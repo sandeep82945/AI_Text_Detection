@@ -1,15 +1,8 @@
 import os
-import pandas as pd
-import json
-import nltk
-from nltk.tokenize import PunktSentenceTokenizer, word_tokenize
-nltk.download('punkt')
 import yaml
+import json
 from tqdm import tqdm
 from gemini import inference as gemini_inference
-# from test_preprocessing import preprocess
-
-tokenizer = PunktSentenceTokenizer()
 
 with open('/content/AI_Text_Detection/code/config.yml', 'r') as config_file:
     config = yaml.safe_load(config_file)
@@ -22,27 +15,26 @@ dump_folder = os.path.join(paper_dump_path, model_name, domain)
 if not os.path.exists(dump_folder):
     os.makedirs(dump_folder)
 
-def generate_gemini(paper_text):
+def generate_gemini(paper_text, paper_title):
     prompt = f"""Imagine you are a research scientist, read the following paper and write a peer review in the following format:  
-        1) Title - 
-        2) Main Contributions
+        1) Title - {paper_title}
+        2) Paper Topic and Main Contributions (Write a concise summary outlining the paper's topic and main contributions. Highlight the significance of the research problem addressed, any novel methods or techniques introduced, and the key findings or results obtained. Provide enough detail to give readers a clear understanding of the paper's contribution to its field.)
         3) Reasons to accept
         4) Reasons to reject
         5) Questions to authors
         6) Soundness - a value between (1 - 5) and write 1-2 lines.
-        7) Excitment - a value between (1 - 5) and write 1-2 lines.
+        7) Excitement - a value between (1 - 5) and write 1-2 lines.
         8) Reproducibility - a value between (1 - 5) and write 1-2 lines.
         9) Ethical Concerns 
         10) Reviewer Confidence - a value between (1 - 5) and write 1-2 lines.
         ``` {paper_text}```
         """
-
     response = gemini_inference(prompt)
     return response
 
-def choose_model(text):
+def choose_model(text, paper_title):
     if model_name == 'gemini':
-        return generate_gemini(text)
+        return generate_gemini(text, paper_title)
     elif model_name == 'claude':
         return generate_claude2(text)
 
@@ -61,9 +53,10 @@ for filename in tqdm(os.listdir(input_folder)):
     full_text = ''
     for section in data.get('sections', []):
         full_text += section.get('text', '') + '\n'
+    
+    paper_title = data.get('title', 'Untitled')
 
-    # response = preprocess(full_text)
-    response = choose_model(full_text)
+    response = choose_model(full_text, paper_title)
     if response is None:
         continue
 
