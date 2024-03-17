@@ -17,16 +17,15 @@ if not os.path.exists(dump_folder):
 
 def generate_gemini(paper_text, paper_title):
     prompt = f"""Imagine you are a research scientist, read the following paper and write a peer review in the following format:  
-        1) Title - {paper_title}
-        2) Paper Topic and Main Contributions (Write a concise summary outlining the paper's topic and main contributions. Highlight the significance of the research problem addressed, any novel methods or techniques introduced, and the key findings or results obtained. Provide enough detail to give readers a clear understanding of the paper's contribution to its field.)
-        3) Reasons to accept
-        4) Reasons to reject
-        5) Questions to authors
-        6) Soundness - a value between (1 - 5) and write 1-2 lines.
-        7) Excitement - a value between (1 - 5) and write 1-2 lines.
-        8) Reproducibility - a value between (1 - 5) and write 1-2 lines.
-        9) Ethical Concerns 
-        10) Reviewer Confidence - a value between (1 - 5) and write 1-2 lines.
+        1) Paper Topic and Main Contributions (Write a concise summary outlining the paper's topic and main contributions. Highlight the significance of the research problem addressed, any novel methods or techniques introduced, and the key findings or results obtained. Provide enough detail to give readers a clear understanding of the paper's contribution to its field.)
+        2) Reasons to accept
+        3) Reasons to reject
+        4) Questions to authors
+        5) Soundness - a value between (1 - 5)
+        6) Excitement - a value between (1 - 5)
+        7) Reproducibility - a value between (1 - 5)
+        8) Ethical Concerns 
+        9) Reviewer Confidence - a value between (1 - 5)
         ``` {paper_text}```
         """
     response = gemini_inference(prompt)
