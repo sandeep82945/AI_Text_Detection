@@ -1,0 +1,793 @@
+{
+    "abstractText": "Generative models have shown remarkable progress in 3D aspect. Recent works learn 3D representation explicitly under text-3D guidance. However, limited text3D data restricts the vocabulary scale and text control of generations. Generators may easily fall into a stereotype concept for certain text prompts, thus losing openvocabulary generation ability. To tackle this issue, we introduce a conditional 3D generative model, namely TextField3D.Specifically, rather than using the text prompts as input directly, we suggest to inject dynamic noise into the latent space of given text prompts, i.e., Noisy Text Fields (NTFs). In this way, limited 3D data can be mapped to the appropriate range of textual latent space that is expanded by NTFs. To this end, an NTFGen module is proposed to model general text latent code in noisy fields. Meanwhile, an NTFBind module is proposed to align viewinvariant image latent code to noisy fields, further supporting image-conditional 3D generation. To guide the conditional generation in both geometry and texture, multi-modal discrimination is constructed with a text-3D discriminator and a text2.5D discriminator. Compared to previous methods, TextField3D includes three merits: 1) large vocabulary, 2) text consistency, and 3) low latency. Extensive experiments demonstrate that our method achieves a potential open-vocabulary 3D generation capability.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Tianyu Huang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yihan Zeng"
+        },
+        {
+            "affiliations": [],
+            "name": "Bowen Dong"
+        },
+        {
+            "affiliations": [],
+            "name": "Hang Xu"
+        },
+        {
+            "affiliations": [],
+            "name": "Songcen Xu"
+        },
+        {
+            "affiliations": [],
+            "name": "Rynson W. H. Lau"
+        },
+        {
+            "affiliations": [],
+            "name": "Wangmeng Zuo"
+        }
+    ],
+    "id": "SP:4546023c57e209019ed0d368be3dc25e04ce2876",
+    "references": [
+        {
+            "authors": [
+                "Panos Achlioptas",
+                "Olga Diamanti",
+                "Ioannis Mitliagkas",
+                "Leonidas Guibas"
+            ],
+            "title": "Learning representations and generative models for 3d point clouds",
+            "venue": "In International conference on machine learning,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Eric R Chan",
+                "Connor Z Lin",
+                "Matthew A Chan",
+                "Koki Nagano",
+                "Boxiao Pan",
+                "Shalini De Mello",
+                "Orazio Gallo",
+                "Leonidas J Guibas",
+                "Jonathan Tremblay",
+                "Sameh Khamis"
+            ],
+            "title": "Efficient geometry-aware 3d generative adversarial networks",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Angel X Chang",
+                "Thomas Funkhouser",
+                "Leonidas Guibas",
+                "Pat Hanrahan",
+                "Qixing Huang",
+                "Zimo Li",
+                "Silvio Savarese",
+                "Manolis Savva",
+                "Shuran Song",
+                "Hao Su"
+            ],
+            "title": "Shapenet: An information-rich 3d model repository",
+            "venue": "arXiv preprint arXiv:1512.03012,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Rui Chen",
+                "Yongwei Chen",
+                "Ningxin Jiao",
+                "Kui Jia"
+            ],
+            "title": "Fantasia3d: Disentangling geometry and appearance for high-quality text-to-3d content creation",
+            "venue": "arXiv preprint arXiv:2303.13873,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yinbo Chen",
+                "Xiaolong Wang"
+            ],
+            "title": "Transformers as meta-learners for implicit neural representations",
+            "venue": "In Computer Vision\u2013ECCV 2022: 17th European Conference,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yen-Chi Cheng",
+                "Hsin-Ying Lee",
+                "Sergey Tulyakov",
+                "Alexander G Schwing",
+                "Liang-Yan Gui"
+            ],
+            "title": "Sdfusion: Multimodal 3d shape completion, reconstruction, and generation",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An open-source chatbot impressing gpt-4 with 90%* chatgpt quality, March 2023",
+            "venue": "URL https: //lmsys.org/blog/2023-03-30-vicuna/",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Matt Deitke",
+                "Dustin Schwenk",
+                "Jordi Salvador",
+                "Luca Weihs",
+                "Oscar Michel",
+                "Eli VanderBilt",
+                "Ludwig Schmidt",
+                "Kiana Ehsani",
+                "Aniruddha Kembhavi",
+                "Ali Farhadi"
+            ],
+            "title": "Objaverse: A universe of annotated 3d objects",
+            "venue": "arXiv preprint arXiv:2212.08051,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova. Bert"
+            ],
+            "title": "Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "arXiv preprint arXiv:1810.04805,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Rao Fu",
+                "Xiao Zhan",
+                "Yiwen Chen",
+                "Daniel Ritchie",
+                "Srinath Sridhar"
+            ],
+            "title": "Shapecrafter: A recursive text-conditioned 3d shape generation model",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jun Gao",
+                "Tianchang Shen",
+                "Zian Wang",
+                "Wenzheng Chen",
+                "Kangxue Yin",
+                "Daiqing Li",
+                "Or Litany",
+                "Zan Gojcic",
+                "Sanja Fidler"
+            ],
+            "title": "Get3d: A generative model of high quality 3d textured shapes learned from images",
+            "venue": "Advances In Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiatao Gu",
+                "Lingjie Liu",
+                "Peng Wang",
+                "Christian Theobalt"
+            ],
+            "title": "Stylenerf: A style-based 3d-aware generator for high-resolution image synthesis",
+            "venue": "arXiv preprint arXiv:2110.08985,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sophia Gu",
+                "Christopher Clark",
+                "Aniruddha Kembhavi"
+            ],
+            "title": "I can\u2019t believe there\u2019s no images! learning visual tasks using only language data",
+            "venue": "arXiv preprint arXiv:2211.09778,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Anchit Gupta",
+                "Wenhan Xiong",
+                "Yixin Nie",
+                "Ian Jones",
+                "Barlas O\u011fuz"
+            ],
+            "title": "3dgen: Triplane latent diffusion for textured mesh generation",
+            "venue": "arXiv preprint arXiv:2303.05371,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Erik H\u00e4rk\u00f6nen",
+                "Miika Aittala",
+                "Tuomas Kynk\u00e4\u00e4nniemi",
+                "Samuli Laine",
+                "Timo Aila",
+                "Jaakko Lehtinen"
+            ],
+            "title": "Disentangling random and cyclic effects in time-lapse sequences",
+            "venue": "ACM Transactions on Graphics (TOG),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jon Hasselgren",
+                "Jacob Munkberg",
+                "Jaakko Lehtinen",
+                "Miika Aittala",
+                "Samuli Laine"
+            ],
+            "title": "Appearancedriven automatic 3d model simplification",
+            "venue": "In EGSR (DL),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jack Hessel",
+                "Ari Holtzman",
+                "Maxwell Forbes",
+                "Ronan Le Bras",
+                "Yejin Choi"
+            ],
+            "title": "Clipscore: A reference-free evaluation metric for image captioning",
+            "venue": "arXiv preprint arXiv:2104.08718,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Martin Heusel",
+                "Hubert Ramsauer",
+                "Thomas Unterthiner",
+                "Bernhard Nessler",
+                "Sepp Hochreiter"
+            ],
+            "title": "Gans trained by a two time-scale update rule converge to a local nash equilibrium",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Tianyu Huang",
+                "Bowen Dong",
+                "Yunhan Yang",
+                "Xiaoshui Huang",
+                "Rynson WH Lau",
+                "Wanli Ouyang",
+                "Wangmeng Zuo"
+            ],
+            "title": "Clip2point: Transfer clip to point cloud classification with image-depth pre-training",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ajay Jain",
+                "Ben Mildenhall",
+                "Jonathan T Barron",
+                "Pieter Abbeel",
+                "Ben Poole"
+            ],
+            "title": "Zero-shot text-guided object generation with dream fields",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Heewoo Jun",
+                "Alex Nichol"
+            ],
+            "title": "Shap-e: Generating conditional 3d implicit functions",
+            "venue": "arXiv preprint arXiv:2305.02463,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tero Karras",
+                "Samuli Laine",
+                "Timo Aila"
+            ],
+            "title": "A style-based generator architecture for generative adversarial networks",
+            "venue": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Diederik P. Kingma",
+                "Jimmy Ba"
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "arXiv preprint arXiv:1412.6980,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Adam R Kosiorek",
+                "Heiko Strathmann",
+                "Daniel Zoran",
+                "Pol Moreno",
+                "Rosalia Schneider",
+                "Sona Mokr\u00e1",
+                "Danilo Jimenez Rezende"
+            ],
+            "title": "Nerf-vae: A geometry aware 3d scene generative model",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi"
+            ],
+            "title": "Blip-2: Bootstrapping languageimage pre-training with frozen image encoders and large language models",
+            "venue": "arXiv preprint arXiv:2301.12597,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chen-Hsuan Lin",
+                "Jun Gao",
+                "Luming Tang",
+                "Towaki Takikawa",
+                "Xiaohui Zeng",
+                "Xun Huang",
+                "Karsten Kreis",
+                "Sanja Fidler",
+                "Ming-Yu Liu",
+                "Tsung-Yi Lin"
+            ],
+            "title": "Magic3d: High-resolution text-to-3d content creation",
+            "venue": "arXiv preprint arXiv:2211.10440,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Michael Maire",
+                "Serge Belongie",
+                "James Hays",
+                "Pietro Perona",
+                "Deva Ramanan",
+                "Piotr Doll\u00e1r",
+                "C Lawrence Zitnick"
+            ],
+            "title": "Microsoft coco: Common objects in context",
+            "venue": "In Computer Vision\u2013ECCV",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Minghua Liu",
+                "Ruoxi Shi",
+                "Kaiming Kuang",
+                "Yinhao Zhu",
+                "Xuanlin Li",
+                "Shizhong Han",
+                "Hong Cai",
+                "Fatih Porikli",
+                "Hao Su"
+            ],
+            "title": "Openshape: Scaling up 3d shape representation towards open-world understanding",
+            "venue": "arXiv preprint arXiv:2305.10764,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhen Liu",
+                "Yao Feng",
+                "Michael J Black",
+                "Derek Nowrouzezahrai",
+                "Liam Paull",
+                "Weiyang Liu"
+            ],
+            "title": "Meshdiffusion: Score-based generative 3d mesh modeling",
+            "venue": "arXiv preprint arXiv:2303.08133,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Paritosh Mittal",
+                "Yen-Chi Cheng",
+                "Maneesh Singh",
+                "Shubham Tulsiani"
+            ],
+            "title": "Autosdf: Shape priors for 3d completion, reconstruction and generation",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nasir Mohammad Khalid",
+                "Tianhao Xie",
+                "Eugene Belilovsky",
+                "Tiberiu Popa"
+            ],
+            "title": "Clip-mesh: Generating textured meshes from text using pretrained image-text models",
+            "venue": "In SIGGRAPH Asia 2022 Conference Papers,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alex Nichol",
+                "Heewoo Jun",
+                "Prafulla Dhariwal",
+                "Pamela Mishkin",
+                "Mark Chen"
+            ],
+            "title": "Point-e: A system for generating 3d point clouds from complex prompts",
+            "venue": "arXiv preprint arXiv:2212.08751,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Michael Niemeyer",
+                "Andreas Geiger"
+            ],
+            "title": "Giraffe: Representing scenes as compositional generative neural feature fields",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "David Nukrai",
+                "Ron Mokady",
+                "Amir Globerson"
+            ],
+            "title": "Text-only training for image captioning using noise-injected clip",
+            "venue": "arXiv preprint arXiv:2211.00575,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Michael Oechsle",
+                "Lars Mescheder",
+                "Michael Niemeyer",
+                "Thilo Strauss",
+                "Andreas Geiger"
+            ],
+            "title": "Texture fields: Learning texture representations in function space",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ben Poole",
+                "Ajay Jain",
+                "Jonathan T Barron",
+                "Ben Mildenhall"
+            ],
+            "title": "Dreamfusion: Text-to-3d using 2d diffusion",
+            "venue": "arXiv preprint arXiv:2209.14988,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Charles R Qi",
+                "Hao Su",
+                "Kaichun Mo",
+                "Leonidas J Guibas"
+            ],
+            "title": "Pointnet: Deep learning on point sets for 3d classification and segmentation",
+            "venue": "In Proceedings of the IEEE conference on computer vision and pattern recognition,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark"
+            ],
+            "title": "Learning transferable visual models from natural language supervision",
+            "venue": "In International conference on machine learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aditya Ramesh",
+                "Mikhail Pavlov",
+                "Gabriel Goh",
+                "Scott Gray",
+                "Chelsea Voss",
+                "Alec Radford",
+                "Mark Chen",
+                "Ilya Sutskever"
+            ],
+            "title": "Zero-shot text-to-image generation",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aditya Ramesh",
+                "Prafulla Dhariwal",
+                "Alex Nichol",
+                "Casey Chu",
+                "Mark Chen"
+            ],
+            "title": "Hierarchical textconditional image generation with clip latents",
+            "venue": "arXiv preprint arXiv:2204.06125,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Robin Rombach",
+                "Andreas Blattmann",
+                "Dominik Lorenz",
+                "Patrick Esser",
+                "Bj\u00f6rn Ommer"
+            ],
+            "title": "Highresolution image synthesis with latent diffusion models",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chitwan Saharia",
+                "William Chan",
+                "Saurabh Saxena",
+                "Lala Li",
+                "Jay Whang",
+                "Emily L Denton",
+                "Kamyar Ghasemipour",
+                "Raphael Gontijo Lopes",
+                "Burcu Karagol Ayan",
+                "Tim Salimans"
+            ],
+            "title": "Photorealistic text-to-image diffusion models with deep language understanding",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aditya Sanghi",
+                "Hang Chu",
+                "Joseph G Lambourne",
+                "Ye Wang",
+                "Chin-Yi Cheng",
+                "Marco Fumero",
+                "Kamal Rahimi"
+            ],
+            "title": "Malekshan. Clip-forge: Towards zero-shot text-to-shape generation",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aditya Sanghi",
+                "Rao Fu",
+                "Vivian Liu",
+                "Karl DD Willis",
+                "Hooman Shayani",
+                "Amir H Khasahmadi",
+                "Srinath Sridhar",
+                "Daniel Ritchie"
+            ],
+            "title": "Clip-sculptor: Zero-shot generation of high-fidelity and diverse shapes from natural language",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Axel Sauer",
+                "Tero Karras",
+                "Samuli Laine",
+                "Andreas Geiger",
+                "Timo Aila"
+            ],
+            "title": "Stylegan-t: Unlocking the power of gans for fast large-scale text-to-image synthesis",
+            "venue": "arXiv preprint arXiv:2301.09515,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianchang Shen",
+                "Jun Gao",
+                "Kangxue Yin",
+                "Ming-Yu Liu",
+                "Sanja Fidler"
+            ],
+            "title": "Deep marching tetrahedra: a hybrid representation for high-resolution 3d shape synthesis",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhengyi Wang",
+                "Cheng Lu",
+                "Yikai Wang",
+                "Fan Bao",
+                "Chongxuan Li",
+                "Hang Su",
+                "Jun Zhu"
+            ],
+            "title": "Prolificdreamer: High-fidelity and diverse text-to-3d generation with variational score distillation",
+            "venue": "arXiv preprint arXiv:2305.16213,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiacheng Wei",
+                "Hao Wang",
+                "Jiashi Feng",
+                "Guosheng Lin",
+                "Kim-Hui Yap"
+            ],
+            "title": "Taps3d: Text-guided 3d textured shape generation from pseudo supervision",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Deyao Zhu",
+                "Jun Chen",
+                "Xiaoqian Shen",
+                "Xiang Li",
+                "Mohamed Elhoseiny"
+            ],
+            "title": "Minigpt-4: Enhancing vision-language understanding with advanced large language models",
+            "venue": "arXiv preprint arXiv:2304.10592,",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "3D creative contents are in significantly increased demand for a wide range of applications, including video games, virtual reality, and robotic simulation. However, manually creating 3D content is a time-consuming process that requires a high level of expertise. To achieve automatic generation, previous works (Niemeyer & Geiger, 2021; Gu et al., 2021; Chan et al., 2022; Gao et al., 2022) attempt on several 3D representations like Voxel, NeRF, and SDF. Nonetheless, objects from these methods are unconditionally generated in a single category, which can hardly be applied in practice.\nWith the success of text-to-image generative models (Ramesh et al., 2021; 2022; Rombach et al., 2022), text prompts become a flexible variable to achieve open-vocabulary generative capability. Similar to 2D vision, text-to-3D generation has recently aroused great interest. Current research can be generally separated into two strategies. One (Jain et al., 2022; Mohammad Khalid et al., 2022; Poole et al., 2022; Lin et al., 2022) optimizes differentiable 3D representations with vision-language (V-L) pre-trained knowledge, e.g., DreamFields (Jain et al., 2022) is optimized from knowledge of the V-L pre-trained model CLIP (Radford et al., 2021), and DreamFusion (Poole et al., 2022) is guided by a diffusion model Imagen (Saharia et al., 2022). Since no 3D data are involved in training, these methods can easily fall into artifacts, facing serious 3D consistency problems. Meanwhile, the cost of optimizing 3D representations is extremely high, in terms of both time and computational resources. The first strategy seems not to be the ultimate solution for 3D generation. The other (Nichol et al., 2022; Cheng et al., 2023; Wei et al., 2023; Sanghi et al., 2023; Jun & Nichol, 2023) directly supervises 3D generators with paired text-3D data. These methods allow real-time generation but are extremely restricted by the scale of available 3D data. Nichol et al. (2022) and Jun & Nichol\n(2023) collect millions of text-3D pairs, which is still thousands of times smaller than the scale of V-L data. As such, the diversity of generated output and the complexity of text input are incompatible with V-L optimized methods. Therefore, here is the question: With limited data, can we train a real-time 3D generator with the potential towards open-vocabulary content creation?\nThe common practice to address data scarcity is introducing V-L pre-trained knowledge to generators. Specifically, 3D generative latent codes are initialized with pre-trained models. Cheng et al. (2023) adopt BERT (Devlin et al., 2018)/CLIP (Radford et al., 2021) encoders for text/imagecondition tasks. Sanghi et al. (2023) propose to train a transformer module with CLIP image embedding and replace it with text embedding at inference. Wei et al. (2023) further attempt to align text prompts with rendered images to improve generative text control. However, one key problem remains challenging: how to map limited 3D content to comprehensive V-L pre-trained concepts. Some recent 3D representation learning works Huang et al. (2023); Liu et al. (2023a) align generative latent space based on limited categories and text prompts, resulting in a close set understanding.\nTo tackle this issue, we intend to expand the expression range of 3D latent space. We observe that 3D latent code can easily fall into stereotype concepts when trained in a small data scale with clean data and templated prompts. For example, a simple prompt \u201ca chair\u201d can represent any type of chair, tall or short, with or without armrests. However, if supervised on a specific type of chair, the generator may tend to produce this fixed shape only, losing diversity. Based on this observation, we introduce a conditional 3D generative model, dubbed TextField3D. TextField3D maps limited 3D data to dynamic fields of V-L concepts, which are named as Noisy Text Fields (NTFs). Specifically, we assume that there is a dynamic range in the latent mapping of text-to-3D, which can be formulated as an injected noise to the text embeddings. We thus propose an NTFGen module, where text latent code is formulated based on the field of noisy text embeddings. To support image conditional generation, we further propose an NTFBind module for binding image features to NTFs and keeping the consistency of multi-view conditions. A view-invariant image latent code is derived for the image-to-3D task. Furthermore, multi-modal discrimination is constructed for the supervision of 3D generation, in which we propose a text-3D discriminator to guide geometry generation and a text-2.5D discriminator to refine texture details.\nCompared to previous methods, TextField3D simultaneously possesses three advantages: large vocabulary, text consistency, and low latency. Extensive experiments are conducted on various categories and complicated text prompts, which exhibit the open-vocabulary potential of our model. We further employ several metrics to evaluate the generation quality and text consistency, demonstrating the effectiveness of our newly proposed modules.\nOur contributions can be summarised as follows:\n\u2022 We introduce a conditional 3D generative model TextField3D, in which limited 3D data is mapped to textual fields with dynamic noise, namely Noisy Text Fields (NTFs).\n\u2022 We propose NTFGen and NTFBind to manipulate general latent codes for conditional generation, and a multi-modal discriminator to guide the generation of geometry and texture.\n\u2022 Extensive experiments present an open-vocabulary potential of our proposed method, in terms of large vocabulary, text consistency, and low latency."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": "Driven by the increasing demand for 3D creative contents, text-to-3D generation has witnessed rapid improvement recently. We can generally split current studies into two categories: V-L optimized methods and 3D supervised methods.\nV-L Optimized Methods. With the success of V-L pre-trained models, various works (Jain et al., 2022; Mohammad Khalid et al., 2022; Poole et al., 2022; Lin et al., 2022; Chen et al., 2023; Wang et al., 2023) leverage V-L pre-trained knowledge to optimize implicit functions of 3D representations. Jain et al. (2022) supervise the generation of a NeRF representation by the CLIP guidance of given text prompts. Poole et al. (2022) introduce Score Distillation Sampling (SDS) to a NeRF variant, adopting diffusion models to optimize 3D renderings. Based on SDS, Wang et al. (2023) further propose Variational Score Distillation (VSD), treating the 3D content of a given textual prompt as a random variable. Albeit approaching open-vocabulary generation, these methods highly depend on expensive and time-consuming optimization procedures and may easily produce 3D artifacts like multi-face and paper-thin outputs, which is not a practical solution for 3D generation.\n3D supervised Methods. 3D supervised methods train generators with 3D data. Contrary to V-L optimized methods, they present an efficient way to generate solid 3D content. These works (Achlioptas et al., 2018; Kosiorek et al., 2021; Chen & Wang, 2022) are basically in an encoder-decoder architecture. For example, Kosiorek et al. (2021) proposes a variational autoencoder, encoding rendered views of scene representations as a generative condition. However, generations are restricted by the scarcity of 3D data. To allow various generative conditions, some recent works (Sanghi et al., 2022; Mittal et al., 2022; Fu et al., 2022; Cheng et al., 2023; Wei et al., 2023; Sanghi et al., 2023) attempt to combine pre-trained knowledge to the latent encoding, while the improvement is limited. Nichol et al. (2022) and Jun & Nichol (2023) collect several millions 3D data for training large-vocabulary generators, which is still far from the data scale of 2D diffusion.\nIn this work, we aim to enhance the mapping of limited 3D data and comprehensive V-L pre-trained knowledge, presenting an efficient way to approach open-vocabulary 3D generation."
+        },
+        {
+            "heading": "3 PRELIMINARIES",
+            "text": ""
+        },
+        {
+            "heading": "3.1 3D GENERATIVE MODEL",
+            "text": "Regardless of those V-L optimized methods, a 3D generative model takes latent codes to the generator and supervises corresponding generated contents with 3D data. GET3D (Gao et al., 2022) proposes a 3D generative adversarial network (GAN) that embeds a random vector to the latent space of geometry and texture. MeshDiffusion (Liu et al., 2023b) learns to denoise a simple initial distribution into the target 3D objects with a diffusion model. SDFusion (Cheng et al., 2023) leverages a vector quantised-variational autoencoder (VQ-VAE) to compress 3D shapes into latent space for further generations. Not losing generality, we can split 3D generation training into three components, i.e., a 3D latent code w, a generator G in differentiable 3D representations, and a 3D-related supervision \u22073DG(w)."
+        },
+        {
+            "heading": "3.2 CONDITIONAL 3D GENERATION",
+            "text": "To allow condition inputs for the generation, the common strategy is embedding the generative latent code with corresponding inputs. In 2D text-to-image synthesis (Ramesh et al., 2021; 2022; Rombach et al., 2022), generators are trained to minimize the objective \u22072DG(w) with large-scale V-L data, achieving an open-vocabulary performance. Unfortunately, reaching such a tremendous scale for 3D datasets is challenging. Saharia et al. (2022) suggest that pre-trained text or V-L models may encode meaningful representations relevant for the generation task. They initialize latent codes with freezed BERT (Devlin et al., 2018), T5 (Raffel et al., 2020), and CLIP (Radford et al., 2021), which may alleviate data scarcity to some extent. Therefore, some text-to-3D methods (Sanghi et al., 2022; Mittal et al., 2022; Fu et al., 2022; Cheng et al., 2023; Wei et al., 2023; Sanghi et al., 2023) utilize pre-trained knowledge to embed latent vectors w. Take a textual input t as an example: The conditional latent code wt can be revised as wt = f(z, t), where t is pre-trained text features encoded from t, and f is a mapping network to embed text features t with noise distributions z."
+        },
+        {
+            "heading": "4 METHODOLOGY",
+            "text": "Albeit introducing open-vocabulary knowledge from V-L pre-trained models as guidance, previous 3D generative models (Cheng et al., 2023; Wei et al., 2023; Sanghi et al., 2023) still struggle to exhibit promising open-vocabulary capability. In this work, we present TextField3D as a feasible solution to approach open-vocabulary generation. To this end, we introduce Noisy Text Fields (NTFs) to boost the latent mapping between V-L concepts and 3D representations. Meanwhile, we propose multi-modal discrimination to enhance the supervision of 3D generation. The overall framework is illustrated in Figure 2. We provide detailed explanations in the following."
+        },
+        {
+            "heading": "4.1 LEARNING GENERAL LATENT SPACE FOR 3D REPRESENTATION",
+            "text": "Current available 3D data is limited to a small range of categories, which is unable to cover comprehensive concepts of V-L pre-trained knowledge. As shown in Figure 3, previous 3D latent code is trained with clean data and templated prompts, falling into a stereotype concept of certain prompts in training data. Therefore, it is a challenging task to align 3D latent space with the open-vocabulary embedding space of V-L pre-trained models.\nIn order to learn a general latent code from limited 3D data, we have to map 3D data to an equivalent expression range of pre-trained concepts. There are some previous studies (Nukrai et al., 2022; Gu et al., 2022) addressing the issue of imbalanced data between multiple modalities. They attempt to solve V-L tasks with text-only training. An injected noise n \u223c N(0, \u03f5) is attached to the embedded text, so that image features can be included in the textual space. In our case, text prompts and 3D objects have a one-to-many correspondence, e.g., \u201ca chair\u201d can represent all kinds of chairs in Figure 3. Accordingly, we can introduce a similar noise to the corresponding 3D latent space.\nNoisy Text Latent Code. Considering the scarcity of available text-3D data, we attach a textual range to 3D latent space following (Nukrai et al., 2022; Gu et al., 2022). However, we observe that the one-to-many situation is more obvious in 3D. Different from 2D realistic images, rendered images of 3D data present a single 3D object on a clean background. The diversity can be easily constrained if a strict text prompt is given like \u201ca tall wooden chair without armrests\u201d. Therefore, we propose a dynamic noise injection to adjust the range of text embeddings t:\nt\u0303 = t+N(0,\u03c3), where \u03c3 = ftxt(t),\u03c3 \u2208 (\u03f51, \u03f52), (1)\nwhere ftxt is a non-linear network. \u03f51 and \u03f52 are hyperparameters, which are set as 0.0002 and 0.016. t\u0303 is a textual field injected with dynamic noise, which is regarded as the Noisy Text Field (NTF) of t. Latent code can then be calculated as w = f(z, t\u0303) in NTFs, while we observe that the mapping network f weakens the generative control of t\u0303. In text-to-image synthesis, Ha\u0308rko\u0308nen et al. (2022) and Sauer et al. (2023) also notice the tendency that the input random vector z can dominate over text embeddings t. Following them, we propose a late concatenation, bypassing the mapping networks for text embeddings t\u0303. We thus have the noisy text latent code w\u0303t = [w, t\u0303].\nTo optimize the alignment of latent code and correspondingly generated contents, the common practice is minimizing the cosine distance between text features and image features,\nLnce(I) = \u2212 log exp(t\u0303 \u00b7 [fvis(Itc)]T /\u03c4) exp(t\u0303 \u00b7 [fvis(Itc)]T /\u03c4) + \u2211 t\u0338=t exp(t\u0303 \u00b7 [fvis(Itc)]T /\u03c4) , (2)\nwhere fvis is a pre-trained visual encoder. The image Itc is rendered by a renderer R at the viewpoint c, which is defined as Itc = R(G(w\u0303t), c). However, Lnce(I) is a generation-based objective to match the generated content with the ground-truth text prompt. We further propose a conditionbased objective Lnce(I\u0302), enhancing the alignment of latent code in NTFs with ground-truth rendered images I\u0302 , The final objective for generating noisy textual fields is Lgen = Lnce(I) + Lnce(I\u0302). The module is thus named as NTFGen.\nView-Invariant Image Latent Code. To allow image conditional 3D generation, previous works (Cheng et al., 2023; Gupta et al., 2023) replace text embeddings t with visual embeddings v as generative conditions. However, we argue that image conditions are not equivalent to text conditions in the 3D domain, as images provide additional viewpoint information. In order that generated objects can keep consistent with image conditions at different views, we learn a view-invariant image latent code v\u0303tc = fview(fvis(I\u0302tc), c), where fview is a non-linear network conditioned with camera poses. Given an input latent code v\u0303t1c1 , we randomly select its positive latent code v\u0303 t1 c2 and negative latent code v\u0303t2c3 . The view-invariant objective Lview expects to bind feature spaces with the same text prompt, which is formulated as Lview = \u2225\u2225\u2225v\u0303t1c1 \u2212 v\u0303t1c2\u2225\u2225\u2225 2 \u2212 \u2225\u2225\u2225v\u0303t1c1 \u2212 v\u0303t2c3\u2225\u2225\u2225 2 . Meanwhile, we bind the corresponding generations Itc to noisy text fields t\u0303 by an NTF binding loss Lntf (Itc),\nLntf (Itc) = \u2212 log exp(t\u0303 \u00b7 [fview(fvis(Itc), c)]T /\u03c4) exp(t\u0303 \u00b7 [fview(fvis(Itc), c)]T /\u03c4) + \u2211 t \u0338=t exp(t\u0303 \u00b7 [fview(fvis(Itc), c)]T /\u03c4) (3)\nThe final binding objective is Lbind = Lview + Lntf , and we regard the module as NTFBind."
+        },
+        {
+            "heading": "4.2 TEXTURED MESH GENERATION WITH MULTI-MODAL DISCRIMINATION",
+            "text": "After designing general latent code for 3D generation with injected noise, we then discuss the 3D generative model we used in TextField3D. Previous textured mesh generative models (Chan et al., 2022; Gao et al., 2022; Gupta et al., 2023) have shown remarkable progress in terms of generation quality. In particular, GET3D (Gao et al., 2022) attaches a texture field (Oechsle et al., 2019) to a differentiable 3D representation DMTet (Shen et al., 2021), efficiently producing high-quality textured meshes. Following it, we feed the noisy texture fields to formulate a conditional generator toward open-vocabulary 3D content. Furthermore, to better guide the generation process, we introduce multi-modal discrimination and build a generative adversarial training framework. In the following, we illustrate each component in this framework.\nTextured Mesh Generator. Given two random vectors z1 and z2, GET3D adopts two non-linear mapping networks fgeo and ftex for intermediate latent vectors w1 = fgeo(z1) and w2 = ftex(z2), which are then used for the generation of 3D shapes and texture. By embedding noisy textual fields t\u0303 and bypassing mapping networks fgeo and ftex, the generation process is formulated as G([w1, t\u0303], [w2, t\u0303]).\nText-2.5D Discriminator. The combination of rendered images and corresponding camera poses is widely used in GAN-based 3D supervision (Gu et al., 2021; Chan et al., 2022; Gao et al., 2022).\nRendered images can provide detailed visual information that is beneficial for texture generation. Since 3D geometry is implicitly presented by camera poses, we regard such discrimination as 2.5D supervision. To further supervise the text consistency, we concatenate the camera pose c with t\u0303 as a new discriminative condition. The text-2.5D discriminative objective is formulated as,\nL(Dx, G) = Et\u2208T g(Dx(Itc, [c, t\u0303])) + Et\u2208T,I\u0302tc\u2208I\u0302 (g(\u2212Dx(I\u0302 t c, [c, t\u0303])) + \u03bb \u2225\u2225\u2225\u2207Dx(I\u0302tc)\u2225\u2225\u22252 2 ), (4)\nwhere g(x) is defined as g(x) = \u2212log(1+ exp(x)). I\u0302 is the ground-truth rendered image set. \u03bb is a hyperparameter. x is related to either RGB image or silhouette mask. Following GET3D, we apply the supervision of both RGB and mask.\nText-3D Discriminator. Although 2.5D discrimination implies 3D spatial information, it is difficult to represent geometric details of objects such as normal, smoothness, and so on. Some recent works (Liu et al., 2023b; Cheng et al., 2023; Gupta et al., 2023) have attempted to learn the shape prior directly from 3D data. Similarly, we exploit sampled point clouds to discriminate the generative quality. Given a generated mesh object, we uniformly sample point clouds p over its surface. A discriminator architecture similar to 2.5D is then adopted, while we adjust its mapping network to PointNet (Qi et al., 2017). We have the text-3D discriminative objective L(Dpc, G),\nL(Dpc, G) = Et\u2208T g(Dpc(pt, t)) + Et\u2208T,p\u0302t\u2208P\u0302 (g(\u2212Dpc(p\u0302 t, t)) + \u03bb \u2225\u2225\u2225\u2207Dpc(I\u0302tc)\u2225\u2225\u22252 2 ), (5)\nwhere pt and p\u0302t are the generated and the ground-truth point clouds with text prompt t, respectively. P\u0302 is the ground-truth point cloud set."
+        },
+        {
+            "heading": "4.3 OVERALL TRAINING OBJECTIVE",
+            "text": "Finally, we illustrate the overall training objective L of TextField3D, which is defined as follows:\nL = L(Dimg, G) + L(Dmask, G) + \u03bbpcL(Dpc, G) + \u03bbgenLgen, (6)\nwhere the loss weight parameters \u03bbpc = 0.01 and \u03bbgen = 2. The NTFBind module is additionally trained by the binding objective Lbind. During its training, we freeze noisy texture fields t\u0303."
+        },
+        {
+            "heading": "5 EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "5.1 DATASET",
+            "text": "We train TextField3D with a large-scale 3D dataset Objaverse (Deitke et al., 2022), which collects over 800k 3D objects from various categories. We select around 175k objects among them, which are qualified for the training. To prepare training data, we render RGBA images of 3D objects from random camera viewpoints with blender engines (Community, 2018) and annotate textual descriptions to them with the latest image captioning models (Li et al., 2023). For ablation studies, a clean 3D dataset ShapeNet (Chang et al., 2015) is used to evaluate the generative quality. ShapeNet contains over 50k clean 3D objects from 55 categories. We can accurately divide the training and test sets based on categories, which is the reason why we choose ShapeNet for the ablation studies. We filter out objects without texture, leaving 32,863 3D textured shapes. The filtered data are split into training, validation, and testing sets in a ratio of 7:1:2. We additionally annotate ShapeNet with MiniGPT-4 (Zhu et al., 2023). Please refer to Appendix B for details of data preparation."
+        },
+        {
+            "heading": "5.2 IMPLEMENTATION DETAILS",
+            "text": "For Objaverse, we train TextField3D with the full set and evaluate it with open-vocabulary text prompts. For ShapeNet, we select the best-performing models on the validation set for the evaluation. The total training time is around 3 days and 1 day with 8 V100 GPUs, respectively. Following GET3D, we use a StyleGAN (Karras et al., 2019) discriminator architecture. We use Adam (Kingma & Ba, 2014) optimizer and initialize the learning rate to 0.002. The training batch size is 64. We use CLIP\u2019s ViT-B/32 to embed text/image inputs and freeze them on training. We sample 8,192 points for each mesh object. And the image resolution is 512\u00d7 512 for both rendering and generation."
+        },
+        {
+            "heading": "5.3 EXPERIMENTAL RESULTS",
+            "text": "We train TextField3D on the Objaverse dataset, which is captioned with BLIP-2 (Li et al., 2023). Four state-of-the-art methods are then selected for comparison: DreamFields (Jain et al., 2022), DreamFusion (Poole et al., 2022), Point-E (Nichol et al., 2022), and Shap-E (Jun & Nichol, 2023). Quantitative and qualitative results are presented in the following.\nQuantitative Results. To verify open-vocabulary generation ability, Jain et al. (2022) propose an evaluation set, collecting 153 captions from the Common Objects in Context (COCO) dataset (Lin et al., 2014). We follow the experiment setting: for each prompt, we render an image from the corresponding generated object, with a fixed camera pose at a 45\u25e6 angle of elevation and a 30\u25e6 angle of rotation. Table 1 reports the retrieval precision with CLIP (CLIP R-Precision). Our 1-shot results are better than Point-E and Shap-E, even though TextField3D is trained in a much smaller data scale. Moreover, since TextField3D generates 3D objects much faster than other methods, we try eight more times for each prompt and select the most similar image out of 9 (according to the cosine similarity with CLIP text features). The results (TextField3D, 9-shot) can reach a higher level, almost close to SDS methods. These results demonstrate that TextField3D is more generalized than previous supervised methods (Point-E and Shap-E) with much fewer training data and achieves a comparable open-vocabulary capability with V-L optimized methods by a much faster inference.\nQualitative Results We select seven representative text prompts for the text-to-3D generation task, including three single nouns, two compound nouns, and two adjectival nouns. As shown in Figure 4 , the generation quality of DreamFields and Point-E is relatively low. DreamFusion has several paper-thin cases, i.e., rat, chess piece, and brick chimney, as it is optimized V-L pre-trained knowledge rather than 3D shape prior. The view consistency is another problem for DreamFusion, e.g., the generated teapot has multiple spouts. Shap-E is a 3D-optimized method that is similar to our TextField3D. However, it fails to generate a common rat, which raises questions about its openvocabulary capability. Moreover, Shap-E performs poorly in text prompts with simple attribute binding. The chimney does not have a brick texture, and the teapot is not uniformly filled with green color. The results of our model TextField3D are basically consistent with text descriptions.\nWe also conduct image-to-3D generation, comparing with Point-E and Shap-E in Figure 5. \u201cTextField3D\u201d denotes replacing text embeddings t\u0303 with image features. \u201c+NTFBind\u201d denotes using view-invariant image latent code v\u0303tc. In (a), we provide part of a clay pot in a bottom view as input. Shap-E can generate a similar shape but the color is lighter than the ground-truth image. TextField3D can reproduce the color, while the generated pot neck is too long due to the interference of the input view. The shape and texture are generated precisely only when our NTFBind module is employed. The front view of a donkey in (b) is much harder to reconstruct, as it looks quite different in multiple views. Shap-E fails to reproduce the donkey, generating extra legs in a lighter color. The donkey generated by TextField3D is better than Shap-E\u2019s, but it still has obvious artifacts at the neck and back. The reproduction with our NTFBind has the best visual result."
+        },
+        {
+            "heading": "5.4 ABLATION STUDIES",
+            "text": "NTFGen Module and Multi-Modal Discriminator. To demonstrate the effectiveness of these two proposed modules, we compare four conditional generation solutions, i.e., (a) embedding pretrained V-L features into GET3D, which is similar to SDFusion (Cheng et al., 2023); (b) further\naligning features in (a) by pre-trained models, which is similar to TAPS3D (Wei et al., 2023); (c) embedding text features with our NTFGen module; (d) further attaching our text-to-3D discriminator to (c), which is our method TextField3D. We train them on the ShapeNet dataset, with both BLIP2 (Li et al., 2023) and MiniGPT-4 (Zhu et al., 2023) captioning.\nWe quantitatively compare the four solutions, as well as GET3D, in Table 2. FID (Heusel et al., 2017) and CLIP-score (Hessel et al., 2021) are used for the evaluation. The results demonstrate that our proposed modules effectively improve generation quality and text control consistency.\nWe also provide qualitative results in Figure 6. We use a simple text prompt \u201dA green ball\u201d to evaluate generation quality and a complicated text prompt \u201dA round table with red legs and a blue\ntop surface\u201d to further evaluate text control consistency. In the former case, (d) presents a highquality generation thanks to the multi-modal discrimination. In the latter case, (c) and (d) generate reasonable results according to the textual input, demonstrating the effectiveness of Noisy Text Field.\nNTFBind Module. To evaluate view-invariant features v\u0303tc = fview(fvis(Itc), c), we compare it with vanilla CLIP features vtc = fvis(I t c). We propose two evaluation metrics: cosine similarity s/s\u0303 and retrieval ratio r/r\u0303. We randomly select front view cf and back view cb of 55 generations Itcf , I t cb (one object for each category, with label t). For CLIP similarity, we calculate the mean similarities, i.e., s = \u221155 i=1 cos(v ti cf ,vticb)/55 and s\u0303 = \u221155 i=1 cos(v\u0303 ti cf , v\u0303ticb)/55. For retrieval ratio, we regard the opposite view of the same object as the positive target and views of other objects as negative targets. r and r\u0303 are then computed as the average of retrieval ratios. As shown in Table 3, both the similarity and the ratio of view-invariant features are higher than CLIP features, which indicates that Lview learns a view-invariant representation. It is more obvious in generated images, further demonstrating that view-invariant features enhance the generation consistency of novel views."
+        },
+        {
+            "heading": "6 CONCLUSION",
+            "text": "In this work, we present TextField3D to enhance the open-vocabulary capability of 3D generative models. Specifically, we introduce Noisy Text Fields (NTFs) to 3D latent code, enhancing the mapping of V-L pre-trained knowledge and 3D training data. An NTFGen module is proposed to generate noisy text latent code, and an NTFBind module is further proposed to bind view-invariant image latent code to NTFs. Furthermore, to supervise the generation quality and text consistency, we propose multi-modal discrimination that includes both text-3D and text-2.5D discriminators. TextField3D can efficiently generate various 3D contents with complicated text prompts, exhibiting a potential open-vocabulary generative capability.\nBroader Impacts. 3D creations are in high demand for various applications. TextField3D can generate open-vocabulary 3D objects, greatly reducing the cost of producing 3D content. However, like other generative models, there may be a risk of generating malicious content.\nLimitations. TextField3D still depends on the vocabulary of training data, which may not fully match the general capability of V-L supervised methods. For example, it fails in prompts like \u201cA corgi is reading a book\u201d, as current 3D data mainly focuses on shape/texture-related concepts but lacks action-related prompts. Fortunately, the scale of 3D data is steadily increasing. More and more novel concepts can be included to expand TextField3D\u2019s vocabulary."
+        },
+        {
+            "heading": "ACKNOWLEDGEMENTS",
+            "text": "This work was supported by National Key RD Program of China under Grant No. 2021ZD0112100, and the National Natural Science Foundation of China (NSFC) under Grant No. U19A2073."
+        },
+        {
+            "heading": "A EXPERIMENTAL DETAILS",
+            "text": ""
+        },
+        {
+            "heading": "A.1 EXPERIMENT IMPLEMENTATION",
+            "text": "NTFBind Training and Inference. To support image-to-3D generation, we additionally train an NTFBind module with the binding objective Lbind. We load the parameters of the generator, the discriminator, and the NTFGen module on text-to-3D training. We freeze the NTFGen module during the training so that the NTFBind module can be aligned to the trained noisy text fields. The overall training objective L is similar to text-to-3D training:\nLimage\u2212to\u22123D = L(Dimg, G) + L(Dmask, G) + \u03bbpcL(Dpc, G) + \u03bbbindLbind, (7)\nwhere \u03bbbind is set as 0.1 in the experiment. Since the camera views are sampled uniformly in a fixed range, we can randomly generate a camera pose for an input image on inference.\nAblation Studies. In the ablation studies of the main text, we compare four solutions for 3D conditional generation. We additionally illustrate the latent code encoder of solutions (a) and (b) in Figure 7. In (a), the latent code is initialized by a V-L pre-trained text encoder and supervised by a text-2.5D discriminator, the overall loss La = L(Dimg, G)+L(Dmask, G). In (b), rendered images are further aligned with input text features, which can be regarded as Limg in our NTFGen module. Its overall loss can be revised as Lb = La + Limg . In (c), a full version of our NTFGen module is adopted, in which the overall loss can be formulated as Lc = L(Dimg, G) + L(Dmask, G) + \u03bbbindLbind. Finally, (d) presents our TextField3D. Compared with (c), it is further supervised by a text-3D discriminator. Note that text features in (a)-(b) are fed to a mapping network, while we skip the mapping of text features in (c)-(d), as we mentioned in the main text."
+        },
+        {
+            "heading": "B DATA PREPARATION",
+            "text": "B.1 IMAGE RENDERING\nTo generate 2D images from 3D meshes for training, we follow the rendering strategy in GET3D (Gao et al., 2022). We first scale each mesh object such that the longest edge of its bounding\nbox equals 0.8. We then render the RGB images and silhouettes from 8 random camera poses, which are sampled uniformly from an elevation angle of range [0, 16\u03c0] and a rotation angle of range [0, 2\u03c0]. For all camera poses, we use a fixed radius of 1.2 and the field of view (FOV) is 49.13\u25e6. Images are rendered in Blender (Community, 2018) with fixed lighting.\nB.2 IMAGE CAPTIONING\nTo provide text-3D paired training data, we adopt two image captioning methods BLIP-2 (Li et al., 2023) and MiniGPT-4 (Zhu et al., 2023) to caption the rendered images in ShapeNet (Chang et al., 2015) and Objaverse (Deitke et al., 2022). Considering the data scale, we didn\u2019t use MiniGPT-4 to caption Objaverse. In this section, we will introduce the captioning strategies and compare the captioning effects through examples.\nBLIP-2. BLIP-2 leverages a lightweight querying transformer to bridge the gap between pretrained image encoders and language models. We use BLIP-2-OPT-2.7b as the captioning model. For each rendered image, BLIP-2 is employed to expand a sentence beginning with \u201dan object of \u201d. We then extract {text} from the expanded sentence \u201dan object of {text}\u201d as the caption. MiniGPT-4. MiniGPT-4 utilizes an advanced large language model (LLM) Vicuna (Chiang et al., 2023) and a pre-trained vision component of BLIP-2 to formulate multi-modal outputs. It aligns the encoded visual features with the Vicuna language model using just one projection layer and freezes all other vision and language components. Albeit a lightweight alignment, it can possess many similar capabilities to GPT-4, including generating intricate image descriptions and answering visual questions. Thus, given an input image and its category label {c}, we have a question template \u201dthere is a 3D {c} in the picture, use one sentence to shortly describe its texture and shape\u201d for MiniGPT-4. Note that despite emphasizing \u201duse one sentence\u201d, MiniGPT-4 is still likely to generate multiple sentences. To simplify captions, we use the first sentence of the answer as the final caption. Due to the time constraint, we only utilize MiniGPT-4 to make captions for ShapeNet in this paper.\nComparison of Captioning Effects. In Figure 8, we choose three representative images to compare the captioning effects of different methods. Since TPAS3D (Wei et al., 2023) also proposes a pseudo caption generation method for captioning rendered images in part of ShapeNet, we include it in the comparison. From the three cases, we can observe that captions generated by TAPS3D and BLIP-2 are relatively similar, primarily in terms of the combination of adjectives and nouns. In contrast, MiniGPT-4 provides detailed descriptions, including information in both texture and shape."
+        },
+        {
+            "heading": "B.3 DATASET FILTERING",
+            "text": "Although Objaverse (Deitke et al., 2022) is the largest public 3D dataset, its data quality varies. Therefore, we have filtered out some low-quality data. The filtering process has two steps: First, we filter out mesh files that contain more than one object, as our method is not suitable for multiobject/scene-level generation. Then, we filter out mesh objects according to roughness, because we find there are many objects with uneven surfaces, as well as objects that look like a piece of paper. We use Laplacian Regularizer (Hasselgren et al., 2021) to evaluate the roughness of an object, i.e., \u03b4i = vi \u2212 1|Ni| \u2211 j\u2208Ni vj , where Ni is the set of one-ring neighbours for vertex vi. As the average laplacian regularizer metric \u03b4 increases, the roughness level also increases. We select objects whose \u03b4 \u2208 [10\u22121, 10\u22126] as our final training data, which are not too flat or too rough for generation."
+        },
+        {
+            "heading": "C SUPPLEMENTARY RESULTS",
+            "text": ""
+        },
+        {
+            "heading": "C.1 THREESTUDIO EVALUATION SET",
+            "text": "We find a prompt list with 415 prompts in a public repo ThreeStudio and evaluate the CLIP RPrecision in this test set. Since we haven\u2019t surveyed any method that is evaluated in this set, we only compare our method with Shap-E. As shown in Table R3, although it is a harder test set, our method still significantly outperforms Shap-E."
+        },
+        {
+            "heading": "C.2 COMPARISON WITH MORE SOTA METHODS",
+            "text": "The reason why not compare TAPS3D and SDFusion directly is that, they are fine-tuning methods based on single-category GET3D pre-training. For example, in the implementation of the original TAPS3D, a pre-trained category-wise GET3D checkpoint (e.g., car checkpoint, table checkpoint, and so on) is first loaded to the generator. The generator is then fine-tuned by the supervision of a fixed discriminator. Considering that GET3D hasn\u2019t been pre-trained in an open-vocabulary setting, it is hard to evaluate the original TAPS3D in our benchmark.\nNevertheless, we still provide a comparison based on their official code. We load the checkpoint of our pre-trained GET3D (Table 2) and further finetune the generator with TAPS3D. As shown in Table 5, its FID and CLIP-Score (ViT-B/32) results are uncompetitive to our method and even below the version we reproduced (named as (b) in the main text). We think the results are reasonable, as the performance of fine-tuned TAPS3D strongly depends on the pre-trained GET3D. We have demonstrated in Table 2 of the main text that GET3D can hardly generate high-quality 3D results in a multi-category dataset. As a result, TAPS3D is not an appropriate approach to open-vocabulary generation.\nFurthermore, since TAPS3D hasn\u2019t released the training captions and finetuned checkpoints, we cannot even make a comparison on single-category generation with them. We notice that SDFusion has released its text-to-shape checkpoint, which is trained on a table-chair dataset. Therefore, we further evaluate the original SDFusion with recursive text prompts. As shown in Figure 10, SDFusion is a shape-only generator with low generation resolution. Besides, it is not sensitive to long sentences, failing to generate curved legs in the last prompt."
+        },
+        {
+            "heading": "C.3 ABLATION STUDY OF NOISY TEXT FIELD",
+            "text": "To verify the noise range in our noisy text fields, we design four text prompts with gradually increased attributes for comparison with Shap-E. Jun & Nichol (2023) have mentioned that Shap-E struggles to bind multiple attributes to different objects. In Figure 9, it fails in the third case when\ntwo attributes are added. Shap-E generates extra chairs, despite the absence of such a requirement in the text input. And it is confused by the fourth case, generating blue legs and a mixed-color top. In contrast, TextField3D performs well in all cases and meanwhile presents a high-level generation diversity. Moreover, we calculated the variances of t\u0303 in the four cases, which are 0.2479, 0.2153, 0.1674, and 0.1355, respectively. The variances are consistent with our expectations of noise range, i.e., a more detailed description has a smaller noise range.\nTo further evaluate the generation performance on gradually increased attributes, we include ShapeCraft (Fu et al., 2022) in the comparison. We use the recursive prompts in ShapCraft and rephrase them as longer sentences. As shown in Figure 10, TextField3D can achieve comparable performance with ShapeCraft, although it hasn\u2019t been specifically trained with recursive prompts. On the contrary, Shap-E only succeeds in generating the first case. It seems that Shap-E cannot understand \u201dwith no armrest\u201d, treating the phrase as \u201dwith armrest\u201d."
+        },
+        {
+            "heading": "C.4 ABLATION STUDY OF NTFGEN",
+            "text": "Our NTFGen module consists of two objectives, i.e., Limg and Ltxt. To verify the effectiveness of both objectives, we conduct two more experiments on each objective of ShapeNet (Chang et al., 2015) with captions from MiniGPT-4. We report the quantitative results in Table 6. Comparing two objectives, Limg has a better generation quality as its alignment of generations and text features. However, Ltxt achieves a higher CLIP-score, which implies that Ltxt can enhance the mapping of noisy text fields. Moreover, there\u2019s only one difference between \u201d+Limg\u201d and solution (b) in the ablation studies of the main text, i.e., the position of adding text features. \u201d+Limg\u201d performs better than solution (b) (FID: 29.91, CLIP-score: 30.03) in terms of both FID and CLIP-score, demonstrating that bypassing the mapping network for text features is effective for generation quality and text control."
+        },
+        {
+            "heading": "C.5 ABLATION STUDY OF NTFBIND",
+            "text": "Our NTFBind module binds image features in two dimensions: (1) to the noisy text fields; (2) to the multiple views. As illustrated in Table 7, two terms of binding are evaluated separately as \u201d+binding\nNTFs\u201d and \u201d+binding views\u201d. It is obvious that binding NTFs can significantly improve the quality of image-to-3D generation (from 56.71 to 48.84, -7.87 for FID). Although additionally adding a view-binding can further improve the FID to 48.07, we find that the training of binding-views alone does not lead to satisfactory results (we don\u2019t report its result as the model cannot even achieve convergence). We think it is caused by the disruption of alignment between the view-invariant latent code and the noisy text fields. Therefore, binding NTFs is necessary for the image-to-3D task."
+        },
+        {
+            "heading": "C.6 ABLATION STUDY OF MULTI-MODAL DISCRIMINATION",
+            "text": "The intention of the discrimination design is to decouple the supervision of texture and shape generation. We mainly have two unsuccessful attempts: (1) we split the text condition and the camera condition into two independent discriminators, expecting that the former condition would focus on texture and the latter condition would focus on geometry. However, it fails to generate high-quality content (FID is 36.14). As a result, we combine two conditions together in our final discriminator. (2) we replace the mask discriminator with a depth discriminator, as depth provides more geometry information than the silhouette mask. However, all the generated objects fall into a sphere shape under depth discrimination. We think that is because depth discrimination is too sensitive to depth changes. Especially when using a mesh representation DMTet (Shen et al., 2021), the prominent vertices tend to be smoothed to the neighboring surfaces easily, formulating a sphere shape. Instead, we introduce a 3D discriminator based on point cloud, which can flexibly represent the mesh surface."
+        },
+        {
+            "heading": "C.7 MORE VISUALIZATION RESULTS",
+            "text": "To better present our open-vocabulary generation capability, we visualize more generated objects in Figure 11 and 12. We also provide multiple views of these objects in Figure 13. The elevation angles for rendering are \u221215\u25e6, 15\u25e6, and 30\u25e6 from left to right, respectively. In Figure 14, we generate 9 examples for each prompt, showcasing TextField3D\u2019s generation diversity. Note, a beer can in our training dataset is given in the left of Figure 14 to demonstrate that our results don\u2019t overfit to training data. Furthermore, we provide more visualization results of complicated input prompts and conditioned images in Figure 15 and Figure 16, respectively."
+        }
+    ],
+    "title": "TEXTFIELD3D: TOWARDS ENHANCING OPEN- VOCABULARY 3D GENERATION WITH NOISY TEXT FIELDS",
+    "year": 2024
+}
