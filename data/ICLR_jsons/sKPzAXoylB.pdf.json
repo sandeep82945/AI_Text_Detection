@@ -1,1 +1,977 @@
-null
+{
+    "abstractText": "Deep representation learning methods struggle with continual learning, suffering from both catastrophic forgetting of useful units and loss of plasticity, often due to rigid and unuseful units. While many methods address these two issues separately, only a few currently deal with both simultaneously. In this paper, we introduce Utility-based Perturbed Gradient Descent (UPGD) as a novel approach for the continual learning of representations. UPGD combines gradient updates with perturbations, where it applies smaller modifications to more useful units, protecting them from forgetting, and larger modifications to less useful units, rejuvenating their plasticity. We adopt the challenging setup of streaming learning as the testing ground and design continual learning problems with hundreds of non-stationarities and unknown task boundaries. We show that many existing methods suffer from at least one of the issues, predominantly manifested by their decreasing accuracy over tasks. On the other hand, UPGD continues to improve performance and surpasses or is competitive with all methods in all problems, being among the few methods demonstrably capable of addressing both issues. 1 CHALLENGES OF CONTINUAL LEARNING While AI has seen notable successes in natural language processing (Radford et al. 2018, Devlin et al. 2019), games (Mnih et al. 2015, Silver et al. 2016), and computer vision (Krizhevsky et al. 2017), we are yet to see effective continual learning agents. Catastrophic forgetting (McCloskey & Cohen 1989, Hetherington & Seidenberg 1989) in neural networks is widely recognized as a major challenge of continual learning (de Lange et al. 2021). The phenomenon manifests as the failure of gradient-based methods like SGD or Adam to retain or leverage past knowledge due to forgetting or overwriting previously learned units (Kirkpatrick et al. 2017). In continual learning, these learners often relearn recurring tasks, offering little gain over learning from scratch (Kemker et al. 2018). This issue also raises a concern for reusing large practical models, where finetuning them for new tasks causes significant forgetting of pretrained models (Chen et al. 2020, He et al. 2021). Methods for mitigating catastrophic forgetting are primarily designed for specific settings. These include settings with independently and identically distributed (i.i.d.) samples, tasks fully contained within a batch or dataset, growing memory requirements, known task boundaries, storing past samples, and offline evaluation. Such setups are often impractical in situations where continual learning is paramount, such as on-device learning. For example, retaining samples may not be possible due to the limitation of computational resources (Hayes et al. 2019, Hayes et al. 2020, Hayes & Kannan 2022, Wang et al. 2023) or concerns over data privacy (Van de Ven et al. 2020). In the challenging and practical setting of streaming learning, catastrophic forgetting is more severe and remains largely unaddressed (Hayes et al. 2019). In streaming learning, samples are presented to the learner as they arise, which is non-i.i.d. in most practical problems. The learner cannot retain the sample and is thus expected to learn from it immediately. Moreover, evaluation happens online on the most recently presented sample. This setup mirrors animal learning (Hayes et al. 2021, also c.f., list-learning, Ratcliff 1990) and is practical for many applications, such as robotics or autonomous on-device learning. In this work, we consider streaming learning with unknown task boundaries. Streaming learning in this work provides the learner with a stream of samples (xt,yt) generated using a non-stationary target function ft such that yt = ft(xt). The learner observes the input xt \u2208 R, outputs the prediction \u0177t \u2208 R, and then observes the true output yt \u2208 R, strictly in this",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "CATASTROPHIC FORGETTING"
+        }
+    ],
+    "id": "SP:3443fa064044f67325f13d5df86b22ea1cce8baa",
+    "references": [
+        {
+            "authors": [
+                "Z. Abbas",
+                "R. Zhao",
+                "J. Modayil",
+                "A. White",
+                "M.C. Machado"
+            ],
+            "title": "Loss of Plasticity in Continual Deep Reinforcement Learning",
+            "venue": "arXiv preprint arXiv:2303.07507",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "J. Ash",
+                "R.P. Adams"
+            ],
+            "title": "On warm-starting neural network training",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "R. Aljundi",
+                "F. Babiloni",
+                "M. Elhoseiny",
+                "M. Rohrbach",
+                "T. Tuytelaars"
+            ],
+            "title": "Memory aware synapses: Learning what (not) to forget",
+            "venue": "European Conference on Computer Vision (pp. 139-154)",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "R. Aljundi",
+                "K. Kelchtermans",
+                "T. Tuytelaars"
+            ],
+            "title": "Task-free continual learning",
+            "venue": "Conference on Computer Vision and Pattern Recognition",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "S. Becker",
+                "Y. LeCun"
+            ],
+            "title": "Improving the convergence of backpropagation learning with second-order methods",
+            "venue": "Proceedings of the 1988 Connectionist Models Summer School (pp. 29-37)",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "G.A. Carpenter",
+                "S. Grossberg"
+            ],
+            "title": "ART 2: Self-organization of stable category recognition codes for analog input patterns",
+            "venue": "Applied Optics,",
+            "year": 1987
+        },
+        {
+            "authors": [
+                "A. Chaudhry",
+                "P.K. Dokania",
+                "T. Ajanthan",
+                "P.H. Torr"
+            ],
+            "title": "Riemannian walk for incremental learning: Understanding forgetting and intransigence",
+            "venue": "European Conference on Computer Vision (pp. 532-547)",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "A. Chaudhry",
+                "M. Rohrbach",
+                "M. Elhoseiny",
+                "T. Ajanthan",
+                "P.K. Dokania",
+                "P.H. Torr",
+                "M.A. Ranzato"
+            ],
+            "title": "On tiny episodic memories",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "S. Chen",
+                "Y. Hou",
+                "Y. Cui",
+                "W. Che",
+                "T. Liu",
+                "X. Yu"
+            ],
+            "title": "Recall and Learn: Fine-tuning deep pretrained language models with less forgetting",
+            "venue": "In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "G. Cohen",
+                "S. Afshar",
+                "J. Tapson",
+                "A. Van Schaik"
+            ],
+            "title": "EMNIST: Extending MNIST to handwritten letters",
+            "venue": "International Joint Conference on Neural Networks (pp. 2921-2926)",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "M. De Lange",
+                "R. Aljundi",
+                "M. Masana",
+                "S. Parisot",
+                "X. Jia",
+                "A. Leonardis",
+                "T. Tuytelaars"
+            ],
+            "title": "A continual learning survey: Defying forgetting in classification tasks",
+            "venue": "IEEE transactions on pattern analysis and machine intelligence,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "M. De Lange",
+                "G.M. van de Ven",
+                "T. Tuytelaars"
+            ],
+            "title": "Continual evaluation for lifelong learning: Identifying the stability gap",
+            "venue": "International Conference on Learning Representations",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "J. Devlin",
+                "M.W. Chang",
+                "K. Lee",
+                "K. Toutanova"
+            ],
+            "title": "BERT: Pre-training of the North American Chapter of the Association deep bidirectional transformers for language understanding",
+            "venue": "In Proceedings of the 2019 Conference for Computational Linguistics: Human Language Technologies",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "J. Deng",
+                "W. Dong",
+                "R. Socher",
+                "L.J. Li",
+                "K. Li",
+                "L. Fei-Fei"
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "IEEE Conference on Computer Vision and Pattern Recognition",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "S. Dohare",
+                "J.F. Hernandez-Garcia",
+                "P. Rahman",
+                "R.S. Sutton",
+                "A.R. Mahmood"
+            ],
+            "title": "Maintaining Plasticity in Deep Continual Learning",
+            "venue": "arXiv preprint arXiv:2306.13812",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "S. Dohare",
+                "R.S. Sutton",
+                "A.R. Mahmood"
+            ],
+            "title": "Continual backprop: Stochastic gradient descent with persistent randomness",
+            "venue": "arXiv preprint arXiv:2108.06325",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "X. Dong",
+                "S. Chen",
+                "S. Pan"
+            ],
+            "title": "Learning to prune deep neural networks via layer-wise optimal brain surgeon",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "M. Elsayed"
+            ],
+            "title": "Investigating Generate and Test for Online Representation Search with Softmax Outputs",
+            "venue": "M.Sc. thesis, University of Alberta",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "W. Fedus",
+                "D. Ghosh",
+                "J.D. Martin",
+                "M.G. Bellemare",
+                "Y. Bengio",
+                "H. Larochelle"
+            ],
+            "title": "On catastrophic interference in atari",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "I.J. Goodfellow",
+                "M. Mirza",
+                "D. Xiao",
+                "A. Courville",
+                "Y. Bengio"
+            ],
+            "title": "An empirical investigation of catastrophic forgetting in gradient-based neural networks. arXiv preprint arXiv:1312.6211",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Y. Ge",
+                "Y. Li",
+                "D. Wu",
+                "A. Xu",
+                "A.M. Jones",
+                "A.S. Rios"
+            ],
+            "title": "Lightweight Learner for Shared Knowledge Lifelong Learning",
+            "venue": "Transactions on Machine Learning Research",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "M.B. Gurbuz",
+                "C. Dovrolis"
+            ],
+            "title": "NISPA: Neuro-inspired stability-plasticity adaptation for continual learning in sparse networks",
+            "venue": "International Conference on Machine Learning (pp. 8157-8174)",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "D.O. Hebb"
+            ],
+            "title": "The organization of behavior: A neuropsychological theory",
+            "year": 1949
+        },
+        {
+            "authors": [
+                "P.A. Hetherington",
+                "M.S. Seidenberg"
+            ],
+            "title": "Is there \u2018catastrophic interference",
+            "venue": "in connectionist networks? Conference of the Cognitive Science Society (pp. 26-33)",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "S. Han",
+                "J. Pool",
+                "J. Tran",
+                "W. Dally"
+            ],
+            "title": "Learning both weights and connections for efficient neural network",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "T. He",
+                "J. Liu",
+                "K. Cho",
+                "M. Ott",
+                "B. Liu",
+                "J. Glass",
+                "F. Peng"
+            ],
+            "title": "Analyzing the forgetting problem in pretrain-finetuning of open-domain dialogue response models",
+            "venue": "In Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "K. He",
+                "X. Zhang",
+                "S. Ren",
+                "J. Sun"
+            ],
+            "title": "Deep residual learning for image recognition",
+            "venue": "Conference on Computer Vision and Pattern Recognition",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "K. He",
+                "X. Zhang",
+                "S. Ren",
+                "J. Sun"
+            ],
+            "title": "Delving deep into rectifiers: Surpassing human-level performance on imagenet classification",
+            "venue": "IEEE International Conference on Computer Vision (pp. 1026-1034)",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "B. Hassibi",
+                "D. Stork"
+            ],
+            "title": "Second order derivatives for network pruning: Optimal brain surgeon",
+            "venue": "Advances in neural information processing systems,",
+            "year": 1992
+        },
+        {
+            "authors": [
+                "T.L. Hayes",
+                "N.D. Cahill",
+                "C. Kanan"
+            ],
+            "title": "Memory efficient experience replay for streaming learning",
+            "venue": "International Conference on Robotics and Automation (pp. 9769-9776)",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "T.L. Hayes",
+                "K. Kafle",
+                "R. Shrestha",
+                "M. Acharya",
+                "C. Kanan"
+            ],
+            "title": "Remind your neural network to prevent catastrophic forgetting",
+            "venue": "European Conference on Computer Vision (pp. 466-483)",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "T.L. Hayes",
+                "G.P. Krishnan",
+                "M. Bazhenov",
+                "H.T. Siegelmann",
+                "T.J. Sejnowski",
+                "C. Kanan"
+            ],
+            "title": "Replay in deep learning: Current approaches and missing biological elements",
+            "venue": "Neural Computation,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "T.L. Hayes",
+                "C. Kanan"
+            ],
+            "title": "Online continual learning for embedded devices",
+            "venue": "In Conference on Lifelong Learning Agents,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "D. Isele",
+                "A. Cosgun"
+            ],
+            "title": "Selective experience replay for lifelong learning",
+            "venue": "AAAI Conference on Artificial Intelligence (pp. 3302-3309)",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "D. Jung",
+                "D. Lee",
+                "S. Hong",
+                "H. Jang",
+                "H. Bae",
+                "S. Yoon"
+            ],
+            "title": "New insights for the stability-plasticity dilemma in online continual learning",
+            "venue": "International Conference on Learning Representations",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "E.D. Karnin"
+            ],
+            "title": "A simple procedure for pruning back-propagation trained neural networks",
+            "venue": "IEEE transactions on neural networks,",
+            "year": 1990
+        },
+        {
+            "authors": [
+                "R. Kemker",
+                "M. McClure",
+                "A. Abitino",
+                "T. Hayes",
+                "C. Kanan"
+            ],
+            "title": "Measuring catastrophic forgetting in neural networks",
+            "venue": "In Proceedings of the AAAI conference on artificial intelligence",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "D.P. Kingma",
+                "J. Ba"
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "International Conference on Learning Representations",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "J. Kirkpatrick",
+                "R. Pascanu",
+                "N. Rabinowitz",
+                "J. Veness",
+                "G. Desjardins",
+                "A.A. Rusu",
+                "R. Hadsell"
+            ],
+            "title": "Overcoming catastrophic forgetting in neural networks",
+            "venue": "National Academy of Sciences,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "S. Kim",
+                "L. Noci",
+                "A. Orvieto",
+                "T. Hofmann"
+            ],
+            "title": "Achieving a Better Stability-Plasticity Trade-off via Auxiliary Networks in Continual Learning",
+            "venue": "Conference on Computer Vision and Pattern Recognition (pp. 11930-11939)",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "A. Krizhevsky",
+                "I. Sutskever",
+                "G.E. Hinton"
+            ],
+            "title": "Imagenet classification with deep convolutional neural networks",
+            "venue": "Communications of the ACM,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "A. Krizhevsky"
+            ],
+            "title": "Learning Multiple Layers of Features from Tiny Images",
+            "venue": "Ph.D. dissertation,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "J. Konorski"
+            ],
+            "title": "Conditioned Reflexes and Neuron Organization",
+            "year": 1948
+        },
+        {
+            "authors": [
+                "S. Kumar",
+                "H. Marklund",
+                "B. Van Roy"
+            ],
+            "title": "Maintaining Plasticity via Regenerative Regularization",
+            "venue": "arXiv preprint arXiv:2308.11958",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Y. LeCun",
+                "L. Bottou",
+                "Y. Bengio",
+                "P. Haffner"
+            ],
+            "title": "Gradient-based learning applied to document recognition",
+            "venue": "Proceedings of the IEEE,",
+            "year": 1998
+        },
+        {
+            "authors": [
+                "Y. LeCun",
+                "J. Denker",
+                "S. Solla"
+            ],
+            "title": "Optimal brain damage",
+            "venue": "Advances in neural information processing systems,",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "Y. LeCun",
+                "L. Bottou",
+                "Y. Bengio",
+                "P. Haffner"
+            ],
+            "title": "Gradient-based learning applied to document recognition",
+            "venue": "Proceedings of the IEEE,",
+            "year": 1998
+        },
+        {
+            "authors": [
+                "T. Lesort",
+                "O. Ostapenko",
+                "P. Rodriguez",
+                "M.R. Arefin",
+                "D. Misra",
+                "L. Charlin",
+                "I. Rish"
+            ],
+            "title": "Challenging Common Assumptions about Catastrophic Forgetting and Knowledge Accumulation",
+            "venue": "Conference on Lifelong Learning Agents",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "V. Liu",
+                "R. Kumaraswamy",
+                "L. Le",
+                "M. White"
+            ],
+            "title": "The utility of sparse representations for control in reinforcement learning",
+            "venue": "AAAI Conference on Artificial Intelligence (pp. 4384-4391)",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "I. Loshchilov",
+                "F. Hutter"
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "International Conference on Learning Representations",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "C. Lyle",
+                "Z. Zheng",
+                "E. Nikishin",
+                "B.A. Pires",
+                "R. Pascanu",
+                "W. Dabney"
+            ],
+            "title": "Understanding plasticity in neural networks",
+            "venue": "International Conference on Machine Learning (pp. 23190-23211)",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "A.R. Mahmood",
+                "R.S. Sutton"
+            ],
+            "title": "Representation search through generate and test. AAAI Conference on Learning Rich Representations from Low-Level Sensors",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "M.C. Mozer",
+                "P. Smolensky"
+            ],
+            "title": "Skeletonization: A technique for trimming the fat from a network via relevance assessment",
+            "venue": "Advances in neural information processing systems,",
+            "year": 1988
+        },
+        {
+            "authors": [
+                "P. Molchanov",
+                "A. Mallya",
+                "S. Tyree",
+                "I. Frosio",
+                "J. Kautz"
+            ],
+            "title": "Importance estimation for neural network pruning",
+            "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "P. Molchanov",
+                "S. Tyree",
+                "T. Karras",
+                "T. Aila",
+                "J. Kautz"
+            ],
+            "title": "Pruning convolutional neural networks for resource efficient inference. arXiv preprint arXiv:1611.06440",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "V. Mnih",
+                "K. Kavukcuoglu",
+                "D. Silver",
+                "A.A. Rusu",
+                "J. Veness",
+                "M.G. Bellemare",
+                "D. Hassabis"
+            ],
+            "title": "Human-level control through deep reinforcement learning",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "M. McCloskey",
+                "N.J. Cohen"
+            ],
+            "title": "Catastrophic interference in connectionist networks: The sequential learning problem",
+            "venue": "Psychology of Learning and Motivation,",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "V. Nair",
+                "G.E. Hinton"
+            ],
+            "title": "Rectified linear units improve restricted boltzmann machines",
+            "venue": "International Conference on Machine Learning (pp. 807-814)",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "E. Nikishin",
+                "J. Oh",
+                "G. Ostrovski",
+                "C. Lyle",
+                "R. Pascanu",
+                "W. Dabney",
+                "A. Barreto"
+            ],
+            "title": "Deep reinforcement learning with plasticity injection",
+            "venue": "In Workshop on Reincarnating Reinforcement Learning at ICLR",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "S. Park",
+                "J. Lee",
+                "S. Mo",
+                "J. Shin"
+            ],
+            "title": "Lookahead: a far-sighted alternative of magnitude-based pruning",
+            "venue": "arXiv preprint arXiv:2002.04809",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "A. Radford",
+                "K. Narasimhan",
+                "T. Salimans",
+                "I. Sutskever"
+            ],
+            "title": "Improving language understanding by generative pre-Training",
+            "venue": "OpenAI blog",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "R. Ratcliff"
+            ],
+            "title": "Connectionist models of recognition memory: constraints imposed by learning and forgetting functions",
+            "venue": "Psychological review,",
+            "year": 1990
+        },
+        {
+            "authors": [
+                "D. Rolnick",
+                "A. Ahuja",
+                "J. Schwarz",
+                "T. Lillicrap",
+                "G. Wayne"
+            ],
+            "title": "Experience replay for continual learning",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "J. Schwarz",
+                "W. Czarnecki",
+                "J. Luketina",
+                "A. Grabska-Barwinska",
+                "Y.W. Teh",
+                "R. Pascanu",
+                "R. Hadsell"
+            ],
+            "title": "Progress & compress: A scalable framework for continual learning",
+            "venue": "International Conference on Machine Learning (pp. 4528-4537)",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "D. Silver",
+                "A. Huang",
+                "C.J. Maddison",
+                "A. Guez",
+                "L. Sifre",
+                "G. Van Den Driessche",
+                "D. Hassabis"
+            ],
+            "title": "Mastering the game of Go with deep neural networks and tree",
+            "venue": "search. nature,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "V. Tresp",
+                "R. Neuneier",
+                "H.G. Zimmermann"
+            ],
+            "title": "Early brain damage",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 1996
+        },
+        {
+            "authors": [
+                "H. Tanaka",
+                "D. Kunin",
+                "D.L. Yamins",
+                "S. Ganguli"
+            ],
+            "title": "Pruning neural networks without any data by iteratively conserving synaptic flow",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "G.M. Van de Ven",
+                "H.T. Siegelmann",
+                "A.S. Tolias"
+            ],
+            "title": "Brain-inspired replay for continual learning with artificial neural networks",
+            "venue": "Nature communications,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "O. Vinyals",
+                "C. Blundell",
+                "T. Lillicrap",
+                "D. Wierstra"
+            ],
+            "title": "Matching networks for one shot learning",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Y. Wang",
+                "G. Vasan",
+                "A.R. Mahmood"
+            ],
+            "title": "Real-time reinforcement learning for visionbased robotics utilizing local and remote computers",
+            "venue": "In Proceedings of the 2023 International Conference on Robotics and Automation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "M. Wortsman",
+                "V. Ramanujan",
+                "R. Liu",
+                "A. Kembhavi",
+                "M. Rastegari",
+                "J. Yosinski",
+                "A. Farhadi"
+            ],
+            "title": "Supermasks in superposition",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "M. Zaheer",
+                "S. Reddi",
+                "D. Sachan",
+                "S. Kale",
+                "S. Kumar"
+            ],
+            "title": "Adaptive methods for nonconvex optimization",
+            "venue": "Advances in Neural Information Processing systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "F. Zenke",
+                "B. Poole",
+                "S. Ganguli"
+            ],
+            "title": "Continual learning through synaptic intelligence",
+            "venue": "International Conference on Machine Learning (pp. 3987-3995)",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "C. Zeno",
+                "I. Golan",
+                "E. Hoffer",
+                "D. Soudry"
+            ],
+            "title": "Task agnostic continual learning using online variational bayes",
+            "venue": "arXiv preprint arXiv:1803.10123",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "M. Zhou",
+                "T. Liu",
+                "Y. Li",
+                "D. Lin",
+                "E. Zhou",
+                "T. Zhao"
+            ],
+            "title": "Toward understanding the importance of noise in training neural networks",
+            "venue": "International Conference on Machine Learning (pp. 75947602)",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tanaka"
+            ],
+            "title": "Ul,j,i. This theorem shows the property of the conservation of instantaneous utility. The sum of utilities of the outgoing weights to a feature equals the sum of utilities of the incoming weights to the same feature when origin-passing activation functions are used, and the off-diagonal elements",
+            "year": 2020
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 CHALLENGES OF CONTINUAL LEARNING",
+            "text": "While AI has seen notable successes in natural language processing (Radford et al. 2018, Devlin et al. 2019), games (Mnih et al. 2015, Silver et al. 2016), and computer vision (Krizhevsky et al. 2017), we are yet to see effective continual learning agents. Catastrophic forgetting (McCloskey & Cohen 1989, Hetherington & Seidenberg 1989) in neural networks is widely recognized as a major challenge of continual learning (de Lange et al. 2021). The phenomenon manifests as the failure of gradient-based methods like SGD or Adam to retain or leverage past knowledge due to forgetting or overwriting previously learned units (Kirkpatrick et al. 2017). In continual learning, these learners often relearn recurring tasks, offering little gain over learning from scratch (Kemker et al. 2018). This issue also raises a concern for reusing large practical models, where finetuning them for new tasks causes significant forgetting of pretrained models (Chen et al. 2020, He et al. 2021).\nMethods for mitigating catastrophic forgetting are primarily designed for specific settings. These include settings with independently and identically distributed (i.i.d.) samples, tasks fully contained within a batch or dataset, growing memory requirements, known task boundaries, storing past samples, and offline evaluation. Such setups are often impractical in situations where continual learning is paramount, such as on-device learning. For example, retaining samples may not be possible due to the limitation of computational resources (Hayes et al. 2019, Hayes et al. 2020, Hayes & Kannan 2022, Wang et al. 2023) or concerns over data privacy (Van de Ven et al. 2020).\nIn the challenging and practical setting of streaming learning, catastrophic forgetting is more severe and remains largely unaddressed (Hayes et al. 2019). In streaming learning, samples are presented to the learner as they arise, which is non-i.i.d. in most practical problems. The learner cannot retain the sample and is thus expected to learn from it immediately. Moreover, evaluation happens online on the most recently presented sample. This setup mirrors animal learning (Hayes et al. 2021, also c.f., list-learning, Ratcliff 1990) and is practical for many applications, such as robotics or autonomous on-device learning. In this work, we consider streaming learning with unknown task boundaries.\nStreaming learning in this work provides the learner with a stream of samples (xt,yt) generated using a non-stationary target function ft such that yt = ft(xt). The learner observes the input xt \u2208 Rd, outputs the prediction y\u0302t \u2208 Rm, and then observes the true output yt \u2208 Rm, strictly in this\norder. The learner is then evaluated immediately based on the online metric E(yt, y\u0302t), for example, accuracy in classification or squared error in regression. The learner uses a neural network for prediction and E or a related loss to learn the network parameters immediately without storing the sample. The target function ft is locally stationary in time, where changes to ft occur occasionally, creating a nonstationary continual learning problem composed of a sequence of stationary tasks.\nFigure 1(a) illustrates catastrophic forgetting with Adam in the streaming learning setting. Here, a sequence of tasks based on Label-Permuted EMNIST is presented to the learner. The tasks are designed to be highly coherent, where the features learned in one task are fully reusable in the other. Full details of the problem are described in Section 4.4. If the learner can remember and leverage prior learning, it should continue to improve performance as more tasks are presented. However, Figure 1(a) reveals that Adam can hardly improve its performance, which remains at a low level of accuracy, indicating forgetting. Although catastrophic forgetting is commonly studied under offline evaluation (solid lines), the issue also manifests in online evaluation (dashed lines). This result indicates that current representation learning methods are unable to leverage previously learned useful features but instead forget and relearn them in subsequent tasks.\nYet another pernicious challenge of continual learning is loss of plasticity, where the learner\u2019s ability to learn new things diminishes. Recent studies reveal that SGD or Adam continues to lose plasticity with more tasks, primarily due to features becoming difficult to modify (Dohare et al. 2021, Lyle et al. 2023). Several methods exist to maintain plasticity, but they generally do not address catastrophic forgetting. Figures 1(b) and 1(c) illustrate loss of plasticity, where Adam is presented with a sequence of new tasks based on Input-Permuted MNIST (Goodfellow et al. 2013). Adam\u2019s performance degrades with more tasks and becomes worse than Adam-Restarts, which learns from scratch on each task. The stable performance of Adam-Restarts indicates that the tasks are of similar difficulty. Yet, Adam becomes slower to learn over time, demonstrating loss of plasticity.\nA method that preserves useful units, such as features or weights, while leaving the other units adaptable would potentially address both catastrophic forgetting and loss of plasticity. Although a few methods address both issues simultaneously, such methods expect known task boundaries, maintain a replay buffer, or require pretraining, which does not fit streaming learning (Hayes et al. 2022). In this paper, we intend to fill this gap and present a continual learning method that addresses both catastrophic forgetting and loss of plasticity in streaming learning without such limitations."
+        },
+        {
+            "heading": "2 RELATED WORKS",
+            "text": "Addressing Catastrophic Forgetting. Different approaches have been proposed to mitigate catastrophic forgetting. For example, replay-based methods (e.g., Chaudhry et al. 2019, Isele & Cosgun 2018, Rolnick et al. 2019) address forgetting by using a replay buffer to store incoming non-i.i.d. data and then sample from the buffer i.i.d. samples. Catastrophic forgetting is also addressed by parameter isolation methods (e.g., Rusu et al. 2016, Schwarz et al. 2018, Lee et al. 2019, Wortsman et al. 2020, Ge et al. 2023) that can expand to accommodate new information without significantly\naffecting previously learned knowledge. There are also sparsity-inducing methods (e.g., Liu et al. 2019, Pan et al. 2021) that work by maintaining sparse connections so that the weight updates can be localized and not affect many prior useful weights. Finally, regularization-based methods (e.g., Kirkpatrick et al. 2017, Aljundi et al. 2018, Aljundi et al. 2019) use a quadratic penalty that discourages the learner from moving too far from the previously learned weights. The penalty amount is usually a function of the weight importance based on its contribution to previous tasks.\nAddressing Loss of Plasticity. Dohare et al. (2023) introduced a method that maintains plasticity by continually replacing less useful features and pointed out that methods with continual injection of noise (e.g., Ash & Adams 2020) also maintain plasticity. Later, several methods were presented to retain plasticity. For example, Nikishin et al. (2023) proposed dynamically expanding the network, Abbas et al. (2023) recommended using more adaptive activation functions, and Kumar et al. (2023) proposed a regularization term in the loss function towards the initial parameters.\nAddressing Both Issues. The trade-off between plasticity and forgetting has been outlined early by Carpenter & Grossberg (1987) as the stability-plasticity dilemma, a trade-off between maintaining performance on previous experiences and adapting to newer ones. The continual learning community focused more on improving the stability aspect by overcoming forgetting. Recently, however, there has been a new trend of methods that address both issues simultaneously. Chaudhry et al. (RWalk, 2018) utilized a regularization-based approach with a fast-moving average that quickly adapts to the changes in the weight importance, emphasizing the present and the past equally. Jung et al. (2022) introduced different techniques, including structure-wise distillation loss and pretraining to balance between plasticity and forgetting. Gurbuz et al. (2022) proposed using connection rewiring to induce plasticity in sparse neural networks. Finally, Kim et al. (2023) proposed using a separate network for learning the new task, which then is consolidated into a second network for previous tasks. Despite the recent remarkable advancement in addressing the two issues of continual learning, most existing methods do not fit the streaming learning setting since they require knowledge of task boundaries, replay buffers, or pretraining.\nImportance Measure in Neural Network Pruning. Pruning in neural networks requires an importance metric to choose which weights to prune. Typically, the network is pruned using different measures such as the weight magnitude (e.g., Han et al. 2015, Park et al. 2020), first-order information (e.g., Mozer & Smolensky 1988, Hassibi & Stork 1992, Molchanov et al. 2016), second-order information (e.g., LeCun et al. 1989, Dong et al. 2017), or both (e.g., Tresp et al. 1996, Molchanov et al. 2019). Similar to pruning, regularization-based methods that address catastrophic forgetting use weight importance measures such as the Fisher information diagonals to weigh their penalties."
+        },
+        {
+            "heading": "3 METHOD",
+            "text": "To retain useful units while modifying the rest, we need a metric to assess their utility or usefulness. In this section, we introduce a measure for weight utility and outline an efficient method for computing it. Weight utility can be defined as the change in loss when setting the weight to zero, essentially removing its connection (Mozer & Smolensky 1988, Karnin 1990). Removing an important weight should result in increased loss. Ideally, both immediate and future losses matter, but we can only assess immediate loss at the current step. Finally, we devise a gradient-based update rule that protects or modifies weights based on this utility.\nTo define utility precisely, let us consider that the learner produces the predicted output y\u0302 using a neural network with L layers, parametrized by the set of weights W = {W1, ...,WL}. Here Wl is the weight matrix at the l-th layer, and its element at the i-th row and the j-th column is denoted by Wl,i,j . At each layer l, we get the activation output hl of the features by applying the activation function \u03c3 to the activation input al: hl = \u03c3(al). We simplify notations by defining h0 . = x. The activation output hl is then multiplied by the weight matrix Wl+1 of layer l + 1 to produce the next activation input: al+1,i = \u2211dl j=1 Wl+1,i,jhl,j ,\u2200i, where hl \u2208 Rdl . Here, \u03c3 applies activation element-wise for all layers except for the final layer, which becomes the softmax function.\nThe utility Ul,i,j(Z) of the weight i, j at layer l and sample Z is defined as Ul,i,j(Z) . = L(W\u00ac[l,i,j], Z)\u2212 L(W, Z), (1) where L(W, Z) is the sample loss given W , and L(W\u00ac[l,i,j], Z) is a counterfactual loss where W\u00ac[l,i,j] is the same as W except the weight Wl,i,j is set to 0. We refer to it as the true utility\nto distinguish it from its approximations, which are referred to as either approximated utilities or simply utilities. Note that this utility is a global measure, and it provides a total ordering for weights according to their importance. However, computing it is prohibitive since it requires additional Nw forward passes, where Nw is the total number of weights."
+        },
+        {
+            "heading": "3.1 SCALABLE APPROXIMATION OF THE TRUE UTILITY",
+            "text": "Since the computation of the true utility is prohibitive, we aim to approximate it such that no additional forward passes are needed. To that end, we estimate the true utility by a second-order Taylor approximation. We expand the counterfactual loss L(W\u00ac[l,i,j], Z) around the current weight Wl,i,j and evaluate at weight zero. Hence, the quadratic approximation of Ul,i,j(Z) can be written as\nUl,i,j(Z) = L(W\u00ac[l,i,j], Z)\u2212 L(W, Z)\n\u2248 L(W, Z) + \u2202L(W, Z) \u2202Wl,i,j (0\u2212Wl,i,j) + 1 2 \u22022L \u2202W 2l,ij (0\u2212Wl,i,j)2 \u2212 L(W, Z)\n= \u2212\u2202L(W, Z) \u2202Wl,i,j Wl,i,j + 1 2 \u22022L(W, Z) \u2202W 2l,i,j W 2l,i,j . (2)\nWe refer to the utility measure containing the first term as the first-order utility and the measure containing both terms as the second-order utility. The computation required for the second-order term has quadratic complexity. Therefore, we use an approximation similar to Becker and LeCun\u2019s (1989) that provides a Hessian diagonal approximation in linear complexity. This makes the computation of both of our utility approximations linear in complexity and therefore scalable. Moreover, we present a way for propagating our approximated utilities by the utility propagation theorem in Appendix B. We also define the utility of a feature and provide its scalable approximation in Appendix C."
+        },
+        {
+            "heading": "3.2 UTILITY-BASED PERTURBED GRADIENT DESCENT (UPGD)",
+            "text": "Now, we devise a new method called Utility-based Perturbed Gradient Descent (UPGD) that performs gradient-based learning guided by utility-based information. The utility information is used as a gate, referred to as utility gating, for the gradients to prevent large updates to already useful weights, addressing forgetting. On the other hand, the utility information helps maintain plasticity by perturbing unuseful weights which become difficult to change through gradients (see Dohare et al. 2023). The update rule of UPGD is given by\nwl,i,j \u2190 wl,i,j \u2212 \u03b1 (\n\u2202L \u2202wl,i,j + \u03be\n)( 1\u2212 U\u0304l,i,j ) , (3)\nwhere \u03be \u223c N (0, 1) is the noise sample, \u03b1 is the step size, and U\u0304l,i,j \u2208 [0, 1] is a scaled utility. For important weights with utility U\u0304l,i,j = 1, the weight remains unaltered even by gradient descent, whereas unimportant weights with U\u0304l,i,j = 0 get updated by both perturbation and gradient descent.\nAnother variation of UPGD, which we call non-protecting UPGD, is to add the utility-based perturbation to the gradient as wl,i,j \u2190 wl,i,j \u2212 \u03b1[\u2202L/\u2202wl,i,j + \u03be(1 \u2212 U\u0304l,i,j)]. However, such an update rule can only help against loss of plasticity, not catastrophic forgetting, as useful weights are not protected from change by gradients. We include non-protecting UPGD in our experiments to validate that using the utility information as a gate for both the perturbation and the gradient update is necessary to mitigate catastrophic forgetting. We provide convergence analysis for both UPGD and Non-protecting UPGD on non-convex stationary problems in Appendix A.\nUtility scaling is important for the UPGD update rule. We present here a global scaling and present a local scaling variation in Appendix E. The global scaled utility requires the maximum utility of all weights (e.g., instantaneous or trace) at every time step, which is given by U\u0304l,i,j = \u03d5(Ul,i,j/\u03b7). Here \u03b7 is the maximum utility of the weights and \u03d5 is the scaling function, for which we use sigmoid. We show the pseudo-code of our method using the global scaled utility in Algorithm 1, where Fl contains first derivatives and Sl contains second-derivative approximations. We focus here on weight-wise UPGD and provide similar pseudo-codes for feature-wise UPGD in Appendix E.\nUPGD update rule can be related to some existing update rules. When we perturb all weights evenly, that is, when all scaled utilities are zero, UPGD reduces to a well-known class of algorithms\ncalled Perturbed Gradient Descent (PGD) (Zhou et al. 2019). The PGD learning rule is given by wl,i,j \u2190 wl,i,j \u2212 \u03b1 [\u2202L/\u2202wl,i,j + \u03be]. It has been shown that a PGD with weight decay algorithm, known as Shrink and Perturb (S&P) (Ash & Adams 2020), can help maintain plasticity in continual classification problems (Dohare et al. 2023) since maintaining small weights prevents weights from over-committing, making them easy to change. The learning rule of Shrink and Perturb can be written as wl,i,j \u2190 \u03c1wl,i,j \u2212\u03b1 (\u2202L/\u2202wl,i,j + \u03be), where \u03c1 = 1\u2212 \u03bb\u03b1 and \u03bb is the weight decay factor. When no noise is added, the update reduces to SGD with weight decay (Loshchilov & Hutter 2019), known as SGDW. Incorporating the useful role of weight decay into UPGD, we can write the UPGD with weight decay (UPGD-W) update rule as: wl,i,j \u2190 \u03c1wl,i,j \u2212 \u03b1 ( \u2202L \u2202wl,i,j + \u03be ) ( 1\u2212 U\u0304l,i,j ) ."
+        },
+        {
+            "heading": "3.3 FORGETTING AND PLASTICITY EVALUATION METRICS",
+            "text": "Algorithm 1 UPGD Given a stream of data D, a network f with weights {W1, ...,WL}. Initialize Step size \u03b1, decay rate \u03b2. Initialize {W1, ...,WL}. Initialize Ul, U\u0302l,\u2200l to zero. Initialize time step t\u2190 0. for (x,y) in D do t\u2190 t+ 1 for l in {L,L\u2212 1, ..., 1} do \u03b7 \u2190 \u2212\u221e Fl,Sl \u2190GetDerivatives(f,x,y, l) Ml \u2190 1/2Sl \u25e6W 2l \u2212 Fl \u25e6Wl Ul \u2190 \u03b2Ul + (1\u2212 \u03b2)Ml U\u0302l \u2190 Ul/(1\u2212 \u03b2t) if \u03b7 < max(U\u0302l) then \u03b7 \u2190 max(U\u0302l)\nfor l in {L,L\u2212 1, ..., 1} do Sample noise matrix \u03be U\u0304l \u2190 \u03d5(U\u0302l/\u03b7) Wl \u2190Wl \u2212 \u03b1(Fl + \u03be) \u25e6 (1\u2212 U\u0304l)\nHere, we present two metrics for characterizing plasticity and forgetting in streaming learning. First, we introduce a new online metric to quantify plasticity. Neuroplasticity is usually defined as the ability of biological neural networks to change in response to some stimulus (Konorski 1948, Hebb 1949). Similarly, in artificial neural networks, plasticity can be viewed as the ability of a neural network to change its predictions in response to new information (Lyle et al. 2023). We provide a definition that captures the existing intuition in the literature. We define the plasticity of a learner given a sample as the ability to change its prediction to match the target. The learner achieves plasticity of 1 given a sample if it can exactly match the target and achieves plasticity of 0 if it achieves zero or negative progress toward the target compared to its previous prediction given the same sample. Formally, we define the sample plasticity to be p(Z) = max ( 1\u2212 L(W\n\u2020,Z) max(L(W,Z),\u03f5) , 0\n) \u2208 [0, 1],\nwhere W\u2020 is the set of weights after performing the update and \u03f5 is a small number to maintain numerical stability. Note that the term ( 1\u2212 L(W\n\u2020,Z) max(L(W,Z),\u03f5)\n) \u2208 (\u2212\u221e, 1] has an upper bound of 1, since\nL(W, Z) \u2208 [0,\u221e),\u2200W, Z for cross-entropy and squared-error losses. We use this metric to measure plasticity directly, especially since most measures that are introduced (e.g., weight norm) to show loss of plasticity do not often correlate with plasticity (see Lyle et al. 2023). Our metric can be viewed as a baseline-normalized version of the plasticity metric by Lyle et al. (2023) where the baseline is the loss prior to the update. We measure loss of plasticity as \u2206p\u0304k+1 = p\u0304k \u2212 p\u0304k+1, where p\u0304k is the average plasticity over all samples in the k-th evaluation window. Note that this metric ranges from \u22121 to 1, \u2206p\u0304k \u2208 [\u22121, 1],\u2200k. Negative values indicate the learner has gained plasticity, whereas positive values indicate the learner has lost plasticity. In our experiments, we report the overall loss of plasticity on T evaluation windows: \u2211T\u22121 k=1 \u2206p\u0304k+1 = p\u03041 \u2212 p\u0304T .\nExisting metrics for catastrophic forgetting are predominantly based on offline evaluations. In streaming learning, forgetting previously learned useful features leads to future learning deterioration rather than affecting past performance. If the learner keeps improving its representations with each task, the average online accuracy on new tasks should improve continually. On the other hand, if it cannot improve representations, its average online accuracy on new tasks may stay the same or even decrease (see Fig. 1(a)). Hence, we propose measuring forgetting using different online evaluation windows for streaming learning. Inspired by the windowed-forgetting metric introduced by De Lange et al. (2023), we propose the metric Fk+1 = Ak \u2212Ak+1, where Ak is the accuracy averaged over all samples on the k-th evaluation window. This metric assumes the learned representations in one task remain relevant for future tasks, and all tasks have the same complexity. Note that this metric ranges from \u22121 to 1, Fk \u2208 [\u22121, 1],\u2200k, where negative values indicate the learner can improve on previous representations, and positive values indicate re-learning, hence forgetting. In our experiments, we report the overall forgetting on T evaluation windows, \u2211T\u22121 k=1 Fk+1 = A1 \u2212AT ."
+        },
+        {
+            "heading": "4 EXPERIMENTS",
+            "text": "In this section, we study the quality of our approximated utilities. Then we study the effectiveness of UPGD in mitigating loss of plasticity and catastrophic forgetting. For the latter, we use nonstationary streaming learning problems based on MNIST (LeCun et al. 1998), EMNIST (Cohen et al. 2017), CIFAR-10 (Krizhevsky 2009), and ImageNet (Deng et al. 2009) datasets with learners that use multi-layer perceptrons (MLPs), convolutional neural networks (CNNs) (LeCun et al. 1998), and residual neural networks (ResNets) (He et al. 2016). UPGD is compared to suitable baselines for our streaming learning setup, that is, without replay, batches, or task boundaries.\nThe performance of continual learners is evaluated based on the average online accuracy for classification problems. In each of the following experiments, a thorough hyperparameter search is conducted (see Appendix H). Our criterion was to find the best set of hyperparameters for each method that maximizes the area under the accuracy curve. Unless stated otherwise, we averaged the performance of each method over 20 independent runs. We focus on the key results here and give the full experimental details in the Appendix.\n4.1 QUALITY OF THE APPROXIMATED UTILITIES\nA high-quality approximation of utility should give a similar ordering of weights to the true utility. We use the ordinal correlation measure of Spearman to quantify the quality of our utility approximations. An SGD learner with a small neural network with ReLU activations is used on a simple problem to minimize the online squared error.\nAt each time step, Spearman\u2019s correlation is calculated for first- and second-order global utility against the random ordering, the squared-gradient utility, and the weight-magnitude utility. We report the correlations between the true utility and approximated global weight utilities in Fig. 2. The correlation is the highest for the second-order utility throughout learning. On the other hand, the first-order utility becomes less correlated when the learner plateaus, likely due to zigzagging gradient el-\nements near the solution. The weight-magnitude utility shows a small correlation to the true utility that gets smaller. The correlation of the squared-gradient utility increases with time steps but remains smaller than that of the first-order utility. We use random ordering as a baseline, which maintains zero correlation with the true utility, as expected. We also show the correlation between approximated local utility and true utility in Appendix I in addition to results with other activations."
+        },
+        {
+            "heading": "4.2 UPGD AGAINST LOSS OF PLASTICITY",
+            "text": "In this section, we use Input-Permuted MNIST, a problem where only loss of plasticity is present, and answer two main questions: 1) how does UPGD and the other continual learning methods perform on this problem, and 2) whether performance alone is indicative of plasticity in this task. Performance has been used to measure plasticity on various problems and settings (Dohare et al. 2021, Nikishin et al. 2023, Kumar et al. 2023, Abbas et al. 2023). The decaying performance is usually attributed to loss of plasticity. Here, we question using performance to measure plasticity in arbitrary problems since performance can also be affected by other issues such as catastrophic forgetting (see Fedus et al. 2020). However, we hypothesize that if the only underlying issue is loss of plasticity, performance might actually reflect plasticity. Therefore, it is necessary to use a problem where only loss of plasticity is present to test our hypothesis. This approach also allows us to study the effectiveness of UPGD against loss of plasticity, isolated from catastrophic forgetting. In Inputpermuted MNIST, we permute the inputs every 5000 steps where the time step at each permutation marks the beginning of a new task. After each permutation, the learned features become irrelevant to the new task, so the learner is expected to overwrite prior-learned representations as soon as possible. Thus, the input-permuted MNIST is a suitable problem to study loss of plasticity.\nWe compare SGDW, PGD, S&P, which addresses loss of plasticity, Adam with weight decay (Loshchilov & Hutter 2019) known as AdamW, UPGD-W, and Non-protecting UPGD-W. We also introduce and compare against Streaming Elastic Weight Consolidation (S-EWC), Streaming Synaptic Intelligence (S-SI), and Streaming Memory-Aware Intelligence (S-MAS). These methods can be viewed as a natural extension of EWC (Kirkpatrick et al. 2017), SI (Zenke et al. 2017), and MAS (Aljundi et al. 2018), respectively, which are regularization-based methods for mitigating forgetting to the streaming learning setting. Finally, we introduce and compare against Streaming RWalk (S-RWalk). This can be seen as a natural extension of RWalk (Chaudhry et al. 2018), a method that addresses both issues, adapted for streaming learning. We write the update rule of the last\nfour methods in streaming learning as wl,i,j \u2190 wl,i,j \u2212 \u03b1 [\u2202L/\u2202wl,i,j + \u03ba\u2126l,i,j(wl,i,j \u2212 w\u0304l,i,j)], where \u03ba is the regularization factor, \u2126l,i,j is the weight importance, and w\u0304l,i,j is the trace of weight i, j at the l-th layer. The weight importance is estimated as a trace of squared gradients in S-EWC, whereas it is estimated as a trace of gradient magnitudes in S-MAS. S-RWalk is different from RWalk since it uses a trace of previous weights instead of the instantaneous previous weights. We omit the details of S-SI and RWalk weight importance estimation here since they are quite involved and defer it to Appendix H.4. Lastly, since we compare against methods that use first-order information, we use global first-order utility traces in this and subsequent experiments for a fair comparison.\nFig. 3 shows that methods that only address catastrophic forgetting (e.g., S-EWC) continue to decay in performance whereas methods that address loss of plasticity alone (e.g., S&P) or together with catastrophic forgetting (e.g., UPGD), except S-RWalk, maintain their performance level. We plot the average online accuracy against the number of tasks. The average online accuracy is the percentage of correct predictions within each task, where the sample online accuracy is 1 for correct prediction and 0 otherwise. The prediction of the learner is given by argmax over its output probabilities. The learners are presented with a total of 1 million examples, one example per time step, and are required to maximize online accuracy using a multi-layer (300\u00d7150) network with ReLU units. In order to answer the second question, we measure online plasticity as defined in Section 3.3 for each method\nand plot performance against measured plasticity in Fig. 4. The average online plasticity of each method is shown against the average online accuracies of the last 100 tasks. We notice that plasticity and accuracy are strongly correlated, indicating that when the learner loses plasticity, its accuracy also decreases. This result corroborates that when the only underlying issue is loss of plasticity, performance indeed reflects plasticity. Note that such a correlation is not expected when loss of plasticity is not the only issue, and hence, the plasticity metric can be generally more reliable.\nFinally, in Fig. 5, we use diagnostic statistics to further analyze the solutions each method achieves. More statistics for learners on this problem and next ones are reported in Appendix J.1. Notably, the results show that, for all methods, the fraction of zero activations increases and \u21130 gradient norm decreases substantially except for UPGD-W along with Non-protecting UPGD-W and S&P."
+        },
+        {
+            "heading": "4.3 UPGD AGAINST CATASTROPHIC FORGETTING",
+            "text": "Now, we study how UPGD and other continual learning address forgetting, and for that we use Label-permuted CIFAR-10. CIFAR-10 dataset contains 60,000 RGB images of size 32 \u00d7 32 belonging to 10 classes; each class has 6000 images. The labels are permuted every 2500 time step. Each learner is trained for 1M samples, one sample each time step, using a convolutional neural\nnetwork with ReLU activations. Such permutations should not make the learner change its learned representations since it can simply change the weights of the last layer to adapt to that change. This makes the Label-permuted CIFAR10 problem suitable for studying catastrophic forgetting. It is not clear, however, whether the issue of loss of plasticity is present. We hypothesize that the issue of loss plasticity does not occur in this problem mainly due to its small number of classes (Lesort et al. 2023), leading to a probability of 10% for the same label re-occurrence after label permutation, resulting in less amount of non-stationarity that causes loss of plasticity.\nFig. 6(a) shows that methods addressing catastrophic forgetting continually improve their performance. We use our loss of plasticity metric to check whether learners experience any loss of plasticity. Fig. 7(b) shows that the majority of methods have negative values, reflecting no loss of plasticity, which also indicates that catastrophic forgetting is the major issue in this problem. Although all learners can improve their performance, some can improve more than others, according to their forgetting metric (see Fig. 7(a)). We observe that learners without an explicit mechanism for addressing forgetting (e.g., AdamW) can reach a maximum accuracy of around 40%, compared to learners addressing catastrophic forgetting that keep improving their performance."
+        },
+        {
+            "heading": "4.4 UPGD AGAINST LOSS OF PLASTICITY AND CATASTROPHIC FORGETTING",
+            "text": "In this section, we study the interplay of catastrophic forgetting and loss of plasticity using the Label-permuted EMNIST problem. The EMNIST dataset is an extended form of MNIST that has 47 classes, of both digits and letters, instead of just 10 digits. We permute the inputs every 2500 time steps and present the learners with a total 1 million examples, one example per time step, using the same network architecture from the first problem. Hence, this problem is also suitable for studying catastrophic forgetting. Since EMNIST has more classes, label re-occurrence probability becomes significantly smaller, leading to more non-stationarity. Thus, we expect that loss of plasticity might be present in this problem. Fig. 7(b) shows that most learners indeed suffer from loss of plasticity.\nFig. 6(b) shows that methods addressing catastrophic forgetting, including UPGD-W but except S-RWalk and S-SI, keep improving their performance and outperform methods that only address loss of plasticity. Notably, we observe that S-RWalk, which addressed catastrophic forgetting in the\nprevious problem, struggles in this problem, likely due to the additional loss of plasticity. On the other hand, the performance of S-SI and the rest of the methods keeps deteriorating over time.\nNext, we perform a large-scale experiment using the Label-permuted mini-ImageNet problem, which has a large number of classes; hence, loss of plasticity is expected along with catastrophic forgetting. The mini-ImageNet (Vinyals et al. 2016) is a subset of the ImageNet dataset. The mini-ImageNet dataset contains 60,000 RGB images of size 84 \u00d7 84 belonging to 100 classes; each class has 600 images. In Label-permuted mini-ImageNet, the labels are permuted every 2500 time step. Each learner uses a fully connected network of two layers on top of a pre-trained ResNet-50 (He et al. 2016) on ImageNet with fixed weights.\nFig. 6(c) exhibits the same trends manifested in the previous problem, where methods addressing catastrophic forgetting (e.g., S-EWC) performed the best, whereas methods addressing loss of plasticity (e.g., S&P) only maintained their performance at a lower level. Fig. 7(a) and Fig. 7(b) demonstrate that both metrics of UPGD-W are among the best overall values across all problems, indicating diminished forgetting and loss of plasticity.\nLastly, in Fig. 8, we use Label-Permuted mini-ImageNet to perform an ablation study on the components of UPGD-W: weight decay (WD), weight perturbation (WP), and utility gating (UG). Starting from SGD, we add each component one by one until we reach UPGDW. We notice that both weight perturbation and weight decay separately improve SGD performance but continue to lose accuracy, whereas their combination improves the performance further and maintains its performance at a\nfixed level. When utility gating is added on top of weight decay and weight perturbation, the learner becomes able to improve its performance continually."
+        },
+        {
+            "heading": "5 CONCLUSION",
+            "text": "In this paper, we introduced a novel approach to mitigating loss of plasticity and catastrophic forgetting in neural networks. We devised learning rules that protect useful weights and perturb less useful ones, maintaining plasticity and reducing forgetting. We performed a series of online continual learning experiments with many non-stationarities, which is a challenging setting for continual learning. Our experiments showed that UPGD maintains network plasticity and reuses previously learned useful features, being among the only few methods that can address both issues effectively. Our work endeavors to pave the way for a new class of methods for addressing these issues together. Exploring our approach with different forms of utilities, optimizers, and setups such as batch updates or offline evaluation is a promising direction for future research."
+        },
+        {
+            "heading": "A CONVERGENCE ANALYSIS FOR UPGD AND NON-PROTECTING UPGD",
+            "text": "In this section, we provide convergence analysis for UPGD and Non-protecting UPGD in nonconvex stationary problems. We focus on the stochastic version of these two algorithms since we are interested in continual learners performing updates at every time step. The following proof shows the convergence to a stationary point up to the statistical limit of the variance of the gradients, where \u2225\u2207f(\u03b8)\u22252 \u2264 \u03b4 represent a \u03b4-accurate solution and is used to measure the stationarity of \u03b8. Nonconvex optimization problems can be written as:\nmin \u03b8\u2208Rd\nf(\u03b8) . = ES\u223cP [L(\u03b8, S)] ,\nwhere f is the expected loss, L is the sample loss, S is a random variable for samples and \u03b8 is a vector of weights parametrizing L. We assume that L is L-smooth, meaning that there exist a constant L that satisfy\n\u2225\u2207L(\u03b81, s)\u2212\u2207L(\u03b82, s)\u2225 \u2264 L\u2225\u03b82 \u2212 \u03b81\u2225, \u2200\u03b81,\u03b82 \u2208 Rd, s \u2208 S. (4)\nWe further assume that L has bounded variance in the gradients E[\u2225\u2207L(\u03b8, S) \u2212 \u2207f(\u03b8)\u22252] \u2264 \u03c32,\u2200\u03b8 \u2208 Rd. We assume that the perturbation noise has bounded variance E[\u2225\u03be\u22252] \u2264 \u03c32n. Note that the assumption of L-smoothness on the sample loss result in L-smooth expected loss too, which is given by \u2225\u2207f(\u03b81) \u2212\u2207f(\u03b82)\u2225 \u2264 L\u2225\u03b81 \u2212 \u03b82\u2225. For the simplicity of this proof, we use the true instantaneous weight utility, not an approximated one. We assume that any connection in the network has an average utility u\u0304."
+        },
+        {
+            "heading": "A.1 NON-PROTECTING UTILITY-BASED PERTURBED GRADIENT DESCENT",
+            "text": "Remember that the update equation of the Non-protecting UPGD can be written as follows when the parameters are stacked in a single vector \u03b8:\n\u03b8t+1,i = \u03b8t,i \u2212 \u03b1(gt,i + \u03bet,i\u03c1t,i). where \u03b1 is the step size, gt is the sample gradient vector at time t, \u03c1t = (1 \u2212 ut) is the opposite utility vector, and \u03bet is the noise perturbation. Since the function f is L-smooth, we can write the following:\nf(\u03b8t+1) \u2264 f(\u03b8t) + (\u2207f(\u03b8t))\u22a4(\u03b8t+1 \u2212 \u03b8t) + L\n2 \u2225\u03b8t+1 \u2212 \u03b8t\u222522 (5)\n= f(\u03b8t)\u2212 \u03b1 d\u2211\ni=1\n(\u2207[f(\u03b8t)]i(gt,i + \u03bet,i\u03c1t,i)) + L\u03b12\n2 d\u2211 i=1 (gt,i + \u03bet,i\u03c1t,i) 2. (6)\nNext, we take the conditional expectation of f(\u03b8t+1) as follows:\nEt[f(\u03b8t+1)|\u03b8t] \u2264 f(\u03b8t)\u2212 \u03b1 d\u2211\ni=1\n\u2207[f(\u03b8t)]iEt[(gt,i + \u03bet,i\u03c1t,i)] + L\u03b12\n2 d\u2211 i=1 Et[(gt,i + \u03bet,i\u03c1t,i)2]\n= f(\u03b8t)\u2212 \u03b1 d\u2211\ni=1\n\u2207[f(\u03b8t)]iEt[gt,i] + L\u03b12\n2 d\u2211 i=1 ( Et[g2t,i] + Et[(\u03bet,i\u03c1t,i)2] ) = f(\u03b8t)\u2212 \u03b1\nd\u2211 i=1 \u2207[f(\u03b8t)]2i + L\u03b12 2 d\u2211 i=1 ( Et[g2t,i] + Et[(\u03bet,i\u03c1t,i)2] ) = f(\u03b8t)\u2212 \u03b1\u2225\u2207f(\u03b8t)\u22252 + L\u03b12\n2 d\u2211 i=1 ( Et[g2t,i] + Et[(\u03bet,i\u03c1t,i)2] ) \u2264 f(\u03b8t)\u2212 \u03b1\u2225\u2207f(\u03b8t)\u22252 + L\u03b12\n2 d\u2211 i=1 Et[g2t,i] + L\u03b12 2 \u03c32n.\nNote that Et[gt,i] = [\u2207f(\u03b8t)]i, Et[\u03bet,i] = 0, and E[(\u03bet,i\u03c1t,i)2] \u2264 E[\u03be2t,i], since 0 \u2264 \u03c1t,i \u2264 1 \u2200t, i. From the bounded variance assumption, we know that the E[\u2225gt\u22252] is bounded as follows:\nE[\u2225gt\u22252] \u2264 \u03c32\nbt + \u2225\u2207f(\u03b8t)\u22252,\nwhere bt is the batch size at time step t. We can now bound Et[f(\u03b8t+1)|\u03b8t] as follows:\nEt[f(\u03b8t+1)|\u03b8t] \u2264 f(\u03b8t)\u2212 \u03b1\u2225\u2207f(\u03b8t)\u22252 + L\u03b12\n2\n( \u03c32n + \u03c32\nbt + \u2225\u2207f(\u03b8t)\u22252 ) = f(\u03b8t)\u2212\n2\u03b1\u2212 L\u03b12 2 \u2225\u2207f(\u03b8t)\u22252 + L\u03b12 2\n( \u03c32n + \u03c32\nbt\n) .\nRearranging the inequality and using the telescopic sum, we can write:\n2\u03b1\u2212 L\u03b12 2 T\u2211 t=1 \u2225\u2207f(\u03b8t)\u22252 \u2264 f(\u03b81)\u2212 ET+1[f(\u03b8T+1)] + L\u03b12T 2 ( \u03c32n + \u03c32 bt ) .\nMultiplying both sides by 2T (2\u03b1\u2212L\u03b12) and using the fact that f is the lowest at the global minimum \u03b8\u2217: f(\u03b8T+1) \u2265 f(\u03b8\u2217), we can write the following:\n1\nT T\u2211 t=1 E\u2225\u2207f(\u03b8t)\u22252 \u2264 2 f(\u03b81)\u2212 f(\u03b8\u2217) T (2\u03b1\u2212 L\u03b12) + L\u03b122(\u03c32nbt + \u03c3 2) bt(2\u03b1\u2212 L\u03b12) .\nTherefore, the algorithm converges to a stationary point. However, in the limit T \u2192 \u221e, the algorithm has to have an increasing batch size or a decreasing step size to converge, which is the same requirement for convergence of other stochastic gradient-based methods at the limit (see Zaheer et al. 2018)."
+        },
+        {
+            "heading": "A.2 UTILITY-BASED PERTURBED GRADIENT DESCENT",
+            "text": "Remember that the update equation of UPGD can be written as follows when the parameters are stacked in a single vector \u03b8:\n\u03b8t+1,i = \u03b8t,i \u2212 \u03b1(gt,i + \u03bet,i)\u03c1t,i. where \u03b1 is the step size, gt is the sample gradient vector at time t, \u03c1t = (1 \u2212 ut) is the opposite utility vector, and \u03bet is the noise perturbation. Since the function f is L-smooth, we can write the following:\nf(\u03b8t+1) \u2264 f(\u03b8t) + (\u2207f(\u03b8t))\u22a4(\u03b8t+1 \u2212 \u03b8t) + L\n2 \u2225\u03b8t+1 \u2212 \u03b8t\u222522 (7)\n= f(\u03b8t)\u2212 \u03b1 d\u2211\ni=1\n(\u2207[f(\u03b8t)]i\u03c1t,i(gt,i + \u03bet,i)) + L\u03b12\n2 d\u2211 i=1 (gt,i + \u03bet,i) 2\u03c12t,i. (8)\nNext, we take the conditional expectation of f(\u03b8t+1) as follows:\nEt[f(\u03b8t+1)|\u03b8t] \u2264 f(\u03b8t)\u2212 \u03b1 d\u2211\ni=1\n\u2207[f(\u03b8t)]iEt[\u03c1t,i(gt,i + \u03bet,i)] + L\u03b12\n2 d\u2211 i=1 Et[(gt,i + \u03bet,i)2\u03c12t,i]\n= f(\u03b8t)\u2212 \u03b1 d\u2211\ni=1\n\u2207[f(\u03b8t)]2iEt[\u03c1t,i] + L\u03b12\n2 d\u2211 i=1 Et[g2t,i]Et[\u03c12t,i] + Et[(\u03bet,i\u03c1t,i)2]\n\u2264 f(\u03b8t)\u2212 \u03b1\u03c1\u0304 d\u2211\ni=1\n\u2207[f(\u03b8t)]2i + L\u03b12\n2\n( \u03c32n + \u03c32\nbt + \u2225\u2207f(\u03b8t)\u22252 ) = f(\u03b8t)\u2212 ( \u03b1\u03c1\u0304\u2212 L\u03b1 2\n2\n) \u2225\u2207f(\u03b8t)\u22252 + L\u03b12\n2\n( \u03c32n + \u03c32\nbt\n) .\nNote that \u03c1\u0304 = 1 \u2212 u\u0304, Et[gt,i] = [\u2207f(\u03b8t)]i, Et[\u03bet,i] = 0, and E[(\u03bet,i\u03c1t,i)2] \u2264 E[\u03be2t,i], since 0 \u2264 \u03c1t,i \u2264 1 \u2200t, i. Rearranging the inequality and using the telescopic sum, we can write:\n2\u03b1\u03c1\u0304\u2212 L\u03b12 2 T\u2211 t=1 \u2225\u2207f(\u03b8t)\u22252 \u2264 f(\u03b81)\u2212 ET+1[f(\u03b8T+1)] + L\u03b12T 2 ( \u03c32n + \u03c32 bt ) .\nMultiplying both sides by 2T (2\u03b1\u03c1\u0304\u2212L\u03b12) and using the fact that f is the lowest at the global minimum \u03b8\u2217: f(\u03b8T+1) \u2265 f(\u03b8\u2217), we can write the following:\n1\nT T\u2211 t=1 E\u2225\u2207f(\u03b8t)\u22252 \u2264 2 f(\u03b81)\u2212 f(\u03b8\u2217) T (2\u03b1\u03c1\u0304\u2212 L\u03b12) + L\u03b12(\u03c32nbt + \u03c3 2) bt(2\u03b1\u03c1\u0304\u2212 L\u03b12) .\nTherefore, the algorithm converges to a stationary point. However, in the limit T \u2192 \u221e, the algorithm has to have an increasing batch size or a decreasing step size to converge, which is the same requirement for convergence of other stochastic gradient-based methods at the limit (see Zaheer et al. 2018)."
+        },
+        {
+            "heading": "B UTILITY PROPAGATION",
+            "text": "The instantaneous utility measure can be used in a recursive formulation, allowing for backward propagation. We can get a recursive formula for the utility equation for connections in a neural network. This property is a result of Theorem 1. Theorem 1. If the second-order off-diagonal terms in all layers in a neural network except for the last one are zero and all higher-order derivatives are zero, the true weight utility for the weight ij at the layer l can be propagated using the following recursive formulation:\nUl,i,j(Z) . = fl,i,j + sl,i,j\nwhere\nfl,i,j . =\n\u03c3\u2032(al,i)\nhl,i hl\u22121,jWl,i,j |al+1|\u2211 k=1 fl+1,k,i,\nsl,i,j . =\n1 2 h2l\u22121,jW 2 l,i,j |al+1|\u2211 k=1\n( 2sl+1,k,i \u03c3\u2032(al,i) 2\nh2l,i \u2212 \u03c3\n\u2032\u2032(al,i)\nhl,i fl+1,k,i\n) .\nProof. First, we start by writing the partial derivative of the loss with respect to each weight in terms of earlier partial derivatives in the next layers as follows:\n\u2202L \u2202al,i = |al+1|\u2211 k=1 \u2202L \u2202al+1,k \u2202al+1,k \u2202hl,i \u2202hl,i \u2202al,i = \u03c3\u2032(al,i) |al+1|\u2211 k=1 \u2202L \u2202al+1,k Wl+1,k,i, (9)\n\u2202L \u2202Wl,i,j = \u2202L \u2202al,i \u2202al,i \u2202Wl,i,j = \u2202L \u2202al,i hl\u22121,j . (10)\nNext, we do the same with second-order partial derivatives as follows:\n\u2202\u03022L \u2202a2l,i . = |al+1|\u2211 k=1\n[ \u2202\u03022L\n\u2202a2l+1,k W 2l+1,k,i\u03c3 \u2032(al,i) 2 + \u2202L \u2202al+1,k Wl+1,k,i\u03c3 \u2032\u2032(al,i)\n] , (11)\n\u2202\u03022L \u2202W 2l,i,j . = \u2202\u03022L \u2202a2l,i h2l\u22121,j . (12)\nNow, we derive the utility propagation formulation as the sum of two recursive quantities, fl,ij and sl,ij . These two quantities represent the first and second-order terms in the Taylor approximation.\nUsing Eq. 9, Eq. 10, Eq. 11, and Eq. 12, we can derive the recursive formulation as follows:\nUl,i,j(Z) . = \u2212\u2202L(W, Z)\n\u2202Wl,i,j Wl,i,j +\n1\n2 \u22022L(W, Z) \u2202W 2l,ij W 2l,ij\n\u2248 \u2212\u2202L(W, Z) \u2202Wl,i,j Wl,i,j + 1 2 \u0302\u22022L(W, Z) \u2202W 2l,ij W 2l,ij\n= \u2212 \u2202L \u2202al,i hl\u22121,jWl,i,j + 1 2 \u0302\u22022L(W, Z) \u2202a2l,i,j h2l\u22121,jW 2 l,ij\n= fl,i,j + sl,i,j . (13)\nFrom here, we can write the first-order part fl,i,j and the second-order part sl,i,j as follows:\nfl,i,j = \u2212\u03c3\u2032(al,i)hl\u22121,jWl,i,j |al+1|\u2211 k=1\n( \u2202L\n\u2202al+1,k Wl+1,k,i\n) (14)\nsl,i,j = 1\n2 h2l\u22121,jW 2 l,i,j |al+1|\u2211 k=1\n( \u2202\u03022L\n\u2202a2l+1,k W 2l+1,k,i\u03c3 \u2032(al,i) 2 + \u2202L \u2202al+1,k Wl+1,k,i\u03c3 \u2032\u2032(al,i)\n) (15)\nUsing Eq. 14 and Eq. 15, we can write the recursive formulation for fl,ij and sl,ij as follows:\nfl,ij = \u2212\u03c3\u2032(al,i)hl\u22121,jWl,i,j |al+1|\u2211 k=1\n( \u2202L\n\u2202al+1,k Wl+1,k,i\n)\n= \u03c3\u2032(al,i)\nhl,i hl\u22121,jWl,i,j |al+1|\u2211 k=1\n( \u2212 \u2202L\n\u2202al+1,k hl,iWl+1,k,i\n)\n= \u03c3\u2032(al,i)\nhl,i hl\u22121,jWl,i,j |al+1|\u2211 k=1 fl+1,k,i (16)\nsl,i,j = 1\n2 h2l\u22121,jW 2 l,i,j |al+1|\u2211 k=1\n( \u2202\u03022L\n\u2202a2l+1,k W 2l+1,k,i\u03c3 \u2032(al,i) 2 + \u2202L \u2202al+1,k Wl+1,k,i\u03c3 \u2032\u2032(al,i)\n) (17)\n= 1\n2 h2l\u22121,jW 2 l,i,j |al+1|\u2211 k=1\n( \u2202\u03022L\n\u2202a2l+1,k h2l,iW 2 l+1,k,i\n\u03c3\u2032(al,i) 2\nh2l,i \u2212 \u03c3\n\u2032\u2032(al,i)\nhl,i fl+1,k,i\n) (18)\n= 1\n2 h2l\u22121,jW 2 l,i,j |al+1|\u2211 k=1\n( 2sl+1,k,i \u03c3\u2032(al,i) 2\nh2l,i \u2212 \u03c3\n\u2032\u2032(al,i)\nhl,i fl+1,k,i\n) (19)"
+        },
+        {
+            "heading": "C APPROXIMATED FEATURE UTILITY",
+            "text": "We define the true utility of a feature as the change in the loss after the feature is removed. The utility of the feature i in the l-th layer and sample Z is given by\nul,j(Z) . = L(W, Z|hl,j = 0)\u2212 L(W, Z), (20)\nwhere hl,j = 0 denotes setting the feature output to zero (e.g., by adding a mask set to zero).\nWe refer to it as the true feature utility to distinguish it from its approximations, which are referred to as either approximated utilities or simply utilities. Note that this utility is a global measure, and it provides a total ordering for features according to their importance. However, computing it is prohibitive since it requires additional Nf forward passes, where Nf is the total number of features.\nSince the computation of the true feature utility is prohibitive, we aim to approximate it such that no additional forward passes are needed. We approximate the true utility of features by a secondorder Taylor approximation. We expand the true utility ui around the current feature i at layer l and evaluate it at the value of that feature output set to zero. To have an easier derivation, we add a mask (or gate) on top of the activation output: h\u0304l = ml \u25e6 hl. Note that the weights of such masks are set to ones and never change throughout learning. The quadratic approximation of ul,j(Z) can be written as\nul,j(Z) = L(W, Z|ml,j = 0)\u2212 L(W, Z)\n\u2248 L(W, Z) + \u2202L \u2202ml,i (0\u2212ml,j) + 1 2 \u22022L \u2202m2l,i (0\u2212ml,j)2 \u2212 L(W, Z)\n= \u2212 \u2202L \u2202ml,i + 1 2 \u22022L \u2202m2l,i .\nWe refer to the utility measure containing the first term as the first-order feature utility, and the utility measure containing both terms as the second-order feature utility. We use an approximation similar to Becker and LeCun\u2019s (1989) that provides a Hessian diagonal approximation in linear complexity.\nWhen we use an origin-passing activation function (\u03c3(x) = 0 at x = 0), we can instead expand the loss around the current activation input al,i without the need to use a mask. Note that derivatives with respect to the activation inputs are available from backpropagation. The feature utility can be simply:\nul,j(Z) = L(W, Z|al,j = 0)\u2212 L(W, Z)\n\u2248 \u2212 \u2202L \u2202al,i al,i + 1 2 \u22022L \u2202a2l,i a2l,i.\nFor feature-wise UPGD, the global scaled utility is given by u\u0304l,j = \u03d5(ul,j/\u03b7), where \u03b7 is the maximum utility of the features and \u03d5 is the scaling function, for which we use sigmoid, with its corresponding Algorithm 3, whereas UPGD with the local scaled utility is given by u\u0304l,j =\n\u03d5 ( ul,j/ \u221a\u2211 j u 2 l,j ) in Algorithm 4.\nThe approximated feature utility can be computed using the approximated weight utility, which gives rise to the conservation of utility property. We show this relationship in Appendix D."
+        },
+        {
+            "heading": "D FEATURE UTILITY APPROXIMATION USING WEIGHT UTILITY",
+            "text": "Instead of deriving feature utility directly, we derive the utility of a feature based on setting its input or output weights to zero. The utility of a feature i at layer l is given by\nul,i(Z) = L(W\u00ac[l,i], Z)\u2212 L(W, Z),\nwhereW is the set of all weights, L(W, Z) is the sample loss of a network parameterized byW on sample Z, andW\u00ac[l,i] is the same asW except the weight Wl+1,i,j is set to 0 for all values of i. Note that the second-order Talyor\u2019s approximation of this utility depends on the off-diagonal elements of the Hessian matrix at each layer, since more than one weight is removed at once. For our analysis, we drop these elements and derive our feature utility. We expand the difference around the current output weights of the feature i at layer l and evaluate it by setting the weights to zero. The\nquadratic approximation of ul,i(Z) can be written as\nul,j(Z) = L(W\u00ac[l,i], Z)\u2212 L(W, Z)\n= |al+1|\u2211 i=1 ( \u2212 \u2202L \u2202Wl+1,i,j Wl+1,i,j + 1 2 \u22022L \u2202W 2l+1,ij W 2l+1,i,j ) (21)\n+ |al+1|\u2211 i=1 2\u2211 j \u0338=i \u22022L \u2202Wl+1,i,j\u2202Wl+1,i,k Wl+1,i,jWl+1,i,k  \u2248\n|al+1|\u2211 i=1 ( \u2212 \u2202L \u2202Wl+1,ij Wl+1,ij + 1 2 \u22022L \u2202W 2l+1,ij W 2l+1,ij )\n= |al+1|\u2211 i=1 Ul+1,i,j . (22)\nAlternatively, we can derive the utility of feature i at layer l by dropping the input weights when the activation function passes through the origin (zero input leads to zero output). This gives rise to the property of conservation of utility shown by Therom 2. Theorem 2. If the second-order off-diagonals in all layers in a neural network except for the last one are zero, all higher-order derivatives are zero, and an origin-passing activation function is used, the sum of output-weight utilities to a feature equals the sum of input-weight utilities to the same feature.\n|al+1|\u2211 i=1 Ul+1,i,j = |al|\u2211 i=1 Ul,j,i.\nProof. From Eq. 22, we can write the utility of the feature j at layer l by dropping the input weights when the activation function passes through the origin (zero input leads to zero output) as follows:\nul,j(Z) \u2248 |al|\u2211 i=1 Ul,j,i(Z).\nIn addition, we can write the utility of the feature j at layer l by dropping the output weights as follows:\nul,j(Z) \u2248 |al+1|\u2211 i=1 Ul+1,i,j(Z).\nTherefore, we can write the following equality:\n|al+1|\u2211 i=1 Ul+1,i,j = |al|\u2211 i=1 Ul,j,i.\nThis theorem shows the property of the conservation of instantaneous utility. The sum of utilities of the outgoing weights to a feature equals the sum of utilities of the incoming weights to the same feature when origin-passing activation functions are used, and the off-diagonal elements are dropped. This conservation law resembles the one by Tanaka et al. (2020)."
+        },
+        {
+            "heading": "E WEGIHT-WISE UPGD WITH LOCAL UTILITY AND FEATURE-WISE UPGD WITH GLOBAL AND LOCAL UTILITIES",
+            "text": "Algorithm 2 Weight-wise UPGD with local utility Given a stream of data D and a neural network f with weights {W1, ...,WL}. Initialize Step size \u03b1 and decay rate \u03b2 Initialize {W1, ...,WL}. Initialize Ul,\u2200l to zero. Initialize time step t\u2190 0. for (x,y) in D do t\u2190 t+ 1. for l in {L,L\u2212 1, ..., 1} do Fl,Sl \u2190GetDerivatives(f,x,y, l) Ml \u2190 1/2Sl \u25e6W 2l \u2212 Fl \u25e6W Ul \u2190 \u03b2Ul + (1\u2212 \u03b2)Ml U\u0302l \u2190 Ul/(1\u2212 \u03b2t) Sample noise matrix \u03be. U\u0304l \u2190 \u03d5(DU\u0302l) // Dii = 1/|Ul,i,:| and Dij = 0,\u2200i \u0338= j Wl \u2190Wl \u2212 \u03b1(Fl + \u03be) \u25e6 (1\u2212 U\u0304l)\nAlgorithm 3 Feature UPGD w/ global utility Given a stream of data D and a neural network f with weights {W1, ...,WL}. Initialize Step size \u03b1 and decay rate \u03b2. Initialize {W1, ...,WL} randomly. Initialize {g1, ..., gL\u22121} to ones. Initialize ul, u\u0302l,\u2200l to zero. Initialize time step t\u2190 0. t\u2190 t+ 1. for (x,y) in D do t\u2190 t+ 1 for l in {L\u2212 1, ..., 1} do \u03b7 \u2190 \u2212\u221e Fl,Sl \u2190GetDerivatives(f,x,y, l) ml \u2190 1/2Sl \u2212 Fl ul \u2190 \u03b2ul + (1\u2212 \u03b2)ml u\u0302l \u2190 ul/(1\u2212 \u03b2t) if \u03b7 < max(u\u0302l) then \u03b7 \u2190 max(u\u0302l)\nfor l in {L,L\u2212 1, ..., 1} do if l = L then WL \u2190WL \u2212 \u03b1FL\nelse u\u0304l \u2190 \u03d5(u\u0302l/\u03b7) Sample noise matrix \u03be Wl \u2190Wl \u2212 \u03b1(Fl + \u03be) \u25e6 (1\u2212 1u\u0304\u22a4l )\nAlgorithm 4 Feature-wise UPGD w/ local utility Given a stream of data D and a neural network f with weights {W1, ...,WL}. Initialize Step size \u03b1 and decay rate \u03b2. Initialize {W1, ...,WL} randomly. Initialize {g1, ..., gL\u22121} to ones. Initialize ul,\u2200l to zero. Initialize time step t\u2190 0. t\u2190 t+ 1. for (x,y) in D do t\u2190 t+ 1 for l in {L,L\u2212 1, ..., 1} do Fl,Sl \u2190GetDerivatives(f,x,y, l) if l = L then WL \u2190WL \u2212 \u03b1FL\nelse ml \u2190 1/2Sl \u2212 Fl ul \u2190 \u03b2ul + (1\u2212 \u03b2)ml u\u0302l \u2190 ul/(1\u2212 \u03b2t) u\u0304l \u2190 \u03d5(u\u0302l/\u2225u\u0302l\u2225) Sample noise matrix \u03be. Wl \u2190Wl \u2212 \u03b1(Fl + \u03be) \u25e6 (1\u2212 1u\u0304\u22a4l )"
+        },
+        {
+            "heading": "F UPGD ON STATIONARY MNIST",
+            "text": "We use the MNIST dataset to assess the performance of UPGD under stationarity. A desirable property of continual learning systems is that they should not asymptotically impose any extra performance reduction, which can be studied in a stationary task such as MNIST. We report the results in Fig. 9. We notice that UPGD improves performance over SGD. Each point in the stationary MNIST figures represents an average accuracy over a non-overlapping window of 10000 samples. The learners use a network of 300\u00d7 150 units with ReLU activations. We used the hyperparameter search space shown in Table 1. The utility traces are computed using exponential moving averages\ngiven by U\u0303t = \u03b2uU\u0303t\u22121 + (1 \u2212 \u03b2u)Ut, where U\u0303t is the utility trace at time t and Ut is the instantaneous utility at time t. Each learner is trained for 1 million time steps. The results are averaged over 20 independent runs."
+        },
+        {
+            "heading": "G UPGD ON NON-STATIONARY TOY REGRESSION PROBLEM",
+            "text": "We study UPGD\u2019s effectiveness in mitigating catastrophic forgetting and loss of plasticity in a simple toy regression problem that is easy to analyze and understand. The target at time t is given by yt = a |S| \u2211\ni\u2208S xt,i, where xt,i is the i-th entry of input vector at time t, S is a set of some input indices, and a \u2208 {\u22121, 1}. The inputs are sampled from N (0, 1). In this problem, the task is to calculate the average of two inputs or its negative out of 16 inputs. We introduce non-stationarity using two ways: changing the multiplier a or changing the input-index set S. The learner is required to match the targets by minimizing the online squared error. The learner uses a multi-layer (300 \u00d7 150) linear network, where the activation used is the identity activation (\u03c3(x) = x). We use linear activations to see if catastrophic forgetting and loss of plasticity may occur even in such simple networks.\nThe first variation of the problem focuses solely on loss of plasticity. We can study plasticity when the learner is presented with sequential tasks requiring little transfer between them. Here, |S| = 2 and the input indices change every 200 time steps by a shift of two. For instance, if the first task has S = {1, 2}, the next would be {3, 4} and so on. Since the tasks share little similarity between them, we expect the continual learners to learn as quickly as possible by discarding old features when needed to maintain their plasticity. We compare UPGD against SGD, PGD, S&P, and Nonprotecting UPGD. We also use a baseline with one linear layer mapping the input to the output.\nThe second variation of the problem focuses on catastrophic forgetting. Here, the sign of the target sum is flipped every 200 time steps by changing a from 1 to \u22121 and vice versa. Since the two tasks share high similarities, we expect continual learners to initially learn some features during the first 200 steps. Then, after the target sign flip, we expect the learner to change the sign of only the output weights and keep the features intact since the previously learned features are fully useful. The frequency of changing a is high to penalize learners for re-learning features from scratch.\nFor the input-index changing problem, Fig. 10 shows that the performance of SGD degrades with changing targets even when using linear neural networks, indicating SGD loses plasticity over time. Each point in the toy problem figures represents an average squared error of 20 tasks. The results are averaged over 20 independent runs. Empirically, we found that the outgoing weights of the last layer get smaller, hindering the ability to change the features\u2019 input weights. S&P outperforms the linearlayer baseline. However, PGD and Non-protecting UPGD perform better than S&P, indicating that weight decay is not helpful in this problem, and it is better to just inject noise without shrinking the parameters. UPGD cannot only maintain its plasticity but also improve its performance rapidly with changing targets compared to other methods.\nFor the output-sign changing problem, Fig. 11 shows that the performance of SGD degrades with changing targets, indicating that it does not utilize learned features and re-learn them every time the targets change. S&P, Non-protecting UPGD, and PGD do not lose plasticity over time but perform worse than UPGD, indicating that they are ineffective in protecting useful weights. UPGD\nis likely protecting and utilizing useful weights in subsequent tasks. Moreover, the performance keeps improving with changing targets compared to the other methods.\nIn both variations, we use utility traces (e.g., using exponential moving average) instead of instantaneous utility, as we empirically found utility traces to perform better. We found that the second-order approximated utility improves performance over the first-order approximated utility in this problem."
+        },
+        {
+            "heading": "H EXPERIMENTAL DETAILS",
+            "text": "In each experiment, the utility traces are computed using exponential moving averages given by U\u0303t = \u03b2uU\u0303t\u22121 +(1\u2212 \u03b2u)Ut, where U\u0303t is the utility trace at time t and Ut is the instantaneous utility at time t. Each learner is trained for 1 million time steps."
+        },
+        {
+            "heading": "H.1 OFFLINE EXPERIMENT IN FIG. 1(A)",
+            "text": "In the problem of Label-permuted EMNIST, the labels are permuted every 2500 sample. We form a held-out set comprised of 250 samples of the test set of EMNIST. The performance is measured based on the learner\u2019s prediction on this held-out set after the end of each task in an offline manner. We permute the labels of the held-out set with the same permutation in the task presented to the learner to have consistent evaluation. We observe the same phenomenon indicated by Lesort et al. (2023) in which the performance of SGD decreases on the first few tasks, matching the vast majority of works on catastrophic forgetting. However, when scaling the number of tasks, SGD recovers and maintains its performance.\nH.2 INPUT-PERMUTED MNIST AND LABEL-PERMUTED EMNIST/MINI-IMAGENET\nEach point in the Input-permuted MNIST and Label-permuted EMNIST figures represents an average accuracy of one task. The learners use a network of two hidden layers containing 300 and 150 units with ReLU activations, respectively. The results are averaged over 20 independent runs, and the shaded area represents the standard error."
+        },
+        {
+            "heading": "H.3 LABEL-PERMUTED CIFAR-10",
+            "text": "The learners use a network with two convolutional layers with max-pooling followed by two fully connected layers with ReLU activations. The first convolutional layer uses a kernel of 5 and outputs 6 filters, whereas the second convolutional layer uses a kernel of 5 and outputs 16 filters. The maxpooling layers use a kernel of 2. The data is flattened after the second max-pooling layer and fed to a fully connected network with two hidden layers containing 120 and 84 units, respectively. The results are averaged over 10 independent runs, and the shaded area represents the standard error."
+        },
+        {
+            "heading": "H.4 S-SI AND S-RWALK DETAILS",
+            "text": "We compute weight importance \u2126l,i,j in S-SI by first maintaining a trace of the gradient multiplied by the weight change from its previous value. We then maintain a trace of the weight change from its previous value. The weight importance for S-SI is defined as the ratio of the first trace and the squared value of the second trace as follows:\n\u2126l,i,j = \u03c9\u0303l,i,j\n(\u2206\u0303l,i,j)2 + \u03f5 ,\nwhere \u03c9\u0303l,i,j is a moving average of the gradient gl,i,j multiplied by the weight change from its previous weight w\u2212l,i,k as: gl,i,j(w \u2212 l,i,k \u2212 wl,i,k), \u2206\u0303l,i,j is a moving average of the weight change from its previous weight as (w\u2212l,i,k \u2212 wl,i,k), and \u03f5 is a small number for numerical stability which we set to 10\u22123.\nOn the other hand, the weight importance estimation in S-RWalk is computed as:\nsl,i,j = \u03c9\u0303l,i,j\n1 2 F\u0303l,i,j(\u2206\u0303l,i,j)\n2 + \u03f5 ,\n\u2126l,i,j = s\u0303l,i,j + Fl,i,j ,\nwhere F\u0303l,i,j is a moving average of past squared gradients. Note that s\u0303l,i,j is estimated with a fast-moving average with a decay factor of 0.5."
+        },
+        {
+            "heading": "H.5 HYPERPARAMETER SEARCH SPACE",
+            "text": "In this section, we present the hyperparameter search space we conduct for each method in each problem in Table 1. Our grid search is quite exhaustive and can reach up to 100 configurations per algorithm for a single run. Table 3 and Table 2 show the best hyperparameter configuration for each method on each problem."
+        },
+        {
+            "heading": "I THE QUALITY OF THE APPROXIMATED UTILITY",
+            "text": "Fig. 12 shows the Spearman correlation at every time step with different activation functions. An SGD learner used a single hidden layer network containing 50 units with ReLU activations (Nair & Hinton 2010) and Kaiming initialization (He et al. 2015). The network has five inputs and a single output. The target of an input vector is the sum of two inputs out of the five inputs, where the inputs are sampled from U [\u22120.5, 0.5]."
+        },
+        {
+            "heading": "J ADDITIONAL EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "J.1 MORE DIAGNOSTIC STATISTICS CHARACTERIZING SOLUTION METHODS",
+            "text": "Here, we provide more diagnostic statistics for our methods Fig. 13, Fig. 14, Fig. 15, and Fig. 16."
+        },
+        {
+            "heading": "J.2 COMPUTATIONAL TIME FOR MAKING UPDATES",
+            "text": "Here, we conduct a small experiment to determine the computation overhead by each method. We are interested in the computational time each algorithm needs to perform a single update. Fig. J.2 shows the computational time needed to make a single update using a batch of 100 MNIST samples. The results are averaged over 10000 updates. Each learner used a multi-layered network of 1024\u00d7 512 units. The error bars represent one standard error."
+        },
+        {
+            "heading": "J.3 FEATURE-WISE AND WEIGHT-WISE UPGD ON THE INPUT-PERMUTED MNIST",
+            "text": "We repeat the experiment on Input-permuted MNIST but with feature-wise approximated utility. In addition, we show the results using the local approximated utility for both weight-wise and featurewise UPGD in Fig. 18. The weights are initialized by Kaiming initialization (He et al. 2015)."
+        },
+        {
+            "heading": "J.4 FEATURE-WISE AND WEIGHT-WISE UPGD ON LABEL-PERMUTED EMNIST",
+            "text": "We repeat the experiment on Label-permuted MNIST but with feature-wise approximated utility. In addition, we show the results using the local approximated utility for both weight-wise and featurewise UPGD in Fig. 19. The weights are initialized by Kaiming initialization (He et al. 2015)."
+        },
+        {
+            "heading": "J.5 LOCAL WEIGHT-WISE UPGD ON LABEL-PERMUTED CIFAR-10",
+            "text": "We repeat the experiment on Label-permuted CIFAR-10 but with the local approximated utility. Fig. 20 shows the results for UPGD using local and global approximated utilities. The weights are initialized by Kaiming initialization (He et al. 2015)."
+        },
+        {
+            "heading": "K ABLATION ON THE EFFECT OF WEIGHT DECAY AND PERTURBATION",
+            "text": "We conducted a short ablation study in Fig. 8 on the components of UPGD: weight decay, weight perturbation, and utility gating. Starting from SGD, we add each component step by step until we reach UPGD. Fig. 21 shows the performance of learners on Input-permuted MNIST, Labelpermuted CIFAR10, Label-permuted EMNIST, and Label-permuted mini-ImageNet. We notice that both weight perturbation and weight decay improve SGD performance. Still, the role of weight decay seems to be more important in Input-permuted MNIST and Label-permuted mini-ImageNet. Notably, the combination of weight decay and weight perturbation makes the learner maintain its performance. When utility gating is added on top of weight decay and weight perturbation, the learner can improve its performance continually in all label-permuted problems and slightly improve its performance on input-permuted MNIST.\nWe also conduct an additional ablation in Fig. 22 where we start from UPGD-W and remove each component individually. This ablation bolsters the contribution of utility gating more. Using utility gating on top of SGD makes SGD maintain its performance instead of dropping on input-permuted MNIST and makes SGD improve its performance continually on label-permuted problems. The role of weight decay and weight perturbation is not significant in label-permuted problems, but including both with utility gating improves performance and plasticity on input-permuted MNIST."
+        },
+        {
+            "heading": "L RELATIONSHIP TO GENERATE-AND-TEST METHODS",
+            "text": "The generate-and-test method (Mahmood & Sutton 2013) is a method that finds better features using search, which, when combined with gradient descent (see Dohare et al. 2023), is similar to a feature-wise variation of our method. However, this method only works with networks with single-hidden layers in single-output regression problems. It uses the weight magnitude to determine feature utilities; however, it has been shown that weight magnitude is not suitable for other problems, such as classification (Elsayed 2022). On the contrary, our variation uses a better notion of utility that enables better search in the feature space and works with arbitrary network structures or objective functions so that it can be seen as a generalization of the generate-and-test method."
+        },
+        {
+            "heading": "M LIMITATIONS",
+            "text": "Arguably, one limitation of our approach is that it measures the weight utility, assuming other weights remain unchanged. A better utility would include interaction between weight variations, which is left for future work. One desirable property of continual learners is the ability to modify their hyperparameter, allowing for greater adaptation to changes. Although our method does not require intensive hyperparameter tuning, it still requires some level of tuning, similar to other methods, which may hinder its ability in true lifelong learning. A promising direction is to use a generate-andtest approach that continually learns the best set of hyperparameters. In our evaluation, we assumed that the non-stationary target function is piece-wise stationary. Studying the effectiveness of UPGD against hard-to-distinguish non-stationarities would be an interesting future direction."
+        }
+    ],
+    "year": 2023
+}

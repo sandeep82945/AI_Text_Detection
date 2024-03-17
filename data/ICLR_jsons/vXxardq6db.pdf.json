@@ -1,1 +1,549 @@
-null
+{
+    "abstractText": "Large language models have become the cornerstone of natural language processing, but their use comes with substantial costs in terms of compute and memory resources. Sparsification provides a solution to alleviate these resource constraints, and recent works have shown that trained models can be sparsified post-hoc. Existing sparsification techniques face challenges as they need additional data structures and offer constrained speedup with current hardware. In this paper we present SliceGPT, a new post-training sparsification scheme which replaces each weight matrix with a smaller (dense) matrix, reducing the embedding dimension of the network. Through extensive experimentation, we show that SliceGPT can remove up to 25% of the model parameters (including embeddings) for OPT 66B and LLAMA-2 70B models with modest loss in accuracy (superior to 2:4 sparsity). Our sliced models run on fewer GPUs and run faster without any additional code optimization: on 24GB consumer GPUs we reduce the total compute for inference on LLAMA-2 70B to 64% of that of the dense model; on 40GB A100 GPUs we reduce it to 66%. We offer a new insight, computational invariance in transformer networks, which enables SliceGPT and we hope it will inspire and enable future avenues to reduce memory and computation demands for pre-trained models.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "DELETING ROWS"
+        }
+    ],
+    "id": "SP:1e313c1dd2891fa7d700fd027f4baeab2b6317a2",
+    "references": [
+        {
+            "authors": [
+                "Yonatan Bisk",
+                "Rowan Zellers",
+                "Ronan Le Bras",
+                "Jianfeng Gao",
+                "Yejin Choi"
+            ],
+            "title": "Piqa: Reasoning about physical commonsense in natural language",
+            "venue": "In Thirty-Fourth AAAI Conference on Artificial Intelligence,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Peter Clark",
+                "Isaac Cowhey",
+                "Oren Etzioni",
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Carissa Schoenick",
+                "Oyvind Tafjord"
+            ],
+            "title": "Think you have solved question answering? try arc, the ai2 reasoning challenge",
+            "venue": "ArXiv, abs/1803.05457,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer. LLM"
+            ],
+            "title": "8-bit matrix multiplication for transformers at scale",
+            "venue": "arXiv preprint arXiv:2208.07339,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Ruslan Svirschevski",
+                "Vage Egiazarian",
+                "Denis Kuznedelev",
+                "Elias Frantar",
+                "Saleh Ashkboos",
+                "Alexander Borzunov",
+                "Torsten Hoefler",
+                "Dan Alistarh"
+            ],
+            "title": "Spqr: A sparse-quantized representation for near-lossless LLM weight compression",
+            "venue": "arXiv preprint arXiv:2306.03078,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Elias Frantar",
+                "Dan Alistarh"
+            ],
+            "title": "Optimal brain compression: A framework for accurate post-training quantization and pruning",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Elias Frantar",
+                "Dan Alistarh"
+            ],
+            "title": "SparseGPT: Massive language models can be accurately pruned in one-shot",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Elias Frantar",
+                "Saleh Ashkboos",
+                "Torsten Hoefler",
+                "Dan Alistarh"
+            ],
+            "title": "GPTQ: Accurate post-training quantization for generative pre-trained transformers",
+            "venue": "arXiv preprint arXiv:2210.17323,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Trevor Gale",
+                "Erich Elsen",
+                "Sara Hooker"
+            ],
+            "title": "The state of sparsity in deep neural networks, 2019",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Leo Gao",
+                "Jonathan Tow",
+                "Stella Biderman",
+                "Sid Black",
+                "Anthony DiPofi",
+                "Charles Foster",
+                "Laurence Golding",
+                "Jeffrey Hsu",
+                "Kyle McDonell",
+                "Niklas Muennighoff"
+            ],
+            "title": "A framework for few-shot language model evaluation",
+            "venue": "Version v0",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Amir Gholami",
+                "Sehoon Kim",
+                "Zhen Dong",
+                "Zhewei Yao",
+                "Michael W. Mahoney",
+                "Kurt Keutzer"
+            ],
+            "title": "A survey of quantization methods for efficient neural network inference",
+            "venue": "CoRR, abs/2103.13630,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Manish Gupta",
+                "Puneet Agrawal"
+            ],
+            "title": "Compression of deep learning models for text: A survey, 2021",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Song Han",
+                "Huizi Mao",
+                "William J. Dally"
+            ],
+            "title": "Deep compression: Compressing deep neural networks with pruning, trained quantization and huffman coding, 2016",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Babak Hassibi",
+                "David G Stork",
+                "Gregory J Wolff"
+            ],
+            "title": "Optimal brain surgeon and general network pruning",
+            "venue": "In IEEE international conference on neural networks,",
+            "year": 1993
+        },
+        {
+            "authors": [
+                "Yihui He",
+                "Xiangyu Zhang",
+                "Jian Sun"
+            ],
+            "title": "Channel pruning for accelerating very deep neural networks",
+            "venue": "In Proceedings of the IEEE international conference on computer vision,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Torsten Hoefler",
+                "Dan Alistarh",
+                "Tal Ben-Nun",
+                "Nikoli Dryden",
+                "Alexandra Peste"
+            ],
+            "title": "Sparsity in deep learning: Pruning and growth for efficient inference and training in neural networks",
+            "venue": "CoRR, abs/2102.00554,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Edward J. Hu",
+                "Yelong Shen",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "Lora: Low-rank adaptation of large language models, 2021",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zehao Huang",
+                "Naiyan Wang"
+            ],
+            "title": "Data-driven sparse structure selection for deep neural networks",
+            "venue": "In Proceedings of the European conference on computer vision (ECCV),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yann LeCun",
+                "John Denker",
+                "Sara Solla"
+            ],
+            "title": "Optimal brain damage",
+            "venue": "Advances in neural information processing systems,",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "Zhuang Liu",
+                "Jianguo Li",
+                "Zhiqiang Shen",
+                "Gao Huang",
+                "Shoumeng Yan",
+                "Changshui Zhang"
+            ],
+            "title": "Learning efficient convolutional networks through network slimming",
+            "venue": "In Proceedings of the IEEE international conference on computer vision,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jian-Hao Luo",
+                "Jianxin Wu",
+                "Weiyao Lin"
+            ],
+            "title": "Thinet: A filter level pruning method for deep neural network compression",
+            "venue": "In Proceedings of the IEEE international conference on computer vision,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Xinyin Ma",
+                "Gongfan Fang",
+                "Xinchao Wang"
+            ],
+            "title": "Llm-pruner: On the structural pruning of large language models",
+            "venue": "arXiv preprint arXiv:2305.11627,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xinyin Ma",
+                "Gongfan Fang",
+                "Xinchao Wang"
+            ],
+            "title": "LLM-pruner: On the structural pruning of large language models, 2023b",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rabeeh Karimi Mahabadi",
+                "James Henderson",
+                "Sebastian Ruder"
+            ],
+            "title": "Compacter: Efficient low-rank hypercomplex adapter",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Caiming Xiong",
+                "James Bradbury",
+                "Richard Socher"
+            ],
+            "title": "Pointer sentinel mixture models",
+            "venue": "arXiv preprint arXiv:1609.07843,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Asit Mishra",
+                "Jorge Albericio Latorre",
+                "Jeff Pool",
+                "Darko Stosic",
+                "Dusan Stosic",
+                "Ganesh Venkatesh",
+                "Chong Yu",
+                "Paulius Micikevicius"
+            ],
+            "title": "Accelerating sparse deep neural networks",
+            "venue": "arXiv preprint arXiv:2104.08378,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Matan Ben Noach",
+                "Yoav Goldberg"
+            ],
+            "title": "Compressing pre-trained language models by matrix decomposition",
+            "venue": "In Proceedings of the 1st Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 10th International Joint Conference on Natural Language Processing,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Adam Paszke",
+                "Sam Gross",
+                "Francisco Massa",
+                "Adam Lerer",
+                "James Bradbury",
+                "Gregory Chanan",
+                "Trevor Killeen",
+                "Zeming Lin",
+                "Natalia Gimelshein",
+                "Luca Antiga"
+            ],
+            "title": "PyTorch: An imperative style, high-performance deep learning library",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Karthik Narasimhan",
+                "Tim Salimans",
+                "Ilya Sutskever"
+            ],
+            "title": "Improving language understanding by generative pre-training",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Keisuke Sakaguchi",
+                "Ronan Le Bras",
+                "Chandra Bhagavatula",
+                "Yejin Choi"
+            ],
+            "title": "Winogrande: An adversarial winograd schema challenge at scale",
+            "venue": "Communications of the ACM,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sidak Pal Singh",
+                "Dan Alistarh"
+            ],
+            "title": "Woodfisher: Efficient second-order approximation for neural network compression",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mingjie Sun",
+                "Zhuang Liu",
+                "Anna Bair",
+                "J Zico Kolter"
+            ],
+            "title": "A simple and effective pruning approach for large language models",
+            "venue": "arXiv preprint arXiv:2306.11695,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhang",
+                "Angela Fan",
+                "Melanie Kambadur",
+                "Sharan Narang",
+                "Aurelien Rodriguez",
+                "Robert Stojnic",
+                "Sergey Edunov",
+                "Thomas Scialom"
+            ],
+            "title": "Llama 2: Open foundation and fine-tuned chat models, 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Murad Tukan",
+                "Alaa Maalouf",
+                "Matan Weksler",
+                "Dan Feldman"
+            ],
+            "title": "Compressed deep networks: Goodbye SVD, hello robust low-rank approximation",
+            "venue": "arXiv preprint arXiv:2009.05647,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Thomas Wolf",
+                "Lysandre Debut",
+                "Victor Sanh",
+                "Julien Chaumond",
+                "Clement Delangue",
+                "Anthony Moi",
+                "Pierric Cistac",
+                "Tim Rault",
+                "R\u00e9mi Louf",
+                "Morgan Funtowicz"
+            ],
+            "title": "Huggingface\u2019s transformers: State-of-the-art natural language processing",
+            "year": 1910
+        },
+        {
+            "authors": [
+                "Guangxuan Xiao",
+                "Ji Lin",
+                "Mickael Seznec",
+                "Hao Wu",
+                "Julien Demouth",
+                "Song Han"
+            ],
+            "title": "Smoothquant: Accurate and efficient post-training quantization for large language models",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rowan Zellers",
+                "Ari Holtzman",
+                "Yonatan Bisk",
+                "Ali Farhadi",
+                "Yejin Choi"
+            ],
+            "title": "Hellaswag: Can a machine really finish your sentence",
+            "year": 1905
+        },
+        {
+            "authors": [
+                "Biao Zhang",
+                "Rico Sennrich"
+            ],
+            "title": "Root mean square layer normalization",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models",
+            "venue": "arXiv preprint arXiv:2205.01068,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wayne Xin Zhao",
+                "Kun Zhou",
+                "Junyi Li",
+                "Tianyi Tang",
+                "Xiaolei Wang",
+                "Yupeng Hou",
+                "Yingqian Min",
+                "Beichen Zhang",
+                "Junjie Zhang",
+                "Zican Dong"
+            ],
+            "title": "A survey of large language models",
+            "venue": "arXiv preprint arXiv:2303.18223,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Michael Zhu",
+                "Suyog Gupta"
+            ],
+            "title": "To prune, or not to prune: exploring the efficacy of pruning for model compression, 2017",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Xunyu Zhu",
+                "Jian Li",
+                "Yong Liu",
+                "Can Ma",
+                "Weiping Wang"
+            ],
+            "title": "A survey on model compression for large language models",
+            "venue": "arXiv preprint arXiv:2308.07633,",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Large language models (LLMs) are neural networks with billions of parameters, trained on trillions of tokens (Zhao et al., 2023). The cost of training an LLM has caused a shift to re-using pre-trained models for multiple tasks, the foundation model paradigm. The size of LLMs makes deploying a pre-trained model an expensive undertaking. Many models require multiple GPUs to be able to compute a prediction, and because the models are autoregressive, multiple forward passes of the neural network are needed to generate text responses. It is therefore of widespread interest to reduce the computational requirements of these models, usually performed via post-training techniques referred to as model compression.\nA majority of model compression techniques fall into one of four categories: distillation, tensor decomposition (which includes low-rank factorization), pruning and quantization (Hoefler et al., 2021; Gholami et al., 2021; Zhu et al., 2023; Gupta & Agrawal, 2021). In this work we focus on pruning, though we hope that our methodology may influence future work on other areas. Whilst pruning methods have been around for some time, many approaches require fine-tuning after the model has been partly tuned, making the pruning process itself an expensive and hard-to-scale task. Frantar & Alistarh (2023) introduced a new pruning method that works in one-shot: without any post-pruning tuning. Our proposal SliceGPT follows this pattern: we compress large models using a single GPU in just a few minutes, with no further tuning.\nPruning methods work by setting some elements of the weight matrices in an LLM to zero, and (optionally) updating the surrounding elements of the matrix to compensate. The result is a sparse pattern which means that some floating point operations can be skipped in the matrix multiplications required in the forward pass of the neural network. The relative speedup of the operations depends on the level of sparsity and the sparsity pattern: more structured sparsity is associated with more computational gain. In contrast to other pruning methods, SliceGPT prunes away (slices off!) entire rows or columns of the weight matrices. Before slicing, we perform a single transformation of the network which leaves the predictions invariant, but allows the slicing to have only a small effect.\nThe result is that weight matrices are smaller, and the signals passed between blocks of the neural network are smaller too: we reduce the embedding dimension of the neural network.\nFigure 1 compares our approach with existing sparsity methods. Our contributions are as follows:\n1. We introduce the idea of computational invariance: we show that we can apply orthogonalmatrix transformations to each weight matrix in a transformer without changing the model.\n2. We use this to edit each block in a transformer architecture, such that we are projecting the signal matrix1 between blocks onto its own principal components. We remove columns or rows of the transformed weight matrices to reduce the model size. We call the transformation and removal of weights SliceGPT.\n3. We conduct multiple experiments on the OPT (Zhang et al., 2022) and LLAMA-2 (Touvron et al., 2023) LLMs, demonstrating that SliceGPT is able to compress these models by up to 30% with superior perplexity to the state of the art 2:4 scheme."
+        },
+        {
+            "heading": "2 BACKGROUND",
+            "text": "In this section, we first describe some necessary background on transformer architectures, which allows us to introduce notation which we will use to prove our main results. Then we describe related work on sparsification for compressing such architectures."
+        },
+        {
+            "heading": "2.1 TRANSFORMER NETWORKS",
+            "text": "Transformer networks (Vaswani et al., 2017) are a class of neural networks that have been shown to be effective at a wide range of tasks including language modeling. The transformer architecture is composed of a series of layers, each of which is composed of a multi-head self-attention block followed by a feed-forward network block. Between each block, there is a LayerNorm (Ba et al., 2016) (or RMSNorm (Zhang & Sennrich, 2019)) block. Figure 2 illustrates part of a transformer network: an attention block connected to a FFN block through a LayerNorm block, with residual connections. The following describes the operations of each component (ignoring dropout, which is not applied post-training).\nEmbeddings Let D be the embedding dimension of our transformer, N be the sequence length. The transformer model takes as input a sequence of token IDs and position IDs, and uses them to index the embedding matrices, producing the initial signal X with shape N \u00d7D. In what follows we consider, without loss of generality, a single embedding matrix Wembd indexed by input sequence s.\nLayerNorm After embeddings, the signal matrix is passed through a LayerNorm operation, which subtracts the mean from each row of the matrix, divides the row by its standard deviation, rescales (columnwise), and adds an offset. We write the LayerNorm block as\nLayerNorm(X) = RMSNorm(XM)diag(\u03b1) \u221a D + 1N\u03b2\n\u22a4 (1) 1The signal matrix is sometimes referred as activation matrix.\nwhere RMSNorm(X) applies2 x \u2190 x/\u2225x\u2225 to each row of X. The vector parameter \u03b1 and offset (vector) parameter \u03b2 are learned independently at each LayerNorm instance. The constant matrix M = I\u2212 1D11 \u22a4 is a D \u00d7D matrix which subtracts the mean from each row of X.\nerations (blue) which we denote in the text as Win,Wout. The linear operations of LayerNorm M and diag(\u03b1) are highlighted. This and subsequent figures do not show biases.\nAttention Blocks The attention block has four matrices: Wk,Wq,Wv and Wo, each of dimension D \u00d7 D. The input signal arriving into the block is projected into the Key (XWk), Query (XWq), and Value (XWv) matrices, which are then split into multiple heads. A nonlinear operation is applied at each head before the signals are combined and multiplied by the output weight matrix Wo. Since the first three weight matrices are applied separately to the inputs, we can concatenate them and perform a single matrix multiplication (denoted by the white box around these matrices in Figure 2). We can consider the concatenation of these matrices to be a single linear layer, which we denote Win. We also refer to the output matrix as Wout. We treat the attention block as \u03c3(XWin + bin)Wout + bout3, where \u03c3 represents the multi-head attention operation.\nFFN Blocks The other type of block that appears in transformer architectures is a Feed Forward Network (FFN) block. In many cases, this is a Multi-layer Perceptron (MLP), which consists of a linear layer W1, followed by an elementwise operation \u03c3, followed by a second linear layer: \u03c3(XW1 + b1)W2 + b2. Some architectures have adopted the gated format, where an additional matrix is used, and the operation is( \u03c3(XW1 + b1) \u25e6 (XW2) ) W3, where \u25e6 is an element-wise product. Much like the first three linear layers in the attention module, we can consider the concatenation of W1 and W2 to be a single linear operation, and denote it Win. We can therefore denote the operation of MLP or gated FFN layers as \u03c3(XWin)Wout, where \u03c3 takes a different meaning to that in an attention.\nLangage Modelling (LM) Head All of the transformer networks to which we apply SliceGPT in this paper have a decoder-only structure following (Radford et al., 2018): after multiple layers applying alternating attention and FFN blocks, a head block computes logits which are used to compute the loss during training and token prediction on deployment. The head operation is XWhead+ bhead, where X is the output of the last transformer block.\nForward pass Once the model is trained and all of the parameters are set, the computations required in a transformer network to produce predictions involve passing signal matrices from one block to the next until the head node is reached. Since we are able to define both FFN and attention blocks in the form \u03c3(XWin + bin)Wout + bout, where we understand that \u03c3 represents either a point-wise or multi-head-attention nonlinearity, we are able to describe the forward pass using algorithm 1.\n2In some implementations, an RMSNorm block may contain scale parameters. We consider these to be special instances of LayerNorm and handle them accordingly.\n3For ease of notation here and throughout this paper, we abuse notation slightly and omit the broadcasting of the bias terms across the sequence length dimension. The complete notation for the operation of an attention block is \u03c3(XWin + 1Nb\u22a4in )Wout + 1Nb \u22a4 out\nAlgorithm 1 The forward pass of a transformer network\nRequire: {W\u2113in, b\u2113in,W\u2113out b\u2113out}L\u2113=1 // Weights and biases of FFN and attention blocks Require: {\u03c3\u2113}L\u2113=1 // nonlinearity associated with each block Require: {Norm\u2113}L\u2113=0 // LayerNorm or RMSNorm instances to perform between blocks Require: Wembd,Whead, bhead // Embedding and head matrices Require: s // input sequence\n1: X\u2190Wembd[s, :] // index embeddings 2: X\u2190 Norm0(X) // normalize 3: for \u2113 = 1 . . . L do 4: Z\u2190 \u03c3\u2113 ( XW\u2113in + b \u2113 in ) W\u2113out + b \u2113 out // apply FFN or attention 5: X\u2190 Norm\u2113(X+ Z) // normalize and apply residual connection 6: end for 7: return XWhead + bhead // apply head model"
+        },
+        {
+            "heading": "2.2 RELATED WORK",
+            "text": "In the simplest setting, one can employ magnitude-based sparsification, which involves setting the smallest weights in the model to zero (Han et al., 2016; Zhu & Gupta, 2017; Gale et al., 2019). Although magnitude sparsification is scalable, its application to LLMs gives too strong a degradation in performance (Frantar & Alistarh, 2023). Optimal Brain Surgeon (OBS) (Hassibi et al., 1993; LeCun et al., 1989), a more sophisticated method, systematically removes weights that have the least impact on the loss function. The method compensates for the error introduced by weight removal by updating the un-pruned weights using the inverse of the Hessian matrix. Unfortunately, OBS is impractical for models with a few million parameters due to the need to calculate and store the inverse of the Hessian matrix. To address the computational limitation posed by OBS, recent research has explored two approaches: approximating the inverse of the Hessian matrix such as WoodFisher (Singh & Alistarh, 2020) or applying it separately to each layer such as in Optimal Brain Compression (OBC, Frantar & Alistarh, 2022), known as layer-wise pruning. While these techniques have proven effective for medium-sized networks, they are not practical for large language models, where individual layer weight matrices typically contain more than 108 parameters.\nGPTQ (Frantar et al., 2022) has solved this issue by quantizing (representing the parameter using lower precision) the weight matrix of LLMs using a column-by-column scheme and updating all not-yet-quantized weights in the next columns. SparseGPT (Frantar & Alistarh, 2023) applied the same idea for pruning and sparsifies the LLMs using unstructured and semi-structured pruning, and Sun et al. (2023) simplified the idea by using only the diagonal of the Hessian. Since achieving endto-end speed improvements through unstructured pruning is a demanding task, they also attempted a similar technique to induce sparsity with semi-structured patterns like 2:4 and 4:8 (Mishra et al., 2021). However, implementing such structures does not maintain the accuracy of the model.\nAnother approach to compression is low-rank approximation, where each weight matrix is replaced with the product of two matrices with a smaller inner dimension, usually followed by a fine-tuning step (Hu et al., 2021; Mahabadi et al., 2021; Noach & Goldberg, 2020; Tukan et al., 2020). To achieve compression, the inner dimension must be smaller than half of the original dimension. In contrast, our method replaces each weight matrix with a single smaller one, reducing the embedding dimension without the need for fine-tuning.\nWe propose to delete rows and columns of weight matrices, which is similar to pruning of filters and channels in the convnet literature. There, sparsity-inducing regularization is added to batch-norm factors (Liu et al., 2017) or network structures (Huang & Wang, 2018), and the network is trained or fine-tuned, resulting in the pruning of channels or parts of the network. Perhaps the most analogous methods to ours are ThiNet (Luo et al., 2017) and He et al. (2017), which apply linear operations between layers (as will we), interleaved with more fine-tuning with regularization. In this literature, the model sizes are typically several orders of magnitude smaller than in LLMs, for example the VGG16 network has 138 million parameters, comparable with the very smallest OPT model that we consider. The huge size of LLMs makes methods that involve extensive fine-tuning unappealing, especially when outer-loops are needed to select regularization parameters.\nRecently, some works have been proposed that apply structured pruning to LLMs, followed by continued training (or fine-tuning) to recover the performance that is lost. For example LLM-pruner (Ma et al., 2023a) removes connected structures from an LLM before further training. We emphasize that SliceGPT does not require any post-sparsity tuning."
+        },
+        {
+            "heading": "3 SLICEGPT",
+            "text": "Our SliceGPT method relies on a computational invariance that is inherent in the transformer architecture. By this, we mean that it is possible to apply an orthogonal transformation to the output of one component, so long as it is undone in the next. Our key insight is that the RMSNorm operation which is performed between blocks of the network does not affect the transformation: the operations commute. In this section, we first describe how the invariance occurs in RMSNorm-connected transformer networks, then we note how networks trained with LayerNorm connections can be converted to RMSNorm. Next, we describe our method to compute transformations at each layer using Principal Component Analysis (PCA), such that the signal between blocks is projected onto its principal components. Finally, we describe how deleting the minor principal components corresponds to slicing away rows or columns of the modified network."
+        },
+        {
+            "heading": "3.1 COMPUTATIONAL INVARIANCE IN TRANSFORMER NETWORKS",
+            "text": "Let Q denote an orthogonal matrix: we have Q\u22a4Q = QQ\u22a4 = I. Note that multiplying a vector x by Q does not change the norm of the vector, since \u2225Qx\u2225 = \u221a x\u22a4Q\u22a4Qx = \u221a x\u22a4x = \u2225x\u2225. In this work, the dimensions of Q will always match the embedding dimension of the transformer D.\nSuppose that X\u2113 is the output of one block of the transformer, which is then processed by RMSNorm, and then inputted to the subsequent block as RMSNorm(X\u2113). If we insert linear layers with the orthogonal matrix Q before RMSNorm and Q\u22a4 after RMSNorm, the network remains unchanged, since each row of the signal matrix is multiplied by Q, normalized and multiplied by Q\u22a4. We have\nRMSNorm(X\u2113Q)Q\u22a4 = RMSNorm(X\u2113) . (2)\nA proof of this relation appears in Appendix A.1. Now, since each attention or FFN block of the network has a linear operation on both the input and output, we can absorb the additional operations Q into the linear layers of the blocks. Since the network contains residual connections, we must also apply Q to the output of all previous layers (all the way back to the embedding) and to all subsequent layers (all the way up to the LM Head).\nAn invariant function is one for which a transformation to the input does not result in a change to the output. In our case, we can apply any orthogonal transformation Q to the weights of the transformer without changing the result, so the computation can be performed in any transformed state. We refer to this as a computational invariance, and define it in the following proposition.\nProposition 1. Let W\u2113in and W\u2113out be the weight matrices of the linear layers of the \u2113-th block of an RMSNorm-connected transformer network, and b\u2113in, b \u2113 out be the corresponding biases, if any, and let Wembd and Whead be the embedding and head matrices. Let Q be an orthogonal matrix of dimension D. Then the following network is equivalent to the original transformer network:\nW\u0303embd = WembdQ , (3)\nW\u0303\u2113in = Q \u22a4W\u2113in , (4)\nW\u0303\u2113out = W \u2113 outQ , (5)\nb\u0303\u2113out = Q \u22a4b\u2113out , (6) W\u0303head = Q \u22a4Whead . (7)\nThe input and head biases are copied: b\u0303\u2113in = b \u2113 in, b\u0303head = bhead.\nProof. We can show that the transformed network computes the same results as the original by stepping through Algorithm 1. Suppose that on line 1, the original network has computed X, then the modified network has computed X\u0303 = XQ, using Equation 3. Applying RMSNorm on line 2, we see that the operation of the two networks matches: by Equation 2 we have RMSNorm(X\u0303) = RMSNorm(XQ) = RMSNorm(X)Q. Applying the nonlinearity on line 4, we see that X\u0303W\u0303\u2113in =\nXW\u2113in, using Equation 4 and it follows that Z\u0303 = ZQ. On line 5 the residual connection means we have (X\u0303 + Z\u0303) = (X + Z)Q, and applying RMSNorm results in assignment of X\u0303 = XQ. This follows through to the end of the loop. Finally, on line 7, the transformations are undone as XWhead = X\u0303W\u0303head using Equation 7.\n3.2 LAYERNORM TRANSFORMERS CAN BE CONVERTED TO RMSNORM\ndiag(\u03b1) is absorbed into the subsequent matrix Win. Figure shows the block in combined colors. We use (\u03b1) for brevity. The mean-subtraction matrix M is applied to each matrix Wout. Layernorm becomes RMSNorm, up to a constant \u221a D (not shown). Here, the scaling (\u03b1\u2032) comes from the previous block.\nThe computational invariance of the transformer network applies only to RMSNorm-connected networks. Before working on those with LayerNorm, we convert the network to RMSNorm by absorbing the linear blocks of LayerNorm into the adjacent blocks. Figure 3 shows such a transformation on the transformer network (see Figure 2) . In each block, we multiply the output matrix Wout by the mean-subtraction matrix M, which accounts for the mean subtraction that would happen in the subsequent LayerNorm. The input matrices Win are pre-multiplied by the scales of the preceding LayerNorm blocks. The embedding matrix Wembd must be mean-subtracted, and Whead must be re-scaled by the last LayerNorm scales. This is a straightforward change in the order of operations and does not affect the network output."
+        },
+        {
+            "heading": "3.3 A TRANSFORMATION PER BLOCK",
+            "text": "Now that every LayerNorm in the transformer has been converted to RMSNorm, we can select any Q to modify the model. Our initial plan was to collect signals from the model, construct an orthogonal matrix using those signals and to delete parts of the network. We quickly saw that the signals at different blocks of the network were not aligned, and that we would need to apply a different orthogonal matrix at each block, Q\u2113.\nAllowing the orthogonal matrix used in each block to differ can be shown to leave the model unchanged using the same proof as Proposition 1, with the exception of line 5 of Algorithm 1. Here we see that the residual connection and the output of the block must have the same rotation. To fix this, we modify the residual connection by applying the linear transformation Q\u22a4\u2113\u22121Q\u2113 to the residual. Figure 4 shows how different rotations can be applied to different blocks with the additional linear operation in the residual connection. Unlike the modifications to the weight matrices, these additional operations cannot be pre-computed and add a small (D \u00d7D) overhead to the model. Nonetheless, they are needed to allow slicing the model (Section 3.4) and we see real speedup overall (Section 4).\nTo compute the matrices Q\u2113, we use PCA. We select a calibration dataset from the training set, run it through the model (after converting LayerNorm operations into RMSNorm), and extract the orthogonal matrix of the layer. We use the output of the transformed network to calculate the orthogonal matrices of the next layers. More precisely, if X\u2113,i is the output of the \u2113th RMSNorm block for the ith sequence in the calibration dataset, we compute\nC\u2113 = \u2211 i X\u22a4\u2113,iX\u2113,i (8)\nand set Q\u2113 to the be the eigenvectors of C\u2113, sorted by decreasing eigenvalues.\ninvariance idea. The input weight matrices diag(\u03b1)Win are pre-multiplied by Q\u22a4. The output matrices WoutM are post-multiplied by Q. In the skip-connection, a new linear layer is added Q\u22a4\u2113 Q\u2113+1. After these modifications, the matrices can be sliced (hatched areas)."
+        },
+        {
+            "heading": "3.4 SLICING",
+            "text": "The goal of Principal Component Analysis is usually to take a data matrix X and compute a lower dimensional representation Z, and an approximate reconstruction X\u0303:\nZ = XQD , X\u0303 = ZD\u22a4Q\u22a4 . (9)\nwhere Q is the eigenvectors of X\u22a4X, and D is a D \u00d7 Dsmall deletion matrix (containing Dsmall columns of the D \u00d7D identity matrix), which removes some of the columns of the matrix to the left. The reconstruction is L2 optimal, in the sense that QD is a linear mapping that minimizes \u2225X\u2212 X\u0303\u22252. When we apply PCA to the signal matrix X between blocks, we never materialize the N \u00d7 D signal matrix, but we apply the deletion matrix D to the operations preceding and succeeding the construction of that matrix, which have already been multiplied by Q in the above. We delete rows of Win and columns of Wout and Wembd. We also delete both rows and columns of the matrix Q\u22a4\u2113\u22121Q\u2113 that we have inserted into the residual connection (see Figure 4)."
+        },
+        {
+            "heading": "4 EXPERIMENTAL VALIDATION",
+            "text": "Setup We used HuggingFace Transformers (Wolf et al., 2019) to implement our code with PyTorch (Paszke et al., 2019). The computation of Q is performed on a single A100 GPU with 40GB of memory, taking approximately 3 hours to complete for the LLAMA-2 70B model. During the PCA calculation, we use double precision for computing the eigenvectors of the covariance matrix. We found that using single precision for eigenvector calculations in PyTorch leads to a discrepancy in the final accuracy, as detailed in Appendix A.2. Our calibration set comprises 128 samples from the training dataset of WikiText-2 (Merity et al., 2016), each containing 2048 tokens. An ablation study on the calibration set size and sequence length is presented in Appendix A.3. We employ a random selection of samples, ensuring that we do not include any that require padding, as the presence of padded samples can negatively impact PCA calculations.\nModels, Tasks, and GPUs We evaluate all our experiments on OPT (Zhang et al., 2022) and LLAMA-2 (Touvron et al., 2023) families. We exclude OPT 175B, as it is outperformed by smaller LLAMA-2 models. Nonetheless, we anticipate that this larger model will yield improved results, as larger models typically offer more promising opportunities for compression (see Section 4.1). We evaluate our scheme on both language generation as well as popular zero-shot tasks.To demonstrate the comprehensive speedup achieved by SliceGPT we use: Quadro RTX6000 GPUs with 24GB of memory as a representative example of consumer-level GPUs; 40GB A100s and 80GB H100s to provide datacenter-level benchmarks.\nBaseline Setup We initially planned to compare our results against a scheme that pruned columns (or rows) with the smallest norm. But we quickly found that this baseline was very poor, with the perplexity of the model soaring into the 1000s after pruning just a few columns. Instead, we compare SliceGPT against SparseGPT (Frantar & Alistarh, 2023) employing a 2:4 sparsity ratio, as this is the only sparsity scheme which achieves speedup (Mishra et al., 2021)."
+        },
+        {
+            "heading": "4.1 RESULTS",
+            "text": "Generation Task We begin by showcasing our findings using the WikiText-2 dataset. In this context, we evaluate the performance of both the OPT and LLAMA-2 model families across different sizes when applied to this dataset. Table 1 shows the perplexity obtained by varying slicing levels. SliceGPT exhibits superior performance when applied to OPT models compared to LLAMA-2 models which matches our intuition from the spectrum analysis of those models (see Appendix A.4 for our discussion). The performance of SliceGPT improves as the model size increases. Comparing SliceGPT with SparseGPT, we see that that SparseGPT 2:4 performs worse than SliceGPT with 25% slicing in all LLAMA-2 models. For OPT, we see that 30% sliced models beat 2:4 sparsity for all model sizes except 2.7B.\nZero-shot Tasks We assess SliceGPT across five well-known zero-shot tasks: PIQA (Bisk et al., 2020); WinoGrande (Sakaguchi et al., 2021); HellaSwag (Zellers et al., 2019); Arc (Easy and Challenge) (Clark et al., 2018). Following similar work (Frantar & Alistarh, 2023; Dettmers et al., 2022; Frantar et al., 2022; Dettmers et al., 2023), we use LM Evaluation Harness (Gao et al., 2021) with default parameters in our evaluations. Figure 5 shows the average scores achieved by the compressed models across these tasks. We observe a similar pattern to the generation task in the results: the OPT models are amenable to compression compared to LLAMA-2 models, and the reduction in accuracy is less pronounced in the larger models. Appendix A.5 contains full results.\nBenchmarking Throughput Unlike conventional sparsity methods, which introduce sparsity in Win and Wout, SliceGPT also introduces (structured) sparsity in X: entire columns of X are sliced off, reducing the embedding dimension. This enhances both the computational complexity (in flops) and data movement within our compressed model.\nThe token throughput of models sliced at 25% and 50% are compared to the dense model on 80GB H100 GPUs. We set the sequence length to 128 and find the maximum throughput by doubling the\nbatch size until the GPUs run out of memory or the throughput drops off. The 25% sliced models achieve up to 1.55\u00d7 throughput improvement over the dense model. At 50% slicing the largest models require only one GPU instead of two, with large increases in throughput: 3.13\u00d7 and 1.87\u00d7. This means that for a fixed number of GPUs, these models achieve 6.26\u00d7 and 3.75\u00d7 throughput of a dense model. We note that the WikiText2 perplexity of SliceGPT at 50% is worse than SparseGPT 2:4, but the throughput is much higher than could be achieved with a sparse method that does not slice X. For models of size 13B, the performance increase from batch-size increasing is less pronounced because the models take up little of the GPU memory. On consumer grade GPUs (with less memory) the throughput for these smaller models is likely to be improved. For full details see Appendix A.6.\nInference Time Next we study the end-to-end runtime of a model compressed with SliceGPT. Table 2 compares the time of generating a single token in OPT 66B and LLAMA-2 70B models on Quadro RTX6000 and A100 GPUs. We observe a speedup of 16-17% on RTX6000 GPUs when employing 25% slicing, and 11-13% on A100s. We reduce the number of GPUs used in both cases, providing energy and cost savings relative to deployment of the dense model. For LLAMA-2 70B, the compute required using RTX6000 GPUs is reduced to 64%, from 1764 GPUms to 1075 GPUms4. We attribute this improvement to our approach of substituting weight matrices with smaller ones and using dense kernels in our compressed models, which is infeasible with other pruning schemes.\nEnd-to-end performance gains are not feasible with our baseline SparseGPT 2:4 at the time of writing. Instead, we compare SliceGPT with SparseGPT 2:4 by comparing the relative timing of each operation involved in a transformer layer. We find that SliceGPT (25%) is competitive with SparseGPT in terms of speedup and perplexity for large models. For further details see Appendix A.7."
+        },
+        {
+            "heading": "5 CONCLUSION AND FUTURE WORK",
+            "text": "We\u2019ve introduced SliceGPT which allows for structured pruning for large language models. We reduce the cost of inference of LLAMA-2 70B on 40GB A100 GPUs to 66% of that of the dense model without any additional code optimization, requiring fewer GPUs (from 4 to 3) while maintaining better held-out perplexity than SparseGPT 2:4. On 24GB RTX6000 GPUs, the cost of inference is reduced to 64%, requiring 2 fewer GPUs (from 7 to 5).\nOpportunities remain to build on our method. Smaller but dense LLMs perform better than larger LLMs pruned to similar sizes, though we do not expect this to remain the case for long. Our pruned models have more parameters than those pruned with SparseGPT but our method allows for larger batch sizes to be loaded into GPU memory, and has no overhead for sparsity structure: perhaps a combined method could obtain the best of both. Other methods of computing Q could improve the results. To further decrease the inference time and GPU count, complementary methods including quantization (Xiao et al., 2023; Dettmers et al., 2023; 2022; Frantar et al., 2022), and structural pruning (e.g. Ma et al., 2023b) could be used.\nWe hope that our observation of computational invariance can help future research in improving the efficiency of deep learning models, and perhaps inspire new theoretical insights.\n4Our HuggingFace-based testing does not enjoy continuous batching or model sharding. This means that in terms of inference time, the dense-model could be improved more than our sliced model in terms of GPUms. Nonetheless, our measurements do reflect the energy-usage per token in such a deployment."
+        }
+    ],
+    "title": "SLICEGPT: COMPRESS LARGE LANGUAGE MODELS",
+    "year": 2023
+}

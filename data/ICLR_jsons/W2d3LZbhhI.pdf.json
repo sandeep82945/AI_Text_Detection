@@ -1,1 +1,692 @@
-null
+{
+    "abstractText": "Recent years have witnessed the rapid progress and broad application of diffusion probabilistic models (DPMs). Sampling from DPMs can be viewed as solving an ordinary differential equation (ODE). Despite the promising performance, the generation of DPMs usually consumes much time due to the large number of function evaluations (NFE). Though recent works have accelerated the sampling to around 20 steps with high-order solvers, the sample quality with less than 10 NFE can still be improved. In this paper, we propose a unified sampling framework (USF) to study the optional strategies for solver. Under this framework, we further reveal that taking different solving strategies at different timesteps may help further decrease the truncation error, and a carefully designed solver schedule has the potential to improve the sample quality by a large margin. Therefore, we propose a new sampling framework based on the exponential integral formulation that allows free choices of solver strategy at each step and design specific decisions for the framework. Moreover, we propose S, a predictor-based search method that automatically optimizes the solver schedule to get a better time-quality trade-off of sampling. We demonstrate that S can find outstanding solver schedules which outperform the state-of-the-art sampling methods on CIFAR-10, CelebA, ImageNet, and LSUN-Bedroom datasets. Specifically, we achieve 2.69 FID with 10 NFE and 6.86 FID with 5 NFE on CIFAR-10 dataset, outperforming the SOTA method significantly. We further apply S to Stable-Diffusion model and get an acceleration ratio of 2\u00d7, showing the feasibility of sampling in very few steps without retraining the neural network.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Enshu Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Xuefei Ning"
+        },
+        {
+            "affiliations": [],
+            "name": "Huazhong Yang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yu Wang"
+        }
+    ],
+    "id": "SP:b08cec898635f8ef967e6ca587593d5f9843ba72",
+    "references": [
+        {
+            "authors": [
+                "Brian DO Anderson"
+            ],
+            "title": "Reverse-time diffusion equation models",
+            "venue": "Stochastic Processes and their Applications,",
+            "year": 1982
+        },
+        {
+            "authors": [
+                "Fan Bao",
+                "Chongxuan Li",
+                "Jun Zhu",
+                "Bo Zhang"
+            ],
+            "title": "Analytic-dpm: an analytic estimate of the optimal reverse variance in diffusion probabilistic models",
+            "venue": "arXiv preprint arXiv:2201.06503,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jia Deng",
+                "Wei Dong",
+                "Richard Socher",
+                "Li-Jia Li",
+                "Kai Li",
+                "Li Fei-Fei"
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "IEEE conference on computer vision and pattern recognition,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Prafulla Dhariwal",
+                "Alexander Nichol"
+            ],
+            "title": "Diffusion models beat gans on image synthesis",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "David Francis Griffiths",
+                "Desmond J Higham"
+            ],
+            "title": "Numerical methods for ordinary differential equations: initial value problems, volume",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Martin Heusel",
+                "Hubert Ramsauer",
+                "Thomas Unterthiner",
+                "Bernhard Nessler",
+                "Sepp Hochreiter"
+            ],
+            "title": "Gans trained by a two time-scale update rule converge to a local nash equilibrium",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Tim Salimans"
+            ],
+            "title": "Classifier-free diffusion guidance",
+            "venue": "arXiv preprint arXiv:2207.12598,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Ajay Jain",
+                "Pieter Abbeel"
+            ],
+            "title": "Denoising diffusion probabilistic models",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Max Jaderberg",
+                "Valentin Dalibard",
+                "Simon Osindero",
+                "Wojciech M Czarnecki",
+                "Jeff Donahue",
+                "Ali Razavi",
+                "Oriol Vinyals",
+                "Tim Green",
+                "Iain Dunning",
+                "Karen Simonyan"
+            ],
+            "title": "Population based training of neural networks",
+            "venue": "arXiv preprint arXiv:1711.09846,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Diederik Kingma",
+                "Tim Salimans",
+                "Ben Poole",
+                "Jonathan Ho"
+            ],
+            "title": "Variational diffusion models",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alex Krizhevsky",
+                "Geoffrey Hinton"
+            ],
+            "title": "Learning multiple layers of features from tiny images",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Shanchuan Lin",
+                "Bingchen Liu",
+                "Jiashi Li",
+                "Xiao Yang"
+            ],
+            "title": "Common diffusion noise schedules and sample steps are flawed",
+            "venue": "arXiv preprint arXiv:2305.08891,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Michael Maire",
+                "Serge Belongie",
+                "James Hays",
+                "Pietro Perona",
+                "Deva Ramanan",
+                "Piotr Doll\u00e1r",
+                "C Lawrence Zitnick"
+            ],
+            "title": "Microsoft coco: Common objects in context",
+            "venue": "In European conference on computer vision,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Enshu Liu",
+                "Xuefei Ning",
+                "Zinan Lin",
+                "Huazhong Yang",
+                "Yu Wang"
+            ],
+            "title": "Oms-dpm: Optimizing the model schedule for diffusion probabilistic models",
+            "venue": "arXiv preprint arXiv:2306.08860,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Luping Liu",
+                "Yi Ren",
+                "Zhijie Lin",
+                "Zhou Zhao"
+            ],
+            "title": "Pseudo numerical methods for diffusion models on manifolds",
+            "venue": "arXiv preprint arXiv:2202.09778,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ziwei Liu",
+                "Ping Luo",
+                "Xiaogang Wang",
+                "Xiaoou Tang"
+            ],
+            "title": "Deep learning face attributes in the wild",
+            "venue": "In Proceedings of the IEEE international conference on computer vision,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Cheng Lu",
+                "Yuhao Zhou",
+                "Fan Bao",
+                "Jianfei Chen",
+                "Chongxuan Li",
+                "Jun Zhu"
+            ],
+            "title": "Dpm-solver: A fast ode solver for diffusion probabilistic model sampling in around 10 steps",
+            "venue": "arXiv preprint arXiv:2206.00927,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Cheng Lu",
+                "Yuhao Zhou",
+                "Fan Bao",
+                "Jianfei Chen",
+                "Chongxuan Li",
+                "Jun Zhu"
+            ],
+            "title": "Dpm-solver++: Fast solver for guided sampling of diffusion probabilistic models",
+            "venue": "arXiv preprint arXiv:2211.01095,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Eric Luhman",
+                "Troy Luhman"
+            ],
+            "title": "Knowledge distillation in iterative generative models for improved sampling speed",
+            "venue": "arXiv preprint arXiv:2101.02388,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chenlin Meng",
+                "Robin Rombach",
+                "Ruiqi Gao",
+                "Diederik Kingma",
+                "Stefano Ermon",
+                "Jonathan Ho",
+                "Tim Salimans"
+            ],
+            "title": "On distillation of guided diffusion models",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Nitish Shirish Keskar",
+                "Richard Socher"
+            ],
+            "title": "Regularizing and optimizing lstm language models",
+            "venue": "arXiv preprint arXiv:1708.02182,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Alexander Quinn Nichol",
+                "Prafulla Dhariwal"
+            ],
+            "title": "Improved denoising diffusion probabilistic models",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xuefei Ning",
+                "Yin Zheng",
+                "Tianchen Zhao",
+                "Yu Wang",
+                "Huazhong Yang"
+            ],
+            "title": "A generic graph-based neural architecture encoding scheme for predictor-based nas",
+            "venue": "In European Conference on Computer Vision,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Esteban Real",
+                "Alok Aggarwal",
+                "Yanping Huang",
+                "Quoc V Le"
+            ],
+            "title": "Regularized evolution for image classifier architecture search",
+            "venue": "In Proceedings of the aaai conference on artificial intelligence,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Robin Rombach",
+                "Andreas Blattmann",
+                "Dominik Lorenz",
+                "Patrick Esser",
+                "Bj\u00f6rn Ommer"
+            ],
+            "title": "Highresolution image synthesis with latent diffusion models",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tim Salimans",
+                "Jonathan Ho"
+            ],
+            "title": "Progressive distillation for fast sampling of diffusion models",
+            "venue": "arXiv preprint arXiv:2202.00512,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jasper Snoek",
+                "Hugo Larochelle",
+                "Ryan P Adams"
+            ],
+            "title": "Practical bayesian optimization of machine learning algorithms",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Jascha Sohl-Dickstein",
+                "Eric Weiss",
+                "Niru Maheswaranathan",
+                "Surya Ganguli"
+            ],
+            "title": "Deep unsupervised learning using nonequilibrium thermodynamics",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Jiaming Song",
+                "Chenlin Meng",
+                "Stefano Ermon"
+            ],
+            "title": "Denoising diffusion implicit models",
+            "venue": "arXiv preprint arXiv:2010.02502,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yang Song",
+                "Jascha Sohl-Dickstein",
+                "Diederik P Kingma",
+                "Abhishek Kumar",
+                "Stefano Ermon",
+                "Ben Poole"
+            ],
+            "title": "Score-based generative modeling through stochastic differential equations",
+            "venue": "arXiv preprint arXiv:2011.13456,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Daniel Watson",
+                "Jonathan Ho",
+                "Mohammad Norouzi",
+                "William Chan"
+            ],
+            "title": "Learning to efficiently sample from diffusion probabilistic models",
+            "venue": "arXiv preprint arXiv:2106.03802,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chengrun Yang",
+                "Yuji Akimoto",
+                "Dae Won Kim",
+                "Madeleine Udell"
+            ],
+            "title": "Oboe: Collaborative filtering for automl model selection",
+            "venue": "In Proceedings of the 25th ACM SIGKDD international conference on knowledge discovery & data mining,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Fisher Yu",
+                "Ari Seff",
+                "Yinda Zhang",
+                "Shuran Song",
+                "Thomas Funkhouser",
+                "Jianxiong Xiao"
+            ],
+            "title": "Lsun: Construction of a large-scale image dataset using deep learning with humans in the loop",
+            "venue": "arXiv preprint arXiv:1506.03365,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Qinsheng Zhang",
+                "Yongxin Chen"
+            ],
+            "title": "Fast sampling of diffusion models with exponential integrator",
+            "venue": "arXiv preprint arXiv:2204.13902,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qinsheng Zhang",
+                "Molei Tao",
+                "Yongxin Chen"
+            ],
+            "title": "gddim: Generalized denoising diffusion implicit models",
+            "venue": "arXiv preprint arXiv:2206.05564,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenliang Zhao",
+                "Lujia Bai",
+                "Yongming Rao",
+                "Jie Zhou",
+                "Jiwen Lu"
+            ],
+            "title": "Unipc: A unified predictorcorrector framework for fast sampling of diffusion models",
+            "venue": "arXiv preprint arXiv:2302.04867,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kaiwen Zheng",
+                "Cheng Lu",
+                "Jianfei Chen",
+                "Jun Zhu"
+            ],
+            "title": "Dpm-solver-v3: Improved diffusion ode solver with empirical model statistics",
+            "venue": "arXiv preprint arXiv:2310.13268,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Barret Zoph",
+                "Quoc V Le"
+            ],
+            "title": "Neural architecture search with reinforcement learning",
+            "venue": "arXiv preprint arXiv:1611.01578,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Zhao"
+            ],
+            "title": "2023), too high solver order is detrimental to the solution, possibly because of the numerical instability of high-order derivatives. So, we set the candidates of Taylor expansion order",
+            "year": 2023
+        },
+        {
+            "authors": [],
+            "title": "which maps the sequential timesteps to sequential embeddings using a positional embedder followed by a MLP (Vaswani et al., 2017",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Lu"
+            ],
+            "title": "2022b) to choose uniform t as the time schedule for high-resolution datasets (i.e., ImageNet-128, ImageNet-256 and LSUN-Bedroom) and text-image generation. We use lower orders at the final few steps for DPM-Solver++ and UniPC following their implementation",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Diffusion probabilistic models (DPMs) (Sohl-Dickstein et al., 2015; Ho et al., 2020; Song et al., 2020b) have emerged as a new generative modeling paradigm in recent years. DPMs model the probability distribution through training a neural network to estimate the score function or other equivalent form along pre-defined forward diffusion stochastic differential equations (SDEs) (Song et al., 2020b). Sampling from DPMs can be viewed as solving the corresponding reverse diffusion SDEs (Song et al., 2020b; Ho et al., 2020) or the diffusion ODEs (Song et al., 2020b;a) by discretizing the continuous timesteps.\nDespite the high generation ability, the main drawback of DPMs is the slow sampling speed due to the large number of discretized timesteps for the numerical accuracy of the DE solver (Song et al., 2020b; Ho et al., 2020) with neural inference on each step. Therefore, accelerating the sampling process of DPMs is very meaningful.\nCurrent work focusing on decreasing the DPM sampling steps can be divided into two categories. The first of them needs retraining of the neural network (Luhman & Luhman, 2021; Salimans & Ho, 2022; Meng et al., 2023; Song et al., 2023), which takes significant extra costs, especially for large models like Rombach et al. (2022). The other branch of works attempts to design efficient solvers of differential equations (DEs) to accelerate DPMs without retraining the existing off-the-shelf models (Song et al., 2020a; Watson et al., 2021; Bao et al., 2022; Liu et al., 2022; Lu et al., 2022a;b;\n\u2217Corresponding Authors\nZhang & Chen, 2022; Zhang et al., 2022; Zhao et al., 2023). State-of-the-art methods utilize the equivalent exponential integral form of the reverse diffusion ODE, accurately calculating the linear term while estimating the integral term through various high-order numerical methods (Zhang & Chen, 2022; Lu et al., 2022a;b; Zhao et al., 2023). These methods can reduce the number of steps to 15\u223c20 steps, but the performance decreases rapidly with lower than 10 steps. We notice that many solving strategies of these solvers are empirically set and kept constant along the sampling process except for a few special timesteps, leading to suboptimal performance with inadequate timesteps. In this paper, to systematically study the impact of these strategies, we propose a unified sampling framework based on the exponential integral form of the diffusion ODE, named USF, which splits the solving process of one step into independent decisions of several components, including the choice of 1. timestep, 2. starting point of the current step, 3. prediction type of the neural network, 4. order of Taylor expansion, 5. derivative estimation method, and 6. usage of ODE correctors. Based on this framework, we reveal that the quality and efficiency of training-free samplers can be further improved by designing appropriate solver schedules, motivated by the key observation that the suitable solving strategies vary among different timesteps. Therefore, solver schedules, which means the different solving strategies assigned to each timestep, is very important for the sample quality. Our proposed framework can incorporate the existing diffusion solvers by assigning corresponding decisions to those components and allows the ensemble of different solving strategies in the timestep dimension, enabling sufficient potential to outperform existing sampling methods. In addition, we also design new strategies different from existing diffusion solvers for the derivative estimation component, making the proposed sampling framework more promising.\nHowever, designing solver schedules is difficult due to the vast decision space. To address this problem, we propose S3 to search for optimal solver schedules automatically. We construct a performance predictor to enable the fast evaluation of one solver schedule and use it to guide a multistage search process to find well-performing solver schedules under a certain budget of number of function evaluation (NFE). Our contributions are summarized as follows:\n\u2022 We propose a new sampling framework for DPMs, called USF, which unifies existing diffusion ODE solvers based on exponential integral, to systematically and conveniently study the strategies chosen for diffusion samplers. Based on this framework, we design some new solver strategies, including using different solver strategies across timesteps, low-order estimation for derivatives, more types of scaling methods and searchable timesteps. \u2022 We propose a predictor-based multi-stage search algorithm, S3, to search for the well-\nperforming solver schedule under a certain NFE budget. Our method can directly utilize offthe-shelf DPMs without any retraining of the diffusion neural network and find outstanding solver schedules with a moderate search cost, demonstrating its practical applicability. \u2022 We experimentally validate our method on plenty of unconditional datasets, including CIFAR-\n10 (Krizhevsky et al., 2009), CelebA (Liu et al., 2015), ImageNet-64 (Deng et al., 2009) and LSUN-Bedroom (Yu et al., 2015). Our searched solver schedules outperform the SOTA diffusion sampler (Lu et al., 2022b; Zhao et al., 2023) by a large margin with very few NFE, e.g., 6.86 v.s. 23.44 on CIFAR-10 with only 5 NFE. We further apply S3 to Stable-Diffusion (Rombach et al., 2022) models, achieve 2\u00d7 (from 10 NFE to 5 NFE) acceleration without sacrificing the performance on text-to-image generation task on MS-COCO 256\u00d7256 dataset (Lin et al., 2014). Based on the experimental results, we summarize some knowledge to guide future schedule design."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": ""
+        },
+        {
+            "heading": "2.1 DIFFUSION PROBABILISTIC MODEL",
+            "text": "Diffusion Probabilistic Models (DPMs) (Sohl-Dickstein et al., 2015; Ho et al., 2020; Song et al., 2020b) are used to construct the probability distribution q(x0) of a D-dimension random variable x0 \u2208 RD. DPMs define a forward diffusion process to add noise to the random variable x0 (Song et al., 2020b) progressively:\ndxt = f(xt, t)dt+ g(t)dwt, (1)\nwhere xt stands for the marginal distribution at time t for t \u2208 [0, T ], and x0 obeys the target distribution q(x0). wt is the standard Wiener process. When f(xt, t) is a affine form of xt, the marginal\ndistribution of xt given x0 can be written as (Song et al., 2020b):\nq(xt|x0) = N (xt|\u03b1tx0, \u03c32t I), (2) where \u03b12t /\u03c3 2 t is called signal-to-noise ratio (SNR), which is a strictly decreasing function of t and approximately equals 0 when t = T . The forward diffusion process Eq. (1) has a reverse probability flow ODE (Song et al., 2020b;a):\ndxt = [f(t)xt \u2212 1\n2 g2(t)\u2207xlogq(xt)]dt, (3)\nwhere xT \u223c N (xt|0, I). The ODE has two equivalent forms w.r.t. noise prediction network \u03f5\u03b8 and data prediction network x\u03b8, which are more commonly used for fast sampling:\ndxt = (f(t)xt + g2(t)\n2\u03c3t \u03f5\u03b8(xt, t))dt, (4)\ndxt = ((f(t) + g2(t)\n2\u03c32t )xt \u2212\n\u03b1tg 2(t)\n2\u03c32t x\u03b8(xt, t))dt. (5)\nIt can be proved that the marginal distribution of xt in Eq. (1) equals the distribution of xt in Eq. (3) (Anderson, 1982). Thus, sampling from DPMs can be viewed as solving the above ODEs."
+        },
+        {
+            "heading": "2.2 TRAINING-FREE SAMPLERS",
+            "text": "One major drawback of DPMs is the large number of discretized timesteps needed for numerical solvers to ensure the sample quality. To handle such an issue, training-free samplers for the ODE Eq. (3) are proposed to achieve quicker convergence (Song et al., 2020b;a; Liu et al., 2022; Zhang & Chen, 2022; Lu et al., 2022a;b; Zhao et al., 2023)."
+        },
+        {
+            "heading": "2.2.1 LOW ORDER SAMPLERS",
+            "text": "The early samplers can be viewed as low-order solvers of the diffusion ODE (Song et al., 2020a; Liu et al., 2022). DDIM (Song et al., 2020a) proposes the following formula for the update of one step: xt = \u221a \u03b1t xs\u2212 \u221a 1\u2212\u03b1s\u03f5\u03b8(xs,s)\u221a \u03b1s + \u221a 1\u2212 \u03b1t\u03f5\u03b8(xs, s). PNDM (Liu et al., 2022) proposes to replace the neural term \u03f5\u03b8(xs, s) in the DDIM formula with a new term 124 (55\u03f5s\u2212 59\u03f5s\u2212\u03b4 +37\u03f5s\u22122\u03b4 \u2212 9\u03f5s\u22123\u03b4) inspired by Adams method. The DDIM formula is a 1-st order discretization to the diffusion ODE Eq. (3) and thus is not efficient enough due to the inadequate utilization of high-order information."
+        },
+        {
+            "heading": "2.2.2 EXPONENTIAL-INTEGRAL-BASED SAMPLERS",
+            "text": "The solution xt of the diffusion ODE Eq. (3) at timestep t from timestep s can be analytically computed using the following exponentially weighted integral (Lu et al., 2022a)\nxt = \u03b1t \u03b1s xs \u2212 \u03b1t \u222b \u03bbt \u03bbs e\u2212\u03bb\u03f5\u03b8(x\u03bb, \u03bb)d\u03bb. (6)\nThe linear term \u03b1t\u03b1sxs can be accurately computed and the high order numerical methods can be applied to the integral term \u03b1t \u222b \u03bbt \u03bbs\ne\u2212\u03bb\u03f5\u03b8(x\u03bb, \u03bb)d\u03bb, improving the sample speed dramatically than low-order formulas. The following methods apply different strategies to estimate the integral term.\nDEIS (Zhang & Chen, 2022) uses Lagrange outer interpolation to estimate the integrand. Then, the exponential integral can be computed approximately since the integral of a polynomial can be easily computed. Additionally, DEIS computes this integral in t domain rather than \u03bb.\nDPM-Solver (Lu et al., 2022a) utilizes the Taylor expansion of the exponential integral as follows to estimate this term.\nxt = \u03b1t \u03b1s xs \u2212 \u03b1t k\u22121\u2211 n=0 \u03f5 (n) \u03b8 (x\u03bbs , \u03bbs) \u222b \u03bbt \u03bbs e\u2212\u03bb (\u03bb\u2212 \u03bbs)n n! d\u03bb+O((\u03bbt \u2212 \u03bbs)k+1). (7)\nAdditionally, Lu et al. (2022a) proposes to discretize the timesteps with uniform logSNR, which has empirically better performance. DPM-Solver++ (Lu et al., 2022b) introduces different strategies under the same Taylor expansion framework, e.g., multi-step solver and data prediction neural term.\nUniPC (Zhao et al., 2023) introduces correcting strategy to the Taylor expansion framework. After computing xt through Eq. (7), UniPC uses the newly computed function evaluation \u03f5\u03b8(xt, \u03bbt) to correct the value of xt, which does not consume extra NFE as \u03f5\u03b8(xt, \u03bbt) is calculated only once."
+        },
+        {
+            "heading": "2.3 AUTOML",
+            "text": "AutoML methods aim to automatically decide the optimal configurations for machine learning systems. The decidable elements in AutoML works include training hyperparameters (Jaderberg et al., 2017), model selection (Yang et al., 2019; Liu et al., 2023), neural architecture (Zoph & Le, 2016), etc. Predictor-based search methods (Snoek et al., 2012) are widely used in the AutoML field to accelerate the optimization. In predictor-based search, a predictor is trained with evaluated configuration-objective pairs, and then used to predict the objectives for new configurations."
+        },
+        {
+            "heading": "3 A UNIFIED SAMPLING FRAMEWORK",
+            "text": "In this section, we propose a unified sampling framework called USF based on exponential integral in the \u03bb domain. We introduce our framework by describing the steps of solving the diffusion ODE Eq. (3) and listing all optional strategies and tunable hyperparameters of the sampling process."
+        },
+        {
+            "heading": "3.1 SOLVING STRATEGY",
+            "text": "To solve the diffusion ODE Eq. (3) without closed-form solutions, one should discretize the continuous time into timesteps and calculate the trajectory values at each timestep. Therefore, the first step of solving the diffusion ODE is to determine a discretization scheme [t0, t1, \u00b7 \u00b7 \u00b7 , tN ], where \u03b5 = t0 < t1 < \u00b7 \u00b7 \u00b7 < tN = T . Then consider a timestep t \u2208 [t0, \u00b7 \u00b7 \u00b7 , tN\u22121], exponential integral has been validated to be an effective method of computing xt due to the semi-linear property (Zhang & Chen, 2022; Lu et al., 2022a;b; Zhao et al., 2023), especially in the \u03bb domain. We follow the Taylor expansion of Eq. (6) in \u03bb domain (Lu et al., 2022a) to estimate the integral term, and summarize the strategies that can be applied to numerically compute the expansion as follows.\nPrediction type of neural network. Typically, the neural network is trained with denoising objective (Ho et al., 2020) and the corresponding diffusion ODE writes as Eq. (4). It can be proved that Eq. (6) is the accurate solution of Eq. (4) (see App. H). Denote that s is another timestep before t and h = \u03bbt \u2212 \u03bbs, the Taylor expansion of Eq. (6) can be written as (Lu et al., 2022a):\nxt = \u03b1t \u03b1s\nxs \u2212 \u03c3t n\u2211\nk=0\nhk+1\u03c6\u03f5k+1(h)\u03f5 (k) \u03b8 (xs, s) +O(h n+2), (8)\nwhere \u03c6\u03f5k satisfies \u03c6 \u03f5 k+1(h) = \u03c6\u03f5k(h)\u22121/k! h , and \u03c6 \u03f5 0(h) = e\nh. Alternatively, the neural network can be a data prediction model x\u03b8(xt, t), whose relationship with the noise prediction model \u03f5\u03b8(xt, t) is given by x\u03b8(xt, t) :=\nxt\u2212\u03c3t\u03f5\u03b8(xt,t) \u03b1t\n(Kingma et al., 2021; Lu et al., 2022b). The corresponding diffusion ODE w.r.t. data prediction model writes as Eq. (5), whose Taylor expansion is given below:\nxt = \u03c3t \u03c3s xs + \u03b1t n\u2211 k=0 hk+1\u03c6xk+1(h)x (k) \u03b8 (xs, s) +O(h n+2), (9)\nwhere \u03c6xk satisfies \u03c6 x k+1(h) = 1/k!\u2212\u03c6xk(h) h , and \u03c6 x 0(h) = e \u2212h. See App. H for detailed derivations. Since the linear term and the integral to estimate are different between the two prediction types, the numerical solutions of Eq. (8) and Eq. (9) are essentially different except for n = 1. Starting point s. s can be any timestep larger than t. Multistep solvers (Lu et al., 2022b; Zhao et al., 2023) always choose the previous timestep of t while single-step solvers (Lu et al., 2022a) choose more distant timesteps.\nOrder of the Taylor expansion. To compute the Taylor expansion Eq. (8) or Eq. (9), the number of order retained should be decided. Low retained order may result in higher truncation error. However, the estimation of high-order derivatives need extra information from other timesteps other than the starting point s, which may not be accurate enough for calculation. Therefore, the choice of Taylor expansion order may have a strong influence on the sample quality.\nDerivative estimation method. After determining the prediction type and the retained order n, the last thing is to numerically calculate all unknown derivative terms \u03f5(k)\u03b8 (xs, s) (take noise prediction model as an example), where k \u2264 n, to obtain the final solution xt. The strategies of this component are very flexible since many off-the-shelf numerical differential methods can be used. To simplify the workflow, we utilize the system of linear equations consisting of m \u2265 k Taylor expansions from the starting point s to other timesteps, the k-order derivative can be approximately calculated by eliminating derivatives of other orders (Zhao et al., 2023), which we call m-th Taylor-difference method (see Def. B.1 for its formal definition). Inspired by the 2-nd solver of Lu et al. (2022a;b), we note that for a derivative estimation result \u03f5\u0303(k)\u03b8 (xs, s), rescaling the estimated value by multiplying a coefficient 1 + R(h) has the potential to further correct this numerical estimation. To sum up, we formulate the estimation of k-th order derivative as the following two steps: (1). choose at least k other timesteps ti \u0338= s, i \u2208 [1, \u00b7 \u00b7 \u00b7 , k] with pre-computed function evaluation \u03f5\u03b8(xti , ti) to calculate the estimation value through Taylor-difference method, and (2). rescale the estimation value with a coefficient 1 + R(h). In the search space used in our experiments, we allow low-order Taylordifference estimation to be taken for the 1-st derivative in high-order Taylor expansions (i.e., m can be smaller than n) and design five types of scale coefficients Ri(h), i = 0, \u00b7 \u00b7 \u00b7 , 4 for the 1-st derivative. See App. B for details.\nAfter calculating xt, correctors can be used to improve the accuracy of xt through involving the newly computed \u03f5\u03b8(xt, t) in the re-computation of xt (Griffiths & Higham, 2010). Specifically, the Taylor expansion Eq. (8) or Eq. (9) is estimated again with t as one other timestep for derivative estimation. Typically, \u03f5\u03b8(xt, t) also have to be evaluated again after recomputing xt and the correcting process can be iteratively conducted. However, in practice, re-evaluations and iterative correctors are not used to save NFE budgets. Since our goal is to improve the sample quality with very few NFE, we follow Zhao et al. (2023) to use no additional neural inference for correctors.\nIn summary, all decidable components in our framework are: (1). timestep discretization scheme, (2). prediction type of the neural term, (3). starting point of the current step, (4). retained order of Taylor expansion, (5). derivative estimation methods, and (6). whether to use corrector. Our sampling framework is summarized in Alg. 1 and demonstrated in Fig. 1."
+        },
+        {
+            "heading": "3.2 SOLVER SCHEDULE: PER-STEP SOLVING STRATEGY SCHEME",
+            "text": "In this section, we demonstrate the phenomenon that the proper solving strategies appropriate for different timesteps are different. We construct a \u2019ground-truth\u2019 trajectory c = [xt0 , xt1 , \u00b7 \u00b7 \u00b7 , xtN ] using 1000-step DDIM (Song et al., 2020a) sampler (i.e., N = 1000). We choose a serials of target timesteps [ttar0 , \u00b7 \u00b7 \u00b7 , ttarS ] where ttari \u2208 [t0, \u00b7 \u00b7 \u00b7 , tN ], and estimate the value x\u0303ttari with k previous timesteps [ts1 , \u00b7 \u00b7 \u00b7 , tsj , \u00b7 \u00b7 \u00b7 , tsk ], where sj \u2208 [1, N ] and tsj > ttari . Then we calculate the distance between the ground-truth trajectory value and the estimated value, given by L(ttari) = |x\u0303ttari \u2212 xttari |. We compare different solving strategies by showing their L(ttari)-ttari curve in Fig. 2. The key observation is that the suitable strategies for most components varies among timesteps. For example, the loss of the 3-rd solver with noise prediction network is smaller than the 2-nd solver at 400-700 timesteps but larger at the rest timesteps (see the green and red curves of \u2019Orders and Prediction Types\u2019).\nThis phenomenon reveals the potential of using different solving strategies in different timesteps. We call the decision sequence of solving strategies for every timestep solver schedule."
+        },
+        {
+            "heading": "3.3 ADVANTAGES OF THE FRAMEWORK",
+            "text": "The contribution of USF lies in two ways. First, USF gives a unified perspective for all sampling methods based on exponential integral. Second, USF allows different solving strategies in each timestep, making the sampler more flexible. To demonstrate the universality and reliability of USF, we show in Tab. 1 that almost all existing SOTA samplers based on exponential integral can be incorporated by it through assigning corresponding strategies (more derivations can be found in App. E). Note that since DEIS (Zhang & Chen, 2022) computes the integral in the t domain, it is essentially different from other methods. However, when applying the core numerical method in DEIS to the \u03bb domain, we show that it can still be incorporated in USF (the last row in Tab. 1)."
+        },
+        {
+            "heading": "4 SEARCH FOR SOLVER SCHEDULE THROUGH S3",
+            "text": ""
+        },
+        {
+            "heading": "4.1 PROBLEM DEFINITION",
+            "text": "Denote the si as the numerical solver to compute xti , we formulate the problem of deciding the optimal solver schedule as below:\nargmin M\u2264L,\ns1,s2,\u00b7\u00b7\u00b7 ,sM , t1,t2,\u00b7\u00b7\u00b7 ,tM\nIF \u2217 F([(s1, t1), (s2, t2), \u00b7 \u00b7 \u00b7 , (sM , tM )]), s.t.M \u2264 C,\nwhere C is the given NFE budget, [(s1, t1), (s2, t2), \u00b7 \u00b7 \u00b7 , (sM , tM )] is the solver schedule s, and F is an arbitrary evaluation metric of diffusion models, and IF is an indicator coefficient which equals to 1 when smaller F indicates better performance and equals to \u22121 otherwise. As discussed in Sec. 3.2, the best solving strategies for different timesteps are different, which leads to a search space that grows exponentially with the number of steps. Additionally, the decision of one component may be coupled with the decision of other components. For example, as demonstrated in Fig. 2, low-order estimation of derivatives almost consistently outperforms full-order estimation method with data prediction network (see the orange and blue curves of \u2019Low Order Derivative\nEstimation\u2019) while worse than it with noise prediction network at 500-700 timesteps (see the red and green curves). Therefore, well-performing solver schedules are hard to design manually.\nInspired by AutoML works (Real et al., 2019; Ning et al., 2020; Liu et al., 2023), we attempt to automatically search for solver schedules with good performance under certain NFE budgets. However, the search space is extremely large, and evaluating a solver schedule is also time-consuming since the standard calculation processes of most metrics need to generate a large number of images (Heusel et al., 2017). Thus, random search with a regular metric evaluation method is inefficient in this case."
+        },
+        {
+            "heading": "4.2 PREDICTOR-BASED MULTI-STAGE SEARCH FOR SOLVER SCHEDULE",
+            "text": "To surmount the aforementioned challenges and accelerate the search process, we propose S3, a predictor-based multi-stage evolutionary method. Specifically, we train a light predictor to predict the performance of a solver schedule and use it to guide an evolutionary search process to sample solver schedules. We can evaluate new solver schedules in the evolutionary search with negligible cost with the help of the predictor. making the search process much more efficient.\nBut training the predictor still needs a bunch of evaluated schedules, which is time consuming. To decrease this part of cost, we propose the multi-stage workflow S3. In the early stage of the evolutionary search, only the sub-space adjacent to the current population can be explored. Therefore, the predictor is not required to generalize to the whole search space and can be trained with a small amount of data. As the population expands, generalization ability to new sub-spaces is needed, and thus the predictor should be trained with more sampled schedules. Moreover, the training data of the predictor should also be selected carefully and efficiently.\nBased on the above intuition, we propose the multi-stage workflow. Our workflow is summarized in Alg. 2 and demonstrated in App. D.2, which contains three steps in every loop. (1). A set of solver schedules are sampled from the search space through evolutionary search. The performances needed to guide the evolutionary search are calculated by the predictor except for the first loop in which all performances are truly evaluated. (2). The true metrics of all sampled solver schedules are calculated. (3). All evaluated schedule-performance data pairs are used to update the weights of the predictor. Compared to the single-stage method, which evaluates the true performance of all schedules in one go and trains a predictor to search in the whole space, S3 accelerates the exploration of schedules which have to be truly evaluated."
+        },
+        {
+            "heading": "5 EXPERIMENTS",
+            "text": "We choose several SOTA diffusion samplers, including DPM-Solver (Lu et al., 2022a), DPMSolver++ (Lu et al., 2022b), and UniPC (Zhao et al., 2023) as baseline methods. We use FID\u2193 (Heusel et al., 2017) as the evaluation metric. Our method is validated on CIFAR-10, CelebA, ImageNet-64, ImageNet-128 (guided), ImageNet-256 (guided), and LSUN-bedroom datasets and outperforms baseline methods by a large margin on all of them. We further apply S3 to text-image generation task with Stable Diffusion pre-trained models (Rombach et al., 2022) on MS-COCO2014 validation set. The models we use for all experiments are listed in App. F.1.\nWe evaluate 9 common settings in total of these SOTA methods. We list the best (Baseline-B in all tables) and the worst (Baseline-W in all tables) results of all baseline methods we evaluate under the same NFE budget. For the worst baseline, we distinguish singlestep methods (S) and multistep methods (M) since the former is usually significantly worse with meager budgets. Detailed settings and full results can be found in App. F.3 and App. G.1, correspondingly."
+        },
+        {
+            "heading": "5.1 MAIN RESULTS",
+            "text": "We list the results on unconditional datasets and with classifier-guidance in Tab. 2 and the results with Stable Diffusion models in Tab. 3. The key takeaways are: (1) S3 can achieve much higher sample quality than baselines, especially with very few steps. Our searched schedules outperform all baselines across all budgets and datasets by a large margin. On text-to-image generation with Stable Diffusion models, S3 achieves comparable FIDs with only 5 NFE compared to baselines with 10 NFE, bringing a 2\u00d7 acceleration ratio. Remarkably, our method achieves a significant boost under very tight budgets (like 11.50 v.s. 57.52 on CIFAR-10, 33.84 v.s. 76.69 on ImageNet64), making it feasible to sample with very low NFEs. (2) Choosing proper settings for existing methods is important. We can see that in many cases, the performances of the best baseline and the worst baseline are significantly different from each other, even both of which are under the SOTA frameworks. Additionally, the best baselines on different datasets or even under different NFE budgets are not consistent. It indicates the necessity of a careful selection of solver settings and the significance of our USF since it is proposed to present all adjustable settings systematically."
+        },
+        {
+            "heading": "5.2 ABLATION STUDY: REDUCE SEARCH OVERHEAD",
+            "text": "The main overhead of our method comes from evaluating the true performance of solver schedules since the predictor is much lighter than diffusion U-Nets and has negligible overheads. The time consumed is proportional to the number of generated images used for metric calculation. Fewer evaluation images lead to higher variance and lower generalization ability to other texts and initial noises, thus may cause worse performance. In this section, we ablate this factor to give a relationship\nbetween overhead and performance. We choose the text-to-image task because the text condition is far more flexible than label condition or no condition and thus more difficult to generalize from a small number of samples to other samples. We validate S3 with 250 and 500 generated images rather than the default setting 1000, and our results are shown in the last two rows in Tab. 3. The performance under almost all NFE budgets becomes worse as the number of generated samples decreases. Moreover, some FIDs under higher budgets are even higher compared to lower budgets due to the high variance caused by lower sample numbers. Remarkably, the search results can still outperform baseline methods, indicating the potential of S3."
+        },
+        {
+            "heading": "5.3 ANALYSIS AND INSIGHTS",
+            "text": "We give some empirical insights in this section based on the pattern of our searched schedules. Our general observation is that most components of searched schedules show different patterns on different datasets. We analyze the patterns of different components as follows.\nTimesteps. For low resolution datasets, more time points should be placed when t is small. Unlike the default schedule \u201clogSNR uniform\u201d, we suggest putting more points at 0.2 < t < 0.5 rather than putting too much at t < 0.05. For high resolution datasets, we recommend a slightly smaller step size at 0.35 < t < 0.75 on top of the uniform timestep schedule.\nPrediction Types. We find that data prediction can outperform noise prediction by a large margin in the following cases: 1. the NFE budget is very low (i.e., 4 or 5), 2. the Taylor order of predictor or corrector is high and 3. on low resolution datasets. But for the rest cases, their performance has no significant difference. Noise prediction can even outperform data prediction sometimes.\nDerivative Estimation Methods. We find that low order derivative estimation is preferred for high Taylor order expansion when step size is very high. Oppositely, full-order estimation is more likely to outperform low-order estimation when step size is not so large. For derivative scaling functions, we find additional scaling is often used in all searched schedules. But the pattern varies among datasets.\nCorrectors. Though previous work validates the effectiveness of using correctors Zhao et al. (2023), we find that not all timesteps are suitable for correctors. For large guidance scale sampling, corrector is not usually used. But in general, corrector is more likely to bring positive impact on the performance."
+        },
+        {
+            "heading": "6 CONCLUSION AND FUTURE WORK",
+            "text": "In this paper, we propose a new sampling framework, USF, for systematical studying of solving strategies of DPMs. We further reveal that suitable strategies at different timesteps are different, and thus propose to search solver schedules with the proposed framework in the predictor-based multistage manner. Experiments show that our proposed method can boost the sample quality under a very tight budget by a large margin, making it feasible to generate samples with very few NFE.\nAlthough we propose a general framework for sampling based on exponential integral, we prune the search space empirically to avoid excessive search overheads. Exploring the strategies not used in this work could be a valuable direction for future research. Besides, our method has additional overhead related to the evaluation speed and the number of sampled schedules. Therefore, fast evaluation methods and efficient search methods are worth studying."
+        },
+        {
+            "heading": "ACKONWLEDGEMENT",
+            "text": "This work was supported by National Natural Science Foundation of China (No. 62325405, 62104128, U19B2019, U21B2031, 61832007, 62204164), Tsinghua EE Xilinx AI Research Fund, and Beijing National Research Center for Information Science and Technology (BNRist). We thank Cheng Lu and Prof. Jianfei Chen for valuable suggestions and discussion, Yizhen Liao for providing some experimental results and reviewing the revision in the rebuttal phase. We thank for all the support from Infinigence-AI."
+        },
+        {
+            "heading": "A DEFINITIONS AND ASSUMPTIONS",
+            "text": "In this section we list some necessary definitions and assumptions for the discussion follows. We first define the convergence order of an arbitrary estimation x\u0303.\nDefinition A.1. Suppose h is a given value, x\u0303(h) is an estimation of the ground truth value x. If \u2203c, such that \u2200h, |x\u0303(h)\u2212 x| \u2264 chp, then we call x\u0303(h) is p-order converge to h.\nThe defined p-order convergence can also be given as x\u0303(h) = x+O(hp). Then we list several regularity assumptions for the neural network \u03f5\u03b8, x\u03b8, and the hyperparameters of DPMs.\nAssumption A.1. \u03f5\u03b8(x, t) and x\u03b8(x, t) are Lipschitz w.r.t. x with a Lipschitz constant L\nAssumption A.2. The i-th derivatives d i\u03f5\u03b8(xt,\u03bbt) d\u03bbi and dix\u03b8(xt,\u03bbt)\nd\u03bbi exist and are continuous for all 1 \u2264 i \u2264M, where M is an large enough value. Assumption A.3. \u2203B such that \u2200t, s \u2208 (t\u03b5, T ] and t < s, \u03c3t\u03c3s < \u03b1t \u03b1s \u2264 B."
+        },
+        {
+            "heading": "B SEARCH SPACE DETAILS",
+            "text": "In this section, we detail the searchable strategies for all components of the search space we use for experiments in Sec. 5. We also try several different designs and list the results in App. G.4.\nTimestep Schedule For all experiments, we set the start timestep tN = T following the conclusion in Lin et al. (2023) that setting tN \u0338= T can be harmful to the sample quality. For the last timestep t0, previous works usually set it to 0.001 or 0.0001 empirically (Lu et al., 2022a;b). We find that the value of t0 has a large impact on the sample quality since low t0 can cause numerical instability and high t0 contains more noise. Therefore, we set t0 to be searchable in the interval [0.0001, 0.0015]. For other ti where i \u2208 [1, N \u2212 1], all values between t0 and tN are optional. Prediction Type. For the experiments in Sec. 5, we simply set data prediction and noise prediction as the two only strategies that can be applied for one-step update. We further try interpolation between the two forms: given x\u03f5t calculated by Eq. (8) and x x t calculated by Eq. (9), we set the final solution xt to be ax\u03f5t + (1\u2212 a)xxt . The results of this adjusted search space are shown in Tab. 19. Starting Point. We observe that in most cases, singlestep solvers perform worse than multistep solvers. Therefore, we simply set the starting point to be the previous timestep xti+1 of the target point xti for all experiments in Sec. 5. To have a better understanding of the singlestep approach, we further set the starting point searchable with two candidates xti+1 and xti+2 for every xti , and list the search results with this new search space in Tab. 18.\nTaylor expansion order. As discussed in the previous work Zhao et al. (2023), too high solver order is detrimental to the solution, possibly because of the numerical instability of high-order derivatives. So, we set the candidates of Taylor expansion order as 1, 2, 3, and 4.\nDerivative Estimation Method. As discussed in Sec. 3.1, we divide the estimation of derivatives into two steps: Taylor-difference and scaling operation. For the Taylor-difference method, the main idea is to utilize Taylor expansions from other points to the target points and eliminate all derivatives of other orders to preserve the derivative needed to be computed. We give the formal definition here.\nDefinition B.1. Given the function value of the target point f(xt, t), and m additional points f(xt1 , t1), f(xt2 , t2), \u00b7 \u00b7 \u00b7 , f(xtm , tm) where ti = t + rih, then f (k)(xt, t) can be estimated by DTa/hk, where D is a m-dimension vector given by D = [f(xt, t) \u2212 f(xt1 , t1), f(xt, t) \u2212\nf(xt2 , t2), \u00b7 \u00b7 \u00b7 , f(xt, t) \u2212 f(xtm , tm)]. And a = [a1, a2, \u00b7 \u00b7 \u00b7 , am] is the solution vector of the linear equation system Ca = b, where C is a square matrix with m rows and columns satisfying Cij = rij i! for all integers i, j \u2208 [1,m], and b is a m-dimension vector satisfying bi = Ii==k for all integers i \u2208 [1,m].\nThe convergence order p of Taylor-difference estimation is given by p = m \u2212 k + 1. The proof is simple by substituting the Taylor expansion of all f(xti , ti) to f(xt, t) into the estimation formula.\nProof. Write the estimated value f\u0303 (k)(xt, t) through Def. B.1:\nf\u0303 (k)(xt0 , t0) = 1\nhk m\u2211 i=1 ai(f(xt, t)\u2212 f(xti , ti))\n= 1\nhk m\u2211 i=1 ai(rihf (1)(xt0 , t0) + (rih) 2f (2)(xt0 , t0) 2 +\n\u00b7 \u00b7 \u00b7+ (rih) mf (m)(xt0 , t0)\nn! +O(hm+1))\n=f (k)(xt0 , t0) +O(hm\u2212k+1)\n(10)\nThe last equation holds because ai is a constant and independent of h. If we consider the error of all involved points x\u0303ti and f satisfy the regularity assumptions in App. A, then the convergence order should be p = min(m, li) \u2212 k + 1, where li is the convergence order of x\u0303ti . According to Asm. A.1, the convergence order of f(x\u0303ti , ti) equals the convergence order of x\u0303ti . By substituting the convergence order of f into Eq. (10), we can get a similar proof.\nThe derivation of the last equation utilizes Ca = b that \u2211m\ni=1 ai rki k! = Ii==k. All existing expo-\nnential integral-based methods set the number of additional timesteps to be the same as the order of Taylor expansion to keep the convergence order (see App. E for details). In our framework, we allow low-order estimation for derivatives as an optional strategy, i.e., the number of additional points could be smaller than Taylor expansion order, since low-order difference is more stable and our experiments in Fig. 2 have revealed the potential of this method. For the scaling operation, we use 1 +R(h) to rescale the derivatives. We choose five scaling coefficients R(h) as follows.\n\u2022 R0(h) = 0 (i.e., no scaling operation),\n\u2022 R1(h) = h\u2032 2 (e h\u2032\u22121) eh\u2032\u2212h\u2032\u22121 \u2212 1,\n\u2022 R2(h) = h\u20322 2\neh\u2032\u2212h\u2032\u22121 \u2212 1,\n\u2022 R3(h) = 0.5(eh \u2032 \u2212 1), \u2022 R4(h) = \u22120.5(eh \u2032 \u2212 1),\nwhere h\u2032 = h when the prediction type is noise prediction, and h\u2032 = \u2212h if the prediction is data prediction. The choices of R1 and R2 are inspired by existing methods (Lu et al., 2022a;b; Zhao et al., 2023) (see App. E for details). R3 and R4 are chosen for larger scale coefficients. We demonstrate the R(h)-h curve in Fig. 3. All R(h)s are small quantities ofO(h) order(except R0(h)) and thus convergence is guaranteed for sufficiently small h. Note that though we only try to apply low-order Taylor-difference and scaling operation to the 1-st derivative out of consideration for the potential instability of high-order derivatives and the difficulty in search phase, these methods can be applied to high-order derivatives. Furthermore, in addition to the proposed two-step method with Taylor-difference and scaling, other off-the-shelf numerical differentiation methods can also be applied. These extensions are left for future exploration.\nCorrector. As discussed in Sec. 3.1, the correcting process can be viewed as an independent step using the function evaluation of the target timestep. Therefore, the searchable strategies listed above can also be applied here, causing a too large search space. To avoid this problem, we simply increase\nthe Taylor expansion order and the Taylor-difference order for all derivatives of the corrector by 1 compared to the corresponding predictor. The prediction type is kept consistent with the predictor. No derivative scaling operations are used for the corrector. In this way, the searchable part only includes whether to use corrector, making the search problem easier to handle. Further exploration of independent strategies for the corrector can be a valuable direction for future research."
+        },
+        {
+            "heading": "C ADDITIONAL INVESTIGATE THE POTENTIAL OF EVERY COMPONENT",
+            "text": "In this section, we first discuss the improvement potential of each component and offer suggestions on which component should be paid more attention in the future designing of solver schedules. We find from our search results that on most datasets, the timestep schedule and order schedule are the most different with baseline methods among all components. To further validate this observations, we independently search for every single component and fix others. We only evolutionary sample a small amount of solver schedules and truly evaluate them to do the search. The results are listed in Tab. 4 and Tab. 5. From the results we can conclude that timestep is the component with the most improvement space for baseline and order comes as the second. Moreover, all searchable components can be improved to enhance the sampling quality. We suggest that for future design of solver schedule, the design of timestep and order schedule should be treated with high priority and the strategies of other components could be tuned for better performance."
+        },
+        {
+            "heading": "D ALGORITHM DETAILS",
+            "text": "In this section we detail the search process of S3."
+        },
+        {
+            "heading": "D.1 DETAILED ALGORITHM OF THE UNIFIED SAMPLING FRAMEWORK",
+            "text": "We present the detailed general process of our sampling framework S3 in Alg. 1. We mark all searchable components of the framework in italics.\nAlgorithm 1 Sample through USF 1: Get timestep discretization scheme [t0, t1, \u00b7 \u00b7 \u00b7 , tN ]. 2: Sample xtN from N (0, I) 3: for i = N \u2212 1, \u00b7 \u00b7 \u00b7 , 0 do 4: Get the prediction type from noise prediction or data prediction of neural network. 5: Get the starting point tsi , where si \u2265 i. 6: Get the order of Taylor expansion ni, where ni \u2264 N \u2212 i. 7: h = \u03bbti \u2212 \u03bbtsi 8: if noise prediction then 9: xti =\n\u03b1ti \u03b1tsi\nxtsi 10: for k = 0, \u00b7 \u00b7 \u00b7 , ni \u2212 1 do 11: \u03f5\u0303(k)\u03b8 (xtsi , tsi)\u2190 Estimate \u03f5 (k) \u03b8 (xtsi , tsi) 12: xti = xti \u2212 \u03c3tihk+1\u03c6\u03f5k+1(h)\u03f5\u0303 (k) \u03b8 (xtsi , tsi) 13: end for 14: Correct xti using \u03f5\u03b8(xti , ti) 15: else if data prediction then 16: xti =\n\u03c3ti \u03c3tsi\nxtsi 17: for k = 0, \u00b7 \u00b7 \u00b7 , ni \u2212 1 do 18: \u03f5\u0303(k)\u03b8 (xtsi , tsi)\u2190 Estimate \u03f5 (k) \u03b8 (xtsi , tsi) 19: xti = xti + \u03b1tih k+1\u03c6xk+1(h)x\u0303 (k) \u03b8 (xtsi , tsi) 20: end for 21: Correct xti using x\u03b8(xti , ti) 22: end if 23: end for 24: return xt0"
+        },
+        {
+            "heading": "D.2 DETAILED ALGORITHM OF MULTI-STAGE SEARCH",
+            "text": "As discussed in Sec. 4.2, we use a multi-stage search process to search for well-performed solver schedules as described in Alg. 2 and demonstrated in App. D.2. We first initialize the population with baseline solver schedules mentioned in App. F.3 to avoid the \u2019cold-start\u2019 dilemma since most solver schedules in the search space are not good enough. In the first iteration of the search process, we conduct the evolutionary search based on the true performance of all sampled schedules since no predictor can be utilized. At the end of each iteration, we use all evaluated schedules to update the weights of the predictor, which will be used to guide the evolutionary search in the next iteration."
+        },
+        {
+            "heading": "D.3 PREDICTOR DESIGN",
+            "text": "Architecture. Our performance predictor P takes parameterized solver schedules s as input and outputs the performance. The predictor contains three modules: 1. timestep encoder [t1, \u00b7 \u00b7 \u00b7 , tM ] \u2192 [EmbT1 , \u00b7 \u00b7 \u00b7 ,Emb T M ], which maps the sequential timesteps to sequential embeddings using a positional embedder followed by a MLP (Vaswani et al., 2017; Ho et al., 2020; Song et al., 2020b);\nAlgorithm 2 Predictor-based Multi-stage Search"
+        },
+        {
+            "heading": "Require:",
+            "text": "S: search space of solver schedule P : S \u2192 R: a predictor which takes a parameterized solver schedule as input and outputs its performance N : S \u2192 N+: get the NFE of a solver schedule Hyperparameter: N (k): number of solver schedules sampled in the k-th iteration Input: C = [C1, C2, \u00b7 \u00b7 \u00b7 , Cn]: a series of timestep budgets Search Process: 1: Initialize P randomly 2: Initialize S\u0303 with baseline solver schedules 3: for k = 1, \u00b7 \u00b7 \u00b7 ,MAX ITER NUM do 4: if k == 1 then 5: Sample a set of solver schedules S(k) = {sj}j=1,\u00b7\u00b7\u00b7 ,N(k) from S using evolutionary search\nguided by the ground-truth performance. 6: else 7: Sample a set of solver schedules S(k) = {sj}j=1,\u00b7\u00b7\u00b7 ,N(k) from S using evolutionary search guided by the predictor P 8: end if 9: Evaluate the ground-truth performance pj of all solver schedules sj \u2208 S(k), get S\u0303(k) =\n{(sj , pj)}j=1,\u00b7\u00b7\u00b7 ,N(k) 10: S\u0303 \u2190 S\u0303 \u222a S\u0303(k), and S\u0303 is used to train the predictor P 11: end for 12: s\u2217i = argmin\nsj\npj , s.t. N(sj) < Ci\n13: return s\u2217i\n2. encoder of other solving strategies, which uses one-hot embedders followed by MLPs to embed the decisions of one component (e.g., order of Taylor-expansion) ck and get [Embk1 , \u00b7 \u00b7 \u00b7 ,Emb k M ]. Embeddings of decisions from all components are concatenated to obtain the final embedding of solving strategies [Embc1, \u00b7 \u00b7 \u00b7 ,Emb c M ] = [Emb 1 1| \u00b7 \u00b7 \u00b7 |Emb K 1 , \u00b7 \u00b7 \u00b7 ,Emb 1 M | \u00b7 \u00b7 \u00b7 |Emb K M ], where K is the number of searchable components in the our framework of solving Eq. (6); 3. sequence pre-\ndictor, which takes the concatenated embedding [EmbT1 |Emb k 1 , \u00b7 \u00b7 \u00b7 ,Emb T M |Emb k M ] as input and outputs the final predicted score. An LSTM (Merity et al., 2017) is used to process the sequential embedding, followed by an MLP to regress the final score.\nTraining. Since ranking information of different schedules is far more important than their absolute metrics, we use pair-wise ranking loss to train the predictor, which is validated to be more effective in extracting relative quality information and preserving the ranking information (Ning et al., 2020; Liu et al., 2023).\nloss = \u2225S\u0303\u2225\u2211 i=1 \u2211 j,F(sj)>F(si) max(0,m\u2212 (P(sj)\u2212 P(si))), (11)\nwhere S\u0303 is the dataset of schedule-performance pair data. Lower output value of the predictor trained with ranking loss indicates higher performance of the input solver schedule."
+        },
+        {
+            "heading": "E RELATIONSHIP BETWEEN USF AND EXISTING EXPONENTIAL INTEGRAL BASED METHODS",
+            "text": "In this section, we discuss the relationship between existing exponential integral methods (Zhang & Chen, 2022; Lu et al., 2022a;b; Zhao et al., 2023) and USF. We show that all existing methods in the \u03bb domain (Lu et al., 2022a;b; Zhao et al., 2023) are included in our framework by assigning corresponding decisions to every component. The method in t domain (Zhang & Chen, 2022) also shares strong relevance with USF."
+        },
+        {
+            "heading": "E.1 DPM-SOLVER",
+            "text": "DPM-Solver (Lu et al., 2022a) is a singlestep solver based on the noise prediction type Taylor expansion of exponential integral. Lu et al. (2022a) gives two examples of DPM-Solver-2 and DPMSolver-3 in Algorithm-1 and Algorithm-2 of its paper, correspondingly. We discuss the relationship between these two examples and USF below.\nDPM-Solver-2. In DPM-Solver-2, to calculate the trajectory value x\u0303ti of the target point ti from the starting point ti\u22121, a midpoint si \u2208 (ti, ti\u22121) is given by si = t\u03bb( \u03bbti\u22121+\u03bbti 2 ) and its trajectory value ui is calculated through the 1-st expansion of Eq. (8) (i.e., DDIM (Song et al., 2020a)) from the starting point ti\u22121. Then x\u0303ti is given by: x\u0303ti =\n\u03b1ti \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(ui, si) (see the Algorithm-1 in the original paper Lu et al. (2022a) for details). We further write this formula:\nx\u0303ti = \u03b1ti \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(ui, si)\n= \u03b1ti \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3ti(ehi \u2212 1)(\u03f5\u03b8(ui, si)\u2212 \u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)) = \u03b1ti \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03c3ti (ehi \u2212 1)(\u03bbsi \u2212 \u03bbti\u22121)\nehi \u2212 hi \u2212 1 h2i\u03c6 \u03f5 2(hi) \u03f5\u03b8(ui, si)\u2212 \u03f5\u03b8(x\u0303ti\u22121 , ti\u22121) \u03bbsi \u2212 \u03bbti\u22121\n= \u03b1ti \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3tih2i\u03c6\u03f52(hi)(1 +R1(hi)) \u03f5\u03b8(ui, si)\u2212 \u03f5\u03b8(x\u0303ti\u22121 , ti\u22121) \u03bbsi \u2212 \u03bbti\u22121 .\nWe can see that the 2-nd solver expands Eq. (8) to the 2-nd order and uses 1+R1(hi) to scale the 1-st derivative estimated by Taylor-difference (degrade to direct two-points difference approximation in this case). Therefore, DPM-Solver-2 can be viewed as two updates with Taylor expansion orders 1 and 2. The second update uses second point ti\u22121 before the target timestep ti as the starting point and 1 +R1(h) to scale the 1-st derivative.\nDPM-Solver-3. In DPM-Solver-3, two midpoints s2i\u22121 and s2i are selected to calculate the final solution xti . Firstly, the trajectory value of s2i\u22121 is calculated by the 1-st solver DDIM (Song et al., 2020a). Then, the trajectory value of s2i is calculated from the starting point ti\u22121 and the previous\nmidpoint s2i\u22121.\nu2i = \u03b1s2i \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3s2i(e \u03bbs2i\u2212\u03bbti\u22121 \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03c3s2i(\u03bbs2i \u2212 \u03bbii\u22121) \u03bbs2i\u22121 \u2212 \u03bbii\u22121 ( e\u03bbs2i\u2212\u03bbti\u22121 \u2212 1 \u03bbs2i \u2212 \u03bbti\u22121 \u2212 1)(\u03f5\u03b8(u2i\u22121, s2i\u22121)\u2212 \u03f5\u03b8(x\u0303ti\u22121 , ti\u22121))\n= \u03b1s2i \u03b1ti\u22121 x\u0303ti\u22121 \u2212 \u03c3s2i(e \u03bbs2i\u2212\u03bbti\u22121 \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03c3s2i(\u03bbs2i \u2212 \u03bbti\u22121)2\u03c6\u03f52(\u03bbs2i \u2212 \u03bbti\u22121) \u03f5\u03b8(u2i\u22121, s2i\u22121)\u2212 \u03f5\u03b8(x\u0303i\u22121, ti\u22121)\n\u03bbs2i \u2212 \u03bbti\u22121 .\nThis process also uses the 2-nd order expansion of Eq. (8) like DPM-Solver-2, but uses 1+R0(\u03bbs2i\u2212 \u03bbti\u22121) rather than 1 + R1 in DPM-Solver-2. The final calculation of x\u0303ti is similar to the above process but uses s2i as the midpoint of this 2-nd singlestep solver. In conclusion, DPM-Solver-3 can be viewed as three updates with Taylor expansion orders 1, 2, and 2. The last two solvers both use ti\u22121 as the starting point."
+        },
+        {
+            "heading": "E.2 DPM-SOLVER++",
+            "text": "DPM-Solver++ (Lu et al., 2022b) propose several new solving strategies based on the framework of DPM-Solver (Lu et al., 2022a). The first is to switch the noise prediction model to the data prediction model, both of which are optional strategies in USF. The second is to apply multistep solvers. The original paper provides the process of DPM-Solver++(2S) and DPM-Solver++(2M) in Algorithm 1 and Algorithm 2. We discuss the relationship between these two examples and USF as follows.\nDPM-Solver++(2S). DPM-Solver++(2S) is similarly designed to DPM-Solver-2 Lu et al. (2022a), except for switch to data prediction. See the Algorithm 1 in Lu et al. (2022b) for details. We can draw an analogous conclusion to DPM-Solver-2 by rewriting the formula of the 2-nd update.\nx\u0303ti = \u03c3ti \u03c3ti\u22121 x\u0303ti\u22121 \u2212 \u03b1ti(e\u2212hi \u2212 1)x\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03b1ti (e\u2212hi \u2212 1)hi 2 x\u03b8(x\u0303si , si)\u2212 x\u03b8(x\u0303ti\u22121 , ti\u22121) \u03bbsi \u2212 \u03bbti\u22121\n= \u03c3ti \u03c3ti\u22121 x\u0303ti\u22121 \u2212 \u03b1ti(e\u2212hi \u2212 1)x\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03b1ti hi 2 (e \u2212hi \u2212 1) e\u2212hi \u2212 1 + hi h2i\u03c6 x 2(hi) x\u03b8(x\u0303si , si)\u2212 x\u03b8(x\u0303ti\u22121 , ti\u22121) \u03bbsi \u2212 \u03bbti\u22121\n= \u03c3ti \u03c3ti\u22121 x\u0303ti\u22121 \u2212 \u03b1ti(e\u2212hi \u2212 1)x\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03b1ti(1 +R1(hi))h2i\u03c6x2(hi) x\u03b8(x\u0303si , si)\u2212 x\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u03bbsi \u2212 \u03bbti\u22121\nWe can see that DPM-Solver++(2S) also uses R1(h) to scale the 1-st derivative. Therefore, prediction type is the only difference between the two methods.\nDPM-Solver++(2M). DPM-Solver++(2M) no longer uses singlestep update. Despite the first step, which needs a cold start with the 1-st solver, the rest of the steps use 2-nd expansion of Eq. (9) (See\nthe Algorithm 2 in Lu et al. (2022b) for details). We reformulate the 2-nd update formula as below.\nx\u0303ti = \u03c3ti \u03c3ti\u22121 x\u0303ti\u22121 \u2212 \u03b1ti(e\u2212hi \u2212 1)x\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03b1ti (e\u2212hi \u2212 1)hi 2 x\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 x\u03b8(x\u0303ti\u22122 , ti\u22122) \u03bbti\u22121 \u2212 \u03bbti\u22122\n= \u03c3ti \u03c3ti\u22121 x\u0303ti\u22121 \u2212 \u03b1ti(e\u2212hi \u2212 1)x\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03b1ti hi 2 (e \u2212hi \u2212 1) e\u2212hi \u2212 1 + hi h2i\u03c6 x 2(hi) x\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 x\u03b8(x\u0303ti\u22122 , ti\u22122) \u03bbti\u22121 \u2212 \u03bbti\u22122\n= \u03c3ti \u03c3ti\u22121 x\u0303ti\u22121 \u2212 \u03b1ti(e\u2212hi \u2212 1)x\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03b1ti(1 +R1(hi))h2i\u03c6x2(hi) x\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 x\u03b8(x\u0303ti\u22122 , ti\u22122)\n\u03bbti\u22121 \u2212 \u03bbti\u22122 We find that the only difference between DPM-Solver++(2M) and the 2-nd update of DPMSolver++(2S) is the position of starting point. In the 2-nd update of DPM-Solver++(2S), the starting point is the second point before the target point. In DPM-Solver++(2M), the starting point is the first point before the target point."
+        },
+        {
+            "heading": "E.3 UNIPC",
+            "text": "UniPC (Zhao et al., 2023) proposes two update methods, UniP and UniC. In fact, UniC can be viewed as a special version of UniP with the involvement of the function value \u03f5\u03b8(xt, t) or x\u03b8(xt, t) at the target point t. Therefore, we mainly discuss the relationship between UniP and USF.\nUniP. Take noise prediction model as an example, the update formula of Uni-P is given by x\u0303ti = \u03b1ti\n\u03b1ti\u22121 x\u0303ti\u22121 \u2212\u03c3ti(ehi \u22121)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212\u03c3tiB(hi)\n\u2211p\u22121 m=1 amDm rm\n, where Dm = \u03f5\u03b8(xti\u22121 , ti\u22121)\u2212 \u03f5\u03b8(xtim , tim), ap\u22121 = [a1, a2, \u00b7 \u00b7 \u00b7 , ap\u22121] satisfies ap\u22121 = B \u22121(hi)R \u22121 p\u22121(hi)\u03a6p\u22121(hi), and Rp\u22121(h) and \u03a6p\u22121(h) are given below (see the Algorithm 2 in Zhao et al. (2023)).\nRp\u22121(h) =  1 1 \u00b7 \u00b7 \u00b7 1r1h r2h \u00b7 \u00b7 \u00b7 rp\u22121h\u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 (r1h) p\u22122 (r2h) p\u22122 \u00b7 \u00b7 \u00b7 (rp\u22121h)p\u22122  , \u03a6p\u22121(h) = [1!h\u03c6 \u03f5 2(h), 2!h 2\u03c6\u03f53(h), \u00b7 \u00b7 \u00b7 , (p\u2212 1)!hp\u22121\u03c6\u03f5p(h)].\nThen suppose the solution given by our USF with p-th Taylor expansion and pure Taylor-difference estimation for each derivative is x\u0303Uti . We state that x\u0303 U ti = x\u0303ti if the starting point and all additional points in the two solvers are the same. The proof is as follows.\nProof.\nx\u0303Uti = \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti p\u22121\u2211 k=0 hk+1\u03c6\u03f5k+1(h)\u03f5\u0303 (k) \u03b8 (xti\u22121 , ti\u22121) (12)\n= \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3ti p\u22121\u2211 k=1 hk+1\u03c6\u03f5k+1(h)D T UaU/h k i , (13)\nwhere DU = [\u03f5\u03b8(xti\u22121 , ti\u22121) \u2212 \u03f5\u03b8(xti1 , ti1), \u00b7 \u00b7 \u00b7 , \u03f5\u03b8(xti\u22121 , ti\u22121) \u2212 \u03f5\u03b8(xtip\u22121 , tip\u22121)], and aU satisfies aU = C\u22121U b k U . As discussed in Def. B.1, CU and b k U are written as:\nCU =  r1 r2 \u00b7 \u00b7 \u00b7 rp\u22121 r21/2! r 2 2/2! \u00b7 \u00b7 \u00b7 r2p\u22121/2!\n\u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 rp\u221211 /(p\u2212 1)! r p\u22121 2 /(p\u2212 1)! \u00b7 \u00b7 \u00b7 r p\u22121 p\u22121/(p\u2212 1))!  , bkU = [b1, b2, \u00b7 \u00b7 \u00b7 , bp\u22121], bi = Ii==k\nsubstitute DU , CU and bkU to Eq. (13):\nx\u0303Uti = \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3ti p\u22121\u2211 k=1 h\u03c6\u03f5k+1(h)D T UC \u22121 U b k U (14)\n= \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3tihDTU p\u22121\u2211 k=1 \u03c6\u03f5k+1(h)C \u22121 U b k U (15)\n= \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3ti p\u22121\u2211 m=1 Dmqm, (16)\nwhere qm is the m \u2212 th element of vector q = h \u2211p\u22121 k=1 \u03c6 \u03f5 k+1(h)C \u22121 U b k U = C \u22121 U b \u2032 U , where b \u2032 U = [h\u03c6\u03f52(h), h\u03c6 \u03f5 3(h), \u00b7 \u00b7 \u00b7 , h\u03c6\u03f5p(h)]. Then we rewrite this equation by left multiply CU at both sides:\nCUq =  r1 r2 \u00b7 \u00b7 \u00b7 rp\u22121 r21/2! r 2 2/2! \u00b7 \u00b7 \u00b7 r2p\u22121/2!\n\u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 rp\u221211 /(p\u2212 1)! r p\u22121 2 /(p\u2212 1)! \u00b7 \u00b7 \u00b7 r p\u22121 p\u22121/(p\u2212 1))!\n  q1q2\u00b7 \u00b7 \u00b7\nqp\u22121\n (17)\n=b\u2032U =  h\u03c6 \u03f5 2(h) h\u03c6\u03f53(h) \u00b7 \u00b7 \u00b7\nh\u03c6\u03f5p(h)  (18) This equation is equivalent to: 1 1 \u00b7 \u00b7 \u00b7 1r1h r2h \u00b7 \u00b7 \u00b7 rp\u22121h\u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7\n(r1h) p\u22122 (r2h) p\u22122 \u00b7 \u00b7 \u00b7 (rp\u22121h)p\u22122\n  r1q1r2q2\u00b7 \u00b7 \u00b7\nrp\u22121qp\u22121\n =  h\u03c6 \u03f5 2(h)\n2!h2\u03c6\u03f53(h) \u00b7 \u00b7 \u00b7\n(p\u2212 1)!hp\u22121\u03c6\u03f5p(h)  (19) Compare Eq. (19) with ap\u22121 = B\u22121(hi)R\u22121p\u22121(hi)\u03a6p\u22121(hi), it is obvious to obtain that rmqm = amB(hi). Substitute this equation to Eq. (16), we get:\nx\u0303Uti = \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3tiB(hi) p\u22121\u2211 m=1 amDm rm = x\u0303ti (20)\nWe can see that UniP is equivalent to using full-order Taylor-difference to estimate all derivatives. The coefficient B(h) is eliminated here and thus has no impact on the sample quality. However, the implementation (see https://github.com/wl-zhao/UniPC for details) of UniP applies a special case for the 2-nd solver:\nx\u0303ti = \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\u2212 \u03c3ti B(hi) 2 D1 r1\n= \u03b1ti \u03b1ti\u22121 xti\u22121 \u2212 \u03c3ti(ehi \u2212 1)\u03f5\u03b8(x\u0303ti\u22121 , ti\u22121)\n\u2212 \u03c3ti hiB(hi)\n2(ehi \u2212 hi \u2212 1) h2i\u03c6 \u03f5 2(hi) \u03f5\u03b8(xti\u22121 , ti\u22121)\u2212 \u03f5\u03b8(xti1 , ti1) \u03bbti\u22121 \u2212 \u03bbti1\nThis is equivalent to scaling 1-st derivative with 1+R(h) = hiB(hi) 2(ehi\u2212hi\u22121) . UniPC (Zhao et al., 2023) empirically provides two choices for B(h): B1(h) = h and B2(h) = eh \u2212 1. The corresponding R(h) for B1(h) is h2 2 eh\u2212h\u22121 \u2212 1 = R2(h) and the corresponding R(h) for B2(h) is h 2 (e h\u22121) eh\u2212h\u22121 \u2212 1 = R1(h).\nIn conclusion, 2-nd order UniP is equivalent to using R1 or R2 to scale the 1-st derivative, while UniP with other orders is equivalent to applying full-order Taylor-difference method to all derivatives without scaling.\nUniC. UniC has no fundamental difference with UniP. Inspired by it, our framework USF set the corrector to be a searchable component without re-evaluation of the function at the target timestep."
+        },
+        {
+            "heading": "E.4 DEIS",
+            "text": "As discussed in Sec. 2.2.2, DEIS uses Lagrange interpolation to calculate the integral in t domain directly without Taylor expansion, as given below.\nx\u0303ti\u22121 = \u03b1ti\u22121 \u03b1ti xti \u2212 \u03b1ti\u22121 \u222b ti\u22121 ti e\u2212\u03bb(\u03c4)\u03bb\u2032(\u03c4)\u03f5\u0303\u03b8(x\u03c4 , \u03c4)d\u03c4 (21)\n= \u03b1ti\u22121 \u03b1ti xti \u2212 \u03b1ti\u22121 \u222b ti\u22121 ti e\u2212\u03bb(\u03c4)\u03bb\u2032(\u03c4) p\u2211 j=0 ( p\u220f k \u0338=j \u03c4 \u2212 ti+k ti+j \u2212 ti+k )\u03f5\u03b8(xti+j , ti+j)d\u03c4, (22)\nNote that other methods (Lu et al., 2022a;b; Zhao et al., 2023) including USF estimate the integral in the \u03bb domain, so DEIS has fundamental differences with these methods. However, we show that the numerical integral estimation method of DEIS (i.e., Lagrange interpolation), which is one of the core designs of this work, can still be incorporated in USF in the \u03bb domain. We rewrite Eq. (22) w.r.t. \u03bb:\nx\u0303ti\u22121 = \u03b1ti\u22121 \u03b1ti xti \u2212 \u03b1ti\u22121 \u222b \u03bbti\u22121 \u03bbti e\u2212\u03bb\u03f5\u0303\u03b8(x\u03c4 , \u03c4)d\u03bb (23)\n= \u03b1ti\u22121 \u03b1ti xti \u2212 \u03b1ti\u22121 \u222b \u03bbti\u22121 \u03bbti e\u2212\u03bb p\u2211 j=0 ( p\u220f k \u0338=j \u03bb\u2212 \u03bbti+k \u03bbti+j \u2212 \u03bbti+k )\u03f5\u03b8(xti+j , \u03bbti+j )d\u03bb. (24)\nLagrange interpolation with p + 1 points \u03f5\u03b8(xti+j , \u03bbti+j ) (j = 0, \u00b7 \u00b7 \u00b7 , p) constructs a polynomial \u03f5\u0303\u03b8(xt, \u03bbt) = ap\u03bb p + ap\u22121\u03bb p\u22121 + \u00b7 \u00b7 \u00b7 + a1\u03bb + a0, which pass through all points. We rewrite this polynomial to make the starting point \u03bbti be the \u2019center\u2019: \u03f5\u0303\u03b8(xt, \u03bbt) = ap p! (\u03bb\u2212 \u03bbti) p + ap\u22121 (p\u22121)! (\u03bb\u2212 \u03bbti) p\u22121 + \u00b7 \u00b7 \u00b7 + a1(\u03bb \u2212 \u03bbti) + \u03f5\u03b8(xti , \u03bbti), and construct a linear equation system to solve all coefficients.  \u03bbti+1 \u2212 \u03bbti (\u03bbti+1 \u2212 \u03bbti) 2/2! \u00b7 \u00b7 \u00b7 (\u03bbti+1 \u2212 \u03bbti)p/p!\n\u03bbti+2 \u2212 \u03bbti (\u03bbti+2 \u2212 \u03bbti)2/2! \u00b7 \u00b7 \u00b7 (\u03bbti+2 \u2212 \u03bbti)p/p! \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u03bbti+p \u2212 \u03bbti (\u03bbti+p \u2212 \u03bbti)2/2! \u00b7 \u00b7 \u00b7 (\u03bbti+p \u2212 \u03bbti)p/p!\n  a1a2\u00b7 \u00b7 \u00b7\nap\n\n=  \u03f5\u03b8(xti+1 , \u03bbti+1)\u2212 \u03f5\u03b8(xti , \u03bbti)\u03f5\u03b8(xti+2 , \u03bbti+2)\u2212 \u03f5\u03b8(xti , \u03bbti)\u00b7 \u00b7 \u00b7 \u03f5\u03b8(xti+p , \u03bbti+p)\u2212 \u03f5\u03b8(xti , \u03bbti)  Suppose hi = \u03bbti\u22121 \u2212 \u03bbti , \u03bbti+k \u2212 \u03bbti = rkhi, and \u03f5\u03b8(xti+k , \u03bbti+k) \u2212 \u03f5\u03b8(xti , \u03bbti) = Dk. Then rewrite the above equation:\n[ a1 a2 \u00b7 \u00b7 \u00b7 ap ]  r1 r2 \u00b7 \u00b7 \u00b7 rp\u22121 r21/2! r 2 2/2! \u00b7 \u00b7 \u00b7 r2p\u22121/2!\n\u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 rp\u221211 /(p\u2212 1)! r p\u22121 2 /(p\u2212 1)! \u00b7 \u00b7 \u00b7 r p\u22121 p\u22121/(p\u2212 1))!  = [ D1 D2 \u00b7 \u00b7 \u00b7 Dp ]\nExtract the k-th column of the both sides.\nak = [ D1 D2 \u00b7 \u00b7 \u00b7 Dp ]  r1 r2 \u00b7 \u00b7 \u00b7 rp\u22121 r21/2! r 2 2/2! \u00b7 \u00b7 \u00b7 r2p\u22121/2!\n\u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 \u00b7 rp\u221211 /(p\u2212 1)! r p\u22121 2 /(p\u2212 1)! \u00b7 \u00b7 \u00b7 r p\u22121 p\u22121/(p\u2212 1))!\n \u22121  0 0 \u00b7 \u00b7 \u00b7 1 \u00b7 \u00b7 \u00b7 0  =DC\u22121b\nThe value of D, C, and b can be found in Def. B.1 by replacing f with \u03f5\u03b8 and t with \u03bb. We can see that ak is equal to the k-th derivative at timestep ti calculated by full order Taylor-difference. Therefore, the update formula using USF with an expansion order p + 1 and full order Taylordifference estimation for all derivatives is given by:\nx\u0303Uti\u22121 = \u03b1ti\u22121 \u03b1ti\nxti \u2212 \u03c3ti\u22121 p\u2211\nk=0\nhk+1i \u03c6 \u03f5 k+1(hi)ak.\nAnd the update formula of DEIS in \u03bb domain is written as:\nx\u0303ti\u22121 = \u03b1ti\u22121 \u03b1ti xti \u2212 \u03b1ti\u22121 \u222b \u03bbti\u22121 \u03bbti e\u2212\u03bb p\u2211 k=1 ak(\u03bb\u2212 \u03bbti)kd\u03bb.\nIt is proved in App. H that \u03c3ti\u22121h k+1 i \u03d5 \u03f5 k+1(hi) = \u03b1ti\u22121 \u222b \u03bbti\u22121 \u03bbti\ne\u2212\u03bb(\u03bb \u2212 \u03bbti)kd\u03bb, so that x\u0303Uti\u22121 = x\u0303ti\u22121 . In summary, estimating the integral through Lagrange interpolation in \u03bb domain is equivalent to using full order Taylor-difference to estimate all derivatives. Thus, DEIS in \u03bb domain can also be incorporated in USF."
+        },
+        {
+            "heading": "F EXPERIMENTAL SETTINGS",
+            "text": "In this section, we list the settings of our experiments."
+        },
+        {
+            "heading": "F.1 MODELS",
+            "text": "All models we use in the experiments are open-source pre-trained models. We list the information of them below.\n\u2022 CIFAR-10 We use the model cifar10 ddpmpp deep continuous steps provided by the paper Song et al. (2020b). This model applies linear noise schedule with VP-SDE and is trained with continuous-time. It can be got by downloading the checkpoint 8.pth at https://drive.google.com/drive/folders/ 1ZMLBiu9j7-rpdTQu8M2LlHAEQq4xRYrj.\n\u2022 CelebA We use the model provided by the paper Song et al. (2020a). This model applies linear noise schedule with VP-SDE and is trained with discretetime. It can be downloaded at https://drive.google.com/file/d/1R_ H-fJYXSH79wfSKs9D-fuKQVan5L-GR/view.\n\u2022 ImageNet-64 We use the unconditional model trained with L hybrid provided by the paper Nichol & Dhariwal (2021). This model applies cosine noise schedule with VP-SDE and is trained with discrete-time. It can be downloaded at https://openaipublic.blob.core.windows.net/diffusion/ march-2021/imagenet64_uncond_100M_1500K.pt.\n\u2022 LSUN-Bedroom We use the model provided by the paper Dhariwal & Nichol (2021). This model applies linear noise schedule with VP-SDE and is trained with discrete-time. It can be downloaded at https://openaipublic.blob.core.windows.net/ diffusion/jul-2021/lsun_bedroom.pt.\n\u2022 ImageNet-128 (classifier guidance) We use the model provided by the paper Dhariwal & Nichol (2021). This model applies linear noise schedule with VP-SDE and is trained with discrete-time. It can be downloaded at https://openaipublic.blob. core.windows.net/diffusion/jul-2021/128x128_diffusion.pt. The classifier is also provided by this paper at https://openaipublic.blob.core. windows.net/diffusion/jul-2021/128x128_classifier.pt\n\u2022 ImageNet-256 (classifier guidance) We use the model provided by the paper Dhariwal & Nichol (2021). This model applies linear noise schedule with VP-SDE and is trained with discrete-time. It can be downloaded at https://openaipublic.blob. core.windows.net/diffusion/jul-2021/256x256_diffusion.pt. The classifier is also provided by this paper at https://openaipublic.blob.core. windows.net/diffusion/jul-2021/256x256_classifier.pt.\n\u2022 MS-COCO 256\u00d7256 (classifier-free guidance (Ho & Salimans, 2022)) We use the model provided by the paper Rombach et al. (2022). This model applies linear noise schedule with VP-SDE and is trained with discrete-time. Additionally, this model is trained in the latent space. It can be downloaded at https://huggingface.co/runwayml/ stable-diffusion-v1-5."
+        },
+        {
+            "heading": "F.2 EVALUATION SETTINGS",
+            "text": "We sample 1k images to evaluate the FID as a proxy to the final performance in the search phase. For the final evaluation, we sample 50k images for evaluation on all unconditional datasets and ImageNet-128 (classifier guidance) dataset and 10k images on ImageNet-256 (classifier guidance) and MS-COCO 256\u00d7256. For CIFAR-10 and CelebA, we get the target statistics by calculating the activations of all images in the training set using the pytorch-fid repository at https: //github.com/mseitzer/pytorch-fid. For ImageNet-64, ImageNet-128, ImageNet256, and LSUN-Bedroom, we get the target statistics at https://github.com/openai/ guided-diffusion/tree/main/evaluations. For MS-COCO 256\u00d7256, we calculate the activations of all corresponding images with their caption used for generation using the pytorchfid repository. To align the settings of text-to-image evaluation with Rombach et al. (2022), we resize the short edge of the image to 256 and center crop a 256\u00d7256 patch before feeding them into the InceptionV3. We keep these settings for all samplers in our experiments."
+        },
+        {
+            "heading": "F.3 BASELINE SETTINGS",
+            "text": "We mainly choose the three SOTA methods DPM-Solver (Lu et al., 2022a), DPM-Solver++(Lu et al., 2022b) and UniPC (Zhao et al., 2023) as our baselines. For the evaluation of DPM-Solver and DPM-Solver++, we use the code at https://github.com/LuChengTHU/dpm-solver and choose DPM-Solver-2S, DPM-Solver-3S, DPM-Solver++(2M) and DPM-Solver++(3M) as baselines. For UniPC, we use the code at https://github.com/wl-zhao/UniPC and choose UniPC-2-B1(h), UniPC-2-B2(h), UniPC-3-B1(h), UniPC-3-B2(h) and UniPCv-3 as baselines. We follow Lu et al. (2022b) to choose uniform t as the time schedule for high-resolution datasets (i.e., ImageNet-128, ImageNet-256 and LSUN-Bedroom) and text-image generation. We use lower orders at the final few steps for DPM-Solver++ and UniPC following their implementation. We keep other settings as default in the official implementations of these samplers."
+        },
+        {
+            "heading": "F.4 SEARCH ALGORITHM SETTINGS",
+            "text": "We sample and evaluated 4000 solver schedules on CIFAR-10, 3000 solver schedules on CelebA and ImageNet-64, 2000 solver schedules ImageNet-128 and ImageNet-256, and 1500 solver schedules on LSUN-Bedroom and for text-to-image generation. We sample 1000 images to evaluate the true performance of all solver schedules. We use 3 stages in the multi-stage search process, with the first stage evaluating half of all schedules and the other two stages each evaluating a quarter of all schedules."
+        },
+        {
+            "heading": "F.5 DISCUSSION OF SEARCH OVERHEADS",
+            "text": "Since the we need to generate images for solver schedule evaluation, calculate the metric and train predictors, our method introduces additional overhead. The network used to calculate FID is much lighter than diffusion U-Net and need not to inference iteratively. The predictor is even lighter and its training costs only tens of minutes. Therefore, the total cost is mainly on the generation of images. This overhead is equal to the time cost of N\u00d7M\u00d7S times neural inference of the diffusion U-Net (together with the classifier if it is classifier-guidance sampling), where N is the number of evaluated solver schedules, M is the number of images generated to calculate the metric, and S is the mean NFE of all solver schedules. N and M for each dataset can be found at App. F.4. Since we conduct the search under NFE budget 4-10 and we uniformly sample budget in this range, we use the mean value 7 for S. We then test the runtime for diffusion U-Net to forward one batch of images on one single GPU and estimate the overall GPU time cost. We list the results in Tab. 6.\nComparison with other methods We compare our overhead with a popular training-based method Consistency Model (Song et al., 2023) and a concurrent work DPM-Solver-v3 (Zheng et al., 2023) of improving training-free sampler to demonstrate the efficiency of our search method S3.\n\u2022 Training-based Method. While distillation-based methods have astonishing performance with very low NFE, their overheads are far larger than ours. Consistency model (Song et al., 2023) is a popular and effective work which achieves very impressive performance with 1- 4 sampling steps. However, the training cost of this work is heavy. According to Tab.3 in its paper, consistency distillation/training on CIFAR-10 needs 800k\u00d7512 samples, which is nearly 15 times more than 4000\u00d71000\u00d77 in our methods. Moreover, one iteration of training consistency models needs more than one forward pass (3 for CD and 2 for CT) and an additional backward process (nearly 3\u00d7 time cost than forward pass). Therefore, our search process is nearly 90 times faster than training consistency models. For large resolution datasets, this ratio is even larger. On LSUN-Bedroom, consistency distillation needs 600k\u00d72048 samples, which is 117 times more than 1500\u00d71000\u00d77 in our methods, and the overall cost is almost 700 times larger. Besides, our method does not have GPU memory limitations, while training based methods suffer from this problem (e.g., consistency models are trained on 8 GPUs on CIFAR10 and 64 GPUs on LSUN). In conclusion, our S3 offers a effective trade-off between sample quality and computation overhead compared to training-based methods.\n\u2022 Training-free Sampler. DPM-Solver-v3 (Zheng et al., 2023) is a concurrent work that aims to improve the training-free diffusion samplers. It replaces traditional model prediction types (i.e., data prediction and noise prediction) with a novel new prediction type. To calculate such a prediction type, DPM-Solver-v3 has to calculate empirical model statistics (EMS) related to the data distribution before being used for sampling. Therefore, similar to S3, this method also needs additional offline overhead for the EMS calculation. According to Appendix D in this paper, we compare its cost with our S3 search in Tab. 7. We can see that the overhead of these two methods is within the same order of magnitude. It is worth mentioning that S3 can incorporate DPM-Solver-v3 by introducing its novel prediction type as another searchable strategy without changes to other components and be further boosted."
+        },
+        {
+            "heading": "G ADDITIONAL RESULTS",
+            "text": ""
+        },
+        {
+            "heading": "G.1 COMPARISON WITH MORE BASELINE METHODS",
+            "text": "We provide the full results of all baseline methods at Tabs. 8 to 14. We report best and worst performance of these baselines in Sec. 5."
+        },
+        {
+            "heading": "G.2 SEARCH RESULTS UNDER LARGER NFE BUDGETS",
+            "text": "To further show the effectiveness of our method, we report the FID result under larger NFE budgets in Tab. 15. Noting that when the NFE budget is adequate, the negative impact of sub-optimal empirical strategies diminishes. So, it is nothing surprising that the gap between our method and baselines decreases. But we can see that our method still outperforms all baselines by a large margin at larger NFEs like 12, 15, and 20. Our method completely converges at NFE=15, much faster than existing solvers."
+        },
+        {
+            "heading": "G.3 MORE RESULTS WITH LOWER SEARCH COST",
+            "text": "Since S3 has additional search cost, it is meaningful to investigate its performance if the search cost is limited. As discussed in Sec. 5.2 and App. F.5, the search overhead of S3 is proportional to the number of evaluated schedules and the number of images for FID calculation. In Sec. 5.2, we demonstrate the results of using less generated images to calculate the metric. In this section, we conduct more systematic experiments on CIFAR-10 to investigate the impact of both the number of sampled images and the number of evaluated solver schedules. Our results are listed in Tab. 16. From these results, we can see that though in most cases, lower search cost leads to worse search results, our method consistently outperforms the best baseline method significantly. These results show the large space of optimization for baseline solver schedules, requiring only small search cost to enhance."
+        },
+        {
+            "heading": "G.4 SEARCH RESULTS WITH OTHER SEARCH METHODS AND SPACES",
+            "text": "In addition to the search space we introduce in App. B and the multi-stage method we introduce in Sec. 4.2, we try other search space designs and search approaches. We introduce these methods in this section."
+        },
+        {
+            "heading": "G.4.1 SEARCH METHOD",
+            "text": "Cascade Search The search method introduced in Sec. 4.2 searches for all components simultaneously, which may lead to a huge search space and thus is inefficient. We try another cascade search\nmethod. We start by searching for only some of the components and keep other components consistent with the setting of baselines. After obtaining the search results with this sub-search space, we search for other components based on these searched schedules and keep the rest of the components unsearchable. In our experiment, we search for timesteps, Taylor expansion orders, prediction types, and correctors at the first stage, then search for the derivative estimation method in the second stage. The results of this search method are shown in Tab. 17. The number of sampled schedules is kept consistent for both search methods. Although the cascade method is more likely to fall into a local optimal, our results show that under some NFE budgets, the cascade method finds better solver schedules, indicating that it can also be used for searching."
+        },
+        {
+            "heading": "G.4.2 SEARCH SPACES",
+            "text": "Starting Point (SP) Since singlestep methods usually perform worse than multistep methods, we don\u2019t include other choices of starting points than the point before the target timestep in the original search space used by experiments in Sec. 5. To explore the potential of a more distant starting point, we add the second point before the target timestep into the original search space and obtain the results shown in Tab. 18 (see the row \u2019Ours-SP\u2019). We keep the search method and settings constant. We find that though this new search space provides more potential to find better solver schedules under some NFE budgets, the search results under most budgets are worse than the original search space. This is because the newly added decision does not bring improvements in most cases, making the search process more inefficient. Therefore, we recommend using multistep solver when the NFE budget is very tight.\nInterpolated Prediction Type (IP). There are only two choices for prediction type in our original search space. We further try an interpolation between these two types given below:\nxt = ax x t + (1\u2212 a)x\u03f5t\nwhere xxt and x \u03f5 t are given by:\nx\u03f5t = \u03b1t \u03b1s\nxs \u2212 \u03c3t n\u2211\nk=0\nhk+1\u03c6\u03f5k+1(h)\u03f5 (k) \u03b8 (xs, s),\nxxt = \u03c3t \u03c3s xs + \u03b1t n\u2211 k=0 hk+1\u03c6xk+1(h)x (k) \u03b8 (xs, s)\nNote that interpolating the neural term by f\u03b8(xt, t) = ax\u03b8(xt, t) + (1 \u2212 a)\u03f5\u03b8(xt, t) will lead to an integral term which can not be analytically computed as the integral in Eq. (36), causing a more complicate situation, so we simply interpolate the solution of these two prediction types. We search for the interpolation ratio a only and evaluate another 500 schedules based on the search results of the cascade search method (see App. G.4.1) on CIFAR-10. The results are shown in the \u2019OursIP\u2019 row of Tab. 19. We can see that the continuous search space of prediction type may have the potential to boost the search results with low NFE budget like 4, 5, or 6.\nGuidance Scale (GS). The choice of guidance scale for classifier-free guidance has a significant impact on the content and quality of the generated image. Usually, guidance scale is given by the users to adjust the control strength of provided conditions. But in some cases, users only care about the image quality and have to try different values of guidance scale to get high-quality samples. Therefore, we propose to include this hyper-parameter in our search space. Like other strategies, we allow the guidance scale of each timestep to be searched independently. Our search results are shown at Tab. 20. From the results of baseline methods with different guidance scales, we validate the fact that a suitable guidance scale is very important for sample quality, and our S3 can help find proper guidance scales to achieve higher quality generation. Noting that sample quality evaluated by different metrics may have different preferences on guidance scale, but using S3 can help to automatically find the optimal setting given arbitrary metrics."
+        },
+        {
+            "heading": "G.5 TRANSFER ABILITY VALIDATION OF SOLVER SCHEDULES SEARCHED ON TEXT-TO-IMAGE TASK",
+            "text": "To verify practicality of S3, we use a different version model, SD-v1-3, to evaluate the solver schedules searched with SD-v1-5 model. Other settings are kept consistent with previous experiments in Sec. 5. We list the results in Tab. 21. We can see that the searched results can directly transfer to SD-v1-3 and achieve similar acceleration ratio with SD-v1-5 model, making it more convenient to apply our searched results."
+        },
+        {
+            "heading": "G.6 SEARCHED SOLVER SCHEDULES",
+            "text": "We give some of our searched solver schedules on CIFAR-10 here as examples. We list these schedules in Tab. 22 and Tab. 23"
+        },
+        {
+            "heading": "H ADDITIONAL DERIVATIONS",
+            "text": "In this section, we write the detailed derivation of Eq. (8) and Eq. (9) from Eq. (4) and Eq. (5), correspondingly."
+        },
+        {
+            "heading": "H.1 NOISE PREDICTION MODEL",
+            "text": "Firstly, we use the variation of constant method to derive Eq. (6). Suppose the solution x(t) of Eq. (4) can be written as the product of two independent variables: x(t) = u(t)v(t). Substitute it to Eq. (4), we get:\nu(t)dv + v(t)du = (f(t)u(t)v(t) + g2(t)\n2\u03c3t \u03f5\u03b8(xt, t))dt. (25)\nWe let u(t)dv = f(t)u(t)v(t) to solve v(t) and obtain v(t) = v(s)e \u222b t s f(\u03c4)d\u03c4 , where s is an arbitrary value larger than t. Then we substitute the v(t) into Eq. (25):\nvtdut = g2(t)\n2\u03c3t \u03f5\u03b8(xt, t)dt. (26)\nThen we solve ut through Eq. (26).\nu(t) =u(s) + \u222b t s g2(\u03c4) 2\u03c3\u03c4 \u03f5\u03b8(x\u03c4 , \u03c4) v(\u03c4) d\u03c4 (27)\n=u(s) + \u222b t s g2(\u03c4) 2\u03c3\u03c4 \u03f5\u03b8(x\u03c4 , \u03c4) v(s)e \u222b \u03c4 s f(r)dr d\u03c4 (28)\n(29)\nFinally, we write x(t) = u(t)v(t):\nx(t) = u(t)v(t) =v(s)e \u222b t s f(r)dr(u(s) + \u222b t s g2(\u03c4) 2\u03c3\u03c4 \u03f5\u03b8(x\u03c4 , \u03c4) v(s)e \u222b \u03c4 s f(r)dr d\u03c4) (30)\n=v(s)e \u222b t s f(r)dru(s) + \u222b t s g2(\u03c4) 2\u03c3\u03c4 \u03f5\u03b8(x\u03c4 , \u03c4)e \u222b t \u03c4 f(r)drd\u03c4 (31) =x(s)e \u222b t s dlog\u03b1r +\n\u222b t s d\u03c32\u03c4 d\u03c4 \u2212 2 dlog\u03b1\u03c4 d\u03c4 \u03c3 2 \u03c4 2\u03c3\u03c4 \u03f5\u03b8(x\u03c4 , \u03c4)e \u222b t \u03c4 dlog\u03b1rd\u03c4 (32)\n= \u03b1(t)\n\u03b1(s) x(s)\u2212 \u03b1(t) \u222b t s \u03c3\u03c4 \u03b1\u03c4 \u03f5\u03b8(x\u03c4 , \u03c4)dlog \u03b1\u03c4 \u03c3\u03c4\n(33)\n= \u03b1(t)\n\u03b1(s) x(s)\u2212 \u03b1(t) \u222b \u03bbt \u03bbs e\u2212\u03bb\u03f5\u03b8(x\u03bb, \u03bb)d\u03bb. (34)\nThen we get the exponential integral in Eq. (6). According to Asm. A.2, we further write the \u03f5\u03b8(x\u03bb, \u03bb) with Taylor expansion \u03f5\u03b8(x\u03bb, \u03bb) = \u2211n k \u03f5 (k) \u03b8 (x\u03bbs , \u03bbs) (\u03bb\u2212\u03bbs)k k! (n < M) and substitute into Eq. (6):\nxt = \u03b1t \u03b1s\nxs \u2212 \u03b1t n\u2211\nk=0\n\u03f5 (n) \u03b8 (x\u03bbs , \u03bbs) \u222b \u03bbt \u03bbs e\u2212\u03bb (\u03bb\u2212 \u03bbs)k k! d\u03bb+O((\u03bbt \u2212 \u03bbs)n+2) (35)\n= \u03b1t \u03b1s\nxs \u2212 \u03c3t n\u2211\nk=0\n\u03f5 (n) \u03b8 (x\u03bbs , \u03bbs) \u222b \u03bbt \u03bbs e\u2212(\u03bb\u2212\u03bbt) (\u03bb\u2212 \u03bbs)k k! d\u03bb+O((\u03bbt \u2212 \u03bbs)n+2). (36)\nLet h = \u03bbt \u2212 \u03bbs, and suppose \u03c6\u03f5k+1 = 1hk+1 \u222b \u03bbt \u03bbs e\u2212(\u03bb\u2212\u03bbt) (\u03bb\u2212\u03bbs) k\nk! d\u03bb (k \u2265 0). Use partial integral to calculate \u03c6\u03f5k+1:\n\u03c6\u03f5k+1 = 1 hk+1 (\u2212h\nk\nk! + \u222b \u03bbt \u03bbs e\u2212(\u03bb\u2212\u03bbt) (\u03bb\u2212 \u03bbs)(k\u22121) (k \u2212 1)! d\u03bb) (37)\n= \u03c6\u03f5k(h)\u2212 1/k!\nh . (38)\nThe initial value \u03c6\u03f51(h) can be easily computed: \u03c6 \u03f5 1(h) = 1 h \u222b \u03bbt \u03bbs e\u2212(\u03bb\u2212\u03bbt)d\u03bb = e h\u22121 h . And we further give \u03c6\u03f50(h) = e h through \u03c6\u03f51 = \u03c6\u03f50(h)\u22121/0! h . By substituting \u03c6 \u03f5 k+1 to Eq. (36), we obtain Eq. (8)."
+        },
+        {
+            "heading": "H.2 DATA PREDICTION MODEL",
+            "text": "The derivation with data prediction model is very similar to that with noise prediction model. Therefore, we omit some derivation in this section.\nFirstly, by using the variation of constant method in App. H.1, we can get the exponential integral with data prediction model:\nxt = \u03c3t \u03c3s xs + \u03c3t \u222b \u03bbt \u03bbs e\u03bbx\u03b8(x\u03bb, \u03bb)d\u03bb. (39)\nThen we replace the x\u03b8(x\u03bb, \u03bb) with its Taylor expansion:\nxt = \u03c3t \u03c3s xs + \u03c3t n\u2211 k=0 x (k) \u03b8 (x\u03bbs , \u03bbs) \u222b \u03bbt \u03bbs e\u03bb (\u03bb\u2212 \u03bbs)k k! d\u03bb (40)\n= \u03c3t \u03c3s xs + \u03b1t n\u2211 k=0 x (k) \u03b8 (x\u03bbs , \u03bbs) \u222b \u03bbt \u03bbs e\u03bb\u2212\u03bbt (\u03bb\u2212 \u03bbs)k k! d\u03bb. (41)\nLet h = \u03bbt \u2212 \u03bbs, and suppose \u03c6xk+1 = 1hk+1 \u222b \u03bbt \u03bbs e\u03bb\u2212\u03bbt (\u03bb\u2212\u03bbs) k\nk! d\u03bb (k \u2265 0). Use partial integral to calculate \u03c6xk+1:\n\u03c6xk+1 = 1 hk+1 ( hk k! \u2212 \u222b \u03bbt \u03bbs e\u03bb\u2212\u03bbt (\u03bb\u2212 \u03bbs)(k\u22121) (k \u2212 1)! d\u03bb (42)\n= 1/k!\u2212 \u03c6xk(h)\nh . (43)\nThe initial value \u03c6x1(h) can be easily computed: \u03c6 x 1(h) = 1 h \u222b \u03bbt \u03bbs e\u03bb\u2212\u03bbtd\u03bb = 1\u2212e \u2212h h . And we further give \u03c6x0(h) = e \u2212h through \u03c6x1 = 1/0!\u2212\u03c6x0 (h) h . By substituting \u03c6 x k+1 to Eq. (41), we obtain Eq. (9)."
+        },
+        {
+            "heading": "I DISCUSSION OF CONVERGENCE",
+            "text": "In this section, we discuss the convergence order of USF. We give the convergence bound at Thm. I.1.\nTheorem I.1. Suppose xti is the ground truth trajectory value, and the estimated value x\u0303ti(h) is given by the one step update in Alg. 1, where h = \u03bbti \u2212 \u03bbtsi is the step length w.r.t. the logSNR. Then the convergence order of x\u0303ti(h) to h is pi = min(ni+1, lsi , d1+2, d2+3, \u00b7 \u00b7 \u00b7 , dni\u22121+ni), where lsi is the convergence order of the starting point and dk is the convergence order of the k-th derivative estimation \u03f5\u0303(k)\u03b8 (xtsi , tsi) or x\u0303 (k) \u03b8 (xtsi , tsi) to h.\nThe proof is very simple by substituting the starting point x\u0303tsi = xtsi +O(h lsi ) and the estimation of all derivatives \u03f5\u0303(k)\u03b8 (xtsi , tsi) = \u03f5 (k) \u03b8 (xtsi , tsi)+O(h\ndk) into Eq. (8) (the same for data prediction model). As a result, the convergence order of USF is decided by the Taylor expansion order ni, accuracy of the starting point and the convergence orders of all derivative estimations.\nAs discussed in App. B, when no low-order derivative estimation is used and the additional involved points have convergence orders not smaller than ni, the convergence order of the k-th derivative estimation is ni\u2212k, and the scaling operation doesn\u2019t change the convergence order of the derivative estimation. Therefore, the convergence order pi of x\u0303ti(h) equals ni+1. When low-order estimation is used, the convergence order pi will decreases. It is worth noting that the there is no strong relation with the convergence order and the actual truncation error. As shown in Fig. 2, using low-order derivative estimation in certain timesteps can achieve lower error with the ground truth value. This is because the actual truncation error is not smooth and using high-order information for low-order derivative may introduce additional bias. Therefore, we apply low-order Taylor-difference method for derivative estimation in our experiments."
+        },
+        {
+            "heading": "J QUALITATIVE RESULTS",
+            "text": "We provide some samples generated by our searched solver schedules and baseline methods in this section."
+        }
+    ],
+    "title": "A UNIFIED SAMPLING FRAMEWORK FOR SOLVER SEARCHING OF DIFFUSION PROBABILISTIC MODELS",
+    "year": 2024
+}

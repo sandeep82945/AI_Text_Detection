@@ -1,1 +1,485 @@
-null
+{
+    "abstractText": "We study the problem of training a flow-based generative model, parametrized by a two-layer autoencoder, to sample from a high-dimensional Gaussian mixture. We provide a sharp end-to-end analysis of the problem. First, we provide a tight closed-form characterization of the learnt velocity field, when parametrized by a shallow denoising auto-encoder trained on a finite number n of samples from the target distribution. Building on this analysis, we provide a sharp description of the corresponding generative flow, which pushes the base Gaussian density forward to an approximation of the target density. In particular, we provide closed-form formulae for the distance between the means of the generated mixture and the mean of the target mixture, which we show decays as \u0398n(1/n). Finally, this rate is shown to be in fact Bayes-optimal. Flow and diffusion-based generative models have introduced a shift in paradigm for density estimation and sampling problems, leading to state-of-the art algorithms e.g. in image generation (Rombach et al., 2022; Ramesh et al., 2022; Saharia et al., 2022). Instrumental in these advances was the realization that the sampling problem could be recast as a transport process from a simple \u2013typically Gaussian\u2013 base distribution to the target density. Furthermore, the velocity field governing the flow can be characterized as the minimizer of a quadratic loss function, which can be estimated from data by (a) approximating the loss by its empirical estimate using available training data and (b) parametrizing the velocity field using a denoiser neural network. These ideas have been fruitfully implemented as part of a number of frameworks, including score-based diffusion models (Song & Ermon, 2019; Song et al., 2020; Karras et al., 2022; Ho et al., 2020), and stochastic interpolation (Albergo & Vanden-Eijnden, 2022; Albergo et al., 2023; Lipman et al., 2022; Liu et al., 2022). A tight analytical understanding of the learning of generative models from limited data, and the resulting generative process, is however still largely missing. This constitutes the research question addressed in the present manuscript. A line of recent analytical works (Benton et al., 2023; Chen et al., 2022; 2023a;c;d; Wibisono & Yang, 2022; Lee et al., 2022; 2023; Li et al., 2023; De Bortoli et al., 2021; De Bortoli, 2022; Pidstrigach, 2022; Block et al., 2020) have mainly focused on the study of the transport problem, and provide rigorous convergence guarantees, taking as a starting point the assumption of an L\u2212accurate estimate of the velocity or score. They hence bypass the investigation of the learning problem \u2013and in particular the question of ascertaining the sample complexity needed to obtain such an accurate estimate. More importantly, the study of the effect of learning from a limited sample complexity (and thus e.g. of possible network overfitting and memorization) on the generated density, is furthermore left unaddressed. On the other hand, very recent works (Cui & Zdeborov\u00e1, 2023; Shah et al., 2023) have characterized the learning of Denoising Auto-Encoders (DAEs) (Vincent et al., 2010; Vincent, 2011) in high dimensions on Gaussian mixture densities. Neither work however studies the consequences on the generative process. Bridging that gap, recent works have offered a joint analysis of the learning and generative processes. Oko et al. (2023); Chen et al. (2023b); Yuan",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Hugo Cui"
+        }
+    ],
+    "id": "SP:c2742a39d8fd9a14ec1bc264cec549d59c71b66d",
+    "references": [
+        {
+            "authors": [
+                "M.S. Albergo",
+                "Nicholas M. Boffi",
+                "Eric Vanden-Eijnden"
+            ],
+            "title": "Stochastic interpolants: A unifying framework for flows and diffusions",
+            "venue": "ArXiv, abs/2303.08797,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Michael S Albergo",
+                "Eric Vanden-Eijnden"
+            ],
+            "title": "Building normalizing flows with stochastic interpolants",
+            "venue": "arXiv preprint arXiv:2209.15571,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Joe Benton",
+                "George Deligiannidis",
+                "Arnaud Doucet"
+            ],
+            "title": "Error bounds for flow matching methods",
+            "venue": "arXiv preprint arXiv:2305.16860,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Giulio Biroli",
+                "Marc M\u00e9zard"
+            ],
+            "title": "Generative diffusion in very large dimensions",
+            "venue": "arXiv preprint arXiv:2306.03518,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Adam Block",
+                "Youssef Mroueh",
+                "Alexander Rakhlin"
+            ],
+            "title": "Generative modeling with denoising autoencoders and langevin sampling",
+            "venue": "arXiv preprint arXiv:2002.00107,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hongrui Chen",
+                "Holden Lee",
+                "Jianfeng Lu"
+            ],
+            "title": "Improved analysis of score-based generative modeling: User-friendly bounds under minimal smoothness assumptions",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Minshuo Chen",
+                "Kaixuan Huang",
+                "Tuo Zhao",
+                "Mengdi Wang"
+            ],
+            "title": "Score approximation, estimation and distribution recovery of diffusion models on low-dimensional data",
+            "venue": "arXiv preprint arXiv:2302.07194,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sitan Chen",
+                "Sinho Chewi",
+                "Jerry Li",
+                "Yuanzhi Li",
+                "Adil Salim",
+                "Anru R Zhang"
+            ],
+            "title": "Sampling is as easy as learning the score: theory for diffusion models with minimal data assumptions",
+            "venue": "arXiv preprint arXiv:2209.11215,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sitan Chen",
+                "Sinho Chewi",
+                "Holden Lee",
+                "Yuanzhi Li",
+                "Jianfeng Lu",
+                "Adil Salim"
+            ],
+            "title": "The probability flow ode is provably fast",
+            "venue": "arXiv preprint arXiv:2305.11798,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sitan Chen",
+                "Giannis Daras",
+                "Alex Dimakis"
+            ],
+            "title": "Restoration-degradation beyond linear diffusions: A non-asymptotic analysis for ddim-type samplers",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yongxin Chen",
+                "Tryphon T Georgiou",
+                "Allen Tannenbaum"
+            ],
+            "title": "Optimal transport for gaussian mixture models",
+            "venue": "IEEE Access,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Hugo Cui",
+                "Lenka Zdeborov\u00e1"
+            ],
+            "title": "High-dimensional asymptotics of denoising autoencoders",
+            "venue": "arXiv preprint arXiv:2305.11041,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Valentin De Bortoli"
+            ],
+            "title": "Convergence of denoising diffusion models under the manifold hypothesis",
+            "venue": "arXiv preprint arXiv:2208.05314,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Valentin De Bortoli",
+                "James Thornton",
+                "Jeremy Heng",
+                "Arnaud Doucet"
+            ],
+            "title": "Diffusion schr\u00f6dinger bridge with applications to score-based generative modeling",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Julie Delon",
+                "Agnes Desolneux"
+            ],
+            "title": "A wasserstein-type distance in the space of gaussian mixture models",
+            "venue": "SIAM Journal on Imaging Sciences,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Bradley Efron"
+            ],
+            "title": "Tweedie\u2019s formula and selection bias",
+            "venue": "Journal of the American Statistical Association,",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Davide Ghio",
+                "Yatin Dandi",
+                "Florent Krzakala",
+                "Lenka Zdeborov\u00e1"
+            ],
+            "title": "Sampling with flows, diffusion and autoregressive neural networks: A spin-glass perspective",
+            "venue": "arXiv preprint arXiv:2308.14085,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Ajay Jain",
+                "P. Abbeel"
+            ],
+            "title": "Denoising diffusion probabilistic models",
+            "venue": "ArXiv, abs/2006.11239,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yukito Iba"
+            ],
+            "title": "The nishimori line and bayesian statistics",
+            "venue": "Journal of Physics A: Mathematical and General,",
+            "year": 1999
+        },
+        {
+            "authors": [
+                "Tero Karras",
+                "Miika Aittala",
+                "Timo Aila",
+                "Samuli Laine"
+            ],
+            "title": "Elucidating the design space of diffusionbased generative models",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Jimmy Ba"
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "arXiv preprint arXiv:1412.6980,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Holden Lee",
+                "Jianfeng Lu",
+                "Yixin Tan"
+            ],
+            "title": "Convergence for score-based generative modeling with polynomial complexity",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Holden Lee",
+                "Jianfeng Lu",
+                "Yixin Tan"
+            ],
+            "title": "Convergence of score-based generative modeling for general data distributions",
+            "venue": "In International Conference on Algorithmic Learning Theory,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Gen Li",
+                "Yuting Wei",
+                "Yuxin Chen",
+                "Yuejie Chi"
+            ],
+            "title": "Towards faster non-asymptotic convergence for diffusion-based generative models",
+            "venue": "arXiv preprint arXiv:2306.09251,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yaron Lipman",
+                "Ricky TQ Chen",
+                "Heli Ben-Hamu",
+                "Maximilian Nickel",
+                "Matt Le"
+            ],
+            "title": "Flow matching for generative modeling",
+            "venue": "arXiv preprint arXiv:2210.02747,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xingchao Liu",
+                "Chengyue Gong",
+                "Qiang Liu"
+            ],
+            "title": "Flow straight and fast: Learning to generate and transfer data with rectified flow",
+            "venue": "arXiv preprint arXiv:2209.03003,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Song Mei",
+                "Yuchen Wu"
+            ],
+            "title": "Deep networks as denoising algorithms: Sample-efficient learning of diffusion models in high-dimensional graphical models",
+            "venue": "arXiv preprint arXiv:2309.11420,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hidetoshi Nishimori"
+            ],
+            "title": "Statistical physics of spin glasses and information processing: an introduction",
+            "year": 2001
+        },
+        {
+            "authors": [
+                "Kazusato Oko",
+                "Shunta Akiyama",
+                "Taiji Suzuki"
+            ],
+            "title": "Diffusion models are minimax optimal distribution estimators",
+            "venue": "arXiv preprint arXiv:2303.01861,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Victor M Panaretos",
+                "Yoav Zemel"
+            ],
+            "title": "Statistical aspects of wasserstein distances",
+            "venue": "Annual review of statistics and its application,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Adam Paszke",
+                "Sam Gross",
+                "Francisco Massa",
+                "Adam Lerer",
+                "James Bradbury",
+                "Gregory Chanan",
+                "Trevor Killeen",
+                "Zeming Lin",
+                "Natalia Gimelshein",
+                "Luca Antiga"
+            ],
+            "title": "Pytorch: An imperative style, high-performance deep learning library",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jakiw Pidstrigach"
+            ],
+            "title": "Score-based generative models detect manifolds",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aditya Ramesh",
+                "Prafulla Dhariwal",
+                "Alex Nichol",
+                "Casey Chu",
+                "Mark Chen"
+            ],
+            "title": "Hierarchical textconditional image generation with clip latents",
+            "venue": "arXiv preprint arXiv:2204.06125,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Robin Rombach",
+                "Andreas Blattmann",
+                "Dominik Lorenz",
+                "Patrick Esser",
+                "Bj\u00f6rn Ommer"
+            ],
+            "title": "Highresolution image synthesis with latent diffusion models",
+            "venue": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Olaf Ronneberger",
+                "Philipp Fischer",
+                "Thomas Brox"
+            ],
+            "title": "U-net: Convolutional networks for biomedical image segmentation",
+            "venue": "18th International Conference,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Chitwan Saharia",
+                "William Chan",
+                "Saurabh Saxena",
+                "Lala Li",
+                "Jay Whang",
+                "Emily L Denton",
+                "Kamyar Ghasemipour",
+                "Raphael Gontijo Lopes",
+                "Burcu Karagol Ayan",
+                "Tim Salimans"
+            ],
+            "title": "Photorealistic text-to-image diffusion models with deep language understanding",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kulin Shah",
+                "Sitan Chen",
+                "Adam Klivans"
+            ],
+            "title": "Learning mixtures of gaussians using the ddpm objective",
+            "venue": "arXiv preprint arXiv:2307.01178,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yang Song",
+                "Stefano Ermon"
+            ],
+            "title": "Generative modeling by estimating gradients of the data distribution",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yang Song",
+                "Jascha Sohl-Dickstein",
+                "Diederik P Kingma",
+                "Abhishek Kumar",
+                "Stefano Ermon",
+                "Ben Poole"
+            ],
+            "title": "Score-based generative modeling through stochastic differential equations",
+            "venue": "arXiv preprint arXiv:2011.13456,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Pascal Vincent"
+            ],
+            "title": "A connection between score matching and denoising autoencoders",
+            "venue": "Neural computation,",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Pascal Vincent",
+                "Hugo Larochelle",
+                "Isabelle Lajoie",
+                "Yoshua Bengio",
+                "Pierre-Antoine Manzagol",
+                "L\u00e9on Bottou"
+            ],
+            "title": "Stacked denoising autoencoders: Learning useful representations in a deep network with a local denoising criterion",
+            "venue": "Journal of machine learning research,",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Andre Wibisono",
+                "Kaylee Yingxi Yang"
+            ],
+            "title": "Convergence in kl divergence of the inexact langevin algorithm with application to score-based generative models",
+            "venue": "arXiv preprint arXiv:2211.01512,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hui Yuan",
+                "Kaixuan Huang",
+                "Chengzhuo Ni",
+                "Minshuo Chen",
+                "Mengdi Wang"
+            ],
+            "title": "Reward-directed conditional diffusion: Provable distribution estimation and reward improvement",
+            "venue": "arXiv preprint arXiv:2307.07055,",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "text": "Flow and diffusion-based generative models have introduced a shift in paradigm for density estimation and sampling problems, leading to state-of-the art algorithms e.g. in image generation (Rombach et al., 2022; Ramesh et al., 2022; Saharia et al., 2022). Instrumental in these advances was the realization that the sampling problem could be recast as a transport process from a simple \u2013typically Gaussian\u2013 base distribution to the target density. Furthermore, the velocity field governing the flow can be characterized as the minimizer of a quadratic loss function, which can be estimated from data by (a) approximating the loss by its empirical estimate using available training data and (b) parametrizing the velocity field using a denoiser neural network. These ideas have been fruitfully implemented as part of a number of frameworks, including score-based diffusion models (Song & Ermon, 2019; Song et al., 2020; Karras et al., 2022; Ho et al., 2020), and stochastic interpolation (Albergo & Vanden-Eijnden, 2022; Albergo et al., 2023; Lipman et al., 2022; Liu et al., 2022). A tight analytical understanding of the learning of generative models from limited data, and the resulting generative process, is however still largely missing. This constitutes the research question addressed in the present manuscript.\nA line of recent analytical works (Benton et al., 2023; Chen et al., 2022; 2023a;c;d; Wibisono & Yang, 2022; Lee et al., 2022; 2023; Li et al., 2023; De Bortoli et al., 2021; De Bortoli, 2022; Pidstrigach, 2022; Block et al., 2020) have mainly focused on the study of the transport problem, and provide rigorous convergence guarantees, taking as a starting point the assumption of an L2\u2212accurate estimate of the velocity or score. They hence bypass the investigation of the learning problem \u2013and in particular the question of ascertaining the sample complexity needed to obtain such an accurate estimate. More importantly, the study of the effect of learning from a limited sample complexity (and thus e.g. of possible network overfitting and memorization) on the generated density, is furthermore left unaddressed. On the other hand, very recent works (Cui & Zdeborov\u00e1, 2023; Shah et al., 2023) have characterized the learning of Denoising Auto-Encoders (DAEs) (Vincent et al., 2010; Vincent, 2011) in high dimensions on Gaussian mixture densities. Neither work however studies the consequences on the generative process. Bridging that gap, recent works have offered a joint analysis of the learning and generative processes. Oko et al. (2023); Chen et al. (2023b); Yuan\net al. (2023) derive rigorous bounds at finite sample complexity, under the assumption of data with a low-dimensional structure. Closer to our manuscript, a concurrent work (Mei & Wu, 2023) bounds the Kullback-Leibler distance between the generated and target densities, when parametrizing the flow using a ResNet, for high-dimensional graphical models. On the other hand, these bounds do not go to zero as the sample complexity increases, and are a priori not tight.\nThe present manuscript aims at complementing and furthering this last body of works, by providing a tight end-to-end analysis of a flow-based generative model \u2013 starting from the study of the highdimensional learning problem with a finite number of samples, and subsequently elucidating the implications thereof on the generative process.\nMain contributions\u2013 We study the problem of estimating and sampling a Gaussian mixture using a flow-based generative model, in the framework of stochastic interpolation (Albergo & VandenEijnden, 2022; Albergo et al., 2023; Lipman et al., 2022; Liu et al., 2022). We consider the case where a non-linear two-layer DAE with one hidden unit is used to parametrize the velocity field of the associated flow, and is trained with a finite training set. In the high-dimensional limit,\n\u2022 We provide a sharp asymptotic closed-form characterization of the learnt velocity field, as a function of the target Gaussian mixture parameters, the stochastic interpolation schedule, and the number of training samples n. \u2022 We characterize the associated flow by providing a tight characterization of a small number of summary statistics, tracking the dynamics of a sample from the Gaussian base distribution as it is transported by the learnt velocity field. \u2022 We show that even with a finite number of training samples, the learnt generative model allows to sample from a mixture whose mean asymptotically approaches the mean of the target mixture as \u0398n(1/n) in squared distance, with this rate being tight. \u2022 Finally, we show that this rate is in fact Bayes-optimal.\nThe code used in the present manuscript is provided in this repository.\nRELATED WORKS\nDiffusion and flow-based generative models Score-based diffusion models (Song & Ermon, 2019; Song et al., 2020; Karras et al., 2022; Ho et al., 2020) build on the idea that any density can be mapped to a Gaussian density by degrading samples through an Ornstein-Uhlenbeck process. Sampling from the original density can then be carried out by time-reversing the corresponding stochastic transport, provided the score is known \u2013 or estimated. These ideas were subsequently refined in (Albergo & Vanden-Eijnden, 2022; Albergo et al., 2023; Lipman et al., 2022; Liu et al., 2022), which provide a flexible framework to bridge between two arbitrary densities in finite time.\nConvergence bounds In the wake of the practical successes of flow and diffusion-based generative models, significant theoretical effort has been devoted to studying the convergence of such methods, by bounding appropriate distances between the generated and the target densities. A common assumption of (Benton et al., 2023; Chen et al., 2022; 2023a;c;d; Wibisono & Yang, 2022; Lee et al., 2022; 2023; Li et al., 2023; De Bortoli et al., 2021; De Bortoli, 2022; Pidstrigach, 2022; Block et al., 2020) is the availability of a good estimate for the score, i.e. an estimate whose average (population) squared distance with the true score is bounded by a small constant \u03f5. Under this assumption, Chen et al. (2022); Lee et al. (2022) obtain rigorous control on the Wasserstein and total variation distances with very mild assumptions on the target density. Ghio et al. (2023) explore the connections between algorithmic hardness of the score/flow approximation and the hardness of sampling in a number of graphical models.\nAsymptotics for DAE learning The backbone of flow and diffusion-based generative models is the parametrization of the score or velocity by a denoiser-type network, whose most standard realization is arguably the DAE (Vincent et al., 2010; Vincent, 2011). Very recent works have provided a detailed analysis of its learning on denoising tasks, for data sampled from Gaussian mixtures. Cui & Zdeborov\u00e1 (2023) sharply characterize how a DAE can learn the mixture parameters with n = \u0398d(d) training samples when the cluster separation is \u0398d(1). Closer to our work, for arbitrary cluster separation, Shah et al. (2023) rigorously show that a DAE trained with gradient descent on the denoising diffusion probabilistic model loss (Ho et al., 2020) can recover the cluster means with a polynomial number of samples. While these works complement the aforediscussed\nconvergence studies in that they analyze the effect of a finite number of samples, neither explores the flow associated to the learnt score. Network-parametrized models Tying together these two body of works, a very recent line of research has addressed the problem of bounding, at finite sample complexity, appropriate distances between the generated and target densities, assuming a network-based parametrization. Oko et al. (2023) provide such bounds when parametrizing the score using a class of ReLU networks. These bounds however suffer from the curse of dimensionality. Oko et al. (2023); Yuan et al. (2023); Chen et al. (2023b) surmount this hurdle by assuming a target density with low-dimensional structure. On a heuristic level, Biroli & M\u00e9zard (2023) estimate the order of magnitude of the sample complexity needed to sample from a high-dimensional Curie-Weiss model. Finally, a work concurrent to ours (Mei & Wu, 2023) derives rigorous bounds for a number of high-dimensional graphical models. On the other hand, these bounds are a priori not tight, and do not go to zero as the sample complexity becomes large. The present manuscript aims at furthering this line of work, and provides a sharp analysis of a high-dimensional flow-based generative model."
+        },
+        {
+            "heading": "1 SETTING",
+            "text": "We start by giving a concise overview of the problem of sampling from a target density \u03c11 over Rd in the framework of stochastic interpolation (Albergo & Vanden-Eijnden, 2022; Albergo et al., 2023).\nRecasting sampling as an optimization problem Samples from \u03c11 can be generated by drawing a sample from an easy-to-sample base density \u03c10 \u2013henceforth taken to be a standard Gaussian density \u03c10 = N (0, Id)\u2013, and evolving it according to the flow described by the ordinary differential equation (ODE)\nd dt Xt = b(Xt, t), (1)\nfor t \u2208 [0, 1]. Specifically, as shown in Albergo et al. (2023), if Xt=0 \u223c \u03c10, then the final sample Xt=1 has probability density \u03c11, if the velocity field b(x, t) governing the flow (1) is given by\nb(x, t) = E[\u03b1\u0307(t)x0 + \u03b2\u0307(t)x1|xt = x], (2) where we denoted xt \u2261 \u03b1(t)x0 + \u03b2(t)x1 and the conditional expectation bears over x1 \u223c \u03c11, x0 \u223c \u03c10, with x0 \u22a5 x1. The result holds for any fixed choice of schedule functions \u03b1, \u03b2 \u2208 C2([0, 1]) satisfying \u03b1(0) = \u03b2(1) = 1, \u03b1(1) = \u03b2(0) = 0, and \u03b1(t)2 + \u03b2(t)2 > 0 for all t \u2208 [0, 1]. In addition to the velocity field b(x, t), it is convenient to consider the field f(x, t), related to b(x, t) by the simple relation\nb(x, t) = ( \u03b2\u0307(t)\u2212 \u03b1\u0307(t)\n\u03b1(t) \u03b2(t)\n) f(x, t) + \u03b1\u0307(t)\n\u03b1(t) x. (3)\nNote that f(x, t) can be alternatively expressed as E[x1|xt = x], and thus admits a natural interpretation as a denoising function, tasked with recovering the target value x1 from the interpolated (noisy) sample xt. The denoiser f(x, t) can furthermore characterized as the minimizer of the objective\nR[f ] = 1\u222b\n0\nE \u2225f(xt, t)\u2212 x1\u22252 dt. (4)\nThe loss (4) is a simple sequence of quadractic denoising objectives.\nLearning the velocity from data There are several technical hurdles in carrying out the minimization (4). First, since the analytical form of \u03c11 is generically unknown, the population risk has to be approximated by its empirical version, provided a dataset D = {x\u00b51 ,x \u00b5 0}n\u00b5=1 of n training samples x\u00b51 (x \u00b5 0 ) independently drawn from \u03c11 (\u03c10) is available. Second, the minimization in (4) bears over a time-dependent vector field f . To make the optimization tractable, the latter can be parametrized at each time step t by a separate neural network f\u03b8t(\u00b7) with trainable parameters \u03b8t. Under those approximations, the population risk (4) thus becomes\nR\u0302({\u03b8t}t\u2208[0,1]) = 1\u222b\n0\nn\u2211 \u00b5=1 \u2225f\u03b8t(x \u00b5 t )\u2212 x \u00b5 1\u2225 2 dt. (5)\nRemark that in practice, the time t can enter as an input of the neural network, and only one network then needs to be trained. In the present manuscript however, for technical reasons, we instead consider the case where a separate network is trained for each time step t. Besides, note that since the base density \u03c10 is a priori easy to sample from, one could in theory augment the dataset D with several samples from \u03c10 for each available x \u00b5 1 . For conciseness, we do not examine such an augmentation technique in the present manuscript, and leave a precise investigation thereof to future work. Denoting by {\u03b8\u0302t}t\u2208[0,1] the minimizer of (5), the learnt velocity field b\u0302 is related to the trained denoiser f\u03b8\u0302t by (4) as\nb\u0302(x, t) = ( \u03b2\u0307(t)\u2212 \u03b1\u0307(t)\n\u03b1(t) \u03b2(t)\n) f\u03b8\u0302t(x) + \u03b1\u0307(t)\n\u03b1(t) x. (6)\nThe sampling can finally be carried out by using b\u0302 as a proxy for the unknown b in (1): d\ndt Xt = b\u0302(Xt, t) (7)\nNote that the solution X1 at time t = 1 of the ODE (7) has a law \u03c1\u03021 \u0338= \u03c11 due to the two approximations in going from the population function-space objective (4) to the empirical parametric proxy (5). The present manuscript presents a sharp analysis of the learning problem (5) and the resulting flow (7) for a solvable model, which we detail below.\nData model We consider the case of a target density \u03c11 given by a binary isotropic and homoscedastic Gaussian mixture\n\u03c11 = 1\n2 N (\u00b5, \u03c32Id) +\n1 2 N (\u2212\u00b5, \u03c32Id). (8)\nEach cluster is thus centered around its mean \u00b1\u00b5 and has variance \u03c32. For definiteness, we consider here a balanced mixture, where the two clusters have equal relative probabilities, and defer the discussion of the imbalanced case to Appendix D. Note that a sample x\u00b51 can then be decomposed as x\u00b51 = s\n\u00b5\u00b5+ z\u00b5, with s\u00b5 \u223c U({\u22121,+1}) and z\u00b5 \u223c N (0, \u03c32Id). Finally, note that the closed-form expression for the exact velocity field b (1) associated to the density \u03c11 is actually known (see e.g. Efron (2011); Albergo et al. (2023)). This manuscript explores the question whether a neural network can learn a good approximate b\u0302 thereof without any knowledge of the density \u03c11, and only from a finite number of samples drawn therefrom.\nNetwork architecture We consider the case where the denoising function f (4) is parametrized with a two-layer non-linear DAE with one hidden neuron, and \u2013taking inspiration from modern practical architectures such as U-nets (Ronneberger et al., 2015)\u2013 a trainable skip connection:\nfwt,ct(x) = ct \u00d7 x+wt \u00d7 \u03c6(w\u22a4t x), (9) where \u03c6 is assumed to tend to 1 (resp. \u22121) as its argument tends to +\u221e (resp \u2212\u221e). Sign, tanh and erf are simple examples of such an activation function. The trainable parameters are therefore ct \u2208 R,wt \u2208 Rd. Note that (9) is a special case of the architecture studied in Cui & Zdeborov\u00e1 (2023). It differs from the very similar network considered in Shah et al. (2023) in that it covers a slightly broader range of activation functions (Shah et al. (2023) address the case \u03c6 = tanh), and in that the skip connection istrainable \u2013rather than fixed\u2013. Since we consider the case where a separate network is trained at every time step, the empirical risk (5) decouples over the time index t. The parameters wt, ct of the DAE (9) should therefore minimize\nR\u0302t(wt, ct) = n\u2211\n\u00b5=1\n\u2225fct,wt(x \u00b5 t )\u2212 x \u00b5 1\u22252+\n\u03bb 2 \u2225wt\u22252, (10)\nwhere for generality we also allowed for the presence of a \u21132 regularization of strength \u03bb. We remind that x\u00b5t = \u03b1(t)x \u00b5 0+\u03b2(t)x \u00b5 1 , with {x \u00b5 1}n\u00b5=1 (resp. {x \u00b5 0}n\u00b5=1) n training samples independently drawn from the target density \u03c11 (8) (resp. the base density \u03c10 = N (0, Id)), collected in the training set D.\nAsymptotic limit We consider in this manuscript the asymptotic limit d \u2192 \u221e, with n, \u2225\u00b5\u22252/d, \u03c3 = \u0398d(1). For definiteness, in the following, we set \u2225\u00b5\u22252/d = 1. Note that Cui & Zdeborov\u00e1 (2023) consider the different limit \u2225\u00b5\u2225= \u0398d(1). Shah et al. (2023) on the other hand address a larger range of asymptotic limits, including the present one, but does not provide tight characterizations, nor an analysis of the generative process."
+        },
+        {
+            "heading": "2 LEARNING",
+            "text": "In this section, we first provide sharp closed-form characterizations of the minimizers c\u0302t, w\u0302t of the objective R\u0302t (10). The next section discusses how these formulae can be leveraged to access a tight characterization of the associated flow. Result 2.1. (Sharp characterization of minimizers of (10)) For any given activation \u03c6 satisfying \u03c6(x)\nx\u2192\u00b1\u221e\u2212\u2212\u2212\u2212\u2212\u2192 \u00b11 and any t \u2208 [0, 1], in the limit d \u2192 \u221e, n, \u2225\u00b5\u22252/d, \u03c3 = \u0398d(1), the skip connection strength c\u0302t minimizing (10) is given by\nc\u0302t = \u03b2(t)(\u03bb(1 + \u03c32) + (n\u2212 1)\u03c32)\n\u03b1(t)2(\u03bb+ n\u2212 1) + \u03b2(t)2(\u03bb(1 + \u03c32) + (n\u2212 1)\u03c32) . (11)\nFurthermore, the learnt weight vector w\u0302t is asymptotically contained in span(\u00b5emp., \u03be) (in the sense that its projection on the orthogonal space span(\u00b5emp., \u03be) has asymptotically vanishing norm), where\n\u03be \u2261 n\u2211\n\u00b5=1\ns\u00b5x\u00b50 , \u00b5emp. = 1\nn n\u2211 \u00b5=1 s\u00b5x\u00b51 . (12)\nIn other words, \u00b5emp. is the empirical mean of the training samples. We remind that s\u00b5 = \u00b11 was defined below (8) and indicates the cluster the \u00b5\u2212th sample x\u00b51 belongs to. The components of w\u0302t along each of these three vectors is described by the summary statistics\nmt = \u00b5\u22a4emp.w\u0302t\nd(1 + \u03c32/n) , q\u03bet =\nw\u0302\u22a4t \u03be\nnd , (13)\nwhich concentrate as d \u2192 \u221e to the quantities characterized by the closed-form formulae{ mt = n \u03bb+n \u03b1(t)2(\u03bb+n\u22121) \u03b1(t)2(\u03bb+n\u22121)+\u03b2(t)2(\u03bb(1+\u03c32)+(n\u22121)\u03c32)\nq\u03bet = \u2212\u03b1(t) \u03bb+n \u03b2(t)(\u03bb(1+\u03c32)+(n\u22121)\u03c32) \u03b1(t)2(\u03bb+n\u22121)+\u03b2(t)2(\u03bb(1+\u03c32)+(n\u22121)\u03c32)\n. (14)\nThe derivation of Result 2.1 is detailed in Appendix A, and involves a heuristic partition function computation, borrowing ideas from statistical physics. The theoretical predictions for the skip connection strength c\u0302t and the component mt, q \u03be t of the weight vector w\u0302t are plotted as solid lines in Fig. 1, and display good agreement with numerical simulations, corresponding to training the DAE (9) on the risk (10) using the Pytorch (Paszke et al., 2019) implementation of the Adam optimizer (Kingma & Ba, 2014).\nA notable consequence of (13) is that the weight vector w\u0302t is contained at all times t in the twodimensional subspace spanned by the empirical cluster mean \u00b5emp. and the vectors \u03be (12) \u2013 in other words, the learnt weights align to some extent with the empirical mean, but still possess a non-zero component along \u03be, which is orthogonal thereto. \u03be subsumes the aggregated effect of the base vectors {x\u00b50}n\u00b5=1 used in the train set. Rather remarkably, the training samples thus only enter in the characterization of w\u0302t through the form of simple sums (12). Since the vector \u03be is associated to the training samples, the fact that the learnt vector w\u0302t has non-zero components along \u03be hence signals a form of overfitting\nand memorization. Interestingly, Fig. 1 shows that the extent of this overfitting is non-monotonic\nin time, as |q\u03bet | first increases then decreases. Finally, note that this effect is as expected mitigated as the number of training samples n increases. From (14), for large n, mt = \u0398n(1) while the components q\u03bet is suppressed as \u0398n(1/n). These scalings are further elaborated upon in Remark B.3 in Appendix B. Finally, Result 2.1 and equation (6) can be straightforwardly combined to yield a sharp characterization of the learnt estimate b\u0302 of the velocity field b (1). This characterization can be in turn leveraged to build a tight description of the generative flow (7). This is the object of the following section."
+        },
+        {
+            "heading": "3 GENERATIVE PROCESS",
+            "text": "While Corollary 2.1, together with the definition (6), provides a concise characterization of the velocity field b\u0302, the sampling problem (7) remains formulated as a high-dimensional, and therefore hard to analyze, transport process. The following result shows that the dynamics of a sample Xt following the differential equation (7) can nevertheless be succinctly tracked using a finite number of scalar summary statistics. Result 3.1. (Summary statistics) Let Xt be a solution of the ordinary differential equation (7) with initial condition X0. For a given t, the projection of Xt on span(\u00b5emp., \u03be is characterized by the summary statistics\nMt \u2261 X\u22a4t \u00b5emp. d(1 + \u03c32/n) , Q\u03bet \u2261 X\u22a4t \u03be nd . (15)\nWith probability asymptotically 1/2 the summary statistics Mt, Q \u03be t (15) concentrate for all t to the solution of the ordinary differential equations d dtMt = ( \u03b2\u0307(t)c\u0302t + \u03b1\u0307(t) \u03b1(t) (1\u2212 c\u0302t\u03b2(t)) ) Mt + ( \u03b2\u0307(t)\u2212 \u03b1\u0307(t)\u03b1(t)\u03b2(t) ) mt\nd dtQ \u03be t = ( \u03b2\u0307(t)c\u0302t + \u03b1\u0307(t) \u03b1(t) (1\u2212 c\u0302t\u03b2(t)) ) Q\u03bet + ( \u03b2\u0307(t)\u2212 \u03b1\u0307(t)\u03b1(t)\u03b2(t) ) q\u03bet\n, (16)\nwith initial condition M0 = Q \u03be 0 = 0, and with probability asymptotically 1/2 they concentrate to minus the solution of (16). Furthermore, the orthogonal component X\u22a5t \u2208 span(\u00b5emp., \u03be)\u22a5 obeys the simple linear differential equation\nd dt X\u22a5t =\n( \u03b2\u0307(t)c\u0302t + \u03b1\u0307(t)\n\u03b1(t) (1\u2212 c\u0302t\u03b2(t))\n) X\u22a5t . (17)\nFinally, the statistic Qt \u2261 \u2225Xt\u22252/d is given with high probability by\nQt = M 2 t (1 + \u03c3 2/n) + n(Q\u03bet ) 2 + e\n2 t\u222b 0 (\u03b2\u0307(t)c\u0302t+ \u03b1\u0307(t)\u03b1(t) (1\u2212c\u0302t\u03b2(t)))dt\n. (18)\nA heuristic derivation of Result 3.1 is provided in Appendix B. Taking a closer look at (16), it might seem at first from equations (16) that there is a singularity for t = 1 since \u03b1(1) = 0 in the denominator. Remark however that both 1 \u2212 \u03b2(t)c\u0302t (11) and mt (14) are actually proportional to \u03b1(t)2, and therefore (16) is in fact also well defined for t = 1. In practice, the numerical implementation of a generative flow like (7) often involves a discretization thereof, given a discretization scheme {tk}Nk=0 of [0, 1], where t0 = 0 and tN = 1:\nXtk+1 = Xtk + b\u0302(Xtk , tk)(tk+1 \u2212 tk). (19) The evolution of the summary statistics introduced in Result 3.1 can be rephrased in more actionable form to track the discretized flow (19). Remark 3.2. (Summary statistics for the discrete flow) Let {Xtk}Nk=0 be a solution of the discretized learnt flow (7), for an arbitrary discretization scheme {tk}Nk=0 of [0, 1], where t0 = 0 and tN = 1, with initial condition Xt0 \u223c \u03c10. The summary statistics introduced in Result 3.1 are then equal to the solutions of the recursionsMtk+1 = Mtk + \u03b4tk ( \u03b2\u0307(tk)c\u0302tk + \u03b1\u0307(tk) \u03b1(tk) (1\u2212 c\u0302tk\u03b2(tk)) ) Mtk + \u03b4tk ( \u03b2\u0307(tk)\u2212 \u03b1\u0307(tk)\u03b1(tk)\u03b2(tk) ) mtk\nQ\u03betk+1 = Q \u03be tk + \u03b4tk ( \u03b2\u0307(tk)c\u0302tk + \u03b1\u0307(tk) \u03b1(tk) (1\u2212 c\u0302tk\u03b2(tk)) ) Q\u03betk + \u03b4tk ( \u03b2\u0307(tk)\u2212 \u03b1\u0307(tk)\u03b1(tk)\u03b2(tk) ) q\u03betk\n,\n(20)\nwith probability 1/2, and to the opposite theoreof with probability 1/2. In equation (20), the initial conditions are understood as Mt0 = Q \u03be t0 = 0, and we have denoted \u03b4tk \u2261 tk+1 \u2212 tk for clarity. Furthermore, the orthogonal component X\u22a5tk \u2208 span(\u00b5emp., \u03be) \u22a5 obeys the simple linear recursion\nX\u22a5tk+1 = [ 1 + \u03b4tk ( \u03b2\u0307(tk)c\u0302tk + \u03b1\u0307(tk)\n\u03b1(tk) (1\u2212 c\u0302tk\u03b2(tk))\n)] X\u22a5tk . (21)\nFinally, the statistic Qtk \u2261 \u2225Xtk\u2225 2/d is given with high probability by\nQtk = M 2 tk (1 + \u03c32/n) + n(Q\u03betk) 2 + k\u220f \u2113=0 [ 1+ ( \u03b2\u0307(t\u2113)c\u0302t\u2113+ \u03b1\u0307(t\u2113) \u03b1(t\u2113) (1\u2212c\u0302t\u2113\u03b2(t\u2113)) ) \u03b4t\u2113 ]2 . (22)\nEquations (20),(21) and (22) of Remark 3.2 are consistent discretizations of the continuous flows (16),(17) and (18) of Result 3.1 respectively, and converge thereto in the limit of small discretization steps maxk \u03b4tk \u2192 0. A derivation of Remark 3.2 is detailed in Appendix B. An important consequence of Result 3.1 is that the transport of a sample X0 \u223c \u03c10 by (7) factorizes into the low-dimensional deterministic evolution of its projection on the low-rank subspace span(\u00b5emp., \u03be), as tracked by the two summary statistics Mt, Q \u03be t , and the simple linear dynamics of its projection on the orthogonal space span(\u00b5emp., \u03be)\u22a5. Result 3.1 thus reduces the high-dimensional flow (7) into a set of two scalar ordinary differential equations (16) and a simple homogeneous linear differential equation (17). The theoretical predictions of Result (3.1) and Remark 3.2 for the summary statistics Mt, Q \u03be t , Qt are plotted in Fig. 2, and display convincing agreement with numerical simulations, corresponding to discretizing the flow (7) in N = 100 time steps, and training a separate network for each step as described in Section 1. A PCA visualization of the flow is further provided in Fig. 2 (middle).\nLeveraging the simple characterization of Result 3.1, one is now in a position to characterize the generated distribution \u03c1\u03021, which is the density effectively sampled by the generative model. In particular, Result 3.1 establishes that the distribution \u03c1\u03021 is Gaussian over span(\u00b5emp., \u03be)\u22a5 \u2013 since X\u22a50 is Gaussian and the flow is linear\u2013, while the density in span(\u00b5emp., \u03be) concentrates along the vector \u00b5\u0302 described by the components (16). The density \u03c1\u03021 is thus described by a mixture of two\nclusters, Gaussian along d\u2212 2 directions, centered around \u00b1\u00b5\u0302. The following corollary provides a sharp characterization of the squared distance between the mean \u00b5\u0302 of the generated density \u03c1\u03021 and the true mean \u00b5 of the target density \u03c11. Corollary 3.3. (Mean squared error of the mean estimate) Let \u00b5\u0302 be the cluster mean of the density \u03c1\u03021 generated by the (continuous) learnt flow (7). In the asymptotic limit described by Result 2.1, the squared distance between \u00b5\u0302 and the true mean \u00b5 is given by\n1 d \u2225\u00b5\u0302\u2212 \u00b5\u22252= M21 + n(Q \u03be 1) 2 + n\u03c32(Q\u03b71) 2 + 1\u2212 2M1, (23)\nwith M1, Q \u03be 1, Q \u03b7 1 being the solutions of the ordinary differential equations (16) evaluated at time t = 1. Furthermore, the cosine similarity between \u00b5\u0302 and the true mean \u00b5 is given by\n\u00b5\u0302\u2220\u00b5 = M1\u221a Q1 . (24)\nFinally, both the Mean Squared Error (MSE) 1/d\u2225\u00b5\u0302\u2212 \u00b5\u22252 (23) and the cosine asimilarity 1\u2212 \u00b5\u0302\u2220\u00b5 (24) decay as \u0398n(1/n) for large number of samples n.\nThe heuristic derivation of Corollary 3.3 is presented in Appendix A.1. The theoretical predictions of the learning metrics (23) and (24) are plotted in Fig. 3 as a function of the number of samples, along with the corresponding numerical simulations, and display a clear \u0398n(1/n) decay, signalling the convergence of the generated density \u03c1\u03021 to the true target density \u03c11 as the sample complexity accrues. A PCA visualization of this convergence is further presented in Fig.2 (right). Intuitively, this is because the DAE learns the empirical means up to a \u0398n(1/n) component along \u03be, and that the empirical means itself converges to the true mean with rate \u0398n(1/n). While we focus on the MSE for conciseness, the rate of convergence in terms of a variant of the squared gaussian mixture Wasserstein distance (Delon & Desolneux, 2020; Chen et al., 2018) can similarly be derived to be \u0398n(1/n), see Appendix F."
+        },
+        {
+            "heading": "4 BAYES-OPTIMAL BASELINE",
+            "text": "Corollary 3.3 completes the study of the performance of the DAE-parametrized generative model. It is natural to wonder whether one can improve on the \u0398n(1/n) rate that it achieves. A useful baseline to compare with is the Bayes-optimal estimator \u00b5\u0302\u22c6, yielded by Bayesian inference when in addition to the dataset D = {x\u00b51}n\u00b5=1, the form of the distribution (8) and the variance \u03c3 are known, but not the mean \u00b5 \u2013which for definiteness and without loss of generality will be assumed in this section to be have been drawn at random from N (0, Id). The following remark provides a tight characterization of the MSE achieved by this estimator.\nRemark 4.1. (Bayes-optimal estimator of the cluster mean) The Bayes-optimal estimator \u00b5\u0302\u22c6 of \u00b5 assuming knowledge of the functional form of the target density (8), the cluster variance \u03c3, and the training set D, is defined as the minimizer of the average squared error\n\u00b5\u0302\u22c6 = arginf \u03bd E\u00b5\u223cN (0,Id),D\u223c\u03c1\u2297n1 \u2225\u03bd(D)\u2212 \u00b5\u2225 2. (25)\nIn the asymptotic limit of Result 2.1, the Bayes-optimal estimator \u00b5\u0302\u22c6(D) is parallel to the empirical mean \u00b5emp.. Its component m\u22c6 \u2261 \u00b5\u22a4emp.\u00b5\u0302\u22c6(D)/d(1 + \u03c32/n) concentrate asymptotically to\nm\u22c6 = n\nn+ \u03c32 , (26)\nFinally, with high probability, the Bayes-optimal MSE reads\n1 d \u2225\u00b5\u0302\u22c6(D)\u2212 \u00b5\u22252= \u03c3\n2\nn+ \u03c32 . (27)\nIn particular, (27) implies that the optimal MSE decays as \u0398n(1/n).\nRemark 4.1, whose derivation is detailed in Appendix C, thus establishes that the Bayes-optimal MSE decays as \u0398n(1/n) with the number of available training samples. Note that while the Bayes-optimal estimator is colinear to the empirical mean, it is differs therefrom by a non-trivial multiplicative factor. On the other hand, the \u0398n(1/n) rate is intuitively due to the \u0398n(1/n) convergence of the empirical mean to the true mean. Contrasting to Corollary 3.3 for the MSE associated to the mean \u00b5\u0302 of the density \u03c1\u03021 learnt by the generative model, it follows that the latter achieves the Bayes-optimal learning rate. The Bayes-optimal MSE (27) predicted by Remark 4.1 is plotted in dashed lines in Fig. 3, alongside the MSE achieved by the generative model (see Corollary 3.3). The common 1/n decay rate is also plotted in dashed black for comparison. Finally, we observe that the estimate of \u00b5 inferred by PCA, plotted as dots in Fig. 3, leads to a cosine similarity which is very close to the Bayes-optimal one, echoing the findings of Cui & Zdeborov\u00e1 (2023) in another asymptotic limit. We however stress an important distinction between the generative model analyzed in previous sections and the Bayes and PCA estimators dicussed in the present section. The generative model is tasked with estimating the full distribution \u03c11 only from data, while being completely agnostic thereof. In contrast, PCA and Bayesian inference only offer an estimate of the cluster mean, and require an exact oracle knowledge of its functional form (8) and the cluster variance \u03c3. They do not, therefore, constitute generative models and are only discussed in the present section as insightful baselines.\nIt is a rather striking finding that the DAE (9) succeeds in approximately sampling from \u03c11(8) when trained on but n = \u0398d(1) samples \u2013instead of simply generating back memorized training samples\u2013, and further displays information-theoretically optimal learning rates. The answer to this puzzle lies in the fact that the architecture (9) is very close to the functional form of the exact velocity field b (1), as further detailed in Appendix B (see equation (67)), and is therefore implicitly biased towards learning the latter \u2013 while also not being expressive enough to too detrimentally overfit. A thorough exploration of this form of inductive bias for more complex architectures is an important and fascinating entreprise, which falls out of the scope of the present manuscript and is left for future work.\nCONCLUSION We conduct a tight end-to-end asymptotic analysis of estimating and sampling a binary Gaussian mixture using a flow-based generative model, when the flow is parametrized by a shallow autoencoder. We provide sharp closed-form characterizations for the trained weights of the network, the learnt velocity field, a number of summary statistics tracking the generative flow, and the distance between the mean of the generated mixture and the mean of the target mixture. The latter is found to display a \u0398n(1/n) decay rate, where n is the number of samples, which is further shown to be the Bayes-optimal rate. In contrast to most studies of flow-based generative models in high dimensions, the learning and sampling processes are jointly and sharply analyzed in the present manuscript, which affords the possibility to explicitly investigate the effect of a limited sample complexity at the level of the generated density."
+        },
+        {
+            "heading": "ACKNOWLEDGEMENT",
+            "text": "We thank Michael Albergo, Nicholas Boffi, Joan Bruna, Arthur Jacot and Ahmed El Alaoui for insightful discussions. Part of this work was done during HC\u2019s visit in the Courant Institute in March\n2023. We acknowledge funding from the Swiss National Science Foundation grants OperaGOST (grant number 200390) and SMArtNet (grant number 212049). EVE is supported by the National Science Foundation under awards DMR-1420073, DMS-2012510, and DMS-2134216, by the Simons Collaboration on Wave Turbulence, Grant No. 617006, and by a Vannevar Bush Faculty Fellowship."
+        }
+    ],
+    "year": 2024
+}

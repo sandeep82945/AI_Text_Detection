@@ -1,1 +1,978 @@
-null
+{
+    "abstractText": "The predictions of Large Language Models (LLMs) on downstream tasks often improve significantly when including examples of the input\u2013label relationship in the context. However, there is currently no consensus about how this in-context learning (ICL) ability of LLMs works. For example, while Xie et al. (2022) liken ICL to a general-purpose learning algorithm, Min et al. (2022b) argue ICL does not even learn label relationships from in-context examples. In this paper, we provide novel insights into how ICL leverages label information, revealing both capabilities and limitations. To ensure we obtain a comprehensive picture of ICL behavior, we study probabilistic aspects of ICL predictions and thoroughly examine the dynamics of ICL as more examples are provided. Our experiments show that ICL predictions almost always depend on in-context labels and that ICL can learn truly novel tasks in-context. However, we also find that ICL struggles to fully overcome prediction preferences acquired from pre-training data and, further, that ICL does not consider all in-context information equally.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "SHIPS BUT"
+        },
+        {
+            "affiliations": [],
+            "name": "Jannik Kossen"
+        },
+        {
+            "affiliations": [],
+            "name": "Yarin Gal"
+        },
+        {
+            "affiliations": [],
+            "name": "Tom Rainforth"
+        }
+    ],
+    "id": "SP:6e43b3d68c0455bba83fc1fdc13565fb84b6f965",
+    "references": [
+        {
+            "authors": [
+                "Sweta Agrawal",
+                "Chunting Zhou",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Marjan Ghazvininejad"
+            ],
+            "title": "Incontext examples selection for machine translation",
+            "venue": "In ACL,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ekin Aky\u00fcrek",
+                "Dale Schuurmans",
+                "Jacob Andreas",
+                "Tengyu Ma",
+                "Denny Zhou"
+            ],
+            "title": "What learning algorithm is in-context learning? investigations with linear models",
+            "venue": "In ICLR,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yuntao Bai",
+                "Andy Jones",
+                "Kamal Ndousse",
+                "Amanda Askell",
+                "Anna Chen",
+                "Nova DasSarma",
+                "Dawn Drain",
+                "Stanislav Fort",
+                "Deep Ganguli",
+                "Tom Henighan"
+            ],
+            "title": "Training a helpful and harmless assistant with reinforcement learning from human feedback",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuntao Bai",
+                "Saurav Kadavath",
+                "Sandipan Kundu",
+                "Amanda Askell",
+                "Jackson Kernion",
+                "Andy Jones",
+                "Anna Chen",
+                "Anna Goldie",
+                "Azalia Mirhoseini",
+                "Cameron McKinnon"
+            ],
+            "title": "URL https://arxiv.org/ abs/2212.08073",
+            "venue": "Constitutional ai: Harmlessness from ai feedback",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "NeurIPS,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Stephanie Chan",
+                "Adam Santoro",
+                "Andrew Lampinen",
+                "Jane Wang",
+                "Aaditya Singh",
+                "Pierre Richemond",
+                "James McClelland",
+                "Felix Hill"
+            ],
+            "title": "Data distributional properties drive emergent in-context learning in transformers",
+            "venue": "NeurIPS, 2022a. URL https://arxiv.org/abs/2205.05055",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Stephanie CY Chan",
+                "Ishita Dasgupta",
+                "Junkyung Kim",
+                "Dharshan Kumaran",
+                "Andrew K Lampinen",
+                "Felix Hill"
+            ],
+            "title": "Transformers generalize differently from information stored in context vs in weights",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ting-Yun Chang",
+                "Robin Jia"
+            ],
+            "title": "Careful data curation stabilizes in-context learning",
+            "venue": "In EMNLP,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yanda Chen",
+                "Chen Zhao",
+                "Zhou Yu",
+                "Kathleen McKeown",
+                "He He"
+            ],
+            "title": "On the relation between sensitivity and accuracy in in-context learning",
+            "venue": "URL https://arxiv. org/abs/2209.07661",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "URL https://arxiv. org/abs/2204.02311",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Paul F Christiano",
+                "Jan Leike",
+                "Tom Brown",
+                "Miljan Martic",
+                "Shane Legg",
+                "Dario Amodei"
+            ],
+            "title": "Deep reinforcement learning from human preferences. NeurIPS, 2017",
+            "venue": "URL https://arxiv. org/abs/1706.03741",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ido Dagan",
+                "Oren Glickman",
+                "Bernardo Magnini"
+            ],
+            "title": "The pascal recognising textual entailment challenge",
+            "venue": "In Machine learning challenges workshop,",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Ishita Dasgupta",
+                "Erin Grant",
+                "Tom Griffiths"
+            ],
+            "title": "Distinguishing rule and exemplar-based generalization in learning systems",
+            "venue": "In ICML,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ona de Gibert",
+                "Naiara Perez",
+                "Aitor Garc\u0131\u0301a-Pablos",
+                "Montse Cuadros"
+            ],
+            "title": "Hate Speech Dataset from a White Supremacy Forum",
+            "venue": "In ACL Workshop on Abusive Language Online (ALW2),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Bill Dolan",
+                "Chris Brockett"
+            ],
+            "title": "Automatically constructing a corpus of sentential paraphrases",
+            "venue": "In Third International Workshop on Paraphrasing (IWP2005),",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Edwin Fong",
+                "Chris C Holmes"
+            ],
+            "title": "On the marginal likelihood and cross-validation",
+            "venue": "Biometrika,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Adam Fisch",
+                "Danqi Chen"
+            ],
+            "title": "Making pre-trained language models better few-shot learners",
+            "venue": "In ACL,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Marta Garnelo",
+                "Jonathan Schwarz",
+                "Dan Rosenbaum",
+                "Fabio Viola",
+                "Danilo J Rezende",
+                "SM Eslami",
+                "Yee Whye Teh"
+            ],
+            "title": "URL https://arxiv.org/ abs/1807.01622",
+            "venue": "Neural processes",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Hila Gonen",
+                "Srini Iyer",
+                "Terra Blevins",
+                "Noah A Smith",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Demystifying prompts in language models via perplexity estimation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jonathan Gordon",
+                "John Bronskill",
+                "Matthias Bauer",
+                "Sebastian Nowozin",
+                "Richard E Turner"
+            ],
+            "title": "Metalearning probabilistic inference for prediction",
+            "venue": "In ICLR,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Michael Hahn",
+                "Navin Goyal"
+            ],
+            "title": "A theory of emergent in-context learning as implicit structure induction",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chi Han",
+                "Ziqi Wang",
+                "Han Zhao",
+                "Heng Ji"
+            ],
+            "title": "In-context learning of large language models explained as kernel regression",
+            "venue": "URL https://arxiv.org/abs/2305",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jordan Hoffmann",
+                "Sebastian Borgeaud",
+                "Arthur Mensch",
+                "Elena Buchatskaya",
+                "Trevor Cai",
+                "Eliza Rutherford",
+                "Diego de Las Casas",
+                "Lisa Anne Hendricks",
+                "Johannes Welbl",
+                "Aidan Clark"
+            ],
+            "title": "Training compute-optimal large language models",
+            "venue": "In NeurIPS,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ferenc Husz\u00e1r"
+            ],
+            "title": "Implicit bayesian inference in large language models, 2023",
+            "venue": "URL https://www. inference.vc/implicit-bayesian-inference-in-sequence-models/. [Online; accessed 10-July-2023]",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hui Jiang"
+            ],
+            "title": "A latent space theory for emergent abilities in large language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Saurav Kadavath",
+                "Tom Conerly",
+                "Amanda Askell",
+                "Tom Henighan",
+                "Dawn Drain",
+                "Ethan Perez",
+                "Nicholas Schiefer",
+                "Zac Hatfield Dodds",
+                "Nova DasSarma",
+                "Eli Tran-Johnson"
+            ],
+            "title": "Language models (mostly) know what they know",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Louis Kirsch",
+                "James Harrison",
+                "Jascha Sohl-Dickstein",
+                "Luke Metz"
+            ],
+            "title": "General-purpose in-context learning by meta-learning transformers. arXiv:2212.04458, 2022",
+            "venue": "URL https://arxiv. org/abs/2212.04458",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jannik Kossen",
+                "Neil Band",
+                "Clare Lyle",
+                "Aidan N Gomez",
+                "Tom Rainforth",
+                "Yarin Gal"
+            ],
+            "title": "Selfattention between datapoints: Going beyond individual input-output pairs in deep learning",
+            "venue": "In NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hector Levesque",
+                "Ernest Davis",
+                "Leora Morgenstern"
+            ],
+            "title": "The winograd schema challenge",
+            "venue": "In Thirteenth international conference on the principles of knowledge representation and reasoning,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Xiaonan Li",
+                "Xipeng Qiu"
+            ],
+            "title": "Finding supporting examples for in-context learning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Percy Liang",
+                "Rishi Bommasani",
+                "Tony Lee",
+                "Dimitris Tsipras",
+                "Dilara Soylu",
+                "Michihiro Yasunaga",
+                "Yian Zhang",
+                "Deepak Narayanan",
+                "Yuhuai Wu",
+                "Ananya Kumar"
+            ],
+            "title": "Holistic evaluation of language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Stephanie Lin",
+                "Jacob Hilton",
+                "Owain Evans"
+            ],
+            "title": "Teaching models to express their uncertainty in words",
+            "venue": "TMLR,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiachang Liu",
+                "Dinghan Shen",
+                "Yizhe Zhang",
+                "Bill Dolan",
+                "Lawrence Carin",
+                "Weizhu Chen"
+            ],
+            "title": "What makes good in-context examples for gpt-3? In ACL, 2022",
+            "venue": "URL https://arxiv.org/abs/",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pengfei Liu",
+                "Weizhe Yuan",
+                "Jinlan Fu",
+                "Zhengbao Jiang",
+                "Hiroaki Hayashi",
+                "Graham Neubig"
+            ],
+            "title": "Pretrain, prompt, and predict: A systematic survey of prompting methods in natural language processing",
+            "venue": "ACM Computing Surveys,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Peter J Liu",
+                "Mohammad Saleh",
+                "Etienne Pot",
+                "Ben Goodrich",
+                "Ryan Sepassi",
+                "Lukasz Kaiser",
+                "Noam Shazeer"
+            ],
+            "title": "Generating wikipedia by summarizing long sequences",
+            "venue": "In ICLR,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp"
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming few-shot prompt order sensitivity",
+            "venue": "In ACL,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "P. Malo",
+                "A. Sinha",
+                "P. Korhonen",
+                "J. Wallenius",
+                "P. Takala"
+            ],
+            "title": "Good debt or bad debt: Detecting semantic orientations in economic texts",
+            "venue": "Journal of the Association for Information Science and Technology,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Clara H. McCreery",
+                "Namit Katariya",
+                "Anitha Kannan",
+                "Manish Chablani",
+                "Xavier Amatriain"
+            ],
+            "title": "Effective transfer learning for identifying similar questions: Matching user questions to covid-19 faqs",
+            "venue": "URL https://arxiv.org/abs/2008.13546",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Hannaneh Hajishirzi"
+            ],
+            "title": "Metaicl: Learning to learn in context",
+            "venue": "In NAACL, 2022a. URL https://arxiv.org/abs/2110.15943",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Xinxi Lyu",
+                "Ari Holtzman",
+                "Mikel Artetxe",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Rethinking the role of demonstrations: What makes in-context learning work",
+            "venue": "In ACL,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Samuel M\u00fcller",
+                "Noah Hollmann",
+                "Sebastian Pineda Arango",
+                "Josif Grabocka",
+                "Frank Hutter"
+            ],
+            "title": "Transformers can do bayesian inference",
+            "venue": "In ICLR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kevin P Murphy"
+            ],
+            "title": "Probabilistic machine learning: an introduction",
+            "venue": "MIT press,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human feedback. NeurIPS, 2022",
+            "venue": "URL https://arxiv.org/abs/2203",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jane Pan",
+                "Tianyu Gao",
+                "Howard Chen",
+                "Danqi Chen"
+            ],
+            "title": "What in-context learning \u201dlearns\u201d in-context: Disentangling task recognition and task learning",
+            "venue": "In ACL,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Adam Paszke",
+                "Sam Gross",
+                "Francisco Massa",
+                "Adam Lerer",
+                "James Bradbury",
+                "Gregory Chanan",
+                "Trevor Killeen",
+                "Zeming Lin",
+                "Natalia Gimelshein",
+                "Luca Antiga",
+                "Alban Desmaison",
+                "Andreas Kopf",
+                "Edward Yang",
+                "Zachary DeVito",
+                "Martin Raison",
+                "Alykhan Tejani",
+                "Sasank Chilamkurthy",
+                "Benoit Steiner",
+                "Lu Fang",
+                "Junjie Bai",
+                "Soumith Chintala"
+            ],
+            "title": "Pytorch: An imperative style, high-performance deep learning library",
+            "venue": "NeurIPS,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Karthik Narasimhan",
+                "Tim Salimans",
+                "Ilya Sutskever"
+            ],
+            "title": "Improving language understanding with unsupervised learning",
+            "venue": "Technical report, OpenAI,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yasaman Razeghi",
+                "Robert L Logan IV",
+                "Matt Gardner",
+                "Sameer Singh"
+            ],
+            "title": "Impact of pretraining term frequencies on few-shot reasoning",
+            "venue": "In EMNLP,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chenglei Si",
+                "Dan Friedman",
+                "Nitish Joshi",
+                "Shi Feng",
+                "Danqi Chen",
+                "He He"
+            ],
+            "title": "Measuring inductive biases of in-context learning with underspecified demonstrations",
+            "venue": "In ACL,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Richard Socher",
+                "Alex Perelygin",
+                "Jean Wu",
+                "Jason Chuang",
+                "Christopher D Manning",
+                "Andrew Y Ng",
+                "Christopher Potts"
+            ],
+            "title": "Recursive deep models for semantic compositionality over a sentiment treebank",
+            "venue": "In EMNLP,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Efstathios Stamatatos"
+            ],
+            "title": "A survey of modern authorship attribution methods. American Society for information",
+            "venue": "Science and Technology,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Louis Martin",
+                "Kevin Stone",
+                "Peter Albert",
+                "Amjad Almahairi",
+                "Yasmine Babaei",
+                "Nikolay Bashlykov",
+                "Soumya Batra",
+                "Prajjwal Bhargava",
+                "Shruti Bhosale"
+            ],
+            "title": "Llama 2: Open foundation and fine-tuned chat models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Johannes Von Oswald",
+                "Eyvind Niklasson",
+                "Ettore Randazzo",
+                "Jo\u00e3o Sacramento",
+                "Alexander Mordvintsev",
+                "Andrey Zhmoginov",
+                "Max Vladymyrov"
+            ],
+            "title": "Transformers learn in-context by gradient descent",
+            "venue": "In ICML,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel R. Bowman"
+            ],
+            "title": "GLUE: A multi-task benchmark and analysis platform for natural language understanding",
+            "venue": "In ICLR,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Sida I Wang",
+                "Christopher D Manning"
+            ],
+            "title": "Baselines and bigrams: Simple, good sentiment and topic classification",
+            "venue": "In ACL,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Jerry Wei",
+                "Jason Wei",
+                "Yi Tay",
+                "Dustin Tran",
+                "Albert Webson",
+                "Yifeng Lu",
+                "Xinyun Chen",
+                "Hanxiao Liu",
+                "Da Huang",
+                "Denny Zhou"
+            ],
+            "title": "Larger language models do in-context learning differently",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Noam Wies",
+                "Yoav Levine",
+                "Amnon Shashua"
+            ],
+            "title": "The learnability of in-context learning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ronald J Williams",
+                "David Zipser"
+            ],
+            "title": "A learning algorithm for continually running fully recurrent neural networks",
+            "venue": "Neural computation,",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "Thomas Wolf",
+                "Lysandre Debut",
+                "Victor Sanh",
+                "Julien Chaumond",
+                "Clement Delangue",
+                "Anthony Moi",
+                "Pierric Cistac",
+                "Tim Rault",
+                "R\u00e9mi Louf",
+                "Morgan Funtowicz"
+            ],
+            "title": "Huggingface\u2019s transformers: State-of-the-art natural language processing",
+            "venue": "In EMNLP: System Demonstrations,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhaofeng Wu",
+                "Linlu Qiu",
+                "Alexis Ross",
+                "Ekin Aky\u00fcrek",
+                "Boyuan Chen",
+                "Bailin Wang",
+                "Najoung Kim",
+                "Jacob Andreas",
+                "Yoon Kim"
+            ],
+            "title": "Reasoning or reciting? exploring the capabilities and limitations of language models through counterfactual tasks",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sang Michael Xie",
+                "Aditi Raghunathan",
+                "Percy Liang",
+                "Tengyu Ma"
+            ],
+            "title": "An explanation of in-context learning as implicit bayesian inference",
+            "venue": "In ICLR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kang Min Yoo",
+                "Junyeob Kim",
+                "Hyuhng Joon Kim",
+                "Hyunsoo Cho",
+                "Hwiyeol Jo",
+                "Sang-Woo Lee",
+                "Sanggoo Lee",
+                "Taeuk Kim"
+            ],
+            "title": "Ground-truth labels matter: A deeper look into input-label demonstrations",
+            "venue": "In EMNLP,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiang Zhang",
+                "Junbo Jake Zhao",
+                "Yann LeCun"
+            ],
+            "title": "Character-level convolutional networks for text classification",
+            "venue": "In NeurIPS,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Yiming Zhang",
+                "Shi Feng",
+                "Chenhao Tan"
+            ],
+            "title": "Active example selection for in-context learning",
+            "venue": "In EMNLP, 2022b. URL https://arxiv.org/abs/2211.04486",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yufeng Zhang",
+                "Fengzhuo Zhang",
+                "Zhuoran Yang",
+                "Zhaoran Wang"
+            ],
+            "title": "What and how does in-context learning learn? bayesian model averaging, parameterization, and generalization",
+            "venue": "URL https://arxiv.org/abs/2305.19420",
+            "year": 1942
+        },
+        {
+            "authors": [
+                "Zihao Zhao",
+                "Eric Wallace",
+                "Shi Feng",
+                "Dan Klein",
+                "Sameer Singh"
+            ],
+            "title": "Calibrate before use: Improving few-shot performance of language models",
+            "venue": "In ICML,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Daniel M Ziegler",
+                "Nisan Stiennon",
+                "Jeffrey Wu",
+                "Tom B Brown",
+                "Alec Radford",
+                "Dario Amodei",
+                "Paul Christiano",
+                "Geoffrey Irving"
+            ],
+            "title": "Fine-tuning language models from human",
+            "venue": "URL https://arxiv.org/abs/1909.08593",
+            "year": 1909
+        },
+        {
+            "authors": [
+                "Zhao"
+            ],
+            "title": "SST-2/Falcon-40B and small improvements for all labels for Hate Speech/LLaMa-65B and MQP/LLaMa-2-70B. Most importantly, we still observe large differences in performance between the different label setups at maximum context size, such that, here, NH2 remains rejected for ICL with calibrated predictions",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhao"
+            ],
+            "title": "Few-shot ICL with replacement labels for Falcon-40B on SST-2, LLaMa-2-65B on Hate Speech, and LLaMa-2-70B on MQP. Results are largely similar to the original figure Fig. 5 and NH2 remains rejected. Averages over 100 runs and thick lines with moving average (window size",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Brown et al. (2020) have shown that Large Language Models (LLMs) (Radford et al., 2019; Chowdhery et al., 2022; Hoffmann et al., 2022; Zhang et al., 2022a) can perform so-called in-context learning (ICL) of supervised tasks. In contrast to standard in-weights learning, e.g. gradient-based finetuning of model parameters, ICL requires no parameter updates. Instead, examples of the input\u2013 label relationship of the downstream task are simply prepended to the query for which the LLM predicts. This is sometimes also referred to as few-shot ICL to differentiate from other ICL variants that do not use example demonstrations (Liu et al., 2023). Few-shot ICL is widely used, e.g. in all LLM publications cited above, to improve predictions across a variety of established NLP tasks, such as sentiment or document classification, question answering, or natural language inference.\nHowever, there is currently no consensus on why ICL improves predictions, with prior work presenting a large variety of often contradictory perspectives. For example, Brown et al. (2020) highlight similarities between the behavior of ICL and finetuning of LLMs, such as improvements with model size and number of examples. Since then, some have argued that ICL works because it implements general-purpose learning algorithms such as Bayesian inference or gradient descent (Xie et al., 2022; Husza\u0301r, 2023; Hahn & Goyal, 2023; Jiang, 2023; Zhang et al., 2023; Von Oswald et al., 2023; Akyu\u0308rek et al., 2023; Han et al., 2023). In contrast, others have highlighted practical shortcomings of ICL, suggesting ICL does not really \u2018learn\u2019 from examples in the way one expects (Liu et al., 2022; Lu et al., 2022; Zhao et al., 2021; Chen et al., 2022; Agrawal et al., 2023; Chang & Jia, 2022; Razeghi et al., 2022; Li & Qiu, 2023; Wei et al., 2023). In particular, Min et al. (2022b) claim their \u2018findings suggest that [LLMs] do not learn new tasks at test time\u2019 in the sense of \u2018capturing the input-label correspondence\u2019. Clearly, these claims, if true, are not compatible with the behavior we would expect from a general-purpose learning algorithm.\nIn this paper, we address the pressing need for an improved understanding of how information given in-context affects ICL predictions. Concretely, we formulate a set of questions that encode our beliefs about how an idealized conventional learning algorithm should incorporate label information\n\u2207Correspondence to jannik.kossen@cs.ox.ac.uk. \u2206 Equal advising.\n1\nPublished as a conference paper at ICLR 2024\nand then study ICL behavior in relation to this concept of a conventional learner. (1) Does ICL take the input\u2013label relationship of the in-context examples into account when predicting for test queries? (2) Is ICL powerful enough to overcome prediction preferences originating from pre-training? (3) Does ICL treat all information provided in-context equally? To study these questions rigorously, we rephrase them as null hypotheses that we study empirically. Our results yield an improved understanding of the similarities and differences between ICL and idealized conventional learners.\nUnlike prior work, we study in detail how ICL predictions evolve as an increasing number of examples are provided, from no examples at all up to the maximum possible, across a range of LLMs and tasks. We further show that using probabilistic metrics better highlights the resulting ICL dynamics, often revealing large changes in the confidence of ICL predictions, even when accuracy metrics barely change at all. These measures ensure we obtain a comprehensive picture of ICL behavior.\nIn our experiments, we first examine if ICL predictions depend on the labels of in-context examples by studying how probabilistic metrics react to randomized in-context labels (\u00a75, Fig. 1). Further, we study ICL on a truly novel task the LLM cannot know from pre-training (\u00a76). Both experiments show that ICL typically considers in-context label relations. We then investigate if ICL is powerful enough to overcome prediction preferences learned from pre-training data (\u00a77). In our experiments, we find this is typically not the case as ICL performance plateaus if label relations oppose pretraining preference. Further, while additional prompting can improve ICL here, we ultimately do not find prompts that lead to the desired behavior. Finally, we study if ICL treats all information provided in-context equally (\u00a78). This is important when the context contains multiple different label relationships. By modifying label relations during ICL, we find it does not treat all in-context information equally, and, instead, ICL preferentially makes use of information closer to the query.\nIn summary, our results suggest a new middle ground regarding the capabilities and limitations of ICL. While ICL can learn from label information, it does so differently than an idealized learner. Our findings thus contribute to a better understanding of information processing in ICL, which, in turn, is crucial to our ability to deploy LLMs safely and effectively. For example, Bai et al. (2022b) suggest to use ICL for alignment, which relies on ICL being able to sufficiently adjust LLM behavior."
+        },
+        {
+            "heading": "2 BACKGROUND",
+            "text": "A large and growing body of prior work studies ICL. We here highlight those studies that are most relevant to our motivation, and discuss other related work later in \u00a710.\nSince its introduction by Brown et al. (2020), few-shot ICL has become an integral part of LLM evaluations: e.g. many recent publications rely on few-shot ICL tasks, such as the popular HELM benchmark (Liang et al., 2022), to evaluate their LLMs (Chowdhery et al., 2022; Hoffmann et al., 2022).\nIn the wake of ICL\u2019s success, follow up work has speculated if ICL implements a general purpose learning algorithm such as gradient descent (Von Oswald et al., 2023) or Bayesian inference (Xie et al., 2022). This line of work implies that ICL captures not just how much LLMs have learned during pre-training but, rather, how much LLMs have learned how to learn novel supervised tasks in-context. However, so far arguments have been largely theoretical, lacking solid experimental evidence in actual LLMs (Zhang et al., 2023; Husza\u0301r, 2023; Wies et al., 2023; Jiang, 2023).\n2\nPublished as a conference paper at ICLR 2024\nConversely, a variety of studies have highlighted unexpected shortcomings of ICL. For example, ICL can be sensitive to the formatting (Min et al., 2022b) or order (Lu et al., 2022) of the in-context learning examples. Further, LLMs prefer to predict labels that are common in the pre-training data (Zhao et al., 2021), they can predict drastically different for similar prompts (Chen et al., 2022), and they rely on task formulations similar to those observed in the pre-training data (Wu et al., 2023).\nIn particular, Min et al. (2022b) claim that ICL does not learn label relationships from in-context examples and that ICL \u2018performance drops only marginally when labels in the demonstrations are replaced by random labels\u2019. Further, they suggest that, instead of learning input\u2013label relationships, ICL only works because the model learns about the general label space, the formatting of the examples, and their input distribution. They assert that ICL does \u2018not learn new tasks at test time\u2019 and that \u2018ground truth demonstrations are in fact not required\u2019 in many common scenarios. In the first part of our evaluation, we will revisit and ultimately disagree with these claims."
+        },
+        {
+            "heading": "3 NULL HYPOTHESES ON HOW ICL INCORPORATES LABEL INFORMATION",
+            "text": "We wish to obtain a better understanding of how ICL uses information about the input\u2013label relationship provided in-context. We therefore study to what extent ICL behavior matches our expectations of how a machine learning algorithm should behave in an idealized world. To this end, we introduce the concept of a \u2018conventional learning algorithm\u2019 as an algorithm that conforms to our intuitions of how an idealized learner will make predictions given data. In particular, we focus on the following intuitions of an idealized learner: (1) it makes use of the labels for learning, (2) it allows the true label relationship to be learned when provided with sufficient data, and (3) it considers all information in the data equally. Note here that some existing approaches may not always conform to some or all of these intuitions, e.g. due to imperfections in training schemes, but our concept of the conventional learning algorithm reflects how we would expect them to behave if our training worked perfectly.\nTo allow these institutions to be tested for ICL, we now introduce a series of null hypotheses that we will subsequently try to falsify. Our first hypothesis follows from the notion that conventional learners make use of the conditional distribution of labels given inputs.\nNull Hypothesis 1 (NH1): ICL predictions are independent of the conditional label distribution of the examples given in-context.\nWe will investigate NH1 in multiple ways. In \u00a75, we revisit and refine the randomized in-context label experiment of Min et al. (2022b): in addition to revising their results for point predictions, we propose the use of probabilistic metrics to study if label randomization really does not affect ICL predictive beliefs. Then, in \u00a76, we study ICL on a novel task that we create and which ICL can only solve by learning a novel label relationship that it cannot know from pre-training.\nNext, we study how ICL incorporates label information. The pre-trained model already contains information towards many NLP tasks: even without any ICL, predictions are significantly better than random guessing. This raises the question of how information given in-context interacts with this pre-training preference. In typical applications of conventional learners, we would expect that predictions eventually follow the label relation of the training examples when provided with sufficient data. A learner that does not conform to this is inherently limited in what it can learn. With NH2, we study if ICL conforms to these intuitions and can overcome the initial pre-training preference.\nNull Hypothesis 2 (NH2): ICL can overcome the zero-shot prediction preferences of the pre-trained model.\nIn \u00a77, we modify in-context label relationships and study how this changes ICL predictions. If NH2 is true, ICL should eventually predict according to any label relation given in-context.\nOur last hypothesis relies on the following typical property of conventional learning algorithms: they will consider all information in the examples equally. If a dataset contains multiple sources of information about a label relationship, e.g. the dataset itself is a union of multiple datasets, then all information is considered equally by the learner. NH3 investigates if this is holds true for ICL as well.\nNull Hypothesis 3 (NH3): ICL considers all information given in-context equally.\nIn \u00a78, we study non-stationary input distributions for which label relations change during ICL. If NH3 is true, ICL predictions should not depend on the order in which we present label relations.\n3\nPublished as a conference paper at ICLR 2024"
+        },
+        {
+            "heading": "4 EXPERIMENTAL SETUP & ICL TRAINING DYNAMICS",
+            "text": "We here detail our experimental setup for the subsequent evaluation of few-shot ICL behavior.\nModels & Tasks. We employ LLMs from the LLaMa-2 (Touvron et al., 2023b), LLaMa (Touvron et al., 2023a), and Falcon (TII, 2023) families due to their strong performance and open source nature. We evaluate on SST-2, Subjective (Subj.), Financial Phrasebank (FP), Hate Speech (HS), AG News (AGN), MQP, MRPC, RTE, and WNLI. We provide citations for all tasks in \u00a7D.\nContext Size. We always report few-shot ICL performance across all possible numbers of in-context demonstrations, i.e. from zero-shot performance up to the maximum number of examples within the LLMs\u2019 input token limit. This is in contrast to prior work, which often evaluates few-shot ICL at only a few context set sizes, and allows us to obtain a comprehensive picture of ICL \u2018training dynamics\u2019.\nComputationally Cheap ICL Evaluations. We propose a novel evaluation strategy that obtains ICL predictions at all possible numbers of in-context demonstrations without incurring any additional cost. Concretely, we exploit the fact that each forward pass through the model gives not just a prediction for the next token, but rather, the predicted probabilities for each input token (given all preceding tokens). By extracting those token predictions that correspond to labels of in-context examples, we obtain few-shot ICL predictions at all in-context dataset sizes with each forward pass. We refer to \u00a7B for a formalization of few-shot ICL and further description of our evaluation strategy.\nEvaluation Metrics. We evaluate few-shot ICL performance in terms of accuracy (\u2191) and (average) log likelihood (\u2191) of label predictions. We also report entropy, which, while not a performance metric, is useful for understanding how much predicted probabilities are spread over classes. We average metrics over sets of in-context examples drawn randomly and without replacement from the training set, and we compare to a guessing baseline that predicts with probabilities equal to class frequencies.\nDefault Training Dynamics. Before modifying label relationships in the following sections, Fig. 2 shows standard few-shot ICL training dynamics for Falcon models on SST-2. We observe reasonable behavior for all models: as more in-context examples are observed, accuracies and log likelihoods increase, while entropies decrease. Notably, log likelihoods and entropies show in-context learning more clearly: predicted probabilities continue to improve at larger context sizes, whereas accuracies saturate quickly. Differences between models are more noticeable for probabilistic metrics, too: entropies reveal that larger or instruction-tuned Falcon models predict with higher certainty on SST-2. Similar findings also hold for LLaMa and LLaMA-2 models, for which we provide results in Fig. F.1."
+        },
+        {
+            "heading": "5 DO ICL PREDICTIONS DEPEND ON IN-CONTEXT LABELS?",
+            "text": "We now study the null hypotheses (NH) formulated in \u00a73, starting with NH1, which states that ICL predictions are independent of the conditional label distribution of the in-context examples. To this end, we first revisit the experiments of Min et al. (2022b), replacing all labels of in-context examples with labels drawn randomly from the training set of the task. If NH1 is true, then accuracy, log-likelihood, and entropy should be identical for the randomized and standard label scenario. We note that, while we believe the results of this experiment are already sufficient to reject NH1, the experiments in \u00a76\u2013\u00a78 will provide additional strong evidence for this conclusion.\nObservations & Discussion. We evaluate NH1 across all our models, tasks, and metrics, computing full ICL training curves as introduced in \u00a74. Figure 1 shows log likelihoods for LLaMa-2-70B for\n4\nPublished as a conference paper at ICLR 2024\na selection of tasks, and Fig. 3 shows all metrics for all Falcon models on SST-2. We observe significant differences in ICL behavior for the default and randomized label scenario. As the context size grows, likelihoods eventually degrade significantly for randomized labels. In Fig. 3, we can further see entropies increase when randomizing labels. This is reasonable from a probabilistic learning perspective: as noisy labels are observed, estimates of uncertainty will typically increase. While differences are large for probabilistic log likelihood and entropy, they can be harder to spot for accuracy. In Fig. 2, only Falcon-40B experiences a sizeable accuracy decrease. (For LLaMa(-2) models, accuracy decreases more frequently and can approach guessing level, cf. Figs. F.3 to F.8.)\nWe provide results for label randomization across all our models, tasks, and metrics: we invite the reader to view the full set of training curves in \u00a7F and provide a summary of the results in Table 1. It shows the average difference in log likelihoods between the default and randomized labels at the maximum number of demonstrations for each task and model. We gray out entries where ICL on default labels does not outperform the guessing baseline as we are only interested in studying label randomization when ICL works in the first place. When default label performance is better than random (black entries), differences are almost always significantly positive (bold entries), indicating ICL performs worse for randomized labels. Based on these results, we reject NH1 that ICL predictions do not depend on the conditional label distribution of in-context examples.\nNotably, Table 1 shows that LLaMa-2-70B, our largest and most capable model, always performs worse under label randomization. This suggests the importance of labels in ICL will increase as models become more powerful in the future. However, performance often degrades significantly even for smaller models, although they struggle to reach better than random performance on the entailment tasks MQP, MRPC, RTE, and WNLI. Occasionally, likelihoods improve despite random labels, e.g. for the small Falcon models in Fig. 3. Following Pan et al. (2023); Min et al. (2022b), we attribute this to ICL \u2018recognizing\u2019, rather than learning, the task from the random label demonstrations. However, we note that, even here, there are significant performance gaps to the default scenario. We conclude that label randomization adversely affecting ICL predictions is the rule not the exception.\nDiscussion of Min et al. (2022b). Lastly, we discuss possible reasons for why Min et al. (2022b) arrive at the conclusion that label randomization only \u2018barely hurts\u2019 ICL performance: (1) They do\n5\nPublished as a conference paper at ICLR 2024\nnot study probabilistic metrics, which are more sensitive to randomization. (2) They use a fixed ICL dataset size of 16, but effects of random labels increase with growing contexts. (3) Only one model they study has more than 20B parameters (GPT-3), but we observe that larger models react more to randomization. (Pan et al. (2023) also observe this, cf. \u00a710.) (4) On some tasks, performance for Min et al. (2022b) could be close to random guessing, where label randomization has less of an effect."
+        },
+        {
+            "heading": "6 CAN ICL LEARN TRULY NOVEL LABEL RELATIONSHIPS?",
+            "text": "The results of \u00a75 show that ICL predictions do depend on the label relationship of in-context examples. Here, we explore the extent to which ICL can extract label information from the context. Concretely, we study if LLMs can learn truly novel label relationships in-context. To do this, we create a task that is guaranteed to not appear in the pre-training data. The task needs to be distinct from established NLP tasks, for which the pre-training data could be contaminated and for which, often, strong zero-shot performance shows the model has learned the task, perhaps implicitly, during pre-training.\nSpecifically, we create an authorship identification (Stamatatos, 2009) dataset from private messages between two authors of this paper. The task is to identify the author corresponding to a given message. As messages stem from private communication, they are guaranteed to not be part of the pre-training corpus. For ICL to succeed here, it needs to learn the novel input\u2013label relationship provided in-context: while the LLM could have some general notion of authorship identification tasks, the specific input\u2013label relationship is definitely novel, as the authors\u2019 private writing styles cannot be known to the LLM. We give further details on the task in \u00a7C.\nObservations & Discussion. Figure 4 shows that ICL with LLaMa-2 succeeds at learning the author identification task. Accuracies and log likelihoods increase, agreeing with expectations about conventional learning. Performance improves with model size, but all models perform better than random. We show results for more LLMs in Fig. F.13: all models, except Falcon-7B-Instruct, achieve better than random performance. We conclude that LLMs can learn truly novel tasks incontext, correctly inferring the label relation from examples. These results also strongly support our previous rejection of NH1 as, clearly, ICL predictions must depend on labels to learn the novel task."
+        },
+        {
+            "heading": "7 CAN ICL OVERCOME PRE-TRAINING PREFERENCE?",
+            "text": "With NH2, we explore how in-context label information trades off against the LLM\u2019s pre-training preference, i.e. its zero-shot predictions based on label relationships inferred from pre-training and stored in the model parameters. Often, pre-training preference and in-context label relationships agree: e.g. in Fig. 3, performance is high zero-shot and then improves with ICL. To test NH2 if ICL can overcome pre-training preference, we create scenarios where pre-training preference and in-context observations are not aligned. We then study if ICL behavior is compatible with fully overcoming pre-training preference as we would expect from a conventional learner.\nConcretely, we use replacement label relationships when constructing the in-context examples. (1) We flip the default labels, e.g. (negative, positive) get mapped to (positive, negative) for SST-2. (2) We study arbitrary labels, e.g. (negative, positive) become (A, B) or (B, A)\u2014we deliberately choose arbitrary labels here such that the LLM should not have a significant preference for assigning them to positive or negative. We then evaluate ICL performance for predicting the replacement\n6\nPublished as a conference paper at ICLR 2024\nlabel relationship, e.g. the flipped labels in (1). Note that, we rely on the flipped label experiments to evaluate NH2; results on arbitrary labels serve to complete the picture, and we discuss them later.\nObservations & Discussion. We evaluate NH2 across all our models, tasks, and metrics. Figure 5 shows results for a selection of large models and datasets. Evidently, the LLMs can, to some extent, learn to predict the flipped label relationships against pre-training preference. Accuracies on flipped labels reach levels significantly better than random guessing. However, in particular for entropies, there is a consistent gap between the default and flipped label scenarios: ICL predictions on flipped labels are much less certain. Importantly, given the plateauing behavior, this gap is unlikely to disappear with additional in-context observations. (Practically speaking, we cannot actually add any additional examples as input size is maximal already and will deteriorate when exceeding the LLMs\u2019 input token limit; this is itself a limitation of ICL compared to conventional learning.) It seems that label relationships inferred from pre-training have a permanent effect that cannot be overcome through in-context observations. This does not agree with conventional learning: predictions on flipped labels should continue to improve as observations continue to contradict pre-training preference.\nCrucially, we observe this behavior across models and tasks. We encourage the reader to view the full set of training curves in \u00a7F. Table 2 provides a summary of the results, showing differences in entropy between default and flipped label scenarios at maximum context size, highlighting statistical significance in bold and graying out entries where ICL fails on default labels. Across the board, we again observe that predictions on flipped labels plateau: a significant gap between predictions on default and flipped labels remains, even at maximum input size. For the models we study, we reject\n7\nPublished as a conference paper at ICLR 2024\nNH2 that ICL can overcome prediction preferences from pre-training. Again, the results here strongly support our previous rejection of NH1, as clearly, predictions change for replacement labels.\nFigure 5 also shows that for replacement labels (A, B) and (B, A) both directions are similarly easy for ICL to learn. This suggests the LLM has not learned a preference for them from pre-training, agreeing with our intuition. Further, learning arbitrary labels is slower than learning default labels but faster than learning flipped labels, which agrees with intuitions about inductive biases.\nCan Prompting Help? In \u00a7A, we further study if specific prompts, i.e. instructions that inform the LLMs of the flipped labels, can improve ICL predictions. We find that, while prompts initially can help the model predict on flipped labels, eventually, prompts no longer improve predictions."
+        },
+        {
+            "heading": "8 HOW DOES ICL AGGREGATE IN-CONTEXT INFORMATION?",
+            "text": "With NH3, we study if ICL considers all in-context information equally. We have just seen that ICL does not treat pre-training preference equivalently to in-context label information. However, it is similarly important to understand how ICL treats different sources of purely in-context information.\nTo test NH3, we change the label relationship during in-context learning in three different scenarios. (D\u2192 F): after N observations of the default label relation we flip the label relation for all following observations, e.g. from (negative, positive) to (positive, negative) for SST-2. (F\u2192 D): we now start with N flipped label observations and then expose the model to default labels. (Alternate F\u2194 D): we alternate between the default and flipped labels after each observation. For all three setups, after 2N observations, the model has observed the same number of the flipped and default label examples. If NH3 is true, ICL should treat all observed label relations equally, no matter their position in the input. This means, predictions should be the same for all three scenarios after 2N observations.\nObservations & Discussion. Figure 6 shows accuracies for a selection of models and tasks, and we report full probabilistic metrics for all tasks and model combinations for which ICL was able to learn the flipped relationships well in Figs. F.32 to F.36. We observe that, across almost all tasks and model combinations, predictions are significantly different between the three setups after observing the same number of examples of both label relationships (after 2N total observations, red dashed line in the figure). We thus reject NH3 that ICL treats all information provided in-context equivalently.\nAfter the changepoint N , predictions immediately begin to adjust to the new label relationship. In particular, after 2N observations, the (F\u2192D) setup has a bias for predicting according to the default label relationship, while the (D \u2192 F) setup has a bias for predicting the flipped label relationship.\n8\nPublished as a conference paper at ICLR 2024\nIn other words, LLMs prefer to use information that is closer to the query, instead of considering all available information equally. Our finding is distinct from Zhao et al. (2021), who observe that ICL preferentially predicts labels that appear frequently near the query for a single fixed label relation. Lastly, we note once more that the results here also strongly support our previous rejection of NH1."
+        },
+        {
+            "heading": "9 DISCUSSION & LIMITATIONS",
+            "text": "Alignment. For alignment of LLMs, it is crucial to understand how pre-training preference and inputs trade-off, as well as how different parts of the input, such as a context string and user input, interact and influence predictions. Our results suggest prompt-based alignment (Bai et al., 2022b) may struggle to overwrite pre-training preference and could itself easily be overcome by future user input.\nDo Labels Always Matter? It is plausible that labels matter less for other NLP tasks such as question answering, where in-context examples may provide limited information towards the answer of the query question. However, for the randomized label experiment, capable LLMs might still identify that the provided in-context answers are random and imitate this in their predictions.\nLimitations. We focus on few-shot ICL tasks where evaluation is based on logits and not free-form generation. We do this mostly to avoid complications around evaluating free-form generation tasks and believe our results should transfer to this setting. Further, our experiments do not cover RLHF-finetuned LLMs (Christiano et al., 2017; Ziegler et al., 2019; Ouyang et al., 2022)."
+        },
+        {
+            "heading": "10 RELATED WORK",
+            "text": "Some recent work has studied the effect of labels in ICL. Yoo et al. (2022) also revisit label randomization and find significant variance across tasks and models. Pan et al. (2023) further separate ICL into label-independent and -dependent learning, which they study by replacing labels with arbitrary tokens. Wei et al. (2023) find that smaller or instruction-tuned models are less capable when performing ICL with replacement labels. Similar to Min et al. (2022b), the above studies do not consider probabilistic metrics or full ICL training curves, and thus can underestimate changes in ICL predictions for modified labels. For example, Pan et al. (2023) find that the gap between random and default labels is \u2018insignificant\u2019 for small models, which our results, in particular for probabilistic metrics, contradict, cf. \u00a75. Further, Wei et al. (2023) claim that \u2018large models can override prior knowledge from pretraining [. . . ] in-context\u2019 and \u2018small models do not change their predictions when seeing flipped labels\u2019, which is not supported by our results in \u00a77. Lastly, Gao et al. (2021) observe that replacement labels can also degrade performance when finetuning language models. More generally, ICL has been the subject of many recent studies. For example, Min et al. (2022a) fine-tune language models to improve ICL, Si et al. (2023) measure the inductive bias of ICL predictions, Chan et al. (2022b); Dasgupta et al. (2022) study differences between in-weights and incontext generalization, and Chang & Jia (2022); Liu et al. (2022); Zhang et al. (2022b) observe that the selection of examples affect ICL predictions significantly. In this paper, we emphasize a probabilistic treatment of ICL predictions. Uncertainty in LLMs has previously been studied, e.g. by Kadavath et al. (2022); Lin et al. (2023); Bai et al. (2022a); Gonen et al. (2022). On non-language tasks, Kirsch et al. (2022); Chan et al. (2022a) study properties that lead to the emergence of ICL. Also related are Garnelo et al. (2018); Kossen et al. (2021); Gordon et al. (2019), who propose deep non-parametric models on non-language tasks. Unlike ICL, they can guarantee invariance to example-order or closely approximate Bayesian predictive distributions (Mu\u0308ller et al., 2022)."
+        },
+        {
+            "heading": "11 CONCLUSIONS",
+            "text": "In this paper, we have investigated how the conditional label distribution of in-context examples affects ICL predictions. To ensure our conclusions represent ICL behavior well, we have studied ICL across all possible in-context dataset sizes and considered probabilistic aspects of ICL predictions. In some sense, we have shown that ICL is both better and worse than expected. On the one hand, our results demonstrate that, against expectations set by prior work, ICL does incorporate in-context label information and can even learn truly novel tasks in-context. On the other hand, we have shown that analogies between ICL and conventional learning algorithms fall short in a variety of ways. In particular, label relationships inferred from pre-training have a lasting effect that cannot be surmounted by in-context observations. Additional prompting can improve but likely not overcome this deficiency. Further, ICL does not treat all information provided in-context equally and preferentially makes use of label information that appears closer to the query.\n9\nPublished as a conference paper at ICLR 2024\nREPRODUCIBILITY STATEMENT\nWe discuss the details of our experimental evaluation in \u00a7E. We provide the code to reproduce our results at the following repository: github.com/jlko/in context learning."
+        },
+        {
+            "heading": "A CAN PROMPTS HELP ICL LEARN FLIPPED LABEL RELATIONSHIPS?",
+            "text": "In this section, we explore if prompts can be used to overcome the plateauing ICL performance when default labels are flipped. Before the in-context examples, we insert prompt strings that inform the LLM of the flipped label relationship in some fashion, and should thus help the LLM adjust to it during ICL. These prompts could fundamentally change few-shot ICL behavior. In fact, one can think of the in-context learner as the union of LLM and prompt, where so far the prompt was simply left empty. There could exist prompts that help ICL learn the flipped label relationship better than without them, or as well as in the default scenario. Note that, regardless of the outcome here, NH2 remains rejected as ICL should not need to rely on a prompt to correctly consider in-context observations. Nevertheless, for the \u2018prompted few-shot ICL\u2019 setup, NH2 should be reconsidered.\nWe explore the following three prompts: \u2018In the following ...\u2019, (Instruct Prompt) \u2018...negative means positive and positive means negative\u2019 (here for SST-2 and adapted to other tasks), (Ignore Prompt) \u2018...ignore all prior knowledge\u2019, and (Invert Prompt) \u2018...flip the meaning for all answers\u2019.\nObservations & Discussions. Figure A.1 gives results for the prompted few-shot ICL setup for LLaMa-65B and Falcon-40B on SST-2. Figures F.38 to F.46 give results for our largest models across all tasks. However, prompting is most successful for the scenarios in Fig. A.1, making this the most interesting result to study NH2. In particular, prompting has a surprisingly weak effect for LLaMa-2-70B. In Fig. A.1 we observe that prompts, in particular the instruct and invert prompts, can help improve ICL performance. However, it seems that the positive impact from prompting is restricted to an initial boost at small in-context datasets sizes. We then sometimes observe a \u2018dip\u2019 in performance, which could indicate ICL forgetting about the prompt. At large context sizes, none of our prompts have any advantage, and flipped label performance again plateaus short of performance for the default label setup. Therefore, we reject NH2 for the prompted ICL variations that we study.\nIt is possible that there exist prompts\u2014that we have not found\u2014for which we cannot reject NH2. However, we are sceptical these prompts exist for the models we study, as their behavior at large context sizes is strikingly similar across all prompts we investigate. For more capable LLMs, we suspect it may be possible to obtain a zero-shot performance on the flipped scenario that is equal to the zero-shot of the default scenario, i.e. the prompt leads to the LLM perfectly flipping all its zero-shot predictions. However, we are unsure if, in addition to flipping zero-shot predictions, such prompts would also improve ICL on flipped label observations to be as good as in the default scenario.\n15\nPublished as a conference paper at ICLR 2024"
+        },
+        {
+            "heading": "B EVALUATION APPROACH FOR CHEAP IN-CONTEXT LEARNING DYNAMICS",
+            "text": "In this section, we suggest a\u2014to the best of our knowledge\u2014novel way of evaluating ICL that gives performance metrics at all in-context dataset sizes in a single forward pass without incurring additional cost. We start by introducing the notation necessary to formalize few-shot ICL in LLMs.\nDataset to Input String. The few-shot task is defined by a dataset D = {(Si, Yi)}Ni=1, where Si \u2208 T dSi are input sentences from which to predict the associated labels Yi \u2208 T dyi , and T v are text strings of length v. A verbalizer V (S, Y ) takes a sentence\u2013label pair and maps it to an example, e.g. the sequence \u2018I am happy\u2019 and label \u2018positive\u2019 are verbalized as \u2018Sentence: I am happy\\n Label: positive\\n\u2019. We also define a query verbalizer Vq(S) that maps a test query S to a query example, e.g. \u2018I am sad\u2019 is mapped to \u2018Sentence: I am sad\\n Label:\u2019, such that the next-token prediction of an LLM will be encouraged to predict the label for the query. We apply the verbalizer to the entire dataset set and concatenate its output to obtain the context C = \u2295Ni=1V (Si, Yi). Finally, we concatenate context C and verbalized query Vq(S), where S is a sentence drawn from a separate test set, to obtain the input to the language model, I = C \u2295 Vq(S) \u2208 T dI . Input String to Tokens. The input I is tokenized before it can be processed by the language model. The tokenizer, T (I) = (X1, . . . , XM ), maps an input sequence I to a sequence of integers, or tokens, Xi \u2208 (1, . . . , D), where D is the vocabulary size, i.e. the number of unique tokens. We keep track of which token positions correspond to labels, L = (l1, . . . , lN ), e.g. the indices of the tokens immediately following the string \u2018Label:\u2019 in the above example.\nTokens to Predictions. In the following, we use capital letters to denote random variables and lower-case letters for their realizations. Here, we describe the behavior of decoder-only language models (Liu et al., 2018; Radford et al., 2018), a popular architecture choice for LLMs. Given the observed sequence of input tokens (X1 = x1, . . . , XM = xM ), a single forward pass through the language model gives an estimate of the joint probability,\np(X1 = x1) \u00b7 p(X2 = x2 | X1 = x1) \u00b7 ... \u00b7 p(XM = xM | X1 = x1, . . . , XM\u22121 = xM\u22121). (1)\nWe highglight that Eq. (1) gives the joint probability at the observed outcomes: we obtain M \u2018onestep ahead\u2019 predictions, each conditioned only on observed outcomes and not on model predictions. Equation (1) is a common objective in LLM training, where \u2018the joint probability the model assigns to the observations\u2019 is sometimes referred to as teacher forcing (Williams & Zipser, 1989).\nAt test time, LLMs are usually iteratively conditioned on their own predictions, generating novel outputs via multiple forward passes, i.e. one first samples x\u0302M \u223c p(XM | . . . ), and then x\u0302M+1 \u223c p(XM+1 | . . . , XM = x\u0302M ), and so on. We here use \u2018. . . \u2019 to stand in for any additional tokens also conditioned on, e.g. (x1, . . . , xM\u22121). One usually ignores all other terms of the joint here\u2014 the predictions for (X1, . . . , XM\u22121) that are generated in each forward pass\u2014as only the last term p(XM | . . . ) is needed to sample the next token, i.e. the label in standard few-shot ICL applications. Single-Forward Pass ICL Training Dynamics. We now explain our approach for efficient evaluation of ICL training dynamics. Given input tokens (X1, . . . , XM ) for the few-shot ICL setup described above, we first select those terms from Eq. (1) that correspond to label token predictions,\u220fN\ni=1 p(Xli = xli | X1 = x1, . . . , Xm<li = xm<li). (2)\nFor each term, the model predicts a distribution over the entire token vocabulary, i.e. p(Xli | . . . ) is a categorical distribution, p = (p1, . . . , pD), which is then evaluated at the observed tokens in Eq. (2). We can transform this into a prediction over only the few-shot task label Y by selecting the indices of the categorical distribution which correspond to the tokenized labels and then renormalizing, p(Y ) = (pt1 , . . . , ptC | . . . ), where C is the number of unique labels which are encoded to tokens (t1, . . . , tC). With this, we can rewrite ?? as the joint probability the model assigns to the sequence of labels given input sentences\np(Y1 = y1 | S1 = s1) \u00b7 p(Y2 = y2 | S1 = s1, Y1 = y1, S2 = s2) \u00b7 . . . \u00b7 p(YN = yN | S1 = s1, Y1 = y1, . . . , SN\u22121 = sN\u22121, YN\u22121 = yN\u22121, SN = sN ). (3)\nNote how, because the joint is evaluated at the observations, its individual terms are always conditioned on the true labels and not previous predictions. This allow us to cheaply compute the training\n16\nPublished as a conference paper at ICLR 2024\ndynamics of ICL as a function of increasing in-context dataset size. With each forward pass, we obtain the individual terms of Eq. (3), which are the few-shot ICL predictions at all possible context dataset sizes, i = (1, . . . , N). In contrast, in standard few-shot ICL evaluations, each forward pass only yields predictions for a single test query, neglecting the information the joint contains about the first N \u2212 1 label predictions. There may be interesting applications of Eq. (3) to model selection, as the quantity has links to both Bayesian evidence (Murphy, 2022) and cross-validation (Fong & Holmes, 2020), although we do not explore this any further in this paper.\nMulti-Token Labels. So far, we have assumed that each label string is encoded as a single token. However, our approach can also be applied if some or all labels are encoded as multiple tokens. In essence, we continue to measure only the probability the model assigns to the first token of each label, making the (fairly harmless) assumption that the first (or only) token that each label is encoded to is unique among labels. We believe this is justified, as, given the first token for a label, the model should near-deterministically predict the remaining tokens, i.e. all the predictive information is contained in the first token the model predicts for a label. For example, for the Subjectivity dataset, the label \u2018objective\u2019 is encoded by the LLaMa tokenizer as a single token but the label \u2018subjective\u2019 is encoded as two tokens, [subject, ive]. We only use the probability assigned to [subject] to assign probabilities to \u2018subjective\u2019, and ignore any predictions for [ive]. However, if the model successfully accommodates the pattern of the in-context example labels, we would expect probabilities for [ive] following [subject] to be close to 1 always.\nFor LLaMa-7B on Subjectivity, we have investigated the above assumption empirically. After the first observation of the \u2018subjectivity\u2019 label in-context, the probability of predicting [ive] after observing [subject] are 0.9998\u00b1 0.0003 for the following 12 instances of the \u2018subjectivity\u2019 label, with probabilities normalized over all tokens of the vocabulary here. In other words, we can safely evaluate the performance of the LLaMa model from its predictions of only the [subject] token, even though the full label is split over two tokens [subject, ive]."
+        },
+        {
+            "heading": "C AUTHORSHIP IDENTIFICATION TASK",
+            "text": "We here give details on our novel authorship identification task.\nData Collection & Processing. We extract the last 151 messages sent between two authors of this paper on the Slack messaging platform. If multiple messages are sent in a row by one author, these count as multiple inputs. We filter out 42 messages that were of low quality: URLs, article summaries, missed call notifications, and meeting notes. This leaves us with 58 and 51 messages per author. We set the maximum message length to be 200 and truncate any messages longer than that. Before truncation, the longest message was 579 characters long. The median message length is 68 before and after truncation, mean and standard deviation shrink from 100\u00b1 98 to 88\u00b1 65. For use in ICL, we treat this dataset as we would any other and present messages in random order.\nData Release. For now, we have decided to not make this dataset public for two reasons: (1) It contains genuinely private communication, and (2) releasing the data would mean that future LLMs might be trained on it, so we could no longer use it to test their ability to learn truly novel label relationships in-context. However, below, we give 6 random examples from the dataset:\nAuthor 1 Would 10.30am on Tuesday work? Author 1 Sounds good. When are you back again? Author 1 Yeah, we might have to find somewhere else depending on whether my office mates are in, but its out of term so should be plenty of free meeting rooms if needed Author 2 No problem! Author 2 I\u2019ll be in [redacted] next week, so do you think we can meet in person? Author 2 The vacation is 16 days!"
+        },
+        {
+            "heading": "D DATASET CITATIONS",
+            "text": "We evaluate on SST-2 (Socher et al., 2013), Subjective (Wang & Manning, 2012), Financial Phrasebank (Malo et al., 2014), Hate Speech (de Gibert et al., 2018), AG News (Zhang et al., 2015), Medical Questions Pairs (MQP) (McCreery et al., 2020), as well as Microsoft Research Paraphrase Corpus (MRPC) (Dolan & Brockett, 2005), Recognizing Textual Entailment (RTE) (Dagan et al., 2005), and Winograd Schema Challenge (WNLI) (Levesque et al., 2012) from GLUE (Wang et al., 2019).\n17\nPublished as a conference paper at ICLR 2024"
+        },
+        {
+            "heading": "E EXPERIMENT DETAILS",
+            "text": "Below we give additional details on our experimental evaluation.\nGuessing Baseline. In our experiments, we frequently display a \u2018guessing based on class frequencies\u2019 baseline as a grey-dashed line. This baseline presents an informed guess that relies only on knowing the class frequencies of the task and makes the exact same prediction for each input datapoint. We here explain how we compute this baseline for accuracy, entropy, and log likelihood. We are given a classification task with C classes which appear with frequencies p = [p1, . . . , pC ] in the training set. The baseline always predicts p = [p1, . . . , pC ], i.e. it predicts the class frequencies. For accuracy, it thus always predicts the majority class c\u2217 = argmaxk pk, which leads to accuracy pc\u2217 . Further, the baseline prediction leads to a log likelihood of \u2211 k pk log pk and an entropy of\n\u2212 \u2211\nk pk log pk under the training data distribution.\nClass Flipping. While most of our tasks are binary classification, Financial Phrasebank and AG News are not. For these datasets, when \u2018flipping\u2019 labels in \u00a77, \u00a7A, and \u00a78, we actually rotate labels instead, i.e. we reassign labels y as y \u2190 (y+1) mod C, where C is the number of classes. For AG News, [\u2019world\u2019, \u2019sports\u2019, \u2019business\u2019, \u2019science and technology\u2019] get mapped to [\u2019sports\u2019, \u2019business\u2019, \u2019science and technology\u2019, \u2019world\u2019]. For Financial Phrasebank, [\u2019negative\u2019, \u2019neutral\u2019, \u2019positive\u2019] get mapped to [\u2019neutral\u2019, \u2019positive\u2019, \u2019negative\u2019]. Note that, for Financial Phrasebank, rotating the labels is harder than naively inverting the label order, as rotating does not leave the meaning of the \u2018neutral\u2019 label unchanged.\nIn-Context Example Formatting. We use the following simple templates to format the in-context examples. For SST-2, Subjectivity, Financial Phrasebank, Hate Speech, and our author identification task, we use the following line of Python code to format each input example: f\"Sentence: \u2019{sentence}\u2019\\nAnswer: {label}\\n\\n\". For MRPC, WNLI, and RTE, we format instances with f\"Sentence 1: \u2019{sentence1}\u2019\\nSentence 2: \u2019{sentence2}\u2019\\nAnswer: {label}\\n\\n\". For MQP, we use f\"Question 1: \u2019{sentence1}\u2019\\nQuestion 2: \u2019{sentence2}\u2019\\nAnswer: {label}\\n\\n\".\nImplementation. We rely on the Hugging Face Python library (Wolf et al., 2020) and PyTorch (Paszke et al., 2019) to implement the experiments of this paper. We use half-precision floating-point numbers for LLaMa-65B and LLaMa-2-70B, and we use 8 bit-quantization for all other models, which we have found to not affect performance notably. In Fig. E.1, we illustrate this by showing the difference between 8 bit quantization and full 32 bit precision for default ICL and ICL with label randomization for LLaMa-2-7B on the Subjectivity dataset: there is no significant loss of precision or change in behavior from 8 bit quantization.\nDatasets. We use Hugging Face Spaces to access all tasks considered in this paper. For Hate Speech, we select the first 1000 examples with labels 0 and 1, skipping datapoints with labels 2 and 3. We do not use custom processing for any other dataset.\nWhitespace Tokenization. To evaluate few-shot ICL performance as introduced in \u00a74, we need to identify the tokens that individual task labels are encoded to. We here detail how to achieve this at the example of the SST-2 label \u2018positive\u2019. In particular, we highlight the, perhaps unexpected, effects of whitespaces on input tokenization. These details are important and, if not considered correctly, can degrade performance significantly.\nFor Falcon models, the tokenizer encodes \u2018Answer:\u2019 as [20309, 37], \u2018Answer:-\u2019 as [20309, 37, 204], and \u2018Answer:-positive\u2019 as [20309, 37, 3508]. We here use dashes \u2018-\u2019 instead of whitespaces for improved legibility. Clearly, the relevant token for the label \u2018positive\u2019 is [3508]. Note how the token [204] for the trailing whitespace disappears again after appending the label. Further, just encoding \u2018positive\u2019 without a preceding whitespace gives [28265]. However, this token does not appear in the input, where the label is preceded by a whitespace\u2014we should thus use the token [3508] to measure ICL performance.\nThe LLaMa and LLaMa-2 tokenizer encodes \u2018Answer:\u2019 as [673, 29901], \u2018Answer:-\u2019 as [673, 29901, 29871], and \u2018Answer:-positive\u2019 as [673, 29901, 6374]. Thus,\n18\nPublished as a conference paper at ICLR 2024\n0 50\n0.6\n0.8\nAccuracy \u2191\n0 50\nNo Observed In-Context Examples\n\u22120.8\n\u22120.6\n\u22120.4\nLog Likelihood \u2191\n0 50\n0.5\n0.6\nEntropy\n8 Bit default 8 Bit random 32 Bit Default 32 Bit Random Guessing\nFigure E.1: Few-shot ICL at 8 bit and 32 bit precision with default and randomized labels for LLaMa-2-7B on Subjectivity. There is no significant performance degradation from 8 bit quantization. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals, and we apply moving averages (window size 5) for clarity.\nTable E.1: Maximum number of in-context examples we consider for each model-task combination. Below, we shorten AG News as AGN, Hate Speech as HS, and Financial Phrasebank as FP.\nSST-2 Subj FP HS AGN MQP MRPC RTE WNLI\nLLaMa-2 140 79 73 76 45 47 40 28 57 LLaMa 66 37 33 26 21 21 20 13 27 Falcon 67 39 37 28 25 23 21 15 30\nthe relevant token for the label \u2018positive\u2019 is [6374]. In contrast to the Falcon tokenizer, just encoding \u2018positive\u2019 without a preceding whitespace also gives [6374].\nLastly, similar caveats apply to the classic evaluation procedure for few-shot ICL, where we only evaluate the prediction for a single test query at the end of the input. Here, it is crucially important that we do not end inputs with a trailing whitespace. As we have seen above, for both LLaMa and Falcon tokenizers, the trailing whitespace leads to the generation of an extra token that is not present when encoding complete in-context examples, as the whitespace would usually be included in the label prediction itself. This change in tokenization between in-context examples and test query can adversely affect ICL performance.\nStatistical Significance. In Tables 1, 2, F.1, and F.2 we bold differences if they are statistically significant at a 95% level. Concretely, we compute if the absolute average differences are larger than 1.96 times the standard error. Similarly, when deciding if default label performance is significantly better than random guessing performance, we check if mean performance plus 1.645 times the standard error is larger than the guessing baseline across accuracy and log likelihood.\nMaximum Context Dataset Size. For each task, we create in-context datasets by sub-sampling from the training set of the task. Falcon and LLaMa support input sizes up to 2048 tokens, and LLaMa-2 supports up to 4096 input tokens. For all models, performance will degrade if the input size exceeds this limit. This caps the number of in-context examples we can include for each task. For tasks where the individual input sentences are longer, we will be able to include fewer examples in-context. Across all in-context datasets that we sample for a task, we compute the minimum number of in-context examples needed to exceed the token limit of 2048 or 4096. This is the maximum in-context dataset size up to which we report results for that task. We list these numbers in Table E.1\nCalibration. We do not calibrate predicted probabilities by first dividing them by a \u2018prior\u2019 probability and then renormalizing as suggested by Zhao et al. (2021). We have found this rarely improves, and sometimes degrades predictions, cf. Fig. E.2. We observe this happening in particular for tasks where labels are encoded as multiple tokens.\n19\n0.4\n0.6\n0.8\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\n\u22123\n\u22122\n\u22121\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.25\n0.50\n0.75\n1.00\n1.25\nE n tr\no p y\nDefault Default Cal. Random Random Cal. Guessing\n0 20 0 20 0 20\nNo Observed In-Context Examples\n10 20 10 20 5 10 15 5 10 0 20\nFigure E.2: Few-shot ICL with randomized labels for LLaMa-65B. We additionally display performance for random and default labels when \u2018calibrating\u2019 the predicted probabilities as suggested by Zhao et al. (2021). We do not find calibration helpful to improve ICL performance. We average over 500 random in-context datasets and thin lines are bootstrapped 99% confidence intervals and we apply a moving average (window size 3) for clarity.\nPublished as a conference paper at ICLR 2024"
+        },
+        {
+            "heading": "F EXTENDED RESULTS",
+            "text": "Section 4 \u2013 Training Dynamics: Figure F.1 shows few-shot ICL training dynamics on SST-2 for a selection of models at different parameter counts.\nSection 5 \u2013 Label Randomization: Figure F.2 gives results for randomized labels for all models on SST2. Figures F.3 to F.12 give results for all tasks and models comparing ICL with randomized labels to the default label setup. Table F.1 gives full summary statistics across all models, tasks, and metrics for the label randomization experiment.\nSection 6 \u2013 Author ID Task: Figure F.13 gives few-shot ICL results for all models on our novel authorship identification task.\nSection 7 \u2013 Flipped Labels: Figures F.14 to F.31 give results for all tasks and models for the modified label relationship experiments. We also report performance for additional replacement labels across task and models. Table F.2 gives full summary statistics across all models, tasks, and metrics for the difference between default and flipped label performance.\nSection 8 \u2013 Dynamic Label Flipping: In Figs. F.32 to F.36, we give results for the experiments investigating NH3 for all large models on tasks where label flipping gave strong performance in \u00a77. For LLaMa-2-70B on Hate Speech in Fig. F.35, metrics appear very similar initially. However, when exploring additional changepoints in Fig. F.37, we do find significant differences in predictions.\nAppendix A \u2013 Prompting with Flipped Labels: Figures F.38 to F.46 give results for all tasks and models for the prompted few-shot ICL setup.\n21\nPublished as a conference paper at ICLR 2024\n0 100\n0.6\n0.8\nAccuracy \u2191\n0 100\n\u22120.6\n\u22120.4\n\u22120.2\nLog Likelihood \u2191\n0 100\n0.2\n0.4\n0.6\nEntropy\nLLaMa-2 7B LLaMa-2 13B LLaMa-2 70B Guessing\n0 25 50\n0.6\n0.8\n0 25 50\n\u22120.6\n\u22120.4\n\u22120.2\n0 50\n0.2\n0.4\n0.6 LLaMa 7B LLaMa 13B\nLLaMa 65B Guessing\n0 25 50\n0.6\n0.8\n0 25 50\nNo Observed In-Context Examples\n\u22120.6\n\u22120.4\n\u22120.2\n0 50\n0.2\n0.4\n0.6 Falcon 7B Falcon 7B Instr.\nFalcon 40B Falcon 40B Instr. Guessing\nFigure F.1: Few-shot ICL training dynamics in a standard scenario on SST-2. Accuracy (\u2191) and log likelihood (\u2191) improve with in-context dataset size, and entropies decrease appropriately. Averages over 500 random subsets of the SST-2 training set (thin lines), additionally applying a moving average with window size 5 for clarity (thick lines).\n22\nPublished as a conference paper at ICLR 2024\n0 100\n0.6\n0.8\nAccuracy \u2191\n0 100\n\u22120.6\n\u22120.4\n\u22120.2 Log Likelihood \u2191\n0 100\n0.2\n0.4\n0.6\nEntropy\nLLaMa-2 7B LLaMa-2 13B LLaMa-2 70B Guessing\n0 25 50\n0.6\n0.8\n0 25 50\n\u22120.6\n\u22120.4\n\u22120.2\n0 50\n0.2\n0.4\n0.6 LLaMa 7B LLaMa 13B\nLLaMa 65B Guessing\n0 25 50\n0.6\n0.8\n0 25 50\nNo Observed In-Context Examples\n\u22120.6\n\u22120.4\n\u22120.2\n0 50\n0.2\n0.4\n0.6 Falcon 7B Falcon 7B Instr.\nFalcon 40B Falcon 40B Instr. Guessing\nFigure F.2: Few-shot ICL with randomized labels for SST-2: Compared to default ICL behavior (dashed lines, cf. Fig. F.1), log likelihoods and entropies of the models degrade when in-context example labels are randomized. Thin lines are averages over 500 repetitions, thick lines with moving average (window size 5), guessing baseline based on class frequencies.\n23\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 100\n0.0\n0.5\n1.0\nE n tr\no p y\n0 50 0 50 0 50\nNo Observed In-Context Examples\n0 25 0 25 0 25 0 20 0 50\nFigure F.3: Few-shot ICL with randomized labels for LLaMa-2-7B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 100\n0.0\n0.5\n1.0\nE n tr\no p y\n0 50 0 50 0 50\nNo Observed In-Context Examples\n0 25 0 25 0 25 0 20 0 50\nFigure F.4: Few-shot ICL with randomized labels for LLaMa-2-13B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 100\n0.0\n0.5\n1.0\nE n tr\no p y\n0 50 0 50 0 50\nNo Observed In-Context Examples\n0 25 0 25 0 25 0 20 0 50\nFigure F.5: Few-shot ICL with randomized labels for LLaMa-2-70B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.00\n0.25\n0.50\n0.75\n1.00\nE n tr\no p y\n0 20 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 10 0 10 0 20\nFigure F.6: Few-shot ICL with randomized labels for LLaMa-7B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.00\n0.25\n0.50\n0.75\n1.00\nE n tr\no p y\n0 20 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 10 0 10 0 20\nFigure F.7: Few-shot ICL with randomized labels for LLaMa-13B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.0\n0.5\n1.0\nE n tr\no p y\n0 20 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 10 0 10 0 20\nFigure F.8: Few-shot ICL with randomized labels for LLaMa-65B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.00\n0.25\n0.50\n0.75\n1.00\nE n tr\no p y\n0 25 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 20 0 10 0 20\nFigure F.9: Few-shot ICL with randomized labels for Falcon-7B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.0\n0.2\n0.4\n0.6\n0.8\nE n tr\no p y\n0 25 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 20 0 10 0 20\nFigure F.10: Few-shot ICL with randomized labels for Falcon-7B-Instruct: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.2\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.0\n0.5\n1.0\nE n tr\no p y\n0 25 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 20 0 10 0 20\nFigure F.11: Few-shot ICL with randomized labels for Falcon-40B: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy \u2191\nSST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI\nDefault Randomized Guessing\n\u22121.5\n\u22121.0\n\u22120.5\n0.0\nL o g\nL ik\nel ih\no o d \u2191\n0 50\n0.0\n0.5\n1.0\nE n tr\no p y\n0 25 0 20 0 20\nNo Observed In-Context Examples\n0 20 0 20 0 20 0 10 0 20\nFigure F.12: Few-shot ICL with randomized labels for Falcon-40B-Instruct: accuracies, entropies, and log likelihoods behave differently for randomized and default labels when performance is above randomly guessing class frequencies. While accuracy can be noisy, differences are clearly visible for probabilistic entropy and log likelihood. We average over 500 random in-context datasets, thin lines are bootstrapped 99% confidence intervals.\nTable F.1: Full summary statistics for the randomization experiment of \u00a75. We strongly encourage readers to also view the full training curves across all possible context sizes in \u00a7F. Across all metrics, here show the average difference between the default and randomized label scenario. We compute \u2018Metric(Default) - Metric(Random)\u2019, such that positive accuracy/log likelihood differences indicate that ICL performs worse with randomized labels. We compute differences at the maximum context size for each task-model combination (cf.\u00a7E and Table E.1). We display experiments where ICL accuracies or log likelihoods on the default labels do not significantly exceed random guessing performance in lightgray. Across models, and metrics, model performance is usually significantly worse when labels are randomized and default performance exceeds random guessing. We display mean differences and standard errors over 500 runs. We bold entries for which mean differences are statistically significant.\n\u2206 Log Lik. SST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI LLaMa-2 7B 0.42\u00b1 0.02 0.39\u00b1 0.02 0.57\u00b1 0.02 0.18\u00b1 0.01 0.53\u00b1 0.04 0.03\u00b1 0.01 0.02\u00b1 0.01 0.03\u00b1 0.01 0.02\u00b1 0.01 LLaMa-2 13B 0.41\u00b1 0.02 0.62\u00b1 0.03 0.49\u00b1 0.03 0.24\u00b1 0.02 0.81\u00b1 0.04 0.04\u00b1 0.01 0.01\u00b1 0.01 0.06\u00b1 0.02 0.02\u00b1 0.03 LLaMa-2 70B 0.51\u00b1 0.03 0.53\u00b1 0.02 0.57\u00b1 0.02 0.34\u00b1 0.02 0.80\u00b1 0.03 0.29\u00b1 0.02 0.04\u00b1 0.02 0.22\u00b1 0.02 0.18\u00b1 0.02 LLaMa 7B 0.39\u00b1 0.03 0.42\u00b1 0.03 0.36\u00b1 0.02 0.15\u00b1 0.02 0.30\u00b1 0.03 0.03\u00b1 0.01 0.00\u00b1 0.01 0.03\u00b1 0.02 0.01\u00b1 0.02 LLaMa 13B 0.44\u00b1 0.03 0.45\u00b1 0.02 0.37\u00b1 0.02 0.16\u00b1 0.02 0.32\u00b1 0.03 0.04\u00b1 0.02 \u22120.01\u00b1 0.02 0.05\u00b1 0.02 0.02\u00b1 0.02 LLaMa 65B 0.55\u00b1 0.02 0.45\u00b1 0.02 0.49\u00b1 0.02 0.23\u00b1 0.02 0.88\u00b1 0.04 0.14\u00b1 0.02 0.01\u00b1 0.01 0.12\u00b1 0.02 0.08\u00b1 0.02 Falcon 7B 0.20\u00b1 0.01 0.19\u00b1 0.01 0.25\u00b1 0.01 0.06\u00b1 0.01 0.31\u00b1 0.03 0.01\u00b1 0.02 0.01\u00b1 0.02 \u22120.01\u00b1 0.02 0.01\u00b1 0.02 Falcon 7B Instr. 0.13\u00b1 0.01 0.08\u00b1 0.01 0.11\u00b1 0.01 0.03\u00b1 0.02 0.15\u00b1 0.02 0.03\u00b1 0.02 0.02\u00b1 0.03 \u22120.00\u00b1 0.02 0.00\u00b1 0.02 Falcon 40B 0.34\u00b1 0.02 0.35\u00b1 0.02 0.31\u00b1 0.02 0.18\u00b1 0.02 0.90\u00b1 0.04 0.06\u00b1 0.02 0.01\u00b1 0.02 0.01\u00b1 0.02 0.02\u00b1 0.02 Falcon 40B Instr. 0.25\u00b1 0.02 0.37\u00b1 0.03 0.27\u00b1 0.02 0.02\u00b1 0.03 0.77\u00b1 0.04 0.06\u00b1 0.02 0.02\u00b1 0.02 0.02\u00b1 0.02 0.04\u00b1 0.02\n\u2206 Accuracy SST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI LLaMa-2 7B 28.4\u00b1 2.1 39.8\u00b1 2.4 30.4\u00b1 2.4 16.2\u00b1 2.3 13.4\u00b1 2.2 3.8\u00b1 2.2 5.2\u00b1 2.8 4.0\u00b1 2.4 3.0\u00b1 2.5 LLaMa-2 13B 19.8\u00b1 2.0 46.0\u00b1 2.4 24.4\u00b1 2.4 19.0\u00b1 2.3 34.6\u00b1 2.3 3.2\u00b1 2.5 2.8\u00b1 1.4 1.6\u00b1 1.9 3.6\u00b1 2.3 LLaMa-2 70B 34.8\u00b1 2.3 29.8\u00b1 2.1 27.0\u00b1 2.2 28.6\u00b1 2.5 24.4\u00b1 2.1 19.6\u00b1 2.5 3.6\u00b1 1.7 14.0\u00b1 2.0 13.6\u00b1 2.5 LLaMa 7B 24.6\u00b1 2.2 36.4\u00b1 2.5 19.8\u00b1 2.1 10.8\u00b1 2.2 11.2\u00b1 2.0 4.6\u00b1 2.8 \u22120.2\u00b1 1.9 2.8\u00b1 2.6 1.0\u00b1 2.0 LLaMa 13B 31.4\u00b1 2.2 42.4\u00b1 2.5 26.4\u00b1 2.7 13.8\u00b1 2.0 9.2\u00b1 1.8 4.0\u00b1 2.6 \u22122.6\u00b1 2.4 2.0\u00b1 2.4 3.0\u00b1 2.5 LLaMa 65B 47.4\u00b1 2.5 34.4\u00b1 2.3 18.4\u00b1 2.1 13.6\u00b1 2.2 39.2\u00b1 2.7 8.4\u00b1 2.0 2.0\u00b1 1.4 7.6\u00b1 1.8 4.6\u00b1 2.1 Falcon 7B 6.8\u00b1 1.6 14.4\u00b1 2.0 24.0\u00b1 2.4 7.6\u00b1 1.8 13.2\u00b1 2.0 3.0\u00b1 2.2 2.6\u00b1 2.4 \u22121.4\u00b1 2.9 0.0\u00b1 2.1 Falcon 7B Instr. 3.6\u00b1 1.4 7.6\u00b1 1.8 5.2\u00b1 1.5 2.0\u00b1 2.0 8.2\u00b1 1.9 1.6\u00b1 2.6 3.0\u00b1 2.9 \u22121.0\u00b1 2.3 2.8\u00b1 1.8 Falcon 40B 20.2\u00b1 2.1 22.2\u00b1 2.1 10.0\u00b1 1.8 10.6\u00b1 2.2 49.4\u00b1 2.4 11.2\u00b1 2.4 \u22120.4\u00b1 1.1 0.4\u00b1 1.7 1.2\u00b1 2.2 Falcon 40B Instr. 6.8\u00b1 1.4 21.8\u00b1 2.2 10.4\u00b1 1.8 0.8\u00b1 1.6 40.4\u00b1 2.4 4.2\u00b1 2.0 3.4\u00b1 2.3 3.2\u00b1 1.9 3.6\u00b1 2.2\n\u2206 Entropy SST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI LLaMa-2 7B \u22120.465\u00b1 0.007 \u22120.177\u00b1 0.008 \u22120.529\u00b1 0.012 \u22120.099\u00b1 0.006 \u22120.910\u00b1 0.014 \u22120.004\u00b1 0.002 \u22120.005\u00b1 0.002 \u22120.014\u00b1 0.004 0.004\u00b1 0.003 LLaMa-2 13B \u22120.499\u00b1 0.008 \u22120.429\u00b1 0.009 \u22120.477\u00b1 0.013 \u22120.204\u00b1 0.008 \u22121.009\u00b1 0.013 \u22120.018\u00b1 0.004 \u22120.021\u00b1 0.004 \u22120.079\u00b1 0.006 \u22120.058\u00b1 0.006 LLaMa-2 70B \u22120.564\u00b1 0.007 \u22120.500\u00b1 0.007 \u22120.563\u00b1 0.010 \u22120.313\u00b1 0.010 \u22121.046\u00b1 0.011 \u22120.242\u00b1 0.009 \u22120.074\u00b1 0.006 \u22120.246\u00b1 0.009 \u22120.220\u00b1 0.008 LLaMa 7B \u22120.426\u00b1 0.009 \u22120.153\u00b1 0.009 \u22120.225\u00b1 0.011 \u22120.103\u00b1 0.007 \u22120.497\u00b1 0.013 \u22120.002\u00b1 0.001 \u22120.001\u00b1 0.003 \u22120.002\u00b1 0.004 \u22120.001\u00b1 0.004 LLaMa 13B \u22120.376\u00b1 0.009 \u22120.193\u00b1 0.009 \u22120.218\u00b1 0.009 \u22120.112\u00b1 0.007 \u22120.567\u00b1 0.015 \u22120.008\u00b1 0.004 \u22120.014\u00b1 0.005 \u22120.012\u00b1 0.004 0.001\u00b1 0.004 LLaMa 65B \u22120.422\u00b1 0.009 \u22120.283\u00b1 0.008 \u22120.502\u00b1 0.011 \u22120.273\u00b1 0.009 \u22121.032\u00b1 0.013 \u22120.100\u00b1 0.007 \u22120.040\u00b1 0.005 \u22120.128\u00b1 0.008 \u22120.153\u00b1 0.008 Falcon 7B \u22120.196\u00b1 0.007 \u22120.109\u00b1 0.006 \u22120.099\u00b1 0.006 \u22120.046\u00b1 0.005 \u22120.428\u00b1 0.015 \u22120.000\u00b1 0.004 0.003\u00b1 0.005 \u22120.002\u00b1 0.004 \u22120.002\u00b1 0.004 Falcon 7B Instr. \u22120.207\u00b1 0.007 \u22120.038\u00b1 0.004 \u22120.115\u00b1 0.007 \u22120.041\u00b1 0.006 \u22120.200\u00b1 0.011 0.000\u00b1 0.004 0.007\u00b1 0.006 0.003\u00b1 0.006 \u22120.003\u00b1 0.006 Falcon 40B \u22120.382\u00b1 0.009 \u22120.248\u00b1 0.009 \u22120.358\u00b1 0.010 \u22120.175\u00b1 0.008 \u22120.923\u00b1 0.015 \u22120.002\u00b1 0.004 0.001\u00b1 0.006 \u22120.008\u00b1 0.005 \u22120.001\u00b1 0.004 Falcon 40B Instr. \u22120.396\u00b1 0.008 \u22120.177\u00b1 0.009 \u22120.313\u00b1 0.010 \u22120.202\u00b1 0.009 \u22120.922\u00b1 0.015 \u22120.039\u00b1 0.006 \u22120.013\u00b1 0.007 \u22120.033\u00b1 0.006 \u22120.012\u00b1 0.005\nPublished as a conference paper at ICLR 2024\n0 50 100\n0.4\n0.6\n0.8\nAccuracy \u2191\n0 50 100 \u22123\n\u22122\n\u22121\nLog Likelihood \u2191\n0 50 100 0.2\n0.4\n0.6\nEntropy\nLLaMa-2 7B LLaMa-2 13B LLaMa-2 70B Guessing\n0 20 40\n0.4\n0.6\n0.8\n0 20 40 \u22123\n\u22122\n\u22121\n0 20 40 0.2\n0.4\n0.6\nLLaMa 7B LLaMa 13B LLaMa 65B Guessing\n0 20 40\n0.4\n0.6\n0.8\n0 20 40\nNo Observed In-Context Examples\n\u22123\n\u22122\n\u22121\n0 25 50 0.2\n0.4\n0.6\nFalcon 7B Falcon 7B Instr. Falcon 40B Falcon 40B Instr. Guessing\nFigure F.13: Few-shot ICL on novel author identification task for all models. Models achieves accuracies significantly better than random guessing on our novel author identification task. Thus, ICL predictions must depend on the label relationship provided in-context. Thin lines are averages over 500 runs, thick lines moving average (window size 5).\n35\nPublished as a conference paper at ICLR 2024\n0.0\n0.4\n0.8\n1.2\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.1\n0.3\n0.5\n0.7\nEntropy\nReplacing default labels (negative, positive) with:\n(negative, positive)\n(positive, negative)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.0\n0.4\n0.8\n1.2\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.1\n0.3\n0.5\n0.7\n0 25 50 75 100 125 0.0\n0.4\n0.8\n1.2\nL L\na M\na -2\n7 0 B\n0 25 50 75 100 125\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n0 25 50 75 100 125 0.1\n0.3\n0.5\n0.7\nFigure F.14: Few-shot ICL with replacement labels on SST-2 for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n36\nPublished as a conference paper at ICLR 2024\n0.0\n0.4\n0.8\n1.2\nL L\na M\na 7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.1\n0.3\n0.5\n0.7\nEntropy\nReplacing default labels (negative, positive) with:\n(negative, positive)\n(positive, negative)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.0\n0.4\n0.8\n1.2\nL L\na M\na 1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.1\n0.3\n0.5\n0.7\n0.0\n0.4\n0.8\n1.2\nL L\na M\na 6 5 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.1\n0.3\n0.5\n0.7\n0.0\n0.4\n0.8\n1.2\nF a lc\no n\n7 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.1\n0.3\n0.5\n0.7\n0.0\n0.4\n0.8\n1.2\nF a lc\no n\n7 B\nIn st\nr.\n\u22122.5\n\u22121.5\n\u22120.5\n0.1\n0.3\n0.5\n0.7\n0.0\n0.4\n0.8\n1.2\nF a lc\no n\n4 0 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.1\n0.3\n0.5\n0.7\n0 20 40 60 0.0\n0.4\n0.8\n1.2\nF a lc\no n\n4 0 B\nIn st\nr.\n0 20 40 60\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n0 20 40 60 0.1\n0.3\n0.5\n0.7\nFigure F.15: Few-shot ICL with replacement labels on SST-2 for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n37\nPublished as a conference paper at ICLR 2024\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\n0.5\nLog Likelihood \u2191\n0.1\n0.3\n0.5\n0.7\nEntropy\nReplacing default labels (objective, subjective) with:\n(objective, subjective)\n(subjective, objective)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.5\n0.1\n0.3\n0.5\n0.7\n0 20 40 60 80 0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n7 0 B\n0 20 40 60 80\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n0.5\n0 20 40 60 80 0.1\n0.3\n0.5\n0.7\nFigure F.16: Few-shot ICL with replacement labels on Subjectivity for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n38\nPublished as a conference paper at ICLR 2024\n0.2\n0.6\n1.0\nL L\na M\na 7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.4\n0.6\nEntropy\nReplacing default labels (objective, subjective) with:\n(objective, subjective)\n(subjective, objective)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.6\n1.0\nL L\na M\na 1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.2\n0.6\n1.0\nL L\na M\na 6 5 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\nIn st\nr.\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n10 20 30 0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n10 20 30 0.2\n0.4\n0.6\nFigure F.17: Few-shot ICL with replacement labels on Subjectivity for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n39\nPublished as a conference paper at ICLR 2024\n0.2\n0.6\n1.0\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.6\n1.0\nEntropy\nReplacing default labels (negative, neutral, positive) with:\n(negative, neutral, positive)\n(neutral, positive, negative)\n(positive, negative, neutral)\n(positive, neutral, negative)\n(bad, ok, good)\n(good, ok, bad)\n(A, B, C)\n(C, A, B)\n(B, C, A)\n0.2\n0.6\n1.0\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.6\n1.0\n0 20 40 60 0.2\n0.6\n1.0\nL L\na M\na -2\n7 0 B\n0 20 40 60\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n0 20 40 60 0.2\n0.6\n1.0\nFigure F.18: Few-shot ICL with replacement labels on Financial Phrasebank for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n40\nPublished as a conference paper at ICLR 2024\n0.0\n0.4\n0.8\nL L\na M\na 7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.6\n1.0\nEntropy\nReplacing default labels (negative, neutral, positive) with:\n(negative, neutral, positive)\n(neutral, positive, negative)\n(positive, negative, neutral)\n(positive, neutral, negative)\n(bad, ok, good)\n(good, ok, bad)\n(A, B, C)\n(C, A, B)\n(B, C, A)\n0.0\n0.4\n0.8\nL L\na M\na 1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.6\n1.0\n0.0\n0.4\n0.8\nL L\na M\na 6 5 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.6\n1.0\n0.0\n0.4\n0.8\nF a lc\no n\n7 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.6\n1.0\n0.0\n0.4\n0.8\nF a lc\no n\n7 B\nIn st\nr.\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.6\n1.0\n0.0\n0.4\n0.8\nF a lc\no n\n4 0 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.6\n1.0\n10 20 30 40 0.0\n0.4\n0.8\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30 40\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n10 20 30 40 0.2\n0.6\n1.0\nFigure F.19: Few-shot ICL with replacement labels on Financial Phrasebank for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n41\nPublished as a conference paper at ICLR 2024\n0.2\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.4\n0.6\n0.8\nEntropy\nReplacing default labels (not hate speech, hate speech) with:\n(not hate speech, hate speech)\n(hate speech, not hate speech)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0 20 40 60 80 0.2\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n7 0 B\n0 20 40 60 80\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n0 20 40 60 80 0.2\n0.4\n0.6\n0.8\nFigure F.20: Few-shot ICL with replacement labels on Hate Speech for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n42\nPublished as a conference paper at ICLR 2024\n0.2\n0.6\n1.0\nL L\na M\na 7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.4\n0.6\n0.8\nEntropy\nReplacing default labels (not hate speech, hate speech) with:\n(not hate speech, hate speech)\n(hate speech, not hate speech)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.6\n1.0\nL L\na M\na 1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nL L\na M\na 6 5 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\nIn st\nr.\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n10 20 30 0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n10 20 30 0.2\n0.4\n0.6\n0.8\nFigure F.21: Few-shot ICL with replacement labels on Hate Speech for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n43\nPublished as a conference paper at ICLR 2024\n0.0\n0.4\n0.8\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22124\n\u22122\n0\nLog Likelihood \u2191\n0.0\n0.4\n0.8\n1.2\n1.6\nEntropy\nReplacing default labels (world, sports, business, science and technology) with:\n(world, sports, business, science and technology)\n(science and technology, world, sports, business)\n(business, science and technology, world, sports)\n(sports, business, science and technology, world)\n(science and technology, business, sports, world)\n(A, B, C, D)\n(D, C, B, A)\n0.0\n0.4\n0.8\nL L\na M\na -2\n1 3 B\n\u22124\n\u22122\n0\n0.0\n0.4\n0.8\n1.2\n1.6\n0 20 40 0.0\n0.4\n0.8\nL L\na M\na -2\n7 0 B\n0 20 40\nNo Observed In-Context Examples\n\u22124\n\u22122\n0\n0 20 40 0.0\n0.4\n0.8\n1.2\n1.6\nFigure F.22: Few-shot ICL with replacement labels on AG News for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n44\nPublished as a conference paper at ICLR 2024\n\u22120.2\n0.2\n0.6\n1.0\nL L\na M\na 7 B\nAccuracy \u2191\n\u22125\n\u22123\n\u22121\nLog Likelihood \u2191\n0.0\n0.5\n1.0\n1.5\nEntropy\nReplacing default labels (world, sports, business, science and technology) with:\n(world, sports, business, science and technology)\n(science and technology, world, sports, business)\n(business, science and technology, world, sports)\n(sports, business, science and technology, world)\n(science and technology, business, sports, world)\n(A, B, C, D)\n(D, C, B, A)\n\u22120.2\n0.2\n0.6\n1.0\nL L\na M\na 1 3 B\n\u22125\n\u22123\n\u22121\n0.0\n0.5\n1.0\n1.5\n\u22120.2\n0.2\n0.6\n1.0\nL L\na M\na 6 5 B\n\u22125\n\u22123\n\u22121\n0.0\n0.5\n1.0\n1.5\n\u22120.2\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\n\u22125\n\u22123\n\u22121\n0.0\n0.5\n1.0\n1.5\n\u22120.2\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\nIn st\nr.\n\u22125\n\u22123\n\u22121\n0.0\n0.5\n1.0\n1.5\n\u22120.2\n0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\n\u22125\n\u22123\n\u22121\n0.0\n0.5\n1.0\n1.5\n10 20 \u22120.2\n0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20\nNo Observed In-Context Examples\n\u22125\n\u22123\n\u22121\n10 20 0.0\n0.5\n1.0\n1.5\nFigure F.23: Few-shot ICL with replacement labels on AG News for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n45\nPublished as a conference paper at ICLR 2024\n0.3\n0.5\n0.7\n0.9\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22123\n\u22122\n\u22121\n0\nLog Likelihood \u2191\n0.3\n0.5\n0.7\nEntropy\nReplacing default labels (not equivalent, equivalent) with:\n(not equivalent, equivalent)\n(equivalent, not equivalent)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.3\n0.5\n0.7\n0.9\nL L\na M\na -2\n1 3 B\n\u22123\n\u22122\n\u22121\n0\n0.3\n0.5\n0.7\n0 10 20 30 40 0.3\n0.5\n0.7\n0.9\nL L\na M\na -2\n7 0 B\n0 10 20 30 40\nNo Observed In-Context Examples\n\u22123\n\u22122\n\u22121\n0\n0 10 20 30 40 0.3\n0.5\n0.7\nFigure F.24: Few-shot ICL with replacement labels on Medical Questions Pairs for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n46\nPublished as a conference paper at ICLR 2024\n0.2\n0.6 1.0 L L a M a 7 B\nAccuracy \u2191\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.4\n0.6\n0.8\nEntropy\nReplacing default labels (not equivalent, equivalent) with:\n(not equivalent, equivalent)\n(equivalent, not equivalent)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.6\n1.0\nL L\na M\na 1 3 B\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nL L\na M\na 6 5 B\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\nIn st\nr.\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n5 10 15 20 0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\nIn st\nr.\n5 10 15 20\nNo Observed In-Context Examples\n\u22123.5\n\u22122.5\n\u22121.5\n\u22120.5\n5 10 15 20 0.2\n0.4\n0.6\n0.8\nFigure F.25: Few-shot ICL with replacement labels on Medical Questions Pairs for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n47\nPublished as a conference paper at ICLR 2024\n0.3\n0.5\n0.7\n0.9\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.3\n0.5\n0.7\nEntropy\nReplacing default labels (not equivalent, equivalent) with:\n(not equivalent, equivalent)\n(equivalent, not equivalent)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.3\n0.5\n0.7\n0.9\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.3\n0.5\n0.7\n10 20 30 0.3\n0.5\n0.7\n0.9\nL L\na M\na -2\n7 0 B\n10 20 30\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n10 20 30 0.3\n0.5\n0.7\nFigure F.26: Few-shot ICL with replacement labels on MRPC for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n48\nPublished as a conference paper at ICLR 2024\n0.3\n0.5\n0.7\n0.9\nL L\na M\na 7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.2\n0.4\n0.6\n0.8\nEntropy\nReplacing default labels (not equivalent, equivalent) with:\n(not equivalent, equivalent)\n(equivalent, not equivalent)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.3\n0.5\n0.7\n0.9\nL L\na M\na 1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.3\n0.5\n0.7\n0.9\nL L\na M\na 6 5 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.3\n0.5\n0.7\n0.9\nF a lc\no n\n7 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.3\n0.5\n0.7\n0.9\nF a lc\no n\n7 B\nIn st\nr.\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n0.3\n0.5\n0.7\n0.9\nF a lc\no n\n4 0 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.2\n0.4\n0.6\n0.8\n5 10 15 20 0.3\n0.5\n0.7\n0.9\nF a lc\no n\n4 0 B\nIn st\nr.\n5 10 15 20\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n5 10 15 20 0.2\n0.4\n0.6\n0.8\nFigure F.27: Few-shot ICL with replacement labels on MRPC for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n49\nPublished as a conference paper at ICLR 2024\n0.2\n0.4\n0.6\n0.8\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.35\n0.45\n0.55\n0.65\n0.75\nEntropy\nReplacing default labels (entailment, not entailment) with:\n(entailment, not entailment)\n(not entailment, entailment)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.4\n0.6\n0.8\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.35\n0.45\n0.55\n0.65\n0.75\n10 20 0.2\n0.4\n0.6\n0.8\nL L\na M\na -2\n7 0 B\n10 20\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n10 20 0.35\n0.45\n0.55\n0.65\n0.75\nFigure F.28: Few-shot ICL with replacement labels on RTE for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n50\nPublished as a conference paper at ICLR 2024\n0.2\n0.4\n0.6\n0.8\nL L\na M\na 7 B\nAccuracy \u2191\n\u22123\n\u22122\n\u22121\n0\nLog Likelihood \u2191\n0.2\n0.4\n0.6\n0.8\nEntropy\nReplacing default labels (entailment, not entailment) with:\n(entailment, not entailment)\n(not entailment, entailment)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.4\n0.6\n0.8\nL L\na M\na 1 3 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.4\n0.6\n0.8\nL L\na M\na 6 5 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.4\n0.6\n0.8\nF a lc\no n\n7 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.4\n0.6\n0.8\nF a lc\no n\n7 B\nIn st\nr.\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.4\n0.6\n0.8\nF a lc\no n\n4 0 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n5 10 15 0.2\n0.4\n0.6\n0.8\nF a lc\no n\n4 0 B\nIn st\nr.\n5 10 15\nNo Observed In-Context Examples\n\u22123\n\u22122\n\u22121\n0\n5 10 15 0.2\n0.4\n0.6\n0.8\nFigure F.29: Few-shot ICL with replacement labels on RTE for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n51\nPublished as a conference paper at ICLR 2024\n0.2\n0.4\n0.6\n0.8\nL L\na M\na -2\n7 B\nAccuracy \u2191\n\u22122.5\n\u22121.5\n\u22120.5\nLog Likelihood \u2191\n0.35\n0.45\n0.55\n0.65\n0.75\nEntropy\nReplacing default labels (not entailment, entailment) with:\n(not entailment, entailment)\n(entailment, not entailment)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.4\n0.6\n0.8\nL L\na M\na -2\n1 3 B\n\u22122.5\n\u22121.5\n\u22120.5\n0.35\n0.45\n0.55\n0.65\n0.75\n0 20 40 60 0.2\n0.4\n0.6\n0.8\nL L\na M\na -2\n7 0 B\n0 20 40 60\nNo Observed In-Context Examples\n\u22122.5\n\u22121.5\n\u22120.5\n0 20 40 60 0.35\n0.45\n0.55\n0.65\n0.75\nFigure F.30: Few-shot ICL with replacement labels on WNLI for LLaMa-2 models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n52\nPublished as a conference paper at ICLR 2024\n0.2\n0.6\n1.0\nL L\na M\na 7 B\nAccuracy \u2191\n\u22123\n\u22122\n\u22121\n0\nLog Likelihood \u2191\n0.2\n0.4\n0.6\n0.8\nEntropy\nReplacing default labels (not entailment, entailment) with:\n(not entailment, entailment)\n(entailment, not entailment)\n(bad, good)\n(good, bad)\n(A, B)\n(B, A)\n(green, blue)\n(blue, green)\n(sea, chair)\n(chair, sea)\n0.2\n0.6\n1.0\nL L\na M\na 1 3 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nL L\na M\na 6 5 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n7 B\nIn st\nr.\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\n\u22123\n\u22122\n\u22121\n0\n0.2\n0.4\n0.6\n0.8\n10 20 30 0.2\n0.6\n1.0\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30\nNo Observed In-Context Examples\n\u22123\n\u22122\n\u22121\n0\n10 20 30 0.2\n0.4\n0.6\n0.8\nFigure F.31: Few-shot ICL with replacement labels on WNLI for LLaMa and Falcon models. In addition to the default labels, we study a variety of replacement labels (see legend). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n53\nTable F.2: Full summary statistics for the flipped label experiments of \u00a77. We strongly encourage readers to also view the full training curves across all possible context sizes and adittional replacement labels in \u00a7F. Across all metrics, here show the average difference between the default and flipped label scenario. We compute \u2018Metric(Default) - Metric(Flipped)\u2019, such that positive accuracy/log likelihood differences indicate that ICL performs worse with flipped labels. We compute differences at the maximum context size for each task-model combination (cf.\u00a7E and Table E.1). We display experiments where ICL accuracies or log likelihoods on the default labels do not significantly exceed random guessing performance in lightgray. Across models, and metrics, model performance is usually significantly worse when labels are flipped (and default performance exceeds random guessing). In particular for entropies, we observe significant differences between ICL predictions. We display mean differences and standard errors over 100 runs. We bold entries for which mean differences are statistically significant.\n\u2206 Log Lik. SST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI LLaMa-2 7B 0.41\u00b1 0.02 \u22120.04\u00b1 0.02 0.36\u00b1 0.03 0.26\u00b1 0.01 0.87\u00b1 0.03 0.01\u00b1 0.00 \u22120.02\u00b1 0.01 0.22\u00b1 0.01 \u22120.00\u00b1 0.01 LLaMa-2 13B 0.31\u00b1 0.02 0.03\u00b1 0.02 0.30\u00b1 0.02 0.26\u00b1 0.02 0.90\u00b1 0.03 0.15\u00b1 0.01 0.15\u00b1 0.01 0.38\u00b1 0.02 0.20\u00b1 0.02 LLaMa-2 70B 0.08\u00b1 0.02 0.08\u00b1 0.02 0.35\u00b1 0.03 0.18\u00b1 0.02 0.90\u00b1 0.02 0.24\u00b1 0.02 0.15\u00b1 0.02 0.21\u00b1 0.02 0.08\u00b1 0.02 LLaMa 7B 0.36\u00b1 0.02 0.13\u00b1 0.02 0.53\u00b1 0.02 0.31\u00b1 0.02 1.06\u00b1 0.03 0.05\u00b1 0.00 0.06\u00b1 0.01 0.14\u00b1 0.01 \u22120.03\u00b1 0.01 LLaMa 13B 0.40\u00b1 0.02 0.09\u00b1 0.02 0.51\u00b1 0.02 0.33\u00b1 0.02 1.18\u00b1 0.03 0.16\u00b1 0.01 0.16\u00b1 0.01 0.22\u00b1 0.01 0.05\u00b1 0.01 LLaMa 65B 0.33\u00b1 0.02 0.16\u00b1 0.02 0.63\u00b1 0.02 0.19\u00b1 0.02 1.02\u00b1 0.03 0.39\u00b1 0.02 0.31\u00b1 0.02 0.41\u00b1 0.02 0.20\u00b1 0.02 Falcon 7B 0.48\u00b1 0.02 0.37\u00b1 0.01 0.58\u00b1 0.02 0.19\u00b1 0.01 1.38\u00b1 0.04 0.05\u00b1 0.01 0.02\u00b1 0.01 0.05\u00b1 0.01 0.12\u00b1 0.01 Falcon 7B Instr. 0.70\u00b1 0.02 0.48\u00b1 0.01 0.77\u00b1 0.02 0.52\u00b1 0.02 2.29\u00b1 0.03 \u22120.07\u00b1 0.01 0.01\u00b1 0.02 0.15\u00b1 0.02 0.22\u00b1 0.02 Falcon 40B 0.33\u00b1 0.02 0.25\u00b1 0.02 0.74\u00b1 0.03 0.27\u00b1 0.02 1.00\u00b1 0.03 0.20\u00b1 0.01 0.19\u00b1 0.01 0.39\u00b1 0.01 0.09\u00b1 0.01 Falcon 40B Instr. 0.45\u00b1 0.02 0.37\u00b1 0.02 0.94\u00b1 0.03 0.68\u00b1 0.02 0.89\u00b1 0.03 0.48\u00b1 0.02 0.15\u00b1 0.01 0.70\u00b1 0.02 0.19\u00b1 0.01\n\u2206 Accuracy SST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI LLaMa-2 7B 34.0\u00b1 5.3 \u22123.0\u00b1 4.3 15.0\u00b1 4.3 26.0\u00b1 6.9 47.0\u00b1 5.6 1.0\u00b1 8.4 \u22125.0\u00b1 5.9 32.0\u00b1 7.5 1.0\u00b1 7.3 LLaMa-2 13B 14.0\u00b1 4.0 1.0\u00b1 1.0 12.0\u00b1 3.8 18.0\u00b1 5.4 37.0\u00b1 5.8 22.1\u00b1 7.1 20.0\u00b1 5.3 36.0\u00b1 7.0 27.0\u00b1 6.5 LLaMa-2 70B 2.0\u00b1 1.4 1.0\u00b1 2.2 13.0\u00b1 3.4 0.0\u00b1 3.2 51.0\u00b1 5.6 11.0\u00b1 4.7 20.0\u00b1 5.5 7.0\u00b1 5.0 5.0\u00b1 3.8 LLaMa 7B 22.0\u00b1 4.8 3.0\u00b1 4.8 36.0\u00b1 5.9 27.0\u00b1 6.6 64.0\u00b1 6.4 6.0\u00b1 6.6 13.0\u00b1 6.6 19.0\u00b1 7.0 0.0\u00b1 8.6 LLaMa 13B 26.0\u00b1 5.8 7.0\u00b1 3.5 26.0\u00b1 5.8 36.0\u00b1 5.9 55.0\u00b1 6.2 16.0\u00b1 6.7 12.0\u00b1 4.5 28.0\u00b1 7.5 6.0\u00b1 6.9 LLaMa 65B 15.0\u00b1 4.3 8.0\u00b1 3.7 27.0\u00b1 5.3 14.0\u00b1 5.8 50.0\u00b1 5.7 29.0\u00b1 7.4 41.0\u00b1 6.3 46.0\u00b1 6.7 30.0\u00b1 6.1 Falcon 7B 49.0\u00b1 5.9 39.0\u00b1 4.9 34.0\u00b1 6.7 20.0\u00b1 8.4 63.0\u00b1 6.7 13.0\u00b1 8.2 7.0\u00b1 4.5 10.0\u00b1 6.1 12.0\u00b1 8.3 Falcon 7B Instr. 63.0\u00b1 5.8 46.0\u00b1 7.0 48.0\u00b1 6.6 42.0\u00b1 7.4 71.0\u00b1 5.2 \u221210.0\u00b1 7.1 \u22129.0\u00b1 6.3 11.0\u00b1 7.6 17.0\u00b1 8.5 Falcon 40B 15.0\u00b1 4.3 17.0\u00b1 4.5 36.0\u00b1 5.9 20.0\u00b1 6.8 58.0\u00b1 6.5 28.0\u00b1 6.8 32.0\u00b1 6.8 25.0\u00b1 8.3 16.0\u00b1 7.8 Falcon 40B Instr. 29.0\u00b1 5.3 30.0\u00b1 5.2 45.0\u00b1 5.5 53.0\u00b1 6.8 49.0\u00b1 6.9 45.0\u00b1 7.0 11.0\u00b1 6.3 48.0\u00b1 7.0 22.0\u00b1 7.6\n\u2206 Entropy SST-2 Subj F. Phraseb. Hate Speech AG News MQP MRPC RTE WNLI LLaMa-2 7B \u22120.519\u00b1 0.022 0.010\u00b1 0.017 \u22120.397\u00b1 0.026 \u22120.100\u00b1 0.013 \u22120.749\u00b1 0.030 \u22120.003\u00b1 0.005 0.049\u00b1 0.005 \u22120.027\u00b1 0.008 \u22120.006\u00b1 0.008 LLaMa-2 13B \u22120.479\u00b1 0.019 \u22120.058\u00b1 0.015 \u22120.475\u00b1 0.024 \u22120.194\u00b1 0.019 \u22120.953\u00b1 0.028 \u22120.027\u00b1 0.010 \u22120.067\u00b1 0.011 \u22120.106\u00b1 0.018 \u22120.073\u00b1 0.017 LLaMa-2 70B \u22120.167\u00b1 0.019 \u22120.100\u00b1 0.015 \u22120.398\u00b1 0.029 \u22120.255\u00b1 0.018 \u22120.995\u00b1 0.024 \u22120.243\u00b1 0.019 \u22120.150\u00b1 0.015 \u22120.258\u00b1 0.019 \u22120.209\u00b1 0.017 LLaMa 7B \u22120.434\u00b1 0.020 \u22120.017\u00b1 0.023 \u22120.355\u00b1 0.023 \u22120.159\u00b1 0.019 \u22120.645\u00b1 0.033 0.007\u00b1 0.003 \u22120.032\u00b1 0.005 \u22120.005\u00b1 0.008 \u22120.014\u00b1 0.010 LLaMa 13B \u22120.424\u00b1 0.023 \u22120.005\u00b1 0.020 \u22120.237\u00b1 0.022 \u22120.151\u00b1 0.018 \u22120.731\u00b1 0.033 0.008\u00b1 0.009 0.019\u00b1 0.012 \u22120.010\u00b1 0.008 \u22120.009\u00b1 0.009 LLaMa 65B \u22120.345\u00b1 0.019 \u22120.140\u00b1 0.020 \u22120.528\u00b1 0.024 \u22120.273\u00b1 0.020 \u22121.041\u00b1 0.029 \u22120.128\u00b1 0.019 \u22120.141\u00b1 0.015 \u22120.205\u00b1 0.020 \u22120.199\u00b1 0.019 Falcon 7B \u22120.276\u00b1 0.019 \u22120.118\u00b1 0.014 \u22120.022\u00b1 0.018 \u22120.062\u00b1 0.013 \u22120.518\u00b1 0.037 0.002\u00b1 0.009 0.005\u00b1 0.006 \u22120.004\u00b1 0.010 \u22120.015\u00b1 0.013 Falcon 7B Instr. \u22120.367\u00b1 0.020 \u22120.068\u00b1 0.012 \u22120.327\u00b1 0.021 \u22120.052\u00b1 0.016 \u22120.220\u00b1 0.028 \u22120.024\u00b1 0.009 0.127\u00b1 0.015 0.005\u00b1 0.015 0.001\u00b1 0.020 Falcon 40B \u22120.392\u00b1 0.020 \u22120.233\u00b1 0.022 \u22120.420\u00b1 0.027 \u22120.190\u00b1 0.022 \u22120.904\u00b1 0.033 \u22120.003\u00b1 0.010 \u22120.103\u00b1 0.012 \u22120.018\u00b1 0.014 \u22120.001\u00b1 0.013 Falcon 40B Instr. \u22120.483\u00b1 0.020 \u22120.160\u00b1 0.024 \u22120.430\u00b1 0.028 \u22120.313\u00b1 0.024 \u22120.916\u00b1 0.033 \u22120.098\u00b1 0.017 \u22120.017\u00b1 0.014 \u22120.063\u00b1 0.017 \u22120.013\u00b1 0.013\nPublished as a conference paper at ICLR 2024\n0 25 50 75 100\n0.2\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 25 50 75 100\n\u22121.8\n\u22121.6\n\u22121.4\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n\u22120.2\nLog Likelihood \u2191\n0 25 50 75 100\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\nEntropy\nD \u2192 F F \u2192 D Alternate F \u2194 D Changepoint 2 x Changepoint Guessing\n0 20 40 60\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\n1.0\nL L\na M\na 6 5 B\n0 20 40 60\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n\u22120.2\n0 20 40 60\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0 20 40 60\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nF a lc\no n\n4 0 B\n0 20 40 60\nNo Observed In-Context Examples\n\u22120.9\n\u22120.8\n\u22120.7\n\u22120.6\n\u22120.5\n\u22120.4\n\u22120.3\n\u22120.2\n0 20 40 60 0.2\n0.3\n0.4\n0.5\n0.6\nFigure F.32: Few-shot ICL on SST-2 when the label relationship changes throughout ICL. For (D \u2192 F), we start with default labels and change to flipped labels at the changepoint, for (F \u2192 D) we change from flipped to the default labels at the changepoint, and for (Alternating F \u2194 D) we alternate between the two label relationships after every observation. For all setups, at \u20182 x Changepoint\u2019, the LLMs have observed the same number of examples for both label relations. If, according to NH3, ICL treats all in-context information equally, predictions should be equal at that point\u2014but they are not. Averages over 500 repetitions, we apply moving averages (window size 3), and thin lines are bootstrapped 99% confidence intervals, thin dashed lines are mean results without moving average smoothing.\n55\nPublished as a conference paper at ICLR 2024\n0 20 40 60\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 20 40 60\n\u22121.75\n\u22121.50\n\u22121.25\n\u22121.00\n\u22120.75\n\u22120.50\n\u22120.25\nLog Likelihood \u2191\n0 20 40 60\n0.30\n0.35\n0.40\n0.45\n0.50\n0.55\n0.60\n0.65\nEntropy\nD \u2192 F F \u2192 D Alternate F \u2194 D Changepoint 2 x Changepoint Guessing\n0 10 20 30\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nL L\na M\na 6 5 B\n0 10 20 30 \u22121.2\n\u22121.1\n\u22121.0\n\u22120.9\n\u22120.8\n\u22120.7\n\u22120.6\n\u22120.5\n\u22120.4\n\u22120.3\n0 10 20 30 0.40\n0.45\n0.50\n0.55\n0.60\n0.65\n0.70\n0 10 20 30\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nF a lc\no n\n4 0 B\n0 10 20 30\nNo Observed In-Context Examples\n\u22120.9\n\u22120.8\n\u22120.7\n\u22120.6\n\u22120.5\n\u22120.4\n\u22120.3\n0 10 20 30\n0.425\n0.450\n0.475\n0.500\n0.525\n0.550\n0.575\n0.600\n0.625\nFigure F.33: Few-shot ICL on Subjectivity when the label relationship changes throughout ICL. For (D \u2192 F), we start with default labels and change to flipped labels at the changepoint, for (F \u2192 D) we change from flipped to the default labels at the changepoint, and for (Alternating F \u2194 D) we alternate between the two label relationships after every observation. For all setups, at \u20182 x Changepoint\u2019, the LLMs have observed the same number of examples for both label relations. If, according to NH3, ICL treats all in-context information equally, predictions should be equal at that point\u2014but they are not. Averages over 500 repetitions, we apply moving averages (window size 3), and thin lines are bootstrapped 99% confidence intervals, thin dashed lines are mean results without moving average smoothing.\n56\nPublished as a conference paper at ICLR 2024\n0 20 40 60\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 20 40 60\n\u22122.00\n\u22121.75\n\u22121.50\n\u22121.25\n\u22121.00\n\u22120.75\n\u22120.50\n\u22120.25\nLog Likelihood \u2191\n0 20 40 60\n0.6\n0.7\n0.8\n0.9\n1.0\nEntropy\nD \u2192 F F \u2192 D Alternate F \u2194 D Changepoint 2 x Changepoint Guessing\n0 10 20 30\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nL L\na M\na 6 5 B\n0 10 20 30\n\u22122.25\n\u22122.00\n\u22121.75\n\u22121.50\n\u22121.25\n\u22121.00\n\u22120.75\n\u22120.50\n\u22120.25\n0 10 20 30\n0.5\n0.6\n0.7\n0.8\n0.9\n0 10 20 30\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nF a lc\no n\n4 0 B\n0 10 20 30\nNo Observed In-Context Examples\n\u22122.5\n\u22122.0\n\u22121.5\n\u22121.0\n\u22120.5\n0 10 20 30\n0.65\n0.70\n0.75\n0.80\n0.85\n0.90\n0.95\nFigure F.34: Few-shot ICL on Financial Phrasebank when the label relationship changes throughout ICL. For (D \u2192 F), we start with default labels and change to flipped labels at the changepoint, for (F\u2192 D) we change from flipped to the default labels at the changepoint, and for (Alternating F\u2194D) we alternate between the two label relationships after every observation. For all setups, at \u20182 x Changepoint\u2019, the LLMs have observed the same number of examples for both label relations. If, according to NH3, ICL treats all in-context information equally, predictions should be equal at that point\u2014but they are not. Averages over 500 repetitions, we apply moving averages (window size 3), and thin lines are bootstrapped 99% confidence intervals, thin dashed lines are mean results without moving average smoothing.\n57\nPublished as a conference paper at ICLR 2024\n0 10 20 30 40\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 10 20 30 40\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\nLog Likelihood \u2191\n0 10 20 30 40\n0.3\n0.4\n0.5\n0.6\nEntropy\nD \u2192 F F \u2192 D Alternate F \u2194 D Changepoint 2 x Changepoint Guessing\n0 5 10 15 20\n0.50\n0.55\n0.60\n0.65\n0.70\n0.75\n0.80\n0.85\nL L\na M\na 6 5 B\n0 5 10 15 20\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n0 5 10 15 20\n0.30\n0.35\n0.40\n0.45\n0.50\n0.55\n0.60\n0.65\n0 5 10 15 20\n0.45\n0.50\n0.55\n0.60\n0.65\n0.70\n0.75\n0.80\nF a lc\no n\n4 0 B\n0 5 10 15 20\nNo Observed In-Context Examples\n\u22121.6\n\u22121.4\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n0 5 10 15 20 0.25\n0.30\n0.35\n0.40\n0.45\n0.50\n0.55\n0.60\n0.65\nFigure F.35: Few-shot ICL on Hate Speech when the label relationship changes throughout ICL. For (D \u2192 F), we start with default labels and change to flipped labels at the changepoint, for (F \u2192 D) we change from flipped to the default labels at the changepoint, and for (Alternating F \u2194 D) we alternate between the two label relationships after every observation. For all setups, at \u20182 x Changepoint\u2019, the LLMs have observed the same number of examples for both label relations. If, according to NH3, ICL treats all in-context information equally, predictions should be equal at that point\u2014but they are not. Averages over 500 repetitions, we apply moving averages (window size 3), and thin lines are bootstrapped 99% confidence intervals, thin dashed lines are mean results without moving average smoothing.\n58\nPublished as a conference paper at ICLR 2024\n0 10 20 30 40\n0.5\n0.6\n0.7\n0.8\n0.9\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 10 20 30 40\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n\u22120.2\nLog Likelihood \u2191\n0 10 20 30 40\n0.2\n0.4\n0.6\n0.8\n1.0\n1.2\nEntropy\nD \u2192 F F \u2192 D Alternate F \u2194 D Changepoint 2 x Changepoint Guessing\n0 5 10 15 20\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nL L\na M\na 6 5 B\n0 5 10 15 20\n\u22122.00\n\u22121.75\n\u22121.50\n\u22121.25\n\u22121.00\n\u22120.75\n\u22120.50\n\u22120.25\n0 5 10 15 20\n0.4\n0.6\n0.8\n1.0\n1.2\n0 5 10 15 20\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\nF a lc\no n\n4 0 B\n0 5 10 15 20\nNo Observed In-Context Examples\n\u22121.8\n\u22121.6\n\u22121.4\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n0 5 10 15 20\n0.4\n0.6\n0.8\n1.0\n1.2\nFigure F.36: Few-shot ICL on AG News when the label relationship changes throughout ICL. For (D \u2192 F), we start with default labels and change to flipped labels at the changepoint, for (F \u2192 D) we change from flipped to the default labels at the changepoint, and for (Alternating F \u2194 D) we alternate between the two label relationships after every observation. For all setups, at \u20182 x Changepoint\u2019, the LLMs have observed the same number of examples for both label relations. If, according to NH3, ICL treats all in-context information equally, predictions should be equal at that point\u2014but they are not. Averages over 500 repetitions, we apply moving averages (window size 3), and thin lines are bootstrapped 99% confidence intervals, thin dashed lines are mean results without moving average smoothing.\n59\nPublished as a conference paper at ICLR 2024\n0 5 10 15 20\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nF li\np A\nft er\n1 0\nAccuracy \u2191\n0 5 10 15 20\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\nLog Likelihood \u2191\n0 5 10 15 20\n0.3\n0.4\n0.5\n0.6\nEntropy\nD \u2192 F F \u2192 D Alternate F \u2194 D Changepoint 2 x Changepoint Guessing\n0 10 20 30 40\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nF li\np A\nft er\n2 0\n0 10 20 30 40\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n0 10 20 30 40\n0.3\n0.4\n0.5\n0.6\n0 20 40 60\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0.8\n0.9\nF li\np A\nft er\n3 0\n0 20 40 60\nNo Observed In-Context Examples\n\u22121.2\n\u22121.0\n\u22120.8\n\u22120.6\n\u22120.4\n0 20 40 60\n0.3\n0.4\n0.5\n0.6\nFigure F.37: Few-shot ICL on Hate Speech with LLaMa-2-70B when the label relationship changes throughout ICL. We here investigate a three different changepoints, flipping labels after 10, 20, or 30 in-context observations. For (D \u2192 F), we start with default labels and change to flipped labels at the changepoint, for (F \u2192 D) we change from flipped to the default labels at the changepoint, and for (Alternating F \u2194 D) we alternate between the two label relationships after every observation. For all setups, at \u20182 x Changepoint\u2019, the LLMs have observed the same number of examples for both label relations. If, according to NH3, ICL treats all in-context information equally, predictions should be equal at that point, regardless of whether the changepoint is after 10, 20, or 30 observations. However, this is not the case. In particular, predictions are significantly different when the changepoint is 30. Averages over 500 repetitions, we apply moving averages (window size 3), thin lines are bootstrapped 99% confidence intervals, thin dashed lines are mean results without moving average smoothing.\n60\nPublished as a conference paper at ICLR 2024\n0 50 100\n0.25\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 50 100\n\u22121.5\n\u22121.0\n\u22120.5\nLog Likelihood \u2191\n0 50 100\n0.2\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n0 25 50\n0.25\n0.50\n0.75\nL L\na M\na 6 5 B\n0 25 50\n\u22121.5\n\u22121.0\n\u22120.5\n0 25 50\n0.2\n0.4\n0.6\n0 25 50\n0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\n0 25 50\n\u22121.5\n\u22121.0\n\u22120.5\n0 25 50\n0.2\n0.4\n0.6\n0 25 50\n0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n0 25 50\nNo Observed In-Context Examples\n\u22121.5\n\u22121.0\n\u22120.5\n0 25 50\n0.2\n0.4\n0.6\nFigure F.38: Prompted few-shot ICL with flipped labels on SST-2. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n61\nPublished as a conference paper at ICLR 2024\n0 50\n0.50\n0.75\n1.00\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 50\n\u22121.0\n\u22120.5\nLog Likelihood \u2191\n0 50\n0.2\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20 30\n0.50\n0.75\n1.00\nL L\na M\na 6 5 B\n10 20 30\n\u22121.0\n\u22120.5\n10 20 30\n0.2\n0.4\n0.6\n10 20 30\n0.50\n0.75\n1.00\nF a lc\no n\n4 0 B\n10 20 30\n\u22121.0\n\u22120.5\n10 20 30\n0.2\n0.4\n0.6\n10 20 30\n0.50\n0.75\n1.00\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30\nNo Observed In-Context Examples\n\u22121.0\n\u22120.5\n10 20 30\n0.2\n0.4\n0.6\nFigure F.39: Prompted few-shot ICL with flipped labels on Subjectivity. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n62\nPublished as a conference paper at ICLR 2024\n0 50\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 50\n\u22121.5\n\u22121.0\n\u22120.5\nLog Likelihood \u2191\n0 50\n0.50\n0.75\n1.00\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20 30\n0.50\n0.75\nL L\na M\na 6 5 B\n10 20 30\n\u22121.5\n\u22121.0\n\u22120.5\n10 20 30\n0.50\n0.75\n1.00\n20 40\n0.50\n0.75\nF a lc\no n\n4 0 B\n20 40\n\u22121.5\n\u22121.0\n\u22120.5\n20 40\n0.50\n0.75\n1.00\n20 40\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n20 40\nNo Observed In-Context Examples\n\u22121.5\n\u22121.0\n\u22120.5\n20 40\n0.50\n0.75\n1.00\nFigure F.40: Prompted few-shot ICL with flipped labels on Financial Phrasebank. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n63\nPublished as a conference paper at ICLR 2024\n0 50\n0.25\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 50\n\u22122\n\u22121\nLog Likelihood \u2191\n0 50\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20 30\n0.25\n0.50\n0.75\nL L\na M\na 6 5 B\n10 20 30\n\u22122\n\u22121\n10 20 30\n0.4\n0.6\n10 20 30\n0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\n10 20 30\n\u22122\n\u22121\n10 20 30\n0.4\n0.6\n10 20 30\n0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30\nNo Observed In-Context Examples\n\u22122\n\u22121\n10 20 30\n0.4\n0.6\nFigure F.41: Prompted few-shot ICL with flipped labels on Hate Speech. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n64\nPublished as a conference paper at ICLR 2024\n0 20 40\n0.25\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 20 40\n\u22123\n\u22122\n\u22121\nLog Likelihood \u2191\n0 20 40\n0.5\n1.0\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20\n0.25\n0.50\n0.75\nL L\na M\na 6 5 B\n10 20\n\u22123\n\u22122\n\u22121\n10 20\n0.5\n1.0\n10 20\n0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\n10 20\n\u22123\n\u22122\n\u22121\n10 20\n0.5\n1.0\n10 20\n0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20\nNo Observed In-Context Examples\n\u22123\n\u22122\n\u22121\n10 20\n0.5\n1.0\nFigure F.42: Prompted few-shot ICL with flipped labels on AG News. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n65\nPublished as a conference paper at ICLR 2024\n0 20 40 0.25\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 20 40 \u22122\n\u22121\nLog Likelihood \u2191\n0 20 40\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20 0.25\n0.50\n0.75\nL L\na M\na 6 5 B\n10 20 \u22122\n\u22121\n10 20\n0.4\n0.6\n10 20 0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\n10 20 \u22122\n\u22121\n10 20\n0.4\n0.6\n10 20 0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20\nNo Observed In-Context Examples\n\u22122\n\u22121\n10 20\n0.4\n0.6\nFigure F.43: Prompted few-shot ICL with flipped labels on Medical Questions Pairs. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n66\nPublished as a conference paper at ICLR 2024\n10 20 30\n0.4\n0.6\n0.8\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n10 20 30\n\u22121.0\n\u22120.5 Log Likelihood \u2191\n10 20 30\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20\n0.4\n0.6\n0.8\nL L\na M\na 6 5 B\n10 20\n\u22121.0\n\u22120.5\n10 20\n0.4\n0.6\n10 20\n0.4\n0.6\n0.8\nF a lc\no n\n4 0 B\n10 20\n\u22121.0\n\u22120.5\n10 20\n0.4\n0.6\n10 20\n0.4\n0.6\n0.8\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20\nNo Observed In-Context Examples\n\u22121.0\n\u22120.5\n10 20\n0.4\n0.6\nFigure F.44: Prompted few-shot ICL with flipped labels on MRPC. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n67\nPublished as a conference paper at ICLR 2024\n10 20 0.25\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n10 20 \u22122\n\u22121\nLog Likelihood \u2191\n10 20\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n5 10 0.25\n0.50\n0.75\nL L\na M\na 6 5 B\n5 10 \u22122\n\u22121\n5 10\n0.4\n0.6\n5 10 0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\n5 10 \u22122\n\u22121\n5 10\n0.4\n0.6\n5 10 0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n5 10\nNo Observed In-Context Examples\n\u22122\n\u22121\n5 10\n0.4\n0.6\nFigure F.45: Prompted few-shot ICL with flipped labels on RTE. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n68\nPublished as a conference paper at ICLR 2024\n0 25 50 0.25\n0.50\n0.75\nL L\na M\na -2\n7 0 B\nAccuracy \u2191\n0 25 50\n\u22121.5\n\u22121.0\n\u22120.5 Log Likelihood \u2191\n0 25 50\n0.4\n0.6\nEntropy\nDefault Guessing\nFlipped w/ Prompt\nNone Instruct Ignore Invert\n10 20 0.25\n0.50\n0.75\nL L\na M\na 6 5 B\n10 20\n\u22121.5\n\u22121.0\n\u22120.5\n10 20\n0.4\n0.6\n10 20 30 0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\n10 20 30\n\u22121.5\n\u22121.0\n\u22120.5\n10 20 30\n0.4\n0.6\n10 20 30 0.25\n0.50\n0.75\nF a lc\no n\n4 0 B\nIn st\nr.\n10 20 30\nNo Observed In-Context Examples\n\u22121.5\n\u22121.0\n\u22120.5\n10 20 30\n0.4\n0.6\nFigure F.46: Prompted few-shot ICL with flipped labels on WNLI. Some prompts are able to improve ICL on flipped labels compared to not using a prompt as before (label none in the figure). We average over 100 random subsets and then additionally apply moving averages (window size 5) for clarity.\n69\nPublished as a conference paper at ICLR 2024"
+        },
+        {
+            "heading": "G ADDITIONAL EXPERIMENTS",
+            "text": "In this section, we provide additional experiments and insights into label learning in ICL.\nG.1 PROGRESSIVE RANDOMIZATION\nPreviously, we have observed that ICL performance suffers when all labels in the context are randomized. In this section, we study the changes to ICL predictions when gradually increasing the proportion of in-context examples with random labels. This is of practical relevance as noisy labels are a common concern in many applications.\nFigure G.1 gives the performance of ICL for LLaMa-2-70B on SST-2 at different noise levels. We observe that probabilistic log likelihood immediately and clearly degrades, even at our smallest proportion of random labels of 0.2. This makes sense intuitively, as we would expect model predictions to become less certain in the face of noisy label observations. In contrast, accuracy stays relatively constant until the noise level reaches a proportion of 0.6, i.e. more than half the in-context points are noisy.\nG.2 CALIBRATED LABEL FLIPPING\nWe here repeat our label flipping experiments from \u00a77 regarding NH2 with probabilities calibrated according to the approach of Zhao et al. (2021) to see if calibrated predictions can overcome the model\u2019s pre-training preference.\nFigure G.2 is a reproduction of Fig. 5 with calibrated probabilities. We observe that differences between the calibrated and uncalibrated versions are generally small: we find almost no differences for SST-2/Falcon-40B and small improvements for all labels for Hate Speech/LLaMa-65B and MQP/LLaMa-2-70B. Most importantly, we still observe large differences in performance between the different label setups at maximum context size, such that, here, NH2 remains rejected for ICL with calibrated predictions.\nWe do not necessarily find these results surprising. Zhao et al. (2021) focus on scenarios with small in-context dataset sizes (up to 16). They show that this is where calibration is most important. Already for 16 in-context demonstrations, the gains from calibration are insignificant, see, e.g. their Figure 1. In contrast, we study ICL at much larger numbers of in-context demonstrations. Thus, we are not surprised that our conclusions do not change with calibration.\nG.3 LABEL FLIPPING FOR AUTHOR IDENTIFICATION\nIn Fig. G.3, we present results for our label flipping experiments (NH2, \u00a77) with LLaMa-2 models on our novel author identification task (\u00a76). Generally, we observe that accuracy is very similar across different label scenarios. However, small differences are visible for the probabilistic metrics (most clearly for entropy). Interestingly, these differences are much smaller than in most of our previous experiments. This provides additional support for the intuitions underlying \u00a77: we would expect the\n0 50 100\n0.6\n0.8\n1.0 Accuracy \u2191\n0 50 100\n\u22120.6\n\u22120.4\n\u22120.2\nLog Likelihood \u2191\n0 50 100\n0.2\n0.4\n0.6\nEntropy\nRandom Proportion\n0.0 0.2 0.4 0.6 0.8 1.0\nFigure G.1: Few-shot ICL with different proportions of randomized labels for SST-2 and LLaMa2-70B. As the proportions of random labels increases, predictions become less certain. Accuracies stay relatively constant, until label noise increases above 50%. We average over 500 random incontext datasets.\n70\nPublished as a conference paper at ICLR 2024\n0 25 50\n0.3\n0.6 S S T -2 F a lc o n\n4 0 B\nAccuracy \u2191\n0 25 50 \u22121.5 \u22121.0 \u22120.5\nLog Likelihood \u2191\n0 25 50\n0.3\n0.6\nEntropy\nLabel Relationship\nDefault Flipped Arbitrary Arbitrary Flipped\n0 15 30\n0.5\n0.8\nH a te\nS p\nee ch\nL L\na M\na 6 5 B\n0 15 30 \u22122\n\u22121\n0 15 30\n0.4\n0.6\n0 20 40\n0.5\n0.8\nM Q P L L a M a -2\n7 0 B\n0 20 40\nNo Observed In-Context Examples\n\u22121.5 \u22121.0 \u22120.5\n0 20 40\n0.4\n0.6\nFigure G.2: Reproduction of Fig. 5 with calibrated probabilities according to Zhao et al. (2021). Few-shot ICL with replacement labels for Falcon-40B on SST-2, LLaMa-2-65B on Hate Speech, and LLaMa-2-70B on MQP. Results are largely similar to the original figure Fig. 5 and NH2 remains rejected. Averages over 100 runs and thick lines with moving average (window size 5).\nmodel to only suffer significantly from flipped or replaced in-context labels if the pre-training data actually suggests to prefer a particular label setup over another. For the author identification task, which is guaranteed to not be part of the training data (cf. \u00a76), it makes sense that ICL would have a much weaker preference for any particular label setup.\nWe can also discuss the small differences that we do observe between label setups: (1) Especially initially, the performance for the arbitrary/arbitrary flipped labels, i.e. A/B or B/A, can be lower than the performance for the default/flipped labels, which are the authors\u2019 first names. It seems the model prefers assigning the sentences to \u2018names\u2019 rather than \u2018symbols\u2019. It makes sense that this is a bias that would emerge from the pre-training data. (2) Further, we observe that the larger LLaMa-2 models can slightly prefer the default label direction. We believe that a possible explanation for this is that, sometimes, the sentences in our dataset contain the authors name, e.g. \u2018Hi Author 1\u2019 in a sentence from Author 2. This could confuse the model for the flipped label direction, in particular, if the model has some general understanding of author identification tasks. Lastly, we note that, to reject NH2, it is sufficient to find any dataset on which it does not hold, such that our conclusions in \u00a77 remain valid regardless.\nG.4 ANSWER IN CONTEXT\nTo better understand how ICL leverages in-context label information, in this section, we study ICL predictions when one (or multiple) of the in-context examples exactly match the test query. That is, the model can always achieve perfect accuracy on the test query by looking up the label of the exact match in the in-context training set. We examine this across different label setups to investigate how pre-training preferences affect prediction behavior of the model here.\nFigure G.4 shows results for SST-2 at 10 in-context examples averaged across our selection of models. We find the following behavior: (1) A single repetition of the test query (in the training set) increases performance for arbitrary and flipped labels but not for default labels, where performance is high already. Further, absolute performance remains highest for the default labels. We do not observe perfect accuracy, i.e. perfect copying behavior, for any of the label setups. This means ICL does not implement a nearest neighbor predictor, and single observations have but a limited influence on the decision function. This behavior seems generally sensible, in particular, if the model expects that single examples can be mislabelled. (2) For multiple (here, four) repetitions of the test query we observe perfect accuracy for all label setups. Variance across the different models is negligible. This behavior is reasonable, as we would expect that multiple observations of the same input with consistent labeling should lead to a confident prediction of that label for that input.\n71\nPublished as a conference paper at ICLR 2024\n0 50\n0.50\n0.75\nL L\na M\na -2\n7 B\nAccuracy \u2191\n0 50 \u22122\n\u22121\nLog Likelihood \u2191\n0 50\n0.25\n0.50\nEntropy\nLabel Relationship\nDefault Flipped Arbitrary Arbitrary Flipped\n0 50\n0.50\n0.75\nL L\na M\na -2\n1 3 B\n0 50\n\u22122\n\u22121\n0 50\n0.25\n0.50\n0 50\n0.50\n0.75\nL L\na M\na -2\n7 0 B\n0 50\nNo Observed In-Context Examples\n\u22122\n\u22121\n0 50\n0.25\n0.50\nFigure G.3: Few-shot ICL with replacement labels for LLaMa-2 at different sizes on our novel author identification task. We find that differences between different label setups are much smaller than in most previous experiments. This conforms to our expectations: the author identification task is purposefully chosen such that it is novel, and as such, we would not expect the LLMs to have a strong preference towards any particular label relationship. Averages over 100 runs and thick lines with moving average (window size 5).\nNone One Four\nRepetitions\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\nA cc\nu ra\ncy\nDefault\nArbitrary\nFlip\nFigure G.4: Few-Shot ICL for answer in context experiment for SST-2 averaged across our usual selection of models and for three different label setups. For each input, we add (No, One, Four) \u2018repetitions\u2019 of the exact test query to the in-context examples. For one or more repetitions, ICL could achieve perfect accuracy by looking up the exact match and predicting its label. We find that one repetition improves performance for arbitrary or flipped replacement labels, but that robust copying behavior, i.e. perfect accuracy, emerges only for multiple repetitions of the test query.\n72"
+        }
+    ],
+    "title": "IN-CONTEXT LEARNING LEARNS LABEL RELATION-",
+    "year": 2024
+}

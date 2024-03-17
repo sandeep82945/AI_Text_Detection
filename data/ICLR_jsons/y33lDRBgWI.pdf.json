@@ -1,1 +1,660 @@
-null
+{
+    "abstractText": "This paper considers a ubiquitous problem underlying several applications of DPMs, i.e., optimizing the parameters of DPMs when the objective is a differentiable metric defined on the generated contents. Since the sampling procedure of DPMs involves recursive calls to the denoising UNet, na\u00efve gradient backpropagation requires storing the intermediate states of all iterations, resulting in extremely high memory consumption. To overcome this issue, we propose a novel method AdjointDPM, which first generates new samples from diffusion models by solving the corresponding probability-flow ODEs. It then uses the adjoint sensitivity method to backpropagate the gradients of the loss to the models\u2019 parameters (including conditioning signals, network weights, and initial noises) by solving another augmented ODE. To reduce numerical errors in both the forward generation and gradient backpropagation processes, we further reparameterize the probability-flow ODE and augmented ODE as simple non-stiff ODEs using exponential integration. AdjointDPM can effectively compute the gradients of all types of parameters in DPMs, including the network weights, conditioning text prompts, and noisy states. Finally, we demonstrate the effectiveness of AdjointDPM on several interesting tasks: guided generation via modifying sampling trajectories, finetuning DPM weights for stylization, and converting visual effects into text embeddings.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "DIFFUSION PROBA"
+        },
+        {
+            "affiliations": [],
+            "name": "BILISTIC MODELS"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiachun Pan"
+        },
+        {
+            "affiliations": [],
+            "name": "Jun Hao Liew"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiashi Feng"
+        },
+        {
+            "affiliations": [],
+            "name": "Hanshu Yan"
+        }
+    ],
+    "id": "SP:16f5f72c1695b4bdc68bcaba82b487770f4ccc20",
+    "references": [
+        {
+            "authors": [
+                "Kendall Atkinson",
+                "Weimin Han",
+                "David E Stewart"
+            ],
+            "title": "Numerical solution of ordinary differential equations",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Arpit Bansal",
+                "Hong-Min Chu",
+                "Avi Schwarzschild",
+                "Soumyadip Sengupta",
+                "Micah Goldblum",
+                "Jonas Geiping",
+                "Tom Goldstein"
+            ],
+            "title": "Universal Guidance for Diffusion Models, February 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Andreas Blattmann",
+                "Robin Rombach",
+                "Huan Ling",
+                "Tim Dockhorn",
+                "Seung Wook Kim",
+                "Sanja Fidler",
+                "Karsten Kreis"
+            ],
+            "title": "Align your Latents: High-Resolution Video Synthesis with Latent Diffusion Models, April 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ricky T.Q. Chen",
+                "Yulia Rubanova",
+                "Jesse Bettencourt",
+                "David K Duvenaud"
+            ],
+            "title": "Neural ordinary differential equations",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Giannis Daras",
+                "Alex Dimakis"
+            ],
+            "title": "Multiresolution textual inversion",
+            "venue": "In NeurIPS 2022 Workshop on Score-Based Methods,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Prafulla Dhariwal",
+                "Alexander Nichol"
+            ],
+            "title": "Diffusion models beat GANs on image synthesis",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhengcong Fei",
+                "Mingyuan Fan",
+                "Junshi Huang"
+            ],
+            "title": "Gradient-Free Textual Inversion, April 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rinon Gal",
+                "Yuval Alaluf",
+                "Yuval Atzmon",
+                "Or Patashnik",
+                "Amit H. Bermano",
+                "Gal Chechik",
+                "Daniel Cohen-Or"
+            ],
+            "title": "An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion, August 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "LA Gatys",
+                "AS Ecker",
+                "M Bethge"
+            ],
+            "title": "A neural algorithm of artistic style",
+            "venue": "Nature Communications,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ian J. Goodfellow",
+                "Jonathon Shlens",
+                "Christian Szegedy"
+            ],
+            "title": "Explaining and harnessing adversarial examples",
+            "venue": "In 3rd International Conference on Learning Representations,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ligong Han",
+                "Yinxiao Li",
+                "Han Zhang",
+                "Peyman Milanfar",
+                "Dimitris Metaxas",
+                "Feng Yang"
+            ],
+            "title": "SVDiff: Compact Parameter Space for Diffusion Fine-Tuning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Tim Salimans"
+            ],
+            "title": "Classifier-free diffusion guidance",
+            "venue": "NeurIPS",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Ajay Jain",
+                "Pieter Abbeel"
+            ],
+            "title": "Denoising diffusion probabilistic models",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "William Chan",
+                "Chitwan Saharia",
+                "Jay Whang",
+                "Ruiqi Gao",
+                "Alexey Gritsenko",
+                "Diederik P Kingma",
+                "Ben Poole",
+                "Mohammad Norouzi",
+                "David J Fleet"
+            ],
+            "title": "Imagen video: High definition video generation with diffusion models",
+            "venue": "arXiv preprint arXiv:2210.02303,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tero Karras",
+                "Miika Aittala",
+                "Timo Aila",
+                "Samuli Laine"
+            ],
+            "title": "Elucidating the design space of diffusionbased generative models",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bahjat Kawar",
+                "Shiran Zada",
+                "Oran Lang",
+                "Omer Tov",
+                "Huiwen Chang",
+                "Tali Dekel",
+                "Inbar Mosseri",
+                "Michal Irani"
+            ],
+            "title": "Imagic: Text-Based Real Image Editing with Diffusion Models, March 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aditya Khosla",
+                "Nityananda Jayadevaprakash",
+                "Bangpeng Yao",
+                "Li Fei-Fei"
+            ],
+            "title": "Novel dataset for fine-grained image categorization",
+            "venue": "In First Workshop on Fine-Grained Visual Categorization, IEEE Conference on Computer Vision and Pattern Recognition,",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Nupur Kumari",
+                "Bingliang Zhang",
+                "Richard Zhang",
+                "Eli Shechtman",
+                "Jun-Yan Zhu"
+            ],
+            "title": "Multi-concept customization of text-to-image diffusion",
+            "venue": "arXiv preprint arXiv:2212.04488,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Haohe Liu",
+                "Zehua Chen",
+                "Yi Yuan",
+                "Xinhao Mei",
+                "Xubo Liu",
+                "Danilo Mandic",
+                "Wenwu Wang",
+                "Mark D. Plumbley"
+            ],
+            "title": "AudioLDM: Text-to-Audio Generation with Latent Diffusion Models, February 2023a",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xingchao Liu",
+                "Lemeng Wu",
+                "Shujian Zhang",
+                "Chengyue Gong",
+                "Wei Ping",
+                "Qiang Liu"
+            ],
+            "title": "Flowgrad: Controlling the output of generative odes with gradients",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Cheng Lu",
+                "Yuhao Zhou",
+                "Fan Bao",
+                "Jianfei Chen",
+                "Chongxuan Li",
+                "Jun Zhu"
+            ],
+            "title": "DPM-Solver: A fast ODE solver for diffusion probabilistic model sampling in around 10 steps",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Cheng Lu",
+                "Yuhao Zhou",
+                "Fan Bao",
+                "Jianfei Chen",
+                "Chongxuan Li",
+                "Jun Zhu"
+            ],
+            "title": "DPM-Solver++: Fast solver for guided sampling of diffusion probabilistic models",
+            "venue": "arXiv preprint arXiv:2211.01095,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ron Mokady",
+                "Amir Hertz",
+                "Kfir Aberman",
+                "Yael Pritch",
+                "Daniel Cohen-Or"
+            ],
+            "title": "Null-text Inversion for Editing Real Images using Guided Diffusion Models, November 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexander Quinn Nichol",
+                "Prafulla Dhariwal",
+                "Aditya Ramesh",
+                "Pranav Shyam",
+                "Pamela Mishkin",
+                "Bob Mcgrew",
+                "Ilya Sutskever",
+                "Mark Chen"
+            ],
+            "title": "GLIDE: Towards photorealistic image generation and editing with text-guided diffusion models",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ashwini Pokle",
+                "Zhengyang Geng",
+                "J Zico Kolter"
+            ],
+            "title": "Deep equilibrium approaches to diffusion models",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark",
+                "Gretchen Krueger",
+                "Ilya Sutskever"
+            ],
+            "title": "Learning Transferable Visual Models From Natural Language Supervision",
+            "venue": "In Proceedings of the 38th International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aditya Ramesh",
+                "Prafulla Dhariwal",
+                "Alex Nichol",
+                "Casey Chu",
+                "Mark Chen"
+            ],
+            "title": "Hierarchical TextConditional Image Generation with CLIP Latents, April 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Javier Rando",
+                "Daniel Paleka",
+                "David Lindner",
+                "Lennart Heim",
+                "Florian Tramer"
+            ],
+            "title": "Red-teaming the stable diffusion safety filter",
+            "venue": "In NeurIPS ML Safety Workshop,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Robin Rombach",
+                "Andreas Blattmann",
+                "Dominik Lorenz",
+                "Patrick Esser",
+                "Bj\u00f6rn Ommer"
+            ],
+            "title": "Highresolution image synthesis with latent diffusion models",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nataniel Ruiz",
+                "Yuanzhen Li",
+                "Varun Jampani",
+                "Yael Pritch",
+                "Michael Rubinstein",
+                "Kfir Aberman"
+            ],
+            "title": "DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation",
+            "venue": "Technical report,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chitwan Saharia",
+                "William Chan",
+                "Saurabh Saxena",
+                "Lala Li",
+                "Jay Whang",
+                "Emily L Denton",
+                "Kamyar Ghasemipour",
+                "Raphael Gontijo Lopes",
+                "Burcu Karagol Ayan",
+                "Tim Salimans"
+            ],
+            "title": "Photorealistic textto-image diffusion models with deep language understanding",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Flavio Schneider"
+            ],
+            "title": "ArchiSound: Audio Generation with Diffusion, January 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Christoph Schuhmann",
+                "Romain Beaumont",
+                "Richard Vencu",
+                "Cade Gordon",
+                "Ross Wightman",
+                "Mehdi Cherti",
+                "Theo Coombes",
+                "Aarush Katta",
+                "Clayton Mullis",
+                "Mitchell Wortsman",
+                "Patrick Schramowski",
+                "Srivatsa Kundurthy",
+                "Katherine Crowson",
+                "Ludwig Schmidt",
+                "Robert Kaczmarczyk",
+                "Jenia Jitsev"
+            ],
+            "title": "LAION-5B: An open large-scale dataset for training next generation image-text models, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yang Song",
+                "Jascha Sohl-Dickstein",
+                "Diederik P Kingma",
+                "Abhishek Kumar",
+                "Stefano Ermon",
+                "Ben Poole"
+            ],
+            "title": "Score-based generative modeling through stochastic differential equations",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Andrey Voynov",
+                "Qinghao Chu",
+                "Daniel Cohen-Or",
+                "Kfir Aberman. P"
+            ],
+            "title": "Extended Textual Conditioning in Text-to-Image Generation, March 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bram Wallace",
+                "Akash Gokul",
+                "Stefano Ermon",
+                "Nikhil Naik"
+            ],
+            "title": "End-to-end diffusion latent optimization improves classifier guidance, 2023a",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bram Wallace",
+                "Akash Gokul",
+                "Nikhil Naik"
+            ],
+            "title": "Edict: Exact diffusion inversion via coupled transformations",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yuxin Wen",
+                "Neel Jain",
+                "John Kirchenbauer",
+                "Micah Goldblum",
+                "Jonas Geiping",
+                "Tom Goldstein"
+            ],
+            "title": "Hard Prompts Made Easy: Gradient-Based Discrete Optimization for Prompt Tuning and Discovery, February 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hanshu Yan",
+                "Jiawei Du",
+                "Vincent Tan",
+                "Jiashi Feng"
+            ],
+            "title": "On robustness of neural ordinary differential equations",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jiwen Yu",
+                "Yinhuai Wang",
+                "Chen Zhao",
+                "Bernard Ghanem",
+                "Jian Zhang"
+            ],
+            "title": "Freedom: Training-free energy-guided conditional diffusion model",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qinsheng Zhang",
+                "Yongxin Chen"
+            ],
+            "title": "Fast sampling of diffusion models with exponential integrator",
+            "venue": "In NeurIPS Workshop on Score-Based Methods,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Daquan Zhou",
+                "Weimin Wang",
+                "Hanshu Yan",
+                "Weiwei Lv",
+                "Yizhe Zhu",
+                "Jiashi Feng"
+            ],
+            "title": "MagicVideo: Efficient Video Generation With Latent Diffusion Models, November 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "embeddings Radford"
+            ],
+            "title": "2021) of generated images and unsafe embeddings from Rando",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Diffusion Probabilistic Models (DPMs) constitute a family of generative models that diffuse data distributions into white Gaussian noise and then revert the stochastic diffusion process to synthesize new contents (Ho et al., 2020; Song et al., 2021). DPM-based methods have recently achieved state-of-the-art performances in generating various types of contents, such as images (Saharia et al., 2022; Rombach et al., 2022; Ramesh et al., 2022), videos (Blattmann et al., 2023; Zhou et al., 2022; Ho et al., 2022), and audio data (Liu et al., 2023a; Schneider, 2023). To promote the development of downstream tasks, several pre-trained high-performance models, such as Stable Diffusion (SD) (Rombach et al., 2022), have been made publicly available. Based on these public large-scale models, researchers have developed many algorithms for creative applications (Gal et al., 2022; Daras & Dimakis, 2022; Kawar et al., 2023; Ruiz et al., 2022; Fei et al., 2023; Wen et al., 2023;\n\u2217Equal contribution. This work was completed during Jiachun Pan\u2019s internship at ByteDance. \u2020Project Lead. 1Github link for codes: https://github.com/HanshuYAN/AdjointDPM.git\nMolad et al., 2023). For example, a line of customization algorithms of DPMs, such as TexturalInversion (Gal et al., 2022) and DreamBooth (Ruiz et al., 2022), have been proposed to adapt DPMs for generating images/videos that share certain styles or identities. Researchers also have proposed some guidance algorithms (Bansal et al., 2023; Ho & Salimans, 2021) to make the generation process more controllable.\nA ubiquitous problem in customization and guidance applications is the optimization of the diffusion models\u2019 parameters so that the final generated contents satisfy certain properties. For example, to customize models for certain styles, we need to optimize the model weights to minimize the style distance between the generated images and the reference. Alternatively, concerning the guidance of sampling, we need to adjust the intermediate noisy states via the gradients of the guidance loss computed on the final generated data. Generally, the parameters to optimize include the conditional text embeddings, the network weights, and the noisy states, as they all affect the sampling trajectories. We formulate this optimization problem as follows. Denote the DPM as \u03a6(\u00b7, \u00b7, \u03f5\u03b8), which generates samples by iteratively calling a function \u03f5\u03b8. The desired properties can be defined by the loss function L(\u00b7) computed based on the generated contents x0 = \u03a6(xT , c, \u03f5\u03b8). We aim to minimize the loss by optimizing the variables \u03c8, including the weights \u03b8, conditioning signals c, or initial noise xT , i.e.,\nmin \u03c8\u2208{xT ,c,\u03b8} L(\u03a6(xT , c, \u03f5\u03b8)). (1)\nTo solve the optimization problem (1), an effective backpropagation (BP) technique is required to compute the gradient of the loss function L(x0) with respect to the optimization variables. Song et al. (2021) showed that the DPM sampling process is equivalent to solving a probability-flow ODE. Thus, many efficient sampling methods have been developed using adaptive ODE solvers. The sampling process involves recursive calls to the denoising UNet \u03f5\u03b8(xt, t, c) for multiple iterations. Using na\u00efve gradient BP requires intermediate state storage for all iterations, resulting in significant GPU memory consumption. To overcome this problem, we propose AdjointDPM, a novel gradient BP technique based on the adjoint sensitivity method (Chen et al., 2018). AdjointDPM computes the gradient by solving a backward ODE that only needs to store the intermediate state at the time point of function evaluation, resulting in constant memory usage. Moreover, we reparameterize the diffusion generation process to a simple non-stiff ODE using exponential integration, which helps reduce discretization errors in both the forward and reverse processes of gradient computation.\nWe evaluate the effectiveness of AdjointDPM by applying it to several interesting tasks, involving optimizing the initial/intermediate noisy states, network weights, and conditioning text prompts, respectively. 1) Guided sampling. Under the supervision of fine-grained vision classifiers, AdjointDPM can guide the Stable Diffusion to synthesize images of certain breeds of animals. 2) Security auditing of image generation systems. AdjointDPM successfully finds a set of initial noise whose corresponding output images contain NSFW (not safe for work) content, but can sneakily bypass the moderation filters. This triggers an alert about the potential security issues of existing AI generation systems. 3) Stylization via a single reference image. AdjointDPM can finetune a Stable Diffusion model for stylization defined by the Gram Matrix (Gatys et al., 2015) of a reference image. The stylizing capability of the fine-tuned model can generalize to different objects. All the empirical results demonstrate the flexibility and general applicability of AdjointDPM. We summarize the main contributions of this paper as follows:\n1. We propose a novel gradient backpropagation method of DPMs by applying the adjoint sensitivity method to the sampling process of diffusion models.\n2. To the best of our knowledge, AdjointDPM is the first general gradient backpropagation method that can be used for all types of parameters of DPMs, including network weights, conditioning text prompts, and intermediate noisy states.\n3. AdjointDPM can be used for several creative applications and outperforms other baselines."
+        },
+        {
+            "heading": "2 BACKGROUND",
+            "text": ""
+        },
+        {
+            "heading": "2.1 PROBABILITY-FLOW ODES CORRESPONDING TO DPMS",
+            "text": "The framework of diffusion probabilistic models involves gradually diffusing the complex target data distribution to a simple noise distribution, such as white Gaussian, and solving the corresponding\nreverse process to generate new samples (Ho et al., 2020; Song et al., 2021). Both the diffusion and denoising processes can be characterized by temporally continuous stochastic differential equations (SDEs) (Song et al., 2021). Song et al. (2021) derive deterministic processes (probability-flow ODEs) that are equivalent to the stochastic diffusion and denoising processes in the sense of marginal probability densities for all the time steps.\nLet q0 denote the unknown d-dimensional data distribution. Song et al. (2021) formulated the forward diffusion process {x(t)}t\u2208[0,T ] as follows\ndxt = f(t)xt dt+ g(t) dwt, x0 \u223c q0(x), t \u2208 [0, T ], (2) where xt denotes the state at time t and wt is the standard Wiener process. f(t)xt is a vector-valued function called drift coefficient and g(t) is a scalar function known as diffusion coefficient. For the forward diffusion process, it is common to adopt the conditional probability as q0t(xt|x0) = N (xt|\u03b1tx0, \u03c32t I), and the marginal distribution of xT to be approximately a standard Gaussian. For sampling, we have a corresponding reverse process as\ndxt = [f(t)xt \u2212 g(t)2\u2207xt log qt(xt)] dt+ g(t) dwt, xT \u223c N (0, \u03c32T I), t \u2208 [0, T ]. (3)\nIn Eqn. (3), the term \u2207x log qt(x), is known as the score function. We can train a neural network \u03f5\u03b8(xt, t) to estimate \u2212\u03c3t\u2207x log qt(xt) via denoising score matching. As discussed in Song et al. (2021), there exists a corresponding deterministic process whose trajectory shares the same set of marginal probability densities {qt(x)}Tt=0 as the SDE (3). The form of this deterministic probabilityflow ODE is shown in (4). We can generate new samples by solving Eqn. (4) from T to 0 with initial sample xT drawn from N (0, \u03c32T I).\ndx = [ f(t)xt + g(t)2\n2\u03c3t \u03f5\u03b8(xt, t)\n] dt (4)\nFor conditional sampling, classifier-free guidance (CFG) (Ho & Salimans, 2021) has been widely used in various tasks for improving the sample quality, including text-to-image, image-to-image, class-to-image generation (Saharia et al., 2022; Dhariwal & Nichol, 2021; Nichol et al., 2022). We can use CFG to generate new samples by solving Eqn. (4) and replacing \u03f5\u03b8(xt, t) with \u03f5\u0303\u03b8(xt, t, c).\n\u03f5\u0303\u03b8(xt, t, c) := s \u00b7 \u03f5\u03b8(xt, t, c) + (1\u2212 s) \u00b7 \u03f5\u03b8(xt, t,\u2205),"
+        },
+        {
+            "heading": "2.2 ADJOINT SENSITIVITY METHODS FOR NEURAL ODES",
+            "text": "Considering a neural ODE model dx\ndt = s(xt, t, \u03b8), the output x0 = xT + \u222b 0 T s(xt, t, \u03b8) dt. We aim to optimize the input xT or the weights \u03b8 by minimizing a loss L defined on the output x0. Regarding \u2202L\u2202xT , Chen et al. (2018) introduced adjoint state a(t) = \u2202L\u2202xt , which represents how the loss w.r.t the state xt at any time t. The dynamics of a(t) are given by another ODE,\nda(t) dt = \u2212a(t)T \u2202s(xt, t, \u03b8) \u2202xt , (5)\nwhich can be thought of as the instantaneous analog of the chain rule. Since \u2202L\u2202x0 is known, we can compute \u2202L\u2202xT by solving the initial value problem (IVP) backwards in time T to 0 of ODE in (5). Similarly, for \u03b8, we can regard them as a part of the augmented state:\nd dt [x, \u03b8, t] (t) := [s(xt, t, \u03b8),0, 1] .\nThe corresponding adjoint state to this augmented state are aaug(t) := [a(t),a\u03b8(t),at(t)], where a\u03b8 := \u2202L \u2202\u03b8 and at := \u2202L \u2202t . The augmented adjoint state aaug is governed by:\ndaaug dt = \u2212 [ a \u2202s\u2202x ,a \u2202s \u2202\u03b8 ,a \u2202s \u2202t ] . (6)\nBy solving the IVP from time T to 0 of Eqn. (6), we obtain the gradients of L w.r.t. {xt, \u03b8, t}. The explicit algorithm (Chen et al., 2018) is shown in Algorithm 1.\nAlgorithm 1 Reverse-mode derivative of an ODE initial value problem Input: Dynamics parameter \u03b8, start time t0, end time t1, final state xt1 , loss gradient \u2202L/\u2202xt1 . a(t1) =\n\u2202L \u2202xt1 , a\u03b8(t1) = 0, z0 = [xt1 , a(t1), a\u03b8(t1)] \u25b7 Define initial augmented state. def AugDynamics([xt,at, \u00b7], t, \u03b8) \u25b7 Define dynamics on augmented state.\nreturn [s(xt, t, \u03b8),\u2212aTt \u2202s\u2202x ,\u2212a T t \u2202s \u2202\u03b8 ] \u25b7 Concatenate time-derivatives\n[xt0 , \u2202L \u2202xt0 , \u2202L\u2202\u03b8 ] = ODESolve(z0,AugDynamics, t1, t0, \u03b8) \u25b7 Solve reverse-time ODE Return: [ \u2202L\u2202xt0 , \u2202L \u2202\u03b8 ] \u25b7 Return gradients"
+        },
+        {
+            "heading": "3 ADJOINT SENSITIVITY METHODS FOR DIFFUSION PROBABILISTIC MODELS",
+            "text": "In this section, we develop the AdjointDPM for gradient backpropagation in diffusion models based on the adjoint sensitivity methods from the neural ODE domain. When optimizing the model\u2019s parameters xT or \u03b8 (including the conditioning c), AdjointDPM first generates new samples via the forward probability-flow ODE (4). Through applying the adjoint sensitivity method, we then write out and solve the backward adjoint ODE (6) to compute the gradients of loss with respect to the parameters. One can apply any general-purpose numerical ODE solver, such as Euler\u2013Maruyama and Runge\u2013Kutta methods (Atkinson et al., 2011), for solving the ODE. To further improve the efficiency of the vanilla adjoint sensitivity methods, we exploit the semi-linear structure of the diffusion ODE functions (4), which has been used in several existing works for accelerating DPM samplers (Lu et al., 2022a;b; Karras et al., 2022; Zhang & Chen, 2022), and reparameterize the forward and backward ODEs as simple non-stiff ones."
+        },
+        {
+            "heading": "3.1 APPLYING ADJOINT METHODS TO PROBABILITY-FLOW ODES",
+            "text": "Sampling from DPMs, we obtain the generated data x0 = xT + \u222b 0 T s(xt, t, \u03b8, c) dt, where\ns(xt, t, \u03b8, c) = f(t)xt + g(t)2\n2\u03c3t \u03f5\u0303\u03b8(xt, t, c). (7)\nConcerning the customization or guidance tasks, we aim to minimize a loss L defined on x0, such as the stylization loss or semantic scores. We plug the equation (7) into the augmented adjoint ODE (5), and obtain the reverse ODE function in Algorithm 1 as:\nd  xt \u2202L \u2202xt \u2202L \u2202\u03b8 \u2202L \u2202t  = \u2212 \n\u2212f(t)xt \u2212 g(t) 2\n2\u03c3t \u03f5\u0303\u03b8(xt, t, c)\nf(t) \u2202L\u2202xt + \u2202L \u2202xt\ng(t)2\n2\u03c3t \u2202\u03f5\u0303\u03b8(xt,t,c) \u2202xt\n\u2202L \u2202xt\ng(t)2\n2\u03c3t\n\u2202\u03f5\u0303\u03b8(xt,t,c) \u2202\u03b8\ndf(t) dt \u2202L \u2202xt xt + \u2202L \u2202xt \u2202[g(t)2/2\u03c3t\u03f5\u0303\u03b8(xt,t,c)] \u2202t  dt. (8) We observe that the ODEs governing xt and \u2202L\u2202xt both contain linear and nonlinear parts. If we directly use off-the-shelf numerical solvers on Eqn. (8), it causes discretization errors of both the linear and nonlinear terms. To avoid this, in Section 3.2, we exploit the semi-linear structure of the probability-flow ODE to better control the discretization error for each step. Thus, we are allowed to use a smaller number of steps for generating samples of comparable quality."
+        },
+        {
+            "heading": "3.2 EXPONENTIAL INTEGRATION AND REPARAMETERIZATION",
+            "text": "We use the exponential integration to transform the ODE (4) into a simple non-stiff ODE. We multiply an integrating factor exp(\u2212 \u222b t 0 f(\u03c4)d\u03c4) on both sides of Eqn. (4) and obtain\nde\u2212 \u222b t 0 f(\u03c4)d\u03c4xt dt = e\u2212 \u222b t 0 f(\u03c4)d\u03c4 g(t) 2 2\u03c3t \u03f5\u0303\u03b8(xt, t, c).\nLet yt denote e\u2212 \u222b t 0 f(\u03c4)d\u03c4xt, then we have\ndyt dt\n= e\u2212 \u222b t 0 f(\u03c4)d\u03c4 g(t) 2\n2\u03c3t \u03f5\u0303\u03b8\n( e \u222b t 0 f(\u03c4)d\u03c4yt, t, c ) . (9)\nWe introduce a variable \u03c1 = \u03b3(t) and d\u03b3dt = e \u2212\n\u222b t 0 f(\u03c4)d\u03c4 g(t) 2\n2\u03c3t . In diffusion models, \u03b3(t) usually\nmonotonically increases when t increases from 0 to T . For example, when we choose f(t) = d log\u03b1dt and g2(t) = d\u03c3 2 t\ndt \u2212 2 d log\u03b1 dt \u03c3 2 t in VP-SDE (Song et al., 2021), we have \u03b3(t) = \u03b10 \u03c3t \u03b1t \u2212 \u03c30. Thus, a\nbijective mapping exists between \u03c1 and t, and we can reparameterize (9) as:\ndy d\u03c1 = \u03f5\u0303\u03b8\n( e \u222b \u03b3\u22121(\u03c1) 0 f(\u03c4)d\u03c4y, \u03b3\u22121(\u03c1), c ) . (10)\nWe also reparameterize the reverse ODE function in Algorithm 1 as follows\nd  y \u2202L \u2202y\n\u2202L \u2202\u03b8 \u2202L \u2202\u03c1  = \u2212  \u2212\u03f5\u0303\u03b8 ( e \u222b \u03b3\u22121(\u03c1) 0 f(\u03c4)d\u03c4y, \u03b3\u22121(\u03c1), c ) \u2202L \u2202y \u2202\u03f5\u0303\u03b8 ( e \u222b\u03b3\u22121(\u03c1) 0 f(\u03c4)d\u03c4y,\u03b3\u22121(\u03c1),c ) \u2202y \u2202L \u2202y \u2202\u03f5\u0303\u03b8 ( e \u222b\u03b3\u22121(\u03c1) 0 f(\u03c4)d\u03c4y,\u03b3\u22121(\u03c1),c ) \u2202\u03b8\n\u2202L \u2202y\n\u2202\u03f5\u0303\u03b8\n( e \u222b\u03b3\u22121(\u03c1) 0 f(\u03c4)d\u03c4y,\u03b3\u22121(\u03c1),c ) \u2202\u03c1\n d\u03c1. (11)\nNow instead of solving Eqn. (4) and Eqn. (8), we use off-the-shelf numerical ODE solvers to solve Eqn. (10) and Eqn. (11). This method is termed AdjointDPM. Implementation details are provided in Appendix E."
+        },
+        {
+            "heading": "3.3 ERROR CONTROL",
+            "text": "Here, we first show that the exact solutions of the reparameterzied ODEs are equivalent to the original ones. For the equation in the first row of Eqn. (11), its exact solution is:\ny\u03c1(t) = y\u03c1(s) + \u222b \u03c1(t) \u03c1(s) \u03f5\u0303\u03b8 ( e \u222b \u03b3\u22121(\u03c1) 0 f(\u03c4)d\u03c4y, \u03b3\u22121(\u03c1), c ) d\u03c1. (12)\nWe can rewrite it as e\u2212 \u222b t 0 f(\u03c4)d\u03c4xt = e \u2212 \u222b s 0 f(\u03c4)d\u03c4xs + \u222b t s d\u03c1 d\u03c4 \u03f5\u0303\u03b8(x\u03c4 , \u03c4, c) d\u03c4 . Then, we have\nxt = e \u222b t s f(\u03c4)d\u03c4xs + \u222b t s e \u222b t \u03c4 f(r)dr g(\u03c4) 2 2\u03c3\u03c4 \u03f5\u0303\u03b8(x\u03c4 , \u03c4, c) d\u03c4,\nwhich is equivalent to the exact solution of the equation in the first row of Eqn. (8). Similarly, for other equations in (11), their exact solutions are also equivalent to the solutions in (8). Thus, when we numerically solve non-stiff ODEs in Eqns (10) and (11), there are only discretization errors for nonlinear functions and the closed form of integration of linear parts have been solved exactly without any numerical approximation.\nIn summary, we reformulate the forward and reverse ODE functions and show that by using offthe-shelf numerical ODE solvers on the reparameterized ODEs, AdjointDPM does not introduce discretization eerror to the linear part. In Section 3.4, we experimentally compare the FID of generated images by solving Eqn. (4) and Eqn. (10) with the same number of network function evaluations (NFE). The results verify the superiority of solving Eqn. (10) regarding error control."
+        },
+        {
+            "heading": "3.4 SAMPLING QUALITY OF ADJOINTDPM",
+            "text": "To evaluate the effectiveness of the reparameterization in AdjointDPM, we generate images by solving the original ODE (4) and the reparameterized one (10) respectively. We also use other state-of-the-art samplers to synthesize images and compare the sampling qualities (measured by FID). We follow the implementation of DPM in Song et al. (2021) and use the publicly released checkpoints2 (trained on the CIFAR10 dataset) to generate images in an unconditional manner. We use the torchdiffeq package3 and solve the ODE (4) and (10) via the Adams\u2013Bashforth numerical solver with order 4. We choose a suitable NFE number for ODE solvers so that the DPM can generate content with good quality while not taking too much time. We compare the performance of AdjointDPM (solving the reparameterzied ODEs) to the case of solving the original ones under small NFE regions (\u2264 50).\n2https://github.com/yang-song/score_sde 3https://github.com/rtqichen/torchdiffeq\nNFE Solving (4) DPM-solver Solving (10)\n10 9.50 4.70 4.36 20 8.27 2.87 2.90 50 5.64 2.62 2.58\nWe generate the same number of images as the training set and compute the FID between the generated images and the real ones. From Table 1, we observe that, after reparameterizing the forward generation process to a non-stiff ODE function, we can generate higher-quality samples with lower FID values under the same NFEs. The sampling qualities of our method are also comparable to those of the state-of-the-art\nsampler (DPM-solver (Lu et al., 2022a))."
+        },
+        {
+            "heading": "4 APPLICATIONS",
+            "text": "In this section, we apply AdjointDPM to perform several interesting tasks, involving optimizing initial noisy states or model weights for performing guided sampling or customized generation. Due to the space limitation, we provide another application using AdjointDPM for converting visual effects into identification prompt embeddings in Appendix A. The experimental results of all applications demonstrate that our method can effectively back-propagate the loss information on the generated images to the related variables of DPMs."
+        },
+        {
+            "heading": "4.1 GUIDED SAMPLING",
+            "text": "In this section, we use AdjointDPM for guided sampling. The guidance is defined by the loss on the output samples, such as the classification score. We aim to optimize the sampling trajectory, {xt}1t=T , to make the generated images satisfy certain requirements."
+        },
+        {
+            "heading": "4.1.1 VOCABULARY EXPANSION",
+            "text": "The publicly released Stable Diffusion model is pre-trained on a very large-scale dataset (e.g., LAION (Schuhmann et al., 2022)), where the images are captioned at a high level. It can generate diverse general objects. However, when using it for synthesizing a specific kind of object, such as certain breeds of animals or species of plants, we may obtain suboptimal results in the sense that the generated images may not contain subtle characteristics. For example, when generating a picture of the \u201cCairn\" dog, the Stable Diffusion model can synthesize a dog picture but the shape and the outer coat may mismatch.\nHere, we use a fine-grained visual classification (FGVC) model as guidance to help the Stable Diffusion model generate specific breeds of dogs. The FGVC model can distinguish objects with subtle variations between classes. Under the guidance of a dog-FGVC model, diffusion models can accurately\ngenerate dog images of a specific breed. In other words, the vocabulary base of the diffusion model gets expanded. We formulate this task as follows: Let f(\u00b7) denote the FGVC model. The guidance L(y, f(x0)) is defined as the prediction score of the generated image x0 for class y. During sampling, in each time step t, we obtain the gradient of guidance L with respect to the noisy state xt, namely \u2202L \u2202xt , to drive the sampling trajectory.\nWe present the visual and numerical results in Fig. 1 and Table 2, respectively. By visual comparison to the vanilla Stable Diffusion (SD), we observe that under the guidance of AdjointDPM, the color and outer coat of the generated dog images align better with the ground-truth reference pictures. Besides, we compute the reduced FID values on Stanford Dogs (Dogs) (Khosla et al., 2011) and find that the FID values are also improved. We also compare AdjointDPM to a state-of-the-art baseline, DOODL (Wallace et al., 2023a). AdjointDPM outperforms in terms of visual quality and reduced FID values compared to SD. Refer to more results, optimization details, and comparison with the existing models in the Appendix B."
+        },
+        {
+            "heading": "4.1.2 SECURITY AUDITING",
+            "text": "DPMs like Stable Diffusion have been widely used in content creation platforms. The large-scale datasets used for training may contain unexpected and harmful data (e.g., violence and pornography). To avoid generating NSFW content, AI generation systems are usually equipped with a safety filter that blocks the outputs of potentially harmful content. However, deep neural networks have been shown to be vulnerable against adversarial examples (Goodfellow et al., 2015; Yan et al., 2020). This naturally raises the concern\u2014may existing DPM generation systems output harmful content that can sneakily bypass the NSFW filter? Formally, denote f(\u00b7) as the content moderation filter and c as the conditioning prompts containing harmful concepts. We randomly sample an initial noisy state xT , the generated image \u03a6(xT , c, \u03f5\u03b8) will likely be filtered out by f(\u00b7). We want to audit the security of generation systems by searching for another initial noisy state x\u2032T , which lies in a small \u03b4-neighborhood of xT , such that the corresponding output \u03a6(x\u2032T , c, \u03f5\u03b8) may still contain harmful content but bypass f(\u00b7). If we find it, the generation systems may face a serious security issue. This problem can also be formulated as a guided sampling process. The guidance L is defined as the distance between harmful prompt c and the prediction score f(\u03a6(x\u2032T , c, \u03f5\u03b8)). The distance is measured by the similarity between CLIP embeddings. We optimize the perturbation \u03b4 on xT to maximize the distance. The norm of the perturbation is limited to be \u03c4 as we want to ensure the newly generated image is visually similar to the original one.\nmax \u03b4:\u2225\u03b4\u2225\u221e\u2264\u03c4 L(c, f(\u03a6(xT + \u03b4, c, \u03f5\u03b8))).\nWe use AdjointDPM to solve this optimization problem and find that there indeed exist initial noisy states of the Stable Diffusion model, whose corresponding outputs can mislead the NSFW filter. Results are shown in Fig. 2. This observation raises an alert about the security issues of AI generation systems. Our research community has to develop more advanced mechanisms to ensure the isolation between NSFW content and users, especially teenagers.\nIndex 242 430 779 859 895\nRatio 63.9 75.8 45.3 58.22 52.6\nexperimental details are provided in Appendix C."
+        },
+        {
+            "heading": "4.2 STYLIZATION VIA A SINGLE REFERENCE",
+            "text": "We consider using AdjointDPM to fine-tune the weights of the UNet in Stable Diffusion for stylization based on a single reference image. We define the style of an image x by its Gram matrix (Gatys et al., 2015), which is computed based on the features extracted from a pre-trained VGG model.4 Here we denote the features extracted from the VGG as F(x) and the Gram matrix G(x) = FFT .\nGiven a reference image, we denote the target style as Gstyle. We aim to fine-tune the weights of the UNet so that the style of generated images matches the target one. This task is formulated as the optimization problem (13). The objective contains two terms. Besides the style loss Ls (mean squared error), we also add a term of content loss Lc. The content loss encourages the model to preserve the ability to generate diverse objects when adapting itself to a certain style. In specific, we sample multiple noise-prompt-image triplets, {(xiT , ci,xi0)}Ni=1, where xi0 denotes the clean image generated by the pre-trained Stable Diffusion with the input of (xiT , c\ni). The content loss is defined as the mean squared error between the features of originally generated images F(xi0) and those generated by optimized weights F(\u03a6(xiT , c\ni, \u03f5\u03b8)). Two coefficients, ws and wc, balance the strength of the two loss terms.\nmin \u03b8\n1\nN \u2211 i [ wsLs ( Gstyle,G(\u03a6(x i T , c i, \u03f5\u03b8)) ) + wcLc ( F(xi),F(\u03a6(xiT , c i, \u03f5\u03b8)) )]\n(13)\n4https://pytorch.org/tutorials/advanced/neural_style_tutorial.html\nPrompt DreamBooth Text-Inv AdjointDPM\nAirplane 21.98 24.44 27.34 Clock 28.23 26.74 30.00 House 25.40 25.91 29.03\nCat 25.90 22.30 26.83 Apples 28.10 24.06 28.59\nWe construct 10 prompts corresponding to ten of the CIFAR100 classes and sample starting noises to generate 100 images (10 images for each prompt) to form our training dataset. Visual and numerical results are shown in Fig. 3 and Table 4 respectively. We observe the SD model fine-tuned by AdjointDPM can generate stylized images of different objects. The stylizing capability also generalizes to the concepts unseen during fine-tuning (shown in the right part of Fig. 3). In addition to the high visual\nquality, the samples also align well with the conditioning prompts according to the high CLIP similarity scores. We compare AdjointDPM with other methods for stylization, including DreamBooth (Ruiz et al., 2022) and Textural-Inversion (Gal et al., 2022) (see the qualitative comparisons in Fig. 12). We observe that AdjointDPM achieves better alignment between image samples and the prompts. In addition, these existing methods barely can be generalized to unseen objects in this case only one reference image is available. More details and examples of stylization are shown in Appendix D."
+        },
+        {
+            "heading": "5 RELATED WORKS AND DISCUSSION",
+            "text": "Customization of Text-to-Image Generation Text-to-image customization aims to personalize a generative model for synthesizing new images of a specific target property. Existing customization methods typically tackle this task by either representing the property via a text embedding (Gal et al., 2022; Mokady et al., 2022; Wen et al., 2023) or finetuning the weights of the generative model (Ruiz et al., 2022; Kawar et al., 2023; Han et al., 2023). For example, Textual-Inversion (Gal et al., 2022) inverts the common identity shared by several images into a unique textual embedding. To make the learned embedding more expressive, Daras & Dimakis (2022) and Voynov et al. (2023) generalize the unique embedding to depend on the diffusion time or the layer index of the denoising UNet, respectively. In the other line, DreamBooth (Ruiz et al., 2022) learns a unique identifier placeholder and finetunes the whole diffusion model for identity customization. To speed up and alleviate the overfitting, Custom Diffusion (Kumari et al., 2022) and SVDiff (Han et al., 2023) only update a small subset of weights. Most of these existing methods assume that a handful of image examples (at least 3-5 examples) sharing the same concept or property are provided by the user in the first place. Otherwise, the generalization of resultant customized models usually will be degraded, i.e., they barely can synthesize unseen objects (unseen in the training examples) of the target concept. However, in some cases, it is difficult or even not possible to collect enough data that can represent abstract requirements imposed on the generated content. For example, we want to distill the editing effects/operations shown in a single image by a media professional or a novel painting style of a unique picture. In contrast, this paper relaxes the requirement of data samples and proposes the AdjointDPM for model customization only under the supervision of a differentiable loss.\nGuidance of Text-to-Image Generation Concerning the guidance of diffusion models, some algorithms (Bansal et al., 2023; Yu et al., 2023) mainly use the estimated clean state for computing the guidance loss and the gradient with respect to intermediate noisy states. The gap to the actual gradient is not negligible. As a result, the guided synthesized results may suffer from degraded image quality. Instead, some other methods (Wallace et al., 2023a; Liu et al., 2023b), such as DOODL, compute the gradients by exploiting the invertibility of diffusion solvers (e.g., DDIM). This paper also formulates the sampling process as ODE and proposes AdjointDPM to compute the gradients in a more accurate and adaptive way.\nThe main contribution of this paper is that we propose a ubiquitous framework to optimize the related variables (including UNet weights, text prompts, and latent noises) of diffusion models based on the supervision information (any arbitrary differentiable metric) on the final generated data. To our best knowledge, AdjontDPM is the first method that can compute the gradients for all types of parameters of diffusion models. In contrast, other methods, such as DOODL (Wallace et al., 2023a), FlowGrad (Liu et al., 2023b), and DEQ-DDIM (Pokle et al., 2022)), either only work for the noisy states or require the diffusion sampling process having equilibrium points. In the future, we will explore more real-world applications of AdjointDPM."
+        },
+        {
+            "heading": "ACKNOWLEDGMENTS",
+            "text": "This research/project is supported by the Singapore Ministry of Education Academic Research Fund (AcRF) Tier 2 under grant number A-8000423-00-00 and the Singapore Ministry of Education AcRF Tier 1 under grant number A-8000189-01-00. We would like to acknowledge that the computational work involved in this research work is partially supported by NUS IT\u2019s Research Computing group."
+        },
+        {
+            "heading": "1 Introduction 1",
+            "text": ""
+        },
+        {
+            "heading": "2 Background 2",
+            "text": ""
+        },
+        {
+            "heading": "3 Adjoint Sensitivity Methods for Diffusion Probabilistic Models 4",
+            "text": ""
+        },
+        {
+            "heading": "4 Applications 6",
+            "text": ""
+        },
+        {
+            "heading": "5 Related Works and Discussion 9",
+            "text": ""
+        },
+        {
+            "heading": "A Text Embedding Inversion 13",
+            "text": ""
+        },
+        {
+            "heading": "B Experimental Details on Vocabulary Expansion and Comparison with Existing Models 15",
+            "text": ""
+        },
+        {
+            "heading": "C Experimental Details and More Results on Security Auditing 15",
+            "text": ""
+        },
+        {
+            "heading": "D More Examples on Finetuning Weights for Stylization 17",
+            "text": "E Implementation of AdjointDPM 22"
+        },
+        {
+            "heading": "A TEXT EMBEDDING INVERSION",
+            "text": "In addition to the applications shown in Section 4, we consider another application concerning using AdjointDPM to convert visual effects (e.g., bokeh and relighting) into an identification text embedding #. Suppose we are given an image pair, namely an original image and its enhanced, the enhanced version is edited by some professional and appears with certain fascinating visual effects. After optimization, we can combine the obtained embedding with various text prompts to generate images with the same visual effect. Here, we simulate this real setting by using a text-to-image model to generate images with and without a certain effect.\nSuppose we are provided a text-to-image DPM \u03a6(\u00b7), we can generate an image x by denoising randomly sampled noise xT in the condition of the base prompt cbase. We further improve the aesthetic quality by inserting some keywords ctarget, like \u201cbokeh\u201d, into the conditioning prompt. The newly generated images are denoted by x\u2217. We use x\u2217 or its feature as a reference to define a loss L(\u00b7) that measures the distance to the target effect, such as the \u21132 or perceptual loss. We aim to optimize a special embedding # that can recover the visual effects in x\u2217:\nmin # L (x\u2217,\u03a6(xT , {cbase, #}, \u03f5\u03b8)) .\nWe utilize the publicly released Stable Diffusion models for image generation and set the loss function as the mean squared error (MSE) between the target images and the generated images. We aim to optimize a prompt embedding in the CLIP (Radford et al., 2021) embedding space and use the obtained embedding for image generation by concatenating it with the embeddings of other text prompts. As shown in Fig. 4, we observe AdjointDPM successfully yields an embedding # that can ensure the appearance of target visual effects, including the bokeh and relighting. Furthermore, the obtained embeddings # also generalize well to other starting noise and other text prompts. For example, the bokeh-# is optimized on a pair of totoro images; it also can be used for generating different images of totoro and other objects like dog. Similarly, the obtained # corresponding to manual editing (\u201cconverting to black and white\u201d) also can be used for novel scene generation."
+        },
+        {
+            "heading": "B EXPERIMENTAL DETAILS ON VOCABULARY EXPANSION AND COMPARISON WITH EXISTING MODELS",
+            "text": "Comparison with Existing Models. DOODL (Wallace et al., 2023a) optimizes the initial diffusion noise vectors w.r.t a model-based loss on images generated from the full-chain diffusion process. In their work, they obtain the gradients of loss w.r.t noise vectors by using invertible neural networks (INNs). There are three main differences between DOODL and our work. First, while DOODL optimizes the initial diffusion noise vectors, our work optimizes related variables, including network parameters, initial noises and textual embeddings w.r.t a model-based loss on images generated from the full-chain diffusion process. Thus, we consider the broader cases of DOODL. Second, in the calculation of gradients w.r.t initial noises, DOODL uses the invertibility of EDICT (Wallace et al., 2023b), i.e., x0 and xT are invertible. This method does not apply to the calculation of gradients w.r.t. network parameters and textual embeddings as they share across the full-chain diffusion process. Finally, with regard to the memory consumption when calculating gradients with respect to the initial noise, our experimental results are as follows: we utilized the stable diffusion v1.5 checkpoint to run both the AdjointDPM and DOODL models on a V100 GPU (32GB memory). For the AdjointDPM method, backpropagating the gradients with respect to a single initial noise required 19.63GB of memory. In comparison, the DOODL method consumed 23.24GB for the same operation. The additional memory consumption in DOODL is mainly from the dual diffusion process in EDICT. Thus, our method is more efficient in memory consumption. In terms of time consumption, DOODL relies on the invertibility of EDICT, resulting in identical computation steps for both the backward gradient calculation and the forward sampling process. Besides, they usually use DDIM sampling methods, which is equivalent to the first-order neural ODE solver. However, our AdjointDPM methods have the flexibility to apply high-order ODE solvers, allowing for faster backward gradient calculation. See the following for an experimental comparison between our method and DOODL.\nWe also make a comparison with FlowGrad (Liu et al., 2023b). FlowGrad efficiently backpropagates the output to any intermediate time steps on the ODE trajectory, by decomposing the backpropagation and computing vector Jacobian products. FlowGrad focuses on refining the ODE generation paths to the desired direction. This is different from our work, which focuses on the finetuning of related variables, including network parameters, textual embedding and initial noises of diffusion models for customization. Besides, FlowGrad methods also can not obtain the gradients of loss w.r.t. textual embeddings and neural variables as these variables share across the whole generation path. Then for the gradients w.r.t the latent variables, we could show the memory consumption of our methods is constant while they need to store the intermediate results.\nExperimental Details on Vocabulary Expansion During the optimization of the noise states under the guidance of FGVC model, we adopt the Euler ODE solver in our AdjointDPM method with 31 steps. We optimize the noise states using the AdamW optimizer for 30 epochs with different learning rates for different breeds. For the implementation of DOODL, we follow the officially released code5 and we set the sampling steps also to be 31 and optimization steps for 30. Following the DOODL, we also measure the performance by computing the FID between a set of generated images (4 seeds) and the validation set of the FGVC dataset being studied. We do experiments on Stanford Dogs (Dogs) (Khosla et al., 2011) datasets and calculate FID values. More qualitative results are shown in Fig 6."
+        },
+        {
+            "heading": "C EXPERIMENTAL DETAILS AND MORE RESULTS ON SECURITY AUDITING",
+            "text": "In this section, we provide explicit details about generating adversarial examples against an ImageNet classifier and the NSFW filter in Stable Diffusion, respectively.\nSecurity Auditing under an ImageNet Classifier. To generate adversarial samples against an ImageNet classifier, we follow the implementation of classifier guidance generation of DPM6 and use\n5https://github.com/salesforce/DOODL 6https://github.com/LuChengTHU/dpm-solver/tree/main/examples/ddpm_and_\nguided-diffusion\nthe publicly released checkpoints trained on the ImageNet 128x128 dataset to generate images in a conditional manner. We adopt the pre-trained ResNet507 as our ImageNet classifier.\nTo generate adversarial examples, we first randomly choose an ImageNet class and set it as the class label for classifier guidance generation, and then we pass the generated images to the ResNet50 classifier. If the outputs of ResNet50 classifier are aligned with the chosen class label, we begin to do an adversarial attack by using AdjointDPM. For the adversarial attack, we adopt the targeted attack, where we choose a target class and make the outputs of ResNet50 close to the pre-chosen target class by minimizing the cross entropy loss. We also clamp the updated initial noise in the range of [xT \u2212 0.8, xT + 0.8] (i.e., set \u03c4 = 0.8 in Sec. 4.3 to ensure that generated images do not visually change too much compared with the start images). We show more adversarial examples against the ImageNet classifier in Fig. 7. Besides, define the attack rate as the ratio between the number of samples with incorrect classification results after the attack and the total number of samples. We also get the attack rate 51.2% by generating 830 samples from 10 randomly chosen classes. The class labels here we choose are [879, 954, 430, 130, 144, 242, 760, 779, 859, 997].\nExperimental Details on the NSFW Filter. In this case, we set \u03c4 = 0.9. We follow the implementation of Stable Diffusion8 and set the loss function as the cosine distance between CLIP embeddings Radford et al. (2021) of generated images and unsafe embeddings from Rando et al. (2022)."
+        },
+        {
+            "heading": "D MORE EXAMPLES ON FINETUNING WEIGHTS FOR STYLIZATION",
+            "text": "In this section, we introduce the experimental details of stylization and present more stylized examples on seen noises and seen classes, unseen noises and seen classes, and unseen noises and unseen classes.\nFor training, we choose ten classes from CIFAR-100 classes, which are [\u201cAn airplane\u201d, \u201cA cat\u201d, \u201cA truck\u201d, \u201cA forest\u201d, \u201cA house\u201d, \u201csunflowers\u201d, \u201cA bottle\u201d, \u201cA bed\u201d, \u201cApples\u201d, \u201cA clock\u201d]. Then we randomly generate 10 samples from each class to compose our training dataset. Besides, we directly use these class names as the input prompt to Stable Diffusion 9. We optimize the parameters of cross\n7https://pytorch.org/vision/stable/models.html 8https://github.com/huggingface/diffusers 9https://github.com/CompVis/stable-diffusion\nattention layers of UNet for 8 epochs by using AdamW optimizer with learning rate 10\u22124. We show more stylization results on 100 training samples (seen noises and seen classes) in Fig. 8. Meanwhile, we also show more examples of seen-classe-unseen-noise and examples of unseen-class-unseen-noise in Fig. 10. In Fig. 11, we also show the stylization results on other target style images, in which one is downloaded from the showcase set of Midjourney10 and the other is the Starry Night by Van Gogh. We also present that the finetuned networks under ODE forms can still apply SDE solvers (such as DDPM) in Fig. 9.\nD.1 QUALITATIVE COMPARISONS TO TEXTUAL-INVERSION AND DREAMBOOTH\nWe also provide visual comparisons to Textual Inversion Gal et al. (2022) and DreamBooth Ruiz et al. (2022) in Fig. 12. We follow the implementation of Textual Inversion11 and DreamBooth12. For textual inversion, we use the same target style image in Section 4.2 as the training dataset. As in our AdjointDPM model, we use one style image for training, for fair comparison, the training\n10https://cdn.midjourney.com/61b8bd5d-846b-4f69-bdc1-0ae2a2abcce8/grid_ 0.webp\n11https://huggingface.co/docs/diffusers/training/text_inversion 12https://huggingface.co/docs/diffusers/training/dreambooth\ndataset to Textual Inversion and DreamBooth also include only one style image. We set the learnable property as \u201cstyle\u201d, placeholder token as \u201c<bengiles>\u201d, initializer token as \u201cflowers\u201d in Textual Inversion. Then we run 5000 epochs with a learning rate 5\u00d7 10\u22124 to train the Textual Inversion. For DreamBooth, we set instance prompt as \u201cbengiles flowers\u201d. Then we run 1000 epochs with a learning rate 1 \u00d7 10\u22126 to train the DreamBooth. In Fig. 12, we show the stylization examples generated by using Textual Inversion and DreamBooth. We can observe distinct differences in the stylization outcomes when comparing the Textual Inversion and DreamBooth approaches to our AdjointDPM methods. In some cases, for Textual Inversion and DreamBooth, we have noticed that the main objects within an image can vanish, resulting in the entire image being predominantly occupied by the applied \"style.\"\nE IMPLEMENTATION OF ADJOINTDPM\nIn this section, we present the explicit AdjointDPM algorithm. For VP-SDE, we have f(t) = d log\u03b1dt and g2(t) = d\u03c3 2 t\ndt \u2212 2 d log\u03b1 dt \u03c3 2 t . Based on the definition of yt and \u03c1, we obtain\nyt = \u03b10 \u03b1t xt, \u03c1 = \u03b3(t) = \u03b10 \u03c3t \u03b1t \u2212 \u03c30.\nWe denote the timesteps for solving forward generation ODE as {ti}Ni=0, where N is the number of timesteps. Then based on this re-parameterization, we can show our explicit forward generation algorithm and reverse algorithm of obtaining gradients for VP-SDE in Algorithm 2 and Algorithm 3.\nFor the choice of \u03b1t, \u03c3t, and sampling steps {ti}Ni=1, we adopt the implementation of DPM-solver13. Specifically, we consider three options for the schedule of \u03b1t and \u03c3t, discrete, linear, and cosine. The detailed formulas for obtaining \u03b1t and \u03c3t for each schedule choice are provided in (Lu et al., 2022a, Appendix D.4). The choice of schedule depends on the specific applications. We usually solve the forward generation ODE function from time T to time \u03f5 (\u03f5 > 0 is a hyperparameter near 0). Regarding the selection of discrete timesteps {ti}Ni=1 in numerically solving ODEs, we generally divide the time range [T, \u03f5] using one of three approaches: uniform, logSNR, or quadratic. The specific time splitting methods can be found in the DPM-solver. Subsequently, we obtain the generated images and gradients by following Algorithm 2 and Algorithm 3. To solve ODE functions in these algorithms, we directly employ the odeint adjoint function in the torchdiffeq packages14.\nAlgorithm 2 Forward generation by solving an ODE initial value problem Input: model \u03f5\u03b8, timesteps {ti}Ni=0, initial value xt0 . yt0 \u2190 xt0 ; \u25b7 Re-parameterize xt0 {\u03c1i}Ni=1 \u2190 {\u03b3(ti)}Ni=1; \u25b7 Re-parameterize timesteps ytN = ODESolve ( yt0 , {\u03c1i}ni=1, \u03f5\u03b8 ( \u03b1t \u03b1t0 yt, \u03b3 \u22121(t), c )) \u25b7 Solve forward generation ODE Return: xtN = \u03b1tN \u03b1t0 ytN\nAlgorithm 3 Reverse-mode derivative of an ODE initial value problem Input: model \u03f5\u03b8, timesteps {\u03c1i}Ni=1, final state y\u03c1N , loss gradient \u2202L/\u2202y\u03c1N . a(\u03c1N ) =\n\u2202L \u2202y\u03c1N , a\u03b8(\u03c1N ) = 0, z0 = [y\u03c1N , a(\u03c1N ), a\u03b8(\u03c1N )] \u25b7 Define initial augmented state. def AugDynamics([y\u03c1,a\u03c1, \u00b7], \u03c1, \u03b8) \u25b7 Define dynamics on augmented state.\nreturn [s(y\u03c1, \u03c1, \u03b8, c),\u2212aT\u03c1 \u2202s\u2202y ,\u2212a T \u03c1 \u2202s \u2202\u03b8 ] \u25b7 Concatenate time-derivatives\n[y\u03c10 , \u2202L \u2202y\u03c10 , \u2202L\u2202\u03b8 ] = ODESolve(z0,AugDynamics, {\u03c1i} N i=1, \u03b8) \u25b7 Solve reverse-time ODE Return: [ \u2202L\u2202xt0 , \u2202L \u2202\u03b8 ] \u25b7 Return gradients\n13https://github.com/LuChengTHU/dpm-solver 14https://github.com/rtqichen/torchdiffeq"
+        }
+    ],
+    "year": 2024
+}

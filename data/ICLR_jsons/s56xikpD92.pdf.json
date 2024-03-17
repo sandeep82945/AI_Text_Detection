@@ -1,1 +1,927 @@
-null
+{
+    "abstractText": "In this paper, we present a novel defense against backdoor attacks on deep neural networks (DNNs), wherein adversaries covertly implant malicious behaviors (backdoors) into DNNs. Our defense falls within the category of post-development defenses that operate independently of how the model was generated. Our proposed defense is built upon an intriguing concept: given a backdoored model, we reverse engineer it to directly extract its backdoor functionality to a backdoor expert model. To accomplish this, we finetune the backdoored model over a small set of intentionally mislabeled clean samples, such that it unlearns the normal functionality while still preserving the backdoor functionality, and thus resulting in a model (dubbed a backdoor expert model) that can only recognize backdoor inputs. Based on the extracted backdoor expert model, we show the feasibility of devising robust backdoor input detectors that filter out the backdoor inputs during model inference. Further augmented by an ensemble strategy with a finetuned auxiliary model, our defense, BaDExpert (Backdoor Input Detection with Backdoor Expert), effectively mitigates 17 SOTA backdoor attacks while minimally impacting clean utility. The effectiveness of BaDExpert has been verified on multiple datasets (CIFAR10, GTSRB, and ImageNet) across multiple model architectures (ResNet, VGG, MobileNetV2, and Vision Transformer). Our code is integrated into our research toolbox: https://github.com/vtu81/backdoor-toolbox. Untrusted Source Incorrect Labels Small Reserved Clean Set Recognize Forgot Clean Task Backdoor Task Backdoored Model M Backdoor Expert B Finetuning Figure 1: Extracting backdoor functionality via finetuning on a mislabeled small clean set. The backdoored modelM can correctly recognize both benign and poisoned samples whereas our backdoor expert model B can only recognize backdoor samples.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Tinghao Xie"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiangyu Qi"
+        },
+        {
+            "affiliations": [],
+            "name": "Ping He"
+        },
+        {
+            "affiliations": [],
+            "name": "Yiming Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiachen T. Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Prateek Mittal"
+        }
+    ],
+    "id": "SP:df54a9a5ff3cc9abfda2d062eaa48207ab0f1498",
+    "references": [
+        {
+            "authors": [
+                "Eugene Bagdasaryan",
+                "Vitaly Shmatikov"
+            ],
+            "title": "Blind backdoors in deep learning models",
+            "venue": "In 30th USENIX Security Symposium (USENIX Security",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mauro Barni",
+                "Kassem Kallas",
+                "Benedetta Tondi"
+            ],
+            "title": "A new backdoor attack in cnns by training set corruption without label poisoning",
+            "venue": "IEEE International Conference on Image Processing (ICIP),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Shuwen Chai",
+                "Jinghui Chen"
+            ],
+            "title": "One-shot neural backdoor erasing via adversarial weight masking",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bryant Chen",
+                "Wilka Carvalho",
+                "Nathalie Baracaldo",
+                "Heiko Ludwig",
+                "Benjamin Edwards",
+                "Taesung Lee",
+                "Ian Molloy",
+                "Biplav Srivastava"
+            ],
+            "title": "Detecting backdoor attacks on deep neural networks by activation clustering",
+            "venue": "arXiv preprint arXiv:1811.03728,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Xinyun Chen",
+                "Chang Liu",
+                "Bo Li",
+                "Kimberly Lu",
+                "Dawn Xiaodong Song"
+            ],
+            "title": "Targeted backdoor attacks on deep learning systems using data poisoning",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jia Deng",
+                "Wei Dong",
+                "Richard Socher",
+                "Li-Jia Li",
+                "Kai Li",
+                "Li Fei-Fei"
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "IEEE conference on computer vision and pattern recognition,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Jianshuo Dong",
+                "Qiu Han",
+                "Yiming Li",
+                "Tianwei Zhang",
+                "Yuanjie Li",
+                "Zeqi Lai",
+                "Chao Zhang",
+                "Shu-Tao Xia"
+            ],
+            "title": "One-bit flip is all you need: When bit-flip attack meets model training",
+            "venue": "In ICCV,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Lucas Beyer",
+                "Alexander Kolesnikov",
+                "Dirk Weissenborn",
+                "Xiaohua Zhai",
+                "Thomas Unterthiner",
+                "Mostafa Dehghani",
+                "Matthias Minderer",
+                "Georg Heigold",
+                "Sylvain Gelly"
+            ],
+            "title": "An image is worth 16x16 words: Transformers for image recognition at scale",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tom Fawcett"
+            ],
+            "title": "An introduction to roc analysis",
+            "venue": "Pattern recognition letters,",
+            "year": 2006
+        },
+        {
+            "authors": [
+                "Yansong Gao",
+                "Change Xu",
+                "Derui Wang",
+                "Shiping Chen",
+                "Damith C Ranasinghe",
+                "Surya Nepal"
+            ],
+            "title": "Strip: A defence against trojan attacks on deep neural networks",
+            "venue": "In Proceedings of the 35th Annual Computer Security Applications Conference,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yinghua Gao",
+                "Yiming Li",
+                "Linghui Zhu",
+                "Dongxian Wu",
+                "Yong Jiang",
+                "Shu-Tao Xia"
+            ],
+            "title": "Not all samples are born equal: Towards effective clean-label backdoor attacks",
+            "venue": "Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Micah Goldblum",
+                "Dimitris Tsipras",
+                "Chulin Xie",
+                "Xinyun Chen",
+                "Avi Schwarzschild",
+                "Dawn Song",
+                "Aleksander M\u0105dry",
+                "Bo Li",
+                "Tom Goldstein"
+            ],
+            "title": "Dataset security for machine learning: Data poisoning, backdoor attacks, and defenses",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianyu Gu",
+                "Brendan Dolan-Gavitt",
+                "Siddharth Garg"
+            ],
+            "title": "Badnets: Identifying vulnerabilities in the machine learning model supply chain",
+            "venue": "arXiv preprint arXiv:1708.06733,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Junfeng Guo",
+                "Yiming Li",
+                "Xun Chen",
+                "Hanqing Guo",
+                "Lichao Sun",
+                "Cong Liu"
+            ],
+            "title": "SCALE-UP: An efficient black-box input-level backdoor detection via analyzing scaled prediction consistency",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Xiangyu Zhang",
+                "Shaoqing Ren",
+                "Jian Sun"
+            ],
+            "title": "Deep residual learning for image recognition",
+            "venue": "In Proceedings of the IEEE conference on computer vision and pattern recognition,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Hanxun Huang",
+                "Xingjun Ma",
+                "Sarah Erfani",
+                "James Bailey"
+            ],
+            "title": "Distilling cognitive backdoor patterns within an image",
+            "venue": "arXiv preprint arXiv:2301.10908,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kunzhe Huang",
+                "Yiming Li",
+                "Baoyuan Wu",
+                "Zhan Qin",
+                "Kui Ren"
+            ],
+            "title": "Backdoor defense via decoupling the training process",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Soheil Kolouri",
+                "Aniruddha Saha",
+                "Hamed Pirsiavash",
+                "Heiko Hoffmann"
+            ],
+            "title": "Universal litmus patterns: Revealing backdoor attacks in cnns",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alex Krizhevsky"
+            ],
+            "title": "Learning multiple layers of features from tiny images",
+            "venue": "University of Toronto,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Xi Li",
+                "Zhen Xiang",
+                "David J Miller",
+                "George Kesidis"
+            ],
+            "title": "Test-time detection of backdoor triggers for poisoned deep neural networks",
+            "venue": "IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yige Li",
+                "Xixiang Lyu",
+                "Nodens Koren",
+                "Lingjuan Lyu",
+                "Bo Li",
+                "Xingjun Ma"
+            ],
+            "title": "Anti-backdoor learning: Training clean models on poisoned data",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yige Li",
+                "Xixiang Lyu",
+                "Nodens Koren",
+                "Lingjuan Lyu",
+                "Bo Li",
+                "Xingjun Ma"
+            ],
+            "title": "Neural attention distillation: Erasing backdoor triggers from deep neural networks",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yige Li",
+                "Xixiang Lyu",
+                "Xingjun Ma",
+                "Nodens Koren",
+                "Lingjuan Lyu",
+                "Bo Li",
+                "Yu-Gang Jiang"
+            ],
+            "title": "Reconstructive neuron pruning for backdoor defense",
+            "venue": "arXiv preprint arXiv:2305.14876,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yiming Li",
+                "Tongqing Zhai",
+                "Yong Jiang",
+                "Zhifeng Li",
+                "Shu-Tao Xia"
+            ],
+            "title": "Backdoor attack in the physical world",
+            "venue": "arXiv preprint arXiv:2104.02361,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yiming Li",
+                "Yong Jiang",
+                "Zhifeng Li",
+                "Shu-Tao Xia"
+            ],
+            "title": "Backdoor learning: A survey",
+            "venue": "IEEE Transactions on Neural Networks and Learning Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuezun Li",
+                "Yiming Li",
+                "Baoyuan Wu",
+                "Longkang Li",
+                "Ran He",
+                "Siwei Lyu"
+            ],
+            "title": "Invisible backdoor attack with sample-specific triggers",
+            "venue": "In Proceedings of the IEEE/CVF international conference on computer vision,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kang Liu",
+                "Brendan Dolan-Gavitt",
+                "Siddharth Garg"
+            ],
+            "title": "Fine-pruning: Defending against backdooring attacks on deep neural networks",
+            "venue": "In International Symposium on Research in Attacks, Intrusions, and Defenses,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yannan Liu",
+                "Lingxiao Wei",
+                "Bo Luo",
+                "Qiang Xu"
+            ],
+            "title": "Fault injection attack on deep neural network",
+            "venue": "IEEE/ACM International Conference on Computer-Aided Design (ICCAD),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jerzy Neyman",
+                "Egon Sharpe Pearson"
+            ],
+            "title": "Ix. on the problem of the most efficient tests of statistical hypotheses",
+            "venue": "Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character,",
+            "year": 1933
+        },
+        {
+            "authors": [
+                "Anh Nguyen",
+                "Anh Tran"
+            ],
+            "title": "Wanet\u2013imperceptible warping-based backdoor attack",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tuan Anh Nguyen",
+                "Anh Tran"
+            ],
+            "title": "Input-aware dynamic backdoor attack",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiangyu Qi",
+                "Jifeng Zhu",
+                "Chulin Xie",
+                "Yong Yang"
+            ],
+            "title": "Subnet replacement: Deployment-stage backdoor attack against deep neural networks in gray-box setting",
+            "venue": "arXiv preprint arXiv:2107.07240,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiangyu Qi",
+                "Tinghao Xie",
+                "Ruizhe Pan",
+                "Jifeng Zhu",
+                "Yong Yang",
+                "Kai Bu"
+            ],
+            "title": "Towards practical deployment-stage backdoor attack on deep neural networks",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiangyu Qi",
+                "Tinghao Xie",
+                "Yiming Li",
+                "Saeed Mahloujifar",
+                "Prateek Mittal"
+            ],
+            "title": "Revisiting the assumption of latent separability for backdoor defenses",
+            "venue": "In The eleventh international conference on learning representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xiangyu Qi",
+                "Tinghao Xie",
+                "Jiachen T Wang",
+                "Tong Wu",
+                "Saeed Mahloujifar",
+                "Prateek Mittal"
+            ],
+            "title": "Towards a proactive {ML} approach for detecting backdoor poison samples",
+            "venue": "In 32nd USENIX Security Symposium (USENIX Security",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mark Sandler",
+                "Andrew Howard",
+                "Menglong Zhu",
+                "Andrey Zhmoginov",
+                "Liang-Chieh Chen"
+            ],
+            "title": "Mobilenetv2: Inverted residuals and linear bottlenecks",
+            "venue": "In Proceedings of the IEEE conference on computer vision and pattern recognition,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Zeyang Sha",
+                "Xinlei He",
+                "Pascal Berrang",
+                "Mathias Humbert",
+                "Yang Zhang"
+            ],
+            "title": "Fine-tuning is all you need to mitigate backdoor attacks",
+            "venue": "arXiv preprint arXiv:2212.09067,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shawn Shan",
+                "Emily Wenger",
+                "Bolun Wang",
+                "Bo Li",
+                "Haitao Zheng",
+                "Ben Y Zhao"
+            ],
+            "title": "Gotta catch\u2019em all: Using honeypots to catch adversarial attacks on neural networks",
+            "venue": "In Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Lujia Shen",
+                "Shouling Ji",
+                "Xuhong Zhang",
+                "Jinfeng Li",
+                "Jing Chen",
+                "Jie Shi",
+                "Chengfang Fang",
+                "Jianwei Yin",
+                "Ting Wang"
+            ],
+            "title": "Backdoor pre-trained models can transfer to all",
+            "venue": "In Proceedings of the 2021 ACM SIGSAC Conference on Computer and Communications Security,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Karen Simonyan",
+                "Andrew Zisserman"
+            ],
+            "title": "Very deep convolutional networks for large-scale image recognition",
+            "venue": "arXiv preprint arXiv:1409.1556,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Johannes Stallkamp",
+                "Marc Schlipsing",
+                "Jan Salmen",
+                "Christian Igel"
+            ],
+            "title": "Man vs. computer: Benchmarking machine learning algorithms for traffic sign recognition",
+            "venue": "Neural networks,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Di Tang",
+                "XiaoFeng Wang",
+                "Haixu Tang",
+                "Kehuan Zhang"
+            ],
+            "title": "Demon in the variant: Statistical analysis of dnns for robust backdoor contamination detection",
+            "venue": "In 30th {USENIX} Security Symposium ({USENIX} Security",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Guanhong Tao",
+                "Yingqi Liu",
+                "Guangyu Shen",
+                "Qiuling Xu",
+                "Shengwei An",
+                "Zhuo Zhang",
+                "Xiangyu Zhang"
+            ],
+            "title": "Model orthogonalization: Class distance hardening in neural networks for better security",
+            "venue": "IEEE Symposium on Security and Privacy (SP),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Brandon Tran",
+                "Jerry Li",
+                "Aleksander Madry"
+            ],
+            "title": "Spectral signatures in backdoor attacks",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alexander Turner",
+                "Dimitris Tsipras",
+                "Aleksander Madry"
+            ],
+            "title": "Label-consistent backdoor attacks",
+            "venue": "arXiv preprint arXiv:1912.02771,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Bolun Wang",
+                "Yuanshun Yao",
+                "Shawn Shan",
+                "Huiying Li",
+                "Bimal Viswanath",
+                "Haitao Zheng",
+                "Ben Y Zhao"
+            ],
+            "title": "Neural cleanse: Identifying and mitigating backdoor attacks in neural networks",
+            "venue": "IEEE Symposium on Security and Privacy (SP),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhenting Wang",
+                "Hailun Ding",
+                "Juan Zhai",
+                "Shiqing Ma"
+            ],
+            "title": "Training with more confidence: Mitigating injected and natural backdoors during training",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhenting Wang",
+                "Kai Mei",
+                "Hailun Ding",
+                "Juan Zhai",
+                "Shiqing Ma"
+            ],
+            "title": "Rethinking the reverseengineering of trojan triggers",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhenting Wang",
+                "Juan Zhai",
+                "Shiqing Ma"
+            ],
+            "title": "Bppattack: Stealthy and efficient trojan attacks against deep neural networks via image quantization and contrastive adversarial learning",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Dongxian Wu",
+                "Yisen Wang"
+            ],
+            "title": "Adversarial neuron pruning purifies backdoored deep models",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiaojun Xu",
+                "Qi Wang",
+                "Huichen Li",
+                "Nikita Borisov",
+                "Carl A Gunter",
+                "Bo Li"
+            ],
+            "title": "Detecting ai trojans using meta neural analysis",
+            "venue": "In Proceedings of the IEEE Symposium on Security and Privacy (May 2021),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yuanshun Yao",
+                "Huiying Li",
+                "Haitao Zheng",
+                "Ben Y Zhao"
+            ],
+            "title": "Latent backdoor attacks on deep neural networks",
+            "venue": "In Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yi Zeng",
+                "Si Chen",
+                "Won Park",
+                "Z Morley Mao",
+                "Ming Jin",
+                "Ruoxi Jia"
+            ],
+            "title": "Adversarial unlearning of backdoors via implicit hypergradient",
+            "venue": "In International conference on learning representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Zeng",
+                "Won Park",
+                "Z Morley Mao",
+                "Ruoxi Jia"
+            ],
+            "title": "Rethinking the backdoor attacks\u2019 triggers: A frequency perspective",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Zeng",
+                "Minzhou Pan",
+                "Himanshu Jahagirdar",
+                "Ming Jin",
+                "Lingjuan Lyu",
+                "Ruoxi Jia"
+            ],
+            "title": "Meta-Sift: How to sift out a clean subset in the presence of data poisoning",
+            "venue": "In 32nd USENIX Security Symposium (USENIX Security",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yi Zeng",
+                "Minzhou Pan",
+                "Hoang Anh Just",
+                "Lingjuan Lyu",
+                "Meikang Qiu",
+                "Ruoxi Jia"
+            ],
+            "title": "Narcissus: A practical clean-label backdoor attack with limited information",
+            "venue": "In Proceedings of the 2023 ACM SIGSAC Conference on Computer and Communications Security,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shihao Zhao",
+                "Xingjun Ma",
+                "Yisen Wang",
+                "James Bailey",
+                "Bo Li",
+                "Yu-Gang Jiang"
+            ],
+            "title": "What do deep nets learn? class-wise patterns revealed in the input space",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rui Zhu",
+                "Di Tang",
+                "Siyuan Tang",
+                "XiaoFeng Wang",
+                "Haixu Tang"
+            ],
+            "title": "Selective amnesia: On efficient, high-fidelity and blind suppression of backdoor effects in trojaned machine learning models",
+            "venue": "IEEE Symposium on Security and Privacy (SP),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qi"
+            ],
+            "title": "2023b) introduces a novel backdoor poison training set cleanser based on the technique of \u201cconfusion training\u201d, where they train an inference model jointly on the poisoned dataset and a small number of mislabeled clean samples (similar to our Alg (1)). Nevertheless, we highlight several critical differences between our work and theirs",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qi"
+            ],
+            "title": "2023b) relies on the necessary access of poisoned training samples",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhu"
+            ],
+            "title": "2022) introduces a novel model-repairing backdoor defense (SEAM). In the first phase, they finetune the backdoored model on a small number of mislabeled clean samples (similar to our Alg (1)), observing that both the CA and ASR would diminish. In the second phase, they finetune the resultant model (after phase one) on a portion of correctly labeled samples from the training",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhu"
+            ],
+            "title": "In our method and experiments, we suggest using a conservatively small (un-)learning rate \u03b7, with which only the normal functionality degrades but the backdoor functionality retains. However, as shown in Fig 3 (and Fig 8 in Appendix C.3), when the (un-)learning rate \u03b7 is large enough (e.g., 10\u22123), both the normal and backdoor functionality would be lost (both CA and ASR\u2192",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "work",
+                "Zhu"
+            ],
+            "title": "2022) are possibly due to different selections of the (un-)learning rate",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shan"
+            ],
+            "title": "2020) proposes an adversarial example detection method using \u201choneypots\u201d \u2014 a trapdoor that would enforce malicious adversarial inputs to manifest a certain neural network activation-pattern signature. Their defense\u2019s key design philosophy may be subtly connected to ours, in the sense that Shan et al. (2020) detects potential adversarial examples via \u201csimilarity measurement\u201d of model activation signatures, and we detect backdoor examples via \u201cagreement measurement",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qi"
+            ],
+            "title": "2023a)), such that the alternative trigger satisfies: 1. Can still activate the backdoor functionality of the original backdoor modelM (i.e., achieving a high ASR) 2. Cannot activate the backdoor functionality of the original backdoor model B (i.e., enforcing B to provide a low",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "text": "Conversely, since B lacks the normal functionality, it cannot recognize the clean input asM does (correctly predict to \u201cCat\u201d), and will thus provide a possibly divergent prediction (e.g. \u201cFish\u201d) \u2014 B disagrees withM. Based on the distinctive natures of clean and backdoor inputs, we can simply reject suspicious backdoor inference-time inputs by checking if B andM agree in predictions."
+        },
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "A prominent security concern of deep neural networks (DNNs) is the threat of backdoor attacks (Gu et al., 2017; Li et al., 2022b), wherein an adversary embeds hidden behaviors (backdoors) into a model through techniques such as data poisoning (Goldblum et al., 2022) or weights tampering (Qi et al., 2022). During inference, such a backdoor remains dormant when processing benign inputs but can be activated by trigger-planted backdoor samples devised by attackers. Upon activation, the compromised model produces anomalous outputs, which could lead to severe security breaches.\nThe existing literature has extensively explored defensive strategies against backdoor attacks, with a significant focus on development-stage defenses (Tran et al., 2018; Li et al., 2021a; Huang et al., 2022; Qi et al., 2023b). These defenses are operated before and during the model training process, primarily targeting data-poisoning-based attacks (Goldblum et al., 2022).\nIn this work, we rather focus on post-development defenses that operate after the model development (Wang et al., 2019; Li et al., 2021b; Gao et al., 2019; Guo et al., 2023). Given an arbitrary model that may potentially be backdoored, post-development defenses tackle the challenge of secure deployment head-on, without knowing how the model was generated. Implementing such defenses faces non-trivial technical challenges. From a methodological point of view, these defenses do not have access to the training dataset or information about training dynamics (such as gradient updates or loss information) and thus forfeit rich information that could aid in system defense. For example, approaches that directly analyze poisoned datasets (Tran et al., 2018; Qi et al., 2023b) or the backdoor training dynamics (Li et al., 2021a; Huang et al., 2022) cannot be applied.\nOne recognized paradigm (Tao et al., 2022; Wang et al., 2019; 2022b) for addressing post-development defenses aim to infer backdoor trigger patterns through the direct reverse-engineering of the compromised model without requiring knowledge about how the model was generated, and then neutralize the backdoor with the reconstructed triggers. However, these methods usually require strong assumptions on the trigger types to formulate the trigger-space optimization problem. And in cases where the trigger is based on global transformation (Chen et al., 2017; Nguyen & Tran, 2021), these methods frequently fail\ndue to the mismatch of the assumed trigger pattern and the actual underlying trigger in practice. Our work advocates an alternative perspective by extracting the backdoor functionality (Fig 1) instead of the backdoor trigger pattern and, therefore, avoids the imposition of inductive biases on trigger types. Our key contributions can be summarized as follow:\n\u2022 We introduce a novel approach that directly extracts the backdoor functionality to a backdoor expert model (Fig 1), as opposed to extracting backdoor triggers. Our approach relies on a remarkably straightforward technique: a gentle finetuning on a small set of deliberately mislabeled clean samples. The reasoning behind this technique lies in an intriguing characteristic of backdoored models (Fig 3): finetuning a backdoored model on mislabeled clean samples causes the model to lose its normal functionality (low clean accuracy), but remarkably, its backdoor functionality remains intact (high attack success rate). We also show this observation is pervasive across attacks, datasets and model architectures (Fig 8).\n\u2022 We show that the resultant backdoor expert model can be subsequently utilized to shield the original model from backdoor attacks. Particularly, we demonstrate that it is feasible to devise a highly accurate backdoor input filter using the extracted backdoor expert model, of which the high-level intuition is illustrated in Fig 2. In practice, the efficacy of this approach is further amplified by a more fine-grained design with an ensembling strategy (see Sec 3).\n\u2022 We design a comprehensive defense pipeline, backdoor input detection with backdoor expert (dubbed BaDExpert), capable of mitigating a diverse set of existing backdoor attacks (12 types), at the cost of only negligible clean accuracy drop. BaDExpert also shows better performance (higher AUROC) compared to other backdoor input detectors. Our extensive experiments on both small-scale (CIFAR10, GTSRB) and large-scale (ImageNet) datasets with different model architecture choices (ResNet, VGG, MobileNet and Vision Transformer) validate the consistent effectiveness of BaDExpert. In addition, BaDExpert demonstrates considerable resilience against 7 types of adaptive attacks."
+        },
+        {
+            "heading": "2 PROBLEM FORMULATION",
+            "text": "Notations. We consider a classification model M(\u00b7|\u03b8M) parameterized by \u03b8M. We denote ConfM(y|x) as the probability (confidence) predicted by the model M for class y on input x, with which the classification model is defined as M(x) = argmaxy\u2208[C] ConfM(y|x), where C is the number of classes, and [C] := {1, 2, . . . , C}. We denote the trigger planting procedure for backdoor attacks by T : X 7\u2192 X and denote the target class by t. We use P to denote the distribution of normal clean samples. The clean accuracy (CA) of a model is then defined as P(x,y)\u223cP [M(x) = y] while the attack success rate (ASR) is P(x,y)\u223cP|y \u0338=t[M(T (x)) = t]. Threat Model. We consider a threat model where the attacker directly supplies to the defender a backdoored modelM, which achieves a similar CA to a benign model without backdoor, while the backdoor can be activated by any triggered inputs T (x) at a high ASR (e.g., > 80%). The attacker cannot control how the model will be further processed and deployed by the victim, but will attempt to exploit the pre-embedded backdoor by feeding triggered inputs T (x) to the deployed model. Defenders\u2019 Capabilities. After receiving the modelM, the defender has no information about how the model was generated (e.g., training datasets/procedures). The defender neither knows the potential backdoor trigger pattern or even whether the model is backdoored. Following prior works (Li et al., 2021b; Tao et al., 2022; Qi et al., 2023b), the defender has access to a small reserved clean set Dc.\nDefender\u2019s Goal. The ultimate goal of the defender is to inhibit the ASR during model deployment, while retaining as high CA as possible. Specifically, we focus on realizing this goal by deriving a backdoor input detector BID(\u00b7) : X 7\u2192 {0, 1} that: 1) BID(T (x)) = 1, \u2200(x, y) \u223c P\u2227M(T (x)) = t, i.e., detect and reject any backdoor inputs that successfully trigger the model\u2019s backdoor behavior; 2) BID(x) = 0, \u2200(x, y) \u223c P , i.e., does not harm the model\u2019s utility on clean samples."
+        },
+        {
+            "heading": "3 METHODS",
+            "text": "We design a post-development backdoor defense that is centered on the intriguing concept of backdoor functionality extraction. Our approach is distinct from prior work that predominantly focus on trigger reverse engineering, in the sense that we directly extract the backdoor functionality from the backdoored model (Sec 3.1). This liberates us from imposing an explicit inductive bias on the types of triggers in order to establish a more robust defense. This extracted backdoor functionality is then utilized to design a backdoor input filter (Sec 3.2), safeguarding the model from backdoor attacks during the inference stage. We present the details of our design in the rest of this section."
+        },
+        {
+            "heading": "3.1 BACKDOOR FUNCTIONALITY EXTRACTION",
+            "text": "Algorithm 1 Backdoor Functionality Extraction Input: Reserved Small Clean Set Dc, Backdoor ModelM, Learning Rate \u03b7, Number of Iteration m Output: Backdoor Expert B 1: B \u2190 copy ofM 2: for i = 1, . . . ,m do 3: (X,Y)\u2190 a random batch from Dc 4: Mislabel Y to Y\u2032\n5: \u2113 = CrossEntropyLoss(B(X)rawa,Y\u2032) 6: \u03b8B \u2190 \u03b8B \u2212 \u03b7 \u00b7 \u2207\u03b8B\u2113 7: end for 8: return B\naB(X)raw \u2208 RC is the raw output of the model. As extensively articulated in the prevailing literature (Li et al., 2021a; Huang et al., 2022), the functionality of a backdoored model can generally be decoupled into two components: the normal functionality that is accountable for making accurate predictions (high CA) on clean inputs, and the backdoor functionality that provokes anomalous outputs (with high ASR) in response to backdoor inputs. Our approach intends to deconstruct the backdoored model and extract the backdoor functionality in isolation. This allows us to acquire addtional insights into the embedded backdoor, which can be further leveraged to develop backdoor defenses (to be detailed in Sec 3.2).\nAlgorithm 1 formally presents our approach for the intended backdoor functionality extraction (we refer to the resultant model as a backdoor expert model B). The approach is straightforward \u2014 given a backdoored modelM, we directly finetune it on a small set of deliberately mislabeled clean samples. As illustrated in the algorithm, we sample data (X,Y) from a small reserved clean set Dc and assign them incorrect labels1 (Line 4). We then finetune the backdoored modelM on the mislabeled clean data with a gentle learning rate \u03b7 (e.g., in our implementation, we take \u03b7 = 10\u22124 by default). Our key insight that underpins this methodology stems from an intriguing property of backdoored models: with a small learning rate, finetuning a backdoored model over a few mislabeled\n1In our implementation, we generate the incorrect labels by intentionally shifting the ground-truth label Y to its neighbor (Y + 1) mod C. In Appendix B.3, we also discuss other possible mislabeling strategies.\nclean samples is sufficient to induce the model to unlearn its normal functionality, leading to a low clean accuracy, while simultaneously preserving the integrity of its backdoor functionality, ensuring a high attack success rate, as depicted in Fig 3. In Appendix C.3, we corroborate that similar results can be consistently achieved against a wide array of attacks, across datasets and model architectures, thereby indicating the pervasiveness and fundamentality of this property.\nWe designate the resulting model produced by Algorithm 1 as a \u201cbackdoor expert\u201d, as it singularly embodies the backdoor functionality while discarding the normal functionality. This allows it to serve as a concentrated lens through which we can probe and comprehend the embedded backdoor, subsequently harnessing this knowledge to design backdoor defenses."
+        },
+        {
+            "heading": "3.2 BADEXPERT: BACKDOOR INPUT DETECTION WITH BACKDOOR EXPERT",
+            "text": "In this section, we present a concrete design in which the backdoor expert model is utilized to construct a backdoor input detector to safeguard the model from exploitation during inference. The high-level idea has been illustrated in Fig 2 \u2014 we can detect backdoor inputs by simply comparing whether the predictions of the backdoored model and the backdoor expert agree with each other. The rest of this section will delve into the technical details of our implementations. We start with an ideal case to introduce a simplified design. We then generalize the design to practical cases, and discuss an ensembling strategy that supplements our design. Finally, we present the overall detection pipeline.\nDetecting Backdoor Input via Agreement Measurement betweenM and B. A straightforward way to leverage the extracted backdoor functionality to defend against backdoor attacks is to measure the agreement betweenM and B, as shown in Fig 2. Specifically,\n\u2022 Reject any input x where the predictions ofM and B fall within an agreement (M(x) = B(x)), since B andM will always agree with each other on a backdoor input T (x) that successfully activates the backdoor behavior ofM (backdoor functionality is retained).\n\u2022 Accept any input x that M and B disagrees on (M(x) \u0338= B(x)), since B will always disagree withM on clean inputs x thatM correctly predict (normal functionality is lost).\nNote that the rules above are established when B completely unlearns the normal functionality ofM, while fully preserving its backdoor functionality. Refer to Appendix B.1 for detailed formulations.\nSoft Decision Rule. In practice, we may not obtain such ideal B required for the establishment of the agreement measurement rules above (see Appendix C.3 for empirical studies). Therefore, for practical implementation, we generalize the hard-label agreement measurement process above to a soft decision rule that is based on the fine-grained soft-label (confidence-level) predictions:\nReject input x if ConfB(M(x)|x) \u2265 \u03c4 (threshold). (1)\nThis rule shares the same intuition we leverage in Fig 2 \u2014 when B shows high confidence on the predicted class that M classifies x to (i.e., B agrees with M), the input would be suspected as backdoored and thus rejected. In Appendix B.2, we derive this soft decision rule formally, and showcase that the distributions of ConfB(M(x)|x) for clean and backdoor inputs are polarized on two different ends (i.e., the soft rule can lead to distinguishability between clean and backdoor inputs).\nClean Finetuning Also Helps. Prior work (Li et al., 2021b) has shown that standard finetuning of the backdoored modelM on Dc with correct labels (dubbed \u201cclean finetuning\u201d) can help suppress the backdoor activation (e.g. the ASR will decrease). Essentially, a clean-finetuned auxiliary model M\u2032 will largely maintain the normal functionality ofM, while diminishing some of its backdoor functionality (in sharp contrast to the behaviors of the backdoor expert model B). Notably, we observe that \u201cclean finetuning\u201d is actually orthogonal and complimentary to our mislabeled finetuning process (Alg (1)).Similar to the soft decision rule above, we can establish a symmetric agreement measurement rule betweenM\u2032 andM\u2014 reject any input x if ConfM\u2032(M(x)|x) \u2264 \u03c4 \u2032, i.e.,M\u2032 andM disagree on (see Appendix B.2 for details). Below, we showcase how to assemble the backdoor expert model B and the clean-finetuned auxiliary modelM\u2032 together for a comprehensive defense pipeline.\nOur Pipeline: BaDExpert. Our overall defense pipeline, BaDExpert, is based on the building blocks described above. For any given input x, we first consult the (potentially) backdoored model M to obtain a preliminary prediction y\u0303 :=M(x). Subsequently, we query both the backdoor expert\nB and the auxiliary modelM\u2032 2, getting their confidence ConfB(y\u0303|x) and ConfM\u2032(y\u0303|x) regarding this preliminary prediction class y\u0303 for the input x. We then decide if an input x is backdoored by:\nReject input x if Score := ConfM\u2032(y\u0303|x) ConfB(y\u0303|x) \u2264 \u03b1 (threshold). (2)\nIntuitively, a backdoor input x tends to have a high ConfB(y\u0303|x) (i.e., B agrees with M) and a low ConfM\u2032(y\u0303|x) (i.e.,M\u2032 disagrees withM), and therefore a low ConfM\u2032(y\u0303|x)/ConfB(y\u0303|x). As follows, we further provide a justification of the reason behind Eq (2) with Neyman-Pearson lemma.\nRemark 1 (Justification for the Decision Rule for Calibrated Classifier) We can justify the likelihood ratio ConfM\u2032(y\u0303|x)/ConfB(y\u0303|x) from the perspective of Neyman-Pearson lemma (Neyman & Pearson, 1933), if both B andM\u2032 are well-calibrated 3 in terms of backdoor and clean distribution, respectively. Specifically, when both B andM\u2032 are well-calibrated, ConfB(y\u0303|x) and ConfM\u2032(y\u0303|x) represents the likelihood of x for having label y\u0303 under backdoor distribution and clean distribution, respectively, and we would like to determine y\u0303 is sampled from which distribution. Neyman-Pearson lemma tells us that, any binary hypothesis test is dominated by the simple strategy of setting some threshold for the likelihood ratio ConfM\u2032(y\u0303|x)/ConfB(y\u0303|x). Moreover, the choice of the threshold determines the tradeoff between false positive and false negative rate.\nFig 4 demonstrates the score distribution given by BaDExpert for clean and backdoor inputs (WaNet attack on CIFAR10). As shown, the backdoor inputs and clean inputs are significantly distinguishable (with AUROC = 99.7%). We can identify > 97% backdoor inputs that only leads to < 1% FPR. Through our various experiments in Sec 4, we find our backdoor detection pipeline is robust across extensive settings."
+        },
+        {
+            "heading": "4 EXPERIMENTS",
+            "text": "In this section, we present our experimental evaluation of the BaDExpert defense. We first introduce our experiment setup in Sec 4.1, and demonstrate our primary results on CIFAR10 in Sec 4.2 (similar results on GTSRB deferred to Appendix C.1), followed by detailed ablation studies of BaDExpert\u2019s key design components. In Sec 4.3, we delve deeper into BaDExpert\u2019s generalizability across various model architectures and its scalability on ImageNet. Finally, in Sec 4.4, we investigate the resilience of BaDExpert\u2019s design against a series of adaptive attacks, demonstrating its adaptive effectiveness."
+        },
+        {
+            "heading": "4.1 SETUP",
+            "text": "Datasets and Models. Our primary experiment focuses on two widely benchmarked image datasets in backdoor literature, CIFAR10 (Krizhevsky, 2012) (Sec 4.2) and GTSRB (Stallkamp et al., 2012) (deferred to Appendix C.1). We demonstrate the equivalently successful effectiveness of BaDExpert on a representative large scale dataset, 1000-class ImageNet Deng et al. (2009), in Sec 4.3, to further validate our method\u2019s scalability. We evaluate BaDExpert across various model architectures. Specifically, we adopt the commonly studied ResNet18 (He et al., 2016) through our primary experiment, and validate in Sec 4.3 the effectiveness of BaDExpert on other architectures (VGG (Simonyan & Zisserman, 2014), MobileNetV2 (Sandler et al., 2018), and ViT (Dosovitskiy et al., 2020)). Attacks. We evaluate BaDExpert against 12 state-of-the-art backdoor attacks in our primary experiment, with 9 types initiated during the development stage and the remaining 3 post-development. In the realm of development-stage attacks, we explore 1) classical static-trigger dirty-label attacks such as BadNet (Gu et al., 2017), Blend (Chen et al., 2017), and Trojan (Liu et al., 2018b); 2) clean-label attacks including CL (Turner et al., 2019) and SIG (Barni et al., 2019); 3) input-specifictrigger attacks like Dynamic (Nguyen & Tran, 2020), ISSBA (Li et al., 2021d), WaNet (Nguyen & Tran, 2021), and BPP (Wang et al., 2022c). As for post-development attacks, our evaluation considers: 1) direct finetuning of the developed vanilla model on a blending poisoned dataset (FT);\n2Worth of notice, the auxiliary modelM\u2032 can not only be obtained via clean finetuning, but also via existing model-repairing defenses. In another sentence, our backdoor expert model B serves as an enhancement module orthogonal to the existing line of work on backdoor model-repairing defenses (see Sec 4.2.3 and Appendix C.2).\n3In practical, since we cannot ensure the ideally good calibration of B andM\u2032, we slightly modify the rule according to the actual (ConfB,ConfM\u2032) distribution nature . Kindly refer to Appendix A.2 for more details.\n2) trojanning attacks (TrojanNN (Liu et al., 2018b)); 3) subnet-replacement attacks (SRA (Qi et al., 2022)). Moreover, in Sec 4.4, we study 6 existing adaptive attacks and a novel tailored adaptive attack against BaDExpert. Our attack configurations largely adhere to the methodologies described in their original papers. Readers interested in the detailed configurations can refer to the Appendix A.3.\nDefenses. We compare BaDExpert with 14 established backdoor defense baselines. First, to underscore BaDExpert\u2019s consistent performance in detecting backdoor inputs, we juxtapose it with 3 post-development backdoor input detectors (STRIP (Gao et al., 2019), Frequency (Zeng et al., 2021b), SCALE-UP (Guo et al., 2023)), all of which share our goal of detecting inference-time backdoor inputs. Additionally, for the sake of comprehensiveness, we repurpose certain development-stage poison set cleansers (AC (Chen et al., 2018)) to function as backdoor input detectors for comparative analysis. We also incorporate 4 model repairing defenses (FP (Liu et al., 2018a), NC (Wang et al., 2019), MOTH (Tao et al., 2022), NAD (Li et al., 2021b)) into our comparison to demonstrate BaDExpert\u2019s consistent performance as a general post-development defense. In additional, we compare BaDExpert with 6 other baselines in Appendix C.8. We describe the hyperparameter selection of BaDExpert in Appendix A.1 and configuration details of other baselines defenses in A.4.\nMetrics. We evaluate our results based on two sets of metrics. First, to measure BaDExpert\u2019s effectiveness as a backdoor detector, we report the area under the receiver operating characteristic (AUROC (Fawcett, 2006), the higher the better). Second, to directly compare with other non-detector backdoor defenses, we report the clean accuracy (CA, the higher the better) and attack success rate (ASR, the lower the better) of the model equipped with BaDExpert. Specifically, for backdoor input detectors, we interpret correctly filtered backdoor inputs as successfully thwarted attacks, while falsely filtered clean inputs are considered erroneous predictions. Formally, CA = P(x,y)\u223cP [M(x) = y \u2227 BID(x) = 0], and ASR = P(x,y)\u223cP [M(T (x)) = t \u2227 BID(T (x)) = 0]. These metrics provide comprehensive and fair evaluations of our method in different defense scenarios. CA and ASR are reported on the standard validation over clean inputs and their backdoor correspondance, while AUROC is calculated over a noisy augmented validation set (same configuration following prior work (Guo et al., 2023)) to prevent overfitting. To ensure rigor, all primary results are averaged over three runs (corresponding standard deviations are reported in Appendix C.9)."
+        },
+        {
+            "heading": "4.2 EFFECTIVENESS OF BADEXPERTS ON CIFAR10",
+            "text": ""
+        },
+        {
+            "heading": "4.2.1 CONSISTENT EFFECTIVENESS ACROSS SETTINGS",
+            "text": "Table 1 and Table 2 highlight the defensive results of BaDExpert as a comprehensive post-development defense and as a backdoor input detector, respectively.\nBaDExpert as a Post-Development Defense. Specifically, we deem a defense as successful if the post-defense Attack Success Rate (ASR) is under 20%, and unsuccessful otherwise, as done in prior work (Qi et al., 2023b). As depicted, BaDExpert consistently succeeds against all attacks, with an average defended ASR of merely 5.1% (best). Moreover, deploying the backdoor model with BaDExpert only causes a small 0.9% CA drop, which is comparable to the best of prior arts.\nBaDExpert as a Backdoor Input Detector. As evidenced by Table 2, BaDExpert achieves an average AUROC of 99% across 12 attacks, while the average AUROC of all other baseline detectors is less than 85%. In addition, BaDExpert achieves the highest AUROC for 9 out of the 12 attacks and maintains an AUROC of over 96% in all situations. Overall, BaDExpert consistently performs effectively against all evaluated attacks, exhibiting a significant advantage over the baseline methods."
+        },
+        {
+            "heading": "4.2.2 COMPARING BADEXPERT TO BASELINE DEFENSES",
+            "text": "In Table 1, all the baseline defenses we evaluate fail against at least one of the baseline attacks. Observation 1: The two baseline defenses that focus on trigger reverse-engineering, NC and MOTH, are effective against attacks using patch-based triggers (such as BadNet, Trojan, CL, SRA, etc.), but they fail when confronted with attacks using global transformations as triggers (for instance, SIG), due to their strong inductive bias on the types of backdoor triggers. Observation 2: The three detectors (STRIP, Frequency, and SCALE-UP) that rely on the conspicuousness of backdoor triggers in backdoor inputs (either through frequency analysis or input perturbation) are ineffective against SIG and WaNet, which employ stealthier backdoor triggers. Observation 3: FP and AC utilize specific inner-model information (like neuron activations), turning out not universal enough to counteract all types of attacks. Observation 4: Specifically, NAD, which applies distillation to a fine-tuned model\nto eliminate the backdoor, can effectively defend against 11 out of 12 attacks, but it results in a considerable drop in CA (7.2%).\nRemarkably, BaDExpert inhibits all 12 attacks by rejecting suspicious backdoor inputs. Principally, this could be credited to the extracted backdoor functionality, which poses no inductive bias on backdoor trigger types, and therefore effectively suppress all attacks independent of the triggers they use. Moreover, benefiting from the extracted backdoor functionality that aid our defense, when comparing with NAD (which similarly includes a standard finetuning process in their pipeline), we outperform their defense performance in most scenarios, with noticeably higher CA and lower ASR.\n4.2.3 ABLATION STUDIES\nSize of the Reserved Clean Set |Dc|. In our defense pipeline, we assume a small reserved clean set Dc (default to 5% size of the training dataset in the primary experiment, i.e., 2, 000 samples) to construct both B andM\u2032. To investigate how minimal |Dc| could be, we evaluate BaDExpert with different sizes (200 \u223c 1, 800) of this clean set. The AUROC of BaDExpert (against Blend attack on CIFAR10) is reported in Fig 5 (orange line with the circle marker). As shown, as |Dc| becomes smaller, the AUROC of BaDExpert mostly remains higher than 98%, and slightly drops (to 95% or 90%) when the number of clean samples is extremely limited (400 or 200). To obtain a clearer view, in Appendix C.6, we compare BaDExpert with ScaleUp and STRIP side-by-\nside, where they are all assigned to such highly limited amount (100, 200 and 400) of clean samples. Notably, BaDExpert still outperforms the baselines in most scenarios. Alongside, we also justify how practitioners can acquire a small Dc with possible data-collecting approaches ((Zeng et al., 2023a)).\nNecessity of both B andM\u2032. As mentioned, we ensemble both B andM\u2032 to decide if an input is backdoored or not. However, one may directly attempt to detect backdoor inputs based on the metric of the single confidence of either B orM\u2032. Here, we study whether both of them are necessary for the success of BaDExpert. The blue (square) and red (triangle) lines in Fig 5 correspond to the detection AUROC if we only adoptM\u2032 or B. There is a three-fold observation: 1) backdoor expert B consistently provides a high AUROC (\u223c 95%), implying that it indeed fulfills the backdoor functionality by assigning backdoor input with higher confidence (Eq (1)); 2) The finetuned auxiliary model M\u2032 itself also provides a high AUROC (> 95%) when we have more than 1, 000 clean reserved samples, but degrades when the size of the clean set gets smaller (AUROC < 90% when\nclean samples < 1, 000); 3) Taking advantage from both sides, BaDExpert achieves the highest AUROC in most cases, indicating the necessity of coupling both B andM\u2032. Ensembling with Existing Model-repairing Defenses. In our pipeline, we choose finetuning as the default method to obtain an auxiliary modelM\u2032 where the backdoor is diminished. Importantly, our backdoor expert methodology is also orthogonal to the extensive suite of model-repairing defenses, meaning that the auxiliary modelM\u2032 can effectively be any model that has undergone baseline repair. For instance, when we combined backdoor experts with models repaired by the NAD technique, we achieve an average AUROC of 98.8% on the CIFAR10 dataset, a result that aligns closely with our primary findings presented in Table 2. For a more detailed discussion, please refer to Appendix C.2. Miscellaneous. In Appendix C.3, we validate that Alg (1) consistently isolates the backdoor functionality regardless of different number (1 to 2,000) of clean samples it leverages. In Appendix C.4, we study the choice of (un-)learning rate \u03b7 in Alg (1), showing that BaDExpert\u2019s performance remains insensitive to the selection of \u03b7 across a diverse lens. In Appendix C.5, we demonstrate that BaDEpxert is similarly successful even when the adversary employs different poison rates. In Appendix B.3, we discuss other possible mislabelling strategies used in Line (4) of Alg (1).\n4.3 GENERALIZABILITY AND SCALABILITY Table 3: BaDExpert generalizability on other architetures.\nAUROC (%) VGG16 MobileNetV2 BadNet 99.7 99.5\nBlend 97.7 97.6\nTrojan 98.6 97.8\nCL 97.7 99.2\nSIG 98.4 98.9\nDynamic 96.7 98.1\nWaNet 98.2 98.0\nFT 99.3 98.7\nAverage 98.3 98.5 Generalizability on Other Model Architectures. We first show that BaDExpert works similarly well for two other architectures, VGG-16 and MobileNetV2 in Table 3 on CIFAR10 (some attacks in Table 1 are ineffective and not shown). As shown, the average AUROC on both architectures achieve > 98%, similar to our major results in Table 1. Scalability on ImageNet. Table 4 reflects the effectiveness of BaDExpert on ImageNet. We conduct: 1) poisoning attacks (BadNet, Blend) by training ResNet18 on backdoor poisoned ImageNet datasets from scratch; 2) subnet-replacement attack (SRA) on pretrained ResNet101 (following SRA\u2019s original implementation); 3) finetuning attacks (FT-BadNet, FT-Blend) on pretrained ViT-B/16. We only reserve\u223c 6, 000 clean samples (equivalent to 0.5% size of ImageNet-1000 training set) to BaDExpert. In all scenarios, our BaDExpert can effectively detect backdoor samples (\u223c 100% AUROC and < 5% ASR), costing only negligible CA drop (\u2193 0.1%). These results confirm the scalability of BaDExpert."
+        },
+        {
+            "heading": "4.4 THE RESISTANCE TO ADAPTIVE ATTACKS",
+            "text": "To thoroughly study the potential risk underlying our defense, we also consider adaptive adversaries that strategically employ backdoor attacks designed specifically to bypass BaDExpert\u2019s detection.\nOne possible adaptive strategy is to deliberately establish dependencies between the backdoor and normal functionality, which may undermine the implicit assumption of our defense \u2014 the core concept of isolating the backdoor functionality from the normal functionality via unlearning. Essentially, if the backdoor functionality depends on the normal functionality, the erasure of the normal functionality would subsequently lead to the degradation of the backdoor functionality, potentially reducing BaDExpert\u2019s effectiveness. In fact, there exist several adaptive backdoor attacks tailored to this end. Here, we examine TaCT (Tang et al., 2021), Adap-Blend, and Adap-Patch (Qi et al., 2023a), which employ different poisoning strategies to create dependencies between backdoor and normal predictions. We also consider an All-to-All attack scenario, where each sample originating from any class i \u2208 [C] is targeted to class (i\u2212 1) mod C \u2014 here, the backdoor predictions rely on both the backdoor trigger and clean semantics, thereby forcing the backdoor functionality to depend on the normal one. Eventually, we evaluate BaDExpert against Natural backdoor (Zhao et al., 2022) existing in benign models, where the backdoor triggers are unconsciously learned from normal data.\nAn alternative perspective that may be exploited by adaptive adversaries to bypass our defense would be to utilize specifically constructed asymmetric triggers at inference time (different from the ones used during model production). We first study a simple scenario where the adversary deliberately use\nweakened triggers (e.g. blending triggers with lower opacity, dubbed \u201cLow-Opacity\u201d) to activate the backdoor at inference time. More profoundly, we design a novel adaptive attack tailored against BaDExpert (\u201cBaDExpert-Adap-BadNet\u201d), where the adversary optimizes an asymmetric trigger by minimizing the activation of the backdoor expert model B. Refer to Appendix C.7.2-C.7.3 for details. As shown in Table 5, BaDEpxert\u2019s effectiveness indeed experiences certain degradation in (AUROC becomes as low as 87.0%), in comparison with Table 2 (99.0% average AUROC). Nevertheless, we can see that BaDEpxert still demonstrates considerable resilience against all these adaptive efforts. We recommend interested readers to Appendix C.7 for more details in our adaptive analysis."
+        },
+        {
+            "heading": "5 RELATED WORK",
+            "text": "Backdoor Attacks. Backdoor attacks are typically studied in the data poisoning threat model (Chen et al., 2017; Zeng et al., 2023b; Gao et al., 2023; Qi et al., 2023a), where adversaries inject a few poison samples into the victim\u2019s training dataset. Victim models trained on the poisoned dataset tend to learn spurious correlations between backdoor triggers and target classes encoded in poison samples and get backdoored. Besides data poisoning, backdoor attacks can be implemented in alternative ways, such as manipulating training process Bagdasaryan & Shmatikov (2021); Li et al. (2021c), supplying backdoored pre-trained models (Yao et al., 2019; Shen et al., 2021), as well as weights tampering (Liu et al., 2017; Qi et al., 2021; 2022; Dong et al., 2023), etc. There are also backdoor attacks that are adaptively designed to evade defenses (Tang et al., 2021; Qi et al., 2023a).\nDevelopment-Stage Backdoor Defenses. The existing literature has extensively explored defensive strategies against backdoor attacks, with a significant focus on development-stage defenses. These defenses primarily target data-poisoning-based attacks (Goldblum et al., 2022) and are presumed to be implemented by model vendors. They either identify and remove the poison samples from the dataset before training (Tran et al., 2018; Tang et al., 2021; Qi et al., 2023b; Pan et al., 2023), or suppress the learning of backdoor correlations during training (Li et al., 2021a; Huang et al., 2022; Wang et al., 2022a). Notably, the security of these approaches heavily relies on the integrity of model vendors, and they cannot prevent backdoor injection after the model development.\nPost-Development Backdoor Defenses. Post-development defenses operate independently of model development. They typically assume only access to the (potentially backdoored) model intended to be deployed and a small number of reserved clean data for defensive purposes. One category of such approaches attempts to directly remove the backdoor from a backdoor model via pruning (Liu et al., 2018a), distillation (Li et al., 2021b), forgetting (Zhu et al., 2022), finetuning (Sha et al., 2022), unlearning reconstructed triggers (Wang et al., 2019; Tao et al., 2022), etc. Alternatively, model diagnosis defenses (Xu et al., 2021; Kolouri et al., 2020) attempt to make a binary diagnosis on whether a model is backdoored. There are also approaches attempting to detect and filter backdoor inputs at inference time (Zeng et al., 2021b; Li et al., 2022a; Guo et al., 2023) and thus prevent the backdoor from being activated. The defense we propose in this work falls within this category. Meanwhile, our idea of backdoor extraction is also relavent to the trigger-reconstruction-based defenses (Wang et al., 2019; Tao et al., 2022) in the sense of backdoor reverse engineering, but different in that we directly extract the backdoor functionality as opposed to backdoor trigger patterns."
+        },
+        {
+            "heading": "6 CONCLUSION",
+            "text": "In this study, we introduce a novel post-development defense strategy against backdoor attacks on DNNs. Inspired by the defenses that conduct trigger reverse engineering, we propose a distinctive method that directly extracts the backdoor functionality from a compromised model into a designated backdoor expert model. This extraction process is accomplished by leveraging a simple yet effective insight: finetuning the backdoor model on a set of intentionally mislabeled reserved clean samples allows us to erase its normal functionality while preserving the backdoor functionality. We further illustrate how to apply this backdoor expert model within the framework of backdoor input detection, leading us to devise an accurate and resilient detector for backdoor inputs during inference-time, known as BaDExpert. Our empirical evaluations show that BaDExpert is effective across different attacks, datasets and model architectures. Eventually, we provide an adaptive study against BaDExpert, finding that BaDExpert is resilient against diverse adaptive attacks, including a novelly tailored one."
+        },
+        {
+            "heading": "ETHICS STATEMENT",
+            "text": "In this work, we introduce a novel backdoor defense, demonstrating its consistent capability of detecting inference-time backdoor inputs. Our defense proposal to thwart potential malicious adversaries should not raise ethical concerns. Nevertheless, we want to avoid overstating the security provided by our method, since our evaluation on the effectiveness of our defense is empirical, and that our defense comes without any certified guarantee (most prior backdoor defenses share this limitation). After all, the field of backdoor attacks and defenses is still a long-term cat-and-mouse game, and it is essential for practitioners to exercise caution when implementing backdoor defenses in real-world scenarios. Rather, we hope our comprehensive insights into the concept of \u201cextracting backdoor functionality\u201d can serve as a valuable resource to guide future research in related domains.\nIt is also important to note that our work involves a tailored adaptive attack against our proposed defense. However, we emphasize that the sole purpose of this adaptive attack is to rigorously assess the effectiveness of our defense strategy. We strictly adhere to ethical guidelines in conducting this research, ensuring that all our experiments are conducted in a controlled isolated environment."
+        },
+        {
+            "heading": "A.1 BADEXPERT IMPLEMENTATION DETAILS",
+            "text": ""
+        },
+        {
+            "heading": "A.1.1 UNLEARNING AND FINETUNING CONFIGURATION",
+            "text": "During unlearning (Alg 1), we select a small while effective (un)learning rate \u03b7. For our major experiments on ResNet18, \u03b7 = 10\u22124 for CIFAR10 and \u03b7 = 2.5 \u00b7 10\u22125 for GTSRB. As for other architectures (CIFAR10), \u03b7 = 8 \u00b710\u22125 for VGG16, \u03b7 = 8 \u00b710\u22125 for MobileNetV2, and \u03b7 = 10\u22122 for ResNet110 (SRA attack). On ImageNet, \u03b7 = 10\u22124 for ResNet18 and ResNet101, and \u03b7 = 10\u22126 for pretrained vit_b_16 (IMAGENET1K_SWAG_LINEAR_V1 version). We conduct unlearning using Adam optimizer for only 1 epoch, with a batch size of 128.\nSelection of \u03b7. While we recommend using a conservatively small (un)learning rate \u03b7 (10\u22124 in our major experiments) in Alg (1), we also show that BaDExpert\u2019s defense performance is not sensitive to the choice of \u03b7 across a wide range (from 5 \u00b7 10\u22125 to 5 \u00b7 10\u22123) in Appendix C.4. Practitioners in the real world could start from an \u03b7 that is orders of magnitude smaller than the \u03b7\u2032 used for clean finetuning, then keep tuning \u03b7 until observing the model\u2019s clean accuracy (CA) diminishes by a certain extent (but does not completely vanish, i.e., worse than random guess). This rule of thumb may help practitioners idenfity an approximate range of \u03b7 according to the model\u2019s CA drop magnitude, which can be derived from Fig 8 \u2013 we can see the backdoor functionality is usually preserved when \u03b7 is conservatively small, in the sense that CA has not degraded to the random-guess level.\nDuring the clean finetuning, we select a series of relatively larger learning rates (\u03b7\u2032) in order to diminish the model\u2019s backdoor. The initial learning rate is 0.1 for primary experiments on CIFAR10 with ResNet18, and 0.05 on GTSRB. As for other architectures (CIFAR10), the initial learning is 0.2 for MobileNetV2 and VGG16, and 0.05 for ResNet110 (SRA attack). On ImageNet, the initial learning rate is 0.05 for ResNet18, 10\u22125 for ResNet101, and 5 \u00b7 10\u22124 for pretrained vit_b_16 (IMAGENET1K_SWAG_LINEAR_V1 version). We conduct the clean finetuning with SGD optimizer for 10 epochs, and reduce the learning rate to its 10% after every two epochs, with a batch size of 64.\nSelection of \u03b7\u2032. In our major experiments, we directly follow the standard finetuning hyperparameters adopted in prior work (Li et al., 2021b). Selecting the initial clean finetuning learning rate \u03b7\u2032 can also be done via a manual search by analyzing the CA trend. Specifically, we observe that clean finetuning can best diminish the backdoor functionality with a large learning rate, where the finetuned model\u2019s CA drops to \u223c 0% in the first one or two epochs, and then recovers to a significant value in the following epochs (the recovered CA depends on the size |Dc|; e.g. \u223c 80% when |Dc| = 2, 000, but \u223c 60% when |Dc| = 1, 000)."
+        },
+        {
+            "heading": "A.2 DECISION RULE",
+            "text": "Distribution of clean and backdoor inputs on the 2D joint-confidence plane. Fig 6 (top-left) demonstrates the (ConfB,ConfM\u2032) 2D distribution histogram heatmap of clean inputs and backdoor inputs (WaNet (Nguyen & Tran, 2021) attack on CIFAR10). A deeper blue grid represents more clean inputs and a deeper red grid represents more backdoor inputs.\nAs shown, clean and backdoor inputs could be easily distinguished \u2014 since most backdoor inputs locate nearby the bottom-right corner (1.0, 0.0) (>90% backdoor inputs are in the deepest red grid at the bottom-right corner), while the clean inputs do not (only <0.5% clean inputs are in this grid). Intuitively, 1) if x is a clean input, ConfB should be small (the backdoor expert B should not vote for the predicted class of clean inputs) and ConfM\u2032 should be relatively high (the auxiliary modelM\u2032 should also recognize a clean input asM does); 2) if x is a backdoor input that successfully triggers the backdoor, ConfB should be high (B should recognize backdoor inputs asM does) and ConfM\u2032 should be relatively low (finetuning has diminished the backdoor).\nModified Decision Rule. As mentioned, the simple likelihood ratio score in Eq (2) is only optimal when both B andM\u2032 are well-calibrated, which cannot be guaranteed since the actual construction procedures for them involve deep learning techniques. Therefore, in our practical implementation, we slightly modify Eq (2) according to the observed confidence distribution in the 2D plane as mentioned in the previous paragraph. Specifically, we score each input-prediction pair (x, y\u0303) alternatively as follows:\nReject input x if Score(x, y\u0303) := min  ConfM\u2032(y\u0303|x) \u03b3 \u00b7 ConfB(y\u0303|x) , 1\u2212 ConfB(y\u0303|x)( \u03b3 \u2212 ConfM\u2032(y\u0303|x) )+  \u2264 \u03b1 (threshold) (3) where (\u00b7)+ := max(\u00b7, 10\u22128) represents the operation of numerical positive clamping, and \u03b3 is a\nhyperparameter (fixed to 0.5 through our major experiments). This rule functions similarly to Eq (2): a backdoor input x tends to have a high ConfB(y\u0303|x) (i.e., B agrees withM) and a low ConfM\u2032(y\u0303|x) (i.e.,M\u2032 disagrees withM), and therefore a low ConfM\u2032 (y\u0303|x)\u03b3\u00b7ConfB(y\u0303|x) and 1\u2212ConfB(y\u0303|x) (\u03b3\u2212ConfM\u2032 (y\u0303|x))+\n. This modified score formulation is designed accordingly to best capture the actual (ConfB,ConfM\u2032) distribution nature, as shown in Fig 6. In the following paragraph, we will desribe a detailed empirical geometric interpretation of Eq (3).\nEmpirically understanding the modified decision rule. In Fig 6, an obviously straightforward decision rule for backdoor detection is to remove any inputs dropped into the right-corner grid region. However, since both B andM\u2032 may possibly make mistakes (i.e., not well-calibrated or suboptimal), some backdoor inputs would lie beyond this grid. Therefore, we further smooth out this grid region into two triangle-shaped regions (connected by the dashed lines and the borders in Fig 6 top-right and bottom-left), and claim any inputs dropped into these two triangles to be suspicious for backdoor. Fig 6 (bottom-right) reveals that our decision regions indeed capture the majority of backdoor inputs that locate around the bottom-right corner (1.0, 0.0). Furthermore, our decision regions also capture a majority of backdoor outliers that distribute alongside the ConfB = 1 and ConfM\u2032 = 0 axes. Formally, this geometric decision rule is equivalent to calculating a score for any input x and rejecting inputs with a score lower than a selected threshold \u03b1, which has already been described in Eq (3).\nSelection of \u03b1. In Table 1, the threshold \u03b1 is selected dynamically such that the false positive rate is always 1%. This is very much following previous work (e.g. STRIP (Gao et al., 2019)) where defense results are reported when the false positive rates are fixed. Meanwhile, a fairer and widely-adopted way to report the results of such threshold-based input detectors would be to report the AUROC, which is threshold-free. Intuitively, a detector / classifier with a higher AUROC is usually considered better in pratical. To fairly present the effectiveness of our proposed defense (BaDExpert), we report both 1) ASR and CA when fixing FPR to 1% and, as shown in Table 1; 2) AUROC, which does not involve threshold selection, as shown in Table 2.\nFor practitioners, an empirical and simple way for threshold selection would be to calculate a set of BaDExpert scores on Dc, and then determine the threshold \u03b1 to be the highest 1st percentile (or any other FPR) score among this set. Alternatively, the defender could also select an appropriate threshold based on the desired FPR by observing the score distribution of a small number of manually inspected benign inputs at inference time. According to our experimental results, deployers can reasonably anticipate BaDExpert to provide robust defense against potential backdoor attacks with a low permissible FPR (e.g. 1% in our major experiment); and as the permissible FPR increases, the effectiveness of our defense mechanism is anticipated to further improve.\nAs for the sensitivity w.r.t. threshold selection, it appears that for differently trained and attacked models, \u03b1 may need to be selected accordingly. However, an interesting quantative results on CIFAR10 would be: even if we set \u03b1 to a fixed number (e.g. \u22120.003), the defense performance would not vary too much across different attacks (all ASR < 20% while CA drop no more than 5%).\nSelection of \u03b3. In Fig 6, the hyperparameter \u03b3 \u2208 (0, 1] corresponds to the intersection ycoordination of the top-right dashed line with the vertical border (e.g., the intersection point (1.0, 0.5) corresponds to \u03b3 = 0.5). \u03b3 could be selected based on the confidence distribution ofM\u2032 \u2014 ifM\u2032 assigns high confidences to most (clean) inputs, then a larger \u03b3 would not induce too much FPR, while possibly incorporating more backdoor outliers (vice versa). Nevertheless, we find fixing \u03b3 to 0.5 already provides a consistently good performance through all our major experiments."
+        },
+        {
+            "heading": "A.3 BASELINE ATTACKS CONFIGURATIONS",
+            "text": "Our detailed configurations for baseline attacks (CIFAR10) are listed as follow:\n\u2022 BadNet: 0.3% poison ratio, using the 3x3 BadNet patch trigger (Gu et al., 2017) at the right-bottom corner.\n\u2022 Blend: 0.3% poison ratio, 20% blending alpha, using the 32x32 Hellokitty trigger (Chen et al., 2017) at the right-bottom corner.\n\u2022 Trojan: 0.3% poison ratio, using the 8x8 TrojanNN patch trigger (Liu et al., 2018b) at the right-bottom part of the image.\n\u2022 CL: 0.3% poison ratio, adversarial perturbation on poisoned images bounded with \u21132-norm of 600, using four duplicates of the 3x3 BadNet patch trigger (Gu et al., 2017) at the four corners (for a considerable ASR).\n\u2022 SIG: 2% poison ratio (to achieve a considerable ASR). \u2022 Dynamic: 0.3% poison ratio. \u2022 ISSBA: 2% poison ratio (to achieve a stably considerable ASR). \u2022 WaNet: 5% poison ratio and 10% cover ratio (recommended configurations). \u2022 BPP: training-time poisoning, 20% injection ratio, 20% negative ratio (recommended\nconfigurations).\n\u2022 FT: finetuning with the full training set (for both high CA and high ASR), 20% injection ratio, 20% blending alpha, using the 32x32 Hellokitty trigger (Chen et al., 2017) at the right-bottom corner.\n\u2022 TrojanNN: finetuning with the full training set (for both high CA and high ASR), 10% injection ratio, trojan trigger generated following the procedure in Liu et al. (2018b).\n\u2022 SRA: directly using the authors pretrained clean models and backdoor subnets (ResNet110) to conduct post-development backdoor injection.\nWe adopt the standard training pipeline to obtain backdoor models: SGD optimizer with a momentum of 0.9, a weight decay of 10\u22124, a batch size of 128, 100 epochs in total, initial learning rate of 0.1 (decayed to its 10% at the 50th and 75th epoch), with RandomHorizontalFlip and RandomCrop as the data augmentation."
+        },
+        {
+            "heading": "A.4 BASELINE DEFENSES CONFIGURATIONS",
+            "text": "Our detailed configurations for baseline attacks (CIFAR10) are listed as follow:\n\u2022 FP: We forward a 2,000 reserved clean samples to the model, and keep pruning as much inactive neurons in the last convolutional layer as possible, until the CA drop reaches 10%.\n\u2022 NC: Reverse engineer a trigger for each class with a 2,000-sample reserved clean set. Then an anomaly index is estimated for every class. The class with the highest anomaly index > 2 (whose mask norm is also smaller than the median mask norm) is determined as the target class for unlearning. Its reversed trigger is then attached to the same 2,000 clean samples (correctly labeled), on which the model is retrained to unlearn the backdoor (learning rate is 10\u22122 for one epoch).\n\u2022 MOTH: Similarly, the trigger reverse engineering and model reparing are performed on a 2,000-sample reserved clean set. The learning rate for the model repairing process is default to 10\u22123 (for 2 epochs).\n\u2022 NAD: First train a teacher model in 10 epochs via finetuning (initial learning rate 0.1, decrease to its 10% every two epochs), and use it to distill a student model in 20 epochs (learning rate is 0.1 for the first two epochs and 0.05 for the rest). NAD uses a 2,000 clean set to perform both finetuning and distillation.\n\u2022 STRIP: Calculate an entropy for each sample is calculated by superimposing it with N = 100 randomly sampled clean samples, and consider inputs with the higher entropy to be backdoored; in Table 1, the FPR is fixed to 10% to show its effectiveness.\n\u2022 AC: Gather all inputs for each class, perform a 2-clustering based on their latent representation, then assign each class a silhouette score. The class with the highest silhouette score is suspected, and the inputs within its larger cluster is considered as backdoored. The silhouette scores are used to report AUROC.\n\u2022 Frequency: We directly use their official pretrained model to perform detection. The difference between output 1 and output 0 is used to report AUROC.\n\u2022 SCALE-UP: Each input is scaled up 5 times (scale_set= {3, 5, 7, 9, 11}), and the score corresponds to the fraction of the model\u2019s scaled predictions that equal to the prediction on the original input. The threshold in Table 1 is set to 0.5.\nFairness Considerations in Comparison. We mostly follow the baselines\u2019 original implementations if available. Moreover, to ensure their hyperparameters and implementations work in our settings (model architecture, optimizers, etc.), we also try to tune their hyperparameters if necessary, in order to report their best overall results. Most of these baseline defenses (other than those require no clean samples or those not sensitive to the number of clean samples) are given access to the exactly same clean reserved data (2,000 samples) as BaDExpert, which further ensures fairness in our comparison."
+        },
+        {
+            "heading": "A.5 COMPUTATIONAL ENVIRONMENTS",
+            "text": "We run all experiments on a 4-rack cluster equipped with 2.8 GHz Intel Ice Lake CPUs and Nvidia A100 GPUs. Our major experiment requires training 63 models (\u223c50 GPU hours in total), with an additional > 100 GPU hours for ablation studies (e.g. training ImageNet models)."
+        },
+        {
+            "heading": "B DISCUSSIONS",
+            "text": ""
+        },
+        {
+            "heading": "B.1 FORMULATION OF AGREEMENT MEASUREMENT (HARD-LABEL DECISION RULES)",
+            "text": "Let us fist consider an ideal backdoor expert B that completely unlearns the normal functionality of the backdoored modelM while fully preserving its backdoor functionality, i.e.,\nP(x,y)\u223cP [ B(T (x)) = t|M(T (x)) = t ] \u2248 1, (4)\nP(x,y)\u223cP [ B(x) \u0338= y|M(x) = y ] \u2248 1 (5)\nUnder this condition: 1) we can fully inhibit the embedded backdoor inM from activation (i.e., reduce the ASR ofM to 0%) by simply rejecting all inputs wherein predictions ofM and B fall within an agreement. This is because B andM will always agree with each other on a backdoor\ninput T (x) that can exploitM (Eqn 4); 2) Meanwhile, this rejection rule will not impede the CA of M, because B will always disagree withM on clean inputs x thatM correctly predict (Eqn 5). This example thus suggests the feasibility of performing accurate backdoor input detection via measuring whether the predictions of the backdoored model and backdoored expert concur."
+        },
+        {
+            "heading": "B.2 FORMULATION OF AND INSIGHTS INTO THE SOFT DECISION RULES",
+            "text": "As discussed in Sec 3.2, for practical implementation, we can generalize the hard-label conditions to a soft version that is based on the soft-label (confidence-level) predictions. We can derive soft decision rules for both the backdoor expert B and the auxiliary modelM\u2032. Trivially, for any backdoor expert B, the following soft conditions must establish:\n\u2203\u03c41, \u03c42 \u2208 [0, 1], s.t. (6) P(x,y)\u223cP [ ConfB(t|T (x)) \u2265 \u03c41 \u2223\u2223\u2223M(T (x)) = t] \u2248 1, (7) P(x,y)\u223cP [ ConfB(y|x) < \u03c42\n\u2223\u2223\u2223M(x) = y] \u2248 1, (8) Given an input x\u0303, we can define a soft decision rule that rejects x\u0303 conditional on ConfB(M(x\u0303)|x\u0303) \u2265 \u03c4 . If \u03c41 \u2265 \u03c42, applying a \u03c4 \u2208 [\u03c42, \u03c41] will still result in a perfect backdoor input detector. In suboptimal cases where \u03c41 < \u03c42, we will have a trade-off between the TPR and FPR during detection. Generally, B could serve as a good backdoor input detector if B tends to assign higher confidences for backdoor inputs and lower confidences for clean inputs, which is practically true (Fig 7a). If we directly apply this confidence-level rule to detect backdoor inputs with a backdoor expert B (Blend attack on CIFAR10), we can achieve a 96.76% AUROC.\nOn the contrary, an auxiliary modelM\u2032 must satisfy the following conditions:\n\u2203\u03c43, \u03c44 \u2208 [0, 1], s.t. (9) P(x,y)\u223cP [ ConfM\u2032(t|T (x)) \u2264 \u03c43 \u2223\u2223\u2223M(T (x)) = t] \u2248 1, (10) P(x,y)\u223cP [ ConfM\u2032(y|x) > \u03c44\n\u2223\u2223\u2223M(x) = y] \u2248 1, (11) where \u03c43, \u03c44 \u2208 [0, 1]. Given an input x\u0303, we can define a soft decision rule that rejects x\u0303 conditional on ConfM\u2032(M(x\u0303)|x\u0303) \u2264 \u03c4 \u2032. If \u03c43 < \u03c44, applying a \u03c4 \u2032 \u2208 [\u03c43, \u03c44] will still result in a perfect backdoor input detector. In suboptimal cases where \u03c43 \u2265 \u03c44, we will have a trade-off between the TPR and FPR during detection. Similarly,M\u2032 could serve as a good backdoor input detector ifM\u2032 tends to assign lower confidences for backdoor inputs and higher confidences for clean inputs, which is also\npractically true (Fig 7b). Analogously, if we directly apply this confidence-level rule to detect the same backdoor inputs, but with a finetuned auxiliary modelM\u2032, we can achieve a 96.35% AUROC. To sum up, we see that these soft decision rules, based on the confidence-level information of B and M\u2032, can already detect backdoor inputs effectively (> 96% AUROC). Our BaDExper framework, built on top of both the two models B andM\u2032 via ensembling, achieves an even better detection performance (AUROC > 99%)."
+        },
+        {
+            "heading": "B.3 OTHER POSSIBLE MISLABELING STRATEGIES",
+            "text": "In Alg 1, we specifically mislabel clean samples to their neighboring classes, i.e., Y \u2032 \u2190 (Y + 1)%C. In our preliminary experiment, we have actually explored three different mislabeling strategies:\n1. Shifting Y \u2032 \u2190 (Y + 1)%C (adopted in Alg 1); 2. Randomly mapping Y to any Y \u2032 as long as Y \u0338= Y \u2032; 3. Change the one-hot label Y = [0, 0, \u00b7 \u00b7 \u00b7 , 0, 1, 0, . . . , 0] to Y = [\u03f5, \u03f5, \u00b7 \u00b7 \u00b7 , \u03f5, 0, \u03f5, . . . , \u03f5]\n(0 < \u03f5 \u2264 1) in a soft-label fashion.\nSurprisingly, we find the phenomenon \u2013 \u201cfinetuning a backdoored model on a few mislabeled clean samples can cause the model to forget its regular functionality, resulting in low clean accuracy, but remarkably, its backdoor functionality remains intact, leading to a high attack success rate\u201d \u2013 exists regardless of the adopted mislabeling strategy choice. And as a matter of fact, BaDExpert with each of the three strategies would be similarly effective against diverse set of attacks. We finally settled at the first mislabeling choice mostly due to a stable set of hyperparameters are easier to determined than the other two strategies."
+        },
+        {
+            "heading": "B.4 COMPARING BADEXPERT WITH CONFUSION TRAINING (QI ET AL., 2023B)",
+            "text": "Qi et al. (2023b) introduces a novel backdoor poison training set cleanser based on the technique of \u201cconfusion training\u201d, where they train an inference model jointly on the poisoned dataset and a small number of mislabeled clean samples (similar to our Alg (1)). Nevertheless, we highlight several critical differences between our work and theirs.\nProblems. Qi et al. (2023b) focuses on poisoned training set inspection and aims at identifying poison samples within the training set. Instead, our work focuses on identifying backdoor inputs during inference time. The two problems have completely different setups.\nMethods. Our method and Qi et al. (2023b)\u2019s are different at two critical levels:\n1. Access of Information: \u2022 Qi et al. (2023b) relies on the necessary access of poisoned training samples (i.e.,\nrequiring information about the backdoor), so that their detection model can capture the backdoor correlation.\n\u2022 Our method, on the other hand, operates independently of how the model is generated \u2014 does not rely on any information about the backdoor samples or the poisoned dataset, which is a significantly more challenging scenario.\n2. Principle: \u2022 During the training on a poisoned dataset, Qi et al. (2023b) disrupts the fitting of clean\ntraining samples using a \u201cconfusion batch\u201d of mislabeled clean data (i.e., counteracts the gradient updates learned from the normal training samples), so that the resulting model can only capture the backdoor correlation. They then utilize this resulting model to identify poisoned training samples by seeing which data points are correctly fitted (by comparing the model\u2019s predictions with the data points\u2019 ground-truth labels).\n\u2022 Distinguishly, our method is more related to catastrophic forgetting \u2014 we only finetune the original backdoor model M on the mislabeled clean data (without any access to poisoned samples), resulting in a backdoor expert model B that loses the normal functionality but retains the backdoor functionality. We then measure the agreements"
+        },
+        {
+            "heading": "B.5 COMPARING BADEXPERT WITH SEAM (ZHU ET AL., 2022)",
+            "text": "Zhu et al. (2022) introduces a novel model-repairing backdoor defense (SEAM). In the first phase, they finetune the backdoored model on a small number of mislabeled clean samples (similar to our Alg (1)), observing that both the CA and ASR would diminish. In the second phase, they finetune the resultant model (after phase one) on a portion of correctly labeled samples from the training set, by which the CA will gradually recover, but the ASR will not.\nInterestingly, when finetune the backdoored model on mislabeled clean samples, Zhu et al. (2022)\u2019s observation (both CA and ASR decrease) seems to be different from ours (CA drops but ASR retains). Nevertheless, we argue that our observations are actually not contradictory to theirs.\nIn our method and experiments, we suggest using a conservatively small (un-)learning rate \u03b7, with which only the normal functionality degrades but the backdoor functionality retains. However, as shown in Fig 3 (and Fig 8 in Appendix C.3), when the (un-)learning rate \u03b7 is large enough (e.g., 10\u22123), both the normal and backdoor functionality would be lost (both CA and ASR\u2192 0) \u2014 which corresponds to Zhu et al. (2022)\u2019s observation. In summary, the different observations between our work and Zhu et al. (2022) are possibly due to different selections of the (un-)learning rate."
+        },
+        {
+            "heading": "B.6 RELATIONSHIP OF BADEXPERT WITH SHAN ET AL. (2020)",
+            "text": "Shan et al. (2020) proposes an adversarial example detection method using \u201choneypots\u201d \u2014 a trapdoor that would enforce malicious adversarial inputs to manifest a certain neural network activation-pattern signature. Their defense\u2019s key design philosophy may be subtly connected to ours, in the sense that Shan et al. (2020) detects potential adversarial examples via \u201csimilarity measurement\u201d of model activation signatures, and we detect backdoor examples via \u201cagreement measurement\u201d of model prediction/confidence. However, their work\u2019s motivation, problem, and method are still largely different from ours."
+        },
+        {
+            "heading": "C ADDITIONAL RESULTS",
+            "text": ""
+        },
+        {
+            "heading": "C.1 EFFECTIVENESS OF BADEXPERT ON GTSRB",
+            "text": "Our primary results on GTSRB are shown in Table 6 and Table 7. As a general post-development defense, BaDExpert effectively defends against all attacks (average ASR = 2.0%), with a CA drop as negligible as 0.1%; Meanwhile, other baseline defenses fail against at least one backdoor attack. As a backdoor input detector, BaDExpert achieves an average 100% detection AUROC, and outperforms other baseline detectors in every scenario."
+        },
+        {
+            "heading": "C.2 ENSEMBLING WITH OTHER DEFENSES",
+            "text": "As discussed in Sec 4.2.3, we can apply any baseline-repaired models as M\u2032 in our BaDExpert framework, to ensemble with our backdoor experts B. We demonstrate the ensembling results in Table 8 (\u201cw/ Backdoor Expert\u201d rows). For an insightful comparison, we also show the results when only the baseline-repaired model is used for backdoor input detection (\u201cw/o Backdoor Expert\u201d rows), following the soft decision rule forM\u2032 described in Sec B.2. As shown, BaDExpert can achieve overall \u223c 99% AUROCs when ensembling with NC and NAD, which align well with our major results in Table 2. When combined with FP (failed against 9 of 12 attacks in Table 1) and MOTH (failed against 6 of 12 attacks in Table 1), BaDExpert slightly degrades to \u223c 96.5%, due to the significant failures of the baselines themselves (which can also be told from that deployingM\u2032 without backdoor expert can sometimes barely achieve AUROC < 50% \u2014 worse than random guessing). Moreover, in almost all cases, BaDExpert (\u201cw/ Backdoor Expert\u201d) achieves higher AUROCs compared to deployingM\u2032 alone (\u201cw/o Backdoor Expert\u201d). In other words, our backdoor expert models and the BaDExpert framework could serve as effective augmentations (or add-ons) to existing model-repairing backdoor defense baselines, during backdoor input detection."
+        },
+        {
+            "heading": "C.3 BACKDOOR EXPERTS CONSTRUCTION",
+            "text": "For all 12 attacks evaluated in our primary experiments on CIFAR10, we visualize in Fig 8a\u223c8l the constructed backdoor experts\u2019 (Alg 1) CA and ASR, when we unlearn the originally backdoored model M with different \u03b7\u2019s. As depicted, with a conservatively small \u03b7 (e.g. 10\u22124), we can always enforce the resulting backdoor expert to lose a significant amount of normal functionality (CA drop \u223c 50%), while retaining a similar backdoor functionality (ASR drop \u223c 0%). However, if we choose a large \u03b7 (e.g. 1e-3), both functionalities would be erased (both CA and ASR \u2248 0%). Actually, we sometimes may have to tradeoff between the maintenance of the backdoor functionality and the unlearning of the normal functionality. But overall, we can see that unlearning the backdoor functionality is slower than unlearning the normal functionality. More crucially, we find this phenomenon to consistently exist across datasets and architectures (Fig 8m\u223c 8o). An intuitive justification for such a phenomenon can be referred to and derived from Qi et al. (2023b), where the authors show that during poison training, clean samples could be forgotten faster than poison samples in the context of catastrophic forgetting (for simplified settings of training overparameterized linear model).\nWe also notice that, this property is not sensitive w.r.t. the number of clean samples (|Dc|) we have. No matter how many clean samples (from 1 or 10 to 1,000 or 2,000) we use to conduct Alg 1, with an appropriately small learning rate \u03b7 (e.g. by selecting a small \u03b7 such that the resulting CA only drops to \u223c 40%), we can still separate the CA and ASR by a certain extent (Fig 9).\nC.4 ABLATION STUDIES ON DIFFERENT (UN-)LEARNING RATES \u03b7\nOur method is not sensitive to the choice of (un-)learning rate \u03b7. In this ablation study, we evaluate BadExpert against BadNet and Blend attacks on CIFAR10, across a wide range of \u03b7 (from 5 \u00b7 10\u22125 to 5 \u00b7 10\u22123). As shown in Table 9, the AUROC of our detection remains stable across different \u03b7."
+        },
+        {
+            "heading": "C.5 ABLATION STUDIES ON DIFFERENT POISON RATES",
+            "text": "As shown in Table 10, BaDExpert is insensitive to the variation of poison rate. Even when the poison rate is extremely low (poison rate = 0.1%, equivalent to only 50 poison samples) and ASR drops to \u223c 80%, our BaDExpert is still manifesting near-perfect effectiveness."
+        },
+        {
+            "heading": "C.6 COMPARING BADEXPERT WITH STRIP AND SCALEUP IN SCENARIOS WITH FEWER CLEAN SAMPLES",
+            "text": "We further analyze in details how our BaDExpert would perform when there are fewer accessible clean reserved samples. We compare it alongside with two strong baseline detectors: 1) STRIP,\nwhich requires only N = 100 clean samples by default, and 2) ScaleUp, which by default can work without clean samples (meanwhile, ScaleUp can also utilize available clean samples for its SPC value estimation). To make a fair comparison in our additional study, we assign an equal number of clean samples (100, 200, 400 and 2000) to all three defenses in each scenario.\nIn Table 11, we can quickly notice that under most circumstances (number of clean samples = 200, 400 and 2, 000), BaDExpert performs the best. And when the number of clean samples is extremely restrited to 100, BaDExpert becomes less effective on Blend (72.9% AUROC), but still performs similar to ScaleUp (79.8% AUROC).\nApproaches to Obtain Reserved Clean Samples. There exist various possiblitites to acquire such a small clean set |Dc|:\n\u2022 A developed model usually comes with an independent set of test samples in order to validate the model\u2019 utility, the defender could simply use (a partition) of this test samples as |Dc|;\n\u2022 Collect data (e.g. taking photos) in a secure environment;\n\u2022 Manually inspect and isolate clean samples from online inputs.\nFurthermore, there exists a trending line of work on isolating clean samples from a poisoned set of samples, e.g. META-SIFT (Zeng et al., 2023a). Such work can be directly applied here to aid the defender to obtain reserved clean samples. Overall, we argue that obtaining a small amount of clean samples (e.g. 200, 400, 2000) would not be a major bottleneck for defenders in practice."
+        },
+        {
+            "heading": "C.7 ADDITIONAL ADAPTIVE ANALYSIS DETAILS",
+            "text": ""
+        },
+        {
+            "heading": "C.7.1 NATURAL BACKDOOR",
+            "text": "Natural backdoors (e.g. (Zhao et al., 2022)) may exist in models trained on only clean data, which can also be considered as an adaptive backdoor attack against BaDExpert. This is because the natural backdoor functionality learned by a clean model is strongly correlated with the normal functionality \u2013 therefore, such natural backdoors also directly challenge our insight that \u201cbackdoor functionality can be isolated from normal functionality\u201d.\nWe construct such natural backdoor attacks (Zhao et al., 2022) on normally trained models (on clean data) and achieve ASR = 99.2% on CIFAR10 and ASR = 99.3% on GTSRB. We find that BaDExpert can defend the natural backdoor attacks on both datasets with AUROC = 92.3% and AUROC = 92.8%, respectively. While the performance shows a degradation compared to our major results in Table 2 in our paper (average AUROC = 99.0%), the >92% AUROC still reflects the nontrivial effectiveness of BaDExpert as an inference-time defense. Besides, we note that our key finding \u201cwhen fintuning on mislabled clean data, the backdoor functionality would remain, while normal functionality does not\u201d still stands against this attack:\n\u2022 Following Alg (1) on CIFAR10, the constructed backdoor expert B retains a high ASR 95.3% (originally 99.2%), while the normal functionality degrades significantly (CA drops from 94.2% to 44.8%);\n\u2022 On GTSRB, the observation is similar (ASR drops from 99.3% to 83.0%, CA drops from 96.8% to 41.0%)."
+        },
+        {
+            "heading": "C.7.2 ADAPTIVE ATTACK BY USING WEAKENED TRIGGERS AT INFERENCE TIME AND SMALLER TRIGGERS",
+            "text": "Empirically, adversary may sometimes bypass existing backdoor defense methods by using a weakened version of the backdoor trigger at inference time. Therefore, we also study how our method reacts to such an adaptive attack by decreasing the inference-time trigger blending alpha of the Blend attack on CIFAR10. As shown in Table 12, when the adversary uses a lower blending alpha at inference time (instead of the default 20% during poisoning), the AUROC of BaDExpert indeed degrades, to as low as 94%. Nevertheless, the attack ASR drops more rapidly. Overall, we can observe a tradeoff between backdoor inputs\u2019 stealthiness (AUROC) and the attack\u2019s effectiveness (ASR). Generally speaking, the adversary can hardly evade BaDExpert\u2019s detection by using a weaker trigger at inference time, since the ASR will drop rapidly way before BaDExpert becomes unusable (AUROC > 97.5% whenever ASR > 20%).\nIn addition, we also study whether backdoor attackers could evade our defense via adopting smaller trigger sizes. Specifically, we evaluate BaDExpert\u2019s effectiveness against two backdoor models that are poisoned with: 1) 4-Pixel (Fig 10a): 4 random red pixels as the backdoor trigger (0.1% poison rate); 2) 1-Pixel (Fig 10b): 1 random red pixel as the backdoor trigger (0.5% poison rate). To ensure the backdoors are \u201cweak\u201d, we select the minimum poison rates to make sure the backdoors are just successfully injected (non-trivial ASR). As shown in Table 13, BaDExpert can still effectively defend these attacks, suppresing the ASR to < 14.4%."
+        },
+        {
+            "heading": "C.7.3 A TAILORED ADAPTIVE ATTACK AGAINST BADEXPERT",
+            "text": "To provide more valuable insights for future researchers / developers into our method, we also tailored a novel adaptive attack against our proposed BaDExpert.\nConcretely, we assume that the adversary (who produced the backdoor model) is aware of our BaDExpert defense. Accordingly, he/she will design an evading strategy via using an alternative trigger during inference time (i.e., asymmetric backdoor trigger, which was adopted in prior work like Qi et al. (2023a)), such that the alternative trigger satisfies: 1. Can still activate the backdoor functionality of the original backdoor modelM (i.e., achieving a high ASR) 2. Cannot activate the backdoor functionality of the original backdoor model B (i.e., enforcing B to provide a low confidence on the backdoor inputs).\nNotice that the adversary is only assumed to have access to the backdoor modelM. The adversary, however, could also follow our BaDExpert procedure to construct a surrogate backdoor expert model B\u2032 (Alg 1) to the actual backdoor expert model B used by the victim / defender. (Empirically, we find the attack results using this surrogate backdoor expert model are similar to using the actual B of the\ndefender, if they both are trained following the same configuration. We therefore do not explicitly distinguish the notation of B and B\u2032 in the rest of this section.) The two goals upon can be implemented via optimization on the modelsM and B. Formally, as the adaptive adversary, we compute an alternative trigger mark \u2206 and the corresponding trigger mask m as follow:\nmin \u2206,m\nCrossEntropyLoss ( M(x\u2217)raw, t ) + \u03bb1 \u00b7 ConfB(t|x\u2217) + \u03bb2 \u00b7 |m| (x, y) \u223c P (12)\nwhere x\u2217 = (1\u2212m)\u2299 x+m\u2299\u2206 (13)\nSpecifically, the trigger mark \u2206 \u2208 X = [0, 1]c\u00d7w\u00d7h is a 3-dim real-value matrix (the same shape as the input x), while the trigger mask m \u2208 [0, 1]w\u00d7h is a 2-dim real-value matrix that decides the opacity of each trigger mark pixel to mix with the corresponding input xs\u2019 pixel. The \u2299 operator upon computes the Hadamard product of two matrices. (We adopt the similar trigger optimization setting in Wang et al. (2019).)\nNow we explain this optimization formula:\n\u2022 Minimizing the first CrossEntropyLoss term will help the adversary approach the first target: the alternative trigger (\u2206,m) can still activate the victim backdoor modelM with a high ASR.\n\u2022 The second term represents the confidence of the backdoor expert model B. Minimizing it will directly violate our core design insight, since the resulting backdoor inputs now will not activate the backdoor functionality of the backdoor expert model B anymore.\n\u2022 The last term, \u21131 norm of the trigger mask, corresponds to the visual stealthiness of the trigger. The adversary usually prefers to implant a less noticeable trigger, which can be realized via minimizing the magnitude of the trigger mask m.\nThe two hyperparameter \u03bb1 and \u03bb2 controls the tradeoff among these three goals.\nIn Table 14, we report the results of this adaptive attack (\u201cBaDExpert-Adap-[ORIGINAL ATTACK]\u201d) against our BaDExpert defense when \u03bb1 and \u03bb2 are selected differently. To fully study the potential tradeoff between the adaptive attack effectiveness and its defense evasiveness, we report alongside 1) the adaptive trigger Norm |m|; 2) the attack success rate (ASR); 3) AUROC of BaDExpert against the tailored adaptive attack.\nAs shown in Table 14, we can observe that the tailored adaptive attack could effectively diminish the effectiveness of BaDexpert \u2013 AUROC becomes as low as 57.2% against BaDExpert-Adap-BadNet and 36.4% against BaDExpert-Adap-Blend. Meanwhile, we can also notice two trends from the table:\n1. As \u03bb2 becomes larger (with \u03bb1 fixed), the ASR becomes higher, while the defense AUROC decreases. However, the increasing evasiveness of the adaptive attack comes with a price: the magnitude of the trigger mask (Norm) also increases \u2013 i.e., the backdoor attack becomes less stealthy.\n2. As \u03bb1 becomes higher (with \u03bb2 fixed), the defense AUROC effectively degrades. However: 1) the ASR drops, and 2) the backdoor attack becomes stealthier since Norm becomes larger.\nIn brief, we can see that the adaptive attack can indeed restrict BaDExpert\u2019s performance, at the cost of either attack effectiveness (lower ASR) or stealthiness (higher Norm). Overall, BaDExpert still performs nontrivially in most scenarios \u2013 87.0% average AUROC against BaDExpert-AdapBadNet and 57.6% against BaDExpert-Adap-Blend."
+        },
+        {
+            "heading": "C.8 COMPARING BADEXPERT WITH ADDITIONAL BASELINES",
+            "text": "In Table 15, we further compare BaDExpert with 6 additional recent backdoor defense baselines: ANP (Wu & Wang, 2021), I-BAU (Zeng et al., 2021a), ABL Li et al. (2021a), AWM Chai & Chen (2022), RNP Li et al. (2023) and CD Huang et al. (2023), w.r.t. attack success rate and clean accuracy. Among them: 1) ABL is a poison suppresion method that happens in the model development stage; 2) ANP, I-BAU, RNP and AWM are post-development model-reparing defenses; 3) CD is originally a poisoned training dataset cleanser, and we adapted it to a backdoor input detector. As shown in Table 15, BaDExpert outperforms all of them, achieving lower ASR and higher CA."
+        },
+        {
+            "heading": "C.9 STANDARD DEVIATIONS OF MAJOR EXPERIMENTS",
+            "text": "Standard deviations of our major experiments Table 1, 2, 6 and 7 are shown in Table 16, 17, 18 and 19."
+        }
+    ],
+    "title": "BADEXPERT: EXTRACTING BACKDOOR FUNCTIONAL- ITY FOR ACCURATE BACKDOOR INPUT DETECTION",
+    "year": 2024
+}

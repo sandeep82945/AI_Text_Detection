@@ -1,1 +1,599 @@
-null
+{
+    "abstractText": "Low-rank adaptation (LoRA) is one of the most popular task-specific parameterefficient fine-tuning (PEFT) methods on pre-trained language models for its good performance and computational efficiency. LoRA injects a product of two trainable rank decomposition matrices over the top of each frozen pre-trained model module. However, when applied in the setting of privacy-preserving federated learning (FL), LoRA may become unstable due to the following facts: 1) the effects of data heterogeneity and multi-step local updates are non-negligible, 2) additive noise enforced on updating gradients to guarantee differential privacy (DP) can be amplified and 3) the final performance is susceptible to hyper-parameters. A key factor leading to these phenomena is the discordance between jointly optimizing the two low-rank matrices by local clients and separately aggregating them by the central server. Thus, this paper proposes an efficient and effective version of LoRA, Federated Freeze A LoRA (FFA-LoRA), to alleviate these challenges and further halve the communication cost of federated fine-tuning LLMs. The core idea of FFA-LoRA is to fix the randomly initialized non-zero matrices and only fine-tune the zero-initialized matrices. Compared to LoRA, FFA-LoRA is motivated by practical and theoretical benefits in privacy-preserved FL. Our experiments demonstrate that FFA-LoRA provides more consistent performance with better computational efficiency over vanilla LoRA in various FL tasks.",
+    "authors": [],
+    "id": "SP:039e2f7947887c835f20635421446a6854a5a503",
+    "references": [
+        {
+            "authors": [
+                "Martin Abadi",
+                "Andy Chu",
+                "Ian Goodfellow",
+                "H Brendan McMahan",
+                "Ilya Mironov",
+                "Kunal Talwar",
+                "Li Zhang"
+            ],
+            "title": "Deep learning with differential privacy",
+            "venue": "In Proceedings of the 2016 ACM SIGSAC conference on computer and communications security,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Armen Aghajanyan",
+                "Luke Zettlemoyer",
+                "Sonal Gupta"
+            ],
+            "title": "Intrinsic dimensionality explains the effectiveness of language model fine-tuning",
+            "venue": "arXiv preprint arXiv:2012.13255,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sara Babakniya",
+                "Ahmed Roushdy Elkordy",
+                "Yahya H Ezzeldin",
+                "Qingfeng Liu",
+                "Kee-Bong Song",
+                "Mostafa El-Khamy",
+                "Salman Avestimehr"
+            ],
+            "title": "Slora: Federated parameter efficient fine-tuning of language models",
+            "venue": "arXiv preprint arXiv:2308.06522,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Raef Bassily",
+                "Adam Smith",
+                "Abhradeep Thakurta"
+            ],
+            "title": "Private empirical risk minimization: Efficient algorithms and tight error bounds",
+            "venue": "In 2014 IEEE 55th annual symposium on foundations of computer science,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Rishi Bommasani",
+                "Drew A Hudson",
+                "Ehsan Adeli",
+                "Russ Altman",
+                "Simran Arora",
+                "Sydney von Arx",
+                "Michael S Bernstein",
+                "Jeannette Bohg",
+                "Antoine Bosselut",
+                "Emma Brunskill"
+            ],
+            "title": "On the opportunities and risks of foundation models",
+            "venue": "arXiv preprint arXiv:2108.07258,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nicholas Carlini",
+                "Florian Tramer",
+                "Eric Wallace",
+                "Matthew Jagielski",
+                "Ariel Herbert-Voss",
+                "Katherine Lee",
+                "Adam Roberts",
+                "Tom Brown",
+                "Dawn Song",
+                "Ulfar Erlingsson"
+            ],
+            "title": "Extracting training data from large language models",
+            "venue": "In 30th USENIX Security Symposium (USENIX Security",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Arnav Chavan",
+                "Zhuang Liu",
+                "Deepak Gupta",
+                "Eric Xing",
+                "Zhiqiang Shen"
+            ],
+            "title": "One-for-all: Generalized lora for parameter-efficient fine-tuning",
+            "venue": "arXiv preprint arXiv:2306.07967,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ning Ding",
+                "Yujia Qin",
+                "Guang Yang",
+                "Fuchao Wei",
+                "Zonghan Yang",
+                "Yusheng Su",
+                "Shengding Hu",
+                "Yulin Chen",
+                "Chi-Min Chan",
+                "Weize Chen"
+            ],
+            "title": "Parameter-efficient fine-tuning of large-scale pre-trained language models",
+            "venue": "Nature Machine Intelligence,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Danny Driess",
+                "Fei Xia",
+                "Mehdi SM Sajjadi",
+                "Corey Lynch",
+                "Aakanksha Chowdhery",
+                "Brian Ichter",
+                "Ayzaan Wahid",
+                "Jonathan Tompson",
+                "Quan Vuong",
+                "Tianhe Yu"
+            ],
+            "title": "Palm-e: An embodied multimodal language model",
+            "venue": "arXiv preprint arXiv:2303.03378,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Cynthia Dwork",
+                "Frank McSherry",
+                "Kobbi Nissim",
+                "Adam Smith"
+            ],
+            "title": "Calibrating noise to sensitivity in private data analysis",
+            "venue": "In Theory of Cryptography: Third Theory of Cryptography Conference,",
+            "year": 2006
+        },
+        {
+            "authors": [
+                "Junxian He",
+                "Chunting Zhou",
+                "Xuezhe Ma",
+                "Taylor Berg-Kirkpatrick",
+                "Graham Neubig"
+            ],
+            "title": "Towards a unified view of parameter-efficient transfer learning",
+            "venue": "arXiv preprint arXiv:2110.04366,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Neil Houlsby",
+                "Andrei Giurgiu",
+                "Stanislaw Jastrzebski",
+                "Bruna Morrone",
+                "Quentin De Laroussilhe",
+                "Andrea Gesmundo",
+                "Mona Attariyan",
+                "Sylvain Gelly"
+            ],
+            "title": "Parameter-efficient transfer learning for nlp",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jeremy Howard",
+                "Sebastian Ruder"
+            ],
+            "title": "Universal language model fine-tuning for text classification",
+            "venue": "arXiv preprint arXiv:1801.06146,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "Yelong Shen",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "Lora: Low-rank adaptation of large language models",
+            "venue": "arXiv preprint arXiv:2106.09685,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jie Huang",
+                "Hanyin Shao",
+                "Kevin Chen-Chuan Chang"
+            ],
+            "title": "Are large pre-trained language models leaking your personal information",
+            "venue": "In Findings of the Association for Computational Linguistics: EMNLP 2022,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peter Kairouz",
+                "H Brendan McMahan",
+                "Brendan Avent",
+                "Aur\u00e9lien Bellet",
+                "Mehdi Bennis",
+                "Arjun Nitin Bhagoji",
+                "Kallista Bonawitz",
+                "Zachary Charles",
+                "Graham Cormode",
+                "Rachel Cummings"
+            ],
+            "title": "Advances and open problems in federated learning",
+            "venue": "Foundations and Trends\u00ae in Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sai Praneeth Karimireddy",
+                "Satyen Kale",
+                "Mehryar Mohri",
+                "Sashank Reddi",
+                "Sebastian Stich",
+                "Ananda Theertha Suresh"
+            ],
+            "title": "Scaffold: Stochastic controlled averaging for federated learning",
+            "venue": "In International conference on machine learning,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mikhail Khodak",
+                "Renbo Tu",
+                "Tian Li",
+                "Liam Li",
+                "Maria-Florina F Balcan",
+                "Virginia Smith",
+                "Ameet Talwalkar"
+            ],
+            "title": "Federated hyperparameter tuning: Challenges, baselines, and connections to weightsharing",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Weirui Kuang",
+                "Bingchen Qian",
+                "Zitao Li",
+                "Daoyuan Chen",
+                "Dawei Gao",
+                "Xuchen Pan",
+                "Yuexiang Xie",
+                "Yaliang Li",
+                "Bolin Ding",
+                "Jingren Zhou"
+            ],
+            "title": "Federatedscope-llm: A comprehensive package for fine-tuning large language models in federated learning",
+            "venue": "arXiv preprint arXiv:2309.00363,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Brian Lester",
+                "Rami Al-Rfou",
+                "Noah Constant"
+            ],
+            "title": "The power of scale for parameter-efficient prompt tuning",
+            "venue": "arXiv preprint arXiv:2104.08691,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chunyuan Li",
+                "Heerad Farkhoor",
+                "Rosanne Liu",
+                "Jason Yosinski"
+            ],
+            "title": "Measuring the intrinsic dimension of objective landscapes",
+            "venue": "arXiv preprint arXiv:1804.08838,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tian Li",
+                "Anit Kumar Sahu",
+                "Ameet Talwalkar",
+                "Virginia Smith"
+            ],
+            "title": "Federated learning: Challenges, methods, and future directions",
+            "venue": "IEEE signal processing magazine,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiang Lisa Li",
+                "Percy Liang"
+            ],
+            "title": "Prefix-tuning: Optimizing continuous prompts for generation",
+            "venue": "arXiv preprint arXiv:2101.00190,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xuechen Li",
+                "Florian Tramer",
+                "Percy Liang",
+                "Tatsunori Hashimoto"
+            ],
+            "title": "Large language models can be strong differentially private learners",
+            "venue": "arXiv preprint arXiv:2110.05679,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xuechen Li",
+                "Daogao Liu",
+                "Tatsunori B Hashimoto",
+                "Huseyin A Inan",
+                "Janardhan Kulkarni",
+                "Yin-Tat Lee",
+                "Abhradeep Guha Thakurta"
+            ],
+            "title": "When does differentially private learning not suffer in high dimensions",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zitao Li",
+                "Bolin Ding",
+                "Ce Zhang",
+                "Ninghui Li",
+                "Jingren Zhou"
+            ],
+            "title": "Federated matrix factorization with privacy guarantee",
+            "venue": "Proceedings of the VLDB Endowment,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov"
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "year": 1907
+        },
+        {
+            "authors": [
+                "H Brendan McMahan",
+                "Daniel Ramage",
+                "Kunal Talwar",
+                "Li Zhang"
+            ],
+            "title": "Learning differentially private recurrent language models",
+            "venue": "arXiv preprint arXiv:1710.06963,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Chen Qu",
+                "Weize Kong",
+                "Liu Yang",
+                "Mingyang Zhang",
+                "Michael Bendersky",
+                "Marc Najork"
+            ],
+            "title": "Natural language understanding with privacy-preserving bert",
+            "venue": "In Proceedings of the 30th ACM International Conference on Information & Knowledge Management,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shuang Song",
+                "Kamalika Chaudhuri",
+                "Anand D Sarwate"
+            ],
+            "title": "Stochastic gradient descent with differentially private updates",
+            "venue": "IEEE global conference on signal and information processing,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Yuanyishu Tian",
+                "Yao Wan",
+                "Lingjuan Lyu",
+                "Dezhong Yao",
+                "Hai Jin",
+                "Lichao Sun"
+            ],
+            "title": "Fedbert: When federated learning meets pre-training",
+            "venue": "ACM Transactions on Intelligent Systems and Technology (TIST),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel R Bowman"
+            ],
+            "title": "Glue: A multi-task benchmark and analysis platform for natural language understanding",
+            "venue": "arXiv preprint arXiv:1804.07461,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Chenfei Wu",
+                "Shengming Yin",
+                "Weizhen Qi",
+                "Xiaodong Wang",
+                "Zecheng Tang",
+                "Nan Duan"
+            ],
+            "title": "Visual chatgpt: Talking, drawing and editing with visual foundation models",
+            "venue": "arXiv preprint arXiv:2303.04671,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nan Wu",
+                "Farhad Farokhi",
+                "David Smith",
+                "Mohamed Ali Kaafar"
+            ],
+            "title": "The value of collaboration in convex machine learning with differential privacy",
+            "venue": "IEEE Symposium on Security and Privacy (SP),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ashkan Yousefpour",
+                "Igor Shilov",
+                "Alexandre Sablayrolles",
+                "Davide Testuggine",
+                "Karthik Prasad",
+                "Mani Malek",
+                "John Nguyen",
+                "Sayan Ghosh",
+                "Akash Bharadwaj",
+                "Jessica Zhao"
+            ],
+            "title": "Opacus: User-friendly differential privacy library in pytorch",
+            "venue": "arXiv preprint arXiv:2109.12298,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Da Yu",
+                "Saurabh Naik",
+                "Arturs Backurs",
+                "Sivakanth Gopi",
+                "Huseyin A Inan",
+                "Gautam Kamath",
+                "Janardhan Kulkarni",
+                "Yin Tat Lee",
+                "Andre Manoel",
+                "Lukas Wutschitz"
+            ],
+            "title": "Differentially private fine-tuning of language models",
+            "venue": "arXiv preprint arXiv:2110.06500,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Da Yu",
+                "Huishuai Zhang",
+                "Wei Chen",
+                "Jian Yin",
+                "Tie-Yan Liu"
+            ],
+            "title": "Large scale private learning via lowrank reparametrization",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aohan Zeng",
+                "Xiao Liu",
+                "Zhengxiao Du",
+                "Zihan Wang",
+                "Hanyu Lai",
+                "Ming Ding",
+                "Zhuoyi Yang",
+                "Yifan Xu",
+                "Wendi Zheng",
+                "Xiao Xia"
+            ],
+            "title": "Glm-130b: An open bilingual pre-trained model",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models",
+            "venue": "arXiv preprint arXiv:2205.01068,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuo Zhang",
+                "Yuanhang Yang",
+                "Yong Dai",
+                "Lizhen Qu",
+                "Zenglin Xu"
+            ],
+            "title": "When federated learning meets pre-trained language models\u2019 parameter-efficient tuning methods",
+            "venue": "arXiv preprint arXiv:2212.10025,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fan Zhou",
+                "Guojing Cong"
+            ],
+            "title": "On the convergence properties of a k-step averaging stochastic gradient descent algorithm for nonconvex optimization",
+            "venue": "arXiv preprint arXiv:1708.01012,",
+            "year": 2017
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Recent years have witnessed tremendous success in the development of large language models (LLMs) (Touvron et al., 2023; OpenAI, 2023; Zhang et al., 2022a; Zeng et al., 2022). The applications of LLMs range from a versatile chatbot for different writing tasks (OpenAI) to multi-modal systems (Driess et al., 2023; Wu et al., 2023; Bommasani et al., 2021). Besides the commercialized products based on general-purpose LLMs, people can also build their customized LLMs by utilizing their task-specific data to fine-tune pre-trained LLMs (Howard & Ruder, 2018). Since modern LLMs usually contain billions of parameters, fine-tuning on all parameters has prohibitively high computational costs. As a remedy, parameter efficient fine-tuning (PEFT) approaches (Ding et al., 2023), such as Low-Rank Adaptation (LoRA) (Hu et al., 2021) have been developed and commonly adapted in many downstream tasks. PEFT methods freeze the majority of parameters in pre-trained LLMs, and perform update on a small subset of parameters. Compared to full model fine-tuning, these approaches usually offer on-par or even better performance while significantly improving computational efficiency.\nIn this paper, we focus on LoRA for its good performance and versatility for a wide spectrum of tasks with many variations. However, LoRA still requires sufficient training data to achieve significant improvement over the raw model. The data-limited parties can unite with others and adopt federated learning (FL) (Li et al., 2020) as the computation framework to fine-tune the model collaboratively. The parameter-efficient nature of LoRA is welcomed in FL due to its low communication costs and relatively low local computational burdens. Furthermore, if the data parties in FL (usually known as clients in FL) want to provably prevent local data leaking from their shared information in FL, differential privacy (DP) (Dwork et al., 2006) techniques can be further employed to provide privacy guarantees.\nWhile there are many existing research results exploring (privacy-preserved) PEFT in the central setting, the exploration on how to conduct (privacy-preserved) LoRA in the FL setting is still a premature. Directly migrating LoRA methods from the central setting and combining it with FedAvg\nmay not achieve the best performance since other sources of interference in the (privacy-preserving) FL setting, such as noisy gradients and non-iid distribution of data, can play important roles in the optimization process. In real-world LLM applications with privacy concerns, such as federated finetuning (Babakniya et al., 2023) or fine-tuning under differential privacy guarantees (Li et al., 2022), the performance of LoRA often suffers deterioration.\nContributions. In this paper, we identify three discordances in applying LoRA in the privacypreserved FL setting. The first is presented as a mismatched term brought by the joint local updates and separate global aggregations on the two sets of low-rank matrices of LoRA. The second discordance is that if we employ DP-SGD as the differentially private optimizer for training, the injected noise can be amplified by the locally \u201csemi-quadratic\u201d nature of LoRA. Lastly, the choice of one hyper-parameter of LoRA, the scaling factor \u03b1, can significantly affect the convergence and performance of the final model, no matter enforcing DP or not.\nTo resolve these discordances, we propose our solution named Federated Freeze A LoRA (FFA-LoRA). FFA-LoRA freezes the non-zero initialized low-rank matrices and only perform update and aggregation on the zero-initialized matrices, only half as many parameters as LoRA. Beside FFA-LoRA\u2019s obvious effect of saving half of the communication and computational cost in FL, we also provide intuitions on why it can alleviate the three aforementioned discordances. We conduct comprehensive experiments to demonstrate the advantages of FFA-LoRA over LoRA in privacypreserving FL, across different tasks, hyper-parameters and privacy protection levels.\nWe summarize our contributions as follows:\n\u2022 We explore the conditions in privacy-preserved FL that are discordant with LoRA, and provide explanations on the potential reasons of this performance degradation.\n\u2022 We propose a new method, FFA-LoRA, which tailors LoRA to increase its performance in these undesirable but unavoidable conditions in privacy-preserved FL.\n\u2022 We conduct extensive experiments to verify that FFA-LoRA can consistently outperform LoRA."
+        },
+        {
+            "heading": "2 BACKGROUND AND RELATED WORKS",
+            "text": "Parameter efficient fine-tuning. The ever-increasing network size of LLMs makes them prohibitively expensive, if possible at all, to fine-tune directly. To mitigate this problem, parameterefficient fine-tuning (PEFT) methods have been proposed. These methods introduce a small number of additional trainable parameters \u0398 to improve model performance and keep most of the pre-trained parameters \u03a6 frozen. The task-specific increment \u2206\u03a6 is then encoded into \u2206\u0398 with much smaller dimensions. Houlsby et al. (2019) added additional trainable neural modules named adapters to each layer of the network. Alternatively, prefix-tuning(Li & Liang, 2021) and prompt-tuning(Lester et al., 2021) modify the network by concatenating additional trainable dimensions to input or hidden layers of the network. Another series of works (Hu et al., 2021; Yu et al., 2021b) proposed LoRA and RGP, using low-rank matrices to approximate or re-parameterize the pre-trained weight matrices. LoRA is arguably the most popular approach among PEFT methods, it only requires tuning less than 1% of the parameters in the full fine-tune approach but achieves comparable performance in a wide range of downstream tasks. There are also works (He et al., 2021; Chavan et al., 2023) that seek to provide a generalized method that unifies these PEFT methods.\nFederated fine-tuning with LLM. Although fine-tuned LLMs can become backbones for applications in different areas, the fine-tuning process still favors large-scale, domain-specific data. However, such domain-specific data is typically possessed by multiple parties, with each party\u2019s dataset only containing inadequate data to fine-tune models by itself. Furthermore, these parties are often prohibited from sharing such data directly with other entities. A common solution for this dilemma is federated learning (Kairouz et al., 2021), which allows a set of agents to fine-tune LLMs efficiently by sharing their local model updates without explicitly sharing their respective data. Tian et al. (2022) proposed FedBERT and performed federated full fine-tuning on the BERT model. Different from traditional machine learning models, LLM\u2019s tremendous model size can consume significant amount of resources for cross-party communication and require immense computation resources for local training. Many research solutions rely on the combination of PEFT with FL. There have been multiple studies of PEFT in FL in the recent years, Zhang et al. (2022b) considers PEFT in the federated setting. Recently, (Kuang et al., 2023) proposed FS-LLM, a federated framework for\nfederated fine-tuning LLMs. It has been pointed out that data heterogeneity in FL is a challenge for PEFT algorithm (Kairouz et al., 2021; Babakniya et al., 2023).\nPEFT with differential privacy. Although LLMs are powerful tools and offer great performance thanks to their ability to extract rich features with the transformer structure and large number of parameters, it is also well known that LLMs with large number of parameters can leak critical information contained in the training dataset (Carlini et al., 2021; Huang et al., 2022). A popular privacy notion that can provide theoretical guarantees against training data leakage from the model is differential privacy (DP) (Dwork et al., 2006).\nDefinition 1 ((\u03f5, \u03b4)-DP ). A randomized algorithm A is (\u03f5, \u03b4)-differentially private if for any two neighboring datasets D and D\u2032, which differ in exactly a single record, and for all possible subsets S \u2282 O of possible outputs of A: Pr[A(D) \u2208 S] \u2264 e\u03f5Pr[A(D\u2032) \u2208 S] + \u03b4.\nIntuitively, DP ensures that any single record cannot significantly affect the distribution of the output. With such indistinguishable output distributions, any adversary can only gain limited additional knowledge about whether a specific record is in the input data. The level of privacy is denoted by the privacy parameters (\u03f5, \u03b4), a smaller choice of (\u03f5, \u03b4) means a stronger privacy protection guarantee.\nMachine learning with DP: DP-SGD. A classic mechanism used to ensure the published model differentially private is DP-SGD (Song et al., 2013; Abadi et al., 2016; Bassily et al., 2014). It requires a DP optimizer to privatize gradients before using them to update the model. Compared with the vanilla stochastic gradient descent (SGD) algorithm, DP-SGD has two additional operations in each iteration. It first clips per-sample gradients with a norm constraint C to limit the maximum influence of any sample. Then, it adds a Gaussian noise z \u223c N (0, C2\u03c32Ip) to the sum of clipped gradients in a batch B. Namely, g\u0304 = (\u2211 i\u2208B Clip(\u2207fi, C) + z ) /|B|. Finally, this noisy sum of clipped gradients g\u0304 is used to update the model. The scalar \u03c3 is decided by privacy composition rules (Abadi et al., 2016) given privacy parameter \u03f5, \u03b4, total number of iteration T and sampling rate q = |B|/N , where N is the total number of samples in the training set. In the central setting, where a single trainer possesses all data, existing studies on fine-tuning LLM with DP guarantees mainly adopt DP-SGD as the optimization algorithm. Yu et al. (2021a) studied the effect of parameter-efficient algorithms in private fine-tuning. Li et al. (2021a; 2022) found that although the number of trainable parameters has been significantly reduced for PEFT, the performance of private fine-tuning is not significantly better, which might be contrary to traditional beliefs (Bassily et al., 2014).\nDifferent DP settings in FL. Generally, there are two different levels of differential privacy protection in federated learning, depending on whether the federated aggregation server is trusted by the clients or not. The first setting assumes that the server is trusted, the model updates are shared to the server without privacy concerns; this privacy guarantee is on the final output model achieved by randomization in the global aggregated update on the server side (McMahan et al., 2017). A stronger privacy setting is to forgo the trustworthy server assumption and ensure the shared update from each client is already differentially private (Li et al., 2021b; Wu et al., 2020; Qu et al., 2021).\nIn this paper, we adopt the stronger privacy setting, ensuring that any shared information (i.e., updates of model parameters) from local clients to server satisfies DP. By DP\u2019s properties, including parallel composition, sequential composition and resistance to post-processing (Dwork et al., 2006; Abadi et al., 2016; Li et al., 2021b), the final model automatically satisfies DP globally."
+        },
+        {
+            "heading": "3 LORA IN PRIVACY-PRESERVING FL",
+            "text": "In this paper, we focus on LoRA, one of the most promising PEFT methods in the central setting, LoRA has been shown to exhibit better performance than other PEFT methods in the federated setting Kuang et al. (2023). The core idea of LoRA is to constrain the weight update on the model by a low rank decomposition,\nW0 +\u2206W = W0 +BA. (1)\nInstead of training the entire weight matrix W0 \u2208 Rd\u00d7k composing \u03a6, the updates are performed on A \u2208 Rr\u00d7k and B \u2208 Rd\u00d7r composing \u0398. With r << min(d, k), the number of trainable parameters |\u0398| is reduced by an order of O(r/min(d, k)) compared to full fine-tune with size |\u03a6|. In order to recover the performance of raw model at the start of training, and keep the weights trainable through back-propagation, A uses random Gaussian initialization, while B is set to zero.\nThe product matrix is additionally scaled by a factor \u03b1/r. \u03b1 also has influence on the performance of LoRA and is required to be tuned.\nDiscordance 1: Data heterogeneity and model-averaging introduce interference to LoRA. The performance of vanilla LoRA is negatively affected when faced with FL tasks with data heterogeneity (Babakniya et al., 2023). Notice that the loss for back-propagation is computed on the composition of raw model parameters and the product of A and B (as Equation 1), and LoRA performs optimization over A and B jointly on client side. This implies that the problem is approximately optimized as a locally semi-quadratic problem (suppose the model is locally linear when learning rate is small). However, when the server performs aggregation on the server side, A and B are averaged separately following vanilla FedAvg. The product of the averaged A and B involves additional terms that may neither benefit the optimization on the clients\u2019 loss or FL global loss.\nFor example, consider a FL task involving two clients with datasets of a same size. If clients locally fine-tune on full parameters and the server aggregates with FedAvg, the new model parameters can be represented as the following:\nW+ = 1\n2 (W1 +W2) = W0 +\n1 2 (\u2206W1 +\u2206W2), where Wi = W0 +\u2206Wi, i = 1, 2. (2)\nAn implicit assumption ensuring the global convergence of FL algorithms is \u2206Wglobal \u2248 12 (\u2206W1+ \u2206W2), where \u2206Wglobal is the update assuming the server can access all clients\u2019 dataset directly. When the clients use LoRA locally, we can also consider \u2206Wi \u2248 BiAi. However, after using FedAvg to aggregate the trainable low-rank matrices, the server produces\nW\u0303+ = W0 + 1\n2 (B1 +B2)\u00d7\n1\n2 (A1 +A2)\ufe38 \ufe37\ufe37 \ufe38\nParameters after aggregation with LoRA + FedAvg\n\u0338= W0 + 1\n2 (B1A1 +B2A2) = W +\ufe38 \ufe37\ufe37 \ufe38 Ideal parameters following model-averaging . (3)\nThus, it is possible for two clients in FL to converge to two different combinations of adaptation matrices Bi,Ai, yet when an aggregation such as FedAvg is applied in server, a linear combination does not necessarily provide good performance for the specific task. The difference between 12 (B1+ B2) \u00d7 12 (A1 +A2) and 1 2 (\u2206W1 +\u2206W2) may become more significant when i) number of local update steps between aggregations is large and ii) the local datasets are different across clients.\nThis echoes with the \u201cclient-drift\u201d phenomenon discussed by Karimireddy et al. (2020). \u201cClientdrift\u201d happens in heterogeneous FL when there is a difference between the average of local loss optima of clients and the optimum of the global loss, i.e. \u2211 i \u0398 \u2217 i \u0338= \u0398\u2217global. It is caused by the local gradient dissimilarity among clients and slows down convergence. Since the parameters in LoRA are locally quadratic in construction, they are more prone to \u201cclient-drift\u201d than a locally linear task such as full-fine-tuning.\nDiscordance 2: The noise with DP-SGD can be amplified with LoRA. Although LoRA and DPSGD are the most popular methods in PEFT and privacy-preserved machine learning respectively, directly combining them together may not be the optimal choice. The discordance again comes from the semi-quadratic structure of LoRA. Consider the parameters after a single DP-SGD update. Even if no norm clipping operation is triggered, the parameters are updated as\nW0 + (B + \u03beB)(A+ \u03beA) = W0 +BA+ \u03beBA+B\u03beA + \u03beB\u03beA,\nwhere \u03beA and \u03beB consist of the Gaussian noises from DP-SGD. Three terms contain noise and the third term, \u03beB\u03beA, no longer follows a Gaussian distribution. This shows that noise is cascaded after the multiplication in LoRA, introducing additional difficulties for convergence in fine-tuning.\nWe provide synthetic verification with Figure 1. In this example, W \u2208 R1024\u00d71024 and rank r = 8. We plot the Frobenius norm of the noise matrices \u03beB\u03beA and \u03beW for LoRA and full fine-tuning respectively. Due to the multiplication in LoRA by construction, the norm of noise scales quadraticly with \u03c3, and is significantly worse that full fine-tune when \u03c3 exceeds 0.5.\nFor an FL algorithm with 1000 communication rounds, 10 local update steps and a dataset such as SST-2, using batch-size B = 200, a DP guarantee with \u03f5 = 6, \u03b4 = 1e\u2212 5 will require a noise factor of \u03c3 = 0.99. In this case, LoRA will produce approximately 3 times more noise compared to full model fine-tuning This could be an explanation to why LoRA does not significantly outperform full fine-tuning despite having less parameters, as reported in (Yu et al., 2021a; Li et al., 2022; Babakniya et al., 2023).\nDiscordance 3: LoRA requires careful tuning on \u03b1. In terms of the optimal scaling factor \u03b1, empirical results (Kuang et al., 2023) have demonstrated that in many more complex tasks, a larger \u03b1 shows higher performance after fine-tuning, yet as \u03b1 increases, the algorithm becomes more and more unstable with much higher variance across different runs. According to Zhou & Cong (2017), the convergence speed for FedAvg-like algorithms is closely related to the objective function\u2019s smoothness factor L. As the scaling factor \u03b1 increases, the problem becomes less smooth by construction, slowing down convergence.\nFurthermore, with increase of the scaling factor \u03b1, the impact of noise on the model performance gets worse. This could be explained by the fact that as \u03b1 increases, the update \u2206A becomes less significant compared to\nA0. Since B is initialized at 0, the gradient information in \u2206B becomes more important in comparison. Yet the gradient clipping and privacy engine sees the update on both A and B equally. Due to the imbalanced distribution of information in gradients, the algorithm suffers from either excessive information loss or excessive noise, a trade-off between increasing \u03b1 for better performance and decreasing \u03b1 to prevent noise-induced performance deterioration.\nWhile searching for a good hyper-parameter \u03b1 is important, hyper-parameter optimization (HPO) is usually costly (Khodak et al., 2021). Adding in \u03b1 for HPO means extra communication and computation costs proportional to the search space size of the \u03b1.\n4 A SIMPLE RECEIPT: FFA-LORA In the previous section, we discussed the discordance between LoRA and privacy-preserved FL. Motivated by theory, we propose a simple modification to LoRA, Federated Freeze-A Low Rank Adapters, or FFA-LoRA for short. FFA-LoRA modifies the training process of LoRA by setting matrix A to fixed after initialization. That is, for a weight matrix W \u2208 Rd\u00d7k, we consider the model update to be projected to a low-rank matrix such that\nW = W0 +\u2206W = W0 +BA0, with B \u2208 Rd\u00d7r,A0 \u2208 Rr\u00d7k. W0 is initialized as the pre-trained weight, and A0 follows a random Gaussian initialization. Following vanilla LoRA, we start with B0 = 0 so that the pre-trained model is recovered at the start of fine-tuning. The key difference is that we consider B trainable and keep both W0 and A0 frozen.\nWe note that our approach is somewhat similar to the works regarding the intrinsic dimension of deep models by (Li et al., 2018; Aghajanyan et al., 2020), however these works emphasis on the existence of low intrinsic dimensions in deep models and the generalization properties. We summarize the advantages of FFA-LoRA as the following.\nFFA-LoRA has no extra interference with data heterogeneity and model-averaging. We reconsider the federated aggregation example in Section 3. In the heterogeneous setting, each client will generate a different \u2206Wi. Since \u2206Wi \u2248 BiA0 in FFA-LoRA, the update is more compatible with FedAvg and DP-SGD than LoRA. Similar to Equation 3, we write the the aggregation step of a two-client system for FFA-LoRA:\nW\u0303+ = W0 + 1\n2 (B1 +B2)\u00d7A0 = W0 +\n1 2 (B1A0 +B2A0) = W +. (4)\nUnlike LoRA in Equation 3, FFA-LoRA does not have the aggregation error term caused by low rank adaptation.\nFFA-LoRA works better with noise from DP-SGD. Because FFA-LoRA no longer employs the locally semi-quadratic structure as LoRA, the noise in DP would not be amplified. When no norm clipping operation is triggered, the parameters are updated as W0 + (B + \u03beB)A0 = W0 +BA+ \u03beBA. This is because the trainable parameters are only the zero-initialized matrices B. The noise introduced by DP-SGD is only in the term \u03beBA but without the \u03beB\u03beB term, making FFA-LoRA less susceptible to noise than LoRA.\nFFA-LoRA does not rely on \u03b1, and is equivalent to LoRA with \u03b1 = \u221e. In our previous discussion of LoRA\u2019s reliance on \u03b1 in some tasks, this reliance on \u03b1 is circumvented in FFA-LoRA. We can view the set of trainable parameters \u0398 as a dynamical system, a time-dependent series {\u0398t}t\u2208[T ] generated by the the FFA-LoRA algorithm. We present the following theorem to illustrate the connection between \u03b1 and \u03b7 in FFA-LoRA. Theorem 1. For any function f : X \u2192 R, where X is a Euclidean space of certain dimension, and discrete time dynamical system {\u0398t}t\u2208[T ] defined by the gradient update steps with the following form, \u0398t+1 = \u0398t \u2212 \u03b7 dd\u0398f(\u03b1\u0398)|\u0398=\u0398t . With \u03980 = 0, scaling factor \u03b1 and gradient descent stepsize \u03b7. given a pair of \u03b1, \u03b7 which generate the sequence {\u03b1\u0398t}, with t \u2208 [T ], then for any \u03b1\u2032, there exists \u03b7\u2032 such that the sequence {\u03b1\u2032\u0398\u2032t} generated by \u03b1\u2032 and \u03b7\u2032 is the same as {\u03b1\u0398t}.\nWe refer to the appendix for proof of Thm. 1. It is trivial to show that FFA-LoRA is an algorithm that fits the description above, therefore it is not necessary to introduce the scaling factor when finetuning with FFA-LoRA. However, the same does not apply to LoRA. For the case of LoRA, both A and B are trainable by construction, however, A0 is initialized with Gaussian distribution, away from 0. For LoRA, when \u03b1 is different, the initialization point is different, if we want two selection of \u03b1 to have the same performance, we need to also change the variance of A\u2019s initialization.\nFor vanilla LoRA, as discussed in Section 3, as \u03b1 increases and \u03b7 decreases, the update on A become less significant compared to A0. As \u03b1 \u2192 \u221e, there is almost zero change to be made on A, i.e. A \u223c A0. Yet the update on B is just as significant, making the dynamics of LoRA infinitely close to FFA-LoRA when \u03b1 approaches infinity.\nFFA-LoRA saves computation and communication. Since A0 is fixed after initialization in FFA-LoRA, the total number of trainable parameters in the model is effectively halved compared to LoRA. This leads to the most straightforward advantage in the efficiency of computation and communication. Meanwhile, since we get same performance for a wide range of \u03b1 in FFA-LoRA as long as the learning rate is scaled accordingly, we can fix \u03b1 and only search for other hyperparameters such as learning rate in HPO.\nIn general, not only does FFA-LoRA provide higher efficiency compared to LoRA, FFA-LoRA is also able to preserve all the benefits of LoRA, while avoiding the shortcomings of LoRA as mentioned previously in Section 3."
+        },
+        {
+            "heading": "5 EXPERIMENTS",
+            "text": "In this section, we evaluate and compare the performance of FFA-LoRA with LoRA on two LMs, RoBERTa (Liu et al., 2019) and LLaMA (Touvron et al., 2023). We show that our approach consistently perform better for different types of tasks. We first evaluate the language understanding tasks from the GLUE benchmark(Wang et al., 2018) including MNLI, SST2, QNLI and QQP using the RoBERTa model. For language generation tasks, we use the LLaMA model with experiment settings provided by (Kuang et al., 2023) as benchmark and use the GSM-8K dataset for evaluation. All experiments were run using NVIDIA Tesla A100 GPUs with half-precision enabled for efficiency.\nOur experiments are organized as follows: We provide the overall performance comparison of FFA-LoRA and LoRA in Section 5.1 (Table 1, 2). Questions regarding the critical factors of convergence are answered in Section 5.2 (Table 3, 4, 5). The evaluation on language generation tasks are provided in Section 5.3.\nWe note that our results do not exactly match the centralized PEFT results presented in (Hu et al., 2021) and (Yu et al., 2021a) due to the additional introduction of federated communication/aggregation and data heterogeneity in our setup. Our experiments with LoRA is able to match LoRA\u2019s performance reported in (Hu et al., 2021) in the centralized setting.\n5.1 PERFORMANCE OF FFA-LORA AND LORA IN LANGUAGE UNDERSTANDING TASKS\nOur experiments on language understanding tasks are based on the RoBERTa model. RoBERTaLarge (355M) (Liu et al., 2019) is a popular choice for many NLP tasks and has been widely adopted in many research studies for its robustness and versatility. For our experiments with RoBERTa, we start from a pre-trained model available from the HuggingFace library.\nAll our experiments with LoRA and FFA-LoRA are run in a 3-client federated setting. Data on clients are randomly split among all clients sampled to fit certain proportions to ensure\nstrong data heterogeneity. For the heterogeneous setting, we split data based on their labels, we use [0.15, 0.85], [0.85, 0.15], [0.5, 0.5] data split for binary classification tasks and [0.6, 0.2, 0.2], [0.2, 0.6, 0.2], [0.2, 0.2, 0.6] for three-class classification tasks. In order to make a fair comparison, we keep the batch-size B = 200 and total number of communication round to 1000, the local update steps to 10, the same across all experiments. All experiments use the same SGD (DP-SGD for the experiments with privacy guarantees) optimizer, all the transformer-related hyper-parameters such as sequence length lseq = 128, are kept to be consistent with previous studies such as (Hu et al., 2021). The classification head of the LM is frozen after initialization, and we add adapters to both the attention layers and the feed-forward layers and choose a scaling factor \u03b1 = 8 for LoRA, following the default setting in (Yu et al., 2021a). The same scaling factor \u03b1 is applied to FFA-LoRA for the sake of consistency, although it is not needed as stated in Section 4.\nExperiments with differential privacy guarantees. We report the best result from a set of experiments run with learning rate \u03b7 \u2208 {0.01, 0.02, 0.05, 0.1} for LoRA and \u03b7 \u2208 {0.1, 0.2, 0.5, 1} for FFA-LoRA. The batch-size and total number of update steps are kept to be the same across different tasks. We fix the rank r = 8 for both algorithms. In terms of privacy parameters, we use \u03b4 = 1e\u22125 and three different choices of privacy budget \u03f5 \u2208 {6, 3, 1}. Given the sampling rate, total step number and privacy requirement \u03f5, \u03b4, we use the privacy accountant from Opacus (Yousefpour et al., 2021) to calculate the noise scale \u03c3 for all our experiments. The optimal clipping threshold is determined from a grid search of C \u2208 {2, 5, 10}. The results are presented in Table 1. The introduction of DP significantly degrades algorithm performance across every task for both FFA-LoRA and LoRA, yet FFA-LoRA offers better performance with and without privacy. In many tasks, the performance gap widens as the privacy budget decreases, consistent with our motivation.\nNon-private experiments with different ranks. We then evaluate the performance of FFA-LoRA and LoRA in language understanding without the consideration of privacy. Similar to previous experiments, we keep the batch-size and total number of update steps to be the same across different tasks. We run the experiments with rank r \u2208 {2, 4, 8, 16} on four tasks, and report the best accuracy from a set of learning rates.\nThe results are shown in Table 2. Based on the results, we can see that FFA-LoRA has better performance in the majority of tasks, regardless of the trainable parameter number. In fact, due to the reduction of trainable parameters in FFA-LoRA, we should compare between FFA-LoRA and LoRA with the same parameter budget (i.e. compare FFA-LoRA r = 16 with LoRA r = 8). In this case, the advantage of FFA-LoRA over LoRA becomes more apparent."
+        },
+        {
+            "heading": "5.2 ABLATION STUDY",
+            "text": "Although FFA-LoRA is shown to be effective under federated settings and with private guarantees, previous works have also provided studies on the impact of the other hyper-parameters in LoRA algorithm. In order to provide a more comprehensive evaluation of the three discordances discussed in Section 3, we still need to answer the following questions:\n\u2022 How does data heterogeneity affect performance of FFA-LoRA and LoRA?\n\u2022 What is the relationship between adapter parameter budget and privacy budget of DP-SGD?\n\u2022 How do FFA-LoRA and LoRA behave when we choose different \u03b1 for scaling?\nWe answer the questions above with the following experiments. For the sake of conciseness, all experiments in this section are conducted on the QNLI dataset with r = 8 unless otherwise stated.\nHow does data heterogeneity affect performance of FFA-LoRA and LoRA? Our discussion in Section 3 stated that LoRA is not compatible with FedAvg when there is strong heterogeneity among clients. For verification, we consider the four tasks with both homogeneous and heterogeneous data, and provide the experiment results below.\nIt is evident that FFA-LoRA behaves better than LoRA in both i.i.d. and non-i.i.d. settings.\nThe relationship between adapter parameter budget and privacy budget of DP-SGD. One key hyper-parameter for LoRA is the rank of adaptation matrices. The intrinsic low rank update is crucial for all PEFT algorithms. From existing studies on LoRA, it is understood that although LoRA is able to learn meaningful features from as low as r = 1, an algorithm with too parameter size too small is often far from optimal. On the other hand, if the rank of LoRA is too large, the algorithm risk in over-fitting since the fine-tuning datasets are generally not large enough.\nAlthough there have been multiple studies on the performance of LoRA with DP, the relationship between rank r and privacy budget \u03f5 is unclear. We present the experiments below and compare the impact of rank r on FFA-LoRA versus LoRA on the QNLI dataset. We use a privacy budget of \u03f5 \u2208 {6, 3, 1} with rank r \u2208 {2, 4, 8, 16}. The results are shown in Table 4. Apart from the expected performance degradation as the privacy budget decreases, an interesting observation is that optimal rank differs when faced with different levels of differential privacy. From the subspace similarity discussions in LoRA, we can see that increasing rank does not necessarily increase information from the gradients. However, increase of parameter number implies a bigger amount of noise in added in each update step. In our experiments, we find that as the privacy requirements gets stronger, the performance difference of LoRA between different rank r becomes more and more apparent, yet for FFA-LoRA, the algorithm is still able to output relatively stable performance on a wide range of rank selections.\nHow do FFA-LoRA and LoRA behave when we choose different \u03b1 for scaling? As mentioned previously, LoRA requires a good scaling factor \u03b1 in order to achieve a good performance. It has been shown in proof of Thm. 1 that for FFA-LoRA with any pair of (\u03b1, \u03b7), for any other choice of \u03b1\u2032, we can choose \u03b7\u2032 = \u03b1\u03b1\u2032\n2\u03b7 to get the exact same update. The scaling factor does not affect the overall performance of the algorithm.\nWe conducted experiments with a selection of different \u03b1, we use \u03b1 = 8, r = 8 as baseline, and choose learning rate \u03b7 according to the learning rate scaling discussed above. Our results are shown in Table 5. For FFA-LoRA, the performance using \u03b7 that scales with \u03b1 is consistent across the\nwide range of \u03b1. However for LoRA, the same relationship does not hold, and the performance of LoRA degrades drastically when \u03b1 changes. Additional grid-search shows that LoRA still is able to converge with high accuracy with adequate learning rate, but finding an optimal learning rate given \u03b1 is in general arduous. We note that the optimal \u03b7 for \u03b1 = 256 is the same for both FFA-LoRA and LoRA, consistent with our discussion in Section 4."
+        },
+        {
+            "heading": "5.3 EXTENDING TO LANGUAGE GENERATION TASKS",
+            "text": "We next consider the task of Natural Language Generation (NLG) with LLaMA-7B, a more sophisticated model with significantly more parameters. Similar to RoBERTa, LLaMA is also widely used and offers competitive results for its network size. We evaluate both LoRA and FFA-LoRA with the GSM-8K dataset using the same set of hyper-parameters listed by (Kuang et al., 2023). Our method has achieved an accuracy of 17.12% on the task of GSM-8K, significantly better than the best performance of LoRA at 15.68% (15.31% reported in (Kuang et al., 2023)). It is also the best results on fine-tuning LLaMA with GSM-8K to the best of our knowledge. We sample some generated answers of LoRA and FFA-LoRA in Table 6 in Appendix A.2. The answers generated by FFA-LoRA demonstrate better performance on longer questions with more complex contexts."
+        },
+        {
+            "heading": "6 CONCLUSION",
+            "text": "In this paper, we discussed how to improve LoRA in the context of privacy-preserving federated learning. An in-depth analysis was provided on LoRA\u2019s deficient performance in FL and with DP guarantees. We proposed a modification to LoRA named FFA-LoRA, which is theoretically motivated, empirically verified and computationally more efficient. Beyond the scope of this paper, FFA-LoRA could motivate more interesting problems related to PEFT for future study. For instance, we provide some preliminary results in Appendix A.3 to motivate future studies on algorithms that are even more parameter-efficient for federated LLM fine-tuning. From a theoretical perspective, FFA-LoRA could be related to random kernel methods due to its pseudo-linear nature."
+        },
+        {
+            "heading": "A APPENDIX",
+            "text": "A.1 PROOF FOR THEOREM 1\nProof. Let us first consider \u03980 = 0, and \u0398 is updated using gradient descent. When the problem is in continuous time (gradient flow) and \u03980 = 0, then \u03b1 is in fact trivial, it doesn\u2019t matter to the problem since the PDE is homogeneous.\nHowever in discrete time, the dynamics of the problem is dependent on the learning rate \u03b7, then at any given iteration, suppose for two dynamical systems that satisfy \u03b1\u0398 = \u03b1\u2032\u0398\u2032 in the current iteration, we proof that for the next iteration, there exist \u03b7\u2032 such that \u03b1\u0398+ = \u03b1\u2032\u0398\u2032+. Since we have \u03980 = \u0398 \u2032 0 at initialization, the theorem is proved by induction. Suppose for the new scaling factor \u03b1\u2032 = k\u03b1, where k is a constant, then,\n\u0398\u2032 = \u0398/k, d\nd\u0398\u2032 f(\u03b1\u2032\u0398\u2032) = k\nd\nd\u0398 f(\u03b1\u0398),\nsince\n\u0398\u2032+ = \u0398\u2032 \u2212 \u03b7\u2032 d d\u0398\u2032 f(\u03b1\u2032\u0398\u2032),\n\u0398+ = \u0398\u2212 \u03b7 d d\u0398 f(\u03b1\u0398)\nThen we can find \u03b7\u2032 = \u03b7/k2 such that for the next iteration, \u03b1\u0398+ = \u03b1\u2032\u0398\u2032+.\nFor this optimization problem, the introduction of \u03b1 is trivial and can be replaced with appropriate choices of learning rate \u03b7.\nA.2 LLAMA EXP EXAMPLES AND DETAILS\nWe sample some generated answers from the log of our GSM8K experiments in Table 6, with LLaMA and LoRA or FFA-LoRA.\nA.3 A MOTIVATION FOR FURTHER REDUCING TRAINABLE PARAMETERS\nOur approach named FFA-LoRA in Section 4 exhibits a number of theoretical benefits compared to LoRA, additionally, it also performs better and is more consistent as shown in Section 5. We can conclude that for PEFT with adapters, by freezing randomly initialized parameters and only train on the set of parameters that were initialized at 0 is a valid and practical approach. This guided us to get an even more aggressive construction of adapters, which we refer to as QVP Adapters, formulated as below.\nFor a weight matrix W \u2208 Rd\u00d7k, we consider the model update to be projected to a low-rank matrix such that\nW = W0 +\u2206W = W0 +Q0V P0,\nwhere Q0 \u2208 Rd\u00d7r,V \u2208 Rr\u00d7r,P0 \u2208 Rr\u00d7k. Similar to FFA-LoRA, W0 is the pre-trained weight, and P0,Q0 follows a random Gaussian initialization. We consider V trainable and start with V0 = 0, W0,Q0,P0 are kept frozen throughout the training process. We provide the performance of QVP adapters below in Table 7, and compare with LoRA and FFA-LoRA.\nFor the experiments where these algorithms have the same parameter budget (r = 64 for QVP versus r = 4 for FFA-LoRA, etc.), QVP do not perform as good as the previously mentioned algorithms. But a unique advantage offered by QVP adapters is that it is possible to even further reduce the number of trainable parameters, and the algorithm is still able to learn meaningful features from data. The same is impossible for LoRA and FFA-LoRA since the rank r can not be smaller than 1 for these methods. Therefore, QVP is potentially useful in the case where the parameter budget is extremely constrained, such as local private training in mobile devices."
+        }
+    ],
+    "year": 2023
+}

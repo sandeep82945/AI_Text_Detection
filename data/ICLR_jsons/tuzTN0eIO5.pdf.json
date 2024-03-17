@@ -1,1 +1,415 @@
-null
+{
+    "abstractText": "Pipeline parallelism is one of the key components for large-scale distributed training, yet its efficiency suffers from pipeline bubbles which were deemed inevitable. In this work, we introduce a scheduling strategy that, to our knowledge, is the first to successfully achieve zero pipeline bubbles under synchronous training semantics. The key idea behind this improvement is to split the backward computation into two parts, one that computes gradient for the input and another that computes for the parameters. Based on this idea, we handcraft novel pipeline schedules that significantly outperform the baseline methods. We further develop an algorithm that automatically finds an optimal schedule based on specific model configuration and memory limit. Additionally, to truly achieve zero bubble, we introduce a novel technique to bypass synchronizations during the optimizer step. Experimental evaluations show that our method outperforms the 1F1B schedule up to 15% in throughput under a similar memory limit. This number can be further pushed to 30% when the memory constraint is relaxed. We believe our results mark a major step forward in harnessing the true potential of pipeline parallelism. The source code based on Megatron-LM is publicly avaiable at https: //github.com/sail-sg/zero-bubble-pipeline-parallelism.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Penghui Qi"
+        },
+        {
+            "affiliations": [],
+            "name": "Xinyi Wan"
+        },
+        {
+            "affiliations": [],
+            "name": "Guangxing Huang"
+        }
+    ],
+    "id": "SP:04bba93267d91a8908b9e184c8d54ffc514e63b3",
+    "references": [
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tianqi Chen",
+                "Thierry Moreau",
+                "Ziheng Jiang",
+                "Lianmin Zheng",
+                "Eddie Yan",
+                "Haichen Shen",
+                "Meghan Cowan",
+                "Leyuan Wang",
+                "Yuwei Hu",
+                "Luis Ceze"
+            ],
+            "title": "TVM}: An automated {End-to-End} optimizing compiler for deep learning",
+            "venue": "In 13th USENIX Symposium on Operating Systems Design and Implementation",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Shiqing Fan",
+                "Yi Rong",
+                "Chen Meng",
+                "Zongyan Cao",
+                "Siyu Wang",
+                "Zhen Zheng",
+                "Chuan Wu",
+                "Guoping Long",
+                "Jun Yang",
+                "Lixue Xia"
+            ],
+            "title": "Dapple: A pipelined data parallel approach for training large models",
+            "venue": "In Proceedings of the 26th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "John Forrest",
+                "Robin Lougee-Heimer"
+            ],
+            "title": "Cbc user guide",
+            "venue": "In Emerging theory, methods, and applications,",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Priya Goyal",
+                "Piotr Doll\u00e1r",
+                "Ross Girshick",
+                "Pieter Noordhuis",
+                "Lukasz Wesolowski",
+                "Aapo Kyrola",
+                "Andrew Tulloch",
+                "Yangqing Jia",
+                "Kaiming He"
+            ],
+            "title": "Accurate, large minibatch sgd: Training imagenet in 1 hour",
+            "venue": "arXiv preprint arXiv:1706.02677,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Aaron Harlap",
+                "Deepak Narayanan",
+                "Amar Phanishayee",
+                "Vivek Seshadri",
+                "Nikhil Devanur",
+                "Greg Ganger",
+                "Phil Gibbons"
+            ],
+            "title": "Pipedream: Fast and efficient pipeline parallel dnn training",
+            "venue": "arXiv preprint arXiv:1806.03377,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yanping Huang",
+                "Youlong Cheng",
+                "Ankur Bapna",
+                "Orhan Firat",
+                "Dehao Chen",
+                "Mia Chen",
+                "HyoukJoong Lee",
+                "Jiquan Ngiam",
+                "Quoc V Le",
+                "Yonghui Wu"
+            ],
+            "title": "Gpipe: Efficient training of giant neural networks using pipeline parallelism",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Vijay Anand Korthikanti",
+                "Jared Casper",
+                "Sangkug Lym",
+                "Lawrence McAfee",
+                "Michael Andersch",
+                "Mohammad Shoeybi",
+                "Bryan Catanzaro"
+            ],
+            "title": "Reducing activation recomputation in large transformer models",
+            "venue": "Proceedings of Machine Learning and Systems,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chris Lattner",
+                "Mehdi Amini",
+                "Uday Bondhugula",
+                "Albert Cohen",
+                "Andy Davis",
+                "Jacques Pienaar",
+                "River Riddle",
+                "Tatiana Shpeisman",
+                "Nicolas Vasilache",
+                "Oleksandr"
+            ],
+            "title": "Zinenko. Mlir: A compiler infrastructure for the end of moore\u2019s law",
+            "venue": "arXiv preprint arXiv:2002.11054,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shen Li",
+                "Yanli Zhao",
+                "Rohan Varma",
+                "Omkar Salpekar",
+                "Pieter Noordhuis",
+                "Teng Li",
+                "Adam Paszke",
+                "Jeff Smith",
+                "Brian Vaughan",
+                "Pritam Damania"
+            ],
+            "title": "Pytorch distributed: Experiences on accelerating data parallel training",
+            "venue": "arXiv preprint arXiv:2006.15704,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter"
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "arXiv preprint arXiv:1711.05101,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Paulius Micikevicius",
+                "Sharan Narang",
+                "Jonah Alben",
+                "Gregory Diamos",
+                "Erich Elsen",
+                "David Garcia",
+                "Boris Ginsburg",
+                "Michael Houston",
+                "Oleksii Kuchaiev",
+                "Ganesh Venkatesh"
+            ],
+            "title": "Mixed precision training",
+            "venue": "arXiv preprint arXiv:1710.03740,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Deepak Narayanan",
+                "Mohammad Shoeybi",
+                "Jared Casper",
+                "Patrick LeGresley",
+                "Mostofa Patwary",
+                "Vijay Korthikanti",
+                "Dmitri Vainbrand",
+                "Prethvi Kashinkunti",
+                "Julie Bernauer",
+                "Bryan Catanzaro"
+            ],
+            "title": "Efficient large-scale language model training on gpu clusters using megatron-lm",
+            "venue": "In Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Razvan Pascanu",
+                "Tomas Mikolov",
+                "Yoshua Bengio"
+            ],
+            "title": "On the difficulty of training recurrent neural networks",
+            "venue": "In International conference on machine learning,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Samyam Rajbhandari",
+                "Jeff Rasley",
+                "Olatunji Ruwase",
+                "Yuxiong He"
+            ],
+            "title": "Zero: Memory optimizations toward training trillion parameter models",
+            "venue": "In SC20: International Conference for High Performance Computing, Networking, Storage and Analysis,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jared Roesch",
+                "Steven Lyubomirsky",
+                "Logan Weber",
+                "Josh Pollock",
+                "Marisa Kirisame",
+                "Tianqi Chen",
+                "Zachary Tatlock"
+            ],
+            "title": "Relay: A new ir for machine learning frameworks",
+            "venue": "In Proceedings of the 2nd ACM SIGPLAN international workshop on machine learning and programming languages,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Amit Sabne"
+            ],
+            "title": "Xla : Compiling machine learning for peak performance, 2020",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Philippe Tillet",
+                "Hsiang-Tsung Kung",
+                "David Cox"
+            ],
+            "title": "Triton: an intermediate language and compiler for tiled neural network computations",
+            "venue": "In Proceedings of the 3rd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Bowen Yang",
+                "Jian Zhang",
+                "Jonathan Li",
+                "Christopher R\u00e9",
+                "Christopher Aberger",
+                "Christopher De Sa"
+            ],
+            "title": "Pipemare: Asynchronous pipeline parallel dnn training",
+            "venue": "Proceedings of Machine Learning and Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Lianmin Zheng",
+                "Zhuohan Li",
+                "Hao Zhang",
+                "Yonghao Zhuang",
+                "Zhifeng Chen",
+                "Yanping Huang",
+                "Yida Wang",
+                "Yuanzhong Xu",
+                "Danyang Zhuo",
+                "Eric P Xing"
+            ],
+            "title": "Alpa: Automating inter-and {IntraOperator} parallelism for distributed deep learning",
+            "venue": "In 16th USENIX Symposium on Operating Systems Design and Implementation",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "The realm of distributed model training has become a focal point in the deep learning community, especially with the advent of increasingly large and intricate models. Training these behemoths often requires a vast amount of GPUs interconnected with various topologies. Various parallelism techniques have been proposed for training DNN in the past years. Data parallelism (DP) (Goyal et al., 2017; Li et al., 2020) is the default strategy for models of small to moderate sizes due to its simplicity. Beyond a model size, it is no longer possible to fit the model parameters in one single GPU. This is when model parallelism comes to the rescue (Harlap et al., 2018; Huang et al., 2019; Fan et al., 2021; Zheng et al., 2022). There are two main model parallel schemes, tensor parallelism (TP) and pipeline parallelism (PP). TP splits the matrix multiplication in one layer to several devices, while PP segments the entire model into different stages which can be processed across different devices. Notably, ZeRO (Rajbhandari et al., 2020) provides a strong alternative to model parallelism by sharding parameters across devices, while keeping the simplicity of DP.\nRecent research indicates that achieving optimal performance in large-scale training scenarios requires a non-trivial interaction of DP, TP and PP strategies. In the abundance of interconnection resources, e.g. NVLink between GPUs within one compute node, a hybrid of DP, TP and ZeRO strategies works efficiently. Whereas there are numerous empirical evidences Fan et al. (2021); Zheng et al. (2022); Narayanan et al. (2021) showing PP is particularly advantageous for utilizing cross-server connections, especially at the scale of thousands of GPUs. This highlights the primary aim of our work: enhancing the efficiency of PP.\nGoing deeper into the intricacies of PP, the efficiency of its implementation relies heavily on the amount of device idle time referred to as pipeline bubbles. Due to the dependency between layers, bubbles seem inevitable. A prominent early work to address this issue is GPipe (Huang et al., 2019), which attempts to reduce the bubble ratio by increasing the number of concurrent batches in the pipeline. However, a direct consequence of this is an increase in peak memory demands.\n\u2217Equal Contributors\nTo mitigate this, GPipe discards part of the intermediate activations while recomputing them during the backward pass. Yet, this approach introduced a computation overhead of around 20% (Fan et al., 2021). One line of work that improves over GPipe focuses on asynchronous PP, including PipeDream (Harlap et al., 2018), PipeMare (Yang et al., 2021). Asynchronous PP is theoretically bubble free, they greatly improve pipeline efficiency, however, at the sacrifice of exact optimization semantics. On the other hand, improvements are also made under synchronous settings. A notable scheduling strategy to address the limitation of GPipe is called one-forward-one-backward (1F1B). It was first proposed in PipeDream (Harlap et al., 2018) under the asynchronous setting, and later introduced under synchronous settings (Fan et al., 2021; Narayanan et al., 2021). 1F1B offers faster memory clearance by early scheduling the backward passes. With the same number of microbatches, it yields similar bubble ratios but with a distinct advantage in peak memory. Based on 1F1B, Narayanan et al. (2021) introduced the 1F1B interleaved strategy. By assigning multiple stages to the same device, it further reduces the bubble size at the cost of more communication and higher peak memory.\nDespite various efforts, to this date the remaining bubbles still pose the largest issue for PP under synchronous training semantics. In this work, we spotted the opportunity that PP can be further optimized by representing and scheduling the computation graph at a finer granularity. Classical deep learning frameworks are designed at the granularity of layers, whereas modern deep learning compilers use different intermediate representations for optimizations at various levels. (Chen et al., 2018; Roesch et al., 2018; Sabne, 2020; Tillet et al., 2019; Lattner et al., 2020). Although a finer granularity always means a larger space for searching, it is often impeded by the lack of optimization tools to navigate the space. Therefore, choosing a suitable granularity is crucial.\nTraditionally, neural networks are granularized as stacked layers. There are two functions associated with each layer, forward and backward. In the forward pass, the input x is transformed into the output y with the parameterized mapping f(x,W ). The backward pass, crucial for training, involves two computations: \u2207xf(x,W )\u22a4 d\u2113dy and \u2207W f(x,W ) \u22a4 d\u2113 dy . Correspondingly, they compute the gradient with respect to the input x and the layer\u2019s parameters W . For convenience, we use single letters B and W to denote these two computations respectively, and F to denote forward pass (Figure 1). Traditionally, B and W are grouped and provided as a single backward function. This design is conceptually friendly to the user, and it happens to work well for DP, because the communication of the weights\u2019 gradient at layer i can be overlapped with the backward computation at layer i\u2212 1. However, in PP, this design unnecessarily increases the sequentially dependent computations, i.e. B at the layer i \u2212 1 depends on W at the layer i, which is usually detrimental for the efficiency of the pipeline.\nBased on split B and W, we present new pipeline schedules that greatly improve pipeline efficiency. The remainder of this paper is organized as follows: In Section 2, we introduce handcrafted schedules based on an ideal assumption that the execution times of F, B and W are identical. Subsequently,\nin Section 3, we remove this assumption and propose an automatic scheduling algorithm that works under more realistic conditions. To achieve zero bubble, Section 4 details a method that sidesteps the need for synchronization during the optimizer step, yet preserves synchronous training semantics. We conclude with empirical evaluations of our methods against baseline methods under diverse settings.\nWe should note that we do not aim to explore general mixed strategies for large scale distributed training. Instead, we specifically target to improve the efficiency of pipeline scheduling, supported with apple to apple comparisons with baselines. Our method is orthogonal to DP, TP and ZeRO strategies, and it can be used as a parallel replacement for the PP part in large scale training."
+        },
+        {
+            "heading": "2 HANDCRAFTED PIPELINE SCHEDULES",
+            "text": "Based on the key observation that splitting B and W could reduce sequential dependency and thus improve efficiency, we redesign the pipeline starting from the commonly utilized 1F1B schedule. As depicted in Figure 2, 1F1B initiates with a warm-up phase. In this phase, workers conduct varying numbers of forward passes, with each stage typically performing one more forward pass than its immediately subsequent stage. Following the warm-up phase, each worker transits to a steady state where they alternately execute one forward pass and one backward pass, ensuring an even workload distribution among stages. In the final phase, each worker processes the backward passes for the outstanding in-flight microbatches, completing the batch.\nIn our improved version we split the backward pass into B and W passes, it is imperative that F and B from the same microbatch must still remain sequentially dependent across pipeline stages. However, W can be flexibly scheduled anywhere after the corresponding B of the same stage. This allows for strategic placement of W to fill the pipeline bubbles. There are many possible schedules that improve over 1F1B, trading off differently on the bubble size and the memory footprint. We introduce two particularly interesting handcrafted schedules in this section to show the great potential of finer granularity at reducing pipeline bubbles (see Figure 3). For the sake of clarity in our initial design, we assume that the time costs for F, B, and W are identical, an assumption shared by earlier studies (Narayanan et al., 2021; Huang et al., 2019). However, in Section 3, we re-evaluate this assumption to optimize scheduling efficiency in real-world scenarios."
+        },
+        {
+            "heading": "2.1 MEMORY EFFICIENT SCHEDULE",
+            "text": "Our first handcrafted schedule, named ZB-H1, ensures that the maximum peak memory usage over all workers doesn\u2019t exceed that of 1F1B. ZB-H1 generally follows the 1F1B schedule, but it adjusts\nthe starting points of W depending on the number of warm-up microbatches. This ensures all workers maintain the same number of in-flight microbatches. As a result, as seen in Figure 3 (top), the bubble size is reduced to a third of 1F1B\u2019s size. This reduction is because B is initiated earlier across all workers compared to 1F1B, and the tail-end bubbles are filled by the later-starting W passes. As W typically uses less memory than B (Table 1), the first worker has the maximum peak memory usage which is consistent with 1F1B."
+        },
+        {
+            "heading": "2.2 ZERO BUBBLE SCHEDULE",
+            "text": "When we permit a larger memory footprint than 1F1B and have a sufficient number of microbatches, it\u2019s possible to achieve a zero bubble schedule, which we label as ZB-H2. As illustrated in Figure 3 (bottom), we introduce more F passes during the warm-up phase to fill the bubble preceding the initial B. We also reorder the W passes at the tail, which changes the layout from trapezoid into a parallelogram, eliminating all the bubbles in the pipeline. It is important to highlight that the synchronization between the optimizer steps is removed here, we discuss how this is safely done in Section 4."
+        },
+        {
+            "heading": "2.3 QUANTITATIVE ANALYSES",
+            "text": "We use p to denote the number of stages and b to denote the size of each microbatch. For transformer architecture, we denote the number of attention heads as a, the sequence length as s and the hidden dimension size as h. We use the notations MB /MW to represent the memory required to store activations for one B/W pass, and TF /TB /TW to represent the running time for one F/B/W pass. For simplicity, we only do quantitative analyses on transformer architecture (Vaswani et al., 2017), using a typical setting similar to GPT-3 (Brown et al., 2020) where the hidden dimension size inside feedforward is 4h and the dimension size for each attention head is h/a.\nAs in Narayanan et al. (2021), we only consider matmul operations when calculating FLOPs because they contribute most of the computations in a transformer layer. For each matmul operation in the forward pass, there are two matmul operations with the same FLOPs in corresponding backward pass (see Figure 1), each of which belongs to either B or W. The approximate formula for calculating the FLOPs of a transformer layer is in Table 1. We can see that TW < TF < TB and TB + TW = 2TF . We use the same method in Korthikanti et al. (2023) to estimate activations memory required for B. After B completes, it releases some activations not used anymore but keeps some extra gradients (\u2207zL in Figure 1) for W. The total memory required by W, as in Table 1, is less than B.\nWithout the assumption of TF = TB = TW , the peak activations memory and bubble size of ZBH1 and ZB-H2 are quantified in Table 2. Notably, the activations memory of worker i is (p \u2212 i + 1)MB + (i \u2212 1)MW for ZB-H1 and (2p \u2212 2i + 1)MB + (2i \u2212 2)MW for ZB-H2. As in Table 1, the activations memory required for W is smaller than that for B. Therefore, the peak activations memory is pMB and (2p\u2212 1)MB , for ZB-H1 and ZB-H2 respectively."
+        },
+        {
+            "heading": "3 AUTOMATIC PIPELINE SCHEDULING",
+            "text": "While handcrafted schedules offer simplicity and better comprehensibility, they face several issues in practical applications. For one, scheduling under the assumption that TF = TB = TW introduces unwanted bubbles, especially for models where these values differ significantly. Moreover, communication time (denoted as Tcomm) required to transfer activation/gradient between stages is often ignored in handcrafted schedules, leading to noticeable latencies in the pipeline stream. Finally, striking a balance between minimizing bubble size and adhering to memory limit becomes particularly challenging when the available memory is insufficient to accommodate enough microbatches for a bubble-free schedule.\nTo address these challenges and ensure generalization to practical scenarios, we propose algorithms to automatically search the optimal schedule given the number of pipeline stages p, the number of microbatches m, the activations memory limit Mlimit, and the running time estimations TF , TB , TW and Tcomm. We design a heuristic strategy, which always generates an optimal or near optimal solution especially when m is large enough. We also systematically formulate the problem as Integer Linear Programming (for more details see Appendix G), which can be solved by an off-the-shelf ILP solver (Forrest & Lougee-Heimer, 2005) when the problem is under a certain scale. These two approaches can be combined: first, use the heuristic solution as initialization, and then optimize it further with ILP."
+        },
+        {
+            "heading": "3.1 THE HEURISTIC ALGORITHM",
+            "text": "We present our heuristic algorithm in the following steps:\n\u2022 In the warm-up phase, within the memory limit, we schedule as many F passes as possible to minimize the bubble before the first B. The resulting schedule may still have a small bubble (less than TF ) before the first B if not reaching memory limit, where scheduling another F may delay the following B. We use a binary hyperparameter to control whether to do it or not.\n\u2022 After the warm-up phase, we adhere to the pattern where one F and one B are scheduled iteratively. We insert W to fill the bubble when there is a gap larger than TW . When a bubble occurs but the size is less than TW , we still insert a W if the current bubble makes the largest cumulative bubble size among all stages become larger. We also insert W to recycle some memory when the memory limit is hit. Typically, our heuristic strategy enters a steady state that follows 1F-1B-1W pattern.\n\u2022 Throughout this process, pipeline stage i is always guaranteed to schedule at least one more F than stage i+ 1 anytime before F is used up. When this difference exceeds one, we use another binary hyperparameter to decide whether to skip one F in pipeline stage i if it doesn\u2019t cause more bubbles. We perform a grid search to find the best combination of hyperparameters.\n\u2022 In each stage, when F and B passes run out, we schedule all the left W passes one by one."
+        },
+        {
+            "heading": "4 BYPASSING OPTIMIZER SYNCHRONIZATIONS",
+            "text": "In most practices of PP, synchronizations over pipeline stages are usually performed in optimizer step for the sake of numerical robustness. For example, a global gradient norm needs to be computed for gradient norm clipping (Pascanu et al., 2013); a global check for NAN and INF values are performed in the mixed precision settings (Micikevicius et al., 2017); both of them require an all-reduce communication across all stages. However, synchronization at the optimizer step destroys the parallelogram (Figure 3) and makes zero bubble impossible. In this section, we propose an alternative mechanism to bypass these synchronizations, while still maintaining a synchronous optimization semantics.\nIn existing implementations, an all-reduce communication is first launched to collect the global states, followed by the optimizer steps which are conditioned on the global states. However, we noticed that most of the time the global states have no effects, e.g., the global check for NAN and INF rarely trigger because in a robust setting most iterations shouldn\u2019t have numerical issues; the gradient clipping rate is also quite low empirically to justify a synchronization of global gradient norm at every iteration.\nBased on these observations, we propose to replace the before-hand synchronizations with a post update validation. The idea is illustrated in Figure 4, at each stage before the optimizer step, a partially reduced global state is received from the previous stage, combined with the current stage\u2019s local state, and passed on to the next stage. The optimizer step of each stage is controlled by the partially reduced state, e.g. skip the update when a NAN is spotted or the partially reduced gradient norm exceeds the clipping threshold. During the warm-up phase of the next iteration, the fully reduced global state is then propagated back from the last stage to first stage. Upon receiving the global state, each stage performs a validation to decide whether the previous optimizer step is legitimate. If an amendment to the gradient is required, a rollback will be issued (for more details see Appendix C) and then we redo the optimizer step based on the fully reduced global state."
+        },
+        {
+            "heading": "5 EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "5.1 SETUP",
+            "text": "We base our implementation on the open-source Megatron-LM project (Narayanan et al., 2021) and assess its performance using models analogous to GPT-3 (Brown et al., 2020), as detailed in Table 3. During our experiments, we first conducted a specific number of iterations for profiling, collecting empirical measurements for TF , TB , TW , and Tcomm. After obtaining these values, we fed them into our automatic pipeline scheduling algorithm to determine the optimal schedule. It\u2019s worth noting that both the initial and final pipeline stages possess one fewer transformer layer compared to the intermediate stages. This design is to compensate for the extra embedding lookup and loss computations in the initial and final stages so that they won\u2019t become the bottleneck and cause bubbles to other stages.\nTable 3: Models and fixed settings used in experiments\nModel Layers Attention Hidden Sequence Pipelines Microbatch Number of Heads Size Length (GPUs) Size Microbatches"
+        },
+        {
+            "heading": "1.5B 22 24 2304 1024 8 6 24 / 32 / 64",
+            "text": ""
+        },
+        {
+            "heading": "6.2B 30 32 4096 1024 8 3 24 / 32 / 64",
+            "text": ""
+        },
+        {
+            "heading": "14.6B 46 40 5120 1024 16 1 48 / 64 / 128",
+            "text": ""
+        },
+        {
+            "heading": "28.3B 62 48 6144 1024 32 1 96 / 128 / 256",
+            "text": "Compared methods:\n\u2022 ZB-1p: Automatically searched schedule with the activation memory limited to pMB , which theoretically has the same peak memory as 1F1B.\n\u2022 ZB-2p: Automatically searched schedule with the activation memory limited to 2pMB , which is the least amount of memory to empirically achieve close to zero bubble (see Figure 7).\n\u2022 1F1B and 1F1B-I: 1F1B and interleaved 1F1B methods introduced by Harlap et al. (2018) and Narayanan et al. (2021) with implementation from Megatron-LM. For interleaved 1F1B, the entire model is divided into a sequence of chunks, which are cyclically taken by each stage, forming an interleaved pipeline. In our interleaved experiments, we always use the maximum number of chunks to ensure least bubble, i.e. each transformer layer serves as a chunk.\nOur experiments utilize up to 32 NVIDIA A100 SXM 80G GPUs distributed across 4 nodes interconnected by a RoCE RDMA network. The running time of each iteration is recorded after several warm-up iterations. Thanks to the reproducibility provided by Megatron-LM implementation, we can verify the correctness of ZB-1p and ZB-2p without running models until convergence. We use a fixed random seed to initialize the model, record the loss after every iteration for ZB-1p, ZB-2p, and 1F1B, and then verify that they\u2019re bit-to-bit identical."
+        },
+        {
+            "heading": "5.2 MAIN RESULTS",
+            "text": "We present the throughput of all methods in Figure 5, and leave the additional details for each setup in Table 4. Our experiments demonstrate that ZB-2p consistently outperforms all other methods across various settings. Notably, the throughput of 1F1B, 1F1B-I and ZB-1p show a strong positive correlation with the number of microbatches. In contrast, ZB-2p maintains the efficiency even with fewer microbatches. This is because the bubble rate in ZB-2p has almost reached zero (Table 5), and its throughput is already close to the upper bound. Here the upper bound is roughly estimated by multiplying the throughput of 1F1B and 11\u2212bubble rate of 1F1B (for more details see Section 5.3). As mentioned before, the improved efficiency of ZB-2p comes at the cost of a higher memory consumption compared to the 1F1B baseline. We also compare ZB-2p with 1F1B under the same memory consumption in Appendix F, and the experimental results also show that ZB-2p achieves a higher throughput even with half microbatch size compared to 1F1B.\nIn contrast, ZB-1p is designed to have a peak memory cost similar to the 1F1B baseline. It shows a comparable throughput to 1F1B-I in the 8 GPUs setups. In multi-node setups where communication bandwidth is more of a bottleneck, ZB-1p clearly outperforms 1F1B-I, highlighting its advantage in reducing pipeline bubbles without incurring extra communication cost.\nIn most of our settings we set number of microbatches m larger than number of stages p because they\u2019re more common use cases of pipeline parallelism. However we conducted experiments listed in Appendix H for m \u2264 p cases which shows 20% to 30% improvements with a similar memory consumption."
+        },
+        {
+            "heading": "5.3 EFFICIENCY OF AUTOMATIC SCHEDULING",
+            "text": "We study the efficiency of the schedules generated from our automatic scheduling algorithm. The same setups as our main experiments are used, however, since our purpose is to study the efficiency of the automatic scheduling algorithm, the numbers here are based on theoretical calculations instead of real experiments. To quantify the efficiency of a pipeline schedule, we introduce the concept of bubble rate, which is calculated as (cost \u2212 m(TF + TB + TW ))/cost. The cost here is defined as\nthe largest execution time of all stages, calculated for each schedule using profiled TF , TB , TW and Tcomm values. The m(TF + TB + TW ) is the optimal execution time when all communications are overlapped with computations and hence no bubbles in the pipeline.\nThe bubble rates for different schedules are presented in Table 5. We include the handcrafted schedules ZB-H1 and ZB-H2 as baselines to the automatically searched schedules. In most of the settings, ZB-2p produces a bubble rate of less than 1%, which is the best among all schedules. In contrast, ZB-H2 consistently performs worse than ZB-2p. This provides a strong evidence that our automatic scheduling algorithm adapts better to realistic scenarios by using more accurate estimates of TF , TB , TW and Tcomm. On the contrary, this improvement is not observed in ZB-1p vs ZB-H1, hypothetically because the memory limit becomes the dominate factor. Notably, all of our methods significantly outperform 1F1B.\nWe also plot ZB-2p and its profiled real execution on 16 GPUs to provide a direct visual evidence that it is truly a zero bubble schedule. As shown in Figure 6, the automatically generated ZB-2p schedule has almost no bubble. The profiled execution has slightly more bubbles but retains a good overall alignment."
+        },
+        {
+            "heading": "5.4 MEMORY LIMIT",
+            "text": "To better understand the effect of memory limit, we study the relationship of the bubble rate to Mlimit. We run our heuristic algorithm with a series of Mlimit and plot them in Figure 7. Initially, the bubble rate shows a close-to-linear decreasing trend as we increase the value of Mlimit. Theoretically, the curve should plateau around (p\u22121)(TB+2Tcomm)+pTFTF MB . Empirically, we find 2pMB a good threshold for achieving close to zero bubble rate when TF \u2248 TB and Tcomm is relatively small. Beyond the inflection point, although a sufficiently large memory limit does result in a theoretically zero bubble rate, in general the cost outweighs the gain. For more details see Appendix B."
+        },
+        {
+            "heading": "6 CONCLUSION AND DISCUSSION",
+            "text": "In this work, we introduced a novel strategy to improve the efficiency of pipeline parallelism by splitting the activation gradient and parameter gradient in backward computation, and we design an automatic pipeline scheduling algorithm that can minimize the pipeline bubble rate under different memory budgets. The schedules produced by this algorithm consistently outperform 1F1B and even achieve close to zero bubble rate. Empirically, achieving zero bubble requires approximately twice the activation memory compared to 1F1B, which raises concerns about out of memory issues. According to Appendix F, we believe it is worth trading some memory for a zero bubble pipeline schedule in the training of large models. Strategies like ZeRO, tensor parallelism can be used to accommodate the increased memory need. Another advantage of zero bubble schedule is that it can achieve optimal efficiency with a smaller number of microbatches (typically 3p is enough), which means more microbatches can be partitioned over data parallelism dimension. This brings a better scalability for the training of large models."
+        },
+        {
+            "heading": "A OVERLAP COMMUNICATION IN DATA PARALLELISM",
+            "text": "When data parallelism is taken into consideration, an all-reduce communication is launched to collect gradients before optimizer step. Generally, such communication is poorly overlapped with computation pass, resulting in a latency especially when the communication bandwidth is limited. As in Figure 3, usually a number of W passes are scheduled at the tail of an iteration. For each W pass, it consists of several independent computations calculating gradients for different parameters. As in Figure 8, We can reorder all of these computations to cluster those calculating the gradients for the same parameter, thus achieving the optimal overlapping between computation and communication."
+        },
+        {
+            "heading": "B THE MEMORY LIMIT FOR AUTOMATIC SCHEDULING ALGORITHM",
+            "text": "The relation between memory limit and bubble rate is highly affected by the bubbles preceding the first B in the initial stage. For the first microbatch, the forward pass needs to go through from the initial stage to final stage, and the backward pass reverses this process until it eventually goes back to the initial stage. The total time for the first microbatch from start to complete takes at least p(TF + TB) + 2(p\u2212 1)Tcomm and it can not be squeezed due to the dependency chains. We denote the number of F passes as k(\u2265 1) and the bubble size as \u03b2(\u2265 0), preceding the first B pass in the initial stage. Then we have:\nMlimit \u2265 kMB (1) \u03b2 \u2265 p(TF + TB) + 2(p\u2212 1)Tcomm \u2212 kTF \u2212 TB = (p\u2212 1)(TB + 2Tcomm) + (p\u2212 k)TF (2)\nThe lower bound of Mlimit is in proportion to k (see Formula 1), and \u03b2 is inversely proportional to k (see Formula 2). When increasing k and keeping k < \u230a (p\u22121)(TB+2Tcomm)+pTFTF \u230b, \u03b2 decreases linearly, meanwhile the lower bound of Mlimit increases linearly. When k = \u230a (p\u22121)(TB+2Tcomm)+pTFTF \u230b, \u03b2 reaches its minimum value without delaying B and its value is less than TF , with a peak activation memory at least \u230a (p\u22121)(TB+2Tcomm)+pTFTF \u230bMB . Beyond this point, further reducing pipeline bubbles to zero is not easy. This is because there is a small bubble less than TF in each stage (see Figure 6), and scheduling another F will delay the starting time of B thus causing more requirements on F in previous stages. Theoretically, another p\u2212 1 F passes are required in the initial stage to fully eliminate bubbles preceding the first B for all stages (see Figure 9), which also means a total activation memory usage at least \u230a (p\u22121)(TB+2Tcomm)+(2p\u22121)TFTF \u230bMB .\nC IN-PLACE OPTIMIZER ROLLBACK\nWhen we need to rollback an optimizer step, a typical method is to store a historic version of parameters and optimizer states, and revert to this historic version when needed. However, this method is memory inefficient and lots of copy operations are needed, which definitely hurts the training performance. For most optimizers, we notice that the step function is arithmetically reversible. Under this observation, we propose a novel technique to perform in-place optimizer rollback, which avoids allocating extra memory and requires extra computations only when the rollback is performed. As in Algorithm 1, we show how to rollback the step function for AdamW optimizer (Loshchilov & Hutter, 2017).\nAlgorithm 1 In-place rollback for AdamW 1: Optimizer States: 2: \u03b3(lr), \u03b21, \u03b22(betas), \u03f5 (epsilon), \u03bb(weight decay), 3: m (first moment), v ( second moment), \u03b8 (parameters), 4: t(time stamp). 5: function STEP(g) \u25b7 In-place step 6: t = t+ 1 7: m = \u03b21m+ (1\u2212 \u03b21)g 8: v = \u03b22v + (1\u2212 \u03b22)g2 9: m\u2032 = m/(1\u2212 \u03b2t1) 10: v\u2032 = v/(1\u2212 \u03b2t2) 11: \u03b8 = \u03b8 \u2212 \u03b3\u03bb\u03b8 \u2212 \u03b3m\u2032/( \u221a v\u2032 + \u03f5) 12: end function 13: function ROLLBACK(g) \u25b7 In-place rollback 14: m\u2032 = m/(1\u2212 \u03b2t1) 15: v\u2032 = v/(1\u2212 \u03b2t2) 16: \u03b8 = (\u03b8 + \u03b3m\u2032/( \u221a v\u2032 + \u03f5))/(1\u2212 \u03b3\u03bb) 17: m = (m\u2212 (1\u2212 \u03b21)g)/\u03b21 18: v = (v \u2212 (1\u2212 \u03b22)g2)/\u03b22 19: t = t\u2212 1 20: end function"
+        },
+        {
+            "heading": "D PROFILED TIME IN EXPERIMENTS",
+            "text": "In our experiments, we record the profiled time of TF , TB , TW , and Tcomm in ZB-2p across different settings. These values are then used to calculate bubble rates for all the methods considered in Section 5.3 and 5.4. These values can be found in Table 6."
+        },
+        {
+            "heading": "E ABLATION STUDY ON OPTIMIZER POST-VALIDATION STRATEGY",
+            "text": "In this section, we provide an ablation study on the effectiveness of the optimizer post-validation strategy. The study compares the throughput of ZB-2p under two conditions: with post-validation and with all-reduce synchronization. According to the experimental results in Table 7, the synchronized version of ZB-2p demonstrates a performance decrease of approximately 8% compared to ZB-2p with optimizer post-validation."
+        },
+        {
+            "heading": "F COMPARE ZB-2P WITH 1F1B UNDER THE SAME MEMORY CONSUMPTION",
+            "text": "Under the same memory consumption, we double the size of each microbatch for 1F1B and ZB-1p and compare their throughput with ZB-2p in Table 8. The experimental results show that ZB-2p also holds a better performance even with a half microbatch size compared to 1F1B. Empirically, a larger batch size increases the utilization rate of GPU and thus improves the efficiency. However, it is less of a concern for large models because the hidden dimension is large enough to saturate device utilization. Based on this consideration and our experimental results, we believe ZB-2p is more preferred than increasing the batch size for 1F1B. In some experiments where the device utilization is less saturated and m/p is relatively large, ZB-1p with a doubled microbatch size may slightly outperform than ZB-2p.\nG ILP FORMULATION\nAny pass in the pipeline can be uniquely indexed by (i, j, c), where i \u2208 {1, 2, ..., p} indexes the stage, j \u2208 {1, 2, ...,m} indexes the microbatch, and c \u2208 {F,B,W} denotes the specific pass of the microbatch. We define the variable T(i,j,c) as the time cost and E(i,j,c) as the ending time of a pass. We introduce \u2206M(i,j,c) to denote the memory increment incurred by the pass (i, j, c). For example, \u2206M(\u00b7,\u00b7,F ) = MB because the forward pass leads to a net increase of MB of activation stored for the backward pass. \u2206M(\u00b7,\u00b7,B) = MW \u2212MB which removes the memory stored for B while adding those required by W, and \u2206M(\u00b7,\u00b7,W ) = \u2212MW . Finally, the variable that we want to search is the ordering of the passes in the schedule, for which we introduce the variable O(i,j,c)\u2192(i,j\u2032,c\u2032) \u2208 {0, 1}, which is an indicator whether the pass index by (i, j, c) is scheduled before (i, j\u2032, c\u2032).\nmin O,E max i\nE(i,m,W) \u2212 E(i,1,F) + T(i,1,F) (3)\ns.t. E(i,j,F) \u2265 E(i\u22121,j,F) + Tcomm + T(i,j,F) (4) E(i,j,B) \u2265 E(i+1,j,B) + Tcomm + T(i,j,B) (5) E(i,j,c) \u2265 E(i,j\u2032,c\u2032) + T(i,j,c) \u2212O(i,j,c)\u2192(i,j\u2032,c\u2032)\u221e (6)\nMlimit \u2265 \u2206M(i,j\u2032,c\u2032) + \u2211 j,c \u2206M(i,j,c)O(i,j,c)\u2192(i,j\u2032,c\u2032) (7)\nOverall, the optimization target (3) is to minimize the time spent by the longest stage. Constraints (4) and (5) add the sequential dependency requirements on the F and B passes of the same microbatch in adjacent stages. Additionally, (6) adds the dependency constraint imposed by our decision of the scheduling order. Finally, (7) limits the peak activations memory to be below Mlimit."
+        },
+        {
+            "heading": "H COMPARE ZB METHODS WITH 1F1B ON SMALL NUMBER OF MICROBATCHES",
+            "text": "By nature of PP when the number of microbatches m is less then number of stages p, there\u2019ll be a large bubble rate. However zerobubble methods can still boost performance under these rare settings by approximately 20% to 30%. In a rough analysis ignoring communication and assuming m <= p and TW < TB , an 1F1B iteration takes (m + p \u2212 1) \u2217 (TF + TB + TW ) to complete, while a ZB iteration takes (m+p\u22121)\u2217(TF +TB)+TW . The experiment result is shown in Table 9. Noticeably when m <= p ZB-1p and ZB-2p are essentially the same and consumes similar memory as 1F1B."
+        }
+    ],
+    "title": "ZERO BUBBLE (ALMOST) PIPELINE PARALLELISM",
+    "year": 2024
+}

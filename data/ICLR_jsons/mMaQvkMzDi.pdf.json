@@ -1,1 +1,1508 @@
-null
+{
+    "abstractText": "Following the success of Large Language Models (LLMs), Large Multimodal Models (LMMs), such as the Flamingo model and its subsequent competitors, have started to emerge as natural steps towards generalist agents. However, interacting with recent LMMs reveals major limitations that are hardly captured by the current evaluation benchmarks. Indeed, task performances (e.g., VQA accuracy) alone do not provide enough clues to understand their real capabilities, limitations, and to which extent such models are aligned to human expectations. To refine our understanding of those flaws, we deviate from the current evaluation paradigm, and (1) evaluate 10 recent open-source LMMs from 3B up to 80B parameter scale, on 5 different axes; hallucinations, abstention, compositionality, explainability and instruction following. Our evaluation on these axes reveals major flaws in LMMs. While the current go-to solution to align these models is based on training, such as instruction tuning or RLHF, we rather (2) explore the training-free in-context learning (ICL) as a solution, and study how it affects these limitations. Based on our ICL study, (3) we push ICL further and propose new multimodal ICL variants such as; Multitask-ICL, Chain-of-Hindsight-ICL, and Self-Correcting-ICL. Our findings are as follows; (1) Despite their success, LMMs have flaws that remain unsolved with scaling alone. (2) The effect of ICL on LMMs flaws is nuanced; despite its effectiveness for improved explainability, answer abstention, ICL only slightly improves instruction following, does not improve compositional abilities, and actually even amplifies hallucinations. (3) The proposed ICL variants are promising as post-hoc approaches to efficiently tackle some of those flaws. The code is available here: https://github.com/mshukor/EvALign-ICL.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Mustafa Shukor"
+        },
+        {
+            "affiliations": [],
+            "name": "Alexandre Rame"
+        },
+        {
+            "affiliations": [],
+            "name": "Corentin Dancette"
+        },
+        {
+            "affiliations": [],
+            "name": "Matthieu Cord"
+        }
+    ],
+    "id": "SP:b46c2e9b92d7ae3cf960006f8f697ebbe71de6a8",
+    "references": [
+        {
+            "authors": [
+                "Jean-Baptiste Alayrac",
+                "Jeff Donahue",
+                "Pauline Luc",
+                "Antoine Miech",
+                "Iain Barr",
+                "Yana Hasson",
+                "Karel Lenc",
+                "Arthur Mensch",
+                "Katherine Millican",
+                "Malcolm Reynolds"
+            ],
+            "title": "Flamingo: a visual language model for few-shot learning",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Amanda Askell",
+                "Yuntao Bai",
+                "Anna Chen",
+                "Dawn Drain",
+                "Deep Ganguli",
+                "Tom Henighan",
+                "Andy Jones",
+                "Nicholas Joseph",
+                "Ben Mann",
+                "Nova DasSarma"
+            ],
+            "title": "A general language assistant as a laboratory for alignment",
+            "venue": "arXiv preprint arXiv:2112.00861,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Anas Awadalla",
+                "Irena Gao",
+                "Josh Gardner",
+                "Jack Hessel",
+                "Yusuf Hanafy",
+                "Wanrong Zhu",
+                "Kalyani Marathe",
+                "Yonatan Bitton",
+                "Samir Gadre",
+                "Shiori Sagawa"
+            ],
+            "title": "OpenFlamingo: An open-source framework for training large autoregressive vision-language models",
+            "venue": "arXiv preprint arXiv:2308.01390,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yuntao Bai",
+                "Andy Jones",
+                "Kamal Ndousse",
+                "Amanda Askell",
+                "Anna Chen",
+                "Nova DasSarma",
+                "Dawn Drain",
+                "Stanislav Fort",
+                "Deep Ganguli",
+                "Tom Henighan"
+            ],
+            "title": "Training a helpful and harmless assistant with reinforcement learning from human feedback",
+            "venue": "arXiv preprint arXiv:2204.05862,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuntao Bai",
+                "Saurav Kadavath",
+                "Sandipan Kundu",
+                "Amanda Askell",
+                "Jackson Kernion",
+                "Andy Jones",
+                "Anna Chen",
+                "Anna Goldie",
+                "Azalia Mirhoseini",
+                "Cameron McKinnon"
+            ],
+            "title": "Constitutional AI: Harmlessness from ai feedback",
+            "venue": "arXiv preprint arXiv:2212.08073,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ali Furkan Biten",
+                "Lluis Gomez",
+                "Dimosthenis Karatzas"
+            ],
+            "title": "Let there be a clock on the beach: Reducing object hallucination in image captioning",
+            "venue": "In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rich Caruana"
+            ],
+            "title": "Multitask learning",
+            "venue": "Machine Learning,",
+            "year": 1997
+        },
+        {
+            "authors": [
+                "Yupeng Chang",
+                "Xu Wang",
+                "Jindong Wang",
+                "Yuan Wu",
+                "Kaijie Zhu",
+                "Hao Chen",
+                "Linyi Yang",
+                "Xiaoyuan Yi",
+                "Cunxiang Wang",
+                "Yidong Wang"
+            ],
+            "title": "A survey on evaluation of large language models",
+            "venue": "arXiv preprint arXiv:2307.03109,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhu Chen",
+                "Xueguang Ma",
+                "Xinyi Wang",
+                "William W Cohen"
+            ],
+            "title": "Program of thoughts prompting: Disentangling computation from reasoning for numerical reasoning tasks",
+            "venue": "arXiv preprint arXiv:2211.12588,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xi Chen",
+                "Xiao Wang",
+                "Soravit Changpinyo",
+                "AJ Piergiovanni",
+                "Piotr Padlewski",
+                "Daniel Salz",
+                "Sebastian Goodman",
+                "Adam Grycner",
+                "Basil Mustafa",
+                "Lucas Beyer"
+            ],
+            "title": "PaLI: A jointly-scaled multilingual language-image model",
+            "venue": "arXiv preprint arXiv:2209.06794,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xi Chen",
+                "Josip Djolonga",
+                "Piotr Padlewski",
+                "Basil Mustafa",
+                "Soravit Changpinyo",
+                "Jialin Wu",
+                "Carlos Riquelme Ruiz",
+                "Sebastian Goodman",
+                "Xiao Wang",
+                "Yi Tay"
+            ],
+            "title": "Pali-x: On scaling up a multilingual vision and language model",
+            "venue": "arXiv preprint arXiv:2305.18565,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yen-Chun Chen",
+                "Linjie Li",
+                "Licheng Yu",
+                "Ahmed El Kholy",
+                "Faisal Ahmed",
+                "Zhe Gan",
+                "Yu Cheng",
+                "Jingjing Liu"
+            ],
+            "title": "Uniter: Universal image-text representation learning",
+            "venue": "In European Conference on Computer Vision (ECCV),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "N. Chomsky"
+            ],
+            "title": "Three models for the description of language",
+            "venue": "IRE Transactions on Information Theory,",
+            "year": 1956
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "arXiv preprint arXiv:2204.02311,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Paul F Christiano",
+                "Jan Leike",
+                "Tom Brown",
+                "Miljan Martic",
+                "Shane Legg",
+                "Dario Amodei"
+            ],
+            "title": "Deep reinforcement learning from human preferences",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Wenliang Dai",
+                "Junnan Li",
+                "Dongxu Li",
+                "Anthony Meng Huat Tiong",
+                "Junqi Zhao",
+                "Weisheng Wang",
+                "Boyang Li",
+                "Pascale Fung",
+                "Steven Hoi"
+            ],
+            "title": "Instructblip: Towards general-purpose vision-language models with instruction tuning",
+            "venue": "arXiv preprint arXiv:2305.06500,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenliang Dai",
+                "Zihan Liu",
+                "Ziwei Ji",
+                "Dan Su",
+                "Pascale Fung"
+            ],
+            "title": "Plausible may not be faithful: Probing object hallucination in vision-language pre-training",
+            "venue": "In Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Corentin Dancette",
+                "R\u00e9mi Cad\u00e8ne",
+                "Damien Teney",
+                "Matthieu Cord"
+            ],
+            "title": "Beyond question-based biases: Assessing multimodal shortcut learning in visual question answering",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Corentin Dancette",
+                "Spencer Whitehead",
+                "Rishabh Maheshwary",
+                "Ramakrishna Vedantam",
+                "Stefan Scherer",
+                "Xinlei Chen",
+                "Matthieu Cord",
+                "Marcus Rohrbach"
+            ],
+            "title": "Improving selective visual question answering by learning from your peers",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qingxiu Dong",
+                "Lei Li",
+                "Damai Dai",
+                "Ce Zheng",
+                "Zhiyong Wu",
+                "Baobao Chang",
+                "Xu Sun",
+                "Jingjing Xu",
+                "Zhifang Sui"
+            ],
+            "title": "A survey for in-context learning",
+            "venue": "arXiv preprint arXiv:2301.00234,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zi-Yi Dou",
+                "Yichong Xu",
+                "Zhe Gan",
+                "Jianfeng Wang",
+                "Shuohang Wang",
+                "Lijuan Wang",
+                "Chenguang Zhu",
+                "Zicheng Liu",
+                "Michael Zeng"
+            ],
+            "title": "An empirical study of training end-to-end vision-and-language transformers",
+            "venue": "arXiv preprint arXiv:2111.02387,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mengnan Du",
+                "Fengxiang He",
+                "Na Zou",
+                "Dacheng Tao",
+                "Xia Hu"
+            ],
+            "title": "Shortcut learning of large language models in natural language understanding: A survey",
+            "venue": "arXiv preprint arXiv:2208.11857,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jerry A. Fodor",
+                "Zenon W"
+            ],
+            "title": "Pylyshyn. Connectionism and cognitive architecture: A critical analysis",
+            "venue": "Cognition, 28(1):3\u201371,",
+            "year": 1988
+        },
+        {
+            "authors": [
+                "Difei Gao",
+                "Lei Ji",
+                "Luowei Zhou",
+                "Kevin Qinghong Lin",
+                "Joya Chen",
+                "Zihan Fan",
+                "Mike Zheng Shou"
+            ],
+            "title": "AssistGPT: A general multi-modal assistant that can plan, execute, inspect, and learn",
+            "venue": "arXiv preprint arXiv:2306.08640,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Robert Geirhos",
+                "J\u00f6rn-Henrik Jacobsen",
+                "Claudio Michaelis",
+                "Richard Zemel",
+                "Wieland Brendel",
+                "Matthias Bethge",
+                "Felix A Wichmann"
+            ],
+            "title": "Shortcut learning in deep neural networks",
+            "venue": "Nature Machine Intelligence,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rohit Girdhar",
+                "Alaaeldin El-Nouby",
+                "Zhuang Liu",
+                "Mannat Singh",
+                "Kalyan Vasudev Alwala",
+                "Armand Joulin",
+                "Ishan Misra"
+            ],
+            "title": "Imagebind: One embedding space to bind them all",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sylvain Gugger",
+                "Lysandre Debut",
+                "Thomas Wolf",
+                "Philipp Schmid",
+                "Zachary Mueller",
+                "Sourab Mangrulkar",
+                "Marc Sun",
+                "Benjamin Bossan"
+            ],
+            "title": "Accelerate: Training and inference at scale made simple, efficient and adaptable",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jordan Hoffmann",
+                "Sebastian Borgeaud",
+                "Arthur Mensch",
+                "Elena Buchatskaya",
+                "Trevor Cai",
+                "Eliza Rutherford",
+                "Diego de Las Casas",
+                "Lisa Anne Hendricks",
+                "Johannes Welbl",
+                "Aidan Clark"
+            ],
+            "title": "Training compute-optimal large language models",
+            "venue": "arXiv preprint arXiv:2203.15556,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Cheng-Yu Hsieh",
+                "Jieyu Zhang",
+                "Zixian Ma",
+                "Aniruddha Kembhavi",
+                "Ranjay Krishna"
+            ],
+            "title": "SugarCrepe: Fixing hackable benchmarks for vision-language compositionality",
+            "venue": "arXiv preprint arXiv:2306.14610,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shaohan Huang",
+                "Li Dong",
+                "Wenhui Wang",
+                "Yaru Hao",
+                "Saksham Singhal",
+                "Shuming Ma",
+                "Tengchao Lv",
+                "Lei Cui",
+                "Owais Khan Mohammed",
+                "Qiang Liu"
+            ],
+            "title": "Language is not all you need: Aligning perception with language models",
+            "venue": "arXiv preprint arXiv:2302.14045,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dieuwke Hupkes",
+                "Verna Dankers",
+                "Mathijs Mul",
+                "Elia Bruni"
+            ],
+            "title": "Compositionality decomposed: How do neural networks generalise",
+            "venue": "Journal of Artificial Intelligence Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kushal Kafle",
+                "Christopher Kanan"
+            ],
+            "title": "An analysis of visual question answering algorithms",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Maxime Kayser",
+                "Oana-Maria Camburu",
+                "Leonard Salewski",
+                "Cornelius Emde",
+                "Virginie Do",
+                "Zeynep Akata",
+                "Thomas Lukasiewicz"
+            ],
+            "title": "e-vil: A dataset and benchmark for natural language explanations in vision-language tasks",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Brenden M Lake",
+                "Tomer D Ullman",
+                "Joshua B Tenenbaum",
+                "Samuel J Gershman"
+            ],
+            "title": "Building machines that learn and think like people",
+            "venue": "Behavioral and brain sciences,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Hugo Lauren\u00e7on",
+                "Lucile Saulnier",
+                "L\u00e9o Tronchon",
+                "Stas Bekman",
+                "Amanpreet Singh",
+                "Anton Lozhkov",
+                "Thomas Wang",
+                "Siddharth Karamcheti",
+                "Alexander M Rush",
+                "Douwe Kiela"
+            ],
+            "title": "OBELISC: An open web-scale filtered dataset of interleaved image-text documents",
+            "venue": "arXiv preprint arXiv:2306.16527,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Lauren\u00e7on",
+                "Lucile Saulnier",
+                "L\u00e9o Tronchon",
+                "Stas Bekman",
+                "Amanpreet Singh",
+                "Anton Lozhkov",
+                "Thomas Wang",
+                "Siddharth Karamcheti",
+                "Alexander M. Rush",
+                "Douwe Kiela",
+                "Matthieu Cord",
+                "Victor Sanh"
+            ],
+            "title": "OBELICS: An open web-scale filtered dataset of interleaved image-text documents, 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bo Li",
+                "Yuanhan Zhang",
+                "Liangyu Chen",
+                "Jinghao Wang",
+                "Fanyi Pu",
+                "Jingkang Yang",
+                "Chunyuan Li",
+                "Ziwei Liu"
+            ],
+            "title": "Mimic-it: Multi-modal in-context instruction tuning",
+            "venue": "arXiv preprint arXiv:2306.05425,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bohao Li",
+                "Rui Wang",
+                "Guangzhi Wang",
+                "Yuying Ge",
+                "Yixiao Ge",
+                "Ying Shan"
+            ],
+            "title": "SEED-Bench: Benchmarking multimodal llms with generative comprehension",
+            "venue": "arXiv preprint arXiv:2307.16125,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Ramprasaath Selvaraju",
+                "Akhilesh Gotmare",
+                "Shafiq Joty",
+                "Caiming Xiong",
+                "Steven Chu Hong Hoi"
+            ],
+            "title": "Align before fuse: Vision and language representation learning with momentum distillation",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Caiming Xiong",
+                "Steven Hoi"
+            ],
+            "title": "Blip: Bootstrapping languageimage pre-training for unified vision-language understanding and generation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi"
+            ],
+            "title": "Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models",
+            "venue": "arXiv preprint arXiv:2301.12597,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Junyi Li",
+                "Xiaoxue Cheng",
+                "Wayne Xin Zhao",
+                "Jian-Yun Nie",
+                "Ji-Rong Wen"
+            ],
+            "title": "HELMA: A large-scale hallucination evaluation benchmark for large language models",
+            "venue": "arXiv preprint arXiv:2305.11747,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xiujun Li",
+                "Xi Yin",
+                "Chunyuan Li",
+                "Pengchuan Zhang",
+                "Xiaowei Hu",
+                "Lei Zhang",
+                "Lijuan Wang",
+                "Houdong Hu",
+                "Li Dong",
+                "Furu Wei"
+            ],
+            "title": "Oscar: Object-semantics aligned pre-training for vision-language tasks",
+            "venue": "In European Conference on Computer Vision (ECCV),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yuhui Li",
+                "Fangyun Wei",
+                "Jinjing Zhao",
+                "Chao Zhang",
+                "Hongyang Zhang"
+            ],
+            "title": "Rain: Your language models can align themselves without finetuning",
+            "venue": "arXiv preprint arXiv:2309.07124,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bill Yuchen Lin",
+                "Abhilasha Ravichander",
+                "Ximing Lu",
+                "Nouha Dziri",
+                "Melanie Sclar",
+                "Khyathi Chandu",
+                "Chandra Bhagavatula",
+                "Yejin Choi"
+            ],
+            "title": "The unlocking spell on base llms: Rethinking alignment via in-context learning",
+            "venue": "arXiv preprint arXiv:2312.01552,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Michael Maire",
+                "Serge Belongie",
+                "James Hays",
+                "Pietro Perona",
+                "Deva Ramanan",
+                "Piotr Doll\u00e1r",
+                "C Lawrence Zitnick"
+            ],
+            "title": "Microsoft coco: Common objects in context",
+            "venue": "In European Conference on Computer Vision (ECCV),",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Hao Liu",
+                "Carmelo Sferrazza",
+                "Pieter Abbeel"
+            ],
+            "title": "Languages are rewards: Hindsight finetuning using human feedback",
+            "venue": "arXiv preprint arXiv:2302.02676,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haotian Liu",
+                "Chunyuan Li",
+                "Qingyang Wu",
+                "Yong Jae Lee"
+            ],
+            "title": "Visual instruction tuning",
+            "venue": "arXiv preprint arXiv:2304.08485,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiachang Liu",
+                "Dinghan Shen",
+                "Yizhe Zhang",
+                "Bill Dolan",
+                "Lawrence Carin",
+                "Weizhu Chen"
+            ],
+            "title": "What makes good in-context examples for GPT-3? In Proceedings of Deep Learning Inside Out (DeeLIO 2022): The 3rd Workshop on Knowledge Extraction and Integration for Deep Learning Architectures",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuan Liu",
+                "Haodong Duan",
+                "Yuanhan Zhang",
+                "Bo Li",
+                "Songyang Zhang",
+                "Wangbo Zhao",
+                "Yike Yuan",
+                "Jiaqi Wang",
+                "Conghui He",
+                "Ziwei Liu"
+            ],
+            "title": "MMBench: Is your multi-modal model an all-around player",
+            "venue": "arXiv preprint arXiv:2307.06281,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp"
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming few-shot prompt order sensitivity",
+            "venue": "In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zixian Ma",
+                "Jerry Hong",
+                "Mustafa Omer Gul",
+                "Mona Gandhi",
+                "Irena Gao",
+                "Ranjay Krishna"
+            ],
+            "title": "CREPE: Can vision-language foundation models reason compositionally",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aman Madaan",
+                "Niket Tandon",
+                "Prakhar Gupta",
+                "Skyler Hallinan",
+                "Luyu Gao",
+                "Sarah Wiegreffe",
+                "Uri Alon",
+                "Nouha Dziri",
+                "Shrimai Prabhumoye",
+                "Yiming Yang"
+            ],
+            "title": "Self-refine: Iterative refinement with self-feedback",
+            "venue": "arXiv preprint arXiv:2303.17651,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ana Marasovi\u0107",
+                "Chandra Bhagavatula",
+                "Jae sung Park",
+                "Ronan Le Bras",
+                "Noah A. Smith",
+                "Yejin Choi"
+            ],
+            "title": "Natural language rationales with full-stack visual reasoning: From pixels to semantic frames to commonsense graphs",
+            "venue": "In Findings of the Association for Computational Linguistics: EMNLP",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nicholas Meade",
+                "Spandana Gella",
+                "Devamanyu Hazarika",
+                "Prakhar Gupta",
+                "Di Jin",
+                "Siva Reddy",
+                "Yang Liu",
+                "Dilek Hakkani-T\u00fcr"
+            ],
+            "title": "Using in-context learning to improve dialogue safety",
+            "venue": "arXiv preprint arXiv:2302.00871,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Gr\u00e9goire Mialon",
+                "Roberto Dess\u0131",
+                "Maria Lomeli",
+                "Christoforos Nalmpantis",
+                "Ram Pasunuru",
+                "Roberta Raileanu",
+                "Baptiste Rozi\u00e8re",
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Asli Celikyilmaz"
+            ],
+            "title": "Augmented language models: a survey",
+            "venue": "arXiv preprint arXiv:2302.07842,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Liangming Pan",
+                "Michael Saxon",
+                "Wenda Xu",
+                "Deepak Nathani",
+                "Xinyi Wang",
+                "William Yang Wang"
+            ],
+            "title": "Automatically correcting large language models: Surveying the landscape of diverse self-correction strategies",
+            "venue": "arXiv preprint arXiv:2308.03188,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dong Huk Park",
+                "Lisa Anne Hendricks",
+                "Zeynep Akata",
+                "Anna Rohrbach",
+                "Bernt Schiele",
+                "Trevor Darrell",
+                "Marcus Rohrbach"
+            ],
+            "title": "Multimodal explanations: Justifying decisions and pointing to the evidence",
+            "venue": "In Proceedings of the IEEE conference on computer vision and pattern recognition,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Vikas Raunak",
+                "Amr Sharaf",
+                "Hany Hassan Awadallah",
+                "Arul Menezes"
+            ],
+            "title": "Leveraging GPT-4 for automatic translation post-editing",
+            "venue": "arXiv preprint arXiv:2305.14878,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Arijit Ray",
+                "Filip Radenovic",
+                "Abhimanyu Dubey",
+                "Bryan A Plummer",
+                "Ranjay Krishna",
+                "Kate Saenko"
+            ],
+            "title": "COLA: How to adapt vision-language models to compose objects localized with attributes",
+            "venue": "arXiv preprint arXiv:2305.03689,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Anna Rohrbach",
+                "Lisa Anne Hendricks",
+                "Kaylee Burns",
+                "Trevor Darrell",
+                "Kate Saenko"
+            ],
+            "title": "Object hallucination in image captioning",
+            "venue": "In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Fawaz Sammani",
+                "Tanmoy Mukherjee",
+                "Nikos Deligiannis"
+            ],
+            "title": "Nlx-gpt: A model for natural language explanations in vision and vision-language tasks",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fawaz Sammani",
+                "Tanmoy Mukherjee",
+                "Nikos Deligiannis"
+            ],
+            "title": "Nlx-gpt: A model for natural language explanations in vision and vision-language tasks",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Christoph Schuhmann",
+                "Richard Vencu",
+                "Romain Beaumont",
+                "Robert Kaczmarczyk",
+                "Clayton Mullis",
+                "Aarush Katta",
+                "Theo Coombes",
+                "Jenia Jitsev",
+                "Aran Komatsuzaki"
+            ],
+            "title": "Laion-400m: Open dataset of clip-filtered 400 million image-text pairs",
+            "venue": "arXiv preprint arXiv:2111.02114,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Christoph Schuhmann",
+                "Romain Beaumont",
+                "Richard Vencu",
+                "Cade Gordon",
+                "Ross Wightman",
+                "Mehdi Cherti",
+                "Theo Coombes",
+                "Aarush Katta",
+                "Clayton Mullis",
+                "Mitchell Wortsman"
+            ],
+            "title": "Laion-5b: An open large-scale dataset for training next generation image-text models",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mustafa Shukor",
+                "Guillaume Couairon",
+                "Matthieu Cord"
+            ],
+            "title": "Efficient vision-language pretraining with visual concepts and hierarchical alignment",
+            "venue": "In 33rd British Machine Vision Conference (BMVC),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mustafa Shukor",
+                "Corentin Dancette",
+                "Matthieu Cord"
+            ],
+            "title": "ep-alm: Efficient perceptual augmentation of language models",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mustafa Shukor",
+                "Corentin Dancette",
+                "Alexandre Rame",
+                "Matthieu Cord"
+            ],
+            "title": "Unified model for image, video, audio and language tasks",
+            "venue": "arXiv preprint arXiv:2307.16184,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Amanpreet Singh",
+                "Ronghang Hu",
+                "Vedanuj Goswami",
+                "Guillaume Couairon",
+                "Wojciech Galuba",
+                "Marcus Rohrbach",
+                "Douwe Kiela"
+            ],
+            "title": "Flava: A foundational language and vision alignment model",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "MosaicML NLP Team"
+            ],
+            "title": "Introducing mpt-7b: A new standard for open-source, commercially usable llms, 2023",
+            "venue": "URL www.mosaicml.com/blog/mpt-7b",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tristan Thrush",
+                "Ryan Jiang",
+                "Max Bartolo",
+                "Amanpreet Singh",
+                "Adina Williams",
+                "Douwe Kiela",
+                "Candace Ross"
+            ],
+            "title": "Winoground: Probing vision and language models for visio-linguistic compositionality",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Louis Martin",
+                "Kevin Stone",
+                "Peter Albert",
+                "Amjad Almahairi",
+                "Yasmine Babaei",
+                "Nikolay Bashlykov",
+                "Soumya Batra",
+                "Prajjwal Bhargava",
+                "Shruti Bhosale"
+            ],
+            "title": "Llama 2: Open foundation and fine-tuned chat models",
+            "venue": "arXiv preprint arXiv:2307.09288,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Maria Tsimpoukelli",
+                "Jacob L Menick",
+                "Serkan Cabi",
+                "SM Eslami",
+                "Oriol Vinyals",
+                "Felix Hill"
+            ],
+            "title": "Multimodal few-shot learning with frozen language models",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ramakrishna Vedantam",
+                "C Lawrence Zitnick",
+                "Devi Parikh"
+            ],
+            "title": "Cider: Consensus-based image description evaluation",
+            "venue": "In Proceedings of the IEEE conference on computer vision and pattern recognition (CVPR),",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "W.F. von Humboldt",
+                "P. Heath",
+                "H. Aarsleff"
+            ],
+            "title": "On Language: The Diversity of Human LanguageStructure and its Influence on the Mental Development of Mankind. Texts in German Philosophy",
+            "venue": "URL https://books.google. fr/books?id=0CXEQwAACAAJ",
+            "year": 1988
+        },
+        {
+            "authors": [
+                "Jianfeng Wang",
+                "Zhengyuan Yang",
+                "Xiaowei Hu",
+                "Linjie Li",
+                "Kevin Lin",
+                "Zhe Gan",
+                "Zicheng Liu",
+                "Ce Liu",
+                "Lijuan Wang"
+            ],
+            "title": "GIT: A generative image-to-text transformer for vision and language",
+            "venue": "Transactions on Machine Learning Research (TMLR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peng Wang",
+                "An Yang",
+                "Rui Men",
+                "Junyang Lin",
+                "Shuai Bai",
+                "Zhikang Li",
+                "Jianxin Ma",
+                "Chang Zhou",
+                "Jingren Zhou",
+                "Hongxia Yang"
+            ],
+            "title": "Unifying architectures, tasks, and modalities through a simple sequence-to-sequence learning framework",
+            "venue": "arXiv preprint arXiv:2202.03052,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Hangbo Bao",
+                "Li Dong",
+                "Johan Bjorck",
+                "Zhiliang Peng",
+                "Qiang Liu",
+                "Kriti Aggarwal",
+                "Owais Khan Mohammed",
+                "Saksham Singhal",
+                "Subhojit Som"
+            ],
+            "title": "Image as a foreign language: Beit pretraining for all vision and vision-language tasks",
+            "venue": "arXiv preprint arXiv:2208.10442,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Fei Xia",
+                "Ed Chi",
+                "Quoc V Le",
+                "Denny Zhou"
+            ],
+            "title": "Chain-of-thought prompting elicits reasoning in large language models",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "M. Werning",
+                "W. Hinzen",
+                "E (Eds.) Machery"
+            ],
+            "title": "The oxford handbook of compositionality",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Spencer Whitehead",
+                "Suzanne Petryk",
+                "Vedaad Shakib",
+                "Joseph Gonzalez",
+                "Trevor Darrell",
+                "Anna Rohrbach",
+                "Marcus Rohrbach"
+            ],
+            "title": "Reliable visual question answering: Abstain rather than answer incorrectly",
+            "venue": "In European Conference on Computer Vision (ECCV),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jialin Wu",
+                "Raymond Mooney"
+            ],
+            "title": "Faithful multimodal explanation for visual question answering",
+            "venue": "In Proceedings of the 2019 ACL Workshop BlackboxNLP: Analyzing and Interpreting Neural Networks for NLP,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Peng Xu",
+                "Wenqi Shao",
+                "Kaipeng Zhang",
+                "Peng Gao",
+                "Shuo Liu",
+                "Meng Lei",
+                "Fanqing Meng",
+                "Siyuan Huang",
+                "Yu Qiao",
+                "Ping Luo"
+            ],
+            "title": "Lvlm-ehub: A comprehensive evaluation benchmark for large vision-language models",
+            "venue": "arXiv preprint arXiv:2306.09265,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhiyang Xu",
+                "Ying Shen",
+                "Lifu Huang"
+            ],
+            "title": "Multiinstruct: Improving multi-modal zero-shot learning via instruction tuning",
+            "venue": "arXiv preprint arXiv:2212.10773,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhenfei Yin",
+                "Jiong Wang",
+                "Jianjian Cao",
+                "Zhelun Shi",
+                "Dingning Liu",
+                "Mukai Li",
+                "Lu Sheng",
+                "Lei Bai",
+                "Xiaoshui Huang",
+                "Zhiyong Wang"
+            ],
+            "title": "LAMM: Language-assisted multi-modal instruction-tuning dataset, framework, and benchmark",
+            "venue": "arXiv preprint arXiv:2306.06687,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiahui Yu",
+                "Zirui Wang",
+                "Vijay Vasudevan",
+                "Legg Yeung",
+                "Mojtaba Seyedhosseini",
+                "Yonghui Wu"
+            ],
+            "title": "Coca: Contrastive captioners are image-text foundation models",
+            "year": 1917
+        },
+        {
+            "authors": [
+                "Weihao Yu",
+                "Zhengyuan Yang",
+                "Linjie Li",
+                "Jianfeng Wang",
+                "Kevin Lin",
+                "Zicheng Liu",
+                "Xinchao Wang",
+                "Lijuan Wang"
+            ],
+            "title": "MM-Vet: Evaluating large multimodal models for integrated capabilities",
+            "venue": "arXiv preprint arXiv:2308.02490,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mert Yuksekgonul",
+                "Federico Bianchi",
+                "Pratyusha Kalluri",
+                "Dan Jurafsky",
+                "James Zou"
+            ],
+            "title": "When and why vision-language models behave like bag-of-words models, and what to do about it",
+            "year": 1936
+        },
+        {
+            "authors": [
+                "Pengchuan Zhang",
+                "Xiujun Li",
+                "Xiaowei Hu",
+                "Jianwei Yang",
+                "Lei Zhang",
+                "Lijuan Wang",
+                "Yejin Choi",
+                "Jianfeng Gao"
+            ],
+            "title": "Vinvl: Revisiting visual representations in vision-language models",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yiyuan Zhang",
+                "Kaixiong Gong",
+                "Kaipeng Zhang",
+                "Hongsheng Li",
+                "Yu Qiao",
+                "Wanli Ouyang",
+                "Xiangyu Yue"
+            ],
+            "title": "Meta-transformer: A unified framework for multimodal learning",
+            "venue": "arXiv preprint arXiv:2307.10802,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhuosheng Zhang",
+                "Aston Zhang",
+                "Mu Li",
+                "Alex Smola"
+            ],
+            "title": "Automatic chain of thought prompting in large language models",
+            "venue": "arXiv preprint arXiv:2210.03493,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tiancheng Zhao",
+                "Tianqi Zhang",
+                "Mingwei Zhu",
+                "Haozhan Shen",
+                "Kyusong Lee",
+                "Xiaopeng Lu",
+                "Jianwei Yin"
+            ],
+            "title": "Vl-checklist: Evaluating pre-trained vision-language models with objects, attributes and relations",
+            "venue": "arXiv preprint arXiv:2207.00221,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zihao Zhao",
+                "Eric Wallace",
+                "Shi Feng",
+                "Dan Klein",
+                "Sameer Singh"
+            ],
+            "title": "Calibrate before use: Improving few-shot performance of language models",
+            "venue": "Proceedings of the 38th International Conference on Machine Learning (ICML),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Deyao Zhu",
+                "Jun Chen",
+                "Xiaoqian Shen",
+                "Xiang Li",
+                "Mohamed Elhoseiny"
+            ],
+            "title": "Minigpt-4: Enhancing vision-language understanding with advanced large language models",
+            "venue": "arXiv preprint arXiv:2304.10592,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wanrong Zhu",
+                "Jack Hessel",
+                "Anas Awadalla",
+                "Samir Yitzhak Gadre",
+                "Jesse Dodge",
+                "Alex Fang",
+                "Youngjae Yu",
+                "Ludwig Schmidt",
+                "William Yang Wang",
+                "Yejin Choi"
+            ],
+            "title": "Multimodal c4: An open, billion-scale corpus of images interleaved with text",
+            "venue": "arXiv preprint arXiv:2304.06939,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "2023a Shukor et al",
+                "2023 Girdhar et al",
+                "2023b Shukor et al",
+                "Zhang"
+            ],
+            "title": "ICL. One of the emerging abilities when scaling LLMs, is In Context Learning (ICL) (Brown et al., 2020; Dong et al., 2022); the ability to adapt the model from demonstrations. Several works target the design of the context prompt to enhance ICL effectiveness (Lu et al., 2022",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhao"
+            ],
+            "title": "2021), and improve the model\u2019s reasoning ability (Wei et al., 2022; Zhang et al., 2022; Chen et al., 2022a). Few works have used ICL for aligning LLMs with human preferences, such as generating safer dialogue (Meade et al., 2023) and producing harmless, honest, and helpful text (Askell et al., 2021). However, the investigation of ICL in the realm LMMs remains limited, where previous studies",
+            "venue": "(Tsimpoukelli et al.,",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "The quest for building generalist assistants has garnered significant attention and effort (OpenAI, 2023; Gao et al., 2023). The recent breakthroughs in Large Language Models (LLMs) (Brown et al., 2020; Chowdhery et al., 2022; Touvron et al., 2023b) represent a promising initial step towards this goal, achieving near-human performance across numerous NLP tasks. However, their confinement to the single textual modality remains a significant limitation in developing universal models. Consequently, the focus has shifted to building multimodal models that transcend generation and understanding across text and images (Huang et al., 2023; Yu et al., 2022; Wang et al., 2022a). The prevailing approach to develop Large Multimodal Models (LMMs), is to build on top of LLMs, bridging the gap between language and the other modalities. Those \u201caugmented language models\u201d (Alayrac et al., 2022; Mialon et al., 2023; Shukor et al., 2023a) beat previous models (Chen et al., 2020; Li et al., 2021; Dou et al., 2021; Shukor et al., 2022) on almost all benchmarks.\nAlthough LMMs have achieved remarkable scores, measuring the task performance alone, such as their prediction accuracy on general benchmarks (e.g., VQA accuracy or CIDEr for captioning), is insufficient to assess their genuine capabilities. For example, performances on those tasks may artificially increase simply by exploiting dataset biases and shortcuts, without truly understanding and\n\u2217Contact: {firstname.lastname}@sorbonne-unversite.fr"
+        },
+        {
+            "heading": "LMM",
+            "text": ""
+        },
+        {
+            "heading": "Abstention Explainability",
+            "text": ""
+        },
+        {
+            "heading": "Compositionality",
+            "text": "abstention, compositionality, explainability and instruction following. In addition to an image <image> and a question T used in zero-shot (ZS), in-context learning (ICL) considers N demonstrations of images-questionsanswers (<image>i,Ti,Ri) as input X , augmented by a function f in our X-ICL.\ngeneralization (Geirhos et al., 2020; Dancette et al., 2021; Du et al., 2022). While evaluating LLMs (Chang et al., 2023; Li et al., 2023d) and small multimodal models (Ma et al., 2023; Dai et al., 2023b) has received attention, the evaluation of recent LMMs has been comparatively overlooked. This is becoming increasingly important as recent works (Alayrac et al., 2022; Shukor et al., 2023b;a), in preliminary investigations, have highlighted qualitatively several major flaws (e.g., hallucinations), showing that LMMs are still not aligned with the needs for deployment in real-world applications.\nAs argued in Askell et al. (2021), LLMs should be helpful, honest, and harmless to align with human preferences. Similarly, we argue that this should also be the case for LMMs, which becomes an urgent requirement with the exponential performance improvements. Thus, LMMs must be helpful (e.g., provide explanations, follow user instructions), honest (e.g., abstention or the ability to say I don\u2019t know, no hallucinations), truthful and harmless (e.g., no hallucinations, especially in critical applications), generalize well and understand semantics (e.g., compositionality). Thus, we start by asking the following question: to which extent LMMs are aligned with human expectations?\nTo provide an answer, we propose a different set of experiments, evaluating LMMs on 5 axes (illustrated in Figure 1). (1) Object hallucinations (OH) (honest, harmless), where LMMs generate text predictions referring to objects not present in the input image (Rohrbach et al., 2018; Dai et al., 2023b). (2) Abstention (honest), or the ability to abstain from answering, to avoid incorrect responses when the input image cannot provide the required information (Whitehead et al., 2022). (3) Compositionality (helpful, generalization) wherein the meaning of the sentence depends only on its constituents (Werning et al., 2012; Lake et al., 2017) allowing to generalize to an infinite number of compositions. Users might ask the model to (4) explain (helpful) its answers as a means to understand the underlying rationale. In addition, a true assistant should engage in conversations with users and (5) precisely follow their complex instructions (helpful) (Liu et al., 2023b). The conclusion of our study is that current LMMs lack proficiency in these aspects, revealing that scaling alone is not enough. Specifically, LMMs generate plausible and coherent answers instead of faithful and truthful ones (Section 2.1), provide answers when they do not know (Section 2.2), lack compositionality (Section 2.3), struggle to provide good explanations (Section 2.4) or precisely follow user instructions (Section 2.5).\nWe then investigate how to tackle these limitations. The current go-to solution to align these models is with training (e.g. instruction tuning, RLHF). Here, we rather focus on efficient approaches. For LLMs, a cheap, and effective alternative to finetuning is In-Context Learning (ICL), which is used to adapt the model to a particular task, a recently have been used to align LLMs (Lin et al., 2023). While ICL has been extensively investigated for LLMs (Lu et al., 2022; Liu et al., 2022; Wei et al., 2022), its application to LMMs has received less attention and mainly focuses on adaptation to new\nimage-text tasks (Tsimpoukelli et al., 2021; Alayrac et al., 2022). In this work, we explore to which extent we can efficiently tackle LMMs flaws using different variants of multimodal ICL. Our main contributions are:\n\u2022 We evaluate 10 recent LMMs (from 3B to 80B) and show important flaws on 5 axes; object hallucinations, answer abstention, compositionality, explainability and instruction following.\n\u2022 We explore Multimodal ICL as a remedy, and study its effect on these abilities. We show that while ICL can help on some aspects (explainability, abstention), it has marginal effect (instruction following), no effect (compositionality) or even worsen hallucinations.\n\u2022 Based on our ICL study, we propose simple and novel ICL variants such as; MultitaskIn-Context-Multitask-Learning (MT-ICL), Chain-of-Hindsight-ICL (CoH-ICL), and SelfCorrecting-ICL (SC-ICL). We show the effectiveness of these variants on several abilities."
+        },
+        {
+            "heading": "2 LMMS EVALUATION AND MULTIMODAL ICL",
+            "text": "Background on LMMs and ICL. We refer by LMMs (Chen et al., 2022b; Alayrac et al., 2022; Huang et al., 2023; Li et al., 2023c) to multimodal models (beyond one modality) that train a large number of parameters (beyond 1B) on large datasets (hundreds of millions of examples). The typical development of such models builds on top of pretrained LLMs and vision encoders, with additional trainable adaptation modules. This strategy was used in the Flamingo (Alayrac et al., 2022) model, showing impressive performance on a myriad of vision-language tasks. This has driven significant efforts in the community to build similar open-source models such as Open Flamingo (OF) (Awadalla et al., 2023) and IDEFICS (Laurenc\u0327on et al., 2023). The architecture of those models consists of a frozen decoder-only LLM (e.g., LLaMA, MPT), frozen vision encoder (e.g., CLIP-ViT) followed by a perceiver resampler, and gated cross-attention injected between LLM blocks. An interesting aspect of those LMMs is the ICL ability (Brown et al., 2020; Dong et al., 2022), allowing adaptation to new tasks with only a few demonstrations in context. Despite being heavily investigated for LLMs, as a way to solve new tasks or enhance reasoning (Wei et al., 2022; Zhang et al., 2022; Chen et al., 2022a), little work (Tsimpoukelli et al., 2021; Alayrac et al., 2022; Huang et al., 2023) addressed ICL for LMMs, which usually focus on solving general benchmarks like VQA, captioning, or classification. For multimodal ICL (M-ICL), LMMs take an input I (e.g., an image <image> and a question/instruction T), preceded by a Context C (e.g., N task demonstrations of images and text with responses R) and generate an output o. M-ICL can be written as follows:\nC = {\u27e8<image>iTiRi<|endofchunk|>\u27e9}N , I = \u27e8<image>T\u27e9, o = LMM([C, I]). (1)\nImplementation details. We consider 10 different models from OpenFlamingo (OF) (Awadalla et al., 2023) and IDEFICS (up to 80B parameters) (Laurenc\u0327on et al., 2023) as described in Table 1. The models mainly change in size, initialization (LLMs), and training data. For ICL, we follow the standard way and randomly select the demonstration examples (without an explicit task instruction, results with task instructions are in Appendix I). We repeat each experiment 3 times and report the averaged results. For zero-shot, we follow other approaches and use 2 examples without images as context (a\u0300 la Flamingo). We provide more details in Appendix C. The details for each benchmark are provided in Appendix E."
+        },
+        {
+            "heading": "2.1 HALLUCINATION",
+            "text": "Hallucinations in text is the tendency of LLMs to generate coherent plausible responses, over factual ones. By analogy, when considering multiple modalities, (Rohrbach et al., 2018) define as object\nhallucinations (OH) the textual description by multimodal models of objects not present in the input image. Addressing OH is critical to avoid any harm, especially in critical applications (e.g. autonomous driving or medical imaging).\nBenchmark. We evaluate the LMMs on COCO captioning dataset. The performance is measured with CIDEr. In addition, to capture OH, we report the CHAIRs metric (Rohrbach et al., 2018) comparing the objects referred in the generated captioning to those actually in the image.\nLMMs suffer from object hallucinations. Figure 2a compares the various LMMs. In zero-shot setup, all LMMs suffer from OH, as seen in the high CHAIRs scores, and in comparison to the much smaller SoTA captioning models (OFA (Wang et al., 2022b) from Shukor et al. (2023b)). This reveals that simply scaling LMMs is not enough to reduce hallucinations. For IDEFICS models, we noticed high hallucinations with zero-shot. More details and comparisons can be found in Appendix F.1.\nICL does not reduce hallucination, but instead amplifies it. We investigate if ICL can reduce hallucinations. We can notice (Figure 2a) that adapting models to the captioning task on COCO with 4-shots reduces OH. Yet, more than 4 shots actually amplify hallucinations, as the CHAIRs metric then increases with the number of shots. This reveals that while the overall metric (CIDEr) is improved with ICL, the generated captions contain more hallucinations. This is less the case for the largest models (IDEFICS-80B) which suffer less from such amplification.\nWhat reduces hallucinations? First, pretraining on more multimodal data seems to reduce hallucinations, as all OFv2 models are better than OFv1. Second, training all model parameters (including the language model) on multimodal instruction datasets significantly reduces hallucinations (IDEFICS9B (I) vs IDEFICS-9B). Third, instruction-tuned models (OFv1-3B (I) vs OFv1-3B and OFv1-4B (I) vs OFv1-4B) tend to hallucinate less with a higher number of ICL shots.\nFinding 1. LMMs suffer from severe hallucinations. A small number of ICL shots partially alleviate it, while increasing them exacerbates the problem, especially for small models (<9B params.). Pretraining on more high-quality data and unfreezing the LLM weights helps to reduce hallucinations."
+        },
+        {
+            "heading": "2.2 ABSTENTION",
+            "text": "LMMs should know when they do not know, and abstain instead of providing incorrect answers. Here we study a scenario where the question can not be answered from the image.\nBenchmark. We evaluate on TDIUC (Kafle & Kanan, 2017), a VQA dataset containing absurd questions (\u223c 22% of a total number of questions), that are not related to the image and thus should not\nbe answered. In case of abstention, the model should generate a specific keyword (\u201cdoesnotapply\u201d). We report the overall accuracy in addition to the F1-score abstention metric (absurd question or not).\nLMMs tend to always give an answer. Figure 2b shows a comparison between different LMMs. From the low zero-shot F1-scores, we can notice that models are hardly able to abstain from answering to absurd questions. Adding an explicit instruction for abstention can help get additional improvements (as further shown in Appendix I).\nICL significantly improves abstention. Increasing the number of context examples (and thus the number of absurd examples), significantly helps abstention. However, even with the best performant model (IDEFICS-9B (I)), the F1-score is still low.\nWhat helps the model to abstain? First, instruction tuning while unfreezing the language model parameters seems to significantly increase the abstention score (IDEFICS vs IDEFICS (I)). Second, increasing model size up to certain scale (9B) improves abstention (OFv2-3B vs OFv2-4B vs. OFv19B). In general, we notice a positive correlation between accuracy and abstention performances.\nFinding 2. LMMs give more likely incorrect answers than abstaining. ICL helps them abstain. Larger models, better quality data, and unfreezing LM weights improve abstention."
+        },
+        {
+            "heading": "2.3 COMPOSITIONALITY",
+            "text": "Compositionality (Hupkes et al., 2020) exists when the meaning of a sentence is determined by its elements, and the rules to compose them. To study this, we evaluate if LMMs\u2019 understanding of a caption is changed when changing its constituents. Benchmark Appendix E. We evaluate on the CREPE benchmark (Ma et al., 2023) that focuses on systematicity (Fodor & Pylyshyn, 1988) and productivity (von Humboldt et al., 1988; Chomsky, 1956). It is an image-text retrieval dataset with hard negatives, constructed by changing the composition of the ground truth captions. Instead of retrieval, we create the task of Image-Text Matching (ITM) (Appendix F.2 for other choices). The model is given one caption and asked to decide whether it describes the image or not. We use the positive and negative captions provided by the benchmark. When evaluated on systematicity, we consider 2 types of negative captions: HN-Atom (replacing atoms, such as objects, attributes, or relations with atomic foils e.g., A grill underneath the porch instead of A grill on top of the porch) and HN-Comp (composing two negative captions constructed with HN-Atom e.g., A blue car and a pink toy instead of A pink car). We noticed similar observations with productivity. To complete our evaluation, we similarly evaluate on SugarCREPE (Hsieh et al., 2023) and put more details and results in Appendix F.\nLMMs are only slightly better than random chance on compositionality. Zero-shot performances in Figure 3 shows that LMMs are close to random on the 3 categories, with only slightly better performance on the HN-Comp. This reveals that, despite scaling the number of model parameters and of training examples, LMMs still lack compositional abilities. The baseline in Figure 3 refers to ITM without hard negative examples (Appendix F.2).\nICL has almost no effect on atomic foils. Interestingly, providing more demonstrations with positive and hard negative examples does not increase accuracy on the HN-Atom split. The models seem unable to detect fine-grained changes to the sentence, despite changing completely its meaning. ICL seems to help on compound foils. On HN-Comp, ICL significantly increases the accuracy, especially with OFv1-9B and IDEFICS-9B (I). Are 80B-parameter models really good at compositionality? In Figure 3, we can notice that the largest models (80B) seem to perform better on the CREPE benchmark. However, it is not clear if this gain is coming from really improving compositionality or exploiting biases in this benchmark, where the hard negative examples are usually longer (Ma et al., 2023), do not always make logical sense, and lack fluency Hsieh et al. (2023). Our study suggests that this improvement is coming rather from biases, which is supported in the poor performance of all LMMs on SugarCREPE Appendix F."
+        },
+        {
+            "heading": "2.4 EXPLAINABILITY",
+            "text": ". Despite the impressive abilities of LMMs, it is still unclear if generations are caused by some underlying complex reasoning based on the input image, or rather on some memorization or bias exploitation. Instead of looking at internal activations and learned features as means of output explanation, we try another and more explicit approach; by asking the model itself for an explanation. Benchmark. We consider VQA-X (Park et al., 2018), a VQA dataset with human-annotated explanations for each image-question-answer triplets, and CIDEr (Vedantam et al., 2015) as the metric to measure the syntactic similarity between the generated explanations and the ground truths. LMMs struggle to provide good quality explanations. To assess to which extent LMMs can explain their answers, we evaluate LMMs in a zero-shot manner. We give the model an image, a question, and the correct answer and ask it to provide a possible explanation. Figure 4 shows that LMMs can provide explanations, however, the explanation quality is very limited and significantly far from existing smaller and finetuned SoTA (Sammani et al., 2022b) (filtered scores). ICL significantly improves model explanations. We evaluate the effectiveness of ICL to improve model explainability. The context consists of a few demonstrations, each one containing an image, question, correct answer, and human written explanation. Figure 4 shows that CIDEr is significantly improved by increasing the number of context demonstrations. Interestingly, while most of LMMs are still lagging, IDEFICS-80B succeed to surpass SoTA.\nLarge scale models are better at explanations. We find a clear positive correlation between model size and the quality of the generated explanation. In addition, training on more and better quality data (IDEFICS vs OF) helps to improve the performance, as well as instruction tuning with language model parameters unfrozen (IDEFICS-9B vs IDEFICS-9B (I)). However, for 80B-parameter models this is not the case, which might be due to overfitting when training the LLM."
+        },
+        {
+            "heading": "2.5 INSTRUCTION FOLLOWING",
+            "text": "Existing multimodal models are trained to solve relatively simple tasks, such as providing shallow image descriptions or providing 1-word answers. These capabilities are not enough to build general assistants that can engage in conversation with humans. Helpful assistants should help humans answer complex questions, precisely following specific instructions and engaging in conversations. Current approaches (Liu et al., 2023b; Dai et al., 2023a) to integrate such abilities are based on instruction tuning, wherein the model is fine-tuned on curated instruction datasets. In this section, we evaluate if LMMs lack this ability and qualitatively investigate if ICL can help. Here we focus on IDEFICS and OFv2-9B, and provide more qualitative results in Appendix F to support our findings. Benchmark. We evaluate the models on the LlaVA dataset (Liu et al., 2023b), which contains 3 types of instructions; giving detailed image descriptions, and answering complex questions and conversations. These instructions are generated with GPT-4 (text-only). For ICL, the demonstrations are selected randomly from the dataset with the same instruction type as the query. We report both qualitative and quantitative evaluation with GPT-4. (Liu et al., 2023b), GPT-4 evaluates the response and gives a score with respect to the ground truth, given also by GPT-4. LMMs are unable to precisely follow user instructions. For models that are not instruction tuned, Figure 5 shows that zero-shot (ZS) LMMs lack the ability to follow user instructions. For example, short descriptions are generated even when detailed ones are explicitly asked; the simple answers do not fully answer complex questions; and the responses in the conversation are unhelpful. This is also reflected by the low ZS scores given to these models by GPT-4. ICL can marginally help to adapt LMMs to follow instructions. ICL adapts the model to follow user instructions. This can be noticed in Figure 5, where the scores increase with the number of ICL shots. Qualitatively, the descriptions are more detailed; the answers to complex questions are richer and more elaborate: and the responses in conversation are more engaging. However, we also confirm here that ICL increases hallucinations, as previously shown in Section 2.1 and further discussed in Appendix J. Interestingly, we show the scores with 2-shots but without images (shown as \u2206\n), the relatively high scores raises more concerns on the effectiveness of ICL for instruction following.\nFinding 5. LMMs do not precisely follow user instructions, and small number of ICL demonstrations makes them more helpful, especially for models without instruction tuning."
+        },
+        {
+            "heading": "3 RECTIFYING THE FLAWS OF LMMS WITH MULTIMODAL ICL (X-ICL)",
+            "text": "In the previous section, we show that ICL is effective in improving LMMs on some axes, such as explainability and abstention. Motivated by this, here we push ICL further and propose new improved variants to address these limitations (Appendix H for more quantitative and qualitative results). Chain-of-Hindsight ICL (CoH-ICL). Chain of Hindsight (CoH) (Liu et al., 2023a) is an alternative approach for aligning LLMs to human preferences. It transforms the feedback into sentences and trains LLMs to generate this feedback. Specifically, the model is trained to generate both helpful and unhelpful responses, and during evaluation, it is prompted with the helpful prompt. Inspired by this, and to avoid costly training, we propose CoH-ICL; a training-free approach that leverages both good and bad responses as kind of in-context demonstrations. Here, we are not limited to human preferences as feedback and use positive and negative responses in general (e.g., from human annotation, previous model generation, random text ...). With T+/R+ and T\u2212/R\u2212 referring to positive and negative demonstrations respectively, Equation (1) for CoH-ICL can be written as:\nC = {\u27e8<image>iTiT+i R + i T \u2212 i R \u2212 i <|endofchunk|>\u27e9}N and I = \u27e8<image>TT +\u27e9. (2)\nTable 2: Explainability. Overall task accuracy and CIDEr for explanations on VQA-X. ICL here refers to single-task ICL (answer or explain).\nModel Method 4-shot 8-shot 16-shot 32-shot\nAcc. CIDEr Acc. CIDEr Acc. CIDEr Acc. CIDEr\nOFv2-9B ICL 69.52 61.43 72.71 74.71 73.11 80.41 72.93 80.51CoH-ICL \u2013 70.76 (+9.33) \u2013 78.97 (+4.26) \u2013 82.27 (+1.86) \u2013 73.22 (-6.29) MT-ICL 74.16 (+5.64) 67.62 (+6.19) 75.79 (+3.08) 74.88 (+0.17) 74.89 (+0.78) 77.24 (-3.83) 74.42 (+2.49) 76.40 (-4.09) IDEFICS-9B ICL 74.63 80.13 75.30 83.45 76.12 88.59 76.03 90.18CoH-ICL \u2013 82.21 (+2.08) \u2013 86.85 (+3.40) \u2013 89.00 (+0.41) \u2013 92.18 (+2.00) MT-ICL 74.80 (+0.17) 81.06 (+0.93) 76.51 (+1.21) 83.51 (+0.06) 76.75 (-0.63) 83.56 (-4.56) 78.03 (+2.0) 85.86 (-4.32)\nExplainability. We leverage CoH-ICL to improve model explainability. The context consists of; an image, question, answer, human annotation as the good response, and previous model\u2019s generation (with ICL 32-shot) as the bad response. Table 2 shows significant improvements over ICL (which uses only the positive human annotations as context). Self-Correcting ICL (SC-ICL). Recently, self-correction in LLMs has received large attention (Pan et al., 2023; Madaan et al., 2023; Raunak et al., 2023). The idea is to use the model itself to automatically correct its generated answers.\nAbstention. We explore a similar approach to help LMMs abstain from answering. Specifically, we first ask the model the question using ICL. Then, for each question, we ask the model to decide whether the question is answerable based on the image or not. In case the model recognizes that the question is not answerable, the previous answer is ignored and replaced with an abstention keyword. The correction is with 32-shot in this step 2 (we consider a smaller number of shots in Appendix H.2). Following Equation (1), the steps 1 and 2 of SC-ICL can be written as: where T2 is a fixed question\nC1 ={\u27e8<image>iTiRi<|endofchunk|>\u27e9}N , I1 = \u27e8<image>T\u27e9, o1 = LMM([C1, I1]), (3) C2 ={\u27e8<image>iT2\u201dTi\u201dR2<|endofchunk|>\u27e9}N , I2 = \u27e8<image>T2\u201dT\u201d\u27e9, o2 = LMM([C2, I2]),\nto ask the model if the following question Ti is relevant to the image, and R2 is yes or no. The final answer is given as a function F of o1 and o2, i.e., o = F (o1, o2). Table 3 shows the results with SC-ICL (32shot). We notice that SC-ICL improves significantly over ICL for both models.\nMultitask ICL (MT-ICL). Multitask learning (Caruana, 1997) aims at leveraging the synergy between tasks, usually by training one model on different related tasks. Different from this, we propose to do multitask learning in context, without changing the model\u2019s weights. Our objective is to benefit from information from other tasks to reduce LMMs flaws. With TjiR j i referring to task j, the context C in Equation (1) for MT-ICL can be written as:\nC = {\u27e8<image>iT1i R1i T2i R2i <|endofchunk|>\u27e9}N and I = \u27e8<image>T1\u27e9. (4)\nFor explainability, we ask the model to simultaneously; answer the question and explain its answers preceded with the prompt \u201dbecause\u201d (we find it better to provide the answer first). With MT-ICL (Table 2) both VQA accuracy and CIDEr are better than single task (ICL). However, we notice some degradation in CIDEr with a higher number of shots. For abstention, the main task is to answer the question and the second auxiliary task is to decide whether the question is relevant to the image. Table 3 shows a significant improvement compared to single task ICL (only answering the question)."
+        },
+        {
+            "heading": "4 RELATED WORK",
+            "text": "Limitations of multimodal models. Efforts have been made to address object hallucinations (Rohrbach et al., 2018) by designing better training objectives (Dai et al., 2023b), incorporating object labels as input (Biten et al., 2022) or costly multi-turn reasoning (Xu et al., 2023). To abstain from answering, recent work has attempted to tackle this problem by training selection functions on top of a VQA model (Whitehead et al., 2022; Dancette et al., 2023). The challenge of compositionality has received significant attention, and multiple evaluation benchmarks have been proposed (Ma et al., 2023; Thrush et al., 2022; Zhao et al., 2022). Some solutions involve training on hard negative examples (Yuksekgonul et al., 2022) or employing improved architectures (Ray et al., 2023). The issue of explainability has been tackled in various ways, such as training auxiliary models to provide explanations (Kayser et al., 2021; Marasovic\u0301 et al., 2020; Wu & Mooney, 2019), or training models that generate both answers and explanations (Sammani et al., 2022a). Furthermore, multimodal models also struggle to follow complex user instructions, as shown in recent work (Liu et al., 2023b; Shukor et al., 2023b). To address this, previous work fine-tune models on instruction tuning datasets (Liu et al., 2023b; Xu et al., 2022; Dai et al., 2023a; Li et al., 2023a; Zhu et al., 2023a). However, current approaches to address these limitations are focused mostly on small specialized multimodal models, and based on expensive finetuning; our ICL solutions are easier and cheaper. Evaluation of LMMs. To achieve a more nuanced evaluation of different model abilities, concurrent works have proposed several benchmarks (Xu et al., 2023; Li et al., 2023b; Yu et al., 2023; Liu et al., 2023c; Yin et al., 2023). These works span evaluating multimodal models on modality comprehension (Li et al., 2023b), different capabilities (Xu et al., 2023) fine-grained tasks (Liu et al., 2023c), complicated tasks (Yu et al., 2023) or high-level 3D tasks (Yin et al., 2023). However, these benchmarks remain focused on task performance, with novelty in creating more fine-grained tasks. Besides, we differ from these benchmarks, as we consider different LMMs with ICL ability, and focus more on limitations/alignment in the context of ICL. In general, there is still a notable lack of work evaluating the limitations of LMMs."
+        },
+        {
+            "heading": "5 DISCUSSION",
+            "text": "Reproducibility statement. Each experiment is repeated 3 times with different context demonstrations. We use public datasets and official open-source implementations provided by respective authors. We release the code and detailed technical instructions to reproduce the results (Appendix D). Limitations. The work has some limitations, further discussed in Appendix J and Appendix A, such as the limited range of abilities that we evaluate and the limited effectiveness of ICL as a partial solution for the studied flaws and models. Conclusion. We evaluate the limitations of recent LMMs on different axes; object hallucination, answer abstention, compositionality, explainability and instruction following. Despite their scale, we find that LMMs still struggle on most of these axes. Besides, we study how ICL can affect these limitations, and find that while it might help on some abilities (e.g., abstention and explainability and instruction following) it can amplify the flaws of LMMs (e.g., hallucination) or has almost no effect at all (e.g., compositionality). We also propose simple ICL variants that help reducing some of the flaws. Yet, we find that the improvements coming from ICL are limited, and more complex ICL variants or other strategies, such as RLHF might be required. Finally, we hope this provides more insights about the limitations of current LMMs, and offer promising directions towards efficiently aligning foundation models (Lin et al., 2023; Li et al., 2023e) to human preferences and expectations.\nAcknowledgments This work was partly supported by ANR grant VISA DEEP (ANR-20CHIA-0022), and HPC resources of IDRIS under the allocation 2022-[AD011013415] and 2023- [AD011013415R1] made by GENCI. We thank Hugo Laurencon for fruitful discussions."
+        },
+        {
+            "heading": "A DISCUSSION",
+            "text": "Other limitations and evaluation axes. The work does not consider all existing limitations. For instance, other kinds of hallucinations, beyond objects (e.g., relations, actions, attributes). For answer abstention, we consider the case when the question is not relevant to the image, but not for example when the question is relevant but unanswerable, or when it requires external knowledge that the model does not know. Other important axes include evaluating the reasoning ability of these models, especially in real situations (e.g., embodiment) and to which extent the model prediction is grounded in the real world.\nICL as a way to address foundation model limitations. Despite being effective in some benchmarks, ICL is still limited in addressing some flaws. The different variants that we propose bring additional improvements. However, more effort should be put into devising more effective variants to obtain reasonable performance. In addition, we noticed that the design of the prompt affects the results, thus more prompt engineering work can help to get additional improvement. The importance of such training-free, post-hoc approaches is, in addition to being efficient, they can be complementary to other training-based ones, such RLHF (Christiano et al., 2017; Bai et al., 2022a) and RLAIF (Bai et al., 2022b). Finally, more effort should be put into understanding why and when ICL works, to help develop better approaches.\nOther LMMs and foundation models. The work addresses one kind of LMMs that are based on the Flamingo architecture. We choose these models, as they obtain the best performance on several multimodal benchmarks, they are open source and exist with different scales. The work can straightforwardly be extended to other multimodal models that have ICL abilities. For the broader family of multimodal models, especially the instruction-tuned ones, we believe that these models are also flawed, and it is important to quantitatively assess their limitations. Besides LMMs, the proposed ICL variants might be also effective in tackling the limitations of LLMs, which have received great attention in recent years.\nBeyond 9B parameters. In this work, we only consider models up to 9B parameters. The effectiveness of ICL is limited on some benchmarks probably due to the model size. In fact, the ICL performance of OF models is not very stable as shown in the original paper (Awadalla et al., 2023) (e.g., sometimes increasing the number of shots decreases the performance on VQA). Thus, it will be interesting to evaluate larger and more powerful models. In addition, as ICL becomes more effective with larger models, X-ICL approaches must be also the case, especially on benchmarks where we noticed positive correlations between scaling and performance. On harder problems such as compositionality, or hallucinations it is uncertain if ICL will become more effective.\nBeyond image-text modalities. While this work addresses image-text models, we argue that similar limitations also exist in models trained on other modalities. We believe the extension of this work, especially the ICL part, is straightforward to models tackling other modalities (e.g., videos-text or audio-text) and have ICL abilities. In fact, we argue that most of the findings on image-text models also hold on other modalities, which is supported by recent works (Shukor et al., 2023a; Girdhar et al., 2023; Shukor et al., 2023b; Zhang et al., 2023) demonstrating the feasibility of extending image-text models or using almost the same image-text techniques to address other modalities.\nPerformance saturation after large number of ICL demonstrations. In our study, we notice that the performance start to saturate after large number of shots (16/32) on most of the benchmarks. This issue can be seen in several previous work, in particular, the original work of OpenFlamingo (Awadalla et al., 2023) and IDEFICS (Laurenc\u0327on et al., 2023). For example, in (Awadalla et al., 2023); the VQA accuracy saturates or even degrades after 4/8 shots. Similarly for IDEFICS, but slightly better. There is multiple possible reasons for why multimodal ICL is not as effective as in LLMs, such as: (a) the multimodal datasets are still an order of magnitude smaller than those for LLMs. In addition, the web documents used to train such models do not contain many interleaved image-text pairs (a lot less than 32), which might hinder the ability of the model to generalize to larger number of in-context demonstrations during test. b) The trainable parameters during pretraining, are relatively small (\u00a115B), and acquiring better ICL ability might require training more parameters for more iterations. Finally, we would like to highlight the lack of in depth analysis of ICL in the context of LMMs, which we keep for future work."
+        },
+        {
+            "heading": "B RELATED WORK",
+            "text": "LMMs. The success of Large Language Models (LLMs) (Brown et al., 2020; Chowdhery et al., 2022; Hoffmann et al., 2022; Touvron et al., 2023b) has spurred considerable efforts to extend the potential of these models to more modalities (Chen et al., 2022b; 2023; Huang et al., 2023; Li et al., 2023c; Wang et al., 2022c). In particular, Large Multimodal Models (LMMs) (Alayrac et al., 2022), or multimodal models (beyond one modality) that train a large number of parameters (beyond 1B parameter) on large datasets (hundreds of millions of examples). Typical LMMs build on top of LLMs, with additional adaptation modules. These models mainly differ in the adaptation modules (Shukor et al., 2023a; Li et al., 2023c), pretraining data (Schuhmann et al., 2021; Zhu et al., 2023b; Laurenc\u0327on et al., 2023), and initialization (LLMs). These LMMs surpass the performance of traditional finetuned multimodal models (Li et al., 2021; Shukor et al., 2022; Dou et al., 2021). Recently, a proprietary model called Flamingo (Alayrac et al., 2022), has been proposed, followed by several open source models such as Open Flamingo (OF) (Awadalla et al., 2023) and IDEFICS (Laurenc\u0327on et al., 2023). While most LMMs are currently tailored to image-text tasks, many works have demonstrated the potential for extension to other modalities (Shukor et al., 2023a; Girdhar et al., 2023; Shukor et al., 2023b; Zhang et al., 2023).\nICL. One of the emerging abilities when scaling LLMs, is In Context Learning (ICL) (Brown et al., 2020; Dong et al., 2022); the ability to adapt the model from demonstrations. Several works target the design of the context prompt to enhance ICL effectiveness (Lu et al., 2022; Liu et al., 2022; Zhao et al., 2021), and improve the model\u2019s reasoning ability (Wei et al., 2022; Zhang et al., 2022; Chen et al., 2022a). Few works have used ICL for aligning LLMs with human preferences, such as generating safer dialogue (Meade et al., 2023) and producing harmless, honest, and helpful text (Askell et al., 2021). However, the investigation of ICL in the realm LMMs remains limited, where previous studies (Tsimpoukelli et al., 2021; Alayrac et al., 2022; Huang et al., 2023) mainly focused on adapting pretrained LMMs to solve general benchmarks like VQA, captioning, or classification."
+        },
+        {
+            "heading": "C BACKGROUND ON LMMS AND BASELINE MODELS",
+            "text": "We consider 10 different LMMs from OpenFlamingo (OF) (Awadalla et al., 2023) and IDEFICS (Laurenc\u0327on et al., 2023) as described in Table 1. For OF models; the multimodal pretraining of all models are done on part of the documents from the Multimodal-C4 dataset (Zhu et al., 2023b) and image-text pairs from the english LAION 2B (Schuhmann et al., 2022). OFv2-4B models are trained additionally on ChatGPT-generated data. Note that, the first version of OF (OFv1-9B) is trained\non less data compared to OFv2 models. For IDEFICS; the multimodal pretraining is done on data from OBELICS (Laurenc\u0327on et al., 2023), LAION (Schuhmann et al., 2022), Wikipedia (Foundation) and PMD (Singh et al., 2022). IDEFICS (I) is trained additionally on several instruction-tuning datasets. The architectures of all models are similar, with the main difference in the model size and initialization (which LLM). Specifically, these models consist of a frozen decoder-only LLM (e.g., LLaMA, MPT), frozen vision encoder followed by a perceiver resampler (e.g., CLIP-ViT) and gated cross-attention injected between LLM blocks. The learnable gate in cross-attentions helps to stabilize the early stage of the training."
+        },
+        {
+            "heading": "D EVALUATION SETUP",
+            "text": "The evaluation of all models are done with zero-shot (a la Flamingo; 2-shot without images) or few-shot ICL, without any finetuning. In the paper, when we refer to evaluation we usually mean to the zero-shot setup. For efficient inference, we use the accelerate library (Gugger et al., 2022) from transformers, and run all OF models with float16 (which leads to very small degradation in performance compared to running with float32). For IDEFICS the inference is done with Bfloat16. For ICL, we follow the standard approach and randomly select the examples from the corresponding datasets. For each benchmark, we randomly sample a subset of examples and divide them into separate query and context examples. Each score that we report is the average of scores after repeating the experiment 3 times. We use the official open-source implementation provided by the models\u2019 authors."
+        },
+        {
+            "heading": "E BENCHMARKS AND METRICS",
+            "text": "COCO (Lin et al., 2014) (object hallucination) is a widely used image captioning dataset. It consists of 118K images for training and 5K for validation and testing. Each image is humanannotated with 5 different captions. We use 5K examples from the validation set. This dataset is used to evaluate object hallucinations with the CHAIR metrics (Rohrbach et al., 2018). These metrics are based on comparing the textual objects in the generated captions to the actual objects present in the image (from the segmentation annotation of COCO images).\nTDIUC (Kafle & Kanan, 2017) (abstention) is a VQA dataset with 168K images and 1.6M questions divided into 12 types. The questions are imported from COCO, VQA, and Visual Genome in addition to some annotated questions. One type of them is absurd questions (366K nonsensical queries about the image). We sample 8K examples ( 22% of them absurd questions) for evaluation. To report the abstention metrics, we use the same metrics used in binary classification; accuracy and F1-score which is the harmonic mean of the precision and recall.\nCREPE (Ma et al., 2023) (compositionality) is a large-scale benchmark to evaluate compositionality (productivity and systematicity) in vision-language models. Based on the visual genome dataset, they propose an automated pipeline to generate hard negative captions. In this work, we focus on systematicity. For HN-Atom, the hard negatives are created by replacing the objects, attributes, and relationships in the ground truth captions with an atomic foil (e.g., antonyms). For HN-Comp, they concatenate two compounds, and each one of them contains an atomic foil. We evaluate on 5K examples, randomly sampled from a test set designed for LAION (as the evaluated models use LAION during pretraining). The main difference to our work is that instead of image-text retrieval, we consider this benchmark as image-text matching (ITM) or image-text selection (ITS; where the model is given a correct and incorrect caption and the task is to select which one describes the image). For these created tasks, we report the binary classification accuracy (e.g., for ITM if the caption describes the image or not). We stick to the accuracy as we sample balanced context demonstrations.\nSugarCREPE (Hsieh et al., 2023). Is a benchmark to remedy the previous hackable datasets, by reducing the biases and shortcuts that can be exploited when evaluating compositionality. This is mainly due to using LLMs instead of rule-based templates to create hard negative examples. It covers 7 types of hard negatives; replace (objects, attributes, and relations), swap (objects and attributes) and add (objects and attributes). Each image is associated with a positive description (image caption) and several hard negative descriptions.\nVQA-X (Park et al., 2018) (explainability) is based on the VQA and VQAv2 datasets, and contains 32K question/answer pairs and 41K explanations annotated by humans. The explanations are intended to explain the ground truth answer for the question, based on the corresponding image. We use the test set of this benchmark (1.9K pairs and 5.9K explanations). To evaluate the explainability performance, we consider captioning metrics such as CIDEr that are based on the syntactic similarity between the generated explanations and ground truth ones (annotated by humans).\nLlaVA (Liu et al., 2023b) (instruction following) consists of synthetically generated instructions of images from the COCO dataset. The authors use GPT-4 (OpenAI, 2023) to generate intricate instructions that can be categorized into 3 categories; 23K detailed descriptions, 77K complex questions, and 58K examples of conversations between humans and an AI agent. To generate the instruction, GPT-4 (text-only) is prompted with several handcrafted examples (ICL). To make it understand images, the image is transformed into a set of bounding boxes and captions, passed as a sequence of textual tokens to GPT-4. For each category, we sample randomly some examples from the dataset of the same category. GPT-4 is used to evaluate models quantitatively (Liu et al., 2023b). Specifically, we ask text-only GPT-4 to evaluate the performance and give a an overall score. However, evaluation based on LLMs are biased and might contain some flaws."
+        },
+        {
+            "heading": "F ADDITIONAL EVALUATION EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "F.1 HALLUCINATION",
+            "text": "In Table 4, we provide a comparison with other multimodal models. Most of these models are finetuned on COCO dataset, except for OFA and UnIVAL (that use COCO only during pretraining). Despite being an order of magnitude larger, LMMs generally hallucinate more than other baseline models. This might be due mainly to training on COCO dataset and not relying on LLMs. For IDEFICS models, we noticed very high hallucination when evaluated in zero-shot a la Flamingo."
+        },
+        {
+            "heading": "F.2 COMPOSITIONALITY",
+            "text": "CREPE. In Figure 6, we complete our evaluation on the CREPE benchamrk by adding the results for HN-Atom + HN-Comp.\nSugarCREPE. We evaluate LMMs on SugarCREPE. Figure 7 shows that all LMMs suffer on this benchmark, revealing that previous improvements on CREPE is coming mainly from biases in the dataset, rather than acquiring compositional ability.\nComparison between ITM and ITS. Figure 8 provide a comparison between ITS (HN-ITS) and ITM (HN-ITM) on the CREPE benchmark. We notice that ITS is much harder than ITM with hard negatives. We also include two baselines (ITM and ITS) where the negative caption is sampled randomly from the COCO dataset. Without hard negatives, LMMs perform very well, revealing\nthat the poor results with (HN-ITM/ITS) are mostly due to a lack of compositionality and not the difficulty of the task itself.\nF.3 INSTRUCTION FOLLOWING\nWe provide additional quantitative Figure 9 and qualitative results for instruction following; detailed descriptions (Figure 11), answering complex questions (Figure 12), and conversation with humans (Figure 13) from the LlaVA benchmark. Discussion about the limitations can be found in Appendix J.\nO Fv\n2- 9B\nID\nEF IC\nS\nInstruction: Explain the visual content of the image in great detail."
+        },
+        {
+            "heading": "The giraffe's habitat is the savanna",
+            "text": "The giraffe's habitat can be inferred from this image to be a savanna, which is a type of grassland that is characterized by scattered trees and shrubs. Savannas are typically found in tropical and subtropical climates and are home to a wide variety of animals, including giraffes, zebras, antelopes, and other herbivores.\nThe giraffe's habitat appears to be a savannah\nThe image shows a giraffe standing in a grassy field, which suggests that the giraffe's habitat is a grassland or savanna. Giraffes are herbivores, which means that they only eat plants and other plant-based foods. Grasslands and savannas are ideal habitats for giraffes, as they offer a variety of grasses and other plants for grazing. Giraffes are also known for their long necks, which allow them to easily reach high-growing plants.\nThe dog may have chosen to lay down on the floor in this location because it was the most comfortable place for him to lie down\nWhy might the dog have chosen to lay down on the floor in this location?\nThe dog may have chosen to lay down on the floor in this location because it is a comfortable and familiar place for the dog to rest. The dog may also have chosen to lay down on the floor in this location because it is a safe place for the dog to rest, as the floor is unlikely to have any sharp objects that could cause injury to the dog\nThe dog has chosen to lay down on the floor in this location because the floor is cooler than the rest of the room. The dog has chosen to lay down on the floor in this location because the floor is cooler than the rest of the room.\nThe dog may have chosen to lay down on the floor in this location because it is a comfortable and convenient place to rest. The floor is soft and inviting, and the dog can easily stretch out and relax. Additionally, the floor is close to the food and water bowls, making it easy for the dog to get up and eat or drink when it is hungry or thirsty. Finally, the dog may have chosen to lay down on the floor in this location because it is a\nHe is wearing a helmet\nWhy is the little boy's precaution noteworthy?\nhe little boy's precaution is noteworthy because he is wearing a helmet while riding his bicycle. Helmets are an essential piece of protective gear for bicyclists, as they can reduce the risk of head injuries in the event of a crash or fall. Additionally, helmets can also protect the bicyclist's head from the sun's harmful UV rays\nThe little boy is wearing a helmet\nThe little boy in the image is wearing a helmet while riding his bicycle. This precaution is noteworthy because it shows that he is aware of the risks associated with riding a bicycle and is taking measures to protect himself from potential injuries. It is important to wear a helmet while riding a bicycle to reduce the risk of head injuries in the event of a fall or collision. Wearing a helmet can also help reduce the severity of injuries in the event of an accident\nZS:\nICL:\nZS:\nICL:\nFigure 12: Illustration of instruction following on complex questions.\nO Fv\n2- 9B\nID\nEF IC\nS\nInstruction: Q: What objects are incorporated into the artwork or installation? A:The artwork or installation includes picture frames, potted plants, and a large white planter or vase as key elements, creating an attractive and unique landscape design. Q:What could be the purpose or intent behind this artistic installation?"
+        },
+        {
+            "heading": "A: The purpose or intent behind this artistic installation is to create an attractive and unique landscape design.",
+            "text": "A: The purpose or intent behind this artistic installation could be to create a whimsical and visually appealing landscape design. The use of picture frames, potted plants, and a large white planter or vase could be intended to evoke a sense of playfulness and creativity, while the incorporation of natural elements such as plants and flowers could be intended to create a sense \u2026"
+        },
+        {
+            "heading": "A: The purpose or intent behind this artistic installation is to",
+            "text": "create an attractive and unique landscape design.\nA: A vegetable market is a place where people go to buy fresh vegetables and fruits. It is a place where people go to buy fresh vegetables and fruits.\nQ: What are the two hands doing in the image? A:The two hands are extended over a table of vegetables, with one hand giving money to the other hand for a purchase at a vegetable stand. Q:Can you describe the atmosphere and importance of a vegetable market?\nA vegetable market is a place where people can buy fresh produce, such as fruits, vegetables, herbs, and spices. The atmosphere of a vegetable market can be bustling and lively, with people buying and selling produce, as well as interacting with one another.\nA: A vegetable market is a place where people go to buy fresh vegetables. The atmosphere is usually very busy and noisy, with lots of people buying and selling vegetables. The importance of a vegetable market is that it is a place where people can buy fresh, healthy vegetables\nA: improve the appearance of this bedroom, the bed should be made and the bedding should be arranged neatly\nQ: What makes the bedroom appear messy? A:The bedroom appears messy due to the unkempt bed with disarranged bedding, and the cluttered dresser, which has various items scattered around. The disorganization \u2026.. Q:What are some ways to improve the appearance of this bedroom?\nA: The appearance of the bedroom can be improved by tidying up the bed and dresser, as well as organizing the various items on the dresser. This would involve making the bed, arranging the bedding in a neat and orderly manner, and placing the items on the dresser in an organized fashion. Additionally, the room could benefit from some decorative touches, such as adding \u2026\nZS:\nICL:\nZS:\nICL: A vegetable market is a place where people can buy fresh vegetables and other food items. It is an important part of the local community, as it provides a place for people to gather and socialize while shopping for food. It is also a place where people can learn about different types of vegetables and how to prepare them, which can be helpful for those who are new to cooking or are looking to expand their culinary repertoire.In conclusion, a vegetable market is an important part of the local community, as it provides a place for people to gather and socialize while shopping for food. It is also a place where people can learn about different types of vegetables and how to prepare them, which can be helpful for those who are new to cooking or are looking to expand their culinary repertoire A: The purpose or intent behind this artistic installation could be to create an eye-catching and visually appealing landscape design for a garden or outdoor space. The incorporation of picture frames, potted plants, and a large white planter or vase could be used to create a cohesive and harmonious landscape design that is both aesthetically pleasing and functional.\nA: There are several ways to improve the appearance of this bedroom. First, the bed should be made and the bedding should be tucked in. Second, the dresser should be cleaned and organized. Third, the floor should be swept and vacuumed. Fourth, the windows should be cleaned. Fifth, the curtains should be cleaned. Sixth, the walls should be cleaned. Seventh, the furniture should be dusted. Eighth, the carpet should be vacuumed. Ninth, the closet should be cleaned. Tenth, the mirror should be cleaned\nA: There are several ways to improve the appearance of this bedroom. First, the bed should be made and the bedding should be tucked in neatly. Second, the dresser should be cleaned and organized, with items placed neatly on the shelves and drawers. Third, the floor should be swept and vacuumed to remove any dust or debris. Finally, the room should be tidied up by putting away any items that are out of place.In conclusion, the bedroom depicted in the image appears messy due to the unkempt bed and cluttered dresser. However, there are several ways to improve the appearance of the room, such as making the bed, cleaning the dresser, sweeping and vacuuming the floor, and tidying up any items that are out of place. By following these steps, the bedroom can be transformed into a clean and organized space that is conducive to rest and relaxation\nFigure 13: Illustration of instruction following on conversations."
+        },
+        {
+            "heading": "G ADDITIONAL DETAILS FOR X-ICL",
+            "text": ""
+        },
+        {
+            "heading": "ICL:",
+            "text": "Chain-of-Hindsight ICL (CoH-ICL). Chain of Hindsight (CoH) (Liu et al., 2023a) consists of training the model to generate both helpful and unhelpful answers, by providing both answers as input to the LLM, each preceded by a the corresponding prompt (e.g. \u201dhelpful answer:\u201d, \u201dunhelpful answer:\u201d). Inspired by this, we propose CoH-ICL. Specifically, for each image we collect a positive and negative description. The good/positive description (image caption) is annotated by humans and the bad/negative description is generated by the model itself. As illustrated in Figure 14, during ICL the context consists of several examples as follows; an image, question, answer, human annotation as the good response, and previous model\u2019s generation (with ICL 32-shot) as the bad response. More formally, Equation (1) for CoH-ICL can be written as:\nC = {\u27e8<image>iTiT+i R + i T \u2212 i R \u2212 i <|endofchunk|>\u27e9}N and I = \u27e8<image>TT +\u27e9. (5)\nwhere T+/R+ and T\u2212/R\u2212 refer to positive and negative demonstrations respectively.\nSelf-Correcting ICL (SC-ICL). Self-correction (SC) (Pan et al., 2023; Madaan et al., 2023; Raunak et al., 2023), consists of using the model itself to automatically correct its generated answers. We explore similar approach to help the model abstain from answering. As illustrated in Figure 15, our SC-ICL consists of the following steps:\n1. We first simply ask the model the question Q using ICL, and the model gives an answer A. This is the typical ICL approach used to evaluate the model on different VQA benchmarks.\n2. Then, we provide the same question Q as input and ask the model if it is relevant or answerable given the image.\n3. In case the model recognizes that the question Q is not answerable, the previous answer A is ignored and replaced with an abstention keyword. Note that, in case of SC, usually the model itself correct the answers, but here we employ this heuristic mechanism.\nFormally, the SC-ICL steps can be compressed in 2 steps as follows:\nC1 ={\u27e8<image>iTiRi<|endofchunk|>\u27e9}N , I1 = \u27e8<image>T\u27e9, o1 = LMM([C1, I1]), (6) C2 ={\u27e8<image>iT2\u201dTi\u201dR2<|endofchunk|>\u27e9}N , I2 = \u27e8<image>T2\u201dT\u201d\u27e9, o2 = LMM([C2, I2]),\nwhere T2 is a fixed question to ask the model if the following question Ti is relevant to the image, and R2 is yes or no. The final answer is given as a function F (heuristics) of o1 and o2, i.e., o = F (o1, o2)."
+        },
+        {
+            "heading": "ICL:",
+            "text": "Multitask ICL (MT-ICL). Multitask learning (Caruana, 1997) consists of training the same model on different tasks. We propose to do multitask learning in context. Specifically, the demonstrations contain two tasks, such as simultaneously answering the question and deciding whether the question is answerable or not. Figure 16 illustrate MT-ICL for model abstention. More formally, With TjiR j i referring to task j, the context C in Equation (1) for MT-ICL can be written as:\nC = {\u27e8<image>iT1i R1i T2i R2i <|endofchunk|>\u27e9}N and I = \u27e8<image>T1\u27e9. (7)"
+        },
+        {
+            "heading": "H ADDITIONAL X-ICL EXPERIMENTS",
+            "text": "Here we provide additional experiments with different X-ICL variants to address hallucinations, abstention, compositionality, and explainability. We skip the instruction following ability as we do not have quantitative metrics to measure the improvements over ICL."
+        },
+        {
+            "heading": "H.1 EXPLAINABILITY",
+            "text": "CoH-ICL. Table 6 provides additional results with CoH-ICL. CoH-ICL significantly improves the scores over ICL with all models. We also provide some qualitative results in Figure 14 to illustrate the approach.\nMT-ICL. Figure 17 shows a comparison between different LMMs. LMMs answer the question and then provide an explanation. Increasing the number of shots in ICL significantly improves both tasks. Interestingly, IDEFICS (I) is able to surpass the current SoTA (NLX-GPT (Sammani et al., 2022b) unfiltered scores). In addition, Table 6 provide results for different models. Compared to ICL, the overall accuracy is increased with OFv1, OFv2, and IDEFICS models. For CIDEr, the improvement is mostly with a small number of shots, except IDEFICS (I)."
+        },
+        {
+            "heading": "H.2 ABSTENTION",
+            "text": "SC-ICL. In Table 7, we provide the results with SC-ICL (correction with the same number of shots in both SC steps) and SC-ICL (32 shots) (correction with 32 shots). SC-ICL (32shot) is significantly better than SC-ICL which is expected as classifying questions (relevant to the image or not) is better with more shots. We illustrate SC-ICL in Figure 15. With IDEFICS (I) model, the model tends to answer the question instead of deciding if it is relevant or not (which might also be the reason why the improvement margin with IDEFICS is generally smaller than OF models). More adapted prompts should fix that, which we keep for future work.\nMT-ICL. The model here, simultaneously answers the question and decides whether the question is relevant to the image or not. Table 7 shows that MT-ICL is better than ICL on answer abstention, especially with a small number of shots. We illustrate MT-ICL in Figure 16.\nTable 7: Abstention. We evaluate the ability the model to abstain on the TDIUC dataset.\nModel Method Acc. | Absurd Acc. | Absurd F1 4-shot 8-shot 16-shot 32-shot\nOFv1-9B\nICL 37.14 67.82 31.04 44.71 69.96 43.90 52.87 76.64 57.80 57.16 79.40 63.87 MT-ICL 42.49 72.75 36.17 47.33 74.34 47.6 52.63 76.68 57.31 55.83 77.49 62.88 SC-ICL 39.82 62.52 41.61 46.49 68.01 49.64 53.53 75.10 59.35 57.23 78.13 64.92 SC-ICL (32shot) 45.34 70.72 52.00 50.53 73.30 57.11 54.98 76.75 62.46 57.22 78.10 64.86\nOFv2-9B\nICL 40.93 73.46 28.27 44.71 75.50 42.02 46.83 77.84 51.80 46.63 79.13 56.44 MT-ICL 47.99 77.18 29.99 48.41 76.98 48.09 49.13 76.40 54.58 48.83 78.09 59.14 SC-ICL 43.32 70.93 42.50 47.26 72.76 52.57 47.75 75.56 56.57 48.25 77.7 60.16 SC-ICL (32shot) 44.38 73.3 47.34 46.92 74.95 52.85 48.38 76.51 57.41 47.86 77.49 59.93\nIDEFICS-9B\nICL 45.41 74.73 32.00 51.89 77.12 47.51 58.01 80.39 60.22 61.94 81.75 67.45 MT-ICL 48.30 76.61 37.82 51.80 78.90 48.69 54.76 81.26 59.55 58.51 82.67 67.57 SC-ICL 45.13 68.49 43.23 52.27 74.67 53.41 58.75 79.64 62.55 62.66 81.84 68.62 SC-ICL (32shot) 49.56 77.06 49.56 54.75 78.89 57.76 59.21 80.73 64.16 62.77 82.01 68.96\nIDEFICS-9B (I) ICL 59.57 79.34 29.91 63.30 82.65 46.23 66.94 85.85 61.16 70.69 88.35 72.75MT-ICL 60.24 79.77 35.38 63.64 83.30 50.82 68.20 86.17 64.88 68.66 86.91 68.39"
+        },
+        {
+            "heading": "H.3 OBJECT HALLUCINATIONS",
+            "text": "MT-ICL. For object hallucinations, we use object recognition (listing existing objects in the image without localization) as an auxiliary task (using the prompt \u201dThere is only these objects:\u201d). The motivation is that recognizing objects in the image might push the model to describe only seen objects. From Table 8, we noticed that this approach reduces object hallucinations when the hallucinations is significant (OFv1-9B and IDEFICS).\nTable 8: Hallucinations. We evaluate object hallucinations on the COCO dataset.\nModel Method CIDEr | CHAIRS | CHAIRI\n4-shot 8-shot 16-shot 32-shot\nOFv1-9B ICL 75.36 13.53 10.82 78.98 13.78 10.90 81.38 13.94 11.08 83.82 14.08 11.11MT-ICL 73.88 12.38 10.34 77.60 12.68 10.49 80.5747 13.32 10.59 81.57 13.04 10.41\nOFv2-9B ICL 87.43 5.02 4.15 96.29 6.93 5.28 98.69 7.99 6.05 99.55 9.00 6.70MT-ICL 90.46 5.64 4.54 94.13 6.43 5.03 96.01 8.03 6.16 94.60 10.74 8.25\nIDEFICS-9B ICL 100.54 9.39 6.96 102.15 9.27 6.81 102.19 9.37 6.88 103.18 9.56 6.99MT-ICL 96.44 7.76 6.08 99.70 8.08 6.13 101.72 7.73 5.94 103.80 7.66 5.85\nIDEFICS-9B (I) ICL 133.89 3.76 2.56 136.12 3.90 2.65 136.81 3.88 2.62 136.56 3.89 2.60MT-ICL 129.84 4.79 3.15 132.55 4.42 2.96 134.25 4.36 2.97 135.99 3.78 2.62"
+        },
+        {
+            "heading": "H.4 COMPOSITIONALITY",
+            "text": "Table 9: Compositionality. We evaluate compositionality on the CREPE benchmark.\nModel Method HN-Atom | HN-Comp | HN-Atom + HN-Comp 4-shot 8-shot 16-shot 32-shot\nOFv1-9B ICL 56.48 63.55 59.54 57.4 68.21 60.74 57.57 79.77 66.51 56.32 85.44 67.39 MT-ICL 57.57 64.88 60.58 56.47 69.89 61.83 58.31 77.55 64.60 59.62 81.28 67.99\nOFv2-9B ICL 55.70 58.93 56.64 53.32 61.06 56.63 54.32 69.67 58.71 52.20 75.61 60.59 MT-ICL 57.18 68.54 61.00 55.67 78.74 63.94 54.52 88.53 68.45 52.88 84.85 66.96\nIDEFICS-9B ICL 58.98 64.31 61.41 58.38 71.59 63.11 59.54 80.24 68.13 60.54 86.39 71.49 MT-ICL 56.86 65.25 60.71 57.32 71.99 62.62 58.45 78.56 66.46 59.90 83.28 71.39\nIDEFICS-9B (I) ICL 53.58 55.63 55.64 54.67 56.50 55.67 55.08 58.47 55.40 56.90 66.25 59.26 MT-ICL 56.26 56.92 56.32 56.26 59.03 57.10 58.09 61.68 58.83 55.13 58.70 57.18\nMT-ICL Here, we also consider object detection as an auxiliary task, if the model is able to detect the objects in the image, it should be able to recognize when the caption description is false (when randomly replacing objects in the caption with atomic foils). In Table 9, MT-ICL seems to have a positive effect on HN-Comp, where the ITM accuracy is significantly improved. We notice that this approach works when the performance on compositionality is lower (OFv2 and IDEFICS (I))"
+        },
+        {
+            "heading": "I CAN TASK INSTRUCTIONS HELP ICL?",
+            "text": "In practice, LLMs are augmented with a relatively long instruction, explicitly describing the task. In this section, we investigate if giving the model an explicit instruction (illustrated in Table 10) can help. We show the results in Table 11. We can notice that the added instructions can bring significant improvements with a small number of shots. However, when adding more demonstrations (8/16/32- shot) the effect of the instructions starts to be negligible. This is expected, as more demonstrations will help the model infer more easily the task from the context examples."
+        },
+        {
+            "heading": "J LIMITATIONS",
+            "text": "Despite being effective in adapting the model to follow user instructions, we noticed that ICL has several limitations. Mainly, while the responses are longer and richer, they sometimes include significant hallucinations. In addition, they might include inaccurate and wrong statements that contradict what is seen in the image. Some of these limitations can be seen in Figure 18.\nJ.2 X-ICL\nX-ICL variants partially solve the flaws of LMMs, here we highlight X-ICL limitations to provide more inspiration for the community to devise better variants."
+        },
+        {
+            "heading": "ICL:",
+            "text": "CoH-ICL. This variant also suffers from several limitations as illustrated in Figure 19. In the case of explainability, the generated output is more like an image description than an actual explanation. ICL can introduce some hallucinations and provide unhelpful explanations.\nSC-ICL. As illustrated in Figure 20, SC-ICL can fail on some abstention cases such as not recognizing the question as absurd or relevant. In addition, we correct only in case we classify the\nquestion as irrelevant, thus we do not consider the case when the model abstains in step 1 and then classify the question as relevant in step 2."
+        },
+        {
+            "heading": "ICL:",
+            "text": "MT-ICL. Figure 21 shows some failure cases with MT-ICL on answer abstention. Sometimes there is an inconsistency between the output of the main and auxiliary task such as replying \u201ddoesnotapply\u201d and classifying the image as relevant. MT-ICL does not seem to help correctly respond to the question and fails to detect some abstention cases."
+        }
+    ],
+    "title": "REDUCING THE FLAWS OF LARGE MULTIMODAL MOD- ELS WITH IN-CONTEXT LEARNING",
+    "year": 2024
+}
