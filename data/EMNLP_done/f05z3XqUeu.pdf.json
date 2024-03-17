@@ -1,0 +1,910 @@
+{
+    "abstractText": "Implementing effective control mechanisms to ensure the proper functioning and security of deployed NLP models, from translation to chatbots, is essential. A key ingredient to ensure safe system behaviour is Out-Of-Distribution (OOD) detection, which aims to detect whether an input sample is statistically far from the training distribution. Although OOD detection is a widely covered topic in classification tasks, most methods rely on hidden features output by the encoder. In this work, we focus on leveraging soft-probabilities in a black-box framework, i.e. we can access the soft-predictions but not the internal states of the model. Our contributions include: (i) RAINPROOF a Relative informAItioN Projection OOD detection framework; and (ii) a more operational evaluation setting for OOD detection. Surprisingly, we find that OOD detection is not necessarily aligned with task-specific measures. The OOD detector may filter out samples well processed by the model and keep samples that are not, leading to weaker performance. Our results show that RAINPROOF provides OOD detection methods more aligned with task-specific performance metrics than traditional OOD detectors.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Maxime Darrin"
+        },
+        {
+            "affiliations": [],
+            "name": "Pablo Piantanida"
+        },
+        {
+            "affiliations": [],
+            "name": "Pierre Colombo"
+        }
+    ],
+    "id": "SP:bd12f44170926f07f3a687c16e18e5b5a2fdb30f",
+    "references": [
+        {
+            "authors": [
+                "Udit Arora",
+                "William Huang",
+                "He He."
+            ],
+            "title": "Types of out-of-distribution texts and how to detect them",
+            "venue": "arXiv preprint arXiv:2109.06827.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Leon Brillouin."
+            ],
+            "title": "The negentropy principle of information",
+            "venue": "Journal of Applied Physics, 24(9):1152\u2013 1163.",
+            "year": 1953
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Emile Chapuis",
+                "Pierre Colombo",
+                "Matteo Manica",
+                "Matthieu Labeau",
+                "Chlo\u00e9 Clavel."
+            ],
+            "title": "Hierarchical pre-training for sequence labelling in spoken dialog",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2020, pages 2636\u20132648,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Pierre Colombo",
+                "Eduardo D.C. Gomes",
+                "Guillaume Staerman",
+                "Nathan Noiry",
+                "Pablo Piantanida"
+            ],
+            "title": "Beyond mahalanobis-based scores for textual ood detection",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pierre Jean A Colombo",
+                "Chlo\u00e9 Clavel",
+                "Pablo Piantanida."
+            ],
+            "title": "Infolm: A new metric to evaluate summarization & data2text generation",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, volume 36, pages 10554\u201310562.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Kartikay Khandelwal",
+                "Naman Goyal",
+                "Vishrav Chaudhary",
+                "Guillaume Wenzek",
+                "Francisco Guzm\u00e1n",
+                "Edouard Grave",
+                "Myle Ott",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Unsupervised cross-lingual representation learning at scale",
+            "venue": "arXiv",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "I. Csiszar",
+                "F. Matus."
+            ],
+            "title": "Information projections revisited",
+            "venue": "IEEE Transactions on Information Theory, 49(6):1474\u20131490.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Imre Csisz\u00e1r."
+            ],
+            "title": "Information-type measures of difference of probability distributions and indirect observation",
+            "venue": "studia scientiarum Mathematicarum Hungarica, 2:229\u2013318.",
+            "year": 1967
+        },
+        {
+            "authors": [
+                "Imre Csisz\u00e1r."
+            ],
+            "title": "I-divergence geometry of probability distributions and minimization problems",
+            "venue": "The annals of probability, pages 146\u2013158.",
+            "year": 1975
+        },
+        {
+            "authors": [
+                "Imre Csisz\u00e1r."
+            ],
+            "title": "Sanov property, generalized iprojection and a conditional limit theorem",
+            "venue": "The Annals of Probability, pages 768\u2013793.",
+            "year": 1984
+        },
+        {
+            "authors": [
+                "Geli Fei",
+                "Bing Liu."
+            ],
+            "title": "Breaking the closed world assumption in text classification",
+            "venue": "Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, pages 506\u2013514.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Eduardo Dadalto Camara Gomes",
+                "Florence Alberge",
+                "Pierre Duhamel",
+                "Pablo Piantanida."
+            ],
+            "title": "Igeood: An information geometry approach to out-of-distribution detection",
+            "venue": "arXiv preprint arXiv:2203.07798.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Matan Haroush",
+                "Tzviel Frostig",
+                "Ruth Heller",
+                "Daniel Soudry"
+            ],
+            "title": "A statistical framework for efficient out of distribution detection",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Matthias Hein",
+                "Maksym Andriushchenko",
+                "Julian Bitterwolf."
+            ],
+            "title": "Why relu networks yield highconfidence predictions far away from the training data and how to mitigate the problem",
+            "venue": "2019 IEEE/CVF Conference on Computer Vision and Pat-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ernst Hellinger."
+            ],
+            "title": "Neue begr\u00fcndung der theorie quadratischer formen von unendlichvielen ver\u00e4nderlichen",
+            "venue": "Journal f\u00fcr die reine und angewandte Mathematik, 1909(136):210\u2013271.",
+            "year": 1909
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Kevin Gimpel."
+            ],
+            "title": "A baseline for detecting misclassified and out-of-distribution examples in neural networks",
+            "venue": "arXiv preprint arXiv:1610.02136.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Kevin Gimpel."
+            ],
+            "title": "A baseline for detecting misclassified and out-of-distribution examples in neural networks",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Yen-Chang Hsu",
+                "Yilin Shen",
+                "Hongxia Jin",
+                "Zsolt Kira."
+            ],
+            "title": "Generalized odin: Detecting out-ofdistribution image without learning from out-ofdistribution data",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Haiwen Huang",
+                "Zhihan Li",
+                "Lulu Wang",
+                "Sishuo Chen",
+                "Bin Dong",
+                "Xinyu Zhou."
+            ],
+            "title": "Feature space singularity for out-of-distribution detection",
+            "venue": "arXiv preprint arXiv:2011.14654.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Edwin T Jaynes."
+            ],
+            "title": "Information theory and statistical mechanics",
+            "venue": "Physical review, 106(4):620.",
+            "year": 1957
+        },
+        {
+            "authors": [
+                "John F Kelley."
+            ],
+            "title": "An iterative design methodology for user-friendly natural language office information applications",
+            "venue": "ACM Transactions on Information Systems (TOIS), 2(1):26\u201341.",
+            "year": 1984
+        },
+        {
+            "authors": [
+                "Solomon Kullback."
+            ],
+            "title": "Information theory and statistics",
+            "venue": "Courier Corporation.",
+            "year": 1954
+        },
+        {
+            "authors": [
+                "Solomon Kullback."
+            ],
+            "title": "Information Theory and Statistics",
+            "venue": "John Wiley.",
+            "year": 1959
+        },
+        {
+            "authors": [
+                "Kimin Lee",
+                "Kibok Lee",
+                "Honglak Lee",
+                "Jinwoo Shin."
+            ],
+            "title": "A simple unified framework for detecting outof-distribution samples and adversarial attacks",
+            "venue": "S. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. Cesa-Bianchi, and R. Garnett, editors, Advances",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Kimin Lee",
+                "Kibok Lee",
+                "Honglak Lee",
+                "Jinwoo Shin."
+            ],
+            "title": "A simple unified framework for detecting out-of-distribution samples and adversarial attacks",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yanran Li",
+                "Hui Su",
+                "Xiaoyu Shen",
+                "Wenjie Li",
+                "Ziqiang Cao",
+                "Shuzi Niu"
+            ],
+            "title": "Dailydialog: A manually labelled multi-turn dialogue dataset",
+            "venue": "In Proceedings of The 8th International Joint Conference on Natural Language Processing (IJCNLP",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Shiyu Liang",
+                "Yixuan Li",
+                "R. Srikant."
+            ],
+            "title": "Enhancing the reliability of out-of-distribution image detection in neural networks",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Weitang Liu",
+                "Xiaoyun Wang",
+                "John Owens",
+                "Yixuan Li."
+            ],
+            "title": "Energy-based out-of-distribution detection",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Clara Meister",
+                "Tiago Pimentel",
+                "Gian Wiher",
+                "Ryan Cotterell."
+            ],
+            "title": "Locally Typical Sampling",
+            "venue": "Transactions of the Association for Computational Linguistics, 11:102\u2013121.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yifei Ming",
+                "Yiyou Sun",
+                "Ousmane Dia",
+                "Yixuan Li."
+            ],
+            "title": "Cider: Exploiting hyperspherical embeddings for out-of-distribution detection",
+            "venue": "arXiv preprint arXiv:2203.04450.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Niklas Muennighoff",
+                "Thomas Wang",
+                "Lintang Sutawika",
+                "Adam Roberts",
+                "Stella Biderman",
+                "Teven Le Scao",
+                "M Saiful Bari",
+                "Sheng Shen",
+                "Zheng-Xin Yong",
+                "Hailey Schoelkopf"
+            ],
+            "title": "Crosslingual generalization through multitask finetuning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nathan Ng",
+                "Kyra Yee",
+                "Alexei Baevski",
+                "Myle Ott",
+                "Michael Auli",
+                "Sergey Edunov."
+            ],
+            "title": "Facebook fair\u2019s wmt19 news translation task submission",
+            "venue": "Proc. of WMT.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Jitendra Parmar",
+                "Satyendra Singh Chouhan",
+                "Vaskar Raychoudhury",
+                "Santosh Singh Rathore"
+            ],
+            "title": "Openworld machine learning: Applications, challenges, and opportunities",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Marine Picot",
+                "Francisco Messina",
+                "Malik Boudiaf",
+                "Fabrice Labeau",
+                "Ismail Ben Ayed",
+                "Pablo Piantanida."
+            ],
+            "title": "Adversarial robustness via fisher-rao regularization",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexander Podolskiy",
+                "Dmitry Lipin",
+                "Andrey Bout",
+                "Ekaterina Artemova",
+                "Irina Piontkovskaya."
+            ],
+            "title": "Revisiting mahalanobis distance for transformerbased out-of-domain detection",
+            "venue": "arXiv preprint arXiv:2101.03778.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Soujanya Poria",
+                "Devamanyu Hazarika",
+                "Navonil Majumder",
+                "Gautam Naik",
+                "Erik Cambria",
+                "Rada Mihalcea."
+            ],
+            "title": "Meld: A multimodal multi-party dataset for emotion recognition in conversations",
+            "venue": "arXiv preprint arXiv:1810.02508.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Karthik Narasimhan",
+                "Tim Salimans",
+                "Ilya Sutskever"
+            ],
+            "title": "Improving language understanding by generative pre-training",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "C Radhakrishna Rao."
+            ],
+            "title": "Information and the accuracy attainable in the estimation of statistical parameters",
+            "venue": "Breakthroughs in statistics, pages 235\u2013247. Springer.",
+            "year": 1992
+        },
+        {
+            "authors": [
+                "Jie Ren",
+                "Stanislav Fort",
+                "Jeremiah Liu",
+                "Abhijit Guha Roy",
+                "Shreyas Padhy",
+                "Balaji Lakshminarayanan."
+            ],
+            "title": "A simple fix to mahalanobis distance for improving near-ood detection",
+            "venue": "arXiv preprint arXiv:2106.09022.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jie Ren",
+                "Stanislav Fort",
+                "Jeremiah Liu",
+                "Abhijit Guha Roy",
+                "Shreyas Padhy",
+                "Balaji Lakshminarayanan"
+            ],
+            "title": "2021b. A simple fix to mahalanobis distance for improving near-ood detection",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Seonghan Ryu",
+                "Seokhwan Kim",
+                "Junhwi Choi",
+                "Hwanjo Yu",
+                "Gary Geunbae Lee."
+            ],
+            "title": "Neural sentence embedding using only in-domain sentences for outof-domain sentence detection in dialog systems",
+            "venue": "Pattern Recognition Letters, 88:26\u201332.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ivan N Sanov."
+            ],
+            "title": "On the probability of large deviations of random variables",
+            "venue": "United States Air Force, Office of Scientific Research.",
+            "year": 1958
+        },
+        {
+            "authors": [
+                "Chandramouli Shama Sastry",
+                "Sageev Oore."
+            ],
+            "title": "Detecting out-of-distribution examples with Gram matrices",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, volume 119 of Proceedings of Machine Learning Research, pages",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Angela Fan",
+                "Christopher Akiki",
+                "Ellie Pavlick",
+                "Suzana Ili\u0107",
+                "Daniel Hesslow",
+                "Roman Castagn\u00e9",
+                "Alexandra Sasha Luccioni",
+                "Fran\u00e7ois Yvon",
+                "Matthias Gall\u00e9"
+            ],
+            "title": "Bloom: A 176bparameter open-access multilingual language model",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Elizabeth Shriberg",
+                "Raj Dhillon",
+                "Sonali Bhagat",
+                "Jeremy Ang",
+                "Hannah Carvey."
+            ],
+            "title": "The icsi meeting recorder dialog act (mrda) corpus",
+            "venue": "Technical report, INTERNATIONAL COMPUTER SCIENCE INST BERKELEY CA.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Craig Stewart",
+                "Ricardo Rei",
+                "Catarina Farinha",
+                "Alon Lavie."
+            ],
+            "title": "COMET - deploying a new state-ofthe-art MT evaluation metric in production",
+            "venue": "Proceedings of the 14th Conference of the Association for Machine Translation in the Americas (Volume 2:",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Andreas Stolcke",
+                "Klaus Ries",
+                "Noah Coccaro",
+                "Elizabeth Shriberg",
+                "Rebecca Bates",
+                "Daniel Jurafsky",
+                "Paul Taylor",
+                "Rachel Martin",
+                "Marie Meteer",
+                "Carol Van Ess-Dykema"
+            ],
+            "title": "Dialogue act modeling for automatic tagging and recognition",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Gao",
+                "Vedanuj Goswami",
+                "Francisco Guzm\u00e1n",
+                "Philipp Koehn",
+                "Alexandre Mourachko",
+                "Christophe Ropers",
+                "Safiyyah Saleem",
+                "Holger Schwenk",
+                "Jeff Wang"
+            ],
+            "title": "No language left behind: Scaling humancentered machine translation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "J\u00f6rg Tiedemann",
+                "Santhosh Thottingal."
+            ],
+            "title": "OPUSMT \u2014 Building open translation services for the World",
+            "venue": "Proceedings of the 22nd Annual Conferenec of the European Association for Machine Translation (EAMT), Lisbon, Portugal.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "J\u00f6rg Tiedemann."
+            ],
+            "title": "Parallel data, tools and interfaces in opus",
+            "venue": "Proceedings of the Eight International Conference on Language Resources and Evaluation (LREC\u201912), Istanbul, Turkey. European Language Resources Association (ELRA).",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Samarth Tripathi",
+                "Sarthak Tripathi",
+                "Homayoon Beigi."
+            ],
+            "title": "Multi-modal emotion recognition on iemocap dataset using deep learning",
+            "venue": "arXiv preprint arXiv:1804.05788.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Sachin Vernekar",
+                "Ashish Gaurav",
+                "Vahdat Abdelzad",
+                "Taylor Denouden",
+                "Rick Salay",
+                "Krzysztof Czarnecki"
+            ],
+            "title": "2019a. Out-of-distribution detection in classifiers via generation",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Sachin Vernekar",
+                "Ashish Gaurav",
+                "Taylor Denouden",
+                "Buu Phan",
+                "Vahdat Abdelzad",
+                "Rick Salay",
+                "Krzysztof Czarnecki."
+            ],
+            "title": "Analysis of confident-classifiers for out-of-distribution detection",
+            "venue": "arXiv preprint arXiv:1904.12220.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tim Z. Xiao",
+                "Aidan N. Gomez",
+                "Yarin Gal"
+            ],
+            "title": "Wat zei je? detecting out-of-distribution translations with variational transformers",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiaoxue Zang",
+                "Abhinav Rastogi",
+                "Srinivas Sunkara",
+                "Raghav Gupta",
+                "Jianguo Zhang",
+                "Jindong Chen"
+            ],
+            "title": "Multiwoz 2.2: A dialogue dataset with additional annotation corrections and state tracking baselines",
+            "venue": "In Proceedings of the 2nd Workshop on Natu-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rowan Zellers",
+                "Ari Holtzman",
+                "Hannah Rashkin",
+                "Yonatan Bisk",
+                "Ali Farhadi",
+                "Franziska Roesner",
+                "Yejin Choi."
+            ],
+            "title": "Defending against neural fake news",
+            "venue": "Advances in neural information processing systems, 32.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jingqing Zhang",
+                "Yao Zhao",
+                "Mohammad Saleh",
+                "Peter Liu."
+            ],
+            "title": "Pegasus: Pre-training with extracted gap-sentences for abstractive summarization",
+            "venue": "International Conference on Machine Learning, pages 11328\u201311339. PMLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with bert",
+            "venue": "arXiv preprint arXiv:1904.09675.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yizhe Zhang",
+                "Siqi Sun",
+                "Michel Galley",
+                "Yen-Chun Chen",
+                "Chris Brockett",
+                "Xiang Gao",
+                "Jianfeng Gao",
+                "Jingjing Liu",
+                "Bill Dolan."
+            ],
+            "title": "Dialogpt: Large-scale generative pre-training for conversational response generation",
+            "venue": "arXiv preprint arXiv:1911.00536.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Wenxuan Zhou",
+                "Fangyu Liu",
+                "Muhao Chen."
+            ],
+            "title": "Contrastive out-of-distribution detection for pretrained transformers",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing. Association for Computational",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhi-Hua Zhou."
+            ],
+            "title": "Open-environment machine learning",
+            "venue": "National Science Review, 9(8):nwac123.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qiuyu Zhu",
+                "Guohui Zheng",
+                "Yingying Yan"
+            ],
+            "title": "Effective out-of-distribution detection in classifier based on pedcc-loss",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Significant progress has been made in Natural Language Generation (NLG) in recent years with the development of powerful generic (e.g., GPT (Radford et al., 2018; Brown et al., 2020; Bahrini et al., 2023), LLAMA (Touvron et al., 2023) and its variants) and task-specific (e.g., Grover (Zellers et al., 2019), Pegasus (Zhang et al., 2020) and DialogGPT (Zhang et al., 2019b)) text generators. They power machine translation (MT) systems or chatbots that are exposed to the public, and their reliability is a prerequisite for adoption. Text generators are trained in the context of a so-called closed\n\u2217maxime.darrin@mila.quebec \u2020ILLS - International Laboratory on Learning Systems \u2021Math\u00e9matiques et Informatique Centralesupelec\nworld (Fei and Liu, 2016), where training and test data are assumed to be drawn i.i.d. from a single distribution, known as the in-distribution. However, when deployed, these models operate in an open world (Parmar et al., 2021; Zhou, 2022) where the i.i.d. assumption is often violated. Changes in data distribution are detrimental and induce a drop in performance. It is necessary to develop tools to protect models from harmful distribution shifts as it is a clearly unresolved practical problem (Arora et al., 2021). For example, a trained translation model is not expected to be reliable when presented with another language (e.g. a Spanish model exposed to Catalan, or a Dutch model exposed to Afrikaans) or unexpected technical language (e.g., a colloquial translation model exposed to rare technical terms from the medical field). They also tend to be released behind API(OpenAI, 2023) ruling out many usual features-based OOD detection methods.\nMost work on Out-Of-Distribution (OOD) detection focus on classification, leaving OOD detection in (conditional) text generation settings mainly unexplored, even though it is among the most exposed applications. Existing solutions fall into two categories. The first one called training-aware methods (Zhu et al., 2022; Vernekar et al., 2019a,b), modifies the classifier training by exposing the neural network to OOD samples during training. The second one, called plug-in methods aims to distinguish regular samples in the in-distribution (IN) from OOD samples based on the model\u2019s behaviour on a new input. Plug-in methods include Maximum Softmax Probabilities (MSP) (Hendrycks and Gimpel, 2016) or Energy (Liu et al., 2020) or featurebased anomaly detectors that compute a per-class anomaly score (Ming et al., 2022; Ryu et al., 2017; Huang et al., 2020; Ren et al., 2021a). Although plug-in methods from classification settings seem attractive, their adaptation to text generation tasks is more involved. While text generation can be seen as a sequence of classification problems, i.e.,\nchosing the next token at each step, the number of possible tokens is two orders of magnitude higher than usual classification setups.\nIn this work, we aim to develop new tools to build more reliable text generators which can be used in practical systems. To do so, we work under 4 constraints: (i) We do not assume we can access OOD samples; (ii) We suppose we are in a blackbox scenario: we do not assume we have access to the internal states of the model but only to the soft probability distributions it outputs; (iii) The detectors should be easy enough to use on top of any existing model to ensure adaptability; (iv) Not only should OOD detectors be able to filter OOD samples, but they also are expected to improve the average performance on the end-task the model has to perform.\nOur contributions. Our main contributions can be summarized as follows:\n1. A more operational benchmark for text generation OOD detection. We present LOFTER the Language Out oF disTribution pErformance benchmaRk. Existing works on OOD detection for language modelling (Arora et al., 2021) focus on (i) the English language only, (ii) the GLUE benchmark, and (iii) measure performance solely in terms of OOD detection. LOFTER introduces more realistic data shifts in the generative setting that goes beyond English: language shifts induced by closely related language pairs (e.g., Spanish and Catalan or Dutch and Afrikaans (Xiao et al., 2020)1) and domain change (e.g., medical vs news data or vs dialogs). In addition, LOFTER comes with an updated evaluation setting: detectors\u2019 performance is jointly evaluated w.r.t the overall system\u2019s performance on the end task.\n2. A novel detector inspired by information projection. We present RAINPROOF: a Relative informAItioN Projection Out OF distribution detector. RAINPROOF is fully unsupervised. It is flexible and can be applied both when no reference samples (IN) are available (corresponding to scenario s0) and when they are (corresponding to scenario s1). RAINPROOF tackles s0 by computing the models\u2019 predictions negentropy (Brillouin, 1953) and uses it as a measure of normality. For s1, it relies upon its natural extension: the Information Projection\n1Afrikaans is a daughter language of Dutch. The Dutch sentence: \"Appelen zijn gewoonlijk groen, geel of rood\" corresponds to \"Appels is gewoonlik groen, geel of rooi.\"\n(Csiszar and Matus, 2003), which relies on a reference set to get a data-driven notion of normality."
+        },
+        {
+            "heading": "3. New insights on the operational value of OOD",
+            "text": "detectors. Our experiments on LOFTER show that OOD detectors may filter out samples that are well processed (i.e. well translated) by the model and keep samples that are not, leading to weaker performance. Our results show that RAINPROOF improves performance on the end task while removing most of the OOD samples.\n4. Code and reproductibility. We release a plugand-play library built upon the Transformers library that implements our detectors and baselines 2 3."
+        },
+        {
+            "heading": "2 Problem Statement & Related Works",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Notations & conditional text generation",
+            "text": "Let us denote \u2126, a vocabulary of size |\u2126| and \u2126\u2217 its Kleene closure4. We denote P(\u2126) ={ p \u2208 [0, 1]|\u2126| : \u2211|\u2126| i=1 pi = 1 } the set of probability distributions defined over \u2126. Let Dtrain be the training set, composed of N \u2a7e 1 i.i.d. samples {(xi, yi)}Ni=1 \u2208 (X \u00d7 Y)N with probability law pXY . We denote pX and pY the associated marginal laws of pXY . Each xi is a sequence of tokens, and xij \u2208 \u2126 the jth token of the ith sequence. xi\u2a7dt = {xi1, \u00b7 \u00b7 \u00b7 , xit} \u2208 \u2126\u2217 denotes the prefix of length t. The same notations hold for y. Conditional textual generation. In conditional textual generation, the goal is to model a probability distribution p\u22c6(x,y) over variable-length text sequences (x,y) by finding p\u03b8 \u2248 p\u22c6(x,y) for any (x,y). In this work, we assume to have access to a pretrained conditional language model f\u03b8 : X \u00d7 Y \u2192 R|\u2126|, where the output is the (unnormalized) logits scores. f\u03b8 parameterized p\u03b8, i.e., for any (x,y), p\u03b8(x,y) = softmax(f\u03b8(x,y)/T ) where T \u2208 R denotes the temperature. Given an input sequence x, the pretrained language f\u03b8 can recursively generate an output sequence y\u0302 by sampling yt+1 \u223c pT\u03b8 (\u00b7|x, y\u0302\u2a7dt), for t \u2208 [1, |y|]. Note that y\u03020 is the start of sentence (< SOS > token). We denote by S(x), the set of normalized logits scores generated by the model when the initial input is x i.e., S(x) = {softmax(f\u03b8(x, y\u0302\u2a7dt))} |y\u0302| t=1.\n2https://github.com/icannos/ToddBenchmark 3This work was performed using HPC resources from GENCI\u2013IDRIS (Grant 2022-AD011013945). 4The Kleene closure corresponds to sequences of arbitrary\nsize written with words in \u2126. Formally: \u2126\u2217 = \u221e\u22c3 i=0 \u2126i.\nNote that elements of S(x) are discrete probability distributions over \u2126."
+        },
+        {
+            "heading": "2.2 Problem statement",
+            "text": "In OOD detection, the goal is to find an anomaly score a : X \u2192 R+ that quantifies how far a sample is from the IN distribution. x is classified as IN or OUT according to the score a(x). We then fix a threshold \u03b3 and classifies the test sample IN if a(x) \u2a7d \u03b3 or OOD if a(x) > \u03b3. Formally, let us denote g(\u00b7, \u03b3) the decision function, we take:\ng(x, \u03b3) = { 1 if a (x) > \u03b3 0 if a (x) \u2a7d \u03b3.\nRemark 1. In our setting, OOD examples are not available. Tuning \u03b3 is a complex task, and it is usually calibrated using OOD samples. In our work, we decided not to rely on OOD samples but on the available training set to fix \u03b3 in a realistic setting. Indeed, even well-tailored datasets might contain significant shares of outliers (Meister et al., 2023). Therefore, we fix \u03b3 so that at least 80% of the IN data pass the filtering procedure. See Sec. G.3 for more details."
+        },
+        {
+            "heading": "2.3 Review of existing OOD detectors",
+            "text": "OOD detection for classification. Most works on OOD detection have focused on detectors for classifiers and rely either on internal representations (features-based detectors) or on the final soft probabilities produced by the classifier (softmax based detectors). Features-based detectors. They leverage latent representations to derive anomaly scores. The most well-known is the Mahanalobis distance (Lee et al., 2018a; Ren et al., 2021b), but there are other methods employing Grams matrices (Sastry and Oore, 2020), Fisher Rao distance (Gomes et al., 2022) or other statistical tests (Haroush et al., 2021). These methods require access to the latent representations of the models, which does not fit the black-box scenario. In addition, it is well known in classification that performing per-class OOD detection is key to get good performance (Lee et al., 2018b). This per-class approach is a priori impossible in text generation since it would have to be done per token or by some other unknown type of classes. We argue that it is necessary to find non-class-dependent solutions, especially when it comes to the Mahalanobis distance, which relies upon the hypothesis that the data are unimodal; we study the validity of this hypothesis and show that it is not true in a generative setting in Ap. A.\nSoftmax-based detectors. These detectors rely on the soft probabilities produced by the model. The MSP (Hendrycks and Gimpel, 2017; Hein et al., 2019; Liang et al., 2018; Hsu et al., 2020) uses the probability of the mode while others take into account the entire logit distribution (e.g., Energybased scores (Liu et al., 2020)). Due to the large vocabulary size, it is unclear how these methods generalize to sequence generation tasks. OOD detection for text generation. Little work has been done on OOD detection for text generation. Therefore, we will follow (Arora et al., 2021; Podolskiy et al., 2021) and rely on their baselines. We also generalize common OOD scores such as MSP or Energy by computing the average score along the sequence at each step of the text generation. We refer the reader to Sec. B.7 for more details. Quality estimation as OOD detection metric. Quality Estimation Metrics are not designed to detect OOD samples but to assess the overall quality of generated samples. However, they are interesting baselines to consider, as OOD samples should lead to low-quality outputs. We will use COMET QE (Stewart et al., 2020) as a baseline to filter out low-quality results induced by OOD samples. Remark 2. Note that features-based detectors assume white-box access to internal representations, while softmax-based detectors rely solely on the final output. Our work operates in a black-box framework but also includes a comparison to the Mahalanobis distance for completeness.\n3 RAINPROOF OOD detector"
+        },
+        {
+            "heading": "3.1 Background",
+            "text": "An information measure I : P(\u2126)\u00d7 P(\u2126) \u2192 R quantifies the similarity between any pair of discrete distributions p,q \u2208 P(\u2126). Since \u2126 is a finite set, we will adopt the following notations p = [p1, \u00b7 \u00b7 \u00b7 ,p|\u2126|] and q = [q1, \u00b7 \u00b7 \u00b7 ,q|\u2126|]. While there exist information distances, it is, in general, difficult to build metrics that satisfy all the properties of a distance, thus we often rely on divergences that drop the symmetry property and the triangular inequality.\nIn what follows, we motivate the information measures we will use in this work.\nFirst, we rely on the R\u00e9nyi divergences (Csisz\u00e1r, 1967). R\u00e9nyi divergences belong to the f - divergences family and are parametrized by a parameter \u03b1 \u2208 R+ \u2212 {1}. They are flexible\nand include well-known divergences such as the Kullback-Leiber divergence (KL) (Kullback, 1959) (when \u03b1 \u2192 1) or the Hellinger distance (Hellinger, 1909) (when \u03b1 = 0.5). The R\u00e9nyi divergence between p and q is defined as follows:\nD\u03b1(p\u2225q) = 1\n\u03b1\u2212 1 log  |\u2126|\u2211 i=1 p\u03b1i q\u03b1\u22121i  . (1) The R\u00e9nyi divergence is popular as \u03b1 allows weighting the relative influence of the distributions\u2019 tail.\nSecond, we investigate the Fisher-Rao distance (FR). FR is a distance on the Riemannian space formed by the parametric distributions, using the Fisher information matrix as its metric. It computes the geodesic distance between two discrete distributions (Rao, 1992) and is defined as follows:\nFR(p\u2225q) = 2 \u03c0 arccos |\u2126|\u2211 i=1 \u221a pi \u00d7 qi. (2)\nIt has recently found many applications (Picot et al., 2022; Colombo et al., 2022b).\n3.2 RAINPROOF for the no-reference scenario (s0)\nAt inference time, the no-reference scenario (s0) does not assume the existence of a reference set of IN samples to decide whether a new input sample is OOD. Which include, for example, Softmax-based detectors such as MSP, Energy or the sequence log-likelihood5\nUnder these assumptions, our OOD detector RAINPROOF comprises three steps. For a given input x with generated sentence y\u0302:\n1. We first use f\u03b8 to extract the step-by-step sequence of soft distributions S(x).\n2. We then compute an anomaly score (aI(x)) by averaging a step-by-step score provided by I . This step-by-step score is obtained by measuring the similarity between a reference distribution u \u2208 P(\u2126) and one element of S(x). Formally,\naI(x) = 1 |S(x)| \u2211\np\u2208S(x)\nI (p\u2225u) , (3)\nwhere |S(x)| = |y\u0302|. 5The detector based on the log-likelihood of the sequence\nis defined as aL(x) = \u2212 1|y\u0302| \u2211|y\u0302|\u22121 t=0 logp\u03b8(y\u0302t+1|x, y\u0302\u2a7dt).\n3. The last step consists of thresholding the previous anomaly score aI(x). If aI(x) is over a given threshold \u03b3, we classify x as an OOD example.\nInterpretation of Eq. 3. aI(x) measures the average dissimilarity of the probability distribution of the next token to normality (as defined by u). aI(x) also corresponds to the token average uncertainty of the model f\u03b8 to generate y\u0302 when the input is x. The intuition behind Eq. 3 is that the distributions produced by f\u03b8, when exposed to an OOD sample, should be far from normality and thus have a high score.\nChoice of u and I . The uncertainty definition of Eq. 3 depends on the choice of both the reference distribution u and the information measure I. A natural choice for u is the uniform distribution, i.e., u = [ 1|\u2126| , \u00b7 \u00b7 \u00b7 , 1 |\u2126| ] which we will use in this work. It is worth pointing out that I(\u00b7||u) yields the negentropy of a distribution (Brillouin, 1953). Other possible choices for u include one hot or tf-idf distribution (Colombo et al., 2022b). For I, we rely on the R\u00e9nyi divergence to obtain aD\u03b1 and the Fisher-Rao distance to obtain aFR.\n3.3 RAINPROOF for the reference scenario (s1)\nIn the reference scenario (s1), we assume that one has access to a reference set of IN samples R = {xi : (xi,yi) \u2208 Dtrain}|R|i=1 where |R| is the size of the reference set. For example, the Mahalanobis distance works under this assumption. One of the weaknesses of Eq. 3 is that it imposes an ad-hoc choice when using u (the uniform distribution). In s1, we can leverage R, to obtain a data-driven notion normality.\nUnder s1, our OOD detector RAINPROOF follows these four steps:\n1. (Offline) For each xi \u2208 R, we generate y\u0302i and the associated sequence of probability distributions (S(xi)). Overall we thus generate \u2211 x\u2208R |y\u0302i| probability distributions which could explode for long sequences6. To overcome this limitation, we rely on the bag of distributions of each sequence (Colombo et al., 2022b). We form the set of these\n6It is also worth pointing out that projecting at each timestep would require a per-step reference set in addition to the computational time required to compute the projections, therefore we decided to aggregate the probability distributions over the sequence.\nbags of distributions:\nS\u0304\u2217 = \u22c3\nxi\u2208R  1|S(xi)| \u2211 p\u2208S(xi) p  . (4) 2. (Online) For a given input x with generated sentence y\u0302, we compute its bag of distributions representation:\np\u0304(x) = 1 |S(x)| \u2211\np\u2208S(x)\np. (5)\n3. (Online) For x, we then compute an anomaly score a\u22c6I(x) by projecting p\u0304(x) on the set S\u0304\u2217. Formally, a\u22c6I(x) is defined as:\na\u22c6I(x) = min p\u2208S\u0304\u22c6 I(p\u2225p\u0304(x)). (6)\nWe denote p\u22c6(x) = argmin p\u2208S\u0304\u2217 I(p\u2225p\u0304(x)).\n4. The last step consists of thresholding the previous anomaly score aI(x). If aI(x) is over a given threshold \u03b3, we classify x as an OOD example.\nInterpretation of Eq. 6. aI(x) relies on a Generalized Information Projection (Kullback, 1954; Csisz\u00e1r, 1975, 1984)7 which measures the similarity between p\u0304(x) and the set S\u0304\u2217. Note that the closest element of S\u0304\u2217 in the sens of I can give insights on the decision of the detector. It allows interpreting the decision of the detector as we will see in Tab. 6.\nChoice of I. Similarly to Sec. 3.2, we will rely on the R\u00e9nyi divergence to define a\u22c6R\u03b1(x) and the Fisher-Rao distance a\u22c6FR(x).\n4 Results on LOFTER\n4.1 LOFTER: Language Out oF disTribution pErformance benchmaRk\nLOFTER for NMT. We consider a realistic setting involving both topic and language shifts. Language shifts correspond to exposing a model trained for a given language to another which is either linguistically close (e.g., Afrikaans for a system trained on Dutch) or missing in the training data (as it is the case for german in BLOOM (Scao et al., 2022)). It is an interesting setting because the differences between languages might not be obvious but still\n7The minimization problem of Eq. 6 finds numerous connections in the theory of large deviation (Sanov, 1958) or in statistical physics (Jaynes, 1957).\ncause a significant drop in performance. For linguistically close languages, we selected closely related language pairs such as Catalan-Spanish, Portuguese-Spanish and Afrikaans-Dutch) coming from the Tatoeba dataset (Tiedemann, 2012) (see Tab. 8). Domain shifts can involve technical or rare terms or specific sentence constructions, which can affect the model\u2019s performance. We simulated such shifts from Tatoeba MT using news, law (EuroParl dataset), and medical texts (EMEA). LOFTER for dialogs. For conversational agents, we focused on a scenario where a goal-oriented agent, designed to handle a specific type of conversation (e.g., customer conversations, daily dialogue), is exposed to an unexpected conversation. In this case, it is crucial to interrupt the agent so it does not damage the user\u2019s trust with misplaced responses. We rely on the Multi WOZ dataset (Zang et al., 2020), a human-to-human dataset collected in the Wizard-of-Oz set-up (Kelley, 1984), for IN distribution data and its associated fine-tuned model. We simulated shifts using dialogue datasets from various sources, which are part of the SILICONE benchmark (Chapuis et al., 2020). Specifically, we use a goal-oriented dataset (i.e., Switchboard Dialog Act Corpus (SwDA) (Stolcke et al., 2000)), a multi-party meetings dataset (i.e., MRDA (Shriberg et al., 2004) and Multimodal EmotionLines Dataset MELD (Poria et al., 2018)), daily communication dialogs (i.e., DailyDialog DyDA (Li et al., 2017)), and scripted scenarii (i.e., IEMOCAP (Tripathi et al., 2018)). We refer the curious reader to Sec. B.5 for more details on each dataset. Model Choices. We evaluated our methods on open-source and freely available language bilingual models (the Helsinki suite (Tiedemann and Thottingal, 2020)), on a BLOOM-based instructions model BLOOMZ (Muennighoff et al., 2022) (for which German is OOD). For dialogue tasks, we relied on the Dialog GPT (Zhang et al., 2019b) model finetuned on Multi WOZ, which acts as IN distribution. We consider the Helsinki models as they are used in production for lightweight applications. Additionally, they are specialized for a specific language pair and released with their associated training set, making them ideal candidates to study the impact of OOD in a controlled setting.8 Metrics. To evaluate the performance on the OOD task, we report the Area Under the Receiver Oper-\n8Please note that for the likelihood detector, the translation model is additionally fine-tuned on the development set, ensuring a strong baseline.\nating Characteristic AUROC and the False positive rate FPR \u2193. These methods have been widely employed in previous research on out-of-distribution (OOD) detection. An exhaustive description of the metrics can be found in Sec. 4.1."
+        },
+        {
+            "heading": "4.2 Experiments in MT",
+            "text": "Results on language shifts (Tab. 1). We find that our no-reference methods (aD\u03b1 and aFR) achieve better performance than common no-reference baselines but also outperform the reference-based baseline. In particular, aD\u03b1 , by achieving an AUROC of 0.95 and FPR \u2193 of 0.25, outperforms all considered methods. Moreover, while no-reference baselines only capture up to 45% of the OOD samples on average, ours detect up to 55%. In addition, COMET QE, a quality estimation tool, performs poorly in pure OOD detection, suggesting that while OOD detection and quality estimation can be related, they are still different problems. Results on domain shifts (Tab. 1). We evaluate the OOD detection performance of RAINPROOF on domain shifts in Spanish (SPA) and German (DEU) with technical, medical data and parliamentary data. For s0, we observe that aD\u03b1 and aFR outperform the strongest baselines (i.e., Energy, MSP and se-\nquence likelihood) by several AUROC points. Interestingly enough, even our no-reference detectors outperform the reference-based baseline (i.e., aM , a deeper study of this phenomenon is presented in Ap. A). While aD\u03b1 achieves similar AUROC performance to its information projection counterpart aD\u2217\u03b1 , the latter achieve better FPR \u2193. Once again, the COMET QE metric does not yield competitive performance for OOD detection."
+        },
+        {
+            "heading": "4.3 Experiments in dialogue generation",
+            "text": "Results on Dialogue shifts (Tab. 1). Dialogue shifts are understandably more difficult to detect, as shown in our experiments, as they are smaller than language shifts. Our no-reference detectors do not outperform the Mahalanobis baseline and achieve only 0.79 in AUROC. The best baseline is the Mahalanobis distance and achieves better performance on dialogue tasks than on NMT domain shifts, reaching an AUROC of 0.84. However, our reference-based detector based on the R\u00e9nyi information projection secures better AUROC (0.86) and better FPR \u2193 (0.52). Even if our detectors achieve decent results on this task, it is clear that dialogue shifts will require further work and investigation (see Ap. F), especially in the wake of LLMs."
+        },
+        {
+            "heading": "4.4 Ablations Study",
+            "text": "Fig. 1 shows that RAINPROOF offers a crucial flexibility by utilizing the R\u00e9nyi divergence with adjustable parameter alpha. RAINPROOF\u2019s detectors show improvement when considering the tail of the distributions. Notably, lower values of \u03b1 (close to 0) yield better results with the R\u00e9nyi Information projection aD\u2217\u03b1 . This finding suggests that the tail of the distributions used in text generation contains contextual information and insights about the processed texts. These results are consistent\nwith recent research in automatic text generation evaluation (Colombo et al., 2022b). Interestingly, increasing the size of the reference set beyond 1.2k has minimal influence. We provide an additional study of the impact of the temperature and parameter \u03b1 for the different OOD scores in Ap. E."
+        },
+        {
+            "heading": "5 A More Practical Evaluation",
+            "text": "Following previous work, we measure the performance of the detectors on the OOD detection task based on AUROC and FPR \u2193. However, this evaluation framework neglects the impact of the detector on the overall system\u2019s performance and the downstream task it performs. We identify three main evaluation criteria that are important in practice: (i) execution time, (ii) overall system performance in terms of the quality of the generated answers, and (iii) interpretability of the decision. Our study is conducted on NMT because due to the existence of relevant and widely adopted metrics for assessing the quality of a generated sentence (i.e., BLEU (Papineni et al., 2002) and BERT-S (Zhang et al., 2019a) and COMET (Stewart et al., 2020))."
+        },
+        {
+            "heading": "5.1 Execution time",
+            "text": "Runtime and memory costs. We report in Tab. 4 the runtime of all methods. Detectors for s0 are faster than the ones for s1. Unlike detectors using references, no-reference detectors do not require additional memory. They can be set up easily in a plug&play manner at virtually no costs."
+        },
+        {
+            "heading": "5.2 Effects of Filtering on Translation Quality",
+            "text": "In this experiment, we investigate the impact of OOD filtering from the perspectives of quality estimation and selective generation. Global performance. In Tab. 3 and Tab. 5, we report the global performance of the system (f\u03b8) with and without OOD detectors on IN samples, OOD samples, and all samples (ALL). In most cases, adding detectors increases the average quality of the returned answers on all three subsets but with varying efficacy. aMSP is a notable exception, and we provide a specific correlation analysis later. While the reference-based detectors tend to remove more OOD samples, the no-reference detectors demonstrate better performance regarding the remaining sentences\u2019 average BLEU. Thus, OOD detector evaluation should consider the final task performance. Overall, it is worth noting that directly adapting classical OOD detection methods (e.g., MSP or Energy) to the sequence generation problem leads to poor results in terms of performance gains (i.e., as measured by BLEU or BERT-S). aD\u03b1 removes up to 62% of OOD samples (whereas the likelihood only removes 45%) and maintains or improves the average performance of the system on the end task. In other words, aD\u03b1 provides the best combination of OOD detection performance and system performance improvements. Threshold free analysis. In Tab. 2, we report the correlations between OOD scores and quality metrics on each data subset (IN and OUT distribution, and ALL combined). For the OOD detector to improve or maintain performance on the end task, its score must correlate with performance metrics similarly for each subset. We notice that it is not the case for the likelihood or aMSP. The highest likelihood on IN data corresponds to higher quality answers. Still, the opposite is true for OOD samples, meaning using the likelihood to remove OOD samples tends to remove OOD samples that are well handled by the model. By contrast, RAINPROOF scores correlate well and in the same way on both IN and OUT, allowing them to remove OOD samples while improving performance."
+        },
+        {
+            "heading": "5.3 Towards an interpretable decision",
+            "text": "An important dimension of fostering adoption is the ability to verify the decision taken by the automatic system. RAINPROOF offers a step in this direction when used with references: for each input sample, RAINPROOF finds the closest sample\n(in the sense of the Information Projection) in the reference set to take its decision. Tab. 6 present examples of OOD samples along with their translation scores, projection scores, and projection on the reference set. Qualitative analysis shows that, in general, sentences close to the reference set and whose projection has a close meaning are better handled by f\u03b8. Therefore, one can visually interpret the prediction of RAINPROOF and validate it.\n6 RAINPROOF on LLM for NMT\nAs an alternative to NMT models, we can study the performance of instruction finetuned LLM on translation tasks. However, it is important to note that while LLMs are trained on enormous amounts of data, they still miss many languages. Typically, they are trained on around 100 languages (Conneau et al., 2019), this falls far short of the existing 7000 languages. In our test-bed experiments, we decided to rely on BLOOM models, which have not been specifically trained on German (DEU) data. Therefore, We can use German samples to simulate OOD detection in an instruction-following translation setting, specifically relying on BLOOMZ (Muennighoff et al., 2022). We prompt the model to trans-\nlate Tatoeba dataset samples into English, focusing on languages known to be within the distribution for BLOOMZ while attempting to separate the German samples from them. From Tab. 7, we observed that our no-reference methods perform comparably to the aMSP baseline, but are outperformed by the Mahalanobis distance in this scenario. However, the information projection methods demonstrate substantial improvements over all the baselines."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "This work introduces a detection framework called RAINPROOF and a new benchmark called LOFTER for black-box OOD detection on text generator. We adopt an operational perspective by not only considering OOD performance but also task-specific metrics: despite the good results obtained in pure OOD detection, OOD filtering can harm the performance of the final system, as it is the case for aMSP or aM . We found that RAINPROOF succeed in removing OOD while inducing significant gains in translation performance both on OOD samples and in general. In conclusion, this work paves the way for developing text-generation OOD detectors and calls for a global evaluation when benchmarking future OOD detectors."
+        },
+        {
+            "heading": "8 Limitations",
+            "text": "While this work does not bear significant ethical or impact hazards, it is worth pointing out that it is not a perfect, absolutely safe solution against OOD distribution samples. Preventing the processing of OOD samples is an important part of ensuring ML algorithms\u2019 safety and robustness but it cannot guarantee total safety nor avoid all OOD samples. In this work, we approach the problem of OOD detection from a performance standpoint: we argue that OOD detectors should increase performance metrics since they should remove risky samples. However, no one can give such guarantees, and the outputs of ML models should always be taken with caution, whatever safety measures or filters are in place. Additionally, we showed that our methods worked in a specific setting of language shifts or topic shifts, mainly on translation tasks. While our methods performed well for small language shifts (shifts induced by linguistically close languages) and showed promising results on detecting topic shifts, the latter task remains particularly hard. Further work should explore different types of distribution shifts in other newer settings such as different types of instructions or problems given to instruction-finetuned models."
+        },
+        {
+            "heading": "A Examining the Limitations of Mahalanobis-Based OOD Detector for Text Generation",
+            "text": "The main drawback of the Mahalanobis distance is assuming a single-mode distribution. In text classification, this is mitigated by fitting one Mahalanobis scorer per class. However, in text generation, this assumption is flawed as there are multiple modes as illustrated in Fig. 2). PCA of Fig. 2 illustrate a failure case of the Mahalanobis distance in the case of OOD detection."
+        },
+        {
+            "heading": "B Experimental setting",
+            "text": "In this section, we dive into the details and definitions of our experimental setting. First, we present our OOD detection performance metrics (Sec. B.1), then we provide a couple samples for one of the small language shifts (Sec. B.4). We also discuss the choices of pre-trained model (Sec. B.6) and how we adapted common OOD detectors to the text generation case (Sec. B.7)."
+        },
+        {
+            "heading": "B.1 Additionnal details on metrics",
+            "text": "OOD Detection is usually an unbalanced binary classification problem where the class of interest is OUT. Let us denote Z the random variable corresponding to actually being out of distribution. We can assess the performance of our OOD detectors focusing on the False alarm rate and on the True detection rate. The False alarm rate or False positive rate (FPR) is the proportion of samples misclassified as OUT. For a score threshold \u03b3, we have FPR = Pr ( a(x) > \u03b3 |Z = 0 ) . The True detection rate or True positive rate (TPR) is the proportion of OOD samples that are detected by the method. It is given by TPR = Pr ( a(x) > \u03b3 |Z =\n1 ) .\nIn order to evaluate the performance of our methods we will focus and report mainly the AUROC and the FPR \u2193, we provide more detailed metrics and experiments in Sec. B.1.\nArea Under the Receiver Operating Characteristic curve (AUROC). The Receiver Operating Characteristic curve is curve obtained by plotting the True positive rate against the False positive rate. The area under this curve is the probability that an in-distribution example Xin has an anomaly score higher than an OOD sample xout: AUROC= Pr(a(xin) > a(xout)). It is given by \u03b3 7\u2192 (Pr ( a(x) > \u03b3 |Z = 0 ) ,Pr ( a(x) > \u03b3 |Z = 1 ) ).\nFalse Positive Rate at 95% True Positive Rate (FPR \u2193). We accept to allow only a given false positive rate r corresponding to a defined level of safety and we want to know what share of positive samples we actually catch under this constraint. It leads to select a threshold \u03b3r such that the corresponding TPR equals r. At this threshold, one then computes: Pr(a(x) > \u03b3r |Z = 0) with \u03b3r s.t. TPR(\u03b3r) = r. r is chosen depending on the difficulty of the task at hand and the required level of safety.\nFor the sake of brevity, we present only AUROCand FPR \u2193metrics in our aggregated results but we also used Detection error and Area Under the Precision-Recall curve metrics and those are presented in our full results section (Ap. F).\nDetection error. It is simply the probability of miss-classification for a given True positive rate."
+        },
+        {
+            "heading": "Area Under the Precision-Recall curve",
+            "text": "(AUPR-IN/AUPR-OUT). The Precision-Recall curve plots the recall (true detection rate) against the precision (actual proportion of OOD amongst the predicted OOD). The area under this curve \u03b3 7\u2192 (Pr ( Z = 1 | s(X) \u2a7d \u03b3 ) ,Pr ( s(X) \u2a7d \u03b3 |Z = 1 ) ) captures the trade-off between precision and recall made by the model. A high value represents a high precision and a high recall i.e. the detector captures most of the positive samples while having few False positives."
+        },
+        {
+            "heading": "B.2 Language pairs",
+            "text": ""
+        },
+        {
+            "heading": "Language shift",
+            "text": ""
+        },
+        {
+            "heading": "B.3 Dataset sizes",
+            "text": ""
+        },
+        {
+            "heading": "Dataset Name Size",
+            "text": ""
+        },
+        {
+            "heading": "B.4 Samples",
+            "text": "In Tab. 10 we provide examples of small shifts in translation between Spanish and Catalan and its impact on a spanish to english translation model."
+        },
+        {
+            "heading": "B.5 Dialog datasets",
+            "text": "Switchboard Dialog Act Corpus (SwDA) is a corpus of telephonic conversations. The corpus provides labels, topic and speaker information (Stolcke et al., 2000). ICSI MRDA Corpus (MRDA) contains transcript 75h of naturally occuring meetings involving more than 50 people (Shriberg et al., 2004). DaylyDialog Act Corpus (DyDA) contains daily common communications between people, covering topic such as small talk, meteo or daily activities (Li et al., 2017). Interactive Emotional Dyadic Motion Capture IEMOCAP)(Tripathi et al., 2018) consists of transcripts of improvisations or scripted scenarii supposed to outline the expression of emotions."
+        },
+        {
+            "heading": "B.6 Choices of models",
+            "text": "To perform our experiments we needed models that were already well installed and deployed and that would also support OOD settings. For translation tasks, we needed specialized models for a notion of OOD to be easily defined. It would be indeed more hazardous to define a notion of OOD language when working with a multilingual model. The same is true for conversational models. Neural Machine Translation model. We benchmark our OOD method on translation models provided by Helsinky NLP (Tiedemann and Thottingal, 2020) on several pairs of languages with large and small shifts. We extended the experiment to detect domain shifts. These models are indeed specialized in each language pair and are widely recognised in the neural machine translation field. For our experiments we used the testing set provided along these models, so we can consider that they have been fine-tuned over the same distribution. Conversational model. We used a dialogGPT (Zhang et al., 2019b) model fine-tuned on the Multi WOZ dataset as chat bot model. The finetuning on daily dialogue-type tasks ensures that the model is specialized, thus allowing us to get a good definition of samples not being in its range of expertise. Moreover, the choice of the architecture, DialogGPT, guarantees that our results are valid on a very common architecture.\nB.7 Generalization of existing OOD detectors to Sequence Generation\nIn this section, we extend classical OOD detection score to the conditional text generation settting. Common OOD detectors were built for classification tasks and we need to adapt them to conditional text generation. Our task can be viewed as a sequence of classification problems with a very large number of classes (the size of the vocabulary). We chose the most naive approach which consists of averaging the OOD scores over the sequence. We experimented with other aggregation such as the min/max or the standard deviation without getting interesting results. Likelihood Score The most naive approach to build a OOD score is to rely solely on the loglikelihood of the sequence. For a conditioning x we define the log-likelyhood score by aL(x) = \u2212 \u2211|y\u0302|\u22121\nt=0 logp\u03b8(y\u0302t+1|x, y\u0302\u2a7dt). The likelihood is the same as the perplexity. Average Maximum Softmax Probability score The maximum softmax probability (Hendrycks and Gimpel, 2017) takes the probability of the mode of the categorical distribution as score of OOD. We extend thise definition in the case of sequence of probability distribution by averaging this score along the sequence. For a given conditioning x, we define the average MSP score aMSP(x) = 1 |y\u0302| \u2211|y\u0302| t=1 max\ni\u2208[|0,K|] pT\u03b8 (i|x, y\u0302\u2a7dt)). While it is closely\nlinked to uncertainty measures it discards most of the information contained in the probability distribution. It discards the whole probability distribution. We claim that much more information can be retrieve by studying the whole distribution. Average Energy score We extend the definition of the energy score described in (Liu et al., 2020) to a sequence of probability distributions by averaging the score along the sequence. For a\ngiven conditioning x and a temperature T we define the average energy of the sequence:aE(x) \u225c \u2212 T|y\u0302| \u2211|y\u0302| t=1 log \u2211|\u2126| i e\nf\u03b8(x,y\u0302\u2a7dt)i/T . It corresponds to the normalization term of the softmax function applied on the logits. While it takes into account the whole distribution, it only takes into account the amount of unormalized mass before normalization without attention to how this mass is distributed along the features. Mahalanobis distance Following (Lee et al., 2018a; Colombo et al., 2022a) compute the Mahalanobis matrice based on the samples of a given reference set R. In our case we are using encoderdecoder models we use the output of the last hidden layer of the encoder as embedding. Let\u2019s denote \u03d5(x) this embedding for a conditioning x. Let \u00b5 and \u03a3 be respectively, the mean and the covariance of these embedding on the reference set. We define aM(x) = ( 1 + (\u03d5(x)\u2212 \u00b5)\u22a4\u03a3\u22121(\u03d5(x)\u2212 \u00b5)\n)\u22121."
+        },
+        {
+            "heading": "B.8 Computational budget",
+            "text": "We had a budget of 20000h on NVIDIA V100 GPU. While this is an important number it was used to compute the benchmarks over many pairs and languages. In practice our OOD detectors do not require much addition computation overhead since they only rely on the probability distributions already output by the models."
+        },
+        {
+            "heading": "B.9 Towards an interpretable decision",
+            "text": "An important dimension of fostering adoption is the ability to verify the decision taken by the automatic system. RAINPROOF offers a step in this direction when used with references: for each input sample, RAINPROOF finds the closest sample (in the sense of the Information Projection) in the reference set to take its decision. We present in Tab. 11 some OOD samples along with their translation scores, projection scores, and their projection on the refer-\nence set. We notice that, in general, sentences that are close to the reference set, and whose projection has a close meaning, are better handled by f\u03b8. Therefore, one can visually interpret the prediction of RAINPROOF, and validate it. This observation further validates our method."
+        },
+        {
+            "heading": "C Scaling to larger models",
+            "text": "In order to validate our results we perform experiments on larger and general-purpose models such as BloomZ (Muennighoff et al., 2022), NLLB (Team et al., 2022) and the Facebook WMT16 submission (Ng et al., 2020)."
+        },
+        {
+            "heading": "C.1 Negative results on NLLB",
+            "text": "By the very definition of the No-Language-LeftBehind model, it should be particularly hard to find OOD language to benchmark on. The model still requires special token to be set in the sequence to define the source and target languages. We tried to apply our OOD detection methods to situations where the presented language does not correspond to the source language set by the special token. We found that in this scenario the likelihood was by far the best discriminator of OOD samples. It can be explained by the fact that our inputs are not actually OOD, they are just not consistent with the source language token, but the model is still well calibrated overall on these inputs."
+        },
+        {
+            "heading": "D Additional OOD features-based baselines",
+            "text": "To further support the point that features-based detectors have important flaws when it comes to text generation we compare our best performing OOD score to SOTA OOD detectors in text such as the DataDepth (aD) (Colombo et al., 2022a) and the Maximum Cosine Projection (aC) (Zhou et al., 2021)."
+        },
+        {
+            "heading": "E Parameters tuning",
+            "text": "Detectors depend on their anomaly score to make decisions, and these scores can be parametric. First of all, soft probability-based scores depend on the soft probability distribution and its scaling. Therefore, the temperature is a crucial parameter to tune to get the most performance. While a small temperature makes the distribution pickier, a higher value spreads the probability mass along the classes. Moreover, the R\u00e9nyi divergence depends on a factor \u03b1. We provide here further results and analysis of those parameters on our results.\nIn Fig. 3, we analyse the impact of the temperature and \u03b1 parameter for our Renyi-Negentropy score. Consistently with results for the information projection we find that the tail of the distribution is important to ensure good detection of OOD samples for all language shifts. A temperature higher than 2 and lower values of \u03b1 yield the best results. We recommend using \u03b1 = 0.5 with a temperature of 2.\nWe found that our aD\u03b1 score, the R\u00e9nyi negentropy is more stable concerning the temperature and the considered datasets and shifts than the energybased OOD score and the MSP score. Indeed, in Fig. 4, we show that the baselines do not behave consistently across datasets when the temperature changes. This is a problem when deploying these scores in production. Indeed, we cannot fit a temperature for each possible type of shift or OOD samples. By contrast, there exist sets of parameters (temperature and \u03b1) for which our negentropybased scores perform consistently across different shifts."
+        },
+        {
+            "heading": "F Performance of our detectors in OOD detection",
+            "text": "F.1 Importance of tails\u2019 distributions\nOur results show that, when it comes to domain shift (domain shifts in translation or dialog shifts), reference-based detectors are required to obtain good results. They also show that, the more these detectors take into account the tail of the distributions, the better they are, as displayed in Fig. 5. We find that low values of \u03b1 (near 0) yields better results with the R\u00e9nyi Information projection aD\u2217\u03b1 . It suggests that the tail of the distributions used during text generation carries context information and insights on the processed texts. Such results are consistent with findings of recent works in the context of automatic evaluation of text generation (Colombo et al., 2022b)."
+        },
+        {
+            "heading": "F.2 Summary of our results",
+            "text": "In Fig. 6 we present the different performance levels of all the detectors we studied. We can see that in every task our detectors outperform the baselines but also that in dialog shift, while the Mahalanobis distance outperform clearly our detectors for s0, they still outperform baselines for their scenario by far.\nF.3 Detailed results of OOD detection performances\nIn this section, we present the performances of our OOD detectors on each detailed tasks, i.e. for each pair of IN and OOD data with all the considered metrics. Our metrics outperform other OOD detectors baselines in almost all scenarios.\nTable 17: Detailed results of the performances of our OOD detectors on different domain shifts. For Spanish (spa) and German (de), we present two domains shifts: Technical medical (EMEA) data and legal parlementary texts (parl) against common language emboddied by the Tatoeba dataset (tat).\nAUPR-IN AUPR-OUT AUROC ERR f1 FPR precision recall Scenario Score\ns0\nOurs aD\u03b1 0.90 0.76 0.86 0.43 0.81 0.82 0.80 1.00 aFR 0.87 0.73 0.81 0.46 0.77 0.86 0.79 0.75 Baselines aE 0.88 0.75 0.83 0.49 0.78 0.93 0.79 1.00 aL 0.86 0.73 0.82 0.48 0.76 0.91 0.77 0.74 aMSP 0.89 0.76 0.85 0.44 0.79 0.84 0.80 1.00\ns1\nOurs\naD\u2217\u03b1 0.90 0.88 0.90 0.25 0.82 0.45 0.81 0.86 aD\u2217KL 0.89 0.83 0.88 0.33 0.82 0.62 0.80 0.83 aDmean\u03b1 0.88 0.73 0.84 0.47 0.78 0.89 0.79 0.77 aDmeanKL 0.87 0.73 0.83 0.48 0.77 0.91 0.79 0.75 aFR\u2217 0.85 0.70 0.80 0.50 0.74 0.94 0.77 0.72 aFRmean 0.86 0.67 0.80 0.52 0.75 0.98 0.78 0.72\nBaselines aC 0.88 0.89 0.90 0.25 0.00 0.46 0.00 0.00 aM 0.87 0.90 0.89 0.22 0.81 0.39 0.80 0.81\n(a) deu:news-EMEA\nAUPR-IN AUPR-OUT AUROC ERR f1 FPR precision recall Scenario Score\ns0\nOurs aD\u03b1 0.75 0.75 0.76 0.41 0.67 0.76 0.67 1.00 aFR 0.66 0.67 0.70 0.44 0.45 0.84 0.64 0.35 Baselines aE 0.75 0.75 0.71 0.44 0.67 0.83 0.69 1.00 aL 0.68 0.61 0.68 0.49 0.67 0.94 0.50 1.00 aMSP 0.75 0.75 0.71 0.45 0.67 0.86 0.50 1.00\ns1\nOurs\naD\u2217\u03b1 0.66 0.65 0.68 0.44 0.00 0.84 0.83 0.00 aD\u2217KL 0.67 0.63 0.67 0.48 0.00 0.90 0.00 0.00 aDmean\u03b1 0.67 0.67 0.70 0.44 0.00 0.82 0.00 0.00 aDmeanKL 0.66 0.65 0.69 0.45 0.00 0.85 0.00 0.00 aFR\u2217 0.62 0.64 0.65 0.45 0.00 0.85 0.00 0.00 aFRmean 0.65 0.67 0.69 0.43 0.00 0.80 0.00 0.00\nBaselines aC 0.57 0.61 0.60 0.46 0.27 0.87 0.47 0.19 aM 0.62 0.66 0.66 0.44 0.00 0.83 0.00 0.00\n(b) spa:news-parl\nAUPR-IN AUPR-OUT AUROC ERR f1 FPR precision recall Scenario Score\ns0\nOurs aD\u03b1 0.75 0.75 0.71 0.41 0.67 0.78 0.66 1.00 aFR 0.61 0.65 0.65 0.45 0.42 0.84 0.61 0.32 Baselines aE 0.75 0.75 0.68 0.45 0.67 0.85 0.66 1.00 aL 0.63 0.58 0.64 0.51 0.67 0.96 0.50 1.00 aMSP 0.75 0.75 0.68 0.46 0.67 0.86 0.51 1.00\ns1\nOurs\naD\u2217\u03b1 0.69 0.66 0.68 0.43 0.30 0.81 0.80 0.22 aD\u2217KL 0.66 0.64 0.68 0.46 0.00 0.88 0.00 0.00 aDmean\u03b1 0.65 0.65 0.68 0.45 0.00 0.86 0.00 0.00 aDmeanKL 0.65 0.65 0.68 0.45 0.00 0.85 0.00 0.00 aFR\u2217 0.63 0.64 0.66 0.45 0.00 0.86 0.00 0.00 aFRmean 0.64 0.64 0.67 0.45 0.00 0.86 0.00 0.00\nBaselines aC 0.52 0.66 0.59 0.41 0.40 0.78 0.52 0.33 aM 0.58 0.61 0.62 0.47 0.00 0.89 0.00 0.00\n(c) deu:news-parl\nAUPR-IN AUPR-OUT AUROC ERR f1 FPR precision recall Scenario Score\ns0\nOurs aD\u03b1 0.92 0.81 0.89 0.37 0.83 0.70 0.81 1.00 aFR 0.89 0.75 0.85 0.44 0.79 0.82 0.80 0.78 Baselines aE 0.90 0.77 0.86 0.44 0.80 0.83 0.80 1.00 aL 0.86 0.73 0.82 0.47 0.76 0.89 0.77 0.74 aMSP 0.90 0.80 0.87 0.41 0.81 0.77 0.80 1.00\ns1\nOurs\naD\u2217\u03b1 0.88 0.85 0.88 0.29 0.81 0.54 0.80 0.82 aD\u2217KL 0.89 0.83 0.88 0.32 0.81 0.59 0.80 0.82 aDmean\u03b1 0.90 0.77 0.86 0.44 0.79 0.83 0.80 0.79 aDmeanKL 0.88 0.75 0.84 0.45 0.77 0.85 0.79 0.75 aFR\u2217 0.81 0.66 0.76 0.50 0.70 0.94 0.76 0.65 aFRmean 0.87 0.70 0.81 0.49 0.75 0.94 0.78 0.72\nBaselines aC 0.67 0.59 0.64 0.49 0.00 0.94 0.00 0.00 aM 0.81 0.83 0.83 0.31 0.75 0.58 0.78 0.72\n(d) spa:news-EMEA"
+        },
+        {
+            "heading": "F.4 ROC AUC curves",
+            "text": ""
+        },
+        {
+            "heading": "F.4.1 Language shifts",
+            "text": "In Fig. 7 and Fig. 8 we present the ROC-AUC curves of our different detectors for language shifts in translation."
+        },
+        {
+            "heading": "F.4.2 Domain shifts",
+            "text": "In Fig. 9 and Fig. 10 we present the ROC-AUC curves of our different detectors for topic shifts in translation."
+        },
+        {
+            "heading": "F.4.3 Dialog shifts",
+            "text": "In Fig. 11 and Fig. 12 we present the ROC-AUC curves of our different detectors for topic shifts in a dialog setting."
+        },
+        {
+            "heading": "G NTM performance",
+            "text": "Surprisingly we show that common OOD detectors tend to exclude samples that the model well handles and keep some that are not leading to decreasing overall performance in terms of translation metrics. Moreover, it seems this phenomenon is more dominant in reference-based detectors. We show that our uncertainty-based detectors mostly avoid that downfall and provide good OOD detection and improved translation performances."
+        },
+        {
+            "heading": "G.1 Absolute performances",
+            "text": "It is clear (somewhat expected) that NMT models do not perform as well on OOD data as we can see in Tab. 19b. However, we find that our OOD detectors are able to remove most of the worst-case samples and keep enough well-translated samples so that with correct filtering our method actually allows the model to achieve somewhat acceptable BLEU scores."
+        },
+        {
+            "heading": "G.2 Gains",
+            "text": "In Tab. 20 we give the detailed gain in translation performance based on the BLEU score."
+        },
+        {
+            "heading": "G.3 Choice of threshold",
+            "text": "We believe that the choice of the threshold for OOD detection should not require OOD samples because we do not want to assume we have access to all kind\nspa-cat spa-por nld-afr spa:tat-parl deu:news-parl spa:tat-EMEA deu:news-EMEA Scenario Score\nspa-cat spa-por nld-afr spa:tat-parl deu:news-parl spa:tat-EMEA deu:news-EMEA Scenario Score\nof different OOD samples that might occur. Therefore we choose to fix the False Positive Rate of our detector by constraining the amount of known IN distribution samples that are classified as OOD."
+        },
+        {
+            "heading": "H Negative results",
+            "text": ""
+        },
+        {
+            "heading": "H.1 Different aggregation of OOD metrics",
+            "text": "Most of our detectors are initially classification OOD detectors that we adapted for text generation by averaging them over the generated sequences and using this aggregated score as a score for the whole sequence. We experimented with other aggregations such as the standard deviation or the min/max along the sequence. If the standard deviation gave relatively good results they were still less interesting that the naive average."
+        },
+        {
+            "heading": "H.2 Negentropy of bag of distributions",
+            "text": "We introduced in Sec. 3.3 the bag of distributions as a way to aggregate a sequence of probability distribution and compare it to a set of reference using information projections Sec. 3.3. A natural idea would be to apply the Negentropy methods (Sec. 3.2) to these aggregated distributions.\nMore formally given a sequence of probability distribution S\u03b8(x) = {pT\u03b8 (x, y\u0302\u2a7dt)}nt=1 we would compute its bag of distributions:\np\u0304\u03b8(x) \u225c 1\n|y| |y|\u2211 t=1 p\u03b8(x, y\u2a7dt) (7)\nAnd then compute as novelty score:\nJD(p) = D(p\u2225U). (8)\nFurther experiments have shown that this process was unable to discriminate OOD samples or improve performance translation. We suspect that the uncertainty at each step is key to capture the behavior of the language model and that this uncertainty information is lost when averaging probability distribution along the sequence."
+        }
+    ],
+    "title": "RAINPROOF: An umbrella to shield text generators from Out-of-Distribution data",
+    "year": 2023
+}

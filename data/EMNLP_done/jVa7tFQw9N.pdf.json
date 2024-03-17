@@ -1,0 +1,953 @@
+{
+    "abstractText": "A recent focus of large language model (LLM) development, as exemplified by generative search engines, is to incorporate external references to generate and support its claims. However, evaluating the attribution, i.e., verifying whether the generated statement is fully supported by the cited reference, remains an open problem. Although human evaluation is common practice, it is costly and time-consuming. In this paper, we investigate automatic evaluation of attribution given by LLMs. We begin by defining different types of attribution errors, and then explore two approaches for automatic evaluation: prompting LLMs and fine-tuning smaller LMs. The fine-tuning data is repurposed from related tasks such as question answering, fact-checking, natural language inference, and summarization. We manually curate a set of test examples covering 12 domains from a generative search engine, New Bing. Our results on this curated test set and simulated examples from existing benchmarks highlight both promising signals and challenges. We hope our problem formulation, testbeds, and findings will help lay the foundation for future studies on this important problem.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Xiang Yue"
+        },
+        {
+            "affiliations": [],
+            "name": "Boshi Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Ziru Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Kai Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yu Su"
+        },
+        {
+            "affiliations": [],
+            "name": "Huan Sun"
+        }
+    ],
+    "id": "SP:57761b9597b9b7a963abe4ea9a77ef2ccec85274",
+    "references": [
+        {
+            "authors": [
+                "Rami Aly",
+                "Zhijiang Guo",
+                "Michael Sejr Schlichtkrull",
+                "James Thorne",
+                "Andreas Vlachos",
+                "Christos Christodoulopoulos",
+                "Oana Cocarascu",
+                "Arpit Mittal"
+            ],
+            "title": "FEVEROUS: fact extraction and verification over unstructured and structured information",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Isabelle Augenstein",
+                "Christina Lioma",
+                "Dongsheng Wang",
+                "Lucas Chaves Lima",
+                "Casper Hansen",
+                "Christian Hansen",
+                "Jakob Grue Simonsen."
+            ],
+            "title": "MultiFC: A real-world multi-domain dataset for evidencebased fact checking of claims",
+            "venue": "Proceedings of",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Petr Baudis",
+                "Jan Sediv\u00fd."
+            ],
+            "title": "Modeling of the question answering task in the yodaqa system",
+            "venue": "Experimental IR Meets Multilinguality, Multimodality, and Interaction - 6th International Conference of the CLEF Association, CLEF 2015, Toulouse, France,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Jonathan Berant",
+                "Andrew Chou",
+                "Roy Frostig",
+                "Percy Liang."
+            ],
+            "title": "Semantic parsing on Freebase from question-answer pairs",
+            "venue": "Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing, pages 1533\u20131544, Seattle, Wash-",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Bernd Bohnet",
+                "Vinh Q Tran",
+                "Pat Verga",
+                "Roee Aharoni",
+                "Daniel Andor",
+                "Livio Baldini Soares",
+                "Jacob Eisenstein",
+                "Kuzman Ganchev",
+                "Jonathan Herzig",
+                "Kai Hui"
+            ],
+            "title": "Attributed question answering: Evaluation and modeling for attributed large language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Saffron Huang",
+                "Loren Maggiore",
+                "Chris Jones",
+                "Albin Cassirer",
+                "Andy Brock",
+                "Michela Paganini",
+                "Geoffrey Irving",
+                "Oriol Vinyals",
+                "Simon Osindero",
+                "Karen Simonyan",
+                "Jack W. Rae",
+                "Erich Elsen",
+                "Laurent Sifre"
+            ],
+            "title": "Improving language models by retrieving",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Samuel R. Bowman",
+                "Gabor Angeli",
+                "Christopher Potts",
+                "Christopher D. Manning."
+            ],
+            "title": "A large annotated corpus for learning natural language inference",
+            "venue": "Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, pages",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Meng Cao",
+                "Yue Dong",
+                "Jackie Cheung."
+            ],
+            "title": "Hallucinated but factual! inspecting the factuality of hallucinations in abstractive summarization",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xinyun Chen",
+                "Chen Liang",
+                "Adams Wei Yu",
+                "Denny Zhou",
+                "Dawn Song",
+                "Quoc V. Le."
+            ],
+            "title": "Neural symbolic reader: Scalable integration of distributed and symbolic representations for reading comprehension",
+            "venue": "8th International Conference on Learning Represen-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models",
+            "venue": "ArXiv preprint,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nouha Dziri",
+                "Andrea Madotto",
+                "Osmar Za\u00efane",
+                "Avishek Joey Bose."
+            ],
+            "title": "Neural path hunter: Reducing hallucination in dialogue systems via path grounding",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Process-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jinlan Fu",
+                "See-Kiong Ng",
+                "Zhengbao Jiang",
+                "Pengfei Liu."
+            ],
+            "title": "Gptscore: Evaluate as you desire",
+            "venue": "ArXiv preprint, abs/2302.04166.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Zhuyun Dai",
+                "Panupong Pasupat",
+                "Anthony Chen",
+                "Arun Tejasvi Chaganty",
+                "Yicheng Fan",
+                "Vincent Y Zhao",
+                "Ni Lao",
+                "Hongrae Lee",
+                "Da-Cheng Juan"
+            ],
+            "title": "Rarr: Researching and revising what language models say, using language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Howard Yen",
+                "Jiatong Yu",
+                "Danqi Chen."
+            ],
+            "title": "Enabling large language models to generate text with citations",
+            "venue": "ArXiv preprint, abs/2305.14627.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zorik Gekhman",
+                "Jonathan Herzig",
+                "Roee Aharoni",
+                "Chen Elkind",
+                "Idan Szpektor."
+            ],
+            "title": "Trueteacher: Learning factual consistency evaluation with large language models",
+            "venue": "ArXiv preprint, abs/2305.11171.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Amelia Glaese",
+                "Nat McAleese",
+                "Maja Tr\u0119bacz",
+                "John Aslanides",
+                "Vlad Firoiu",
+                "Timo Ewalds",
+                "Maribeth Rauh",
+                "Laura Weidinger",
+                "Martin Chadwick",
+                "Phoebe Thacker"
+            ],
+            "title": "Improving alignment of dialogue agents via targeted human judgements",
+            "venue": "ArXiv preprint,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Ming-Wei Chang."
+            ],
+            "title": "Retrieval augmented language model pre-training",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, ICML 2020, 13-18 July 2020, Virtual Event, volume",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Or Honovich",
+                "Roee Aharoni",
+                "Jonathan Herzig",
+                "Hagai Taitelbaum",
+                "Doron Kukliansy",
+                "Vered Cohen",
+                "Thomas Scialom",
+                "Idan Szpektor",
+                "Avinatan Hassidim",
+                "Yossi Matias."
+            ],
+            "title": "TRUE: re-evaluating factual consistency evaluation",
+            "venue": "Proceedings of the 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "Proceedings of the 16th",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Patrick S.H. Lewis",
+                "Maria Lomeli",
+                "Lucas Hosseini",
+                "Fabio Petroni",
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Armand Joulin",
+                "Sebastian Riedel",
+                "Edouard Grave."
+            ],
+            "title": "Few-shot learning with retrieval augmented language models",
+            "venue": "ArXiv preprint,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ziwei Ji",
+                "Nayeon Lee",
+                "Rita Frieske",
+                "Tiezheng Yu",
+                "Dan Su",
+                "Yan Xu",
+                "Etsuko Ishii",
+                "Ye Jin Bang",
+                "Andrea Madotto",
+                "Pascale Fung."
+            ],
+            "title": "Survey of hallucination in natural language generation",
+            "venue": "ACM Computing Surveys, 55(12):1\u201338.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mandar Joshi",
+                "Eunsol Choi",
+                "Daniel Weld",
+                "Luke Zettlemoyer."
+            ],
+            "title": "TriviaQA: A large scale distantly supervised challenge dataset for reading comprehension",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Vol-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ryo Kamoi",
+                "Tanya Goyal",
+                "Juan Diego Rodriguez",
+                "Greg Durrett."
+            ],
+            "title": "Wice: Real-world entailment for claims in wikipedia",
+            "venue": "ArXiv preprint, abs/2303.01432.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas Oguz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen-tau Yih."
+            ],
+            "title": "Dense passage retrieval for opendomain question answering",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Peter Clark."
+            ],
+            "title": "Scitail: A textual entailment dataset from science question answering",
+            "venue": "Proceedings of the ThirtySecond AAAI Conference on Artificial Intelligence, (AAAI-18), the 30th innovative Applications of Arti-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Mojtaba Komeili",
+                "Kurt Shuster",
+                "Jason Weston."
+            ],
+            "title": "Internet-augmented dialogue generation",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 8460\u20138478, Dublin, Ireland.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Neema Kotonya",
+                "Francesca Toni."
+            ],
+            "title": "Explainable automated fact-checking for public health claims",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 7740\u20137754, Online.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wojciech Kryscinski",
+                "Bryan McCann",
+                "Caiming Xiong",
+                "Richard Socher."
+            ],
+            "title": "Evaluating the factual consistency of abstractive text summarization",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Uszkoreit",
+                "Quoc Le",
+                "Slav Petrov."
+            ],
+            "title": "Natural questions: A benchmark for question answering research",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:452\u2013466.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Katherine Lee",
+                "Orhan Firat",
+                "Ashish Agarwal",
+                "Clara Fannjiang",
+                "David Sussillo."
+            ],
+            "title": "Hallucinations in neural machine translation",
+            "venue": "Interpretability and Robustness in Audio, Speech, and Language Workshop, Conference on Neural Information Processing",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Patrick S.H. Lewis",
+                "Ethan Perez",
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich K\u00fcttler",
+                "Mike Lewis",
+                "Wen-tau Yih",
+                "Tim Rockt\u00e4schel",
+                "Sebastian Riedel",
+                "Douwe Kiela"
+            ],
+            "title": "Retrieval-augmented generation",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Minghao Li",
+                "Feifan Song",
+                "Bowen Yu",
+                "Haiyang Yu",
+                "Zhoujun Li",
+                "Fei Huang",
+                "Yongbin Li."
+            ],
+            "title": "Apibank: A benchmark for tool-augmented llms",
+            "venue": "ArXiv preprint, abs/2304.08244.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nelson F. Liu",
+                "Tianyi Zhang",
+                "Percy Liang."
+            ],
+            "title": "Evaluating verifiability in generative search engines",
+            "venue": "ArXiv preprint, abs/2304.09848.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "venue": "ArXiv preprint, abs/1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alex Mallen",
+                "Akari Asai",
+                "Victor Zhong",
+                "Rajarshi Das",
+                "Hannaneh Hajishirzi",
+                "Daniel Khashabi."
+            ],
+            "title": "When not to trust language models: Investigating effectiveness and limitations of parametric and non-parametric memories",
+            "venue": "ArXiv preprint,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Joshua Maynez",
+                "Shashi Narayan",
+                "Bernd Bohnet",
+                "Ryan McDonald."
+            ],
+            "title": "On faithfulness and factuality in abstractive summarization",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 1906\u20131919, Online.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shantanu Jain",
+                "Vineet Kosaraju",
+                "William Saunders"
+            ],
+            "title": "Webgpt: Browser-assisted questionanswering with human feedback",
+            "venue": "ArXiv preprint,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yixin Nie",
+                "Adina Williams",
+                "Emily Dinan",
+                "Mohit Bansal",
+                "Jason Weston",
+                "Douwe Kiela."
+            ],
+            "title": "Adversarial NLI: A new benchmark for natural language understanding",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "OpenAI."
+            ],
+            "title": "Chatgpt (mar 14 version) [large language model",
+            "venue": "https://chat.openai.com/chat.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "OpenAI."
+            ],
+            "title": "GPT-4 technical report",
+            "venue": "ArXiv preprint, abs/2303.08774.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "der",
+                "Paul F. Christiano",
+                "Jan Leike",
+                "Ryan Lowe"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "NeurIPS",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Baolin Peng",
+                "Michel Galley",
+                "Pengcheng He",
+                "Hao Cheng",
+                "Yujia Xie",
+                "Yu Hu",
+                "Qiuyuan Huang",
+                "Lars Liden",
+                "Zhou Yu",
+                "Weizhu Chen"
+            ],
+            "title": "Check your facts and try again: Improving large language models with external knowledge and automated feedback",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hongjing Qian",
+                "Yutao Zhu",
+                "Zhicheng Dou",
+                "Haoqi Gu",
+                "Xinyu Zhang",
+                "Zheng Liu",
+                "Ruofei Lai",
+                "Zhao Cao",
+                "Jian-Yun Nie",
+                "Ji-Rong Wen."
+            ],
+            "title": "Webbrain: Learning to generate factually correct articles for queries by grounding on large web corpus",
+            "venue": "ArXiv",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Maosong Sun."
+            ],
+            "title": "Tool learning with foundation models",
+            "venue": "ArXiv preprint, abs/2304.08354.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "J. Mach. Learn. Res., 21:140:1\u2013140:67.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hannah Rashkin",
+                "Vitaly Nikolaev",
+                "Matthew Lamm",
+                "Lora Aroyo",
+                "Michael Collins",
+                "Dipanjan Das",
+                "Slav Petrov",
+                "Gaurav Singh Tomar",
+                "Iulia Turc",
+                "David Reitter."
+            ],
+            "title": "Measuring attribution in natural language generation models",
+            "venue": "ArXiv preprint,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Roberto Dess\u00ec",
+                "Roberta Raileanu",
+                "Maria Lomeli",
+                "Luke Zettlemoyer",
+                "Nicola Cancedda",
+                "Thomas Scialom."
+            ],
+            "title": "Toolformer: Language models can teach themselves to use tools",
+            "venue": "ArXiv preprint, abs/2302.04761.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tal Schuster",
+                "Adam Fisch",
+                "Regina Barzilay."
+            ],
+            "title": "Get your vitamin C! robust fact verification with contrastive evidence",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Christopher Sciavolino",
+                "Zexuan Zhong",
+                "Jinhyuk Lee",
+                "Danqi Chen."
+            ],
+            "title": "Simple entity-centric questions challenge dense retrievers",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 6138\u20136148, Online",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kurt Shuster",
+                "Spencer Poff",
+                "Moya Chen",
+                "Douwe Kiela",
+                "Jason Weston."
+            ],
+            "title": "Retrieval augmentation reduces hallucination in conversation",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021, pages 3784\u20133803, Punta Cana, Do-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kurt Shuster",
+                "Jing Xu",
+                "Mojtaba Komeili",
+                "Da Ju",
+                "Eric Michael Smith",
+                "Stephen Roller",
+                "Megan Ung",
+                "Moya Chen",
+                "Kushal Arora",
+                "Joshua Lane"
+            ],
+            "title": "Blenderbot 3: a deployed conversational agent that continually learns to responsibly engage",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto."
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https:// github.com/tatsu-lab/stanford_alpaca.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Romal Thoppilan",
+                "Daniel De Freitas",
+                "Jamie Hall",
+                "Noam Shazeer",
+                "Apoorv Kulshreshtha",
+                "Heng-Tze Cheng",
+                "Alicia Jin",
+                "Taylor Bos",
+                "Leslie Baker",
+                "Yu Du"
+            ],
+            "title": "Lamda: Language models for dialog applications",
+            "venue": "ArXiv preprint,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "James Thorne",
+                "Andreas Vlachos",
+                "Christos Christodoulopoulos",
+                "Arpit Mittal."
+            ],
+            "title": "FEVER: a large-scale dataset for fact extraction and VERification",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "James Thorne",
+                "Andreas Vlachos",
+                "Oana Cocarascu",
+                "Christos Christodoulopoulos",
+                "Arpit Mittal"
+            ],
+            "title": "The FEVER2.0 shared task",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ashish Sabharwal"
+            ],
+            "title": "Interleaving retrieval",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hannaneh Hajishirzi"
+            ],
+            "title": "Fact or fiction: Verifying",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yu Su"
+            ],
+            "title": "Adaptive chameleon or stubborn",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhilin Yang",
+                "Peng Qi",
+                "Saizheng Zhang",
+                "Yoshua Bengio",
+                "William Cohen",
+                "Ruslan Salakhutdinov",
+                "Christopher D. Manning."
+            ],
+            "title": "HotpotQA: A dataset for diverse, explainable multi-hop question answering",
+            "venue": "Proceedings of the 2018 Conference on Empiri-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Shunyu Yao",
+                "Jeffrey Zhao",
+                "Dian Yu",
+                "Nan Du",
+                "Izhak Shafran",
+                "Karthik Narasimhan",
+                "Yuan Cao."
+            ],
+            "title": "React: Synergizing reasoning and acting in language models",
+            "venue": "ArXiv preprint, abs/2210.03629.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lianmin Zheng",
+                "Wei-Lin Chiang",
+                "Ying Sheng",
+                "Siyuan Zhuang",
+                "Zhanghao Wu",
+                "Yonghao Zhuang",
+                "Zi Lin",
+                "Zhuohan Li",
+                "Dacheng Li",
+                "Eric P. Xing",
+                "Hao Zhang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica"
+            ],
+            "title": "Judging llm-as-a-judge with mt-bench and chatbot arena",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenxuan Zhou",
+                "Sheng Zhang",
+                "Hoifung Poon",
+                "Muhao Chen."
+            ],
+            "title": "Context-faithful prompting for large language models",
+            "venue": "ArXiv preprint, abs/2303.11315.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Reference: Lakshman Joseph de"
+            ],
+            "title": "Saram is a film composer and classical musician. Born in Colombo, Sri Lanka and educated at the Royal College, Colombo, the High School of Performing Arts, Manhattan School of Music and Juilliard Pre-College in New York City, Joseph de Saram is influential in the music of South Asian art cinema, having scored many international award-winning films like \\\u2019Between Two Worlds\\\u2019 and \\\u2019Akasa Kusum.\\\u2019 His best-known score is to the 2012 film \"Bel Ami",
+            "year": 2012
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Generative large language models (LLMs) (Brown et al., 2020; Ouyang et al., 2022; Chowdhery et al., 2022; OpenAI, 2023a,b, inter alia) often struggle with producing factually accurate statements, resulting in hallucinations (Ji et al., 2023). Recent efforts aim to alleviate this issue by augmenting LLMs with external tools (Schick et al., 2023) such as retrievers (Shuster et al., 2021; Borgeaud et al., 2022) and search engines (Nakano et al., 2021; Thoppilan et al., 2022; Shuster et al., 2022).\nIncorporating external references for generation inherently implies that the generated statement is\n1Our code and dataset are available at: https://github. com/OSU-NLP-Group/AttrScore\nbacked by these references. However, the validity of such attribution, i.e., whether the generated statement is fully supported by the cited reference, remains questionable.2 According to Liu et al. (2023), only 52% of the statements generated by state-of-the-art generative search engines such as New Bing and PerplexityAI are fully supported by their respective cited references.3\nInaccurate attribution compromises the trustworthiness of LLMs, introducing significant safety risks and potential harm. For instance, in healthcare, an LLM might attribute incorrect medical advice to a credible source, potentially leading users to make harmful health decisions. Similarly, in finance, faulty investment advice attributed to a reliable source may cause substantial financial losses.\nTo identify attribution errors, existing attributed LLMs (Nakano et al., 2021; Thoppilan et al., 2022) rely heavily on human evaluation, which is both expensive and time-consuming. For instance, the average cost of annotating a single (query, answer, reference) example is about $1 in Liu et al. (2023). In the actual use of attributed LLMs, it is the user who needs to be wary of the attribution and manually verify it, which puts a tremendous burden on their side. Therefore, effective and reliable methods to automatically evaluate attribution and identify potential attribution errors are highly desired.\nTowards this goal, we take the first step by introducing AttrScore (Figure 1), a framework designed for automatic evaluation of attribution and identification of specific types of attribution errors. We propose a new problem formulation that categorizes attribution into three types: 1) attributable: the reference fully supports the generated statement; 2) extrapolatory: the reference lacks sufficient information to support the generated state-\n2Attribution primarily refers to \u201cthe act of attributing something\u201d in this paper, which is similar to \u201cverifiability\u201d as defined in Liu et al. (2023).\n3www.bing.com/new, www.perplexity.ai\nment, and 3) contradictory: the generated statement directly contradicts the cited reference. Unlike existing work (Bohnet et al., 2022) that uses binary categorization (i.e., attributable or not) and Liu et al. (2023) that defines the degree of reference support for the generated statement as \u201cfull\u201d, \u201cpartial\u201d, or \u201cno support\u201d, our fine-grained error categorization aids humans in better understanding the type of an attribution error made by an LLM. This not only enhances safe system usage but also provides valuable insights for future development of mechanisms tailored to correct specific errors.\nWe explore two approaches in AttrScore: 1) prompting LLMs and 2) fine-tuning LMs on simulated and repurposed data from related tasks such as question answering (QA), fact-checking, natural language inference (NLI), and summarization. For evaluation, unlike existing work (Liu et al., 2023; Gao et al., 2023) that only uses queries from existing benchmarks, we curate a set of test examples covering 12 different domains from a generative search engine, New Bing. This is the first evaluation set for measuring the attribution of LLMs with queries created based on real-life interactions,\nhence avoiding the data contamination issue. Our results indicate that both approaches show reasonable performance on our curated and simulated test sets; yet there is still substantial room for further improvement. Major sources of evaluation failures include insensitivity to fine-grained information comparisons, such as overlooking contextual cues in the reference, disregard for numerical values, and failure in performing symbolic operations. In light of these findings, we discuss potential directions for improving AttrScore, including training models to be more strongly conditioned on the reference, and augmenting them with external tools for numerical and logical operations.\nWith the new formulation of attribution errors, the development of AttrScore, the introduction of new test sets, and the insights into challenges and potential directions for future work, we hope our work can help lay the foundation for the important task of automatically evaluating LLM attributions."
+        },
+        {
+            "heading": "2 Problem Formulation",
+            "text": "The primary task in this paper is to evaluate attribution, which involves verifying whether a reference\nprovides sufficient support for a generated answer to a user\u2019s query. Our task setting prioritizes one reference per statement, a unit task that more complex scenarios can be decomposed to. We study such a setting as it forms the basis for dealing with multiple references or distinct segments (Liu et al., 2023; Gao et al., 2023).\nPrior work, such as Rashkin et al. (2021); Gao et al. (2022); Bohnet et al. (2022), mainly focuses on binary verification, i.e., determining if a reference supports the generated answer or not. We propose advancing this task by introducing a more fine-grained categorization. Specifically, we classify attributions into three distinct categories:4\n\u2022 Attributable: The reference fully supports the generated answer.\n\u2022 Extrapolatory: The reference lacks sufficient information to validate the generated answer.\n\u2022 Contradictory: The generated answer contradicts the information presented in the reference.\nTo illustrate, consider a contradictory example (Figure 1). The query is \u201cWhat was the unemployment rate in Germany in 2020?\u201d, and the generated answer is \u201c4.31%\u201d. However, the reference states that the rate was \u201c3.81%\u201d, contradicting the generated answer. An extrapolatory instance, on the other hand, would be a query about the \u201cgas price in California\u201d. While the reference is relevant, it does not contain specific information to verify the correctness of the generated answer.\nFollowing these examples, we see the importance of granularity in error classification. A finegrained classification allows us to pinpoint the nature of the errors, be it contradiction or extrapolation. Users can better understand the type of errors an LLM might make, enabling them to use the model more safely. Additionally, such an error identification system can guide future training processes of attributed LLMs, leading to specific mechanisms\u2019 development to correct such errors.\nOur categorization also offers a departure from the existing approach (Liu et al., 2023), which emphasizes on degree of support (\u201cfull\u201d, \u201cpartial\u201d, or \u201cnone\u201d) rather than attribution error types. Our approach highlights specific issues in attribution\n4We acknowledge that while these categories are generally mutually exclusive, complex scenarios might blur the boundaries between them. However, such cases are very rare. For the purpose of this study, we maintain their exclusivity to enable clear and focused error analysis.\nevaluation for more effective error management and system improvement.\nFormally, the task of attribution evaluation involves a natural language query q, a generated answer a, and a reference x from an attributed LLM. The goal is to develop a function, denoted as f , that inputs (q, a, x) and outputs a class label indicating whether \u201caccording to x, the answer a to the query q is attributable, extrapolatory or contradictory.\u201d5"
+        },
+        {
+            "heading": "3 Automatic Evaluation of Attribution",
+            "text": "Following our problem definition, we introduce two approaches for automatic evaluation of attribution: prompting LLMs and fine-tuning LMs on simulated and repurposed data from related tasks."
+        },
+        {
+            "heading": "3.1 Prompting LLMs",
+            "text": "Recent research (Fu et al., 2023) has demonstrated the possibility of prompting LLMs to evaluate the quality of generated text using their emergent capabilities (Wei et al., 2022b), such as zero-shot instruction (Wei et al., 2022a) and in-context learning (Brown et al., 2020). Following this approach, we prompt LLMs, such as ChatGPT (OpenAI, 2023a), using a clear instruction that includes definitions of the two types of errors (as shown in Figure 1) and an input triple of the query, answer, and reference for evaluation. The complete prompt used in our study can be found in Appendix Table 6."
+        },
+        {
+            "heading": "3.2 Fine-tuning LMs on Repurposed Data",
+            "text": "The primary challenge in fine-tuning LMs for automatic attribution evaluation is the lack of training data. One potential approach is to hire annotators to collect real samples, but the cost can be prohibitive.\nHere, we first repurpose datasets from three related tasks (fact-checking, NLI, and summarization). We then propose to further simulate more realistic samples from existing QA benchmarks. Repurpose data from fact-checking, NLI, and summarization tasks. Given the connections between our attribution evaluation task and the tasks of fact-checking, NLI, and summarization, we propose to utilize datasets from these fields to enrich our training examples. Fact-checking data and NLI data, with their emphasis on assessing the consistency and logical relationship between claims (hypothesis) and evidence (premise), mirrors our task\u2019s\n5It is important to note that this evaluation focuses on the \u201cverifiability\u201d of the answer based on the reference. It does not measure the \u201crelevance\u201d, i.e., whether the answer correctly responds to the query (Liu et al., 2023).\nobjective of checking the supporting relationship between reference documents and generated statements. Summarization datasets, especially those involving the detection of hallucinations (including both intrinsic and extrinsic (Maynez et al., 2020), could provide a useful starting point for identifying attribution inconsistencies. Nevertheless, these datasets would require suitable adaptation. We keep their original data sequences and modify their data label space to suit the specific needs of the attribution evaluation definition. Additional information on this can be found in Appendix A.\nSimulate data from open-domain QA. QA benchmarks provide an ideal platform for data simulation, as they comprise questions, their corresponding ground truth answers, and reference contexts. These elements can be directly employed as attributable examples (Figure 2, A). In open-domain QA datasets, answers are typically brief text spans. To cater to the long answer setting in most attributed LLMs, we convert these short answers into longer sentences using ChatGPT. For simulating contradictory errors, we propose two methods: (1) The first involves modifying the correct answer with an alternative candidate from an off-the-shelf QA model, an answer substitution model, or a random span generator (Figure 2, B). (2) The second retains the original answer but replaces the answer span in the reference context with a comparable candidate (Figure 2, C). To emulate extrapolatory errors, we employ a BM25 retriever on the ques-\ntion, retrieving relevant external documents from resources such as Wikipedia, which do not contain the ground truth answers (Figure 2, D). More details regarding the simulation of these errors from QA datasets can be found in Appendix A."
+        },
+        {
+            "heading": "4 Experimental Setup",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Datasets",
+            "text": "This section presents the datasets utilized for training and testing methods for automatic attribution evaluation. In particular, we develop two evaluation sets, AttrEval-Simulation and AttrEvalGenSearch, derived from existing QA datasets and a generative search engine, respectively. The dataset statistics are presented in Table 1. Training data. To repurpose and simulate training examples, we follow the method in Section 3.2 based on four similar tasks\u2019 datasets. For QA, we consider NaturalQuestions (Kwiatkowski et al., 2019). For fact-checking, we include FEVER (Thorne et al., 2018), Adversarial FEVER (Thorne et al., 2019), FEVEROUS (Aly et al., 2021), VITAMINC (Schuster et al., 2021), MultiFC (Augenstein et al., 2019), PubHealth (Kotonya and Toni, 2020), and SciFact (Wadden et al., 2020). For NLI, we include SNLI (Bowman et al., 2015), MultiNLI (Williams et al., 2018), ANLI (Nie et al., 2020) and SciTail (Khot et al., 2018). For summarization, we include XSum-Halluc. (Maynez et al., 2020), XENT (Cao et al., 2022), and FactCC (Kryscinski\net al., 2020). We use all examples in the summarization task datasets, and sample 20K examples from QA, fact-checking, and NLI task datasets. We combine all the simulated datasets to create the training set for our main experiment. AttrEval-Simulation. For testing, we first simulate examples from six out-of-domain QA datasets: HotpotQA (Yang et al., 2018), EntityQuestions (Sciavolino et al., 2021), PopQA (Mallen et al., 2022), TREC (Baudis and Sediv\u00fd, 2015), TriviaQA (Joshi et al., 2017), and WebQuestions (Berant et al., 2013). Note that we intend to use different QA datasets for training and testing, as to test the model\u2019s generalization ability, and evaluate its performance across a diverse set of domains and question formats. Our manual examination indicates that 84% of 50 randomly sampled examples accurately align with their category, and the labeling errors are primarily due to incorrect annotations in the original QA datasets or heuristics used to formulate comparable answer candidates for contradictory errors and to retrieve negative passages for extrapolatory errors. AttrEval-GenSearch. To examine the real-life application of automatic attribution evaluation, approximately 250 examples from the New Bing search engine are annotated carefully by the authors. This process comprises two subtasks: creating queries and verifying attributions. To avoid the issue of training data contamination, new queries are manually created across 12 domains (Figure 3).6 To facilitate and motivate query annotation,\n6The \u201cAI/NLP Research\u201d domain is inspired by recent discussions on social media about testing LLMs\u2019 knowledge on researchers, e.g., \u201cIs XX a co-author of the paper XX?\u201d\nkeywords from a specific domain are randomly generated using ChatGPT, and relevant facts within that domain are compiled from the Web.7\nIn the verification process, queries are sent to the New Bing search engine under a balanced mode following Liu et al. (2023), which balances accuracy and creativity. The validity of the output generated by New Bing is evaluated, where we consider only the first sentence that answers the question along with its reference. As we state in Section 2, our evaluation emphasizes the error type in a single reference per statement. In the case of a sentence having multiple references or distinct segments (for example, \u201cXXX [1][2]\u201d or \u201cXXX [1] and YYY [2]\u201d), each reference or segment is treated as a separate sample, and the attributions are verified individually. Finally, the samples are categorized by the annotators as attributable, contradictory, or extrapolatory. Detailed annotation guidelines can be found in Appendix D."
+        },
+        {
+            "heading": "4.2 Implementation Details",
+            "text": "In the configuration of \u201cprompting LLMs\u201d, we test Alpaca (Taori et al., 2023), Vicuna (Chiang et al., 2023), ChatGPT (OpenAI, 2023a) and GPT4 (OpenAI, 2023b), where we use OpenAI\u2019s official APIs (gpt-3.5-turbo, gpt-4-0314)8, and weights from Alpaca and Vicuna from the official repository9. For Alpaca and Vicuna inference, documents are tokenized and truncated at a maximum of 2048 tokens. We generate text with a temperature of 0. The prompts for the task of evaluating attribution are provided in Appendix Table 6,\n7We make an effort to collect new facts post-2021 to test about \u201cknowledge confliction\u201d (Zhou et al., 2023; Xie et al., 2023) between parametric and external knowledge.\n8platform.openai.com/docs/api-reference/chat. Given GPT-4\u2019s high cost and slow inference speed, we evaluate it on 500 random samples from AttrEval-Simulation.\n9https://github.com/tatsu-lab/stanford_alpaca, https://github.com/lm-sys/FastChat\nand our main results are averaged over 4 different prompts. For the few-shot prompting setting, we manually write 3 examples as demonstrations for both test sets as shown in Table 7. If LLMs yield an attribution label with an explanation, we extract the predicted label with regular expression.\nIn the \u201cfine-tuning LMs\u201d setting, we fine-tune four types of LMs of various scales: Roberta (340M) (Liu et al., 2019), (FLAN-)T5 (770M, 3B, 11B) (Raffel et al., 2020; Chung et al., 2022), GPT2 (1.5B) (Radford et al., 2019), LLaMA (7B), Alpaca (7B, 11B) (Taori et al., 2023), and Vicuna (7B, 11B) (Chiang et al., 2023). Our implementation utilizes the Huggingface library (Wolf et al., 2019) and Alpaca examples. The training is performed on 4 A100 80GB GPUs with a maximum of 512 tokens. For the LLaMA family of models, we use a batch size of 32 and train for 1 epoch. For the other models, we use a batch size of 64 and 3 epochs. We set the learning rate as 2e-5 and use a cosine learning rate decay with 0.03 warm-up steps.\nMetrics. For evaluation, we present the F1 score for each individual class as well as the micro-F1 score, which is equivalent to the overall accuracy."
+        },
+        {
+            "heading": "5 Results",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Overall Performance",
+            "text": "Table 2 presents an evaluation of different models on both the simulated dataset (AttrEval-Simulation) and the annotated dataset on New Bing (AttrEvalGenSearch). Our primary findings are as follows: GPT-4 achieves promising results, reaching an overall accuracy of 81-83% on AttrEval-GenSearch and significantly outperforming other models. This suggests a promising potential for employing GPT4 for automatic attribution evaluation to alleviate human annotation workloads, aligning with the emerging trend that uses GPT-4 for different evaluation tasks (Chiang et al., 2023; Zheng et al., 2023). However, it may still not be sufficiently accurate for practical use. We also note some potential concerns of bias (see Limitations Section 8). Automatic attribution evaluation presents substantial challenges. This complex task requires not only understanding the reference information but also comparing it with the information in the statement, all of which can significantly vary across different datasets and test conditions. Against these challenges, models other than GPT-4 exhibit suboptimal performance in zero-shot and few-shot settings. Fine-tuning LMs on the simulated datasets from related tasks significantly improves the per-\nformance. For instance, the Vicuna (13B) model sees the overall accuracy on the two test sets rise from 34.6% and 41.4% in the zero-shot setting to 66.0% and 71.3%, respectively. And the fine-tuned FLAN-T5 (770M) model can even surpass ChatGPT on both test sets. Despite this, there is still a large room for further improvement. Some models that yielded better results on the simulated test set may be less effective on the annotated test set, indicating a lack of consistency across diverse testing settings, signaling generalizability challenges. Models struggle most notably with contradictory errors. Detecting contradictions is particularly complex because it requires the model to weigh one piece of information in the statement against another in the reference, a process that necessitates advanced fine-grained information comparison and reasoning capabilities. Consequently, even the best-performing model GPT-4 and the finetuned models often fail when faced with contradictory inputs, most often treating them as attributable (see qualitative analysis in Section 5.2)."
+        },
+        {
+            "heading": "5.2 Qualitative Analysis",
+            "text": "To shed light on the space for future improvements in attribution evaluation, we qualitatively examine all the error examples of GPT-4 in the zero-shot setting. Representative examples are in Table 3.\nOur first observation is that a significant portion (30.6%) of errors happen due to fine-grained information insensitivity: failure in comparing very fine-grained information such as numerical values,\nnumbers, dates, and time. Besides, the model misunderstands task definition and misinterprets logical relations implied by labels (22.2%). The model also struggles with symbolic operators (13.9%). For example, it fails to distinguish \u2018equal to\u2019 (=) and \u2018approximately equal to\u2019 (\u2248) in numeric comparisons. In the left cases, the model tends to overlook the context clues and does not make judgments by conditioning on the reference (e.g., potentially relying on its own parametric knowledge).\nOur observations point to two potential directions for improvement: 1) training or prompting models to be more faithful and strongly conditioned on the reference (Zhou et al., 2023), especially paying attention to fine-grained information; and 2) augmenting an LM-based evaluation method with external tools for different types of numerical and logical operations that are hard to be accurately performed only by the LM itself (Chen et al., 2020; Mialon et al., 2023). Similarly, we do qualitative analysis for ChatGPT in Appendix Section E."
+        },
+        {
+            "heading": "5.3 Ablation Study",
+            "text": "In this section, we perform an ablation study to test how each task influences the fine-tuned LMs\u2019 results and analyze the prompt sensitivity in zeroshot and few-shot settings for prompting LLMs. Contribution of individual task. We show the performance of models fine-tuned on individual task datasets and their combinations in Figure 4. We select a representative from each group of the models under the fine-tuned setting in Table 2. Our findings\nsuggest that examples from our simulated QA and fact-checking task most significantly improve performance for the attribution evaluation task, hinting at a strong link between these tasks. Furthermore, integrating various related task datasets generally leads to better performance, particularly on out-ofdomain test instances in AttrEval-GenSearch. Sensitivity of prompts. The choice of prompts used to evaluate language models can have an impact on their performance. We evaluate the sensitivity of prompts for AttrScore under both zero-shot and few-shot settings of Alpaca (7B) and ChatGPT. We show four types of prompts as mentioned earlier: a prompt designed specifically for our evaluation setting (Attri.), an NLI prompt, a fact-checking prompt (Fact.), and a summarization hallucination detection prompt (Sum.). These prompts are presented in Appendix Table 6. As shown in Table 4, fact-checking and NLI prompts generally perform better, as similar tasks may have been seen during their instruction tuning phase."
+        },
+        {
+            "heading": "6 Related Work",
+            "text": "Attributed LMs. Generative LMs often produce hallucinations (Maynez et al., 2020; Dziri et al., 2021; Lee et al., 2018; Shuster et al., 2021; Wang and Sennrich, 2020; Xiao and Wang, 2021; Ji et al., 2023). To alleviate the issue, recent work proposes to augment LLMs (Mialon et al., 2023) with external tools (Schick et al., 2023; Li et al., 2023; Qin et al., 2023) such as retrievers (Guu et al., 2020; Lewis et al., 2020; Shuster et al., 2021; Izacard and Grave, 2021; Izacard et al., 2022; Borgeaud et al., 2022; Trivedi et al., 2022; Qian et al., 2023) and search engines (Nakano et al., 2021; Komeili et al., 2022; Thoppilan et al., 2022; Yao et al., 2022; Glaese et al., 2022; Shuster et al., 2022; Peng et al., 2023). Incorporating external references for generation inherently implies that the generated statement is backed by these references. However, the\nvalidity of such attribution remains questionable.\nEvaluation of attribution. To evaluate attribution, Liu et al. (2023) conduct a human evaluation to audit the verifiability of responses from generative search engines. They find that these engines frequently contain unsupported statements and inaccurate citations, which strengthen the need to carefully examine the attribution of generations (Rashkin et al., 2021). However, human evaluations are very expensive and time-consuming. Gao et al. (2022); Bohnet et al. (2022); Gao et al. (2023) propose to automatically evaluate attribution by levering NLI models (Honovich et al., 2022; Kamoi et al., 2023; Gekhman et al., 2023). We study this problem in a more comprehensive and realistic manner: 1) we explore how helpful other relevant tasks besides NLI are to attribution evaluation; 2) our evaluation setting is based on both benchmark examples and real examples."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "In this paper, we investigate the important problem of automatically evaluating attribution given by LLMs. We begin by defining different types of attribution errors and then explore two approaches for automatic evaluation: prompting LLMs and fine-tuning smaller LMs. We experiment with both simulated test examples and manually curated test examples from a real-life generative search engine. The results highlight both promising signals and remaining challenges for the automatic evaluation of attribution. We hope our work could lay the foundation for future studies on this important problem."
+        },
+        {
+            "heading": "8 Limitations",
+            "text": "Currently, smaller models in AttrScore are finetuned on the combination of simulated or repurposed datasets from related tasks. However, this dataset still has gaps from the real scenario. Moreover, the error patterns in these simulated datasets might be overly simplistic and lack diversity, which can limit the models\u2019 ability to effectively handle more complex and varied real-world errors. It is also worth noting that these simulated datasets may contain noise and erroneous labels, which could further impede the models\u2019 learning and subsequent performance. How to obtain higher-quality training data for attribution evaluation at scale can be a major focus for future development.\nOur annotated evaluation set, AttrEvalGenSearch, is derived from New Bing, which uses GPT-4 as its backbone. It is crucial to note that we also use GPT-4 for evaluating attribution on AttrEval-GenSearch, which achieves the best performance with around 85% overall accuracy. Some bias might come from GPT-4 both generating the test examples and evaluating the attribution, which could potentially skew our understanding of the model\u2019s true performance. We therefore caution against over-optimism. We also acknowledge that the size of AttrEval-GenSearch is moderate, which may not fully represent the real use setting of attributed LLMs.\nWhile acknowledging current limitations, several promising directions emerge for future research and enhancement. For example, one can diversify data sources to include examples from a variety of generative search engines, not just New Bing. In addition, it may be beneficial to annotate larger-scale queries that cover a broad spectrum of topics, styles, and perspectives."
+        },
+        {
+            "heading": "9 Ethics Statement",
+            "text": "This research project involves evaluating attribution given by attributed LLMs. We collect and annotate data for evaluation using publicly available information on the web, with the assistance of a generative search engine, New Bing. We acknowledge that LLMs have the potential to reproduce and amplify harmful information present in the data. We made an effort to mitigate this risk by carefully selecting our evaluation data and by conducting analyses to identify and mitigate potential risks in the process."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "The authors would like to thank the anonymous reviewers and colleagues from the OSU NLP group for their thoughtful comments. This research was supported in part by NSF IIS 1815674, NSF CAREER 1942980, NSF OAC-2112606, and Ohio Supercomputer Center (OSC, 1987). The views and conclusions contained herein are those of the authors and should not be interpreted as representing the official policies, either expressed or implied, of the U.S. government. The U.S. Government is authorized to reproduce and distribute reprints for Government purposes notwithstanding any copyright notice herein."
+        },
+        {
+            "heading": "A Data Simulation",
+            "text": "A.1 Simulation - QA\nAttributable. Since we have questions, and their ground truth answers and reference contexts, we can directly treat them as \u201cAttributable\u201d examples.\nContradictory. To simulate contradictory errors, we consider two methods. The first method involves modifying the correct answer by replacing it with a different candidate generated from an offthe-shelf QA model, an answer substitution model, or a random span generator. The second method involves keeping the original answer and replacing the answer span in the reference context with a similar candidate. The QA model, the answer substitution model, and the random span generator are all implemented by prompting a FLAN-T5-XL (3B) (Chung et al., 2022) with different task prompts in Appendix Table 5.\nExtrapolatory. To simulate extrapolatory errors, we employ a BM25 retriever to retrieve external documents that do not contain ground truth answers from knowledge sources like Wikipedia or the Web. And then we replace the original paragraph with one of the retrieved documents. For the answer, we either keep the original ground truth answer or leverage a QA model to generate an answer. Here are more details for constructing negative retrieved documents in each dataset.\nFollowing previous work (Karpukhin et al., 2020), we utilize the passages from Wikipedia dumps for constructing evidence for NaturalQuestions (Kwiatkowski et al., 2019), WebQuestions (Berant et al., 2013), and TREC (Baudis and Sediv\u00fd, 2015) datasets. In particular, we regard the highest-ranked passage including answers from BM25 as positive evidence and the top passage without answers as negative evidence.\nFor TriviaQA (Joshi et al., 2017), we select the passage with the highest overlap with answers from web texts as positive evidence and the top-ranked wiki passage without answers from BM25 as negative evidence. We exclude examples where the positive evidence has an overlap ratio of less than 0.5 with answers. For HotpotQA (Yang et al., 2018), we combine the ground truth passages provided as positive evidence and randomly select two out of eight passages provided as negative evidence. Similarly, in PopQA (Mallen et al., 2022), we find positive evidence from Wikipedia content\nthrough the provided link and retrieve negative evidence from Wikipedia dumps using BM25. In EntityQuestions (Sciavolino et al., 2021), we match positive evidence in Wikipedia texts searched by the question entity and retrieve negative evidence via BM25.\nConverting short answers to long sentences. Since many of the attributed LLMs generate long sentences to the query, to make it our simulated data more realistic, we convert short answers to long answers using ChatGPT. Specifically, we prompt ChatGPT with the instruction \u201cConvert a given question and answer pair into plain sentences. [Question] [Answer]\u201d.\nA.2 Simulation - Fact Checking\nWith provided Wiki content as evidence in FEVER (Thorne et al., 2018) and Adversarial FEVER datasets (Thorne et al., 2019), we repurpose \u2018SUPPORTS\u2019 examples as attributable, \u2018REFUTES\u2019 as contradictory, and \u2018NOT ENOUGH INFO\u2019 as extrapolatory. Using the same label mapping, we apply this approach to the claim and evidence provided in VITAMINC (Schuster et al., 2021), after removing duplicated examples as shown in FEVER. For FEVEROUS (Aly et al., 2021), we concatenate all pieces of evidence, including tables and texts, and prepend an increasing index as the final evidence. We then ground the label into our three categories using the same label mapping. Regarding natural claim datasets with various label spaces, we keep the top 6 classes out of 117 in MultiFC (Augenstein et al., 2019) and map them to our defined three categories. In PUBHEALTH (Kotonya and Toni, 2020), we consider both \u2018unproven\u2019 and \u2018mixture\u2019 classes as extraplanetary. We also regard the abstract of the article as evidence. For SciFact (Wadden et al., 2020), we repurpose \u2018SUPPORT\u2019 as attributable and \u2018CONTRADICT\u2019 as contradictory. Additionally, we randomly select one sentence from the abstract of other articles as evidence for the \u2018Not enough information\u2019 class to construct extrapolatory examples.\nA.3 Simulation - NLI\nNatural language inference (NLI) aims to determine whether a hypothesis is true given a premise. In NLI datasets such as SNLI (Bowman et al., 2015), MultiNLI (Williams et al., 2018), ANLI (Nie et al., 2020), and SciTail (Khot et al.,\n2018), the hypothesis is considered the claim and the premise is regarded as the evidence. The original labels in NLI datasets, namely \u2018Entailment\u2019, \u2018Contradictory\u2019, and \u2018Neutral\u2019, are mapped to \u2018Attributable\u2019, \u2018Contradictory\u2019, and \u2018Extrapolatory\u2019.\nA.4 Simulation - Summarization Summarization involves condensing a given passage or article into brief sentences while preserving its original meaning. To simulate contradictory examples, we use datasets with annotations of hallucinations. In terms of XSum-Hallucination (Maynez et al., 2020), we merge examples with the same ID and consider those with the most intrinsic hallucination as contradictory and those with the most extrinsic hallucination as extrapolatory. Paired full articles and ground truth summaries are treated as attributable examples. For XENT (Cao et al., 2022), \u2018Non-factual Hallucination\u2019 and \u2018Intrinsic Hallucination\u2019 are seen as contradictory, \u2018Factual Hallucination\u2019 as extrapolatory, and \u2018Non-hallucinated\u2019 as attributable. Each article and reference are paired as attributable examples. Finally, we resplit the manually annotated dev and test sets for training and evaluation in FactCC (Kryscinski et al., 2020), with \u2018INCORRECT\u2019 labeled as extrapolatory and \u2018CORRECT\u2019 as attributable."
+        },
+        {
+            "heading": "B Label and Subset Distributions of Training and Test Sets",
+            "text": "We show the label and data sources\u2019 distributions of training and AttrEval-Simulation sets in Figure 5 and Figure 6."
+        },
+        {
+            "heading": "C Prompts for LLMs as AttrScore",
+            "text": "We show different kinds of prompts for using LLMs as AttrScore in Table 6. And we show the few-shot demonstrations in Table 7."
+        },
+        {
+            "heading": "D Generative Search Engine Examples Annotation Protocol",
+            "text": "We show the detailed annotation guidelines in the following.\nAnnotation Guidelines\nOverview Thank you for participating in this annotation task. The goal of this task is to create a query and verify whether a given reference document fully supports the generation of the query.\nThere are two sub-annotation tasks: 1. Create a query based on a few given keywords under a topic. 2. Verify whether a given answer to a query is fully supported by its references.\nTask 1: Create a query for a specific domain. You will be shown a list of keywords (e.g., inflation rate, CPI, GDP, unemployment rate, etc.) from a specific domain or topic (e.g., economics) and a demo question (e.g., What was the unemployment rate in Germany in 2020?) as an inspiration. Then you will be asked to create a new query based on these keywords.\nTask 2: Verify whether the generated statement is supported by its reference. You will be shown a user query, a generative search engine\u2019s response, and associated references. You will need to read the query, response, and reference carefully and verify whether the cited evidence fully supports the generation of the query.\nYou will be given three options: a. \u2018\u2018Attributable\u2019\u2019: The reference fully supports the generation of the query. b. \u2018\u2018Extrapolatory\u2019\u2019: The generation contradicts the reference. c. \u2018\u2018Contradictory\u2019\u2019: The reference does not contain sufficient information to infer the correctness of the\ngeneration.\nConsider the following examples: (1) \u2018\u2018Attributable\u2019\u2019 Query: What is the temperature range on the moon? Response: The average temperature on the moon can range from -298 degrees F (-183 degrees C) at night to 224 degrees F (106 degrees C) during the day [1]. Reference: The average temperature on the Moon (at the equator and mid latitudes) varies from -298 degrees Fahrenheit (-183 degrees Celsius), at night, to 224 degrees Fahrenheit (106 degrees Celsius) during the day. Because the Moon has no... Annotation: Attributable\n(2) \u2018\u2018Extrapolatory\u2019\u2019 Query: What is the highest price of a gallon of regular gas in the US in 2022? Response: According to a news article by NPR, as of June 2022, the highest average price of a gallon of regular gas in the US was $6.34 in California [1]. Reference: U.S. gas prices hit a new record on Monday, with a gallon of regular gas costing an average of $4.865 (not adjusting for inflation), according to the most recent data from the American Automobile Association... Annotation: Extrapolatory\n(3) \u2018\u2018Contradictory\u2019\u2019 Query: What was the unemployment rate in Germany in 2020? Response: According to [1], the unemployment rate in Germany for 2020 was 4.31%, which was a 1.17% increase from 2019. However, it is important to note that the COVID-19 pandemic had a significant impact on unemployment rates in Germany and around the world. Reference: Germany unemployment rate for 2020 was 3.81%. Annotation: Contradictory\nTasks Prompts\nQA Context: [Context]\\n Based on Context, [Question]\nAnswer Substitution\nPlease provide a related term or substitution for the given input, which should be different from the input.\\n \"Input: Biden; Output: Obama\\n\" \"Input: 1949; Output: 1358\\n\" \"Input: University of Maryland; Output: University of Cambridge\\n\" \"Input: 09/12/2014; Output: 03/30/2008\\n\" \"Input: $431; Output: $769;\\n\" \"Input: [Ground Truth Answer]; Output: \",\nRandom Span Generation Extract a phrase from the given passage. \\n Passage: [Context]\nTable 5: Prompts for QA, answer substitution, and random span generation when simulating contradictory errors\nAttributable Contradictory Extrapolatory 0\n10\n20\n30\n40\n50\nP er\nce nt\nag e\n(% )\n42.48%\n28.51% 29.01%\nLabel distribution in combined_train\nAttributable Contradictory Extrapolatory 0\n10\n20\n30\n40\nP er\nce nt\nag e\n(% )\n33.33% 33.33% 33.33%\nLabel distribution in attreval_simulation\nAttributable Contradictory Extrapolatory 0\n10\n20\n30\n40\n50\n60\nP er\nce nt\nag e\n(% )\n33.47%\n13.64%\n52.89%\nLabel distribution in attreval_gensearch\nFigure 5: Label distribution of training and test sets.\nXSUMHUL 1.6% VITAMINC 13.0%\nSNLI 15.4%\nSCITAIL 1.2% PUBHEALTH 0.5% MULTINLI 11.3% MULTIFC 0.5%\nNQ 31.3%\nSCIFACT 0.1%\nENTFA 1.8% FACTCC 2.6% ANLI 4.6%\nFEVER 16.1%\nDistribution of data source in the combined training set WEBQUESTIO 3.6%\nTRIVIAQA 22.7%\nTREC 1.9%\nPOPQA 21.6%\nENTITYQUEST 26.0%\nHOTPOTQA 24.2%\nDistribution of data source in the AttrEval-Simulation\nFigure 6: Data source distribution of combined training and AttrEval-Simulation sets."
+        },
+        {
+            "heading": "E Additional Qualitative Analysis",
+            "text": "The qualitative results of ChatGPT are shown in Table 8. Our first observation is that a significant portion (79.4%) of errors happen due to ChatGPT overlooking the context clues and does not make judgments by conditioning on the reference (e.g., potentially relying on its own parametric knowledge). For the remaining error cases, they are: 1) fine-grained information insensitivity (13.8%): failure in comparing very fine-grained information such as numerical values, numbers, dates, and\ntime; 2) failure in performing symbolic operations (6.8%): the model fails to verify the claim which requires performing symbolic operations over the reference, such as verifying set relationships."
+        },
+        {
+            "heading": "F Author Contribution Statement",
+            "text": "Xiang Yue conceived the project, conceptualized and designed the study, conducted experiments, wrote the manuscript, and annotated New Bing test examples. Boshi Wang provided critical feedback and edits, revised the manuscript, contributed to the\nPrompt Types Prompts\nAttribution\n### Instruction:\nAs an Attribution Validator, your task is to verify whether a given context can support the claim. A claim can be either a plain sentence or a question followed by its answer. Specifically, your response should clearly indicate the relationship: Attributable, Contradictory or Extrapolatory. A contradictory error occurs when you can infer that the answer contradicts the fact presented in the context, while an extrapolatory error means that you cannot infer the correctness of the answer based on the information provided in the context.\n### Input: Claim: [Question Answer] or [Plain Sentence] \\n\\n Context: [Context]\n### Response:\nFact-Checking\n### Instruction: Fact-check a claim based on the given evidence. Options: Supported, Refuted or Not Enough Information\n### Input: Claim: <Claim>\\n\\n Evidence: <Evidence>\n### Response:\nNLI\n### Instruction: Read the following and determine if the hypothesis can be inferred from the premise. Options: Entailment, Contradiction, or Neutral\n### Input: Hypothesis: <Hypothesis>\\n\\n Premise: <Premise>\n### Response:\nSummarization Hallucination Detection\n### Instruction: Read the following and determine whether the source text can support the summary. Options: Support, Contradicts, or Not Enough Information\n### Input: Summary: <Summary>\\n\\n Source: <Source>\n### Response:\nTable 6: Prompt variations for test the sensitivity of different prompts on the results. We use the \u201cAttribution\u201d prompt for our main experiments as default as it achieves the best performance overall.\nconceptualization of the study, conducted experiments for ChatGPT, and annotated New Bing test examples. Ziru Chen set up the training code base, annotated New Bing test examples, and conducted experiments for fine-tuning Roberta, Flan-T5, and GPT-2. Kai Zhang contributed to all the simulation data preprocessing, revised the manuscript, and annotated New Bing test examples. Yu Su and Huan Sun secured funding for the project, provided supervision and guidance throughout the study, contributed to the conceptualization and design of the study, and edited the whole manuscript. All authors approved the final version of the manuscript."
+        }
+    ],
+    "title": "Automatic Evaluation of Attribution by Large Language Models",
+    "year": 2023
+}

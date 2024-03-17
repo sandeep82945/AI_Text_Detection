@@ -1,0 +1,801 @@
+{
+    "abstractText": "Language models (LMs) can generate hallucinations and incoherent outputs, which highlights their weak context dependency. CacheLMs, which augment LMs with a memory of recent history, can increase context dependency and have shown remarkable performance in diverse language generation tasks. However, we find that even with training, the performance gain stemming from the cache component of current cache-LMs is suboptimal due to the misalignment between the current hidden states and those stored in the memory. In this work, we present HISTALIGN, a new training approach to ensure good cache alignment such that the model receives useful signals from the history. We first prove our concept on a simple and synthetic task where the memory is essential for correct predictions, and we show that the cache component of HISTALIGN is better aligned and improves overall performance. Next, we evaluate HISTALIGN on diverse downstream language generation tasks, including prompt continuation, abstractive summarization, and data-to-text. We demonstrate that HISTALIGN improves text coherence and faithfulness in open-ended and conditional generation settings, respectively. HISTALIGN is also generalizable across different model families, showcasing its strength in improving context dependency of LMs in diverse scenarios.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "David Wan"
+        },
+        {
+            "affiliations": [],
+            "name": "Shiyue Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Mohit Bansal"
+        }
+    ],
+    "id": "SP:9e3c0b649937bc163bdd3b31e94efa3d2b1765cf",
+    "references": [
+        {
+            "authors": [
+                "Amal Alabdulkarim",
+                "Siyan Li",
+                "Xiangyu Peng."
+            ],
+            "title": "Automatic story generation: Challenges and attempts",
+            "venue": "Proceedings of the Third Workshop on Narrative Understanding, pages 72\u201383, Virtual. Association for Computational Linguistics.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shuyang Cao",
+                "Lu Wang."
+            ],
+            "title": "CLIFF: Contrastive learning for improving faithfulness and factuality in abstractive summarization",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 6633\u20136649, Online and",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ziqiang Cao",
+                "Furu Wei",
+                "Wenjie Li",
+                "Sujian Li."
+            ],
+            "title": "Faithful to the original: Fact-aware neural abstractive summarization",
+            "venue": "Proceedings of the Thirty-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Haw-Shiuan Chang",
+                "Andrew McCallum."
+            ],
+            "title": "Softmax bottleneck makes language models unable to represent multi-mode word distributions",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Pa-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Haw-Shiuan Chang",
+                "Zonghai Yao",
+                "Alolika Gon",
+                "Hong Yu",
+                "Andrew McCallum."
+            ],
+            "title": "Revisiting the architectures like pointer networks to efficiently improve the next word distribution, summarization factuality, and beyond",
+            "venue": "Findings of the Association",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sihao Chen",
+                "Fan Zhang",
+                "Kazoo Sone",
+                "Dan Roth."
+            ],
+            "title": "Improving faithfulness in abstractive summarization with contrast candidate generation and selection",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wenhu Chen",
+                "Jianshu Chen",
+                "Yu Su",
+                "Zhiyu Chen",
+                "William Yang Wang."
+            ],
+            "title": "Logical natural language generation from open-domain tables",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 7929\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wenhu Chen",
+                "Hongmin Wang",
+                "Jianshu Chen",
+                "Yunkai Zhang",
+                "Hong Wang",
+                "Shiyang Li",
+                "Xiyou Zhou",
+                "William Yang Wang."
+            ],
+            "title": "Tabfact: A large-scale dataset for table-based fact verification",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Bradley Efron",
+                "Robert J. Tibshirani."
+            ],
+            "title": "An Introduction to the Bootstrap",
+            "venue": "Number 57 in Monographs on Statistics and Applied Probability. Chapman & Hall/CRC, Boca Raton, Florida, USA.",
+            "year": 1993
+        },
+        {
+            "authors": [
+                "Julian Eisenschlos",
+                "Syrine Krichene",
+                "Thomas M\u00fcller."
+            ],
+            "title": "Understanding tables with intermediate pre-training",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2020, pages 281\u2013296, Online. Association for Computational Lin-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Angela Fan",
+                "Mike Lewis",
+                "Yann Dauphin."
+            ],
+            "title": "Hierarchical neural story generation",
+            "venue": "Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 889\u2013898, Melbourne, Australia. Association",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Xingcheng Yao",
+                "Danqi Chen."
+            ],
+            "title": "SimCSE: Simple contrastive learning of sentence embeddings",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 6894\u20136910, Online and Punta Cana, Do-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tanya Goyal",
+                "Greg Durrett."
+            ],
+            "title": "Annotating and modeling fine-grained factuality in summarization",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Edouard Grave",
+                "Moustapha M Cisse",
+                "Armand Joulin."
+            ],
+            "title": "Unbounded cache model for online language modeling with open vocabulary",
+            "venue": "Advances in neural information processing systems, 30.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Edouard Grave",
+                "Armand Joulin",
+                "Nicolas Usunier."
+            ],
+            "title": "Improving neural language models with a continuous cache",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Edouard Grave",
+                "Armand Joulin",
+                "Nicolas Usunier."
+            ],
+            "title": "Improving neural language models with a continuous cache",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Caglar Gulcehre",
+                "Sungjin Ahn",
+                "Ramesh Nallapati",
+                "Bowen Zhou",
+                "Yoshua Bengio."
+            ],
+            "title": "Pointing the unknown words",
+            "venue": "Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 140\u2013149,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Karl Moritz Hermann",
+                "Tomas Kocisky",
+                "Edward Grefenstette",
+                "Lasse Espeholt",
+                "Will Kay",
+                "Mustafa Suleyman",
+                "Phil Blunsom."
+            ],
+            "title": "Teaching machines to read and comprehend",
+            "venue": "Advances in Neural Information Processing Systems, volume 28. Curran Associates,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ari Holtzman",
+                "Jan Buys",
+                "Li Du",
+                "Maxwell Forbes",
+                "Yejin Choi."
+            ],
+            "title": "The curious case of neural text degeneration",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sekitoshi Kanai",
+                "Yasuhiro Fujiwara",
+                "Yuki Yamanaka",
+                "Shuichi Adachi."
+            ],
+            "title": "Sigsoftmax: Reanalysis of the softmax bottleneck",
+            "venue": "Advances in Neural Information Processing Systems, volume 31. Curran Associates, Inc.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Urvashi Khandelwal",
+                "Omer Levy",
+                "Dan Jurafsky",
+                "Luke Zettlemoyer",
+                "Mike Lewis."
+            ],
+            "title": "Generalization through memorization: Nearest neighbor language models",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wojciech Kryscinski",
+                "Bryan McCann",
+                "Caiming Xiong",
+                "Richard Socher."
+            ],
+            "title": "Evaluating the factual consistency of abstractive text summarization",
+            "venue": "In",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Roland Kuhn",
+                "Renato De Mori."
+            ],
+            "title": "A cachebased natural language model for speech recognition",
+            "venue": "IEEE transactions on pattern analysis and machine intelligence, 12(6):570\u2013583.",
+            "year": 1990
+        },
+        {
+            "authors": [
+                "Mike Lewis",
+                "Yinhan Liu",
+                "Naman Goyal",
+                "Marjan Ghazvininejad",
+                "Abdelrahman Mohamed",
+                "Omer Levy",
+                "Veselin Stoyanov",
+                "Luke Zettlemoyer"
+            ],
+            "title": "BART: Denoising sequence-to-sequence pre-training for natural language",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Lagunas",
+                "Alexander Rush",
+                "Thomas Wolf."
+            ],
+            "title": "Datasets: A community library for natural language processing",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing: System Demonstrations, pages 175\u2013184, Online",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiang Lisa Li",
+                "Ari Holtzman",
+                "Daniel Fried",
+                "Percy Liang",
+                "Jason Eisner",
+                "Tatsunori Hashimoto",
+                "Luke Zettlemoyer",
+                "Mike Lewis"
+            ],
+            "title": "Contrastive decoding: Open-ended text generation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiang Lisa Li",
+                "Ari Holtzman",
+                "Daniel Fried",
+                "Percy Liang",
+                "Jason Eisner",
+                "Tatsunori Hashimoto",
+                "Luke Zettlemoyer",
+                "Mike Lewis"
+            ],
+            "title": "Contrastive decoding: Open-ended text generation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin."
+            ],
+            "title": "ROUGE: A package for automatic evaluation of summaries",
+            "venue": "Text Summarization Branches Out, pages 74\u201381, Barcelona, Spain. Association for Computational Linguistics.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Ao Liu",
+                "Haoyu Dong",
+                "Naoaki Okazaki",
+                "Shi Han",
+                "Dongmei Zhang."
+            ],
+            "title": "PLOG: Table-to-logic pretraining for logical table-to-text generation",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 5531\u2013",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qian Liu",
+                "Bei Chen",
+                "Jiaqi Guo",
+                "Morteza Ziyadi",
+                "Zeqi Lin",
+                "Weizhu Chen",
+                "Jian-Guang Lou."
+            ],
+            "title": "TAPEX: Table pre-training via learning a neural SQL executor",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yixin Liu",
+                "Pengfei Liu",
+                "Dragomir Radev",
+                "Graham Neubig."
+            ],
+            "title": "BRIO: Bringing order to abstractive summarization",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 2890\u20132903,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Joshua Maynez",
+                "Shashi Narayan",
+                "Bernd Bohnet",
+                "Ryan McDonald."
+            ],
+            "title": "On faithfulness and factuality in abstractive summarization",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 1906\u20131919, On-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Clara Meister",
+                "Tiago Pimentel",
+                "Gian Wiher",
+                "Ryan Cotterell."
+            ],
+            "title": "Locally typical sampling",
+            "venue": "Transactions of the Association for Computational Linguistics, abs/2202.00666.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Caiming Xiong",
+                "James Bradbury",
+                "Richard Socher."
+            ],
+            "title": "Pointer sentinel mixture models",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Tomas Mikolov",
+                "Ilya Sutskever",
+                "Kai Chen",
+                "Greg S Corrado",
+                "Jeff Dean."
+            ],
+            "title": "Distributed representations of words and phrases and their compositionality",
+            "venue": "Advances in Neural Information Processing Systems, volume 26. Curran Associates, Inc.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Weijia Shi",
+                "Mike Lewis",
+                "Xilun Chen",
+                "Wen tau Yih",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Nonparametric masked language modeling",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Feng Nan",
+                "Ramesh Nallapati",
+                "Zhiguo Wang",
+                "Cicero Nogueira dos Santos",
+                "Henghui Zhu",
+                "Dejiao Zhang",
+                "Kathleen McKeown",
+                "Bing Xiang."
+            ],
+            "title": "Entitylevel factual consistency of abstractive text summarization",
+            "venue": "Proceedings of the 16th Conference of",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shashi Narayan",
+                "Shay B. Cohen",
+                "Mirella Lapata."
+            ],
+            "title": "Don\u2019t give me the details, just the summary! topic-aware convolutional neural networks for extreme summarization",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Lan-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Krishna Pillutla",
+                "Swabha Swayamdipta",
+                "Rowan Zellers",
+                "John Thickstun",
+                "Sean Welleck",
+                "Yejin Choi",
+                "Zaid Harchaoui."
+            ],
+            "title": "Mauve: Measuring the gap between neural text and human text using divergence frontiers",
+            "venue": "Advances in Neural Information Pro-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeff Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever."
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hannah Rashkin",
+                "Asli Celikyilmaz",
+                "Yejin Choi",
+                "Jianfeng Gao."
+            ],
+            "title": "PlotMachines: Outlineconditioned generation with dynamic plot state tracking",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "SentenceBERT: Sentence embeddings using Siamese BERTnetworks",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natu-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Abigail See",
+                "Peter J Liu",
+                "Christopher D Manning."
+            ],
+            "title": "Get to the point: Summarization with pointergenerator networks",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 1073\u2013",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Yixuan Su",
+                "Tian Lan",
+                "Yan Wang",
+                "Dani Yogatama",
+                "Lingpeng Kong",
+                "Nigel Collier."
+            ],
+            "title": "A contrastive framework for neural text generation",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Craig Thomson",
+                "Ehud Reiter."
+            ],
+            "title": "A gold standard methodology for evaluating accuracy in data-to-text systems",
+            "venue": "Proceedings of the 13th International Conference on Natural Language Generation, pages 158\u2013168, Dublin, Ireland. Association for Computa-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "driguez",
+                "Robert Stojnic",
+                "Sergey Edunov",
+                "Thomas Scialom"
+            ],
+            "title": "Llama 2: Open foundation and finetuned chat models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aaron van den Oord",
+                "Yazhe Li",
+                "Oriol Vinyals"
+            ],
+            "title": "Representation learning with contrastive predictive coding",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141 ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in Neural Information Processing Systems, volume 30. Curran Associates, Inc.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Oriol Vinyals",
+                "Meire Fortunato",
+                "Navdeep Jaitly."
+            ],
+            "title": "Pointer networks",
+            "venue": "Advances in neural information processing systems, 28.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "David Wan",
+                "Mohit Bansal."
+            ],
+            "title": "FactPEGASUS: Factuality-aware pre-training and fine-tuning for abstractive summarization",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "David Wan",
+                "Mengwen Liu",
+                "Kathleen McKeown",
+                "Markus Dreyer",
+                "Mohit Bansal."
+            ],
+            "title": "Faithfulness-aware decoding strategies for abstractive summarization",
+            "venue": "Proceedings of the 17th Conference of the European Chapter of the",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rongxiang Weng",
+                "Heng Yu",
+                "Xiangpeng Wei",
+                "Weihua Luo."
+            ],
+            "title": "Towards enhancing faithfulness for neural machine translation",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 2675\u20132684,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Sylvain Gugger",
+                "Mariama Drame",
+                "Quentin Lhoest",
+                "Alexander Rush."
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhilin Yang",
+                "Zihang Dai",
+                "Ruslan Salakhutdinov",
+                "William W. Cohen."
+            ],
+            "title": "Breaking the softmax bottleneck: A high-rank RNN language model",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Zhilin Yang",
+                "Thang Luong",
+                "Russ R Salakhutdinov",
+                "Quoc V Le."
+            ],
+            "title": "Mixtape: Breaking the softmax bottleneck efficiently",
+            "venue": "Advances in Neural Information Processing Systems, volume 32. Curran Associates, Inc.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Pengcheng Yin",
+                "Graham Neubig",
+                "Wen-tau Yih",
+                "Sebastian Riedel."
+            ],
+            "title": "TaBERT: Pretraining for joint understanding of textual and tabular data",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 8413\u20138426, On-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dani Yogatama",
+                "Cyprien de Masson d\u2019Autume",
+                "Lingpeng Kong"
+            ],
+            "title": "Adaptive semiparametric language models. Transactions of the Association for Computational Linguistics, 9:362\u2013373",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zexuan Zhong",
+                "Tao Lei",
+                "Danqi Chen."
+            ],
+            "title": "Training language models with memory augmentation",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 5657\u20135673, Abu Dhabi, United Arab Emirates. As-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lhoest"
+            ],
+            "title": "2021) for loading the XSum (Narayan et al., 2018) and CNN/DM (Hermann et al., 2015) datasets. And we use Huggingface\u2019s Metrics library for calculating ROUGE scores. Training the original model, TRIME, and HISTAL",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Reference: St"
+            ],
+            "title": "Kilda had the highest Score as an Away Team in the 1928 Vfl Season",
+            "year": 1928
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Language modeling (LM), or language generation, requires decent context dependency. For both openended and conditional generation tasks, we want the model generation to be consistent with its previous generation or the input context. However, incoherence and hallucination problems are pervasive in current model generations (Holtzman et al.,\n1Our code is publicly available at https://github. com/meetdavidwan/histalign\n2020; Cao et al., 2018; Maynez et al., 2020), which suggests the weak context dependency of LMs.\nCache language model (Grave et al., 2017b, Cache-LM) is a simple yet effective method to improve context dependency by equipping LM with an additional memory of recent history (local context) and enabling it to directly \u201ccopy\u201d from the history. Such models showed considerable improvement in language modeling and downstream generation tasks (Merity et al., 2017; See et al., 2017). However, since the introduction of Transformers (Vaswani et al., 2017), local memory has been less used due to the powerful self-attention mechanism, and more works have been focusing on leveraging long-term or external memory (Khandelwal et al., 2020; Yogatama et al., 2021). Nonethe-\nless, Zhong et al. (2022) showed that using local memory on top of a Transformer is still beneficial.\nIn this paper, we focus on applying local cache to Transformer-based LMs and show that better alignment of the cache component leads to stronger gains. First, we show that cache-LM theoretically breaks the softmax bottleneck (Yang et al., 2018) that limits the capacity of any parametric LM to model highly context-dependent natural language. Then, we find that, in current cache-LMs, the signals provided by the memory component are minor, even when using the cache component during training (Zhong et al., 2022). We hypothesize that the main bottleneck comes from the misalignment of the current hidden states and those in the memory, because of which more relevant memories are not given higher weights than less relevant ones. We demonstrate this problem through a synthetic task: Ambiguous Template (Chang and McCallum, 2022), an example of which is shown in Figure 1. When asking the model to predict the next word given the context \u201cAfter debating whether to bow to the woman or the king, the jester decided to bow to the __ ,\u201d current cache-LM does not give the highest probabilities to the desired words king and woman. Instead, we find that irrelevant words, such as to and jester have high cache probabilities. When combining these probabilities with the original softmax, the desired words cannot be ranked as top tokens. We find that this problem exists in pretrained LMs of various sizes, fine-tuned models, as well as models with cache augmented.\nNext, we address this misalignment issue by proposing a new fine-tuning scheme, HISTALIGN, in which we augment the LM training objective with a contrastive loss to encourage the model to align the current hidden states with those in the history. As shown in Figure 1, our cache component gives higher probabilities for king and woman than other less relevant words in the cache. Unlike the typical contrastive loss that treats all negative examples equally, we propose to learn a ranking of negative tokens, i.e., more semantically similar tokens are ranked higher. As shown in Figure 2, when we align the space for the token housing, we want words such as accommodations to be closer than less relevant words like children. Hence, the cache can also be useful even when the exact target word is not present in the history. We demonstrate the stronger cache performance of HISTALIGN through the synthetic ambiguous template task and\nshowcase its strength in improving coherence for open-ended prompt continuation and faithfulness for abstractive summarization and data-to-text.\nTo summarize, our contributions are as follows:\n\u2022 We discuss why cache-LM with local memory can improve context dependency through a softmax bottleneck lens.\n\u2022 We show the misalignment problem present in current cache language models and their training strategy.\n\u2022 We propose a new training method, HISTALIGN, based on order-informed contrastive learning, which alleviates the misalignment problem and makes better use of memories.\n\u2022 We demonstrate that HISTALIGN improves the coherence of open-ended generation as well as the faithfulness of conditional generation, and it works across different model families and adds little computational overhead."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Cache-LM and Pointer Network. Adding a cache component to a language model (LM) was first introduced for speech recognition (Kuhn and De Mori, 1990). Grave et al. (2017c) extended this idea to RNN-based neural LM, which they call neural cache-LM. Cache-LM predicts the next token by combining the RNN model\u2019s outputs with the similarities between the cache and the current hidden state. The cache saves tuples of hidden state and next token prediction, i.e., (hi, xi+1), from recent history (see Section 3.2). Essentially, the cache component enables the model to copy tokens from the history. Similar to cache-LM, a pointer network (Vinyals et al., 2015; Merity et al., 2017) also combines generating and copying of tokens but uses hi as a representation of xi (instead of xi+1). This means that a pointer network requires learning additional transformations between the current representation and those in the past and a gating component for interpolation (Merity et al., 2017; See et al., 2017).2 In contrast, cache-LM doesn\u2019t need extra parameters to be learned and can be applied directly at testing time. It is more efficient to\n2Depending on the implementation, the model can have additional numbers of parameters that are quadratic to the number of hidden size for the projection matrix (for example, See et al. (2017) uses the concatenation of four hidden states for the gating module).\nbe used for larger cache sizes (i.e., extending cacheLM to long-term and external memory), and has been shown to perform better than pointer-network (Grave et al., 2017b; Zhong et al., 2022).\nWhile cache-LM can be directly applied at test time, a recent work (Zhong et al., 2022) showed that it leads to more improvement when using cache during training time as well. Nonetheless, such proposed learning objectives for cache-LMs usually only provide distant supervision to the cache component. In contrast, we introduce direct supervision to the cache, which aligns the current representation with its history.\nLM with Local or External Memory. CacheLM and pointer network were originally proposed to only use hidden states from the local context, i.e., previous tokens in the input context. Though this technique has been proven to be helpful for language modeling and other language generation tasks (Gulcehre et al., 2016; Grave et al., 2017c; Merity et al., 2017; See et al., 2017), it has been less used after the Transformer architecture became popular, because the self-attention mechanism can attend to any token in the input context. Therefore, many works (Grave et al., 2017a; Khandelwal et al., 2020; Yogatama et al., 2021; Zhong et al., 2022; Min et al., 2022) proposed to use long-term or external memory beyond local context by applying retrieval techniques. Though our work can be extended to the external cache setting, we focus only on incorporating local memory, and we show that local memory is still helpful on top of Transformer because it breaks the softmax bottleneck (Yang et al., 2018) of parametric language models. A concurrent work (Chang et al., 2023) also demonstrates how a pointer network breaks softmax bottleneck by examples and empirical results, while we discuss this in a more mathematical way in Section 4.1.\nContext Dependency in Language Generation. Existing language generation models demonstrate weak context dependency. For open-ended generation tasks, Holtzman et al. (2020) pointed out that strong LMs can produce very incoherent text following an input prompt. This incoherence issue has also been long observed in the story generation literature (Rashkin et al., 2020; Alabdulkarim et al., 2021). For conditional generation tasks, for example, summarization, Cao et al. (2018); Maynez et al. (2020) showed that around 30% and 70%\nmodel-generated summaries contain hallucinations for two popularly used summarization datasets, respectively. Similar unfaithfulness problems have also been seen in data-to-text generation (Chen et al., 2020a), machine translation (Weng et al., 2020), etc. Though many approaches have been introduced to alleviate incoherence (Li et al., 2022a) or unfaithfulness (Cao and Wang, 2021; Wan and Bansal, 2022), in this work, we explore a simple yet general cache-LM method to increase context dependency for diverse tasks. The concurrent work (Chang et al., 2023) uses pointer network type of architectures to improve next-word distribution and summarization factuality. They modify the softmax head by using additional contextdependent embeddings. In contrast, we simply apply the original cache-LM architecture and improve it with a novel training objective."
+        },
+        {
+            "heading": "3 Preliminaries",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Language Modeling",
+            "text": "We focus on autoregressive language modeling (LM). Here, for simplicity, we assume that the LM is decoder-only, i.e., the context of the current step is the generated tokens of previous steps. We show that the same approach can easily be generalized to encoder-decoder models in Section 4.3. Given the context ct = x1, ..., xt\u22121, the probability of next token xt = w is predicted by a softmax head:\nPlm(w|ct) \u221d exp(h\u22a4t ew) (1)\nwhere ew is the output embedding of token w and ht is the output context vector (hidden state) from the model at the t-th step. The model is trained by minimizing the cross-entropy loss: lxe = \u2212 \u2211\nt logPlm(xt|ct)."
+        },
+        {
+            "heading": "3.2 Cache Language Models",
+            "text": "Cache language models augment a memory component to language models. Following Grave et al. (2017c), we consider cache to be a list of tuples of context vector and target token, (hi, xi). Assume we only consider the history of the local context, then the local memory of t-th step is written as:\nMlocal = {(hi, xi)}1\u2264i\u2264t\u22121 (2)\nThen, the next-token prediction aggregates the logits from the softmax head and the similarities be-\ntween ht and those saved in the memory:\nPclm(w|ct) \u221d exp(h\u22a4t ew)+\u2211 (hi,xi)\u2208Mlocal 1{xi=w}exp(sim(ht, hi)) (3)\nwhere sim(\u00b7, \u00b7) can be an arbitrary similarity function. Here, we follow Zhong et al. (2022) and use the scaled dot product: sim(h1, h2) = h1\u00b7h2\u221ad , where d is the hidden dimension size.\nWhile Grave et al. (2017c) only incorporated cache during evaluation, TRIME (Zhong et al., 2022) showed that it brings more benefits when also incorporated during training, i.e., minimizing ltrime = \u2212 \u2211 t logPclm(xt|ct). Here, we also use cache in both training and evaluation, but we improve the training objective by introducing direct supervision on the cache (see Section 4.2)."
+        },
+        {
+            "heading": "4 Our Methodology",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Breaking Softmax Bottleneck",
+            "text": "We first want to connect using local memory with the softmax bottleneck problem (Yang et al., 2018) and show that Transformer\u2019s self-attention cannot break this bottleneck, while the local cache can.\nParametric autoregressive language models (Section 3.1), including Transformer-based LMs, use a softmax function operating on context vectors (or hidden states) H \u2208 RN\u00d7d and output embedding matrix E \u2208 RV\u00d7d. N is the number of contexts, assuming every token in the training set has a different context, then N is the number of tokens in the training set. V is the vocabulary size, and d is the hidden dimension size. Then, the next token probabilities form a log-probability matrix A \u2208 RN\u00d7V (Atw = logP (w|ht)). Ideally, since every context is unique, the rank of A should be as large as V (assuming V < N ). However, as A is roughly equivalent to HE\u22a4, its rank is strictly upper bounded by hidden size d (please refer to Yang et al. (2018) for the formal proof). This low-rank problem greatly limits the LM\u2019s capacity to model highly contextdependent natural language. This can be seen in Figure 1, where queen achieves higher probability than woman. The reason for LM\u2019s difficulty in such bimodal distribution, as explained in Chang and McCallum (2022), is that the four words king, woman, man, queen tend to form a parallelogram in the embedding space, and if the model\u2019s hidden state wishes to be close to the output embeddings of king and woman, it will also be close to those of man and queen.\nTo break this bottleneck, one simple solution is to increase d, as we see larger models usually have better performance. Another solution proposed by Yang et al. (2018) and extended by Kanai et al. (2018); Yang et al. (2019); Chang and McCallum (2022) is to use multiple softmax heads \u2013 mixture of softmax (MoS), e.g., P (w|ht) \u221d exp(h\n(1)\u22a4 t ew) + exp(h (2)\u22a4 t ew) + exp(h (3)\u22a4 t ew).\nEach h(k)t is a different context vector. However, adding softmax heads is fairly computationally expensive. Comparing MoS to Eq. 3, we can see that adding exp(h\u22a4t ew) and exp(sim(ht, hi)) resembles MoS without adding extra softmax heads. Another way to understand this connection is that when using local memory, A is roughly equivalent to HE\u22a4 +HH\u22a4c , where Hc are the hidden states in the local context.3 Assuming Ec = E + Hc, A becomes HEc. Different from E, Ec is no longer a static output embedding matrix of size V \u00d7 d but a context-dependent embedding tensor of size N \u00d7 V \u00d7 d. Hence, the rank of A is no longer upper bounded by d. Note that this connection also holds for using long-term or external memories."
+        },
+        {
+            "heading": "4.2 HISTALIGN",
+            "text": "Cache-LM combines the original softmax probabilities with the cache probabilities by aggregating the similarity scores between the current hidden state and those in the cache. To use the cache module effectively, the similarity function sim(\u00b7, \u00b7) plays an important role in Eq. 3. If the similarities between the current hidden state and less relevant memories are higher than more relevant ones, it would steer the model away from selecting the most useful information from the cache. By assigning a high probability to the correct local memories, e.g., those corresponding to king and woman in the example of Figure 1, we can ensure that when the probabilities are combined, they will be scored higher than irrelevant and hallucinated tokens. However, we find that even when directly maximizing logPclm (Zhong et al., 2022), there is no guarantee that the current representations are well aligned with relevant information stored in the memory, as shown by the baseline probabilities in Figure 1 (see Section 6.1 for more details).\nHence, to deal with this misalignment, we pro-\n3This is because the logits under the cache-LM setting are the sum of the original token logits HE\u22a4 (first term of Eq. 3) and the cache logits HH\u22a4C (the second term of Eq. 3), and property 2 of Yang et al. (2018) showed that the log-probability matrix and logit matrix have similar ranks.\npose a new contrastive objective that encourages higher similarities between the hidden states of similar target tokens. During training, given the current hidden state ht and the corresponding next token xt, we construct a positive set Pt from caches by selecting memories with the same target token:\nPt = {(hi, xi)}xi=xt,1\u2264i\u2264t\u22121 (4)\nAll other memories are taken as negative examples. An example is shown in step 2 of Figure 2. For predicting the token housing, we have two previous mentions of the word housing, and the other words, including flat, children, accommodations, etc., are considered as negative.\nIn the typical contrastive loss, such as InfoNCE (van den Oord et al., 2019), all negative examples are treated equally. However, we hope to learn an ordering of the negative examples \u2013 more similar examples are ranked higher than less similar ones. In the example in Figure 2, accommodations is more similar to housing than children. This ensures that even when predicting words that do not have previous mentions in the local cache, our model can still output a reasonable alternative.\nTo achieve this, we construct a ranking of memories by computing the cosine similarities between the embedding of the current target word and the embeddings of words in the cache, i.e., cosim(et, ei). After sorting tokens from the most similar w.r.t. semantic similarity to the least, we use\nthe following max-margin loss (Liu et al., 2022c):\nlcont. = \u2211 t \u2211 i\u2208Pt \u2211 j>i,j /\u2208Pt max (0, sim(ht, hj)\n\u2212 sim(ht, hi) + \u03bbi,j) (5)\nwhere \u03bbi,j = (j \u2212 i)\u03bb, and \u03bb is the margin tuned based on validation loss.\nThe final objective of HISTALIGN is a combination of the original LM cross-entropy loss lxe and this ranking-based contrastive loss:\nlhistalign = lxe + \u03b1lcont. (6)\nwhere \u03b1 is a tunable weight of the contrastive loss. Note that during the inference time, we use Eq. 3."
+        },
+        {
+            "heading": "4.3 Extension to Encoder-Decoder Models",
+            "text": "HISTALIGN can be easily adapted to encoderdecoder models. For conditional generation tasks, the target text is usually short, hence, coherence is not a big issue. What is more crucial is whether the target generation stays true to the input context, e.g., the input document for summarization or the input table for data-to-text. Therefore, we define the local cache to be the input tokens and their corresponding encoder hidden states, as opposed to the output tokens and decoder hidden states for decoder-only models. We then calculate the similarity between the current decoder hidden state with those encoder hidden states stored in the cache."
+        },
+        {
+            "heading": "5 Experimental Setup",
+            "text": "Here, we describe the tasks and the experimental setups. Please refer to Appendix A for more details."
+        },
+        {
+            "heading": "5.1 Tasks and Datasets",
+            "text": "Ambiguous Template is a useful synthetic dataset collated by Chang and McCallum (2022), in which each example is generated using templates with diagonal words4 from semantic analogy relations in the Google (English) analogy dataset (Mikolov et al., 2013). This is a simple yet effective setting to examine whether the model can copy the correct tokens from history and not hallucinate semantically similar tokens, e.g., queen and man of the example in Figure 1. Since the target words can always be found in the context, we can also evaluate the performance only with the cache component.\nOpen-Ended Generation evaluates the language modeling capability by asking the model to generate a continuation given a prompt (Holtzman et al., 2020; Su et al., 2022; Li et al., 2022b). We use WritingPrompts (Fan et al., 2018), and treat the first 50 tokens as the prompt and allow the model to generate up to 256 tokens using the canonical nucleus sampling (p = 0.95) (Holtzman et al., 2020).\nAbstractive Summarization is the task of providing an abridged version of the input document. One crucial problem is \u2018hallucination\u2019, where the generated summaries contain facts or entities that are wrong or not present in the document (Cao et al., 2018; Maynez et al., 2020). We evaluate on two widely-used English News summarization datasets, XSum (Narayan et al., 2018) and CNN/DM (Hermann et al., 2015).\nData-to-Text is the task of describing structured data, where faithfulness is extremely important, as humans do not tolerate any hallucinations in cases such as describing medical reports or financial statistics (Thomson and Reiter, 2020). We evaluate on LogicNLG (Chen et al., 2020a)."
+        },
+        {
+            "heading": "5.2 Systems",
+            "text": "We use GPT2-small and GPT2-large (Radford et al., 2019) for ambiguous template and prompt continuation, and we use BART-large (Lewis et al., 2020) for both summarization and data-to-text. For all tasks, we choose to finetune pre-trained LMs. The\n4This refers to words that lie on the diagonal of a parallelogram in the embedding space. For example, for the tuple (queen, king, woman, man), the diagonal words are (king, woman) and (queen, man).\nfirst baseline we compare to is fine-tuning with the original cross-entropy loss (lxe in Section 3.1), which is named by the original model name in our result tables. Then, we also compare to the most recent cache-LM learning objective, TRIME (Zhong et al., 2022) (ltrime in Section 3.2)."
+        },
+        {
+            "heading": "5.3 Evaluations",
+            "text": "Ambiguous Template. As a proof-of-concept experiment, we evaluate under both a full setting, using the combined probability in Eq. 3, as well as a cache-only setting, only using the cache similarity scores to predict the next token. We evaluate the performance via the accuracy of having the two diagonal words within the top-k predictions (Acc@k), where k = {2, 5, 10, 25}. Ideally, we want to see 100% accuracy with k = 2, which indicates that the two diagonal words are the top 2 choices. Note that when only using the cache, a k value of 50 would achieve perfect accuracy, as it would include the entire local history. In addition, we want to empirically verify that cache LM with local memory can break the softmax bottleneck. To this end, we calculate the rank of log-probability matrix A \u2208 RN\u00d7V (Section 4.1) using 500 examples (concretely, N = 4750 and V = 50257 for GPT-2 based models) under the full setting.\nOpen-Ended Generation. We mainly evaluate the coherence of model-generated continuations. Following Su et al. (2022), coherence is approximated by the cosine similarity of the SimCSE (Gao et al., 2021) sentence embeddings of the prompt and the continuation. In addition, following previous works, we report n-gram diversity (Meister et al., 2022) and MAUVE (Pillutla et al., 2021) scores for a more general evaluation. We hope HISTALIGN not to harm diversity and MAUVE. We also run human evaluation on Amazon MTurk to ask workers to compare the continuations generated by TRIME and HISTALIGN. More details can be found in Appendix B.1.\nAbstractive Summarization. We mainly evaluate the faithfulness of generated summaries by three widely-used automatic metrics: FactCC (Kryscinski et al., 2020) and DAE (Goyal and Durrett, 2021), which are entailment-based metric; and Entity Precision (Nan et al., 2021, PENT), which calculates the percentage of entities in the summary that are present in the document. We also report ROUGE-L (Lin, 2004) for general content selection evaluation. Similarly, we conduct human\nevaluation, where we ask crowd workers to judge whether each summary (of 100 randomly selected examples) is faithful and informative. Please refer to Appendix B.2 for more details.\nData-to-Text. We mainly evaluate the faithfulness of model generations by NLI-Acc and SPAcc (Chen et al., 2020a) and two more recent metrics \u2013 TAPEX-Acc and TAPAS-Acc (Liu et al., 2022a). NLI-Acc is an entailment-based metric pre-trained on TabFact dataset (Chen et al., 2020b) using TaBERT (Yin et al., 2020), and SP-Acc first parses the sentence into a logical program and evaluates the execution accuracy. TAPEX-Acc and TAPAS-Acc are entailment-based metrics trained with TAPEX (Liu et al., 2022b) and TAPAS (Eisenschlos et al., 2020), respectively. Same as previous works (Chen et al., 2020a), we report BLEU (Papineni et al., 2002) for a surface-level evaluation."
+        },
+        {
+            "heading": "6 Results",
+            "text": "We verify the strength of HISTALIGN at aligning the cache component and thus improve the nexttoken prediction on ambiguous template in Section 6.1, coherence in open-ended prompt continuation in Section 6.2, and faithfulness in abstractive summarization and data-to-text in Section 6.3 and Section 6.4, respectively."
+        },
+        {
+            "heading": "6.1 Importance of Cache on Ambiguous Template",
+            "text": "We show the results of the Ambiguous Template in Table 1. First, it can be seen that the original GPT2 model has pretty bad performance in the cache-only setting, especially considering Acc@2. This is ex-\npected because the original model is fine-tuned using the cross-entropy loss without the cache component involved, and thus applying cache at test time may not be helpful. Second, though TRIME (Zhong et al., 2022) generally outperforms the original model in the full setting, its cache-only Acc@2 and Acc@5 are similar to the original model. Considering that all target words are present in the history, this result indicates that despite the fact that TRIME uses cache during training, its cache component is still misaligned and has limited contributions to the final performance.\nIn contrast, HISTALIGN achieves high Acc@2 with only the cache module, substantially outperforming the original model and TRIME on both model sizes, which demonstrates the effectiveness of our contrastive loss for aligning memories better. As a result, HISTALIGN outperforms both baselines across all k in the full setting. And the improvement holds for both model sizes, though with smaller gaps for the large model. This observation is consistent with our discussion in Section 4.1 that a larger model with a larger hidden dimension suffers less from the softmax bottleneck, while local memory can help break this bottleneck of any parametric LM. This is also empirically verified by the rank of the log-probability matrix reported in Table 1, where we see that the rank of the original model is upper-bounded by its hidden dimension (768 for GPT2-small and 1280 for GPT2-large), and having a local cache breaks this bottleneck. Finally, we present two qualitative examples in Table 9. See detailed discussions in Appendix C.\nExperiment on recent LLM. We also fine-tune LLaMA2 7B model (Touvron et al., 2023). Interestingly, we find that LLaMA2 achieves 0% accuracy for Acc@{2,5,10} when evaluated zero-shot. After fine-tuning, the model achieves 100% accuracy without any cache. This is expected, as the task is a simple synthetic task, and the model, compared to GPT2-large, is 10x larger, and the hidden size\nis 3.2x larger (1280 \u2192 4096). Thus, as mentioned in Section 4.1, the model alleviates the softmax bottleneck due to its larger hidden size.\nHowever, we still observe the two problems with LLaMA2. First, the problem of softmax bottleneck still exists, as the rank of its output log-probability matrix A is still upper-bounded by its hidden size of 4096, as we find that its empirical rank is 3332. This means that it is still theoretically less expressive than highly context-dependent natural language. Second, TRIME is still not able to make good use of the cache, i.e., misalignment still exists. As shown in the Table 2, TRIME achieves 0% accuracy for Acc@{2,5,10} under the cache-only setting, which shows that the issue of misalignment is even more apparent for larger language models: Since the token logits perform well enough, the model does not learn to use the cache anymore. Nevertheless, as shown in the table, our training objective can enforce the use of the local cache and achieve 100% accuracy, which is consistent with our findings from smaller models.\nThe presence of these two issues showcases that there is still room for improvement on LM\u2019s context dependency, as HISTALIGN outperforms TRIME in making good use of cache."
+        },
+        {
+            "heading": "6.2 Coherence in Open-Ended Generation",
+            "text": "The results of prompt continuation can be found in Table 3. Across both sizes of the model, we observe an improvement in coherence with TRIME and a larger improvement with HISTALIGN. The effect of HISTALIGN is especially prominent for the smaller model, where coherence increases by 7.5 points compared to the original model, and 3.7 points over TRIME. This validates our hypothesis that HISTALIGN can improve the coherence of LMs. When looking at MAUVE, HISTALIGN improves by 0.8 points and 0.7 points over GPT2 and TRIME respectively when using small models. On the large model, while TRIME achieves the best\nperformance, HISTALIGN still improves over the original model by 0.7 points. A similar trend can be observed for diversity. Holistically, HISTALIGN improves coherence while maintaining similar diversity and MAUVE.\nBesides automatic evaluations, we also conduct a human evaluation, the results of which are shown in Table 4. On both fluency and coherence, human raters prefer the continuations by HISTALIGN more than that by TRIME. This confirms the observation from the automatic evaluations that HISTALIGN does improve especially on coherence."
+        },
+        {
+            "heading": "6.3 Faithfulness in Abstractive Summarization",
+            "text": "The summarization results are shown in Table 5. TRIME improves faithfulness over the baseline on XSum, but the improvement is not clear on CNN/DM. In contrast, our HISTALIGN method greatly improves over the baseline, especially on DAE and Pent, which are specifically targeted towards hallucinations. Concretely, we improve FactCC by 0.91 points, DAE by 4.78 points, and Pent by 3 points on the XSum dataset. HISTALIGN improves the metrics on CNN/DM as well though to a smaller degree. This shows that allowing the model to pay specific attention to previous contexts in the input is helpful in reducing hallucinations.\nWe note that the ROUGE-L score for HISTALIGN is lower than the original model. This ROUGEfaithfulness tradeoff has been observed by many previous works (Chen et al., 2021; Kryscinski et al., 2020; Wan and Bansal, 2022; Wan et al., 2023), where the reference summary inherently contains hallucinations and thus does not overlap highly with the more faithful generated summaries.\nTo confirm this, we conduct a human evaluation. The results are shown in Table 6. HISTALIGN achieves the best faithfulness score, which is statistically significantly better than BART. This confirms our observation from automatic metric results\nin Table 5. Though there is a small drop in informativeness, the difference between the three methods has no statistical significance.5 This shows that the drop in automated metrics such as ROUGE-L does not necessarily mean a decrease in informativeness."
+        },
+        {
+            "heading": "6.4 Faithfulness in Data-to-Text Generation",
+            "text": "The results on LogicNLG are shown in Table 7. Similar to abstractive summarization, HISTALIGN can improve faithfulness on LogicNLG. Out of the four faithfulness metrics, HISTALIGN achieves the highest NLI-Acc, TAPEX-Acc, and TAPAS-Acc: HISTALIGN achieves 0.6 and 0.8 point improvements on TAPEX-Acc over BART and TRIME respectively, and a 1.74 point improvement on TAPAS-Acc over the BART model. In the meantime, HISTALIGN obtains the best BLEU scores."
+        },
+        {
+            "heading": "7 Discussion and Conclusion",
+            "text": "In this work, we improve the context dependency of LMs by introducing a novel cache-LM training objective, HISTALIGN, which improves the existing cache-LM objective by adding an order-informed contrastive loss for the cache component. On a synthetic dataset, we show that HISTALIGN is effective at retrieving the desired memories from the cache and breaking the softmax bottleneck. Furthermore, we demonstrate the effectiveness of HISTALIGN at improving the coherence of open-ended generation and improving faithfulness of abstractive summarization and data-to-text generation.\nWe want to emphasize a couple of salient points with the recent trend of pushing for larger and\n5We use boostrap test (Efron and Tibshirani, 1993) to determine statistical significance in our paper.\nmore powerful models. Firstly, attention mechanisms alone cannot break the softmax bottleneck, as shown in Table 2. Secondly, while increasing the model size can mitigate this bottleneck, the problem will persist unless we reach a size that truly encapsulates the complexity of human language. Cache-LM is a light alternative for breaking softmax bottleneck theoretically and improving context dependency empirically."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "We thank the reviewers and Haw-Shiuan Chang for helping with providing the Ambiguous Template data. This work was supported by NSF-CAREER Award 1846185, NSF-AI Engage Institute DRL2112635, DARPA Machine Commonsense (MCS) Grant N66001-19-2-4031, and a Bloomberg Data Science Ph.D. Fellowship. The views contained in this article are those of the authors and not of the funding agency.\nLimitations\nWhile we focus on the local memory to show that current LMs still benefit from better local context dependency, our method is also compatible with external memories, which can potentially further improve the performance of HISTALIGN in future work. We evaluate HISTALIGN using GPT2 and BART that at most consist of 774M parameters, which is smaller than the latest large LMs that can have billions of parameters. On the Ambiguous Template task, we do show that this problem exists for recent LLMs with LLaMA2 7B models and our method improves the cache alignment, but we\nhope that in the future we can explore scaling up the approach on large LMs to various tasks. We believe that our method is still helpful for larger models. But as larger models suffer less from softmax bottleneck (Section 4.1), how much it can help is an interesting problem to study in the future. Another current limitation of this work is that due to the additional hyper-parameters (the \u03bb of the margin and the weight \u03b1 of the contrastive loss), it becomes less straightforward to incorporate our HISTALIGN objective into pre-training compared to TRIME. The training objective also considers that each token has a fixed margin (and thus assumes that each token is equally different), which can be improved by dynamically adjusting the margins. Although fine-tuning is cheaper and we show effective gains using HISTALIGN in fine-tuning, how to use HISTALIGN to pre-train LMs is also an interesting future work direction.\nEthical Considerations\nAs the OpenAI team pointed out, GPT-2 does not distinguish fact from fiction, so it can not support use cases that require the generated text to be true. In addition, GPT-2 reflects the biases inherent to the data they were trained on, so it can not be deployed unless the deployers first carry out a study of biases relevant to the intended use case. Though our HISTALIGN improves the coherence of GPT-2 generations, the above statement still holds. Similarly, despite that HISTALIGN improved the faithfulness of BART-large generations for abstractive summarization and data-to-text generation, such systems cannot be directly deployed and used in factualitysensitive scenarios without further checks in place."
+        },
+        {
+            "heading": "A Experimental Setup Details",
+            "text": "Unless specified, we use Huggingface\u2019s Transformers library (Wolf et al., 2020) to train the models. We use the trainer\u2019s default setting, including AdamW optimizer (Loshchilov and Hutter, 2019) and a linear rate scheduler. We use mixed precision and deepspeed. We use RTX A6000 GPUs with 48GB memory and A100 GPUs with 80GB memory.\nFor hyperparameter tuning, we try learning rate of {1e-5,3e-5,5e-5} and \u03bb between {0.001,0.0001,0.00001}, and contrastive weight {0.5,1.0} for all tasks. For HISTALIGN, we use \u03bb of 0.001 and the contrastive weight \u03b1 = 1, unless otherwise specified.\nA.1 Ambiguous Template\nThe dataset consists of 122k, 250k, and 122k examples for train, dev, and test sets, respectively. The test set has no overlap of diagonal words with the training set. Following Chang and McCallum (2022), we freeze output vocab to prevent overfitting, and get loss only from the last token (the target token). We select the model based on validation loss. For GPT2-large-based models, training the original model took around 30 minutes, TRIME and HISTALIGN took around an hour with 4 RTX A6000. On GPT2-small-based models, training took 10 minutes, 15 minutes, and 15 minutes, for orig, TRIME, and HISTALIGN, respectively.\nA.2 Prompt Continuation\nWritingPrompts6 (Fan et al., 2018) contain 273k, 16k, and 15k examples in the train, dev, and test sets. We use the full train and dev sets, while we sample 5000 examples from the test set for final evaluation to save time. We first train the models using the different objectives on the training set. We split the text into blocks of 512 tokens. For generation, we decode with nucleus sampling with p = 0.95 and three random seeds={0,1,42}, and average the scores. Training the original small model takes around 1.5 hours, TRIME takes around 2 hours, and HISTALIGN takes around 3 hours. Training GPT-2 large, TRIME and HISTALIGN takes around 6 hours, 7 hours, and 11.5 hours on 2 A100s, respectively.\nA.3 Summarization\nXSum is a news summarization dataset consisting of BBC articles and contains 204k/11k/11k examples in the train/dev/test set. CNN/DM consists of Dailymail and CNN articles and the dataset consists of 287k/13k/11k examples in the train/dev/test set. We use the official packages for the faithfulness metrics.7 We calculate Pent by using spacy to extract entities and only consider [PERSON, FAC, GPE, ORG, NORP, LOC, EVENT] as the allowed entity types. We use Huggingface\u2019s Dataset\n6https://github.com/urvashik/knnmt/ blob/master/examples/stories/README.md\n7FactCC: https://github.com/salesforce/ factCC. DAE: https://github.com/tagoyal/ factuality-datasets.\nlibrary (Lhoest et al., 2021) for loading the XSum (Narayan et al., 2018) and CNN/DM (Hermann et al., 2015) datasets. And we use Huggingface\u2019s Metrics library for calculating ROUGE scores. Training the original model, TRIME, and HISTALIGN all took around 5 hours for XSum and training orig, TRIME and HISTALIGN all took around 4 hours for CNN/DM on 4 A6000s.\nA.4 Data-to-text\nWe follow Liu et al. (2022a) for pre-processing dataset, such as adding numerical pre-computation to the tables. We use a contrastive weight \u03b1 = 0.5. LogicNLG (Chen et al., 2020a) consists of 28k training, 4k validation, and 4k test examples. We use original evaluation scripts for the faithfulness metrics, and the BLEU calculation script provided by the original dataset.8 Training the original model and TRIME took 2 hours, and HISTALIGN took around 5 hours on 2 A100."
+        },
+        {
+            "heading": "B Human Evaluation Details",
+            "text": "For both human evaluations, we use Amazon Mechanical Turk to do the annotation. We have the same set of requirements: The workers need to be from the United States, have more than 10,000 number of HITS approved, and an approval rate greater than 98%.\n8https://github.com/wenhuchen/ LogicNLG/blob/master/evaluate.py\nB.1 Open-ended Generation\nWe use Amazon Mechanical Turk to annotate whether human prefers the continuation by TRIME or by HISTALIGN. We do not include the original model, since TRIME shows better performance on the automatic metrics. We select examples where the difference between their characters is less than 200 characters to ensure that the length is similar (since shorter texts will naturally be more coherent). We collect 3 annotations per example for 100 randomly selected examples, yielding 300 annotations. We take the percentage of passages that are judged as coherent and/or fluent.\nWe pay 0.5 USD per HIT, and the average time it takes is around 2.5 minutes, which yields an hourly rate of \u2265 $12 per hour. An example of the annotation page is shown in Figure 3.\nB.2 Summarization\nWe follow the same setup as Wan and Bansal (2022), and also use a qualification test where we rate the faithfulness of the selected generated summaries. Only workers with the correct annotation can perform the actual task.\nWe select the most important sentences and replace the less relevant sentences with an ellipsis to reduce the overload for the workers. We select ten most relevant sentences from the document by cosine similarity of the sentence embedding using SentenceTransformer9 (Reimers and Gurevych, 2019) for each summary and then combine and show all the selected relevant sentences from each summary.\nEach task consists of three unique workers, where we take the mean as the scores for this document. The final score is the mean factuality score across all documents. The average time for each task is around 2.5 minutes and we pay 0.5 USD per task, hence an hourly rate of \u2265 $12 per hour. An example of the annotation page is shown in Figure 4."
+        },
+        {
+            "heading": "C Qualitative Results on Ambiguous Template",
+            "text": "We present two qualitative examples in Table 9. We see that both the original model and TRIME have difficulty in outputting the two correct words as the top two choices. This is also reflected by the cacheonly results, where irrelevant words, such as and, I,\n9We use the all-mpnet-base-v2 model.\nthe get high probabilities. In fact, the cache similarities of the original model are similar to those of TRIME, again indicating that there is no guarantee of well-aligned memories, despite training with the cache. HISTALIGN nevertheless returns the two target words as the top two choices for both the full and cache-only settings, showing that the model benefits from the well-aligned memories through our contrastive objective."
+        },
+        {
+            "heading": "D Sample Outputs",
+            "text": "We show sample outputs for prompt continuations in Figure 5, summarization in Figure 6 and Figure 7, and data-to-text in Figure 8."
+        }
+    ],
+    "title": "HISTALIGN: Improving Context Dependency in Language Generation by Aligning with History",
+    "year": 2023
+}

@@ -1,0 +1,598 @@
+{
+    "abstractText": "Large language models, such as OpenAI\u2019s ChatGPT, have demonstrated exceptional language understanding capabilities in various NLP tasks. Sparsely activated mixture-of-experts (MoE) has emerged as a promising solution for scaling models while maintaining a constant number of computational operations. Existing MoE model adopts a fixed gating network where each token is computed by the same number of experts. However, this approach contradicts our intuition that the tokens in each sequence vary in terms of their linguistic complexity and, consequently, require different computational costs. Little is discussed in prior research on the tradeoff between computation per token and model performance. This paper introduces adaptive gating in MoE, a flexible training strategy that allows tokens to be processed by a variable number of experts based on expert probability distribution. The proposed framework preserves sparsity while improving training efficiency. Additionally, curriculum learning is leveraged to further reduce training time. Extensive experiments on diverse NLP tasks show that adaptive gating reduces at most 22.5% training time while maintaining inference quality. Moreover, we conduct a comprehensive analysis of the routing decisions and present our insights when adaptive gating is used.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Jiamin Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Qiang Su"
+        },
+        {
+            "affiliations": [],
+            "name": "Yitao Yang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yimin Jiang"
+        },
+        {
+            "affiliations": [],
+            "name": "Cong Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Hong Xu"
+        }
+    ],
+    "id": "SP:dec8da324656a912db931d4c3c8bfebdec26245b",
+    "references": [
+        {
+            "authors": [
+                "Raquel Aoki",
+                "Frederick Tung",
+                "Gabriel L Oliveira."
+            ],
+            "title": "Heterogeneous multi-task learning with expert diversity",
+            "venue": "IEEE/ACM Transactions on Computational Biology and Bioinformatics, 19(6):3093\u20133102.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yoshua Bengio",
+                "J\u00e9r\u00f4me Louradour",
+                "Ronan Collobert",
+                "Jason Weston."
+            ],
+            "title": "Curriculum learning",
+            "venue": "Proc. ICML.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Tianlong Chen",
+                "Zhenyu Zhang",
+                "AJAY KUMAR JAISWAL",
+                "Shiwei Liu",
+                "Zhangyang Wang."
+            ],
+            "title": "Sparse MoE as the New Dropout: Scaling Dense and Self-Slimmable Transformers",
+            "venue": "Proc. ICLR.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zitian Chen",
+                "Yikang Shen",
+                "Mingyu Ding",
+                "Zhenfang Chen",
+                "Hengshuang Zhao",
+                "Erik G Learned-Miller",
+                "Chuang Gan."
+            ],
+            "title": "Mod-squad: Designing mixtures of experts as modular multi-task learners",
+            "venue": "Proceedings of the IEEE/CVF Conference on Com-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yong Dai",
+                "Duyu Tang",
+                "Liangxin Liu",
+                "Minghuan Tan",
+                "Cong Zhou",
+                "Jingquan Wang",
+                "Zhangyin Feng",
+                "Fan Zhang",
+                "Xueyu Hu",
+                "Shuming Shi."
+            ],
+            "title": "One model, multiple modalities: A sparsely activated approach for text, sound, image, video and code",
+            "venue": "arXiv",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: pre-training of deep bidirectional transformers for language understanding",
+            "venue": "CoRR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "lat",
+                "Kevin Robinson",
+                "Kathleen Meier-Hellstern",
+                "Toju Duke",
+                "Lucas Dixon",
+                "Kun Zhang",
+                "Quoc Le",
+                "Yonghui Wu",
+                "Zhifeng Chen",
+                "Claire Cui"
+            ],
+            "title": "GLaM: Efficient scaling of language models with mixtureof-experts",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "William Fedus",
+                "Barret Zoph",
+                "Noam Shazeer."
+            ],
+            "title": "Switch transformers: Scaling to trillion parameter models with simple and efficient sparsity",
+            "venue": "arXiv preprint arXiv:2101.03961.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wikimedia Foundation"
+            ],
+            "title": "Acl 2019 fourth conference on machine translation (wmt19), shared task: Machine translation of news",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Trevor Gale",
+                "Deepak Narayanan",
+                "Cliff Young",
+                "Matei Zaharia."
+            ],
+            "title": "Megablocks: Efficient sparse training with mixture-of-experts",
+            "venue": "arXiv preprint arXiv:2211.15841.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hussein Hazimeh",
+                "Zhe Zhao",
+                "Aakanksha Chowdhery",
+                "Maheswaran Sathiamoorthy",
+                "Yihua Chen",
+                "Rahul Mazumder",
+                "Lichan Hong",
+                "Ed Chi."
+            ],
+            "title": "Dselectk: Differentiable selection in the mixture of experts with applications to multi-task learning",
+            "venue": "Advances in",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Karl Moritz Hermann",
+                "Tom\u00e1s Kocisk\u00fd",
+                "Edward Grefenstette",
+                "Lasse Espeholt",
+                "Will Kay",
+                "Mustafa Suleyman",
+                "Phil Blunsom."
+            ],
+            "title": "Teaching machines to read and comprehend",
+            "venue": "NIPS.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Hyunwoo Kim",
+                "Jack Hessel",
+                "Liwei Jiang",
+                "Peter West",
+                "Ximing Lu",
+                "Youngjae Yu",
+                "Pei Zhou",
+                "Ronan Le Bras",
+                "Malihe Alikhani",
+                "Gunhee Kim",
+                "Maarten Sap",
+                "Yejin Choi"
+            ],
+            "title": "Soda: Million-scale dialogue distillation with social commonsense contextualization",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Young Jin Kim",
+                "Ammar Ahmad Awan",
+                "Alexandre Muzio",
+                "Andres Felipe Cruz Salinas",
+                "Liyang Lu",
+                "Amr Hendy",
+                "Samyam Rajbhandari",
+                "Yuxiong He",
+                "Hany Hassan Awadalla"
+            ],
+            "title": "Scalable and efficient moe training for multitask multilingual models",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aran Komatsuzaki",
+                "Joan Puigcerver",
+                "James Lee-Thorp",
+                "Carlos Riquelme Ruiz",
+                "Basil Mustafa",
+                "Joshua Ainslie",
+                "Yi Tay",
+                "Mostafa Dehghani",
+                "Neil Houlsby."
+            ],
+            "title": "Sparse upcycling: Training mixture-ofexperts from dense checkpoints",
+            "venue": "arXiv preprint",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yoohwan Kwon",
+                "Soo-Whan Chung."
+            ],
+            "title": "Mole: Mixture of language experts for multi-lingual automatic speech recognition",
+            "venue": "ICASSP.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dmitry Lepikhin",
+                "HyoukJoong Lee",
+                "Yuanzhong Xu",
+                "Dehao Chen",
+                "Orhan Firat",
+                "Yanping Huang",
+                "Maxim Krikun",
+                "Noam Shazeer",
+                "Zhifeng Chen."
+            ],
+            "title": "Gshard: Scaling giant models with conditional computation and automatic sharding",
+            "venue": "arXiv preprint",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mike Lewis",
+                "Yinhan Liu",
+                "Naman Goyal",
+                "Marjan Ghazvininejad",
+                "Abdelrahman Mohamed",
+                "Omer Levy",
+                "Ves Stoyanov",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Bart: Denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jiaqi Ma",
+                "Zhe Zhao",
+                "Xinyang Yi",
+                "Jilin Chen",
+                "Lichan Hong",
+                "Ed H Chi."
+            ],
+            "title": "Modeling task relationships in multi-task learning with multi-gate mixtureof-experts",
+            "venue": "Proceedings of the 24th ACM SIGKDD international conference on knowledge discovery &",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Caiming Xiong",
+                "James Bradbury",
+                "Richard Socher"
+            ],
+            "title": "Pointer sentinel mixture models",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Nathan Ng",
+                "Kyra Yee",
+                "Alexei Baevski",
+                "Myle Ott",
+                "Michael Auli",
+                "Sergey Edunov."
+            ],
+            "title": "Facebook fair\u2019s wmt19 news translation task submission",
+            "venue": "Proc. of WMT.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Reiner Pope",
+                "Sholto Douglas",
+                "Aakanksha Chowdhery",
+                "Jacob Devlin",
+                "James Bradbury",
+                "Jonathan Heek",
+                "Kefan Xiao",
+                "Shivani Agrawal",
+                "Jeff Dean."
+            ],
+            "title": "Efficiently scaling transformer inference",
+            "venue": "Proc .MLSys.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeff Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Samyam Rajbhandari",
+                "Conglong Li",
+                "Zhewei Yao",
+                "Minjia Zhang",
+                "Reza Yazdani Aminabadi",
+                "Ammar Ahmad Awan",
+                "Jeff Rasley",
+                "Yuxiong He"
+            ],
+            "title": "DeepSpeed-MoE: Advancing Mixture-of-Experts Inference and Training to Power Next-Generation AI",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pranav Rajpurkar",
+                "Jian Zhang",
+                "Konstantin Lopyrev",
+                "Percy Liang"
+            ],
+            "title": "SQuAD: 100,000+ Questions for Machine Comprehension of Text",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Stephen Roller",
+                "Sainbayar Sukhbaatar",
+                "Jason Weston"
+            ],
+            "title": "Hash layers for large sparse models",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Abigail See",
+                "Peter J. Liu",
+                "Christopher D. Manning"
+            ],
+            "title": "Get to the point: Summarization with pointergenerator networks. In Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Sheng Shen",
+                "Zhewei Yao",
+                "Chunyuan Li",
+                "Trevor Darrell",
+                "Kurt Keutzer",
+                "Yuxiong He."
+            ],
+            "title": "Scaling vision-language models with sparse mixture of experts",
+            "venue": "arXiv preprint arXiv:2303.07226.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Richard Socher",
+                "Alex Perelygin",
+                "Jean Wu",
+                "Jason Chuang",
+                "Christopher D. Manning",
+                "Andrew Ng",
+                "Christopher Potts."
+            ],
+            "title": "Recursive deep models for semantic compositionality over a sentiment treebank",
+            "venue": "Proc. EMNLP.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xin Wang",
+                "Yudong Chen",
+                "Wenwu Zhu."
+            ],
+            "title": "A survey on curriculum learning",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Yi Tay",
+                "Rishi Bommasani",
+                "Colin Raffel",
+                "Barret Zoph",
+                "Sebastian Borgeaud",
+                "Dani Yogatama",
+                "Maarten Bosma",
+                "Denny Zhou",
+                "Donald Metzler"
+            ],
+            "title": "Emergent abilities of large language models. arXiv preprint arXiv:2206.07682",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Quentin Lhoest",
+                "Alexander Rush."
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "venue": "Proc .EMNLP.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Fuzhao Xue",
+                "Xiaoxin He",
+                "Xiaozhe Ren",
+                "Yuxuan Lou",
+                "Yang You."
+            ],
+            "title": "One student knows all experts know: From sparse to dense",
+            "venue": "arXiv preprint arXiv:2201.10890.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yizhe Zhang",
+                "Siqi Sun",
+                "Michel Galley",
+                "Yen-Chun Chen",
+                "Chris Brockett",
+                "Xiang Gao",
+                "Jianfeng Gao",
+                "Jingjing Liu",
+                "Bill Dolan."
+            ],
+            "title": "Dialogpt: Large-scale generative pre-training for conversational response generation",
+            "venue": "ACL, system demonstration.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yanqi Zhou",
+                "Tao Lei",
+                "Hanxiao Liu",
+                "Nan Du",
+                "Yanping Huang",
+                "Vincent Zhao",
+                "Andrew M Dai",
+                "Quoc V Le",
+                "James Laudon"
+            ],
+            "title": "Mixture-of-experts with expert choice routing",
+            "venue": "Advances in Neural Information Processing Systems",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Barret Zoph",
+                "Irwan Bello",
+                "Sameer Kumar",
+                "Nan Du",
+                "Yanping Huang",
+                "Jeff Dean",
+                "Noam Shazeer",
+                "William Fedus."
+            ],
+            "title": "Designing Effective Sparse Expert Models",
+            "venue": "arXiv preprint arXiv:2202.08906.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Simiao Zuo",
+                "Xiaodong Liu",
+                "Jian Jiao",
+                "Young Jin Kim",
+                "Hany Hassan",
+                "Ruofei Zhang",
+                "Tuo Zhao",
+                "Jianfeng Gao."
+            ],
+            "title": "Taming sparsely activated transformer with stochastic experts",
+            "venue": "arXiv preprint arXiv:2110.04260.",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "text": "Large language models, such as OpenAI\u2019s ChatGPT, have demonstrated exceptional language understanding capabilities in various NLP tasks. Sparsely activated mixture-of-experts (MoE) has emerged as a promising solution for scaling models while maintaining a constant number of computational operations. Existing MoE model adopts a fixed gating network where each token is computed by the same number of experts. However, this approach contradicts our intuition that the tokens in each sequence vary in terms of their linguistic complexity and, consequently, require different computational costs. Little is discussed in prior research on the tradeoff between computation per token and model performance. This paper introduces adaptive gating in MoE, a flexible training strategy that allows tokens to be processed by a variable number of experts based on expert probability distribution. The proposed framework preserves sparsity while improving training efficiency. Additionally, curriculum learning is leveraged to further reduce training time. Extensive experiments on diverse NLP tasks show that adaptive gating reduces at most 22.5% training time while maintaining inference quality. Moreover, we conduct a comprehensive analysis of the routing decisions and present our insights when adaptive gating is used."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "The field of natural language processing (NLP) has undergone a remarkable revolution driven by the rapid advancements in language models (Cha; Touvron et al., 2023; Bar; pal). They exhibit socalled \u201cemergent\u201d capabilities for a wide variety of applications (Wei et al., 2022). However, as demands for these applications continue to grow, scalability of these models poses an increasingly challenging hurdle due to constraints in computational resources, memory capacity, interconnect bandwidth, etc. (Pope et al., 2023).\nSparsely-activated mixture-of-experts (MoE) is a promising paradigm to address the scalability issue while maintaining a constant number of computation FLOPs (Lepikhin et al., 2020; Fedus et al., 2021). MoE utilizes an ensemble of experts to collectively tackle the learning task. Each input activates a subset of experts, resulting in a dynamically-changing and sparse computation graph. This method effectively distributes the computation among experts, increases model capacity and improves training efficiency (Du et al., 2022; Rajbhandari et al., 2022). Very recently, there has been quite some prior work on improving the performance of Transformers using MoE (Rajbhandari et al., 2022; Zoph et al., 2022; Chen et al., 2023a; Gale et al., 2022).\nDespite MoE\u2019s benefit in scalability, it suffers from suboptimal training efficiency. In particular, we focus on the gating mechanism that selects the experts for each token in this work. Existing MoE models adopt a fixed top-2 gating in training while employing top-1 gating during inference for shorter response times. Top-2 gating entails twice the computational cost per token and doubles the data transfer size of all-to-all operations compared to top-1. Yet, it remains unclear whether top-2 gating actually leads to performance gains that could justify the additional overheads. Therefore, a comprehensive analysis of the trade-off between training efficiency and model performance is increasingly crucial. More practically, how to construct an MoE language model that effectively balances training efficiency and performance, is of great interest and imminent value.\nTowards this end, we present our first attempt to empirically characterize and improve the efficiency of the gating mechanism in MoE. We observe that across various models and tasks, a large number of tokens display simple linguistic characteristics or a single dominant feature, which allows them to be effectively processed using just the top-1 expert.\nThis observation suggests that the current top-2 gating strategy incurs unnecessary computation costs for a significant number of tokens.\nMotivated by this insight, we further introduce adaptive gating in MoE that enables tokens to be processed by a flexible number of experts depending on the gating decision. Our approach, in contrast to conventional MoE models, preserves the sparsity of MoE models while enhancing flexibility in token handling. We incorporate a threshold within the gating network to conduct adaptive token routing based on the distribution of expert probabilities. With adaptive gating, the majority of tokens use simple top-1 gating; top-2 gating is selectively applied only when necessary and beneficial, thus significantly reducing the computation cost. However, the training efficiency cannot achieve the same improvement as the computation cost due to the fact that tokens with top-2 gating always incur a longer training step, thus becoming the bottleneck. Therefore, to enhance training efficiency even further, we leverage the idea of curriculum learning by strategically adjusting the order of training data samples.\nWe conduct extensive experiments on six NLP tasks with different encoder and decoder models. The results show that our approach can effectively reduce the end-to-end training time by at most 22.5%, while achieving comparable inference quality with top-2 gating MoE models. Moreover, we show that the tokens routed to two experts are coupled with the nature of each NLP task. For sentiment analysis, those are the tokens expressing neutral opinions; translation task pays attention to sentences with complex structure; Question and Answer connects key words in question and context and assign both with top-2 gating; summarization puts more effort in understanding the pronouns and finding tokens expressing central idea; top-2 routing decision changes along with the token to generated in text completion task and conversational tokens in dialogue response task use top-2 experts frequently. Empirically, we find that a small threshold value (i.e. 0.1, 0.2) in adaptive gating can lead to a similar performance as top-2 gating.\nOur contributions are as follows: \u2022 We propose adaptive gating in the MoE train-\ning scheme, which enables tokens to be processed by a flexible number of experts.\n\u2022 We leverage curriculum learning to alleviate the training bottleneck caused by varying execution times of tokens.\n\u2022 We conduct extensive experiments on various NLP tasks and datasets and present a thorough analysis of the gating decision of the tokens to prove the effectiveness and efficiency of adaptive gating."
+        },
+        {
+            "heading": "2 Background",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Mixture-of-Experts",
+            "text": "Mixture-of-Experts (MoE) has been adopted in various deep neural network models (Shen et al., 2023; Chen et al., 2023b) and has shown great promise in enhancing the performance of language models. For example, GShard (Lepikhin et al., 2020) and Switch Transformer (Fedus et al., 2021) effectively scale Transformer-based language models with MoE layers.\nIn particular, these models typically employ an MoE layer to substitute the feed-forward network (FFN) layer. The MoE layer comprises multiple FFNs, each acting as an expert, along with a gating network. Each expert i is a fully-connected twolayer network utilizing ReLU activation and with its own set of parameters. For a given token x, the output of an expert can be defined as:\nFFNi(x) = ReLU(x \u00b7W i0) \u00b7W i1, (1)\nwhere W i0 and W i 1 are the trainable weights of the two linear layers in expert i. The gating network takes in the embedding vector of each token x and multiplies them with its trainable matrix WG. The gate value for a specific token can be determined through:\nR = softmax(x \u00b7WG). (2)\nThis softmax activation R indicates the weight of each expert in processing the token. The gating network then dispatches this token to top-k experts with k highest activations. The final output of the MoE layer is:\ny = \u2211 i\u2208E Ri \u00b7 FFNi(x), (3)\nthat is, the weighted sum of outputs from selected expert(s) E \u2282 {FFN1, FFN2...FFNN}. The sparse nature of MoE improves the model scaling in size without increasing the training cost. Related work. Several prior works have explored the efficient use of gating or expert selection in MoE. Aoki et al., 2022; Zhou et al., 2022; Hazimeh et al., 2021; Ma et al., 2018 propose different\napproaches to encourage expert specialization. Dai et al., 2022 adopt a pre-defined expert assignment for each input categories. Roller et al., 2021; Zuo et al., 2021 propose to remove gating networks. Zhou et al., 2022 present a novel selection mechanism where experts selects token instead of token selecting experts. Hazimeh et al., 2021 introduce multiple routing policies to enhance specialization in multi-task scenario. Roller et al., 2021 use deterministic hashing, while Zuo et al., 2021 use stochastic routing. However, it could lead to inconsistent inference results. Therefore, they employ a regularized loss to penalize the discrepancy of expert selection. All existing work adopts a fixed and equal computation capacity for each token and expert, while we look into the trade-off between computation costs and model performance with adaptive gating."
+        },
+        {
+            "heading": "3 Design",
+            "text": "We now discuss the design of adaptive gating in MoE for training."
+        },
+        {
+            "heading": "3.1 Adaptive Gating in MoE",
+            "text": "Observation. We first present our empirical findings from experiments with classical MoE models. Specifically, we extract the softmax activations and analyze the probability distribution of expert selection for each token in the gating network. Figures 1 depict the normalized activation values of four sampled tokens across 16 experts. We see that for tokens 1 and 4, their activations of the top-1 and top-2 expert are very close as shown in Figures 1a and 1d, while for tokens 2 and 3 a significant bias towards the top-1 expert exists as in Figures 1b and 1c. We find that these significantly-biased distribution accounts for at least 55% of all the tokens in our evaluation. Adaptive gating. Previous work has demonstrated that MoE experts specialize in different linguistic aspects. Building upon our empirical findings, one can see that many tokens can be effectively handled by a single expert during the training stage. To control the number of experts handling each token, we introduce a threshold parameter, denoted as T . If the activation value difference between the top-1 expert, denoted as i, and the top-2 expert, denoted as j, is within the threshold T , we consider the token as requiring both expert i and expert j for processing. Otherwise, we route the token only to the top-1 expert.\nLoad balancing loss. Adaptive gating uses a flexible number of experts to process each token. This flexibility, however, adds extra difficulty to the load balancing problem in training which aims to evenly distribute tokens among all experts. As it is still important to prevent the gating network from overly concentrating on a very small number of experts, in adaptive gating, we impose the soft load balancing constraints on the top-1 gating decisions, while allowing top-2 gating decisions to be trained without any soft constraints. That is, the loss of each MoE layer i becomes:\nLi = Ei \u2211 e\u2208E f1e pe, (4)\nwhere f1e is the fraction of tokens dispatched to expert e among those processed by top-1 gating; pe is the average gating probability to expert e over all tokens in the current batch, and Ei is the number of experts at layer i just as in classical MoE (Fedus et al., 2021)."
+        },
+        {
+            "heading": "3.2 Batching",
+            "text": "Challenge. While adaptive gating provides effective computational savings, Transformer MoE\u2019s model architecture poses a significant challenge to training efficiency. Specifically, there is a mismatch\nin the data processing granularity between the MoE experts and the Attention layer. The MoE experts operate on individual tokens, while the Attention layer requires input in the form of a complete sentence. As a result, although the processing time for a large portion of tokens is reduced by half in the MoE layer, we still need to wait until the remaining tokens (in the same data batch) complete their top-2 processing. Consequently, training step time cannot enjoy the same reduction as in computation. Table 1 shows the computation reduction as well as empirical MoE layer running time, both normalized to conventional top-2 gating. We use PyTorch Profiler to obtain the computation time of MoE layer. For simplicity, here we force a fixed percentage of tokens to be routed to only top-1 expert and measure the running time. The reduction in running time is clearly much smaller than the computation savings.\nCurriculum learning. In adaptive gating, we propose to incorporate the concept of curriculum learning to address the aforementioned training efficiency challenge. Curriculum learning (Bengio et al., 2009), as the name implies, is a paradigm where training examples are presented to a model in increasing order of complexity. It aims to enhance the learning efficiency and generalization performance of models. By carefully designing the curriculum, the model is exposed to easier examples at the initial stages, allowing it to build a solid foundation before tackling more challenging concepts. This gradual learning process has shown promising results in NLP (Wang et al., 2021).\nAdjust training data order. Our intuition is that the number of experts required by each token can be an indicator of the token complexity. We can therefore reorder the training data in a way that prioritizes simpler sequences during model training. Additionally, we can group together training data with similar complexity levels to minimize the bottleneck effect caused by difficult tokens in need of top-2 experts.\nTo quantify the complexity of a training sample\nd, we define a complexity vector C:\nCd = [r d 0 , r d 1 , ...r d L], (5)\nwhere L is the number of MoE layers in the model, and ri represents the ratio of tokens processed by top-2 experts to the sequence length (i.e., the total number of tokens in data sample d) in layer i.\nTo determine the order of the training data, we identify the data sample with the fewest tokens processed by top-2 experts, and calculate the cosine similarity using complexity vectors of the remaining data samples. Training data is then reordered based on this similarity value, starting from the most similar ones. This approach allows the model to gradually learn from simpler sequences and progressively handle more complex sequences."
+        },
+        {
+            "heading": "4 Evaluation",
+            "text": "We evaluate adaptive gating in MoE on six NLP tasks using various encoder and decoder models. We then analyze the gating decision to better understand the effectiveness of adaptive gating."
+        },
+        {
+            "heading": "4.1 Tasks and Models",
+            "text": "Table 2 summarizes the details."
+        },
+        {
+            "heading": "4.2 Baselines",
+            "text": "We use the Transformer models from HuggingFace and convert the FFN layers to MoE layers (Komatsuzaki et al., 2022). We compare adaptive gating\u2019s training efficiency with the following three baselines and then evaluate the inference performance with top-1 gating MoE. Dense models. Transformer with no MoE layers. Top-2 gating MoE. MoE models with top-2 gating (Lepikhin et al., 2020; Hazimeh et al., 2021) for training. Top-1 gating MoE (Switch Transformer). Switch Transformer (Fedus et al., 2021; Kim et al., 2021; Xue et al., 2022) uses top-1 gating to mitigate training instabilities."
+        },
+        {
+            "heading": "4.3 Training Configurations",
+            "text": "We use 8 A100 GPUs, each with 40 GB memory. Data and expert parallel is used for distributed training. We distribute the experts evenly among all the GPUs. In terms of hyperparameters and model architecture, we adopt the default configurations established in the existing models (Wolf et al., 2020; Kwon and Chung, 2023).\nModel architecture. BERT-Base has 12 attention heads per layer. The hidden size is 768 and the intermediate dimension is 3072. The Transformer model has 16 attention heads. The hidden size is 1024 and the intermediate dimension in encoder and decoder layers are 8192 and 4096, respectively. BART-Large has 16 attention heads. The hidden size is 1024 and the intermediate dimension is 4096. GPT-2 and DialoGPT-medium have 16 attention heads. The hidden size is 1024 and the intermediate dimension is 4096.\nHyperparameters. BERT-Base has a batch size of 24 and the learning rate is 0.00003. The maximum number of tokens for the translation model is 4096 with a learning rate of 0.0005. The maximum number of tokens allowed for BART-Large is set to 4096. The learning rate is 0.00001. The batch size of GPT-2 is 8 with a learning rate of 0.00015.\nFor DialoGPT-medium, the batch size and learning rate are 64 and 0.0001. MoE configurations. The parameter size of the FFN in each model is the same in Baseline and MoE models and we set the number of FFNs (i.e. experts) to 16 for all evaluated tasks. The coefficient of the load balancing loss is 0.01. No capacity constraints are enabled so no tokens would be dropped. The expert parameters are randomly initialized. We normalize the expert probability in adaptive gating and set the threshold T to 0.1."
+        },
+        {
+            "heading": "4.4 Overall Performance",
+            "text": "We present the overall training and inference performance in Table 3. Overall, adaptive gating achieves comparable performance to the baselines while significantly reducing the training time even compared to top-1 gating. This is because though top-1 gating maximizes the computation saving, it makes training more difficult to converge to the same loss value, eventually leading to slightly longer training time compared to top-2 gating in 4 out of 6 tasks we run. An in-depth analysis of how adaptive gating works in connection to each task is presented in Section 4.5. Sentiment analysis. Adaptive gating in MoE outperforms both Dense models and top-2 gating MoE\nin all metrics. While the average computation FLOPs per token is higher with adaptive gating compared to top-1 gating MoE, which represents the minimum possible FLOPs in the MoE structure, adaptive gating requires less training time and achieves superior accuracy during the inference stage. This is consistent across all the tasks. Notably, only 11.3% of the tokens in our evaluation receive two experts, which is the lowest among all tasks. Compared to top-2 gating, adaptive gating focuses on assigning more experts to tokens that represent neutral opinions, allowing for a more comprehensive decision-making process. Conversely, tokens expressing little or obvious sentiment are given less attention without degrading accuracy. Translation. Adaptive gating delivers the same performance with top-2 gating while reducing training time and FLOPs per token by 25.6% and 38.2%, respectively. Notably, we observe that the gating network in adaptive gating exhibits a particular focus on the complexity of sentence structures. Even tokens that appear linguistically simple can involve two experts when they appear in sentences with intricate structures and grammar. Overall, 25.6% of all trained tokens are routed to two experts. Question and Answer. The training time with adaptive gating is 85.7% that of top-2 gating. Although its inference performance is slightly lower, it still outperforms top-1 gating. Through our experiments (refer to Section 4.6), we discover that adaptive gating achieves the best results when the threshold is set to 0.2 for Question and Answer. The gating decision is influenced by both the context and the specific question being asked. For this task 16.4% tokens receive top-2 processing. Summarization. Summarization is the most challenging task in our evaluation, as it involves processing long and information-rich articles. Adaptive gating takes 11.8% less training time than top-2 gating. However, its inference performance slightly lags behind. Particularly, in adaptive gating tokens selected for top-2 experts exhibit significant variations across different layers. We provide a more detailed analysis of this observation in Section 4.5. Text completion. We use a GPT-like decoderonly architecture for this task. Adaptive gating achieves similar performance as top-2 gating and Dense models while outperforming top-1 gating. When compared to top-2 gating, only 21.8% tokens rely on two experts, resulting in a reduction of 23.8% in average computation FLOPs per token. The selection of tokens utilizing two experts varies considerably due to the diverse nature of the input. Dialogue response. Dialogue response requires more nuanced processing compared to simple text generation, as it involves generating responses in a targeted role based on narrative input and dialogue history. The sparsity introduced by MoE is advantageous for this task. All three MoE approaches outperform the Dense model. Among all the tasks evaluated, dialogue response exhibits the highest percentage, 23.4% of tokens routed to two experts, indicating the higher utilization of the top-2 gating mechanism among all the tasks. Upon evaluating the tokens, we observe that this task can be viewed as a combination of all the other evaluated tasks."
+        },
+        {
+            "heading": "4.5 Analysis and Insights",
+            "text": "While it is intuitive to understand that some minor tokens (e.g., \u201ca\u201d, \u201cthe\u201d, \u201cis\u201d) only need top-1 expert to process, this does not fully explain how and why adaptive gating works in different NLP tasks. Thus we analyze how the tokens are processed in training with adaptive gating, and make quite a few interesting observations that can help better answer this question. In a broader sense, we believe\nour insights are also instrumental towards building better language models.\nNote that when BPE tokenizer is used, we aggregate the result by mapping the tokens to the natural language word and perform analysis on the aggregated statistics.\nSentiment analysis. Sentiment analysis exhibits the lowest percentage of top-2 gating among all tasks, and the percentage is stable across layers (Figure 2a). The top-2 gating mechanism focuses on two main types of input here. First, it frequently selects tokens that express a more neutral opinion since they are more difficult to classify (Table 4). Second, tokens associated with sarcastic statements, double negatives, or conflicting opinions are also commonly routed to two experts. Adaptive gating effectively identifies these tokens early on in the model as they are relatively easy to extract, which explains the stable percentage across layers. A special case is when the input does not explicitly convey any sentiment. Adaptive gating tends to initially route all tokens to either the top-1 or top-2 experts and gradually narrows down to more informative tokens. A typical instance of this is \u201cas a dentist\u2019s waiting room.\u201d\nTranslation. We focus on English-to-German translation only. We examine the top-2 gating results based on our understanding of the source sentences. The distribution of the top-2 gating percentages varies between the encoder and decoder layers, exhibiting a gradual decrease in the encoder layers and an increase in the decoder layers (Figure 2b). From sampled tokens and the adjusted data order in adaptive gating, we observe that tokens requiring two experts are usually within the same sentence. This observation leads us to infer that the complexity of sentence structure influences the gating results. In Table 4, we present one sentence containing multiple clauses that are frequently processed by the top-2 experts.\nQuestion and Answer. The percentage of top-2 tokens in question and answer tasks fluctuates across layers (Figure 2c). First, adaptive gating pays extra attention to the question itself. Words listed in Table 4 are some common examples. These tokens often either specify the scope of the question or pose constraints to the answers. Second, in the context side, tokens routed to two experts are closely related to the question in the input as well. For example, asking a question about numbers and computations would result in top-2 gating on the\nnumbers and the objects those numbers refer to.\nSummarization. In summarization, the percentage of tokens using two experts decreases in both encoder and decoder layers (Figure 2d). Based on our analysis of sampled tokens, we identify two patterns for tokens that are likely to be routed to top-2 experts. First, tokens with multiple meanings that rely on both themselves and the surrounding context for their ultimate interpretation. They are often routed to two experts in the shallow layers. Second, pronoun tokens, as understanding their referents is crucial for accurate summarization, use two experts in the deeper layers. This pattern is particularly prevalent in this task. Additionally, certain key tokens (e.g. \u201cin conclusion\u201d, \u201chowever\u201d, \u201cin all\u201d) that indicate the beginning the central idea or the main opinion of the context are often sent to two experts together with the following tokens.\nText completion. Text completion differs from the previous tasks as it is a decoder-only and autoregressive task. The gating results in text completion are influenced by the current prediction being generated. The focus of tokens changes dynamically based on the current prediction. It is challenging to identify specific types of tokens that consistently receive two experts. When predicting a pronoun, for example, the focus shifts to the names of individuals. Similar patterns can be observed for numbers and dates. Additionally, we find that the percentage of tokens routed to two experts is linked to the length of the current sequence. Longer sequences have a higher percentage of top-2 gating.\nDialogue response. Dialogue response, compared to text completion, requires more understanding of the narrative input and the dialogue history. We find that lots of effort are put into processing dialogue history. First, one key distinction is that tokens with a conversational meaning occur much more frequently. These words lack informative content but serve to express human-like sentiments, such as gratitude and politeness. We infer that routing these tokens for two experts indicates that there is a difference between the conversational usage and written text and it is also critical to learn where and when these words should be used. Second, given the nature of the dialogue, many conversations are based on underlying assumptions and conditions. Related tokens are usually processed with two tokens to improve the understanding of the context. For instance, the dialogue example provided in Table 4 is built on top of a scenario assuming that\n\u201cJohnathan tells his parents that he is gay\u201d and asks the model to answer questions with this condition."
+        },
+        {
+            "heading": "4.6 Ablation Study",
+            "text": "Threshold T in adaptive gating. We now conduct an ablation study on the threshold T introduced in adaptive gating. Increasing the threshold value results in a less sparse model, where more tokens are assigned to the top-2 gating mechanism, subsequently increasing the computational FLOPs. Table 5 shows the inference performance of different tasks when the threshold is increased from 0.05 to 0.5. When using a small threshold of 0.05, both the training time and inference performance closely resemble those of top-1 gating MoE. On the other hand, setting the threshold to 0.4 does not always lead to the same performance as top-2 gating. Together with Table 3, we discover that threshold values of 0.1 and 0.2 often strike a favorable balance between training time and inference performance. Curriculum learning. Essentially, we disable the data order adjustment before each epoch and use the random data loader to feed the training set. We present the performance degradation compared to the full-set adaptive gating in Table 6. Since it is highly possible that there is at least one token that are routed to top-2 experts, the step time of each\nTask Norm. Training Time Inference Performance\n0.05 0.2 0.3 0.4 0.05 0.2 0.3 0.4\nSentiment analysis 1.02x 0.77x 0.92x 1.01x 0.912 0.918 0.917 0.918 Translation 0.88x 0.83x 0.83x 0.88x 40.2 41.1 40.8 41.1 Question and Answer 0.92x 0.87x 0.93x 0.96x 74.3 77.6 77.6 77.6 Summarization 0.98x 1.02x 1.05x 1.04x 40.8 42.3 43.1 43.1 Text generation 0.95x 0.93x 0.99x 1.01x 16.6 17.2 17.4 17.4 Dialogue response 0.93x 0.91x 1.01x 1.01x 12.2 12.8 13.2 13.4\nTable 5: Overall performance when the threshold T changes. Training time is normalized with reference to top-2 gating MoE. We highlight the best one with the least training time.\nTask Training Time Inflation Inference Performance\nSentiment analysis 22% +0.00 Translation 14% -0.14 Question and Answer 9% -0.21 Summarization 14% -0.14 Text completion 12% -0.01 Dialogue response 11% -0.19\nTable 6: Overall performance comparison of adaptive gating when data batch is not adjusted.\niteration cannot achieve the same level of reduction as the computation FLOPs. Consequently, the end-to-end training time is significantly inflated, with an average increase of 13.7%. Additionally, the idea of the curriculum also contributes to the improvement in inference performance. The maximum drop is 0.21 in Question and Answer task when the data is fed and trained in a random manner."
+        },
+        {
+            "heading": "5 Limitation",
+            "text": "Choice of k. Adaptive gating in MoE currently is limited to top-k gating, where k can be either 1 or 2. This is built on the common practice in extensive prior work that top-2 gating shows a promissing resut in MoE. Further evaluation is necessary to validate the performance of a wider range of k values. Our experiments were conducted on a diverse set of NLP tasks and datasets, but it is essential to note that the effectiveness and efficiency of adaptive MoE may vary depending on the specific task characteristics. Different tasks may exhibit distinct patterns and complexities, which can impact the performance and generalizability of the proposed approach. Further investigation and evaluation on a wider range of tasks would provide a more comprehensive understanding of the limitations and applicability of adaptive MoE."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "This paper demonstrates the effectiveness and flexibility of adaptive gating in MoE models for a wide range of natural language processing tasks. By dynamically adjusting the number of experts based on token characteristics, we achieve improved training efficiency without compromising inference performance. Additionally, the integration of curriculum learning allows us to tackle the challenge of varying execution times, thereby reducing training costs. Our research sheds light on the trade-off between training efficiency and model performance in sparse and dynamic MoE networks, offering valuable insights for the development of more scalable and adaptable language models."
+        },
+        {
+            "heading": "Acknowledgement",
+            "text": "We thank the anonymous EMNLP\u201923 reviewers and Area Chairs for their constructive and valuable comments. This work was supported in part by funding from the Research Grants Council of Hong Kong (N_CityU139/21, C2004-21GF, R1012-21, R6021-20F, GRF 11209520, and CRF C7004-22G).\nEthics Statement\nThere is no ethic problem in this work."
+        }
+    ],
+    "title": "Adaptive Gating in Mixture-of-Experts based Language Models",
+    "year": 2023
+}

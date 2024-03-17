@@ -1,0 +1,947 @@
+{
+    "abstractText": "Generating mathematical equations from natural language requires an accurate understanding of the relations among math expressions. Existing approaches can be broadly categorized into token-level and expression-level generation. The former treats equations as a mathematical language, sequentially generating math tokens. Expression-level methods generate each expression one by one. However, each expression represents a solving step, and there naturally exist parallel or dependent relations between these steps, which are ignored by current sequential methods. Therefore, we integrate tree structure into the expression-level generation and advocate an expression tree decoding strategy. To generate a tree with expression as its node, we employ a layer-wise parallel decoding strategy: we decode multiple independent expressions (leaf nodes) in parallel at each layer and repeat parallel decoding layer by layer to sequentially generate these parent node expressions that depend on others. Besides, a bipartite matching algorithm is adopted to align multiple predictions with annotations for each layer. Experiments show our method outperforms other baselines, especially for these equations with complex structures.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Wenqi Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yongliang Shen"
+        },
+        {
+            "affiliations": [],
+            "name": "Qingpeng Nong"
+        },
+        {
+            "affiliations": [],
+            "name": "Zeqi Tan"
+        },
+        {
+            "affiliations": [],
+            "name": "Yanna Ma"
+        },
+        {
+            "affiliations": [],
+            "name": "Weiming Lu"
+        }
+    ],
+    "id": "SP:1bc67a9296cc3d426e829930e4e60ddbd884003b",
+    "references": [
+        {
+            "authors": [
+                "Aida Amini",
+                "Saadia Gabriel",
+                "Shanchuan Lin",
+                "Rik Koncel-Kedziorski",
+                "Yejin Choi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "MathQA: Towards interpretable math word problem solving with operation-based formalisms",
+            "venue": "Proceedings of the 2019 Conference",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yi Bin",
+                "Mengqun Han",
+                "Wenhao Shi",
+                "Lei Wang",
+                "Yang Yang",
+                "Heng Tao Shen."
+            ],
+            "title": "Non-autoregressive math word problem solver with unified tree structure",
+            "venue": "CoRR, abs/2305.04556.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Bocklisch",
+                "Joey Faulkner",
+                "Nick Pawlowski",
+                "Alan Nichol."
+            ],
+            "title": "Rasa: Open source language understanding and dialogue management",
+            "venue": "arXiv preprint arXiv:1712.05181.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Yixuan Cao",
+                "Feng Hong",
+                "Hongwei Li",
+                "Ping Luo."
+            ],
+            "title": "A bottom-up dag structure extraction model for math word problems",
+            "venue": "Thirty-Fifth AAAI Conference on Artificial 2021, pages 39\u201346.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nicolas Carion",
+                "Francisco Massa",
+                "Gabriel Synnaeve",
+                "Nicolas Usunier",
+                "Alexander Kirillov",
+                "Sergey Zagoruyko."
+            ],
+            "title": "End-to-end object detection with transformers",
+            "venue": "Computer Vision\u2013ECCV 2020: 16th European Conference, Glasgow, UK, August 23\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ting-Rui Chiang",
+                "Yun-Nung Chen."
+            ],
+            "title": "Semantically-aligned equation generation for solving and reasoning math word problems",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Karl Cobbe",
+                "Vineet Kosaraju",
+                "Mohammad Bavarian",
+                "Mark Chen",
+                "Heewoo Jun",
+                "Lukasz Kaiser",
+                "Matthias Plappert",
+                "Jerry Tworek",
+                "Jacob Hilton",
+                "Reiichiro Nakano"
+            ],
+            "title": "Training verifiers to solve math word problems",
+            "venue": "arXiv preprint arXiv:2110.14168",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Joy He-Yueya",
+                "Gabriel Poesia",
+                "Rose E Wang",
+                "Noah D Goodman."
+            ],
+            "title": "Solving math word problems by combining language models with symbolic solvers",
+            "venue": "arXiv preprint arXiv:2304.09102.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shifeng Huang",
+                "Jiawei Wang",
+                "Jiao Xu",
+                "Da Cao",
+                "Ming Yang."
+            ],
+            "title": "Recall and learn: A memoryaugmented solver for math word problems",
+            "venue": "arXiv preprint arXiv:2109.13112.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Andrew Jaegle",
+                "Felix Gimeno",
+                "Andy Brock",
+                "Oriol Vinyals",
+                "Andrew Zisserman",
+                "Joao Carreira."
+            ],
+            "title": "Perceiver: General perception with iterative attention",
+            "venue": "International conference on machine learning, pages 4651\u20134664. PMLR.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhanming Jie",
+                "Jierui Li",
+                "Wei Lu."
+            ],
+            "title": "Learning to reason deductively: Math word problem solving as complex relation extraction",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bugeun Kim",
+                "Kyung Seo Ki",
+                "Donggeon Lee",
+                "Gahgene Gweon."
+            ],
+            "title": "Point to the Expression: Solving Algebraic Word Problems using the ExpressionPointer Transformer Model",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa."
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "venue": "arXiv preprint arXiv:2205.11916.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rik Koncel-Kedziorski",
+                "Subhro Roy",
+                "Aida Amini",
+                "Nate Kushman",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Mawps: A math word problem repository",
+            "venue": "Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics:",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Harold W Kuhn."
+            ],
+            "title": "The hungarian method for the assignment problem",
+            "venue": "Naval research logistics quarterly, 2(1-2):83\u201397.",
+            "year": 1955
+        },
+        {
+            "authors": [
+                "Yihuai Lan",
+                "Lei Wang",
+                "Qiyuan Zhang",
+                "Yunshi Lan",
+                "Bing Tian Dai",
+                "Yan Wang",
+                "Dongxiang Zhang",
+                "Ee-Peng Lim."
+            ],
+            "title": "Mwptoolkit: An open-source framework for deep learning-based math word problem solvers",
+            "venue": "arXiv preprint arXiv:2109.00799.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yunshi Lan",
+                "Lei Wang",
+                "Jing Jiang",
+                "Ee-Peng Lim."
+            ],
+            "title": "Improving compositional generalization in math word problem solving",
+            "venue": "arXiv preprint arXiv:2209.01352.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Soochan Lee",
+                "Gunhee Kim"
+            ],
+            "title": "Recursion of thought: Divide and conquer reasoning with language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jierui Li",
+                "Lei Wang",
+                "Jipeng Zhang",
+                "Yan Wang",
+                "Bing Tian Dai",
+                "Dongxiang Zhang."
+            ],
+            "title": "Modeling intrarelation in math word problems with different functional multi-head attentions",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi."
+            ],
+            "title": "Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models",
+            "venue": "arXiv preprint arXiv:2301.12597.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shucheng Li",
+                "Lingfei Wu",
+                "Shiwei Feng",
+                "Fangli Xu",
+                "Fengyuan Xu",
+                "Sheng Zhong."
+            ],
+            "title": "Graph-totree neural networks for learning structured inputoutput translation with applications to semantic parsing and math word problem",
+            "venue": "Findings of the Asso-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhongli Li",
+                "Wenxuan Zhang",
+                "Chao Yan",
+                "Qingyu Zhou",
+                "Chao Li",
+                "Hongzhi Liu",
+                "Yunbo Cao."
+            ],
+            "title": "Seeking patterns, not just memorizing procedures: Contrastive learning for solving math word problems",
+            "venue": "arXiv preprint arXiv:2110.08464.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhenwen Liang",
+                "Jipeng Zhang",
+                "Jie Shao",
+                "Xiangliang Zhang."
+            ],
+            "title": "Mwp-bert: A strong baseline for math word problems",
+            "venue": "arXiv preprint arXiv:2107.13435.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhenwen Liang",
+                "Jipeng Zhang",
+                "Xiangliang Zhang."
+            ],
+            "title": "Analogical math word problems solving with enhanced problem-solution association",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 9454\u20139464,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhenwen Liang"
+            ],
+            "title": "Solving Math Word Problems with Teacher Supervision",
+            "venue": "Proceedings of the Thirtieth International Joint Conference on Artificial Intelligence, IJCAI-21, pages 3522\u20133528. International Joint Conferences on Artificial Intelligence",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wang Ling",
+                "Dani Yogatama",
+                "Chris Dyer",
+                "Phil Blunsom."
+            ],
+            "title": "Program induction by rationale generation: Learning to solve and explain algebraic word problems",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Qianying Liu",
+                "Wenyv Guan",
+                "Sujian Li",
+                "Daisuke Kawahara."
+            ],
+            "title": "Tree-structured decoding for solving math word problems",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "venue": "arXiv preprint arXiv:1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Arkil Patel",
+                "Satwik Bhattamishra",
+                "Navin Goyal"
+            ],
+            "title": "Are nlp models really able to solve simple math word problems? arXiv preprint arXiv:2103.07191",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Arkil Patel",
+                "Satwik Bhattamishra",
+                "Navin Goyal"
+            ],
+            "title": "Are NLP models really able to solve simple math word problems",
+            "venue": "In Proceedings of the 2021 Conference of the North American Chapter of the Association",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jinghui Qin",
+                "Xiaodan Liang",
+                "Yining Hong",
+                "Jianheng Tang",
+                "Liang Lin."
+            ],
+            "title": "Neural-symbolic solver for math word problems with auxiliary tasks",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jianhao Shen",
+                "Yichun Yin",
+                "Lin Li",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Ming Zhang",
+                "Qun Liu."
+            ],
+            "title": "Generate & rank: A multi-task framework for math word problems",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021, pages 2269\u20132279,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yibin Shen",
+                "Qianying Liu",
+                "Zhuoyuan Mao",
+                "Fei Cheng",
+                "Sadao Kurohashi."
+            ],
+            "title": "Textual enhanced contrastive learning for solving math word problems",
+            "venue": "arXiv preprint arXiv:2211.16022.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yibin Shen",
+                "Qianying Liu",
+                "Zhuoyuan Mao",
+                "Zhen Wan",
+                "Fei Cheng",
+                "Sadao Kurohashi."
+            ],
+            "title": "Seeking diverse reasoning logic: Controlled equation expression generation for solving math word problems",
+            "venue": "arXiv preprint arXiv:2209.10310.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yongliang Shen",
+                "Kaitao Song",
+                "Xu Tan",
+                "Dongsheng Li",
+                "Weiming Lu",
+                "Yueting Zhuang."
+            ],
+            "title": "Hugginggpt: Solving ai tasks with chatgpt and its friends in huggingface",
+            "venue": "arXiv preprint arXiv:2303.17580.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Minghuan Tan",
+                "Lei Wang",
+                "Lingxiao Jiang",
+                "Jing Jiang"
+            ],
+            "title": "Investigating math word problems using pretrained multilingual language models",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shih-hung Tsai",
+                "Chao-Chun Liang",
+                "Hsin-Min Wang",
+                "Keh-Yih Su."
+            ],
+            "title": "Sequence to general tree: Knowledge-guided geometry word problem solving",
+            "venue": "arXiv preprint arXiv:2106.00990.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Bin Wang",
+                "Jiangzhou Ju",
+                "Yang Fan",
+                "Xin-Yu Dai",
+                "Shujian Huang",
+                "Jiajun Chen."
+            ],
+            "title": "Structure-unified m-tree coding solver for mathword problem",
+            "venue": "arXiv preprint arXiv:2210.12432.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lei Wang",
+                "Yan Wang",
+                "Deng Cai",
+                "Dongxiang Zhang",
+                "Xiaojiang Liu."
+            ],
+            "title": "Translating a math word problem to an expression tree",
+            "venue": "arXiv preprint arXiv:1811.05632.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tianduo Wang",
+                "Wei Lu."
+            ],
+            "title": "Learning multi-step reasoning by solving arithmetic tasks",
+            "venue": "Proceedings of ACL.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc Le",
+                "Ed Chi",
+                "Sharan Narang",
+                "Aakanksha Chowdhery",
+                "Denny Zhou."
+            ],
+            "title": "Self-consistency improves chain of thought reasoning in language models",
+            "venue": "arXiv preprint arXiv:2203.11171.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yan Wang",
+                "Xiaojiang Liu",
+                "Shuming Shi."
+            ],
+            "title": "Deep neural solver for math word problems",
+            "venue": "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, pages 845\u2013854.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "arXiv preprint arXiv:2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ronald J Williams",
+                "David Zipser."
+            ],
+            "title": "A learning algorithm for continually running fully recurrent neural networks",
+            "venue": "Neural computation, 1(2):270\u2013280.",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Sylvain Gugger",
+                "Mariama Drame",
+                "Quentin Lhoest",
+                "Alexander Rush."
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qinzhuo Wu",
+                "Qi Zhang",
+                "Jinlan Fu",
+                "Xuan-Jing Huang."
+            ],
+            "title": "A knowledge-aware sequence-to-tree network for math word problem solving",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qinzhuo Wu",
+                "Qi Zhang",
+                "Zhongyu Wei",
+                "Xuanjing Huang."
+            ],
+            "title": "Math word problem solving with explicit numerical values",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Confer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yiquan Wu",
+                "Kun Kuang",
+                "Yating Zhang",
+                "Xiaozhong Liu",
+                "Changlong Sun",
+                "Jun Xiao",
+                "Yueting Zhuang",
+                "Luo Si",
+                "Fei Wu."
+            ],
+            "title": "De-biased court\u2019s view generation with causality",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yiquan Wu",
+                "Yifei Liu",
+                "Weiming Lu",
+                "Yating Zhang",
+                "Jun Feng",
+                "Changlong Sun",
+                "Fei Wu",
+                "Kun Kuang"
+            ],
+            "title": "Towards interactivity and interpretability: A rationale-based legal judgment prediction framework",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yiquan Wu",
+                "Weiming Lu",
+                "Yating Zhang",
+                "Adam Jatowt",
+                "Jun Feng",
+                "Changlong Sun",
+                "Fei Wu",
+                "Kun Kuang."
+            ],
+            "title": "Focus-aware response generation in inquiry conversation",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2023, pages 12585\u2013",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhipeng Xie",
+                "Shichao Sun."
+            ],
+            "title": "A goal-driven tree-structured neural model for math word problems",
+            "venue": "IJCAI, pages 5299\u20135305.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jing Xiong",
+                "Zhongwei Wan",
+                "Xiping Hu",
+                "Min Yang",
+                "Chengming Li."
+            ],
+            "title": "Self-consistent reasoning for solving math word problems",
+            "venue": "arXiv preprint arXiv:2210.15373.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhicheng Yang",
+                "Jinghui Qin",
+                "Jiaqi Chen",
+                "Xiaodan Liang."
+            ],
+            "title": "Unbiased math word problems benchmark for mitigating solving bias",
+            "venue": "arXiv preprint arXiv:2205.08108.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhicheng Yang",
+                "Jinghui Qin",
+                "Jiaqi Chen",
+                "Liang Lin",
+                "Xiaodan Liang."
+            ],
+            "title": "Logicsolver: Towards interpretable math word problem solving with logical prompt-enhanced learning",
+            "venue": "arXiv preprint arXiv:2205.08232.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Adams Wei Yu",
+                "David Dohan",
+                "Minh-Thang Luong",
+                "Rui Zhao",
+                "Kai Chen",
+                "Mohammad Norouzi",
+                "Quoc V Le."
+            ],
+            "title": "Qanet: Combining local convolution with global self-attention for reading comprehension",
+            "venue": "arXiv preprint arXiv:1804.09541.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Weijiang Yu",
+                "Yingpeng Wen",
+                "Fudan Zheng",
+                "Nong Xiao."
+            ],
+            "title": "Improving math word problems with pre-trained knowledge and hierarchical reasoning",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiaxin Zhang",
+                "Yasha Moshfeghi."
+            ],
+            "title": "Elastic: numerical reasoning with adaptive symbolic compiler",
+            "venue": "arXiv preprint arXiv:2210.10105.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jipeng Zhang",
+                "Lei Wang",
+                "Roy Ka-Wei Lee",
+                "Yi Bin",
+                "Yan Wang",
+                "Jie Shao",
+                "Ee-Peng Lim."
+            ],
+            "title": "Graph-totree learning for solving math word problems",
+            "venue": "Association for Computational Linguistics.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mengxue Zhang",
+                "Zichao Wang",
+                "Zhichao Yang",
+                "Weiqi Feng",
+                "Andrew Lan."
+            ],
+            "title": "Interpretable math word problem solution generation via step-by-step planning",
+            "venue": "arXiv preprint arXiv:2306.00784.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenqi Zhang",
+                "Yongliang Shen",
+                "Weiming Lu",
+                "Yueting Zhuang."
+            ],
+            "title": "Data-copilot: Bridging billions of data and humans with autonomous workflow",
+            "venue": "arXiv preprint arXiv:2306.07209.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenqi Zhang",
+                "Yongliang Shen",
+                "Yanna Ma",
+                "Xiaoxia Cheng",
+                "Zeqi Tan",
+                "Qingpeng Nong",
+                "Weiming Lu."
+            ],
+            "title": "Multi-view reasoning: Consistent contrastive learning for math word problem",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenqi Zhang",
+                "Kai Zhao",
+                "Peng Li",
+                "Xiao Zhu",
+                "Yongliang Shen",
+                "Yanna Ma",
+                "Yingfeng Chen",
+                "Weiming Lu."
+            ],
+            "title": "A closed-loop perception, decision-making and reasoning mechanism for human-like navigation",
+            "venue": "Proceedings of the Thirty-First International",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenqi Zhang",
+                "Kai Zhao",
+                "Peng Li",
+                "Xiaochun Zhu",
+                "Faping Ye",
+                "Wei Jiang",
+                "Huiqiao Fu",
+                "Tao Wang."
+            ],
+            "title": "Learning to navigate in a vuca environment: Hierarchical multi-expert approach",
+            "venue": "2021 IEEE/RSJ International Conference on Intelligent Robots and Sys-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Zhang",
+                "Guangyou Zhou",
+                "Zhiwen Xie",
+                "Jimmy Xiangji Huang."
+            ],
+            "title": "Hgen: Learning hierarchical heterogeneous graph encoding for math word problem solving",
+            "venue": "IEEE/ACM Transactions on Audio, Speech, and Language Processing, 30:816\u2013828.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zihao Zhou",
+                "Maizhen Ning",
+                "Qiufeng Wang",
+                "Jie Yao",
+                "Wei Wang",
+                "Xiaowei Huang",
+                "Kaizhu Huang."
+            ],
+            "title": "Learning by analogy: Diverse questions generation in math word problem",
+            "venue": "arXiv preprint arXiv:2306.09064.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xinyu Zhu",
+                "Junjie Wang",
+                "Lin Zhang",
+                "Yuxiang Zhang",
+                "Ruyi Gan",
+                "Jiaxing Zhang",
+                "Yujiu Yang."
+            ],
+            "title": "Solving math word problem via cooperative reasoning induced language models",
+            "venue": "arXiv preprint arXiv:2210.16257.",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Generating corresponding mathematical equations and solutions from text is important for a range of tasks, such as dialogues, question answering, math word problem (MWP), etc. It necessitates an accurate comprehension of semantics and the complex relations between mathematical symbols.\nWe investigate the existing approaches from two perspectives: the generation is at the token-level or expression-level, and the order is based on sequence or tree structure. Firstly, sequence-tosequence methods (seq2seq in Figure 1) (Wang et al., 2017, 2018; Chiang and Chen, 2019; Li et al.,\n\u2020Corresponding author.\nQuestion: Two cars are traveling from two places 10 km apart, the speed of the first car is 50km/h, the speed of the second car is 60km/h, the first car drives for 5 hours, the second car drives for 4 hours, finally how far apart are the two cars?"
+        },
+        {
+            "heading": "Seq",
+            "text": "2019) have considered mathematical symbols as a special kind of language (i.e., mathematical language) and employ sequential generation for the equation. These methods belong to the token-level sequential generation. Then a great deal of work (Xie and Sun, 2019; Zhang et al., 2020; Patel et al., 2021a; Li et al., 2020; Zhang et al., 2022c; Shen et al., 2022b) has proposed a tree-order decoding process (seq2tree in Figure 1) at the token-level. This process considers it as an equation tree generation and predicts pre-order tokens one by one.\nRecently, some researchers have explored expression-level approaches for mathematical equation generation, including (Kim et al., 2020; Cao et al., 2021; Jie et al., 2022; Zhang and Moshfeghi, 2022; Zhang et al., 2022a). These approaches mostly place emphasis on generating a mathematical expression step by step (seq2exp), rather than a token. These seq2exp methods belong to a sequen-\ntial generation at expression-level. However, it is imperative to recognize that each mathematical expression represents a problemsolving step, and there inherently exists a parallel or dependent relation among these steps. The existing seq2exp approach may struggle to capture these relations since they only produce expressions in sequence. Therefore, there is a pressing need for a versatile decoding strategy capable of simultaneously generating independent expressions in parallel at one step, while sequentially producing expressions that depend on others step by step.\nBased on this belief, we propose an expression tree decoding strategy by combining the seq2exp with a tree structure at the expression level. Differing from the prior seq2tree, each node in this tree represents an expression, rather than a token. To construct an expression-level tree, we generate multiple expressions in parallel at each step. These expressions are independent to each other and act as the leaf node in the expression tree. Those expressions depend on others, they act as parent nodes and are sequentially generated based on their child nodes. As shown in Figure 1, the two expressions (50 \u00d7 5, 60 \u00d7 4) are completely independent and generated in parallel at Step 1. The third expression depends on the first two, forming an expression tree. It not only empowers the model to exploit the inherent structure of the equation but also shortens its decoding path (the minimum steps in Figure 1).\nTo achieve this, we design a layer-wise parallel decoding strategy. At each decoder\u2019s layer, it can generate multiple independent expressions in parallel and then proceeds to the next layer, and repeat parallel prediction layer by layer. This layerwise parallel decoding process ensures that these independent expressions are produced in parallel, while these expressions depending on others are sequentially generated layer by layer, eventually constructing the entire expression tree.\nBesides, to decode multiple expressions in parallel, we take inspiration from query-based object detection (Carion et al., 2020; Jaegle et al., 2021; Li et al., 2023). Similar to detecting multiple visual objects by queries, we also utilize queries to identify multiple mathematical relations for expression generation in parallel. Lastly, we adopt a bipartite matching algorithm for loss calculation between multiple predicted expressions and the label.\nCao et al. (2021) shares some similarities with us but the challenges and approaches are different.\nCao et al. (2021) perform a bottom-up structure to extract multiple equations (e.g., x+y=3, y-2=4), whereas our method considers how to predict multiple expressions in parallel for a complex equation at each step (e.g., output 50 \u00d7 5, 60 \u00d7 4 simultaneously for 50 \u00d7 5 + 60 \u00d7 4). Besides, Cao et al. (2021) enumerates all possible expression combinations but we first introduce bipartite matching to achieve parallel prediction.\nOur contributions are threefold:\n\u2022 We introduce an expression tree decoding strategy by combining seq2exp with tree structure. It considers the dependent or parallel relation among different expressions (solving steps). To the best of our knowledge, this is the first effort to integrate query-based object detection techniques with equation generation in the literature.\n\u2022 We design a layer-wise parallel decoding process to construct an expression tree. It predicts multiple independent expressions in parallel and repeats parallel decoding layer by layer. Besides, we employ bipartite matching to align predicted expressions with labels.\n\u2022 To assess our method, we evaluate on MWP task and outperform prior baselines with higher accuracy and shorter steps.\nBy aligning the decoding process with the inherent structure of the equation, our approach paves the way for more intuitive, efficient equation generation. Moreover, it provides insights that could be applicable to many other structured tasks."
+        },
+        {
+            "heading": "2 Related work",
+            "text": "In advancing toward general-purpose AI, dependable reasoning remains imperative. The quest for human-equivalent reasoning has been rigorously explored in domains including NLP (Kojima et al., 2022), RL (Zhang et al., 2022b), and Robotics (Zhang et al., 2021). Recently, leveraging the planning and reasoning capabilities of LLMs paves the way for the development of numerous intelligent applications (Wei et al., 2022; Shen et al., 2023; Zhang et al., 2023b). Accurate generation of mathematical equations is an important manifestation of reasoning abilities, which has been extensively investigated in a plethora of NLP tasks, e.g., Math Word Problems (Wang et al., 2017; Ling et al., 2017; Xie and Sun, 2019; Wang et al., 2022a), Question Answering (Yu et al., 2018; Wu et al.,\n2020b), Dialogue (Bocklisch et al., 2017; Wu et al., 2022, 2023), etc. These tasks necessitate an accurate understanding of the semantics within the text as well as mathematical symbols.\nToken-level Generation Mathematical equation was treated as a translation task from human language into the mathematical token (symbol) (Wang et al., 2017; Chiang and Chen, 2019). Many seq2seq-based methods were proposed with an encoder-decoder framework. Li et al. (2019) introduced a group attention to enhance seq2seq performance. Lan et al. (2021) utilized a transformer model for equation generation. Except for seq2seq methods, some researchers (Liu et al., 2019a; Xie and Sun, 2019; Zhang et al., 2020, 2022c) studied the decoding structures and proposed a treebased decoder using prefix sequence. Wu et al. (2020a, 2021); Qin et al. (2021); Yu et al. (2021) introduced mathematical knowledge to solve the complex math reasoning. Liang et al. (2021b) improved accuracy by knowledge distillation between the teacher and student. Li et al. (2021) proposed a prototype learning through contrasting different equations. Shen et al. (2022a); Liang et al. (2022) also used contrastive learning at the semantic and symbolic expression levels. Yang et al. (2022b) improved the interpretability by explicitly retrieving logical rules. These generative approaches were token-level generation in infix order or prefix order.\nExpression-level Generation Expression-level generation has opened up a new perspective for math solving. Kim et al. (2020) proposed an expression pointer generation. Cao et al. (2021) introduced a DAG structure to extract two quantities from bottom to top. Jie et al. (2022); Wang and Lu (2023) further treated this task as an iterative relation extraction to construct an expression at each step. Zhang and Moshfeghi (2022) treated expression generation as a program generation and execution. Besides, Lee and Kim (2023); Zhang et al. (2023a); He-Yueya et al. (2023); Zhu et al. (2022) harness the capabilities of LLMs and prompt engineering to bolster mathematical reasoning under the few-shot setting. These methods treat equation generation as a multi-step expression generation and achieve impressive performance. However, these methods generate only one expression per step using pre-defined order, which may potentially impede the model\u2019s acuity in accurately understanding mathematical logic. In contrast, our method generates multiple expressions in parallel per step."
+        },
+        {
+            "heading": "3 Methodology",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Overview",
+            "text": "The task is to generate a complete equation based on the problem description. The generation process contains two vocabularies: number and operator vocabulary ( Vop={+,\u2212,\u00d7,\u00f7, \u00b7 \u00b7 \u00b7 }). The number is either from the original text or the math expression results from previous steps.\nSimilar to object detection, where queries are utilized to detect multiple objects, we also feed multiple learnable queries to identify possible math relations. As shown in Figure 2, a standard decoder and multiple queries are adopted to generate candidate expressions at each layer. To construct an expression tree, we must consider two structures simultaneously: parallel and sequential. For these expressions that have no dependent relations, we employ a parallel strategy to generate them. Conversely, for these expressions that depend on others, we generate them layer by layer (\u00a7 3.2). We also provide detailed cases in Figure A2 for decoding. When training, we utilize a bipartite matching algorithm to align the multiple predicted expressions with the label set for loss calculation (\u00a7 3.3)."
+        },
+        {
+            "heading": "3.2 Layer-wise Parallel Decoding",
+            "text": "We devise a problem encoder, a decoder, and multiple learnable queries, where the query is used to identify a specific mathematical relation and then produce a candidate expression at each layer.\nProblem Encoder Given a text description X with Nn number words, we adopt the pre-trained language model (Devlin et al., 2019; Liu et al., 2019b) to obtain the contextualized problem representations P . We obtain number vocabulary Vn= {ein}Nni=1 from P , which denotes the embeddings of the Nn number tokens from text. In addition, we randomly initialize the learnable embedding for each operator and a None label Vop={ejop} Nop+1 j=1 .\nLearnable Query The decoder is designed for extracting all candidate expressions in parallel based on problem representation. Firstly, we design learnable embeddings as query Q = {qi}Ki=1, where K means the number of the query. As shown in Figure 2, the K queries are firstly fed into the decoder and then are utilized to predict K possible expressions at each layer.\nSpecifically, the decoder is the standard transformer decoder which contains a stack of identical layers. At the l-th layer, the problem embeddings P l\u22121 and the query embeddings Ql\u22121 from the"
+        },
+        {
+            "heading": "Optimal Permutation Index: = [0, 4, 1, 2, 3, 5]",
+            "text": "previous layer are fed into the current decoder\u2019s layer as inputs, and then interact with each other by self-attention and cross-attention mechanism:\nQl = Decoder-Layerl(Ql\u22121;P l\u22121) (1)\nwhere Ql means K query embeddings at l-th layer. Parallel Decoding After obtaining K query vectors, we use them to predict K expressions in parallel, each of which contains one operator and two operands (l, op, r). Firstly, we use query to calculate the operator and operands embedding:\nsli, s r i , s op i = MLP l,r,op(qi), qi \u2208 Ql (2)\nwhere qi denotes the i-th query vectors in Ql. Then,\nwe predict three distributions as follows:\nP l,ri (\u2217)= Softmax(s l,r i en), \u2200en\u2208Vn (3) P opi (\u2217)= Softmax(s op i eop),\u2200eop\u2208Vop (4)\nwhere en and eop represent the number and operator embedding in vocabulary respectively. P li (\u2217), P ri (\u2217), and P op i (\u2217) denotes the three distributions for two operands and one operator. Lastly, we calculate the embedding for this i-th expression:\nvari = MLPn([s op i ; s l i; s r i ; s l i \u25e6 sri ]) (5)\nWe totally predict K independent expressions from K queries at this layer. Then we continue to the next layer for these expressions depending on previous results (e.g.,var1 + var2 in Figure 2).\nLayer by Layer Prediction The K predicted expressions contain K1 valid expressions and K2 invalid expressions. An invalid expression implies that the operator in (l, op, r) is predicted to None. We will discuss it in section (\u00a7 3.3). First, we concat all valid expression embeddings with the problem representations P l\u22121 for the next layer:\nP l=MLPu([P l\u22121\u2295var1\u2295var2....\u2295varK1 ]) (6)\nwhere var1, var2, ...., varK1 means K1 new generated expression embeddings in l-th layer. \u2295 means the concatenation of the vectors. Besides, we also update the number embedding: V ln = V l\u22121n \u222a var1 \u222a var2.... \u222a varK1 using K1 new expression embeddings as new number embeddings.\nAs shown in Figure 2, we proceed to the next layer of decoding using P l and Ql, as Equation 1:\nQl+1 = Decoder-Layerl+1(Ql;P l) (7)\nAt layer l+1, we still decode K expressions in parallel and continue to the next layer. If all predicted expressions are invalid, i.e., K operators are classified as None, it signifies the equation generation is complete."
+        },
+        {
+            "heading": "3.3 Loss For Parallel Decoding",
+            "text": "As mentioned before, each decoder\u2019s layer generates multiple mathematical expressions. However, the annotations of equations in the dataset are usually serial (e.g., \u201c50\u201d, \u201c\u00d7\u201d, \u201c5\u201d, \u201c+\u201d, \u201c60\u201d, \u201c\u00d7\u201d, \u201c4\u201d), and it is crucial to design a method to utilize these annotations for training parallel decoding.\nTo this end, we first convert the original equation annotations into multiple label sets, each set comprising K mathematical expressions. Then, bipartite matching is employed to align the K predicted expressions with the K mathematical expressions in the label set to compute model loss.\nLabel Set As shown in Figure 2, we initially convert the label equations from infix order to prefix order, thus forming an equation tree. Starting from the leaf nodes, we iterative gather two leaves and their parent node into a label set for each step, eventually producing multiple label sets (e.g. set1 = {50\u00d7 5, 60\u00d7 4}, set2 = {var1\u00d7 var2}). Each label set contains several non-dependent expressions that can be generated in parallel. Each label set is also padded with a specific label None to ensure all sets contain K elements. We provide two detailed cases for this process in Figure A2.\nBipartite Match For each layer, K candidate mathematical expressions are predicted. We compute the function loss for the K predicted expressions based on the corresponding label set, which also contains K golden expressions. However, as the K expressions are unordered, it is difficult to calculate the loss directly. For instance, if the label set is {50 \u00d7 5, 60 \u00d7 4}, and the prediction is {60\u00d7 4, 50\u00d7 5}, the loss in this case should be 0. To address this, we adopt a bipartite matching algorithm to align the two sets, i.e., align the K predictions with the K golden labels. As shown in Figure 2, six golden expressions align with six predicted expressions. Specifically, we denote the golden expression in the label set as {y1, y2, ..., yK}, and the set of predicted expressions by y\u0302 = {y\u0302i}Ki=1. To find an optimal matching, we search for a permutation (\u03b2 \u2208 OK) of K elements with the lowest cost. As shown in Figure 2, the optimal permutation for predicted set is [y\u03020, y\u03024, y\u03021, y\u03022, y\u03023, y\u03025]. It can be formalized as:\n\u03b2\u2217 = argmin \u03b2\u2208OK K\u2211 i Lmatch ( yi, y\u0302\u03b2(i) ) (8)\nwhere Lmatch ( yi, y\u0302\u03b2(i) ) is a pair matching cost between the golden expression yi and the predicted expression y\u0302 with index \u03b2(i). We use the Hungarian algorithm (Kuhn, 1955) to compute this pair-matching cost. Each golden expression contains two operands and one operator, i.e. yi = (li, opi, ri) and each predicted expression has three distributions, i.e. y\u0302i = (P li (\u2217), P op i (\u2217), P ri (\u2217)). We calculate Lmatch as follow:\nLmatch ( yi, y\u0302\u03b2(i) ) = \u22121{opi \u0338=None} [ pop\u03b2(i) (opi)\n+ pl\u03b2(i) (li) + p r \u03b2(i) (ri) ] (9)\nAfter we get the optimal matching \u03b2\u2217, we calculate the final loss L(y, y\u0302) as:\nL(y, y\u0302) = N\u2211 i=1 { \u2212 log pop\u03b2\u2217(i) (opi)\n+ 1{opi \u0338=None} [ \u2212 log pl\u03b2\u2217(i) (li)\n\u2212 log pr\u03b2\u2217(i) (ri) ]} (10)\nWe calculate the predicted loss for each decoder layer after aligning two sets. A detailed match process is provided in Figure A3."
+        },
+        {
+            "heading": "Model Test Acc.",
+            "text": ""
+        },
+        {
+            "heading": "3.4 Training and Inference",
+            "text": "During training, we calculate the loss after employing the bipartite match for each layer. Besides, we also adopt the teacher forcing (Williams and Zipser, 1989) by using golden expressions for the next layer (Equation 5, 6). During inference, each layer predicts K expressions in parallel. Those expressions whose predicted operator is None are filtered out before proceeding to the next layer generation. The entire process is finished when all K expressions are predicted to be None."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": "Math Word Problem Task We first evaluate our expression tree decoding strategy on the Math Word Problem task (MWP). MWP represents a challenging mathematical reasoning task where the model is required to comprehend the semantics of a given problem and generate a complete equation and the solution. Encompassing a spectrum of topics, including engineering, arithmetic, geometry, and commerce, MWP effectively evaluates the model\u2019s prowess in semantic understanding as well as mathematical symbol generation. We use three standard MWP datasets1 across two languages:\n1The criteria for the selection of the dataset: 1. Dataset size. 2. Datasize label includes not just answers but also complete\nMathQA (Amini et al., 2019), Math23K (Wang et al., 2017), and MAWPS (Koncel-Kedziorski et al., 2016). We follow (Jie et al., 2022; Zhang et al., 2022a) to preprocess datasets. The statistics of datasets are reported in Appendix A.3.\nBaselines We compare our method with three types of baselines: (1) Seq2Seq/Tree: PLM-Gen (Lan et al., 2021), Rank (Shen et al., 2021), SymbolDec (Qin et al., 2021), H-Reasoner (Yu et al., 2021), Logic-Dec (Yang et al., 2022b), Prototype (Li et al., 2021), T-Dis (Liang et al., 2021b), Textual-CL (Shen et al., 2022a), Ana-CL (Liang et al., 2022) and several representative methods. (2) Seq2Exp: E-Pointer (Kim et al., 2020), DAG (Cao et al., 2021), RE-Ext (Jie et al., 2022), M-View (Zhang et al., 2022a), ELASTIC(Zhang and Moshfeghi, 2022), M-Tree (Wang et al., 2022a) and MWPNAS (Bin et al., 2023). Besides, we also compare with gpt-3.5-turbo (OpenAI, 2022) and SelfConsistency (Wang et al., 2022b) prompted by one demonstration through the OpenAI API. More details are listed in Appendix A.1.\nTraining Details Following most previous works (Zhang et al., 2022a; Jie et al., 2022), we report the average accuracy (five random seeds) with\nequations. 3. Extensively employed in prior research.\nstandard deviation for Math23K and MathQA, and 5-fold cross-validation for Math23K and MAWPS. The test-set accuracy is chosen by the best dev-set accuracy step. Since most of the math problems only require two or three mathematical expressions to be generated in parallel for each step, we set the number of queries K to be 6, which is sufficient to cover all cases. Except for using a standard decoder for layer-wise decoding (Our), we also explore an alternate variant (Our Layer-Shared), in which parallel decoding is performed at every N transformer layer, but each decoding step shares the parameter of these N layers. This model is efficient with fewer parameters. Model details are reported in Figure A1."
+        },
+        {
+            "heading": "4.1 Results",
+            "text": "As shown in Table 1, 2 and 3, our expression tree decoding strategy achieves SoTA performance on two large datasets, especially on the most difficult MathQA with +1.2% gains. Similarly, we gain +0.6% (test) and +0.8% (5-fold) improvements on Math23K and comparable performance on the MAWPS. Moreover, we also notice that our performance still substantially outperforms LLMs in the case of complex mathematical equation generation (MathQA: +30.8% and Math23K: +20.1%). Furthermore, our variant model (Our w/ Layer-Shared) has also demonstrated comparable performance"
+        },
+        {
+            "heading": "Math23K Seq2Exp Our Seq2Seq Seq2Tree",
+            "text": ""
+        },
+        {
+            "heading": "MathQA Seq2Exp Our Seq2Seq Seq2Tree",
+            "text": "(+0.8% on MathQA), with fewer parameters.\nFrom the view of three types of methods, our method is more stable and effective, with +1.9% and +1.2% gains against the best Seq2Tree baseline (Ana-CL) and best Seq2Exp baseline (Elastic) on MathQA. The Seq2Exp focuses on generation at the sequence at the expression-level, while Seq2Tree absorbs the feature of a tree structure. In contrast, our expression tree decoding strategy, more than generating the expressions, also integrates the tree structure into the parallel decoding process, performing well for complex equations.\nIn addition to the accuracy comparison, we also analyze the difference in the number of decoding steps. We report the average decoding steps, step standard deviation, and maximum steps for the four types of methods (Seq2Seq: mBERT, Seq2Tree: Ana-CL, Seq2Exp: RE-Ext, and Expression-tree: Ours) in Table 4. We observe that the decoding steps of the token-level generation methods (e.g., Seq2Seq and Seq2Tree) are significantly higher than those of Expression-level methods (about four to five times). Compared to other methods, our parallel decoding method requires fewer decoding steps, especially on the more complex MathQA. We offer some intuitive examples in Figure A2. These results suggest that our parallel strategy not only offers superior accuracy but also reduces the number of decoding steps.\nExpression Tree\nSingle\nExpression Chain\nEquation Type Diagram Exp 1\nExp 1 Exp 2 Exp 3\nExp 1 Exp 2 Exp 4\nExp 3\nExp 5\nExample a \u00f7 b\n(a + b) \u00d7 \ud835\udc50 \u2212 \ud835\udc51\n(a + b) \u00d7 (\ud835\udc50 \u2212 \ud835\udc51) \u2212 \ud835\udc52 \u00f7 \ud835\udc53"
+        },
+        {
+            "heading": "4.2 Ablations",
+            "text": "Bipartite matching is essential for our parallel strategy. Therefore, we study how it works: I. Sequence Matching. Firstly, we ablate bipartite matching and instead use a simple matching strategy for multiple expressions: sequence matching. It means we align the first expression predicted by the first query with the first label, and then the second predicted expression aligns with the second label, and so on. II. Random Matching. Then we random match the predicted expressions with the labels. III. Operand None Loss. As illustrated in Equation 10, for these labels padded with the None category, we only compute the loss for the operator. At this point, we add two operands\u2019 loss between None to analyze its effect. IV. Operator None Loss. We remove the operator loss for the None category. V. Parallel Decoding. Lastly, we remove the whole parallel decoding, i.e., adopt only one query per layer. We provide a detailed visualization for these designs in Figure A3.\nAs shown in Table 5, when we replace with sequence matching, there is a notable degradation in accuracy (-2.7%). In this case, the performance is similar to the Seq2Exp (RE-Ext:78.6% vs Ablation: 78.8%). It undermines the advantages of expression tree decoding since aligning process still introduces manually-annotated order. Secondly, we find random matching may lead to a training collapse. Then we observe disregarding None operator loss or adding the None operands loss, both having a negative impact (-0.9%, -0.8%). In the last ablation experiments, our performance drops from 81.5% to 79.9% (-1.6%) when we remove the parallel decoding from our system. More comparisons can be found in Appendix A.4."
+        },
+        {
+            "heading": "4.3 Analysis",
+            "text": "We investigate the efficacy of the expression tree decoding strategy in scenarios involving complex equation generation. We conduct the analysis along two dimensions: the structure of the equation and the length of the equation. Besides, we also analyze the impact of different query numbers on parallel decoding performance."
+        },
+        {
+            "heading": "Model Single Exp Chain Exp Tree Overall",
+            "text": "Equation Structure In Table 6, we categorize the structures of equations into three types: (1) Single expression, where the entire equation consists of only one expression; (2) Expression chain, where the equation is comprised of multiple expressions forming a chain; (3) Expression Tree, which involves complex tree structures composed of multiple expressions. We evaluate the model\u2019s accuracy on three types of equation structures.\nAs shown in Table 6, our expression tree decoding strategy gains comparable performance to other baselines in the first two evaluations (Single Expression and Expression Chain). In contrast, in the Expression Tree evaluation, most of these instances in this type involve sophisticated equation structures and complex solving processes. Our method significantly outperforms the other baselines (\u2265 +7.4%). Specifically, in comparison to the seq2tree approach, we achieve a +7.4% improvement (Our:75.2% vs Ana-CL:67.8%), and gain a more substantial advantage (+9.5%) relative to the seq2exp method. Under this case, our method outperforms seq2tree, and seq2tree in turn outperforms seq2exp. This clearly demonstrates that introducing the structural feature of equations indeed contributes to the capable of handling equations with complex structures.\nEquation Length An equation comprises multiple mathematical expressions, with each expres-\nsion representing a reasoning step. Complex equations usually contain more expressions. Therefore, we evaluate the performance on the instance with different numbers of expressions. In Figure 3, as the number of expressions increases, the equation becomes more complex and the performance decreases rapidly. However, our method consistently maintains high accuracy (\u226570% on MathQA) across all cases, especially on complex cases. Compared with baselines, our advantage increases from +1.0% (#2) to +6.4% (#5). For the equation with the longest expressions (\u2265#8), our strategy maintains an improvement by nearly +6%, showing expression tree decoding strategy is more stable for complex equations.\nQuery Number We further analyze the impact of the number of queries on parallel decoding performance. The number of queries is set from 1 to 30. As shown in Table A2, as the number of queries increases, the performance initially increases notably and then decreases. Specifically, when there is only one query per layer (# query = 1), the parallel decoding strategy is removed. Conversely, when we adopt too many queries (# query >= 10), the performance of parallel decoding drops rapidly. We speculate that this might be because most of the queries are redundant and are matched to the \"None\" label under this case. Too many queries may lead to instability in training. Apart from too many or too few queries, the performance gains attributed to parallel decoding remain both stable and pronounced. For instance, as the number of queries fluctuates between 4 and 8, the improvement consistently remains within the range of +1.2% to +1.5%. It suggests that although the number of queries is a hyperparameter, it does not need to be carefully tuned."
+        },
+        {
+            "heading": "4.4 Case Study and Visualization",
+            "text": "We explore the role of learnable queries in the expression tree decoding process. We first calculate the similarity between query vectors and problem representations for each layer and then visualize the results in Figure A4. As shown in the first case, the sixth query is activated twice through two steps, thus performing two division operations. In the second case, the first and second queries generate two valid expressions (14 + 6, 4 + 6) in parallel in the first layer, and then the last query in the second layer outputs a division operation (Exp1 + Exp2) using two results from the first layer. These exam-\nples illustrate that our method is highly flexible and can adaptively predict expressions in parallel or sequentially based on the context, thereby composing an expression tree."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "We devise an expression tree decoding strategy for generating mathematical equations layer by layer. Each layer produces multiple mathematical expressions in parallel which are non-dependent and order-free, achieving flexible decoding. During the training, we employ a bipartite matching algorithm to align the multiple generated expressions with the golden labels and compute the parallel prediction loss under the optimal matching scheme. Extensive experiments demonstrate that our expression tree decoding strategy can effectively absorb the structural features of equations and enhance the capacity for generating complex equations for math reasoning."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Firstly, when faced with a mathematical problem that requires an extensive number of solving steps, we have to increase the number of decoder layers. It consequently leads to an increase in the model parameters. This is due to our layer-wise decoding strategy, where more complex equations require additional decoding layers. To address this, we have designed a variant model with shared parameters (Layer-Shared in Figure A1), which achieves comparable results without modifying layer number.\nSecondly, some hyperparameters (e.g., the number of queries and layer), need to be manually adjusted according to the dataset. In the future, we will explore how to utilize our query-based, layerwise expression tree decoding strategy to address a broader range of structured generation tasks."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "This work is supported by the Fundamental Research Funds for the Central Universities (No. 226- 2023-00060), Key Research and Development Program of Zhejiang Province (No. 2021C01013), National Key Research and Development Project of China (No. 2018AAA0101900), Joint Project DH-2022ZY0013 from Donghai Lab, and MOE Engineering Research Center of Digital Library."
+        },
+        {
+            "heading": "A Appendix",
+            "text": ""
+        },
+        {
+            "heading": "A.1 Baselines",
+            "text": "In recent years, the MWP task has garnered widespread attention (Zhou et al., 2023; Xiong et al., 2022; Lan et al., 2022; Yang et al., 2022a; Cobbe et al., 2021; Tsai et al., 2021; Huang et al., 2021). We divide the prior baselines into two categories: Seq2Seq/Tree and Seq2Exp. In Seq2Seq/Tree, Li et al. (2019) (GroupAttn) applied a multi-head attention approach using a seq2seq model. Xie and Sun (2019) proposed a seq2tree generation (GTS). Zhang et al. (2020) (G2T) introduced a graph encoder. Patel et al. (2021b); Liang et al. (2021a) added a PLMs encoder to GTS and G2T (PLM-GTS, BERTT). Tan et al. (2021) proposed a multilingual model (mBERT). Lan et al. (2021) utilized Transformer for generation (BERTGen). Shen et al. (2021) proposed a multi-task method (Rank). Qin et al. (2021) introduced a neural symbolic method (Symbol-Dec). Yu et al. (2021) extracted hierarchical features for encoder (H-Reasoner). Yang et al. (2022b) designed logical rules to guide decoding (Logic-Dec). Li et al. (2021) proposed a prototype learning (Prototype). Liang et al. (2021b) adopted a teacher model for discrimination (T-Dis). Shen et al. (2022a) distinguished examples with similar semantics but different logics (Textual-CL). Liang et al. (2022) adopted an analogy identification to improve the generalization (Ana-CL).\nIn Seq2Exp, Cao et al. (2021) used a bottom-up DAG construction method (DAG). Jie et al. (2022) introduced a relation extraction method (RE-Ext). Wang et al. (2022a) treated MWP as tagging annotation by M-Tree coding (M-Tree). Bin et al. (2023) introduced a unified tree structure using a non-autoregressive model (MWP-NAS). Zhang et al. (2022a) aligned the representation of different traversal order for consistency (M-View). ELASTIC (Zhang and Moshfeghi, 2022) designs a computer synthesis process to handle numerical reasoning. We also compare our results with the gpt-3.5-turbo in the few-shot setting. We design a prompt consisting of both directive instructions and a demonstration to guide gpt-3.5 step-by-step reasoning."
+        },
+        {
+            "heading": "A.2 Training Details",
+            "text": "Following most previous works (Zhang et al., 2022a; Jie et al., 2022), we adopt Roberta-base and Chinese-BERT as encoder from HuggingFace\nTwo Variant Models\nTransformer Layer 1\nTransformer Layer 2\nTransformer Layer 3\nMultiple Query\nTransformer Layer 1\nTransformer Layer 2\nTransformer Layer N\nMultiple Query\nExp1 \u2026 ExpKExp2\nExp1 \u2026 ExpKExp2\nExp1 \u2026 ExpKExp2\nTransformer Layer 1\nTransformer Layer 2\nTransformer Layer N\nExp1 \u2026 ExpKExp2\nParameter Shared\nExp1 \u2026 ExpKExp2\nTransformer Layer 4\nTransformer Layer N\n\u2026\n\u2026 \u2026\nFigure A1: Except for using a standard decoder for layer-wise decoding (Left), we also explore an alternate model (Right), in which parallel decoding is performed at every N transformer layer, but each decoding step shares the parameter of these N layers. The left model is more accurate, and the right has fewer parameters.\n(Wolf et al., 2020) for multilingual datasets. We consider five mathematical operators, containing Addition, Subtraction, Multiplication, Division, Exponentiation, and various constants ({\u03c0, 1, 0, \u00b7 \u00b7 \u00b7 }) as previously. Our query decoder is a transformer decoder with multiple layers, each having 768 hidden units. In our experiments, we perform parallel decoding once at each transformer layer. We use an AdamW optimizer with a 5e-5 learning rate, batch size of 32 for MathQA and 26 for Math23K. We set the maximum layer number as 8. The other parameters are set as previous works (Zhang et al., 2022a; Jie et al., 2022). All experiments were set up on an NVIDIA RTX A6000."
+        },
+        {
+            "heading": "A.3 MWP Dataset Statistics",
+            "text": "The statistics of the dataset are shown in Table A1.\nDataset #Train/#Valid/#Test #Avg.Token #Avg. Exp #Max. Exp\nMathQA 16191 /2415/1606 39.6 4.17 12 Math23K 21162/1000/1000 26.6 2.26 20 MAWPS 1589/199/199 30.3 1.42 7\nTable A1: Statistics for three standard datasets.\n# Query 1 2 4 5 6 7 8 10 15 20 30\nAcc.(MathQA) % 79.9 80.6 81.4 81.4 81.5 81.3 81.1 80.8 80.2 79.8 79.1 Compared to #1 0 +0.7 +1.5 +1.5 +1.6 +1.4 +1.2 +0.9 +0.3 -0.1 -0.8\nAcc.(Math23K) % 85.2 85.8 86.2 86.0 86.2 85.9 85.6 85.2 84.8 83.5 83.3 Compared to #1 0 +0.6 +1 +0.8 +1 +0.7 +0.4 0 -0.4 -1.7 -1.9\nTable A2: The impact of query number on our parallel decoding performance."
+        },
+        {
+            "heading": "Method MathQA Math23K",
+            "text": "w/ parallel decoding 81.5 86.2 w/o parallel decoding 79.9 85.2 E-pointer 73.5 78.7 M-View 79.5 85.6 RE-Ext 78.6 85.4 Elastic 80.3 84.8\nTable A3: The ablation study on parallel decoding."
+        },
+        {
+            "heading": "A.4 Ablating on Parallel Decoding",
+            "text": "Parallel decoding is the key to constructing expression trees. We provide a more detailed comparison of our parallel decoding strategy. The detailed results are as shown in Table A3. When we ablate parallel decoding from our framework, i.e., adopt only one query per layer, our performance drops from 81.5% to 79.9% (-1.6%) on MathQA. A similar trend is seen on Math23K (-1.0%). Besides, without the parallel decoding strategy, our performance is similar to the Seq2Exp baselines (e.g., E-pointer, M-View, RE-Ext, Elastic, etc.), which generate one expression at each step. Compared to them, parallel decoding brings noticeable and consistent improvements (E-pointer: +8%, M-View: +2%, RE-Ext: +2.9%, Elastic: +1.2%).\nLabel Equation: (50 \u00d7 5) + 60 \u00d7(4 + 7)\nLabel Set\nPrefix Order: + \u00d7 50 5 \u00d7 60 + 4 7\nStep1: Set ( var1 = 50 \u00d7 5, var2 = 4+ 7 )\nStep2: Set ( var3 = 60 \u00d7 var2 )\nStep3: Set (var1 + var3)\n\u00d7 \u00d7\n+\n50 5 +60\n4 7\n\u00d7\n+\nvar1\nvar260\nvar3\n+\nvar1\nLabel Equation: (10 + 4) \u00d7 5 + 60 \u00d7 (10 + 2) \u2212 10 \u00f7 (10 + 7)\nPrefix Order: \u2212 + \u00d7 + 10 4 5 \u00d7 60 + 10 2 \u00f7 10 + 10 7\n+ \u00f7\n\u2212\n\u00d7 \u00d7 +10\n10 7+ 5\n10 4\n+60\n10 2\n+ \u00f7\n\u2212\n\u00d7 \u00d7 var310\nvar1 5 var260\n+ var6\n\u2212\nvar4 var5\nStep1: Set ( var1 = 10 + 4, var2 = 10 + 2, var3 = 10 + 7, None, \u2026.)\nStep2: Set ( var4 = var1 \u00d7 5, var5 = 60 \u00d7 var2, var6 = 10 \u00f7 var3, None, \u2026.)\nStep3: Set (var7 = var4 + var5, None, \u2026.)\nStep4: Set (var7 + var6, None, \u2026.)\nvar7 var6\n\u2212\nResult\nPadding\nSet ( 50 \u00d7 5, 4+ 7, None, None \u2026.. )\nSet ( 60 \u00d7 var2 , None, None \u2026.. )\nSet ( var1 + var3, None, None \u2026.. )\nResult\nLayer 1\nLayer 2\nLayer 3\n50\u00d754+7\nv2\u00d760\nv1 + v3\nExpression Tree Decoding\nLayer 1\nLayer 2\nLayer 3\n10+210+4\nv1\u00d75\nv4 + v6\nExpression Tree Decoding\nLayer 4\nv7 + v6\n10+7\n60\u00d7v2 10\u00f7 v3\nFigure A2: Two cases for Label Set and Expression Tree decoding processes.\nSeveral Ablation Design\nLabel Set 50 \u00d7 5 60 \u00d7 4 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52\ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 None\n50 \u00d7 5 60 \u00d7 450 + 60 5 + 450 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 4 50+ 4Predict Set\nBipartite Matching\nLoss for operatorLoss for operand\nLoss1 Loss2 Loss6Loss4 Loss5Loss3\nLabel Set 50 \u00d7 5 60 \u00d7 4 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52\ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 None\n50 \u00d7 5 60 \u00d7 450 + 60 5 + 450 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 4 50+ 4Predict Set\nSequence Matching\nLoss1 Loss2 Loss3 Loss4\nLoss5 Loss6\nLabel Set\nPredict Set\nWithout Operator None Loss\nLabel Set 50 \u00d7 5 60 \u00d7 4 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52\ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 None\n50 \u00d7 5 60 \u00d7 450 + 60 5 + 450 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 4 50+ 4Predict Set\nWith Operand None Loss\n50 \u00d7 5 60 \u00d7 4 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52\ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 None\n50 \u00d7 5 60 \u00d7 450 + 60 5 + 450 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 4 50+ 4\nLoss1 Loss2\nLabel Set 50 \u00d7 5 60 \u00d7 4 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52\ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 None\n50 \u00d7 5 60 \u00d7 450 + 60 5 + 450 \ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 4 50+ 4Predict Set\nBipartite Matching Process\nY0 Y4Y3Y2Y1 Y5\n!\ud835\udc4c0 !\ud835\udc4c1 !\ud835\udc4c2 !\ud835\udc4c3 !\ud835\udc4c4 !\ud835\udc4c5\nPermutation Index\n0 4 1 2 3 5\nY0: 50 \u00d7 5\n'\ud835\udc4c0: 50 \u00d7 5\nLoss Y1: 60 \u00d7 4\n!\ud835\udc4c4: 60 \u00d7 4\nY2: None\n!\ud835\udc4c1: 50\ud835\udc41\ud835\udc5c\ud835\udc5b\ud835\udc52 4 Loss = Loss1 + Loss2 + \u2026 + Loss6\n\u2026\u2026.\nFigure A3: Up: The process of the Bipartite Matching. Down: Several ablation designs.\n0.125\n-0.075\nLayer 1: Exp1= 600 \u00f7 1000 by # query 6\nProblem: maxwell leaves his home and walks toward brad \u2018 s house . one hour later , brad leaves his home and runs toward maxwell \u2019 s house . if the distance between their homes is 14 kilometers , maxwell \u2018 s walking speed is 4 km / h , and brad \u2019 s running speed is 6 km / h . what is the total time it takes maxwell before he meets up with brad ? Label : (14+6) / (4+6) Our Parallel Prediction: ( 14 + 6 ) \u00f7 ( 4 + 6 )\nProblem: if a truck is traveling at a constant rate of 180 kilometers per hour , how many hours will it take the truck to travel a distance of 600 meters ? ( 1 kilometer = 1000 meters ) Label: 600 / 1000 / 180 Our Prediction: 600 / 1000 / 180\n# Q ue ry Id 1 2 3 4 5 6\n# Q ue ry Id 1 2 3 4 5 6\nLayer 2 : Exp1 \u00f7 108 by # query 6\nLayer 1: Exp1 = 14 + 6 by # query 1 Exp2 = 4 + 6 by # query 2\n1 3 5 4 6 2\nLayer 2: Exp1 \u00f7 Exp2 by # query 6\n1 3 5 4 6 2\nFigure A4: We visualize the expression tree decoding process at each layer. We calculate the cosine similarity between query vectors and problem representations for each layer. In the first case, the prediction expressions are output by a query. In the second case, the first and second queries are activated for two expressions in parallel."
+        }
+    ],
+    "title": "An Expression Tree Decoding Strategy for Mathematical Equation Generation",
+    "year": 2023
+}

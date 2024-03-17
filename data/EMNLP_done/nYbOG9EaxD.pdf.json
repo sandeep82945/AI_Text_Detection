@@ -1,0 +1,759 @@
+{
+    "abstractText": "Many real-world applications (e.g., note taking, search) require extracting a sentence or paragraph from a document and showing that snippet to a human outside of the source document. Yet, users may find snippets difficult to understand as they lack context from the original document. In this work, we use language models to rewrite snippets from scientific documents to be read on their own. First, we define the requirements and challenges for this user-facing decontextualization task, such as clarifying where edits occur and handling references to other documents. Second, we propose a framework that decomposes the task into three stages: question generation, question answering, and rewriting. Using this framework, we collect gold decontextualizations from experienced scientific article readers. We then conduct a range of experiments across state-ofthe-art commercial and open-source language models to identify how to best provide missingbut-relevant information to models for our task. Finally, we develop QADECONTEXT, a simple prompting strategy inspired by our framework that improves over end-to-end prompting. We conclude with analysis that finds, while rewriting is easy, question generation and answering remain challenging for today\u2019s models. \u00a7 github.com/bnewm0609/qa-decontext",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Benjamin Newman"
+        },
+        {
+            "affiliations": [],
+            "name": "Luca Soldaini"
+        },
+        {
+            "affiliations": [],
+            "name": "Raymond Fok"
+        },
+        {
+            "affiliations": [],
+            "name": "Arman Cohan"
+        },
+        {
+            "affiliations": [],
+            "name": "Kyle Lo"
+        }
+    ],
+    "id": "SP:4674257775aedf775c327a9e47154fd28c0f4714",
+    "references": [
+        {
+            "authors": [
+                "Tal August",
+                "Lucy Lu Wang",
+                "Jonathan Bragg",
+                "Marti A. Hearst",
+                "Andrew Head",
+                "Kyle Lo."
+            ],
+            "title": "Paper plain: Making medical research papers approachable to healthcare consumers with natural language processing",
+            "venue": "ACM Trans. Comput.-Hum. Interact. Just",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Donald Metzler",
+                "Slav Petrov",
+                "Kellie Webster."
+            ],
+            "title": "Attributed question answering: Evaluation and modeling for attributed large language models",
+            "venue": "ArXiv, abs/2212.08037.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Daniela Brook Weiss",
+                "Paul Roit",
+                "Ayal Klein",
+                "Ori Ernst",
+                "Ido Dagan."
+            ],
+            "title": "QA-Align: Representing Cross-Text Content Overlap by Aligning QuestionAnswer Propositions",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Lan-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Joseph Chee Chang",
+                "Nathan Hahn",
+                "Aniket Kittur."
+            ],
+            "title": "Supporting mobile sensemaking through intentionally uncertain highlighting",
+            "venue": "Proceedings of the 29th Annual Symposium on User Interface Software and Technology, UIST \u201916, page 61\u201368, New York,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Joseph Chee Chang",
+                "Amy X. Zhang",
+                "Jonathan Bragg",
+                "Andrew Head",
+                "Kyle Lo",
+                "Doug Downey",
+                "Daniel S. Weld"
+            ],
+            "title": "2023a. Citesee: Augmenting citations in scientific papers with persistent and personalized historical",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yapei Chang",
+                "Kyle Lo",
+                "Tanya Goyal",
+                "Mohit Iyyer"
+            ],
+            "title": "2023b. BooookScore: A systematic exploration of book-length summarization in the era of LLMs",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Eunsol Choi",
+                "Jennimaria Palomaki",
+                "Matthew Lamm",
+                "Tom Kwiatkowski",
+                "Dipanjan Das",
+                "Michael Collins."
+            ],
+            "title": "Decontextualization: Making sentences stand-alone",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:447\u2013461.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Leshem Choshen",
+                "Omri Abend."
+            ],
+            "title": "Inherent biases in reference-based evaluation for grammatical error correction",
+            "venue": "Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 632\u2013642,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Elizabeth Clark",
+                "Tal August",
+                "Sofia Serrano",
+                "Nikita Haduong",
+                "Suchin Gururangan",
+                "Noah A. Smith."
+            ],
+            "title": "All that\u2019s \u2018human\u2019 is not gold: Evaluating human evaluation of generated text",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Arman Cohan",
+                "Nazli Goharian."
+            ],
+            "title": "Contextualizing citations for scientific summarization using word embeddings and domain knowledge",
+            "venue": "Proceedings of the 40th International ACM SIGIR Conference on Research and Development in Information Retrieval,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Arman Cohan",
+                "Luca Soldaini",
+                "Nazli Goharian."
+            ],
+            "title": "Matching citation text and cited spans in biomedical literature: a search-oriented approach",
+            "venue": "Proceedings of the 2015 Conference of the North American Chapter of the Association for Computational",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Pradeep Dasigi",
+                "Kyle Lo",
+                "Iz Beltagy",
+                "Arman Cohan",
+                "Noah A. Smith",
+                "Matt Gardner."
+            ],
+            "title": "A dataset of information-seeking questions and answers anchored in research papers",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kordula De Kuthy",
+                "Nils Reiter",
+                "Arndt Riester."
+            ],
+            "title": "QUD-based annotation of discourse structure and information structure: Tool and evaluation",
+            "venue": "Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Esin Durmus",
+                "He He",
+                "Mona Diab."
+            ],
+            "title": "FEQA: A Question Answering Evaluation Framework for Faithfulness Assessment in Abstractive Summarization",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jacob Eisenstein",
+                "Daniel Andor",
+                "Bernd Bohnet",
+                "Michael Collins",
+                "David Mimno."
+            ],
+            "title": "Honest students from untrusted teachers: Learning an interpretable question-answering pipeline from a pretrained language model",
+            "venue": "Workshop on Trustworthy and So-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Raymond Fok",
+                "Joseph Chee Chang",
+                "Tal August",
+                "Amy X. Zhang",
+                "Daniel S. Weld"
+            ],
+            "title": "2023a. Qlarify: Bridging scholarly abstracts and papers with recursively expandable summaries",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Raymond Fok",
+                "Hita Kambhamettu",
+                "Luca Soldaini",
+                "Jonathan Bragg",
+                "Kyle Lo",
+                "Marti Hearst",
+                "Andrew Head",
+                "Daniel S Weld."
+            ],
+            "title": "Scim: Intelligent skimming support for scientific papers",
+            "venue": "Proceedings of the 28th International Conference on Intelli-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sebastian Gehrmann",
+                "Hendrik Strobelt",
+                "Alexander Rush."
+            ],
+            "title": "GLTR: Statistical detection and visualization of generated text",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: System Demonstrations, pages 111\u2013116,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Han L. Han",
+                "Junhang Yu",
+                "Raphael Bournet",
+                "Alexandre Ciorascu",
+                "Wendy E. Mackay",
+                "Michel BeaudouinLafon."
+            ],
+            "title": "Passages: Interacting with text across documents",
+            "venue": "Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems, CHI",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenlong Huang",
+                "Pieter Abbeel",
+                "Deepak Pathak",
+                "Igor Mordatch."
+            ],
+            "title": "Language models as zero-shot planners: Extracting actionable knowledge for embodied agents",
+            "venue": "International Conference on Machine Learning, pages 9118\u20139147. PMLR.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Mathilde Caron",
+                "Lucas Hosseini",
+                "Sebastian Riedel",
+                "Piotr Bojanowski",
+                "Armand Joulin",
+                "Edouard Grave"
+            ],
+            "title": "Unsupervised dense information retrieval with contrastive learning",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Farnaz Jahanbakhsh",
+                "Elnaz Nouri",
+                "Robert Sim",
+                "Ryen W. White",
+                "Adam Fourney."
+            ],
+            "title": "Understanding questions that arise when working with business documents",
+            "venue": "Proc. ACM Hum.-Comput. Interact., 6(CSCW2).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hyeonsu Kang",
+                "Joseph Chee Chang",
+                "Yongsung Kim",
+                "Aniket Kittur"
+            ],
+            "title": "Threddy: An interactive system for personalized thread-based exploration",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tushar Khot",
+                "Harsh Trivedi",
+                "Matthew Finlayson",
+                "Yao Fu",
+                "Kyle Richardson",
+                "Peter Clark",
+                "Ashish Sabharwal."
+            ],
+            "title": "Decomposed prompting: A modular approach for solving complex tasks",
+            "venue": "Proceedings of the 10th International Conference on Learning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wei-Jen Ko",
+                "Te-yuan Chen",
+                "Yiyan Huang",
+                "Greg Durrett",
+                "Junyi Jessy Li."
+            ],
+            "title": "Inquisitive question generation for high level text comprehension",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wei-Jen Ko",
+                "Cutter Dalton",
+                "Mark Simmons",
+                "Eliza Fisher",
+                "Greg Durrett",
+                "Junyi Jessy Li."
+            ],
+            "title": "Discourse comprehension: A question answering framework to represent sentence connections",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Anne Lauscher",
+                "Brandon Ko",
+                "Bailey Kuehl",
+                "Sophie Johnson",
+                "Arman Cohan",
+                "David Jurgens",
+                "Kyle Lo."
+            ],
+            "title": "MultiCite: Modeling realistic citations requires moving beyond the single-sentence singlelabel setting",
+            "venue": "Proceedings of the 2022 Conference",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jimmy Lin",
+                "Dennis Quan",
+                "Vineet Sinha",
+                "Karun Bakshi",
+                "David Huynh",
+                "Boris Katz",
+                "David R. Karger."
+            ],
+            "title": "The role of context in question answering systems",
+            "venue": "CHI \u201903 Extended Abstracts on Human Factors in Computing Systems, CHI EA \u201903, page 1006\u20131007,",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Kyle Lo",
+                "Lucy Lu Wang",
+                "Mark Neumann",
+                "Rodney Kinney",
+                "Daniel Weld."
+            ],
+            "title": "S2ORC: The semantic scholar open research corpus",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 4969\u20134983, Online. Asso-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Pan Lu",
+                "Baolin Peng",
+                "Hao Cheng",
+                "Michel Galley",
+                "KaiWei Chang",
+                "Ying Nian Wu",
+                "Song-Chun Zhu",
+                "Jianfeng Gao."
+            ],
+            "title": "Chameleon: Plug-and-play compositional reasoning with large language models",
+            "venue": "ArXiv, abs/2304.09842.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kelvin Luu",
+                "Xinyi Wu",
+                "Rik Koncel-Kedziorski",
+                "Kyle Lo",
+                "Isabel Cachola",
+                "Noah A. Smith."
+            ],
+            "title": "Explaining relationships between scientific documents",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yan Meng",
+                "Liangming Pan",
+                "Yixin Cao",
+                "Min-Yen Kan."
+            ],
+            "title": "Followupqg: Towards informationseeking follow-up question generation",
+            "venue": "ArXiv, abs/2309.05007.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Edgar Onea"
+            ],
+            "title": "Potential questions at the semanticspragmatics interface",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Paul F. Christiano",
+                "Jan Leike",
+                "Ryan Lowe."
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "Advances in Neural Information Processing Systems, 35:27730\u201327744.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Srishti Palani",
+                "Aakanksha Naik",
+                "Doug Downey",
+                "Amy X. Zhang",
+                "Jonathan Bragg",
+                "Joseph Chee Chang."
+            ],
+            "title": "Relatedly: Scaffolding literature reviews with existing related work sections",
+            "venue": "Proceedings of the 2023 CHI Conference on Human Factors in Comput-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bhargavi Paranjape",
+                "Scott M. Lundberg",
+                "Sameer Singh",
+                "Hanna Hajishirzi",
+                "Luke Zettlemoyer",
+                "Marco Tulio Ribeiro."
+            ],
+            "title": "Art: Automatic multistep reasoning and tool-use for large language models",
+            "venue": "ArXiv, abs/2303.09014.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Abhilash Potluri",
+                "Fangyuan Xu",
+                "Eunsol Choi"
+            ],
+            "title": "Concise answers to complex questions: Summarization of long-form answers",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Valentina Pyatkin",
+                "Ayal Klein",
+                "Reut Tsarfaty",
+                "Ido Dagan."
+            ],
+            "title": "QADiscourse - Discourse Relations as QA Pairs: Representation, Crowdsourcing and Baselines",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Arndt Riester."
+            ],
+            "title": "Constructing qud trees",
+            "venue": "Questions in Discourse.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Roberto Dess\u00ec",
+                "Roberta Raileanu",
+                "Maria Lomeli",
+                "Luke Zettlemoyer",
+                "Nicola Cancedda",
+                "Thomas Scialom."
+            ],
+            "title": "Toolformer: Language models can teach themselves to use tools",
+            "venue": "ArXiv, abs/2302.04761.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Simeng Sun",
+                "Y. Liu",
+                "Shuo Wang",
+                "Chenguang Zhu",
+                "Mohit Iyyer."
+            ],
+            "title": "Pearl: Prompting large language models to plan and execute actions over long documents",
+            "venue": "ArXiv, abs/2305.14564.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Maartje ter Hoeve",
+                "Robert Sim",
+                "Elnaz Nouri",
+                "Adam Fourney",
+                "Maarten de Rijke",
+                "Ryen W. White."
+            ],
+            "title": "Conversations with documents: An exploration of document-centered assistance",
+            "venue": "Proceedings of the 2020 Conference on Human Information Interaction",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Leah Velleman",
+                "David Beaver."
+            ],
+            "title": "Questionbased Models of Information Structure",
+            "venue": "The Oxford Handbook of Information Structure. Oxford University Press.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Vivek Kumar Verma",
+                "Eve Fleisig",
+                "Nicholas Tomlin",
+                "Dan Klein."
+            ],
+            "title": "Ghostbuster: Detecting text ghostwritten by large language models",
+            "venue": "ArXiv, abs/2305.15047.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sheng-Fu Wang",
+                "Shu-Hang Liu",
+                "Tian-Yi Che",
+                "Yi-Fan Lu",
+                "Song-Xiao Yang",
+                "Heyan Huang",
+                "Xian-Ling Mao."
+            ],
+            "title": "Hammer pdf: An intelligent pdf reader for scientific papers",
+            "venue": "Proceedings of the 31st ACM International Conference on Information & Knowl-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "brian ichter",
+                "Fei Xia",
+                "Ed H. Chi",
+                "Quoc V Le",
+                "Denny Zhou"
+            ],
+            "title": "2022. Chain of thought prompting elicits reasoning in large language models",
+            "venue": "In Advances in Neural Information Processing Systems",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yating Wu",
+                "William Sheffield",
+                "Kyle Mahowald",
+                "Junyi Jessy Li"
+            ],
+            "title": "Elaborative simplification as implicit questions under discussion",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wei Xu",
+                "Courtney Napoles",
+                "Ellie Pavlick",
+                "Quanze Chen",
+                "Chris Callison-Burch."
+            ],
+            "title": "Optimizing statistical machine translation for text simplification",
+            "venue": "Transactions of the Association for Computational Linguistics, 4:401\u2013415.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Shiyue Zhang",
+                "David Wan",
+                "Mohit Bansal."
+            ],
+            "title": "Extractive is not faithful: An investigation of broad unfaithfulness problems in extractive summarization",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q. Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with BERT",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "\u2022 TSP"
+            ],
+            "title": "Title, Section header, and the Paragraph containing the snippet. This is the same condition as (Choi et al., 2021",
+            "venue": "TASP and TAISP",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Dolores embeddings"
+            ],
+            "title": "Citing paper: \u201cExtracting Social Networks from Literary Text with Word Embedding Tools\u201d(Wohlgenannt et al., 2016",
+            "venue": "Cited paper: \u201cExtracting Social Networks from Literary Fiction\u201d(Elson et al.,",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Dolores embeddings"
+            ],
+            "title": "Citing paper: \u201cExtracting Social Networks from Literary Text with Word Embedding Tools\u201d(Wohlgenannt et al., 2016",
+            "venue": "Cited paper: \u201cExtracting Social Networks from Literary Fiction\u201d(Elson et al.,",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "citing Elson"
+            ],
+            "title": "Together, they demonstrate how an effective decontextualization system can improve",
+            "year": 2010
+        }
+    ],
+    "sections": [
+        {
+            "text": "\u00a7 github.com/bnewm0609/qa-decontext"
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "Tools to support research activities often rely on extracting text snippets from long, technical documents and showing them to users. For example, snippets can help readers efficiently understand documents (August et al., 2023; Fok et al., 2023b) or scaffold exploration of document collections (e.g. conducting literature review) (Kang et al., 2022; Palani et al., 2023). As more applications use language models, developers use extracted snippets to protect against generated inaccuracies; snippets can help users verify model-generated out-\nputs (Bohnet et al., 2022) and provide a means for user error recovery.\nHowever, extracted snippets are not meant to be read outside their original document: they may include terms that were defined earlier, contain anaphora whose antecedents lie in previous paragraphs, and generally lack context that is needed for comprehension. At best, these issues make extracted snippets difficult to read, and at worst, they render the snippets misleading outside their original context (Lin et al., 2003; Cohan et al., 2015; Cohan and Goharian, 2017; Zhang et al., 2023).\nIn this work, we consider the potential for making extracted snippets more readily-understood in user-facing settings through decontextualization (Choi et al., 2021)\u2014the task of rewriting snippets to incorporate information from their originating contexts, thereby making them \u201cstand alone\u201d.\nWe focus our attention on scenarios in which users read snippets from technical documents (e.g., scientific articles). For example, consider a citation graph explorer that allows users to preview citation contexts to explain the relationship between papers (Luu et al., 2021). Also, consider an AI research assistant that surfaces extracted attribution snippets alongside generated answers. Figure 1 illustrates these two motivating applications. How do language models fare when performing snippet decontextualization over complex scientific text? Our contributions are:\nFirst, we introduce requirements that extend prior decontextualization work (Choi et al., 2021) to handle user-facing scenarios (e.g., delineation of model-generated edits). We characterize additional challenges posed by decontextualizing scientific documents (e.g., longer text, citations and references) and describe methods to address them (\u00a72).\nSecond, we propose a framework for snippet decontextualization that decomposes the task into three stages: question generation, question answering, and rewriting (\u00a73). This decomposition is motivated by a formative study in which our framework makes decontextualization less challenging and creates higher-quality annotations. We use this framework to collect gold decontextualization data from experienced readers of scientific articles (\u00a74).\nFinally, with this data, we operationalize our framework by implementing QADECONTEXT, a strategy for snippet decontextualization (\u00a75). Our best experimental configuration demonstrates a 41.7% relative improvement over end-to-end model prompting (\u00a75.2). We find that state-of-theart language models perform poorly on our task, indicating significant opportunity for further NLP research. We perform extensive analysis to identify task bottlenecks to guide future investigation (\u00a76)."
+        },
+        {
+            "heading": "2 Decontextualization for User-facing Snippets from Scientific Documents",
+            "text": "In this section, we define decontextualization and motivate some additional task requirements when considering user-facing scenarios. Then, we describe additional task challenges that arise when operating on scientific documents."
+        },
+        {
+            "heading": "2.1 Requirements for User-facing Snippets",
+            "text": "Task Definition. As introduced in Choi et al. (2021), decontextualization is defined as:\nGiven a snippet-context pair (s, c), an\nedited snippet s\u2032 is a valid decontextualization of s if s\u2032 is interpretable without any additional context, and s\u2032 preserves the truth-conditional meaning of s in c.\nwhere the context c is a representation of the source document, such as the full text of a scientific article.\nMulti-sentence Passages. While Choi et al. (2021) restrict the scope of their work to singlesentence snippets, they recommend future work on longer snippets. Indeed, real-world applications should be equipped to handle multi-sentence snippets as they are ubiquitous in the datasets used to develop such systems. For example, 41% of evidence snippets in Dasigi et al.\u2019s (2021) dataset and 17% of citation contexts in Lauscher et al.\u2019s (2022) dataset are longer than a single sentence. To constrain the scope of valid decontextualizations, we preserve (1) the same number of sentences in the snippet and (2) each constituent sentence\u2019s core informational content and discourse role within the larger snippet before and after editing.\nTransparency of Edits. Prior work did not require that decontextualization edits were transparent. We argue that the clear delineation of machineedited versus original text is a requirement in userfacing scenarios such as ours. Users must be able to determine the provenance (Han et al., 2022) and authenticity (Gehrmann et al., 2019; Verma et al., 2023) of statements they read, especially in the context of scientific research, and prior work has shown that humans have difficulty identifying machine-generated text (Clark et al., 2021). In this work, we require the final decontextualized snippet s\u2032 to make transparent to users what text came from the original snippet s and what text was added, removed, or modified. We ask tools for decontextualization to follow well-established guidelines in writing around how to modify quotations1. Such guidelines include using square brackets ([]) to denote resolved coreferences or newly incorporated information."
+        },
+        {
+            "heading": "2.2 Challenges in Scientific Documents",
+            "text": "We characterize challenges for decontextualization that arise when working with scientific papers.\nLong, Complex Documents. We present quantitative and qualitative evidence of task difficulty compared to prior work on Wikipedia snippets.\n1APA style guide: https://apastyle.apa.org/style-grammarguidelines/citations/quotations/changes\nFirst, Choi et al. (2021) found between 80-90% of the Wikipedia sentences can be decontextualized using only the paragraph with the snippet, and section and article titles. However, we find in our data collection (\u00a74) that only 20% of snippets from scientific articles can be decontextualized with this information alone (and still only 50% when also including the abstract; see Table 5).\nSecond, we conduct a formative study with five computer science researchers, asking them to manually decontextualize snippets taken from Wikipedia and scientific papers.2 Participants took between 30-160 seconds (\u00b5=88) for Wikipedia sentences from Choi et al. (2021) and between 220- 390 seconds (\u00b5=299) for scientific snippets from our work.3 In qualitative feedback, all participants expressed the ease of decontextualizing Wikipedia snippets. For scientific paper snippets, all participants verbally expressed difficulty of the task despite familiarity with the subject material; 3/5 participants began taking notes to keep track of relevant information; 4/5 participants felt they had to read the paper title, abstract and introduction before approaching the snippet; and 4/5 participants encountered cases of chaining in which the paper context relevant to an unfamiliar entity contained other unfamiliar entities that required further resolving. None of these challenges arose for Wikipedia snippets.\nWithin and Cross-Document References. Technical documents contain references to withindocument artifacts (e.g., figures, tables, sections) and to other documents (e.g., web pages, cited works). Within-document references are typically to tables, figures, or entire sections, which are difficult to properly incorporate into a rewritten snippet without changing it substantially. With crossdocument references, there is no single best way to handle these when performing decontextualization; in fact, the ideal decontextualization is likely more dependent on the specific user-facing application\u2019s design rather than on intrinsic qualities of the snippet. For example, consider interacting with an AI research assistant that provides extracted snippets:\n2Participants were all researchers with at least five published research papers at an NLP, ML or HCI venue. Four had completed PhDs while one was in a PhD program, all in computer science. All were familiar with the decontextualization task, but unfamiliar with the goals of our study.\n3Each participant saw at least two snippets. To control for learning effects, we randomized assignment order of Wikipedia or Science.\n\u00a0 What corpus did Bansal et al. use? \u201cWe test our system on the CALLHOME Spanish-English speech translation corpus [42] (\u00a73).\u201d\nOne method of decontextualization can be:\n\u201c[Bansal et al., 2017] test [their] system on the CALLHOME SpanishEnglish speech translation corpus [42] [\u201cImproved speech-to-text translation with the Fisher and Callhome SpanishEnglish speech translation corpus\u201d at IWSLT 2013] (\u00a73).\u201d\nincorporating the title of cited paper \u201c[42]\u201d.4 But in the case of a citation graph explorer, a typical interface likely already surfaces the titles of both citing and cited papers (recall Figure 1), in which case the addition of a title isn\u2019t useful. Possibly preferred is an alternative decontextualization that describes the dataset:\n\u201c[Bansal et al., 2017] test [their] system on the CALLHOME Spanish-English speech translation corpus [42] [, a noisy multi-speaker corpus of telephone calls in a variety of Spanish dialects] (\u00a73).\u201d"
+        },
+        {
+            "heading": "2.3 Addressing Challenges",
+            "text": "To address the increased task difficulty that comes with working with long, complex scientific documents, we introduce a framework in (\u00a73) and describe how it helps humans tackling this task manually. We also opt to remove all references to in-document tables and figures from snippets, and leave handling them to future work5.\nFinally, to handle cross-document references, we assume in the AI research assistant application setting that a user would have access to basic information about the current document of interest but no knowledge about any referenced documents that may appear in the snippet text. Similarly, we assume in the citation context preview setting, that a user would have access to basic information about\n4While numeric citations benefit substantially from interface assistance in surfacing information about the cited paper (Chang et al., 2023a), researchers may be able to recall details of cited papers from name-year citations like \u201c(Post et al., 2013)\u201d. We define our target decontextualization behavior under the least-informative citation format.\n5Real-world systems currently only surface scientific paper snippets in text-only interfaces, though one can imagine future multimodal interfaces might have different task requirements for snippet decontextualization.\nthe current (citing, cited) document pair but no knowledge about any other referenced documents that may appear in the snippet text."
+        },
+        {
+            "heading": "3 QA for Decontextualization",
+            "text": "Decontextualization requires resolving what additional information a person would like to be incorporated and how such information should be incorporated when rewriting (Choi et al., 2021). If we view \u201cwhat\u201d as addressed in our guidelines (\u00a72), then we address \u201chow\u201d through this proposal:"
+        },
+        {
+            "heading": "3.1 Our Proposed Framework",
+            "text": "We decompose decontextualization into three steps:\n1. Question generation. Ask clarifying questions about the snippet.\n2. Question answering. For each question, find an answer (and supporting evidence) within the source document.\n3. Rewriting. Rewrite the snippet by incorporating information from these QA pairs.\nWe present arguments in favor of this framework:\nQA and Discourse. Questions and answers are a natural articulation of the requisite context that extracted snippets lack. The relationship between questions and discourse relations between document passages can be traced to Questions Under Discussion (QUD) (Onea, 2016; Velleman and Beaver, 2016; De Kuthy et al., 2018; Riester, 2019). Recent work has leveraged this idea to curate datasets for discourse coherence (Ko et al., 2020, 2022). We view decontextualization as a task that aims to recover missing discourse information through the resolution of question-answer pairs that connect portions of the snippet to the source document.\nImproved Annotation. In our formative study (\u00a72.2), we also presented participants with two different annotation guidelines. Both defined decontextualization, but one (QA) described the stages of question generation and question answering as prerequisite before rewriting the snippet, while the other (NoQA) showed before-and-after examples of snippets. All participants tried both guidelines; we randomized assignment order to control for learning effects.\nWhile we find adhering to the framework slows down annotation and does not impact annotation quality in the Wikipedia setting (\u00a7A.4), adhering\nto the framework results in higher-quality annotations in the scientific document setting. 3/5 of participants who were assigned QA first said that they preferred to follow the framework even in the NoQA setting6. Two of them additionally noted this framework is similar to their existing notetaking practices. The remaining 2/5 of participants who were assigned NoQA first struggled initially; both left their snippets with unresolved acronyms or coreferences. When asked why they left them as-is, they both expressed that they lost track of all the aspects that needed decontextualization. These annotation issues disappeared after these participants transitioned to the QA setting. Overall, all participants agreed the framework was sensible to follow for scientific documents."
+        },
+        {
+            "heading": "4 Data Collection",
+            "text": "Following the results of our formative study, we implemented an annotation protocol to collect decontextualized snippets from scientific documents."
+        },
+        {
+            "heading": "4.1 Sources of Snippets",
+            "text": "We choose two English-language datasets of scientific documents as our source of snippets, one for each motivating application setting (Figure 1):\nCitation Graph Explorer. We obtain citation context snippets used in a citation graph explorer from scientific papers in S2ORC (Lo et al., 2020). We restrict to contexts containing a single citation mention to simplify the annotation task, though we note that prior work has pointed out the prevalence of contexts containing multiple citations7 (Lauscher et al., 2022).\nAI Research Assistant. We use QASPER (Dasigi et al., 2021), a dataset for scientific document understanding that includes QA pairs along with document-grounded attributions\u2014extracted passages that support a given answer. We use these supporting passages as user-facing snippets that require decontextualization."
+        },
+        {
+            "heading": "4.2 Annotation Process",
+            "text": "Following our proposed framework:\n6For these participants, their main complaint was the act of writing down questions and answers explicitly seemed slow, but they agreed with the framework overall as intuitive.\n7Future work could investigate decontextualization amid multiple outward references in the same snippet.\nWriting Questions. Given a snippet, we ask annotators to write questions that clarify or seek additional information needed to fully understand the snippet. Given the complexity of the annotation task we used Upwork8 to hire four domain experts with experience reading scientific articles. Annotators were paid $20 USD per hour9.\nAnswering Questions. We hired a separate set of annotators to answer questions from the previous stage using the source document(s). We additionally asked annotators to mark what evidence from the source document(s) supports their answer. We used the Prolific10 annotation platform as a highquality source for a larger number of annotators. Annotators were recruited from the US and UK and were paid $17 USD per hour. To ensure data quality, we manually filtered a total of 719 initial answers down to 487 by eliminating ones that answered the question incorrectly or found that the question could not be answered using the information in the paper(s) (taking \u223c20 hours).\nRewriting Snippets. Given the original snippet and all QA pairs, we ask another set of annotators from Prolific to rewrite the snippet incorporating all information in the QA pairs."
+        },
+        {
+            "heading": "4.3 Dataset Statistics",
+            "text": "In total, we obtained 289 snippets (avg. 44.2 tokens long), 487 questions (avg. 7.8 tokens long), and 487 answers (avg. 20.7 tokens long). On average, the snippets from the Citation Graph Explorer set have 1.9 questions per snippet while the AI Research Assistant snippets have 1.3 questions per snippet. Questions were approximately evenly split between seeking definitions of terms, resolving coreferences, and generally seeking more context to feel informed. See \u00a7A.2 for a breakdown of question types asked by annotators."
+        },
+        {
+            "heading": "5 Experimenting with LLMs for Decontextualization",
+            "text": "We study the extent to which current LLMs can perform scientific decontextulaization, and how our QA framework might inform design of methods.\n8https://www.upwork.com 9We use the minimum wage in Washington, DC, USA ($16.10 USD at the time of annotation) as reference for determining fair compensation.\n10https://www.prolific.co"
+        },
+        {
+            "heading": "5.1 Is end-to-end LLM prompting sufficient?",
+            "text": "Naively, one can approach this task by prompting a commercially-available language model with the instructions for the task, the snippet, and the entire contents of the source paper. We experiment with\ntext-davinci-003 and gpt-4-0314. For gpt-4, most papers entirely fit in the context window (for a small number of papers, we truncate them to fit). For davinci, we represent the paper with the title, abstract, the paragraph containing the snippet, and the section header of section containing the snippet (if available). This choice was inspired by Choi et al.\u2019s (2021) use of analogous information for decontextualizing Wikipedia text, and we empirically validated this configuration in our setting as well (see \u00a7A.3). We provide our prompts for both models in \u00a7A.6.4 and \u00a7A.6.5.\nFor automated evaluation, we follow Choi et al. (2021) and use SARI (Xu et al., 2016). Originally developed for text simplification, SARI is suitably repurposed for decontextualization as it computes the F1 score between unigram edits to the snippet performed by the gold reference versus edits performed by the model. As we are interested in whether the systems add the right clarifying information during decontextualization, we report SARI-add as our performance metric. We additionally report BERTScore (Zhang et al., 2020) which captures semantic similarity between gold reference and model prediction, though it is only used as a diagnostic tool and does not inform our evaluative decisions; due to the nature of the task, as long as model generations are reasonable, BERTScore will be high due to significant overlap between the source snippet, prediction and gold reference.\nWe report these results in Table 1. Overall, we find that naively prompting LLMs end-to-end performs poorly on this task."
+        },
+        {
+            "heading": "5.2 Can our QA framework inform an improved prompting strategy?",
+            "text": "To improve upon end-to-end prompting, we implement QADECONTEXT, a strategy for snippet decontextualization inspired by our framework. This approach is easy to adopt, making use of widelyavailable LLMs as well as off-the-shelf passage retrieval models. See Figure 2 for a schematic. All prompts for each component are in \u00a7A.6.\nQuestion Generation. We prompt an LLM ( davinci) to generate questions with a one-shot prompt with instructions. We found more in-\nModels Metrics Strategy QG QA R SARI-add BERTScore\ndavinci and gpt-4 icons represent the models used for each of the Question Generation (QG), Question Answering (QA), Rewriting (R) components of our strategy; end-to-end prompting only uses a single model. Results from higher performance strategy are bold.\nconfigs are bold. Entries for t\u00fclu are missing as inputs don\u2019t fit in context window.\ncontext examples allowed for better control of the number of questions, but decreased their quality.\nQuestion Answering. Given a question, we can approach answering in two ways. In retrieve-thenanswer, we first retrieve the top k relevant paragraphs from the union of the source document and any document cited in the snippet, and then use an LLM to obtain a concise answer from these k paragraphs. Specifically, we use k = 3 and Contriever (Izacard et al., 2021) for the retrieval step, and davinci or gpt-4 as the LLM.\nAlternatively, in the full document setting, we directly prompt an LLM that supports longer context windows ( gpt-4) to answer the question given the entire source document as input. This avoids the introduction of potential errors from performing within-document passage retrieval.\nRewriting. Finally, we prompt an LLM ( davinci) with the snippet, generated questions, generated answers, and any relevant context (e.g., retrieved evidence snippets if using retrieve-thenanswer and/or text from the source document) obtained from the previous modules. This module is similar to end-to-end prompting of LLMs from \u00a75.1 but prompts are slightly modified to accommodate output from previous steps.\nResults. We report results also in Table 1. We find our QADECONTEXT strategy achieves a 41.7% relative improvement over the gpt-4 end-to-end baseline, but given the low SARI-add scores, there remains much room for improvement."
+        },
+        {
+            "heading": "5.3 Human Evaluation",
+            "text": "We conduct a small-scale human evaluation (n = 60 samples) comparing decontextualized snippets with our best end-to-end ( davinci) and QADECONTEXT approaches. Snippets were evaluated on whether they clarified the points that the reader needed help understanding. System outputs for a given snippet were presented in randomized order and ranked from best to worst. The evaluation was performed by two coauthors who were familiar with the task, but not how systems were implemented. The coauthors annotated 30 of the same snippets, and achieved a binary agreement of 70%. This is quite high given the challenging and subjective nature of the task; Choi et al. (2021) report agreements of 80% for snippets from Wikipedia.\nOur QADECONTEXT strategy produces convincing decontextualized snippets in 38% of cases against 33% for the end-to-end approach. We note that decontexualization remains somewhat subjective (Choi et al., 2021), with only 42% of the gold decontextualizations judged acceptable. We conduct a two-sample Binomial test and find that the difference between the two results is not statistically significant (p = 0.57). See Table 4 for qualitative examples of QADECONTEXT errors."
+        },
+        {
+            "heading": "6 Analyzing Performance Bottlenecks through QADECONTEXT",
+            "text": "Modularity of our framework for decontextualization allows us to study performance bottlenecks: Which subtask (question generation, question answering, rewriting) do LLMs struggle with the most? We conduct ablation experiments to better understand the performance and errors of each module in QADECONTEXT. We refer the reader to Table 4 for qualitative error examples."
+        },
+        {
+            "heading": "6.1 Is rewriting the performance bottleneck?",
+            "text": "To study if the rewriting module is the bottleneck, we run oracle experiments to provide an upper bound on the performance of our strategy. We perform these experiments assuming that the LLM-based rewriting module receives gold (human-annotated) Questions, Answers, and answer Evidence paragraphs. We also investigate various combinations of this gold data with the source Document itself (i.e., title, abstract, paragraph containing the snippet, and section header). To ensure our best configuration applies generally across models, we study all com-\nbinations using two commercial ( claude-v1, text-davinci-003) and two open source ( t\u00fclu-30b, llama2-chat-70b) models. Our prompts are in \u00a7A.6.\nWe report results in Table 2. First, we observe that, on average, the performance ranking of different input configurations to the rewriter is consistent across models: (1) Including the gold evidence (E) is better than including larger document context (D), (2) including the gold answer (A) results in the largest improvement in all settings, and (3) performance is often best when the rewriter receives only the questions (Q) and answers (A).\nSecond, we find that overall performance of the best oracle configuration of QADECONTEXT ( davinci) achieves 261% higher performance over the best QADECONTEXT result in Table 1. As we did not change the rewriter for these oracle experiments, we conclude significant errors are being introduced in the question generation and answering modules, rather than in the rewriter."
+        },
+        {
+            "heading": "6.2 Are question generation or question answering the performance bottleneck?",
+            "text": "We continue this investigation using similar oracle experiments to assess performance bottlenecks in the question generation and question answering modules. To scope these evaluations, we only consider input configurations to the rewriting module based on the top two oracle results for davinci from Table 2\u2014QA and DQAE. We report these new results in Table 3).\nQuestion Generation. First, how much better is QADECONTEXT if we replace generated questions with gold ones? From Table 3, we see a relative lift ranging from 48.2% to 72.7% by switching to gold questions (see rows 5 vs 8, 6 vs 9, 7 vs 10). Question generation is a major source of error.\nQuestion Answering. How much better is retrieve-then-answer in QADECONTEXT if we used gold evidence instead of relying on retrieval? Just ablating the retrieve step, from Table 3, we only see a modest improvement ranging from 14.2% to 17.8% by replacing the retrieved evidence with gold evidence (see rows 3 vs 5, 4 vs 6). Within-document passage retrieval is not a major source of error.\nHow much better is QADECONTEXT if we used gold answers? We ablate the full document approach by replacing generated answers with gold\nones, and see the largest relative improvement: 66.8% to 92.3% (see rows 1 vs 3, 2 vs 4). Question answering is a major source of error.\nOverall. While the relative performance improvement from using gold data is large in both the question generation and question answering modules, the absolute values of the scores are quite different. On average, using gold questions provides a 0.080 increase in absolute SARI-add (rows 5 vs 8, 6 vs 9, 7 vs 10), while using gold answers provides a 0.212 absolute increase (rows 1 vs 3, 2 vs 4). We identify question answering as the main performance bottleneck in QADECONTEXT."
+        },
+        {
+            "heading": "6.3 Does QADECONTEXT generalize beyond scientific documents?",
+            "text": "We compare our approach to the one used by Choi et al. (2021) by applying our QADECONTEXT strategy to their Wikipedia data. In these experiments, we find that QADECONTEXT performs slightly worse than end-to-end LLM prompting (\u223c1 percentage point SARI-add absolute difference). These results match our intuitions about the QA approach from our formative study (\u00a73.1 and \u00a7A.4) in which study participants found that following the QA framework for Wikipedia was cumbersome, was unhelpful, or hindered their ability to perform decontextualization. The results also moti-\nvate future work pursuing methods that can adapt to different document types, such as Wikipedia or scientific documents, and user scenarios, such as snippets being user-facing versus intermediate artifacts in a larger NLP systems. These situations require personalizing decontextualizations to diverse information needs."
+        },
+        {
+            "heading": "7 Related Work",
+            "text": ""
+        },
+        {
+            "heading": "7.1 Decontextualization: Uses and Challenges",
+            "text": "Our work is based on Choi et al.\u2019s (2021) seminal work on decontextualization. They show decontextualized snippets can improve passage retrieval. Potluri et al. (2023) show an extract-thendecontextualize approach can help summarization.\nDespite its utility, decontextualization remains a challenging task. Eisenstein et al. (2022) noticed similar failures to those we found in \u00a75.1 when dealing with longer input contexts. Beyond models, decontextualization is challenging even for humans. Choi et al. (2021) note issues related to subjectivity resulting in low annotator agreement. Literature in human-computer interaction on the struggles humans have with note-taking (judging what information to include or omit when highlighting) are similar to those we observed in our formative study and data annotation (Chang et al., 2016)."
+        },
+        {
+            "heading": "7.2 Bridging QA and other NLP Tasks",
+            "text": "In this work, we establish a bridge between decontextualization and QA. A similar bridge between QA and discourse analysis has been wellstudied in prior NLP literature. In addition to the relevant works discussed in \u00a73.1, we also draw attention to works that incorporate QA to annotate discourse relations, including Ko et al. (2020, 2022); Pyatkin et al. (2020). In particular, Pyatkin et al. (2020) show that complex relations between clauses can be recognized by non-experts using a QA formulation of the task, which is reminiscent of the lowered cognitive load observed during our formative study (\u00a73.1). Beyond discourse analysis, prior work has used QA as an approach to downstream NLP tasks, including elaborative simplification (Wu et al., 2023), identifying points of confusion in summaries (Chang et al., 2023b), evaluating summary faithfulness (Durmus et al., 2020), and paraphrase detection (Brook Weiss et al., 2021)."
+        },
+        {
+            "heading": "7.3 QA for User Information Needs",
+            "text": "Like in user-facing decontextualization, prior work has used questions to represent follow-up (Meng et al., 2023), curiosity-driven (Ko et al., 2020), or confusion-driven (Chang et al., 2023b) information needs. QA is a well-established interaction paradigm, allowing users to forage for information within documents through the use of natural language (Wang et al., 2022; ter Hoeve et al., 2020; Jahanbakhsh et al., 2022; Fok et al., 2023a)."
+        },
+        {
+            "heading": "7.4 Prompting and Chaining LLMs",
+            "text": "Motivated by recent advancement in instruction tuning of LLMs (Ouyang et al., 2022), several works have proposed techniques to compose LLMs to perform complex tasks (Mialon et al., 2023). These approaches often rely on a pipeline of LLMs to generate to complete a task (Huang et al., 2022; Sun et al., 2023; Khot et al., 2023), while giving a model access to modules with different capabilities (Lu et al., 2023; Paranjape et al., 2023; Schick et al., 2023). While the former is typically seen as an extension of chain-of-thought (Wei et al., 2022), the latter enables flexible \u201csoft interfaces\u201d between\nmodels. Our QADECONTEXT strategy relies on the latter and falls naturally from human workflows as found in our formative study."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "In this work, we present a framework and a strategy to perform decontextualization for snippets from scientific documents. We introduce task requirements that extend prior work to handle user-facing scenarios and the handle the challenging nature of scientific text. Motivated by a formative study into how humans perform this task, we propose a QA-based framework for decontextualization that decomposes the task into question generation, answering, and rewriting. We then collect gold decontextualizations and use them to identify how to best provide missing context so that state-of-theart language models can perform the task. Finally, we implement QADECONTEXT, a simple prompting strategy for decontextualization, though ultimately we find that there is room for improvement on this task, and we point to question generation and answering in these settings as important future directions.\nLimitations\nAutomated evaluation metrics may not correlate with human judgment. In this work, we make extensive use of SARI (Xu et al., 2016) to estimate the effectiveness of our decontextualization pipeline. While Choi et al. (2021) has successfully applied this metric to evaluate decontextualization systems, text simplification metrics present key biases, for example preferring systems that perform fewer modifications (Choshen and Abend, 2018). While this work includes a human evaluation on a subset of our datasets, the majority of experiments rely on aforementioned metrics.\nCollecting and evaluating decontextualizations of scientific snippets is expensive. The cost of collecting scientific decontextualions limited the baselines we could consider. For example, Choi et al. (2021) approach the decontextualization task by fine-tuning a sequence-to-sequence model. While training such a model on our task would be an interesting baseline to compare to, it is not feasible because collecting enough supervised samples is too costly. In our formative study, we found that it took experienced scientists five times longer to decontextualize snippets from scientific papers compared to ones from Wikipedia. Instead, we are left to compare our method to Choi et al.\u2019s (2021) by running our pipeline in their Wikipedia setting.\nThe high cost of collecting data in this domain also limited our human evaluation due to the time and expertise required for annotating model generations. For example, a power analysis using \u03b1 = 0.05 and power= 0.8, and assuming a true effect size of 5 percentage points absolute difference, estimates that the sample size would be n = 1211 judgements per condition for our evaluation in \u00a75.3. Evaluating model generations is difficult for many tasks that require reading large amounts of text or require domain-specific expertise to evaluate. Our work motivates more investment in these areas.\nClosed-source commercial LLMs are more effective than open models. While we experimented with open models for writing decontextualized snippets ( t\u00fclu-30b, llama2-chat-70b), results indicate a large gap in performance between their closed-source counterparts, such as claude and\ndavinci. Since these systems are not available everywhere and are expensive, their use makes it difficult for other researches to compare with our work, and use our approach.\nPrompting does not guarantee stable output, limiting downstream applicability of the decontextualization approach. As highlighted in Table 9, all approaches described in this work do not reliably produce outputs that precisely follow the guidelines described in \u00a72. Thus, current systems are likely not suitable to be used in critical applications, and care should be taken when deploying them in user-facing applications.\nDecontextualization is only studied for English and for specific scientific fields. In this work, we limit the study of decontextualization to natural language processing papers written in English. The reason for this is two-fold: first, most scientific manuscripts are written in English; second, current instruction-tuned LLMs, particularly those that are open, are predominantly monolingual English models.\nEthical Considerations & Broader Impact\nReformulation of snippets may inadvertently introduce factual errors or alter claims. Scientific documents are a mean to disseminate precise and verifiable research findings and observations. Because LLMs are prone to hallucination and may inadvertently modify the semantics of a claim, their use in scientific applications should be carefully scrutinized. Our decontextualization approach is essentially motivated by the need to make snippets portable and understandable away from their source; however, this property makes verification of their content more challenging. While this work does not discuss safeguards to be used to mitigate this risk, these factor must be considered if this research contribution were to be implemented in user facing applications.\nAvailability of decontextualization tools may discourage users from seeking original sources. Because decontextualization systems are not generally available to the public, users today may be more likely to seek the original content of a snippet. Progress in decontexualization systems might change that, as snippets may offer a credible replacement for the full document. We recognize that, while this functionality might offer improvements in scientific workflows, it would also encourage bad scholarly practices. Even more broadly, more general-domain decontextualization systems might lead to users not visiting sources, thus depriving content creators of revenue."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "The authors would like to thank Doug Downey, Eunsol Choi, Marti Hearst, Jessy Li, and the Semantic Scholar team at AI2 for useful conversations, participation in user studies, and feedback on our paper draft. We would also like to thank the reviewers for their helpful suggestions and actionable feedback.\nAuthor Contributions\nBenjamin Newman led the project, collected the annotations, implemented all methods, and ran experiments. Luca Soldaini, Arman Cohan, and Kyle Lo were project advisors and provided mentorship. Luca Soldaini also contributed to the code, Kyle Lo conducted the formative study, and the two of them helped with human evaluation. Raymond Fok contributed HCI expertise to the framing of the paper. All authors were involved with writing the paper."
+        },
+        {
+            "heading": "A Appendix",
+            "text": "A.1 Location of necessary context for decontextualizing snippets\nSee Table 5:\nA.2 Types of questions asked about scientific document snippets\nWe additionally ask annotators to label their questions based on categories we developed while piloting the writing process. We determined that the questions that people ask fall into three categories: (1) Definitions of terms or expansions of acronyms, (2) Coreference resolution, or (3) Simply seeking more context to feel more informed. The annotators\u2019 labels are in Table 6:\nA.3 TASP: Selecting important sub-regions of a document when prompting\nFor models with context windows too small to fit entire papers like davinci, we need a condensed representation of the paper to use in prompts. (Choi et al., 2021) find that most of the sentences they decontextualize only require the Title, Section Header of the section the sentence is in, and the paragraph surrounding the snippet. For our snippets from scientific documents, this is likely not sufficient\u2014particularly when paperspecific terms need to be defined. As such, we explore a number of different options:\n\u2022 TSP. Title, Section header, and the Paragraph containing the snippet. This is the same condition as (Choi et al., 2021)\n\u2022 TASP and TAISP. These add the Abstract and Introduction respectively as both of these contain much of the background context that might need to be incorporated into the snippets.\nWe found that TASP performed best, 0.03 SARI-add points better than TSP, and 0.01 points better than TAISP. Not including the introductions is potentially helpful because they might include too much distracting information).\nA.4 Additional findings from formative study\nIn our formative study, we found that stepping through the full framework slows down manual decontextualization. Participants averaged 110 seconds (Wikipedia) and 555 secons (science) per snippet when following QA and instead averaged 66 seconds (Wikipedia) and 313 seconds (science) per snippet in the NoQA condition. Second, we find no noticeable difference in annotation quality in either setting when operating on Wikipedia snippets. 3 of 5 participants complained that writing down each question and answer was awkward given the simplicity of the task.\nA.5 davinci vs gpt-4 on QA\nWe compare davinci to gpt-4 on our question answering step, finding that gpt-4 outperforms davinci in all cases. The results are visible in Table 7.\nA.6 LLM prompts\nThe following prompts are for the different stages of the pipeline. They are the prompts for the bestperforming models. For prompts for claude, t\u00fclu and llama2, please see the github repository linked on the first page.\nA.6.1 Question Generation\nThe following text is from a scientific paper, but might include language that requires more context to understand. The language might be vague (like \"their results\") or might be too specific (like acronyms or jargon). Write questions that ask for clarifications. If the language is clear, write \"No questions.\".\nGuidelines:\n* Write the one, two, or three most important questions. Do not write unimportant questions. * Do not ask about people or citations. Sometimes citations show up as \"BIBREF\" * Do not ask questions whose answer is in the snippet. * Do not ask about Tables (\"TABREF\"), Figures (\" FIGREF\"), Sections (\"SECREF\") or Formulas (\" INLINEFORM\").\nExample: Snippet: \"In spirit, CaRE (Gupta et al., 2019)\ncomes closest to our model; however, they do not address the problem of type compatibility in the link prediction task BIBREF3 (See Figure FIGREF2 for details).\"\nQuestions: - What is \"CaRE\"? - What is the authors\u2019 approach? - What is type compatibility?\nSnippet: \"{{snippet}}\" Questions:\nA.6.2 Question Answering\nUsing the given information from the scientific\npaper, answer the question about \"text snippet\" below.\nInformation from the paper: Title: \"{{title}}\"\nAbstract: \"{{abstract}}\" Paragraph with potentially helpful information:\n\"{{ evidence #1 }}\" Paragraph with potentially helpful information:\n\"{{ evidence #2 }}\" Paragraph with potentially helpful information:\n\"{{ evidence #3 }}\"\nSection of the paper the snippet comes from: \"{{ section header}}\" Paragraph with the snippet: \"{{paragraph with snippet}}\"\nText snippet: \"{{snippet}}\"\nGiven the above information, please answer the following question. Keep your answer concise and informative. It should be at most a sentence long. If you cannot find the answer , then write \"No answer.\": Question: {{question}}\nA.6.3 Rewriting\nThe following \"text snippet\" will be quoted in an article using the Chicago Manual of Style . The following questions were answered using information from the paper. Rewrite the \"text snippet\" into quote format by adding the answers in-between square brackets. Write as if you were an expert scientist in the field of natural language processing.\nInformation from the paper:\nQuestion: {{ question #1 }} Answer: {{ answer #1 }} Question: {{ question #2 }} Answer: {{ answer #2 }} ...\nText snippet: \"{{sentence}}\"\nInstructions:\nUsing the given information, please rewrite the text snippet by adding additional information into square brackets. For example: the snippet \"Our approach performs well\" becomes \"[REF0\u2019s] approach [ bidirectional language modeling] performs well\". For example: the snippet \"Our task is MT\" becomes \"[REF0\u2019s] task is MT [machine translation].\"\nAfter adding clarifying information: * Replace first-person pronouns with a\nplaceholder. Replace \"we\" with \"[REF0]\" and \"our\" with \"[REF0\u2019s]\".\n* Remove discourse markers (like \"in conclusion\", \"in this section\", \"for instance\", etc.)\n* Citations are marked as BIBREF or (Author Name, Year). Keep these the same. Do not add any\nadditional citations. * Remove any references to Figures (\"FIGREF\")\nand Tables (\"TABREF\") * Fix the grammar\nPlease rewrite the snippet according to the instructions and the given information. Rewrite:\nA.6.4 End-to-End Model ( gpt-4) system: You are a scientist in the field of natural\nlanguage processing. Using the given information from a scientific paper, rewrite the given text snippet so it stands alone. To do this:\n* Remove discourse markers (like \"in conclusion\", \"in this section\", \"for instance\", etc.) * Replace first-person pronouns with placeholders. Replace \"we\" with \"[REF0 ]\" and \"our\" with \"[REF0\u2019s]\". * Remove time-specific words like \"current\" * Make other surface-level changes to fix\ngrammar * Resolve any vague or unclear references\nin the snippet (e.g. \"our approach\" or \"our method\")\n* Define any specific terminology or acronyms that other scientists will not be familiar with.\nuser: Using the following scientific paper,\nrewrite the \"text snippet\" that follows so it stands alone. The \"text snippet\" will be quoted in an article using the Chicago Manual of Style. Rewrite the \"text snippet\" into quote format by adding the answers inbetween square brackets.\nPaper:\n{{full_text}}\nText Snippet: \"{{sentence}}\"\nInstructions:\nUsing only the given information, please rewrite the text snippet into quote format. Specifically add the following clarifying information in square brackets following the Chicago Manual of Style: * Resolve any vague or unclear references in the snippet (e.g. \"our approach\" or \"our method\"). Put any clarifying text between brackets. For example \" Our approach performs well\" becomes \"[ REF0\u2019s] approach [bidirectional language modeling] performs well\". * Define any specific terminology or acronyms that other scientists will not be familiar with. For example \"Our task is MT\" becomes \"[REF0\u2019s] task is MT [machine translation].\"\n* If needed, add additional short clarifications that are necessary for an expert reader to understand the broader context of the quote. Only add up to a single sentence and put the sentence in between square brackets.\nAfter adding clarifying information: * Replace first-person pronouns with a\nplaceholder. Replace \"we\" with \"[REF0 ]\" and \"our\" with \"[REF0\u2019s]\".\n* Remove discourse markers (like \"in conclusion\", \"in this section\", \"for instance\", etc.) * Citations are marked as BIBREF or (Author Name, Year). Keep these the same. Do not add any additional citations. * Remove any references to Figures (\"FIGREF \") and Tables (\"TABREF\") * Fix the grammar\nReminders: * Follow the Chicago Manual of Style for\nquotes by putting all added text between square brackets.\n* The rewritten snippet is a quote, so the word order should closely match the original snippet\u2019s. * Ignore irrelevant information.\nPlease rewrite this snippet according to the instructions and the given information. Text snippet: \"{{sentence}}\"\nA.6.5 End-to-End Model ( davinci) The following \"text snippet\" will be quoted\nin an article using the Chicago Manual of Style. Using the given information from scientific paper, rewrite the \"text snippet\" into quote format by adding in any clarifying information in square brackets. Write as if you were an expert scientist in the field of natural language processing.\nInformation from the paper:\nTitle: \"{{title}}\"\nAbstract: \"{{abstract}}\" {% if context_section_header %} Header of section with the snippet: \"{{\ncontext_section_header}}\" {% endif %} Paragraph with the snippet: \"{{context_paragraph\n}}\"\nText snippet: \"{{sentence}}\"\nInstructions:\nUsing the given information, please rewrite the text snippet into quote format. Specifically add the following clarifying information in square brackets following the Chicago Manual of Style: * Resolve any vague or unclear references in the snippet (e.g. \"our approach\" or \"our method\n\"). Put any clarifying text between brackets . For example \"Our approach performs well\" becomes \"[REF0\u2019s] approach [bidirectional language modeling] performs well\". * Define any specific terminology or acronyms that other scientists will not be familiar with. For example \"Our task is MT\" becomes \"[REF0\u2019s] task is MT [machine translation].\" * If needed, add additional short clarifications that are necessary for an expert reader to\nunderstand the broader context of the quote. Only add up to a single sentence and put the sentence in between square brackets.\nAfter adding clarifying information: * Replace first-person pronouns with a\nplaceholder. Replace \"we\" with \"[REF0]\" and \"our\" with \"[REF0\u2019s]\".\n* Remove discourse markers (like \"in conclusion\", \"in this section\", \"for instance\", etc.) * Citations are marked as BIBREF or (Author Name, Year). Keep these the same. Do not add any\nadditional citations. * Remove any references to Figures (\"FIGREF\")\nand Tables (\"TABREF\") * Fix the grammar\nReminders: * Follow the Chicago Manual of Style for quotes\nby putting all added text between square brackets.\n* The rewritten snippet is a quote, so the word order should closely match the original snippet\u2019s.\nPlease rewrite this snippet according to the instructions and the given information. Text snippet: \"{{sentence}}\" Rewrite:\nA.7 Sample QA Pairs"
+        }
+    ],
+    "title": "A Question Answering Framework for Decontextualizing User-facing Snippets from Scientific Documents",
+    "year": 2023
+}

@@ -1,0 +1,694 @@
+{
+    "abstractText": "Many natural language processing tasks benefit from long inputs, but processing long documents with Transformers is expensive -not only due to quadratic attention complexity but also from applying feedforward and projection layers to every token. However, not all tokens are equally important, especially for longer documents. We propose COLT5, a long-input Transformer model that builds on this intuition by employing conditional computation, devoting more resources to important tokens in both feedforward and attention layers. We show that COLT5 achieves stronger performance than LONGT5 with much faster training and inference, achieving SOTA on the long-input SCROLLS benchmark. Moreover, COLT5 can effectively and tractably make use of extremely long inputs, showing strong gains up to 64k input length.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Joshua Ainslie"
+        },
+        {
+            "affiliations": [],
+            "name": "Tao Lei"
+        },
+        {
+            "affiliations": [],
+            "name": "Michiel de Jong"
+        },
+        {
+            "affiliations": [],
+            "name": "Santiago Onta\u00f1\u00f3n"
+        },
+        {
+            "affiliations": [],
+            "name": "Siddhartha Brahma"
+        },
+        {
+            "affiliations": [],
+            "name": "Yury Zemlyanskiy"
+        },
+        {
+            "affiliations": [],
+            "name": "David Uthus"
+        },
+        {
+            "affiliations": [],
+            "name": "Mandy Guo"
+        },
+        {
+            "affiliations": [],
+            "name": "James Lee-Thorp"
+        },
+        {
+            "affiliations": [],
+            "name": "Yi Tay"
+        },
+        {
+            "affiliations": [],
+            "name": "Yun-Hsuan Sung"
+        },
+        {
+            "affiliations": [],
+            "name": "Sumit Sanghai"
+        }
+    ],
+    "id": "SP:ccc7a4c067cda8cc420630c6c3cd16125a468815",
+    "references": [
+        {
+            "authors": [
+                "Joshua Ainslie",
+                "Santiago Onta\u00f1\u00f3n",
+                "Chris Alberti",
+                "Vaclav Cvicek",
+                "Zachary Fisher",
+                "Philip Pham",
+                "Anirudh Ravula",
+                "Sumit Sanghai",
+                "Qifan Wang",
+                "Li Yang."
+            ],
+            "title": "ETC: Encoding long and structured inputs in transformers",
+            "venue": "arXiv preprint arXiv:2004.08483.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Iz Beltagy",
+                "Matthew E Peters",
+                "Arman Cohan."
+            ],
+            "title": "Longformer: The long-document transformer",
+            "venue": "arXiv preprint arXiv:2004.05150.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "James Bradbury",
+                "Roy Frostig",
+                "Peter Hawkins",
+                "Matthew James Johnson",
+                "Chris Leary",
+                "Dougal Maclaurin",
+                "George Necula",
+                "Adam Paszke",
+                "Jake VanderPlas",
+                "Skye Wanderman-Milne",
+                "Qiao Zhang"
+            ],
+            "title": "JAX: composable transformations",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Mingda Chen",
+                "Zewei Chu",
+                "Sam Wiseman",
+                "Kevin Gimpel."
+            ],
+            "title": "SummScreen: A dataset for abstractive screenplay summarization",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rewon Child",
+                "Scott Gray",
+                "Alec Radford",
+                "Ilya Sutskever."
+            ],
+            "title": "Generating long sequences with sparse transformers",
+            "venue": "arXiv preprint arXiv:1904.10509.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Arman Cohan",
+                "Franck Dernoncourt",
+                "Doo Soon Kim",
+                "Trung Bui",
+                "Seokhwan Kim",
+                "Walter Chang",
+                "Nazli Goharian."
+            ],
+            "title": "A discourse-aware attention model for abstractive summarization of long documents",
+            "venue": "Proceedings of the 2018 Conference of",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Pradeep Dasigi",
+                "Kyle Lo",
+                "Iz Beltagy",
+                "Arman Cohan",
+                "Noah A. Smith",
+                "Matt Gardner."
+            ],
+            "title": "A dataset of information-seeking questions and answers anchored in research papers",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "William Cohen."
+            ],
+            "title": "FiDO: Fusion-in-decoder optimized for stronger performance and faster inference",
+            "venue": "arXiv preprint arXiv:2212.08153.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "William Fedus",
+                "Barret Zoph",
+                "Noam Shazeer."
+            ],
+            "title": "Switch transformers: Scaling to trillion parameter models with simple and efficient sparsity",
+            "venue": "arXiv preprint arXiv:2101.03961.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Google."
+            ],
+            "title": "Profile your model with cloud tpu tools",
+            "venue": "https://cloud.google.com/tpu/docs/ cloud-tpu-tools. Accessed: 2022-11-11.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mandy Guo",
+                "Joshua Ainslie",
+                "David Uthus",
+                "Santiago Onta\u00f1\u00f3n",
+                "Jianmo Ni",
+                "Yun-Hsuan Sung",
+                "Yinfei Yang."
+            ],
+            "title": "LongT5: Efficient text-to-text transformer for long sequences",
+            "venue": "Findings of the Association for Computational Linguistics: NAACL 2022,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jonathan Heek",
+                "Anselm Levskaya",
+                "Avital Oliver",
+                "Marvin Ritter",
+                "Bertrand Rondepierre",
+                "Andreas Steiner",
+                "Marc van Zee"
+            ],
+            "title": "Flax: A neural network library and ecosystem for JAX",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Luyang Huang",
+                "Shuyang Cao",
+                "Nikolaus Parulian",
+                "Heng Ji",
+                "Lu Wang."
+            ],
+            "title": "Efficient attentions for long document summarization",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Hu-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mandar Joshi",
+                "Eunsol Choi",
+                "Daniel S. Weld",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Triviaqa: A large scale distantly supervised challenge dataset for reading comprehension",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics, Van-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jared Kaplan",
+                "Sam McCandlish",
+                "Tom Henighan",
+                "Tom B. Brown",
+                "Benjamin Chess",
+                "Rewon Child",
+                "Scott Gray",
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Dario Amodei."
+            ],
+            "title": "Scaling laws for neural language models",
+            "venue": "CoRR, abs/2001.08361.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tom\u00e1\u0161 Ko\u010disk\u00fd",
+                "Jonathan Schwarz",
+                "Phil Blunsom",
+                "Chris Dyer",
+                "Karl Moritz Hermann",
+                "G\u00e1bor Melis",
+                "Edward Grefenstette."
+            ],
+            "title": "The NarrativeQA reading comprehension challenge",
+            "venue": "Transactions of the Association for Computational Linguistics, 6:317\u2013",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yuta Koreeda",
+                "Christopher Manning."
+            ],
+            "title": "ContractNLI: A dataset for document-level natural language inference for contracts",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021, pages 1907\u20131919, Punta Cana, Dominican Re-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Bernhard Kratzwald",
+                "Stefan Feuerriegel."
+            ],
+            "title": "Adaptive document retrieval for deep question answering",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, Brussels, Belgium, October 31 - November 4, 2018,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jakob Uszkoreit",
+                "Quoc Le",
+                "Slav Petrov."
+            ],
+            "title": "Natural questions: a benchmark for question answering research",
+            "venue": "Trans. Assoc. Comput. Linguistics, 7:452\u2013466.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tao Lei",
+                "Junwen Bai",
+                "Siddhartha Brahma",
+                "Joshua Ainslie",
+                "Kenton Lee",
+                "Yanqi Zhou",
+                "Nan Du",
+                "Vincent Y. Zhao",
+                "Yuexin Wu",
+                "Bo Li",
+                "Yu Zhang",
+                "Ming-Wei Chang"
+            ],
+            "title": "Conditional adapters: Parameter-efficient transfer learning with fast infer",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yuning Mao",
+                "Pengcheng He",
+                "Xiaodong Liu",
+                "Yelong Shen",
+                "Jianfeng Gao",
+                "Jiawei Han",
+                "Weizhu Chen."
+            ],
+            "title": "Reader-guided passage reranking for open-domain question answering",
+            "venue": "Findings of the Association for Computational Linguistics:",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Richard Yuanzhe Pang",
+                "Alicia Parrish",
+                "Nitish Joshi",
+                "Nikita Nangia",
+                "Jason Phang",
+                "Angelica Chen",
+                "Vishakh Padmakumar",
+                "Johnny Ma",
+                "Jana Thompson",
+                "He He",
+                "Samuel R. Bowman"
+            ],
+            "title": "QuALITY: Question answering with long input texts, yes",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Reiner Pope",
+                "Sholto Douglas",
+                "Aakanksha Chowdhery",
+                "Jacob Devlin",
+                "James Bradbury",
+                "Anselm Levskaya",
+                "Jonathan Heek",
+                "Kefan Xiao",
+                "Shivani Agrawal",
+                "Jeff Dean."
+            ],
+            "title": "Efficiently scaling transformer inference",
+            "venue": "arXiv preprint arXiv:2211.05102.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yujie Qian",
+                "Jinhyuk Lee",
+                "Sai Meher Karthik Duddu",
+                "Zhuyun Dai",
+                "Siddhartha Brahma",
+                "Iftekhar Naim",
+                "Tao Lei",
+                "Vincent Y Zhao."
+            ],
+            "title": "Multivector retrieval as sparse alignment",
+            "venue": "arXiv preprint arXiv:2211.01267.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu"
+            ],
+            "title": "Exploring the limits",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tal Schuster",
+                "Adam Fisch",
+                "Jai Gupta",
+                "Mostafa Dehghani",
+                "Dara Bahri",
+                "Vinh Q Tran",
+                "Yi Tay",
+                "Donald Metzler."
+            ],
+            "title": "Confident adaptive language modeling",
+            "venue": "arXiv preprint arXiv:2207.07061.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Uri Shaham",
+                "Elad Segal",
+                "Maor Ivgi",
+                "Avia Efrat",
+                "Ori Yoran",
+                "Adi Haviv",
+                "Ankit Gupta",
+                "Wenhan Xiong",
+                "Mor Geva",
+                "Jonathan Berant",
+                "Omer Levy."
+            ],
+            "title": "Scrolls: Standardized comparison over long language sequences",
+            "venue": "ArXiv, abs/2201.03533.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Noam Shazeer."
+            ],
+            "title": "Fast transformer decoding: One write-head is all you need",
+            "venue": "arXiv preprint arXiv:1911.02150.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Noam Shazeer",
+                "Azalia Mirhoseini",
+                "Krzysztof Maziarz",
+                "Andy Davis",
+                "Quoc V. Le",
+                "Geoffrey E. Hinton",
+                "Jeff Dean."
+            ],
+            "title": "Outrageously large neural networks: The sparsely-gated mixture-of-experts layer",
+            "venue": "5th International Conference on Learning Rep-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Noam Shazeer",
+                "Mitchell Stern."
+            ],
+            "title": "Adafactor: Adaptive learning rates with sublinear memory cost",
+            "venue": "Proceedings of the 35th International Conference on Machine Learning, ICML 2018, Stockholmsm\u00e4ssan, Stockholm, Sweden, July 10-15, 2018,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yi Tay",
+                "Mostafa Dehghani",
+                "Samira Abnar",
+                "Yikang Shen",
+                "Dara Bahri",
+                "Philip Pham",
+                "Jinfeng Rao",
+                "Liu Yang",
+                "Sebastian Ruder",
+                "Donald Metzler."
+            ],
+            "title": "Long range arena : A benchmark for efficient transformers",
+            "venue": "International Conference on Learning",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Tay",
+                "Mostafa Dehghani",
+                "Vinh Q Tran",
+                "Xavier Garcia",
+                "Dara Bahri",
+                "Tal Schuster",
+                "Huaixiu Steven Zheng",
+                "Neil Houlsby",
+                "Donald Metzler."
+            ],
+            "title": "Unifying language learning paradigms",
+            "venue": "arXiv preprint arXiv:2205.05131.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Neeraj Varshney",
+                "Man Luo",
+                "Chitta Baral"
+            ],
+            "title": "Can open-domain QA reader utilize external knowledge efficiently like humans? CoRR, abs/2211.12707",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shuohang Wang",
+                "Mo Yu",
+                "Xiaoxiao Guo",
+                "Zhiguo Wang",
+                "Tim Klinger",
+                "Wei Zhang",
+                "Shiyu Chang",
+                "Gerry Tesauro",
+                "Bowen Zhou",
+                "Jing Jiang."
+            ],
+            "title": "R3: Reinforced ranker-reader for open-domain question answering",
+            "venue": "Proceedings of the Thirty-Second",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Sinong Wang",
+                "Belinda Z Li",
+                "Madian Khabsa",
+                "Han Fang",
+                "Hao Ma."
+            ],
+            "title": "Linformer: Selfattention with linear complexity",
+            "venue": "arXiv preprint arXiv:2006.04768.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Donghan Yu",
+                "Chenguang Zhu",
+                "Yuwei Fang",
+                "Wenhao Yu",
+                "Shuohang Wang",
+                "Yichong Xu",
+                "Xiang Ren",
+                "Yiming Yang",
+                "Michael Zeng."
+            ],
+            "title": "Kg-fid: Infusing knowledge graph in fusion-in-decoder for opendomain question answering",
+            "venue": "Proceedings of the",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yury Zemlyanskiy",
+                "Joshua Ainslie",
+                "Michiel de Jong",
+                "Philip Pham",
+                "Ilya Eckstein",
+                "Fei Sha."
+            ],
+            "title": "Readtwice: Reading very large documents with memories",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jingqing Zhang",
+                "Yao Zhao",
+                "Mohammad Saleh",
+                "Peter Liu."
+            ],
+            "title": "Pegasus: Pre-training with extracted gap-sentences for abstractive summarization",
+            "venue": "International Conference on Machine Learning, pages 11328\u201311339. PMLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ming Zhong",
+                "Da Yin",
+                "Tao Yu",
+                "Ahmad Zaidi",
+                "Mutethia Mutuma",
+                "Rahul Jha",
+                "Ahmed Hassan Awadallah",
+                "Asli Celikyilmaz",
+                "Yang Liu",
+                "Xipeng Qiu",
+                "Dragomir Radev."
+            ],
+            "title": "QMSum: A new benchmark for querybased multi-domain meeting summarization",
+            "venue": "Pro-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Barret Zoph",
+                "Irwan Bello",
+                "Sameer Kumar",
+                "Nan Du",
+                "Yanping Huang",
+                "Jeff Dean",
+                "Noam Shazeer",
+                "William Fedus."
+            ],
+            "title": "St-moe: Designing stable and transferable sparse expert models",
+            "venue": "arXiv preprint arXiv:2202.08906.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qian"
+            ],
+            "title": "Hyperparameters To normalize the routing scores for differentiable top-k token selection, we use the iterative soft topk algorithm from Lei et al",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Many natural language processing tasks, such as summarization (Cohan et al., 2018) or question answering over long documents (Joshi et al., 2017), require machine learning models to encode longform text. Processing long documents with a Transformer model is computationally expensive, both because attention cost scales quadratically with input length and because feedforward and attention projection layers have to be applied to each input token.\nOver the past few years, many \u201cefficient Transformer\u201d approaches have been proposed that reduce the cost of the attention mechanism over long inputs (Child et al., 2019; Ainslie et al., 2020; Beltagy et al., 2020; Zaheer et al., 2020; Wang et al., 2020; Tay et al., 2021; Guo et al., 2022). However, especially for larger models, the feedforward and projection layers actually make up the majority of\n\u2217Author contributions are outlined in Appendix A. Correspondence author: jainslie@google.com.\nthe computational burden and can render processing long inputs intractable.\nThis paper presents COLT5 (Conditional LongT5), a new family of models that, building on top of LONGT5 (Guo et al., 2022), enables fast processing of long inputs by combining architecture improvements for both attention and feedforward layers. COLT5 is based on the intuition that some tokens are more important than others, and we can achieve better quality for lower cost by devoting more computation to important tokens. Moreover, the fraction of important tokens is likely to diminish with document length, allowing for tractable processing of long documents.\nIn particular, COLT5 divides each feedforward layer and each attention layer into a light branch\nwhich is applied to all tokens and a heavy branch which is applied to a set of important tokens, selected specifically for that input and component. The light feedforward branch has lower hidden dimension than standard LONGT5 while the heavy feedforward branch has higher hidden dimension. The light attention branch has fewer heads and applies only local attention, while the heavy attention branch performs full attention over another separately selected set of important tokens. Figure 1 provides an overview of the COLT5 conditional mechanism.\nFinally, COLT5 also includes two other modifications to the LONGT5 architecture. COLT5 adds multi-query cross-attention (Shazeer, 2019), significantly speeding up inference. COLT5 also employs the UL2 (Tay et al., 2022) pre-training objective, which we demonstrate allows for in-context learning over long inputs.\nWe show that COLT5 performs much faster finetuning and inference with similar or better model quality, improving over LONGT5 on arXiv summarization (Cohan et al., 2018) and TriviaQA question answering (Joshi et al., 2017) datasets and achieving SOTA on the SCROLLS benchmark (Shaham et al., 2022). Moreover, COLT5 achieves further gains in quality and speed for tasks with extremely long inputs (64k tokens), with less-than-linear scaling of \u201cfocus\u201d tokens."
+        },
+        {
+            "heading": "2 Background",
+            "text": "Transformer FLOPs COLT5 follows an extensive line of work in attempting to reduce the computational cost of Transformer models, particularly\nover long inputs. The computational burden of Transformer models has several distinct elements, and different approaches focus on reducing the cost of different components. For that reason, it is helpful to start by providing a breakdown of the computational cost of Transformer components. Table 1 shows the FLOPs1 for each component of a Transformer encoder layer (Kaplan et al., 2020).\nSparse attention The first challenge of applying a Transformer to a long input is that the FLOPs of the self-attention mechanism scales quadratically in the input length, becoming intractable for long inputs. A large body of work focuses on reducing self-attention cost, restricting attention between a subset of inputs (Child et al., 2019; Ainslie et al., 2020; Beltagy et al., 2020; Zaheer et al., 2020; Wang et al., 2020; Guo et al., 2022) or to a subset of layers (Zemlyanskiy et al., 2021). In LONGT5 (Guo et al., 2022), the most closely related model to COLT5, tokens attend within a lo-\n1Each multiply-add is counted as a single FLOP.\ncal window as well as to a mean-pooled summary representation for each block of 16 tokens in the input. LONGT5 attention leads to sharply reduced (though still non-negligible) FLOPs (Table 1).\nConditional computation After applying a sparse attention mechanism, the feedforward and attention projection layers account for the majority of the FLOPs. These costs scale with the length of the input, such that processing long inputs is still prohibitively expensive. A common approach to reduce the remaining cost is to employ some form of conditional computation, avoiding applying all model parameters to the entire input. CALM (Schuster et al., 2022) applies a varying number of decoder layers to each decoded token, outputting a token early if the model is confident in its prediction. Mixture-of-Experts models (Shazeer et al., 2017; Fedus et al., 2021; Zoph et al., 2022) route inputs through a small proportion of expert sub-modules, bringing to bear only the parameters most relevant to the input. In the context of retrieval-augmented models, numerous works rerank retrieved passages by their relevance to the query and process only the highest scoring passages (Mao et al., 2021; Wang et al., 2018; Yu et al., 2022) and vary the number of processed passages depending on model confidence (Kratzwald and Feuerriegel, 2018; Varshney et al., 2022). Concurrent work CoDA (Lei et al., 2023) employs a related conditional computation mechanism, designed for efficient adaptation rather than modeling long documents.\nDevice utilization FLOPs do not tell the whole story, as modeling choices can influence the effective speed of operations achieved by accelerators. For long text inputs, autoregressive decoder inference is very slow due to memory bandwidth constraints from repeatedly loading the long sequence of keys and values (Shazeer, 2019; de Jong et al., 2022). Shazeer (2019) introduces multi-query attention (MQA), sharing heads for keys and values to reduce memory bandwidth overhead. Pope et al. (2022) studies how to shard large models, especially in the context of MQA, to obtain optimal device utilization and therefore speed.\nTraining objectives T5 introduced the span corruption objective (Raffel et al., 2020), a modification of masked language modeling (Devlin et al., 2019). LONGT5 made use of the PEGASUS (Zhang et al., 2020) sentence reconstruc-\ntion objective for improved summarization performance. Tay et al. (2022) proposes UL2, a mixture of span corruption, prefix, and causal language modeling, and shows that it leads to strong performance on both short-output and generative tasks."
+        },
+        {
+            "heading": "3 COLT5",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Conditional computation",
+            "text": "As discussed in the previous section, a large proportion of Transformer FLOPs arise from feedforward and projection layers that scale with the length of the input sequence. Therefore, LONGT5 training and inference on long documents remains expensive.\nCOLT5 further reduces the cost of processing long documents through conditional computation, following the intuition that some tokens are more important and therefore benefit more than others from heavy computation. First, some types of tokens may inherently require less computation, such as filler words and punctuation. Second, especially in long documents, large parts of the input may not be relevant to the current question, task, or processing stage.\nThe COLT5 conditional computation mechanism consists of three components: routing modules, conditional feedforward layers, and conditional attention layers. All tokens are processed by standard, lightweight attention and feedforward layers. Routing modules additionally select important tokens from an input at each attention or feedforward layer, and a heavy conditional layer applies additional computation to routed tokens. This section describes each component in detail. Figure 1 provides an overview of the COLT5 conditional computation mechanism, and Table 2 compares COLT5 and LONGT5 FLOPs.\nModel Encoder Layer Flops\nRouting In order to separately select important tokens for each component in each layer, we need\na learnable and tractable routing function. We follow the simple three-step mechanism from Lei et al. (2023): (1) multiply inputs with a learned embedding to obtain routing scores, (2) normalize, and (3) select the top-k highest scoring inputs.\nLet Xi be the representation of token i, and u a d-dimensional learnable embedding. Then the routing score of token i is\nsi = Xi \u00b7 u\nWe select the top-k highest scoring inputs. In order to provide a learning signal to the scoring embedding, we make sure the contribution of the routed tokens to the layer update is scaled according to the routing score, as will be seen later. To provide a better distributed signal to all tokens, we also globally normalize the routing scores to sum up to the number of desired routed tokens using a generalized softmax, resulting in normalized scores s\u0303i. Each COLT5 layer has three independent routers, one each for the feedforward layer, attention queries, and attention key-values.\nConditional Feedforward Intuitively, some token representations may benefit from more processing than others. The COLT5 conditional feedforward layer applies an additional high-capacity feedforward layer to selected tokens. In particular, let Xi be the model state of the ith token and s\u0303i denote the normalized routing score (set to 0 for non-routed tokens). Then the feedforward update for COLT5 is given by\nXi = Xi + FFdLight(Xi) + s\u0303i \u00b7 FFdHeavy(Xi)\nThe light and heavy feedforward branches differ only in their hidden dimension, with the light branch having smaller hidden dimension than the standard T5 feedforward layer and the heavy branch larger. Let n denote the number of input tokens, m the number of selected tokens, and rL and rH the ratios of light and heavy hidden dimension to standard T5 hidden dimension. Then the FLOPs of the COLT5 layer are given by\nFLOPsFFd = 8nrLd2\ufe38 \ufe37\ufe37 \ufe38 Light branch + 8mrHd 2\ufe38 \ufe37\ufe37 \ufe38 Heavy branch\nWe set the light and heavy ratios as rL = 12 and rH = 4, half and quadruple the standard T5 hidden dimension respectively. For our main experiments, a fraction 116 of tokens are routed to the\nheavy branch. As a result the approximate FLOPs from the COLT5 feedforward layer equals\nFLOPsFFd = 4nd2\ufe38\ufe37\ufe37\ufe38 Light branch + 2nd2\ufe38\ufe37\ufe37\ufe38 Heavy branch\nconsuming 75% of the FLOPs of a standard T5 feedforward layer.\nConditional Attention COLT5 conditional attention operates on the intuition that most tokens have simple, local interactions, but some tokens benefit from heavier processing and long-range interactions. The COLT5 conditional attention layer applies an additional high-capacity attention layer that attends from selected query tokens to selected key-value tokens. Let s\u0303qi denote the normalized routing query score for token i, and s\u0303kv the keyvalue scores for all tokens (set to 0 if not routed). Then the attention update for COLT5 is given by\nXi = Xi+ALight(Xi, X)+ s\u0303 q i \u00b7AHeavy(Xi, s\u0303 kvX)\nThe light and heavy branches differ in the number of heads and tokens attended to: the light branch has fewer heads and attends to a local context window, while the heavy branch has more heads and attends to all routed key-value tokens. Separately selecting query and key-value tokens also allows the model to differentiate between tokens that require additional information and those that possess\nsuch information. Figure 3 shows the COLT5 attention pattern. Let q, v be the number of selected query and key-value tokens, w the size of the local attention window and rL, rH the proportion of light and heavy heads relative to standard T5. Then the FLOPs of the COLT5 attention layer are given by FLOPsAtt = 4n \u00b7 rLd2\ufe38 \ufe37\ufe37 \ufe38 Local projection + 2nw \u00b7 rLd\ufe38 \ufe37\ufe37 \ufe38 Local attention\n+ 2q \u00b7 rHd2 + 2v \u00b7 rHd2\ufe38 \ufe37\ufe37 \ufe38 Global projection + 2qv \u00b7 rHd\ufe38 \ufe37\ufe37 \ufe38 Global attention\nWe set the light and heavy head ratios as rL = 14 and rH = 34 , keeping the total number of heads across the light and heavy branches equal to standard T5 heads. For our main experiments a fraction 1 16 query tokens and 1 8 key-value tokens are routed to the heavy branch, so q = n16 and v = n 8 . Ignoring local attention computation, we approximate attention FLOPS by2\nFLOPsAtt \u2248 nd2\ufe38\ufe37\ufe37\ufe38 Local proj. + 1 4 nd2\ufe38 \ufe37\ufe37 \ufe38\nGlobal proj.\n+ 1\n84 n2d\ufe38 \ufe37\ufe37 \ufe38 Global att.\nwith less than half projection FLOPs and order-ofmagnitude smaller quadratic length scaling compared to LONGT5. Table 2 shows total FLOPs for the COLT5 layer. In general, we set q = m and v = 2m, and use m to summarize the number of routed tokens going forward.\n2Global projection and attention FLOPs rounded to readable fractions, exact values are 9\n32 and 3 256 . Complexity as-\nsumes constant fraction of routed tokens; we show we can do better in practice for extremely long inputs."
+        },
+        {
+            "heading": "3.2 Multi-query Attention",
+            "text": "Conditional computation effectively reduces the computational cost of the encoder. However, for encoder-decoder models with long inputs the majority of inference time is spent in the decoder due to memory bandwidth constraints (Shazeer, 2019; de Jong et al., 2022). Most of the overhead is caused by repeatedly reading all the input token keys and values from memory for every output token that is autoregressively decoded during cross attention. Multi-query attention (Shazeer, 2019) (MQA) allows all query heads to share a single key and value head, alleviating this bottleneck. Accordingly, we apply MQA in cross-attention layers for much faster inference. Note however that MQA does not improve training speed since target tokens are processed in parallel during training, avoiding this memory bandwidth bottleneck."
+        },
+        {
+            "heading": "3.3 UL2",
+            "text": "The UL2 pre-training objective (Tay et al., 2022) combines different denoising objectives, extending the span corruption pre-training used in T5 to a variety of noise rates / average span lengths and adding a prefix language modeling objective more similar to typical decoder-only model pre-training. UL2 has been shown to lead to improved in-context learning. We train COLT5 on UL2 instead of PEGASUS (Zhang et al., 2020), endowing COLT5 with in-context learning capabilities."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": "In order to evaluate COLT5, we perform the following experiments: (1) our main results com-\npare COLT5 and LONGT5 on a collection of long input datasets using input length of 16k tokens; (2) we evaluate COLT5 on extremely long inputs up to 64k tokens and compare scaling against LONGT5; (3) demonstrate COLT5\u2019s few-shot capability, investigating how performance changes as input length and number of shots increase, (4) perform a series of ablations to understand the effect of individual COLT5 components, and (5) investigate empirical routing patterns. The remainder of the section outlines our experimental setup, and then describes each of the experiments above."
+        },
+        {
+            "heading": "4.1 Experimental setup",
+            "text": "Configurations COLT5 is based on the T5.1.1 architecture (Raffel et al., 2020), implemented with JAX (Bradbury et al., 2018), Flax (Heek et al., 2020), and Flaxformer3. Following LONGT5, we experiment with Base, Large, and XL model sizes. COLT5 models use the same embedding dimension, number of layers, and total attention heads as corresponding LONGT5 models of the same size, with more overall parameters (but less compute) due to the conditional branch. See Appendix B for additional details on model configuration.\nPre-training We pre-train COLT5 for 1M steps on the C4 dataset (Raffel et al., 2020) using a variant of the UL2 objective (Tay et al., 2022) with batch size 256, input length 4096, and output length 910. In particular, our mixture contains four objectives in equal proportion: prefix-LM with noise rate 0.5, and span corruption (Raffel et al., 2020) with noise rate 0.15 and average span lengths 3, 8, and 64. We use the Adafactor optimizer (Shazeer and Stern, 2018) with the T5.1.1 inverse square root learning rate schedule and no dropout. COLT5 is trained with the T5X (Roberts et al., 2022) framework. For pre-training, we route m = 512 tokens, 1 8 th of the input length.\nFine-tuning For fine-tuning we use a constant learning rate of 0.001, batch size 128, and dropout rate 0.1 for all tasks. Main results use input length of 16384 for all datasets other than ContractNLI, which uses 8192. Question answering datasets use output length 128 and summarization datasets use output length 512, except for GovRep which uses output length 1024. We route m = 1024 tokens, 1 16 th of the input length. We train until convergence\n3https://github.com/google/flaxformer\nand select the checkpoint with the highest dev performance. We use greedy decoding for inference.\nData We evaluate COLT5 on TriviaQA (Joshi et al., 2017), arXiv (Cohan et al., 2018), and the SCROLLS benchmark (Shaham et al., 2022). SCROLLS contains question-answering datasets: NarrativeQA (Koc\u030cisk\u00fd et al., 2018), QASPER (Dasigi et al., 2021), and QuALITY (Pang et al., 2021), an NLI dataset: ContractNLI (Koreeda and Manning, 2021), and summarization datasets: SummScreenFD (Chen et al., 2022), QMSum (Zhong et al., 2021), and GovReport (Huang et al., 2021). Table 4 provides an overview of the size and input length for each dataset.\nTiming We report time per sample per TPUv4 chip, as measured by xprof (Google, 2020). For inference we use a single TPUv4 with batch size 16 or the largest that fits in memory. For fine-tuning we profile with 8 TPUv4 chips, sharded separately for each model to maximize throughput."
+        },
+        {
+            "heading": "4.2 Main results",
+            "text": "Figure 2 compares the quality-speed trade-off for LONGT54 and COLT5, showing that COLT5 is better at any speed. For 16k input length, COLT5 matches or exceeds LONGT5 quality for Large and XL with 35-75% training speedup and 50-100% inference speedup on top of the order-of-magnitude inference speedup from MQA. Encoder speedups are even greater (Appendix D). COLT5-XL also achieves SOTA performance on the SCROLLS benchmark. Table 3 contains all main results."
+        },
+        {
+            "heading": "4.3 Scaling to extremely long inputs",
+            "text": "We hypothesize that the advantage of COLT5 over LONGT5 strengthens with input length, as the fraction of important tokens decreases and COLT5 can route a greater proportion of important tokens to the heavy branch. Figure 4 compares the qualityspeed trade-off for LONGT5 and COLT5 on NarrativeQA, sweeping over input length rather than model size. The number of routed tokens is 116 th of the input length, except that we do not increase routed tokens going from 32k to 64k, so at 64k we route only 132nd of the input length. COLT5 achieves both stronger performance and faster inference speed at all input lengths and is able to effectively make use of extremely long inputs. We note that COLT5 achieves large quality gains by going from 32k to 64k tokens even while keeping the number of routed tokens constant, providing more evidence for our hypothesis."
+        },
+        {
+            "heading": "4.4 In-context learning",
+            "text": "Models trained on the UL2 objective have shown strong few-shot in-context learning (ICL) capabilities5 even at smaller sizes (Tay et al., 2022). COLT5 enables tractable inference with long inputs. Here, we leverage this for scaling the number of examples used for in-context learning.\n4Note that LONGT5 does not use MQA, but for profiling we add MQA to LONGT5 for a conservative baseline.\n5We initially evaluated ICL for models pre-trained with PEGASUS but found performance to be nearly 0.\nWe test the above hypothesis by evaluating few-shot learning performance on Natural Questions (Kwiatkowski et al., 2019) and TriviaQA as a function of input length, using as many examples as fit in the context. We consider the open book setting, such that each example consists of question, context document, and answer. Table 5 shows the number of examples by input length. We evaluate on the full dev set, randomly sampling examples from the training set for each dev sample until no further examples fit in the input length. We found that COLT5 can perform in-context learning only up to the input length it was trained on, so for these experiments we continued pre-training a COLT5-Large model on input length 16384 for another 100k steps. For the same reason we route m = 512 tokens as in pre-training.\nFigure 5 displays COLT5 few-shot performance as a function of input length, showing that COLT5 is able to apply its long-input capabilities to extract information from increasing numbers of examples."
+        },
+        {
+            "heading": "4.5 Ablations",
+            "text": "This section studies the effect of different choices in the COLT5 recipe. Table 6 contains results of a series of experiments that change a single compo-\nnent for COLT5 Base.\nRouting First, we note that static routing -- evenly distributing routed tokens over the input -- leads to massive drop in performance. The importance of routing provides evidence that the model learns to devote capacity to important tokens and the advantage of COLT5 is not merely a result of additional parameters. Sharing routing decisions for query and KV tokens should be compared with v=q, and leads to a modest reduction in quality and increase in speed.\nThe optimal number of routed tokens represents a trade-off between improved performance and computational cost of applying heavier layers. Table 6 shows strong gains going from 512 to 1024 (baseline) routed tokens and diminishing returns for further increases.\nAttention COLT5 relies on routing to identify not only tokens that can benefit from important information elsewhere in the input, but also which tokens contain such important information. We study whether COLT5 is successful in this task by comparing performance with two different attention settings -- v=all, in which routed tokens attend to the entire input, and v=q, which uses equal number of routed keys and values as queries, rather than twice as many. COLT5 appears to occupy a sweet spot, as using fewer routed key-values modestly decreases performance at similar speed but attending to all inputs barely helps at sharply increased cost.\nOther We compare COLT5 to LONGT5 with multi-query cross-attention, confirming that LONGT5 indeed does not achieve an unexpected quality gain from MQA, and our conservative assumptions in Figures 2, 4 are valid. Next, we evaluate multi-head cross-attention for COLT5, finding that it leads to modestly improved COLT5 performance. However, as MHA exhibits orderof-magnitude slower inference, MQA is clearly favored. Finally, PEGASUS appears to fine-tune slightly better than UL2, though the difference is small and UL2 enables few-shot learning."
+        },
+        {
+            "heading": "4.6 Routing analysis",
+            "text": "It is interesting to ask whether COLT5 routed tokens line up with what we consider intuitively important tokens in each document. We investigate this question by studying routing patterns of a Large COLT5 model fine-tuned on TriviaQA. We divide tokens into three categories: (1) question tokens, (2) answer tokens, and (3) other tokens. Figure 6 shows the average fraction of each type of token that is routed through the heavy path for MLP and attention layers on TriviaQA. We note that question and answer tokens are significantly more likely to be routed than other tokens, for feedforward as well as attention queries and keys/values. Appendix F presents more detailed routing analysis; e.g., semantically important tokens are much more likely to be selected in later layers."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "We propose COLT5, a new model for long-range inputs that employs conditional computation for higher quality and faster speed. COLT5 has light feedforward and attention layers that apply to the entire input, as well as heavy branches that are applied only to a subset of important tokens selected by a learned router. We show that COLT5 achieves stronger performance at any speed compared to LONGT5 on a variety of long-input datasets, and can effectively and efficiently make use of extremely long inputs up to 64k tokens.\nLimitations\nCOLT5 applies conditional computation only in the encoder. Applying conditional computation in the decoder is more complicated; the routing method in COLT5 is not causal, so it isn\u2019t applicable when generating token by token. Since decoder-only models and applications with long outputs have become more popular recently, this is a strong limitation of the current approach. Although the routing method in COLT5 could potentially be applied to the input context in a decoder-only model, we didn\u2019t investigate this setup.\nCOLT5 is specialized towards long sequences and has to be trained from scratch. For large-scale training and deployment, it is desirable to either train a single model that can handle both short and long sequences, or develop a long-input architecture that can be adapted from an existing large model."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "We would like to thank Srinadh Bhojanapalli, Luke Vilnis, Zachary Fisher, Jianmo Ni, Tal Schuster, Vaclav Cvicek, Sudeep Gandhe, Bhargav Kanagal, Kenton Lee, Ming-Wei Chang, Afroz Mohiuddin, Raphael Hoffmann, and others at Google Research for helpful advice and discussion."
+        },
+        {
+            "heading": "A Contributions",
+            "text": "Joshua led the project, developed the initial conditional attention mechanisms, and conducted most experimental ablations. Tao developed the heavy/light formulation for heterogeneous conditional computation, comprising the routing and conditional feedforward mechanisms, and iterated with Joshua on initial experiments demonstrating feasibility. Michiel helped to scope the paper, performed most of the writing, and oversaw speed benchmarking. Santiago designed and conducted all the few-shot experiments, initiated the routing analysis visualization, and integrated UL2 into the codebase. Siddhartha developed the separate routing for query and key/value tokens in the conditional attention component and demonstrated the resulting quality improvements. Yury designed and conducted all experiments for inputs larger than 16k tokens, demonstrating favorable scaling up to 64k. David integrated all SCROLLS tasks into the codebase and ran early experiments, especially comparing UL2 with PEGASUS. Mandy developed the leaderboard comparisons with LongT5 and helped run several experiments. James advised on and ran early comparisons with MoE conditional\ncomputation. Yi advised on the adaptation of UL2 to 4k input length pre-training. Finally, Yun-Hsuan and Sumit provided guidance and support for the project overall."
+        },
+        {
+            "heading": "B Model Hyperparameters",
+            "text": "Table 7 shows LONGT5 and COLT5 hyperparameters, including parameter counts. For LONGT5, we report numbers for the TGlobal configuration, which match T5.1.1. Notice that COLT5\u2019s parameter counts are larger due to using conditional compute. Similar to other conditional compute architectures such as mixture-of-experts, computational cost does not necessarily increase with parameter count.\nWe use the same 127-token local radius for COLT5 as LONGT5. This results in a local attention windoww of 255 since 127 tokens are attended to the left and 127 to the right."
+        },
+        {
+            "heading": "C Routing Normalization Hyperparameters",
+            "text": "To normalize the routing scores for differentiable top-k token selection, we use the iterative soft topk algorithm from Lei et al. (2023) and Qian et al.\n(2022) with = 1.0 and 50 iterations. During training we allow the top 98k tokens to have nonzero weight instead of just the top k in order to provide a slightly improved training signal."
+        },
+        {
+            "heading": "D Additional Experimental Results",
+            "text": "Table 8 compares LONGT5 and COLT5 inference speed in more detail, splitting off encoder and total time per sample. Since COLT5 applies conditional computation only in the encoder, encoder speed gains are larger than overall speed gain, and total speed gains are largest for shorter output length. Trade-offs are even more in the favor of COLT5 when paired with other decoder optimizations.\nTable 9 shows full (Rouge-1, Rouge-2, Rouge-L) results for summarization datasets."
+        },
+        {
+            "heading": "E Computational Resources",
+            "text": "For pre-training we generally used 128 TPUv4 chips for Base and 256 TPUv4 chips for Large and XL. Pre-training took approximately 2.5 days for Base, 3.7 days for Large, and 12.8 days for XL. For fine-tuning we generally used 64, 128, and 256\nTPUv4 chips for Base, Large, and XL, respectively, with training time varying with dataset size."
+        },
+        {
+            "heading": "F Routing Analysis",
+            "text": "In this section we take a closer look at the routing mechanisms in COLT5. There are three routing processes in each layer of COLT5: (1) Routing of attention keys and values (\u201cKV-routing\u201d), (2) routing of attention queries (\u201cQ-routing\u201d) and (3) routing of MLP tokens (\u201cMLP-routing\u201d). For simplicity, we will say that a token is selected, when it is routed to the heavy alternative (of either MLP or attention). We are interested in understanding what tokens are selected and whether these mechanisms select similar or different tokens in each layer.\nWhich tokens are selected We divide input tokens into three categories: (1) question tokens, (2) answer tokens (found via simple normalized string match of the ground truth answer), and (3) other tokens. Figure 7 shows the proportion of each token type that is routed by a fine-tuned COLT5-Large model on the TriviaQA dev set, by layer and routing component.\nEarlier we showed that question and answer tokens are more likely to be selected, but separating routing decisions by layer reveals interesting patterns. At early layers question and answer tokens are only modestly more likely to be selected, with routing probability sharply increasing at later layers and peaking in the last layer. This makes intuitive sense: in early layers the model has not yet had the opportunity to identify which tokens and parts of the document are important. However, the increase is not monotonic and there is strong variation between layers. This variation may imply that different layers focus on different types of tokens, or that some routing components do not successfully learn to identify important tokens.\nTo gain a better insight into this, Figure 8 visualizes routing on two sample fragments from a TriviaQA example (notice that, given the large input length used in COLT5, we do not show the complete example in the figure). The two fragments shown correspond to the beginning of the example (where the question is located), and the part of the context surrounding the correct answer. We have added a colored background to the figure, where each of the three CMY channels are mapped to the KV-routing weights in different layers of the model. Cyan corresponds to layer 1, Magenta to layer 12, and Yellow to layer 24. As we can see, question and answer are heavily yellow colored, showing those tokens are selected in the last layer.\nCorrelation between routing processes. Table 10 shows the Pearson correlation coefficient between the routing weights of the different routing mechanisms in each layer in a COLT5 Large model (MLP-routing correlation with KV-routing, MLP-\nrouting with Q-routing, and KV-routing with Qrouting). We show numbers for both the pre-trained checkpoint, as well as a fine-tuned model on TriviaQA. As we can see, the routing of keys/values and routing of queries is highly correlated at all layers except the first two, while the routing of tokens in the MLP has lower correlation to the other two processes. Interestingly correlation between MLP and attention routing increases in the last layers of the model."
+        }
+    ],
+    "title": "COLT5: Faster Long-Range Transformers with Conditional Computation",
+    "year": 2023
+}

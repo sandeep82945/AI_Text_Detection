@@ -1,0 +1,725 @@
+{
+    "abstractText": "Modern ML systems ingest data aggregated from diverse sources, such as synthetic, humanannotated, and live customer traffic. Understanding which examples are important to the performance of a learning algorithm is crucial for efficient model training. Recently, a growing body of literature has given rise to various \u201cinfluence scores,\u201d which use training artifacts such as model confidence or checkpointed gradients to identify important subsets of data. However, these methods have primarily been developed in computer vision settings, and it remains unclear how well they generalize to language-based tasks using pretrained models. In this paper, we explore the applicability of influence scores in language classification tasks. We evaluate a diverse subset of these scores on the SNLI dataset by quantifying accuracy changes in response to pruning training data through random and influence-score-based sampling. We then stress-test one of the scores \u2013 \u201cvariance of gradients\" (VoG) from Agarwal and Hooker (2022) \u2013 in an NLU model stack that was exposed to dynamic user speech patterns in a voice assistant type of setting. Our experiments demonstrate that in many cases, encoder-based language models can be finetuned on roughly 50% of the original data without degradation in performance metrics. Along the way, we summarize lessons learned from applying out-of-the-box implementations of influence scores, quantify the effects of noisy and class-imbalanced data, and offer recommendations on score-based sampling for better accuracy and training efficiency.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Nikhil Anand"
+        },
+        {
+            "affiliations": [],
+            "name": "Joshua Tan"
+        },
+        {
+            "affiliations": [],
+            "name": "Maria Minakova"
+        }
+    ],
+    "id": "SP:a38444a982e66928421b0b8321d42fc1bd003e47",
+    "references": [
+        {
+            "authors": [
+                "Amro Abbas",
+                "Kushal Tirumala",
+                "Daniel Simig",
+                "Surya Ganguli",
+                "Ari S. Morcos."
+            ],
+            "title": "Semdedup: Dataefficient learning at web-scale through semantic deduplication",
+            "venue": "CoRR, abs/2303.09540.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chirag Agarwal",
+                "Daniel D\u2019souza",
+                "Sara Hooker"
+            ],
+            "title": "Estimating example difficulty using variance of gradients",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chirag Agarwal",
+                "Sara Hooker."
+            ],
+            "title": "Estimating example difficulty using variance of gradients",
+            "venue": "2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 10358\u201310368.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Robert J.N. Baldock",
+                "Hartmut Maennel",
+                "Behnam Neyshabur."
+            ],
+            "title": "Deep learning through the lens of example difficulty",
+            "venue": "Advances in Neural Information Processing Systems 34: Annual Conference on Neural Information Processing Systems 2021,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jacob Bien",
+                "Robert Tibshirani."
+            ],
+            "title": "Prototype selection for interpretable classification",
+            "venue": "The Annals of Applied Statistics, 5(4):2403 \u2013 2424.",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Samuel R. Bowman",
+                "Gabor Angeli",
+                "Christopher Potts",
+                "Christopher D. Manning."
+            ],
+            "title": "A large annotated corpus for learning natural language inference",
+            "venue": "Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing (EMNLP).",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ronan Le Bras",
+                "Swabha Swayamdipta",
+                "Chandra Bhagavatula",
+                "Rowan Zellers",
+                "Matthew E. Peters",
+                "Ashish Sabharwal",
+                "Yejin Choi."
+            ],
+            "title": "Adversarial filters of dataset biases",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, ICML",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Erion \u00c7ano",
+                "Ond\u0159ej Bojar."
+            ],
+            "title": "Efficiency metrics for data-driven models: A text summarization case study",
+            "venue": "Proceedings of the 12th International Conference on Natural Language Generation, pages 229\u2013239, Tokyo, Japan. Association for Computa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nicholas Carlini",
+                "\u00dalfar Erlingsson",
+                "Nicolas Papernot."
+            ],
+            "title": "Distribution density, tails, and outliers in machine learning: Metrics and applications",
+            "venue": "CoRR, abs/1910.13427.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Cody Coleman",
+                "Christopher Yeh",
+                "Stephen Mussmann",
+                "Baharan Mirzasoleiman",
+                "Peter Bailis",
+                "Percy Liang",
+                "Jure Leskovec",
+                "Matei Zaharia."
+            ],
+            "title": "Selection via proxy: Efficient data selection for deep learning",
+            "venue": "8th International Conference on Learning Repre-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kawin Ethayarajh",
+                "Yejin Choi",
+                "Swabha Swayamdipta."
+            ],
+            "title": "Understanding dataset difficulty with V-usable information",
+            "venue": "Proceedings of the 39th International Conference on Machine Learning, volume 162 of Proceedings of Machine",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mohsen Fayyaz",
+                "Ehsan Aghazadeh",
+                "Ali Modarressi",
+                "Mohammad Taher Pilehvar",
+                "Yadollah Yaghoobzadeh",
+                "Samira Ebrahimi Kahou."
+            ],
+            "title": "BERT on a data diet: Finding important examples by gradient-based pruning",
+            "venue": "CoRR, abs/2211.05610.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Vitaly Feldman",
+                "Chiyuan Zhang."
+            ],
+            "title": "What neural networks memorize and why: Discovering the long tail via influence estimation",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Processing Systems 2020,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Garima",
+                "Frederick Liu",
+                "Satyen Kale",
+                "Mukund Sundararajan."
+            ],
+            "title": "Estimating training data influence by tracing gradient descent",
+            "venue": "Proceedings of the 34th International Conference on Neural Information Processing Systems, NIPS\u201920, Red Hook, NY, USA.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Guy Hacohen",
+                "Leshem Choshen",
+                "Daphna Weinshall."
+            ],
+            "title": "Let\u2019s agree to agree: Neural networks share classification order on real datasets",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, ICML 2020, 13-18 July 2020, Vir-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sariel Har-Peled",
+                "Akash Kushal."
+            ],
+            "title": "Smaller coresets for k-median and k-means clustering",
+            "venue": "Discret. Comput. Geom., 37(1):3\u201319.",
+            "year": 2007
+        },
+        {
+            "authors": [
+                "Satoshi Hara",
+                "Atsushi Nitanda",
+                "Takanori Maehara."
+            ],
+            "title": "Data cleansing for models trained with SGD",
+            "venue": "Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, NeurIPS 2019, December",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Geoffrey E Hinton",
+                "Sam Roweis."
+            ],
+            "title": "Stochastic neighbor embedding",
+            "venue": "Advances in Neural Information Processing Systems, volume 15. MIT Press.",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Damoc",
+                "Aurelia Guy",
+                "Simon Osindero",
+                "Karen Simonyan",
+                "Erich Elsen",
+                "Jack W. Rae",
+                "Oriol Vinyals",
+                "Laurent Sifre."
+            ],
+            "title": "Training compute-optimal large language models",
+            "venue": "CoRR, abs/2203.15556.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sara Hooker",
+                "Aaron Courville",
+                "Gregory Clark",
+                "Yann Dauphin",
+                "Andrea Frome"
+            ],
+            "title": "What do compressed deep neural networks forget",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Myunggwon Hwang",
+                "Yuna Jeong",
+                "Won-Kyung Sung."
+            ],
+            "title": "Data distribution search to select coreset for machine learning",
+            "venue": "SMA 2020: The 9th International Conference on Smart Media and Applications, Jeju, Republic of Korea, September 17 - 19,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Angela H. Jiang",
+                "Daniel L.-K. Wong",
+                "Giulio Zhou",
+                "David G. Andersen",
+                "Jeffrey Dean",
+                "Gregory R. Ganger",
+                "Gauri Joshi",
+                "Michael Kaminsky",
+                "Michael Kozuch",
+                "Zachary C. Lipton",
+                "Padmanabhan Pillai"
+            ],
+            "title": "Accelerating deep learning",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Shaojie Jiang",
+                "Thomas Wolf",
+                "Christof Monz",
+                "Maarten de Rijke."
+            ],
+            "title": "TLDR: token loss dynamic reweighting for reducing repetitive utterance generation",
+            "venue": "CoRR, abs/2003.11963.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jared Kaplan",
+                "Sam McCandlish",
+                "Tom Henighan",
+                "Tom B. Brown",
+                "Benjamin Chess",
+                "Rewon Child",
+                "Scott Gray",
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Dario Amodei."
+            ],
+            "title": "Scaling laws for neural language models",
+            "venue": "CoRR, abs/2001.08361.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Been Kim",
+                "Cynthia Rudin",
+                "Julie A. Shah."
+            ],
+            "title": "The bayesian case model: A generative approach for case-based reasoning and prototype classification",
+            "venue": "Advances in Neural Information Processing Systems 27: Annual Conference on Neural Informa-",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Pang Wei Koh",
+                "Percy Liang."
+            ],
+            "title": "Understanding black-box predictions via influence functions",
+            "venue": "Proceedings of the 34th International Conference on Machine Learning, ICML 2017, Sydney, NSW, Australia, 6-11 August 2017, volume 70 of Proceedings",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Futong Liu",
+                "Tao Lin",
+                "Martin Jaggi."
+            ],
+            "title": "Understanding memorization from the perspective of optimization via efficient influence estimation",
+            "venue": "CoRR, abs/2112.08798.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Scott M. Lundberg",
+                "Su-In Lee."
+            ],
+            "title": "A unified approach to interpreting model predictions",
+            "venue": "Advances in Neural Information Processing Systems 30: Annual Conference on Neural Information Processing Systems 2017, December 4-9, 2017, Long Beach,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Max Marion",
+                "Ahmet \u00dcst\u00fcn",
+                "Luiza Pozzobon",
+                "Alex Wang",
+                "Marzieh Fadaee",
+                "Sara Hooker"
+            ],
+            "title": "When less is more: Investigating data pruning for pretraining llms at scale",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kristof Meding",
+                "Luca M. Schulze Buschoff",
+                "Robert Geirhos",
+                "Felix A. Wichmann."
+            ],
+            "title": "Trivial or impossible \u2014 dichotomous data difficulty masks model differences (on imagenet and beyond)",
+            "venue": "The Tenth International Conference on Learning Representa-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mansheej Paul",
+                "Surya Ganguli",
+                "Gintare Karolina Dziugaite."
+            ],
+            "title": "Deep learning on a data diet: Finding important examples early in training",
+            "venue": "Advances in Neural Information Processing Systems, volume 34, pages 20596\u201320607. Curran Associates,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Geoff Pleiss",
+                "Tianyi Zhang",
+                "Ethan R. Elenberg",
+                "Kilian Q. Weinberger."
+            ],
+            "title": "Identifying mislabeled data using the area under the margin ranking",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Process-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Geoff Pleiss",
+                "Tianyi Zhang",
+                "Ethan R. Elenberg",
+                "Kilian Q. Weinberger."
+            ],
+            "title": "Identifying mislabeled data using the area under the margin ranking",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Process-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "J. Mach. Learn. Res., 21:140:1\u2013140:67.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mengye Ren",
+                "Wenyuan Zeng",
+                "Bin Yang",
+                "Raquel Urtasun."
+            ],
+            "title": "Learning to reweight examples for robust deep learning",
+            "venue": "Proceedings of the 35th International Conference on Machine Learning, ICML 2018, Stockholmsm\u00e4ssan, Stockholm, Sweden, July",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Krishnateja Killamsetty",
+                "Sumit Bhatia",
+                "Milan Aggarwal",
+                "Ganesh Ramakrishnan",
+                "Rishabh Iyer",
+                "Balaji Krishnamurthy"
+            ],
+            "title": "Ingenious: Using informative data subsets for efficient pre-training of large language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Marco T\u00falio Ribeiro",
+                "Sameer Singh",
+                "Carlos Guestrin."
+            ],
+            "title": "why should I trust you?\": Explaining the predictions of any classifier",
+            "venue": "Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, San Fran-",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Shoaib Ahmed Siddiqui",
+                "Nitarshan Rajkumar",
+                "Tegan Maharaj",
+                "David Krueger",
+                "Sara Hooker."
+            ],
+            "title": "Metadata archaeology: Unearthing data subsets by leveraging training dynamics",
+            "venue": "CoRR, abs/2209.10015.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yan Song",
+                "Prescott Klassen",
+                "Fei Xia",
+                "Chunyu Kit."
+            ],
+            "title": "Entropy-based training data selection for domain adaptation",
+            "venue": "COLING 2012, 24th International Conference on Computational Linguistics, Proceedings of the Conference: Posters, 8-15 December",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Ben Sorscher",
+                "Robert Geirhos",
+                "Shashank Shekhar",
+                "Surya Ganguli",
+                "Ari S. Morcos."
+            ],
+            "title": "Beyond neural scaling laws: beating power law scaling via data pruning",
+            "venue": "CoRR, abs/2206.14486.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiawei Su",
+                "Danilo Vasconcellos Vargas",
+                "Kouichi Sakurai."
+            ],
+            "title": "One pixel attack for fooling deep neural networks",
+            "venue": "IEEE Trans. Evol. Comput., 23(5):828\u2013 841.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Mukund Sundararajan",
+                "Ankur Taly",
+                "Qiqi Yan."
+            ],
+            "title": "Axiomatic attribution for deep networks",
+            "venue": "Proceedings of the 34th International Conference on Machine Learning, ICML 2017, Sydney, NSW, Australia, 6-11 August 2017, volume 70 of Proceedings of Machine",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Swabha Swayamdipta",
+                "Roy Schwartz",
+                "Nicholas Lourie",
+                "Yizhong Wang",
+                "Hannaneh Hajishirzi",
+                "Noah A. Smith",
+                "Yejin Choi."
+            ],
+            "title": "Dataset cartography: Mapping and diagnosing datasets with training dynamics",
+            "venue": "Proceedings of the 2020 Conference on Empirical",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mariya Toneva",
+                "Alessandro Sordoni",
+                "Remi Tachet des Combes",
+                "Adam Trischler",
+                "Yoshua Bengio",
+                "Geoffrey J. Gordon."
+            ],
+            "title": "An empirical study of example forgetting during deep neural network learning",
+            "venue": "International Conference on Learning Representa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Iulia Turc",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Well-read students learn better: The impact of student initialization on knowledge distillation",
+            "venue": "CoRR, abs/1908.08962.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Xiaoxia Wu",
+                "Ethan Dyer",
+                "Behnam Neyshabur."
+            ],
+            "title": "When do curricula work? In 9th International Conference on Learning Representations, ICLR 2021, Virtual Event, Austria, May 3-7, 2021",
+            "venue": "OpenReview.net.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chih-Kuan Yeh",
+                "Joon Sik Kim",
+                "Ian En-Hsu Yen",
+                "Pradeep Ravikumar."
+            ],
+            "title": "Representer point selection for explaining deep neural networks",
+            "venue": "Advances in Neural Information Processing Systems 31: Annual Conference on Neural Information Pro-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Swayamdipta"
+            ],
+            "title": "2020) for a nice review",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Coleman"
+            ],
+            "title": "2020) to score examples. A different approach taken by several works is to identify certain types of examples such as prototypical examples that match human expectations (Kim et",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "amples (Liu"
+            ],
+            "title": "2021), or outliers and tails in distributions (Carlini et al., 2019)",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Toneva"
+            ],
+            "title": "2019), this measurement was done at the batch-level granularity \u2013 that is, forgetting scores were updated each time the example was seen in the minibatch",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "text": "In this paper, we explore the applicability of influence scores in language classification tasks. We evaluate a diverse subset of these scores on the SNLI dataset by quantifying accuracy changes in response to pruning training data through random and influence-score-based sampling. We then stress-test one of the scores \u2013 \u201cvariance of gradients\" (VoG) from Agarwal and Hooker (2022) \u2013 in an NLU model stack that was exposed to dynamic user speech patterns in a voice assistant type of setting. Our experiments demonstrate that in many cases, encoder-based language models can be finetuned on roughly 50% of the original data without degradation in performance metrics. Along the way, we summarize lessons learned from applying out-of-the-box implementations of influence scores, quantify the effects of noisy and class-imbalanced data, and offer recommendations on score-based sampling for better accuracy and training efficiency."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "A salient challenge in training transformer-based models is selecting which examples are most important for learning. Understanding the relative importance of training examples towards model\n\u2217These authors contributed equally, correspondence: nkhlanan@amazon.com, jshtan@amazon.com.\nperformance can inform data selection strategies that minimize customer privacy risks associated with the collection of training data, estimate the impact of the removal of copyrighted or sensitive data, determine mixing strategies to augment monolingual and multilingual datasets to improve accuracy, and identify defective subsets of data. At the same time, in cases where it is desirable to train on as much data as possible \u2013 such as large language models \u2013 determining the influence of different data instances (both contextually and during pretraining) can help identify failure modes at the level of specific tokens (Grosse et al., 2023), determine the impact of removal of intellectual property, and significantly reduce costs through more efficient model training (Renduchintala et al., 2023).\nA growing body of literature in the science of deep learning aims to capture this hierarchy of example importance and has led to a proliferation of a number of \"difficulty\" or \"influence\" scores (e.g., Paul et al. (2021); Agarwal and Hooker (2022); Toneva et al. (2019); Ethayarajh et al. (2022); Garima et al. (2020); Sorscher et al. (2022); Swayamdipta et al. (2020); see App. A for a more complete review). These scores use various training artifacts, such as the margin of confidence or the variance of loss gradients, to rank the relative contribution of each example to model performance. This ranking of examples can then be used in many downstream tasks that require intelligent data selection, such as pruning datasets while maintaining or even improving model accuracy (Paul et al., 2021; Sorscher et al., 2022; Marion et al., 2023); identifying outliers and misannotations in labeled data (Garima et al., 2020; Ethayarajh et al., 2022; Pleiss et al., 2020a; Carlini et al., 2019; Feldman and Zhang, 2020); or reweighting/reordering training examples to increase model robustness (Ren et al., 2018; Wu et al., 2021).\nApart from a few notable exceptions (Swayamdipta et al., 2020; Ethayarajh et al.,\n2022; Marion et al., 2023), influence scores have primarily been developed and demonstrated in the context of image classification, and relatively little is known about their efficacy in downstream language-based tasks.1 The application of these scores to data selection is further complicated by the fact that during fine-tuning, modern ML systems often ingest a vast amount of data that come from multiple sources, such as synthetic, weak signal,2 live customer data, and humanannotated. Beyond quantifying the efficacy of influence scores in this highly mixed data setting, there is an operational question of the existence of a simple, scalable influence score that can be easily accommodated in a production workflow.\nIn this work, we take a first pass at answering these questions. First, we benchmark a subset of influence scores on the SNLI dataset (Bowman et al., 2015) in the downstream task of data reduction using a pretrained BERT model (Devlin et al., 2019). Given the task of pruning a language dataset for fine-tuning, are influence scores useful signals for determining optimal data selection strategies? If so, which scores work best? We evaluate these scores against a random sampling baseline, in both noisy and clean data settings.\nUser speech patterns are constantly evolving due to current events as well as user-system interactions that can be difficult to anticipate. Are influence scores still effective in surfacing data critical for model performance in this dynamic setting? To answer this question, we build upon on our initial findings on SNLI and implement one influence score (\"variance of gradients\" or \"VoG\", first presented in Agarwal et al. (2022)) in a generic, large-scale NLU model stack commonly found in commercial voice assistants. We present results for existing in-house test data as well as results for a live user study in which we leveraged VoG scores for the purpose of substantially reducing training data without incurring model-performance degradation.\nAmong the five influence scores we evaluated on SNLI, most out-of-the-box implementations do not beat a baseline of randomly pruning the dataset. The implementations can be improved to do better than the random-pruning baseline, but this typically\n1Large language models such as GPT-3 and T5 do implement some basic data mixing strategies (Brown et al., 2020; Raffel et al., 2020). Our focus here, however, is the setting of using a pretrained model in a downstream task.\n2For example, data not associated with customer interruptions in online traffic, which are then pseudo-annotated with labels according to the top model hypothesis.\nrequires careful experimentation to tune hyperparameters specific to each score. Out of the scores we tested, we find that VoG performs best relative to the random-pruning baseline, particularly at large pruning fractions. Test accuracy is mostly maintained after pruning \u223c45% of the SNLI training data using VoG scores calculated in a \u201cone-shot\u201d fashion, i.e. from a single training run, without any score hyperparameter tuning.\nIn a large-scale user study performed using the NLU stack, we find that sampling by VoG scores is effective at surfacing training data that is particularly efficient for learning. We prune roughly 50% of training data without incurring statistically significant regressions in key metrics that track NLU errors, relative to a baseline model trained with all data."
+        },
+        {
+            "heading": "2 Experiments on SNLI",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Selection of influence scores",
+            "text": "We considered five different influence scores (described in Table 1) to benchmark in data-reduction tasks on SNLI (Bowman et al., 2015), based on the following criteria: first, they should not require extensive computational resources to implement. For example, the score should not require extensive ensemble averaging by training many (\u226b 1) copies of \u201creplicate\u201d models to refine the influence measurement of any particular example since many production models can only be trained once in operational workflows.3 Second, the scores should have a natural definition in language models. This excluded some scores that were originally defined in the context of computer vision, such as inputpixel perturbation (Su et al., 2019). We report the implementation details of these scores in App. B.1. Our experiments on SNLI are run on BERTSMALL (L = 4, H = 512, 29.1M parameters), but we comment on the effects of model size in App. B.3."
+        },
+        {
+            "heading": "2.2 Experimental Setup",
+            "text": "We ran two sets of data-pruning experiments on SNLI to understand the effectiveness of pruning based on the influence scores in Table 1.\nIn Section 2.3, we describe data-pruning experiments on the original SNLI dataset. First, we generated the influence scores in Table 1 for the entire\n3We report on the results of scores that require a moderate O(1) number of re-runs such as EL2N (Paul et al., 2021), but our main motivation is to determine if there are influence scores that can be used in a \u201cone-shot\u201d setting, using only training artifacts generated from a single run.\nSNLI training data. We then pruned the training data by using the scores to sample either \u201ceasy\u201d or \u201chard\u201d examples,4 and measured test accuracy for a model trained on the reduced dataset. We compared these score-sampling pruning results to pruning by random sampling. We defer details of the implementation of influence scores and additional findings to App. B.1, but note here that we consider two normalization schemes for VoG scores: classnormalization5, where the scores are normalized with respect to the mean and standard deviation of each class, and dataset-normalization, with respect to the full training dataset.\nResults on a relatively clean public dataset like SNLI may not always translate to results on large, commercial datasets that are noisier and highly class-imbalanced. In Section 2.4, we address this concern by running similar pruning experiments on SNLI with increasing levels of randomly generated label noise.6 We then computed VoG, TracIn, and PVI scores7, pruned easy/hard examples based on those scores, and compared test accuracy to a random sampling baseline.\n4We use the terminology \u201ceasy\u201d and \u201chard\u201d for pedagogical reasons. Strictly speaking, we are running data-pruning experiments where examples are sampled from either the head or tail of the score distributions. Frequently, these examples do correspond to what a human would find easy and hard, respectively, but we clarify in Section 2.3 when they do not.\n5As originally prescribed in Agarwal and Hooker (2022). 6Details about the label noise are given in App. B.6. 7These scores were chosen in the noisy label setting due\nto their reported efficacy in surfacing defective data."
+        },
+        {
+            "heading": "2.3 Results on SNLI",
+            "text": "Fig. 1 shows test accuracy at the end of training as a function of percent data pruned for each of the five score-based pruning strategies.\nGeneral Findings: For most scores, we found that pruning the hardest examples resulted in models with poorer test accuracy compared to pruning the easiest examples. This supports the findings of Sorscher et al. (2022), which hypothesized that hard examples contain critical information about the decision boundaries of classes in larger, less noisy datasets. We also find that out-of-the-box implementations of influence scores \u2013 with the exception of VoG \u2013 do not result in test accuracy higher than the random sampling baseline without score hyperparameter tuning. For example, for EL2N scores, it is crucial that the scores are computed early during fine-tuning for best results. We explored different implementations and chose those that gave best results for data pruning, while adhering to the criteria listed in Sec. 2.1.\nVoG: Remarkably, VoG required only a single model training run and no hyperparameter tuning. At 45% of training data removed, pruning classnormalized VoG-easy examples led to a test accuracy of 85.04\u00b10.20%, compared to 85.52\u00b10.14% with all of the data. At smaller pruning fractions (\u227210%), performance is roughly within the margin of error of sampling randomly. We find that sampling dataset-normalized scores generally performs worse than class-normalized (84.60\u00b11.50% at 45% easy pruned), which is due to the overrepresentation of the \u201ccontradiction\u201d class (Fig. 2) in the tail. We will revisit the merits of class versus dataset normalization in Sec 3.\nEL2N: Best results were obtained by computing EL2N scores early in training; we found epoch \u223c 2 outperformed the random pruning baseline for small to moderate pruning fractions (between 0-25%), but worse beyond that.\nEL2N is a margin-based metric, which means that examples drawn from the tail of the EL2N distribution should lie close to the decision boundary between classes (Paul et al., 2021; Sorscher et al., 2022). If that is true, then removing these examples should dissolve the decision boundary between different classes, and account for the drop in test accuracy. We provide some evidence for this in App. B.4 by clustering the t-SNE (Hinton and Roweis, 2002) encoder representations of the training and test data, before and after pruning EL2N-\nhard train data.\nPVI: We found that beyond a small fraction (5-10%) of data pruned, pruning by PVI scores generally did not outperform random pruning.8 Although manual inspection of the top negativescoring PVI examples showed that this score was effective at finding several misannotated examples in SNLI (see App. B.5), the number of such misannotations was quite small, and beyond a certain pruning fraction, the test accuracy fell off rapidly9.\n8Sampling examples from the head of the PVI score distribution corresponds to \u201chard\u201d or potentially misannotated examples, while the tail corresponds to \u201ceasier\u201d examples.\n9While outside the scope of this work, the explicit dependence on the model inductive bias through the \u201cnull model\" in the definition of PVI suggests that it may be more effective at\nForgetting Scores: We observe consistent improvements over the random sampling baseline when pruning the least forgotten examples, with a test accuracy of 84.58\u00b10.02% at 45% data pruned. However, due to the rapid convergence of finetuning (resulting in most examples having zero forgetting score), forgetting events for the entire training set had to be logged at a high cadence (once every 50 training steps), making it challenging to apply in a production setting.\nTracIn: Pruning up to \u223c 30% of training data by TracIn scores led to consistent improvement over training on randomly pruned data. Similar to pruning EL2N-hard examples, pruning TracIn-hard examples dissolves the decision boundary between classes. The similarity index10 of the top 5% of hard examples for these two scores is 0.37 (versus 0.11 for random sampling), indicating they are roughly sampling the same difficult examples."
+        },
+        {
+            "heading": "2.4 Results on SNLI with Added Label Noise",
+            "text": "Fig. 3 shows the results of our noisy data reduction experiment, where the amount of isotropic label noise was varied from five to 30 percent. We observed that pruning VoG-easy examples outperformed the random-pruning baseline in all of the\niterative pruning, rather than single-shot pruning where scores are computed only once for the model trained on all data.\n10Given by the Jaccard index for two sets A and B: |A\u2229B||A\u222aB| .\nnoisy settings, for large pruning fractions. In some cases, pruning based on VoG scores even clawed back a fraction of the initial accuracy loss due to noisy labels. However, somewhat surprisingly, this was likely not because VoG-based selection was pruning the misannotated examples themselves. The similarity index between the easiest VoG examples and all of the introduced misannotated examples in the 30% label-noise setting was only\u2248 0.11. Compared to random sampling (\u2248 0.11), we conclude that VoG does not do better than random chance at finding misannotated SNLI examples, but does reliably extract more influential examples that partially mitigate the effects of label noise. In all noisy settings, we found that pruning VoG-hard examples did worse than pruning randomly.\nPruning by TracIn and PVI scores resulted in a small but persistent accuracy increase when \u223c 5- 10% of the hard data was pruned. In the 30% noise setting, the similarity index between the TracInhard and PVI-hard examples and misannotated examples was \u2248 0.11, 0.09, respectively, again indicating that the accuracy gains are not due to the removal of defects. The number of instances with a PVI score of < 0 (indicating a potential misannotation) comprises only 6% of the mislabeled data. Nevertheless, it appears beneficial to use these scores to prune 5-10% of overall hard data that adversely impacts training in a noisy setting."
+        },
+        {
+            "heading": "3 VoG in the Context of NLU",
+            "text": "Given its promising results for data reduction on SNLI, we set out to evaluate VoG in an environment\ntypically found in large, general-purpose commercial voice assistants. This setting poses practical challenges often not reflected in public datasets, such as noisy and evolving speech patterns, diverse vocabularies, dialects, carrier phrases, and out-of-distribution named entities. As an added challenge, we focus on Japanese-data trained models and datasets to determine if VoG-based influence scoring could function in a lower-resource setting. The statistical-model component in this setting consisted of generic domain classifier (DC), intent classifier (IC), and named entity recognition (NER) models organized in a coupled, hierarchical manner: a single multi-class DC model is trained on all domains\u2019 data to first predict the domain for a given utterance, which then invokes a domainspecific joint IC-NER model trained on in-domain data11. Both sets of models were based on distilled Japanese BERT models and VoG scores were computed using the procedure given in App. B.1.\nFig. 4 shows the class-normalized scores for a subset of five domains that differ in the proportion of the overall training data they represent and intentlabel complexity12 within that domain. We observe that smaller domains tend to have higher scores (e.g., HealthAndFitness vs. HomeAutomation) and more complex domains tend to have higher scores (Shopping vs. Video). In some cases, domains that are similar in size and complexity still exhibit different VoG score distributions (Music vs. Video) which reflects differing influence of domain data\n11See App. C.1 for additional context. 12As measured by Shannon entropy; see App. C.6.\ndue to factors that cannot be easily discerned without extensive manual analysis.13"
+        },
+        {
+            "heading": "3.1 Experiment Setup",
+            "text": "Here we describe in-house experiments which leverage VoG scores for frugal data selection. We present evaluation results on both existing internal data and live user interaction data to determine the impact of pruning training data. In both sets of experiments, models were trained and evaluated on de-identified, historical user data.\nSampling Technique: We benchmarked VoGbased data sampling against random sampling and stratified sampling.14 In stratified sampling, we sample utterances randomly while preserving the domain distribution of the training data. Fig. 5 shows the relative reduction of a few domains\u2019 training data when pruning using different sampling techniques. Sampling by dataset-normalized VoG scores led to highly non-uniform reductions, as expected since those scores reflect data influence with respect to all domains\u2019 training data.\nFor VoG-based sampling, we used a probabilistic method where the sampling likelihood was proportional to the score (see App. C.3 for details). This results in higher likelihood of pruning training data with scores located near the head (low-score portion) of the VoG distribution. We computed scores using training checkpoints of a baseline model and used those scores as sampling weights to create a new pruned training dataset used for the candidate model.\n13We include additional domain-level analysis in App. C.4. 14In each case, sampling was performed without replace-\nment.\nExperiments on De-identified Historical Data: We compared the performance of models trained on the complete de-identified historical training data versus on a reduced subset of it. The sampled data was used for fine-tuning of the DC model and the in-domain subset of that sample was used for fine-tuning IC-NER stat models. Each model was trained for the same number of epochs without early stopping.\nDue to the non-deterministic nature of probabilistic sampling, we averaged over three random seeds for each sampling technique, trained models on those samples, and report evaluation results.\nThe majority of experiments investigated model performance and efficiency in the context of aggressive reduction of training data (roughly 50%). We performed additional experiments on VoG-based sampling techniques in which we pruned roughly 14% of historical data, in order to understand the impact on model performance when targeting less aggressive data-reduction targets.\nUser Study: In a randomized user study, we investigated the impact of pruning roughly half of the training data. The scaled user study exposes the model to unconstrained human speech, which varies (often dramatically) in carrier phrase frequency, vocabulary, and named entities distribution compared to public datasets, offering a challenging setting to evaluate the efficacy of VoG-based scoring. To ensure that the most frequent user requests are captured, large-scale NLU systems often consist of both statistical models as well as deterministic model artifacts. In addition, although these statistical models are primarily trained on historical data, they also are trained on additional\nin-house synthetic data. Thus, in order to understand how our results might generalize to a production system, we compared composite NLU models containing both statistical and deterministic components, trained on both historical and synthetic data. The total training-data size reduction for the candidate model versus the baseline model was approximately 40%.\nThe user study was performed using an in-house experimentation platform that provided signals of model performance that captured potential degradations to the user experience. Pruning solely by DC VoG scores led to some downstream NER-related regressions for the composite model when evaluated on historical data. Therefore, as an extra precaution, we pruned training data based on a modified version of DC-model VoG scores. We first estimated NER complexity for each intent using the Shannon entropy of slot-label-trail annotations (i.e. all data labeled with a given intent were assigned the same complexity score). The final sampling scores were taken to be the mean of the DC VoG scores and estimated NER complexity scores. For details, see App. C.6.\nThe user study ran for 11 days, with users distributed equally between the baseline and candidate models."
+        },
+        {
+            "heading": "3.2 Experiment Metrics",
+            "text": "In experiments on historical data we measured performance on held-out test data15 in terms of component-wise error rates. We measured domain and intent classification performance using the recall-based classification error rates DCER and ICER.\nTo evaluate slot-filling performance, we measured semantic error rate (SEMER):\nSEMER \u2261 # Intent errors+ # Slot errors # Test data+ # Slots .\nSpecifically, we measured F-SEMER, the harmonic mean of SEMER using predicted labels as the reference and SEMER computed on ground-truth labels as the reference; this score balances precision/recall equally. We also report the interpretation error rate IRER, which reflects the rate of any kind of error (slots, intents, domain). For all error-rate metrics, we report the error rate of the model trained on\n15This evaluation data consisted of roughly 3 million test cases that were sampled from user data and subsequently annotated by humans.\npruned data relative to the model trained on all data:\nRelative ER \u2261 \u2206ER ERno-pruning .\nIt is useful to define a metric that measures accuracy loss per utterance, relative to the no-pruning baseline. We report relative data-score efficiency, originally proposed by \u00c7ano and Bojar (2019):\n\u03c3ER \u2261 \u2206ER/ERno-pruning \u2206d/dno-pruning , (1)\nwhere ERno-pruning and dno-pruning correspond to the error rate and number of training instances for the model trained on all data.16 \u03c3 values express the ratio of relative-change in performance to the relativechange in training data. In our data-pruning setting, \u2206d is negative. More positive values of \u03c3ER indicate less model degradation due to pruning, and a \u03c3ER score of zero indicates no model-performance regression relative to the no-pruning baseline.\nWe analyzed model performance in the user study using two in-house proprietary metrics developed to detect model defects involving user requests:\nPredicted Defect Rate (PDR): PDR is a modelbased metric that uses both the system response and user-provided signals (e.g., whether they interrupted the device response) as features to produce a binary prediction for each request indicating whether that request likely resulted in a userperceived defect. We also report tail-PDR, which is PDR corresponding to the bottom 40% of user traffic. These less common requests are much less likely to be covered by deterministic components.\nUnrecoverable Error Rate (UER): This metric tracks cases where the utterance cannot be acted on. This can happen, e.g., if no domain picks up a request with a high enough confidence threshold, or if there are no clarifying questions that could help to recover from the failure state."
+        },
+        {
+            "heading": "3.3 Results on De-identified Historical Data",
+            "text": "Table 2 shows the results of experiments on deidentified historical data, comparing relative-error and relative data-score efficiency metrics for VoG, random, and stratified sampling. Overall, the best\n16In \u00c7ano and Bojar (2019), the relative data-score efficiency metric \u03c3 was used to evaluate how well model accuracy scaled as the amount of training data was increased. We use use \u03c3 in a slightly different but analogous manner to quantify how well model errors are avoided as the training data is pruned using a given sampling technique.\nperformance for 52%-pruned data was obtained by models trained on VoG-dataset-norm-sampled data, while random sampling was associated with the worst model performance across all evaluation metrics. The stratified-sampling pruning baseline improved over random sampling, particularly with respect to domain-classification accuracy (\u2206DCER of 5.23% for stratified sampling vs. 6.04% for random sampling). In fact, except for \u2206FSEMER and \u2206IRER that track slotting errors, models trained on stratified-sampled data even slightly outperformed models trained on VoG-class-norm-sampled data.\nThe experimental results in Table 2 demonstrate the importance of score normalization: models trained on data pruned by dataset-normalized VoG scores outperformed models trained on data pruned by class-normalized VoG scores across all evaluation metrics we considered, for both pruning percentages. Using class-normalized scores as sampling weights increased overall relative DCER by roughly 1.9x when pruning 52% and by roughly 2.4x when pruning 46%, compared to when sampling from dataset-normalized scores. In App. C.5, we provide a detailed domain-level analysis to understand which data contributed most to the improvement associated with pruning by datasetnormalized VoG scores versus class-normalized.\nTable 2 also shows that the efficiency metric \u03c3 for dataset-normalized VoG-pruning was higher when pruning 46% compared to when pruning 52% or 14%. These findings can be used to help infer appropriate pruning targets for a given training dataset that minimize the need for historical training data without regressing on model performance."
+        },
+        {
+            "heading": "3.4 User Study Results",
+            "text": "Table 3 shows the results of our user study comparing the baseline model to a model trained on\nroughly 50% of historical data.17\nThe reduced-train-data model surprisingly achieved slight statistically significant improvement in overall UER and with no statistically significant change to PDR. We saw a small but statistically significant degradation in PDR-tail, which indicates that this type of aggressive data reduction can lead to regressions for less common requests. We also present a domain-level analysis of these top-line results in App. C.5.\nTaken together, these results suggest that our NLU training data is highly redundant, and that comparable performance can be had by training on an intelligently chosen subset of it. While regressions in per-domain UER and PDR suggest potential downsides of pruning data based solely on DC-model gradients for all statistical models of a hierarchical NLU system, these results nevertheless confirm the overall practical utility of pruning data by VoG scores in commercial settings.\n17As discussed in Section 3.1, the candidate model also included other non-live training data (e.g., synthetic) in model training, which was also the case for the baseline."
+        },
+        {
+            "heading": "4 Discussion",
+            "text": "In this work, we initiated a study of the application of influence scores in efficient language data sampling. First, we benchmarked a diverse subset of influence scores in a data reduction task and found promising results pruning using VoG scores. In the second part, we used these preliminary results on SNLI as impetus to scale VoG up to a model stack commonly used in commercial voice assistants. We provided a detailed account of how score normalization affects final results and again found encouraging results on experiments involving historical data using dataset-normalized VoG scores, as well as in a user study. In particular, we did not see any overall regressions when a model trained only on \u223c50% of historical data was deployed.\nThis work mainly focused on data reduction; it would be interesting to reverse some of the presented analysis for data mixing/augmentation in order to identify economical ways of surfacing new model data. Our work also focused on supervised settings using BERT architectures; an obvious path forward would be to extend the definition of these scores to model pretraining and to, e.g., decoderonly architectures that are commonly used for large language models (see, e.g., Marion et al. (2023) along similar lines). While this may be difficult to implement at a microscopic level for a corpus of pretraining data such as the Common Crawl, one avenue could be to apply this method at a coarsegrained level by grouping together texts by similarity. Given the recent results of Sorscher et al. (2022) and Abbas et al. (2023), this suggests a path towards training data-efficient large language models that could, in principle, outperform empirically observed scaling laws (Kaplan et al., 2020; Hoffmann et al., 2022).\nAnother highly promising application of our results is determining the influence of specific examples in in-context learning. One concrete generalization of VoG scores to this setting would be to look at variance of model weights (e.g., in attention heads) in specific layers over the length of the input sequence. This could provide an interpretable metric for identifying influential contextual examples and failure modes, at the level of specific tokens (Grosse et al. (2023) propose similar methods using influence functions). Given the increased recent interest in this area of research due to concerns over bias, toxicity, and fairness in large language models, there is a critical need for simple, inexpen-\nsive, and empirical metrics that can estimate the the influence of examples to in-context learning. Our work develops the foundational understanding necessary to make progress on that problem by generalizing results from the computer vision field (such as those scores that approximate more computationally expensive influence functions) to language-based tasks."
+        },
+        {
+            "heading": "Limitations",
+            "text": "We hope that our in-house experiments provide a useful data point on the practical utility of influence scores. However, we note that we could not experiment with the same number of sampling techniques or prune sizes as we did in SNLI experiments due to computational overheads, and acknowledge that our in-house results are not readily reproducible. In addition, the customer data available for model training and experimentation changes frequently, e.g. due to data-expiration policies or customer data-deletion requests, which limited our ability to strictly control the training data between all related model-training runs. However, this limitation applied equally to each experimental sampling technique and only impacted the relative training-data reductions for a given pruning fraction by less than 0.01% for all sampling techniques.\nWe also note that the goal of our paper was not to find the absolute, best-performing influence score through extensive score-hyperparameter tuning. It is highly possible, for example, that the benchmarking measurements reported in Fig. 1 can be refined for better accuracy (though we have aimed to provide a thorough documentation in App. B.1 of our initial pass at score-hyperparameter tuning on SNLI). Instead, our results should be taken as a proof-of-concept of the existence \u2013 and applicability \u2013 of a simple, scalable, one-shot influence score in both public and production language data reduction settings.\nFinally, our public data experiments primarily focused on a controlled setting using the SNLI dataset, which may not generalize to other public datasets. To address this, we conducted the scaled user study which exposed the model to unconstrained human speech, which varies (often dramatically) in carrier phrase frequency, vocabulary, named entities distribution and other aspects from publicly available datasets such as SNLI."
+        },
+        {
+            "heading": "Ethics Statement",
+            "text": "Influence-based filtering can have disparate impact on predictions for classes with less annotated data. This can increase the likelihood of training data associated with less frequent language patterns being filtered out, which can increase bias in data that then propagates to the trained model. We have attempted to quantify this bias and correct it through, e.g., dataset-normalization."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "We are grateful for the helpful discussions and feedback provided by Jason Crowley and Kay Rottmann."
+        },
+        {
+            "heading": "A Review of Influence Scores and Related Work",
+            "text": "In this work, we use \u201cinfluence scoring\u201d as a broad term to refer to the large body of scientific literature focused on using artifacts of the learning algorithm \u2013 such as the loss, model confidence, etc. \u2013 to determine the relative importance of specific data instances. Many of these methods can be used to determine influential test examples, in addition to training. This review section should not taken to be comprehensive or exhaustive, but rather as a starting point to delve into subtopics in this area of research. We suggest the \u201cRelated Works\u201d section in Swayamdipta et al. (2020) for a nice review of these methods as well.\nThere are a number of works that aim to use empirically formulated scores to approximate or improve upon influence functions \u2013 formulas that estimate the impact of training examples on test examples (see, e.g., Koh and Liang (2017) and references therein). TracIn (Garima et al., 2020) is one such example. Similarly, there are a number of methods that center around explainability\nand interpretability; e.g., finding representer points by decomposing pre-activation predictions (Yeh et al., 2018), methods that aim to extract feature importance (Sundararajan et al., 2017; Lundberg and Lee, 2017), develop reliable models of predictions (Ribeiro et al., 2016), and capture learning order in neural networks (Hacohen et al., 2020).\nNext, there is a body of literature that broadly includes methods that aim to quantify data quality and difficulty. This includes core-set methods that select an intelligently weighted subset of training data (Hwang et al., 2020; Har-Peled and Kushal, 2007), information-theoretic measures of data quality (Song et al., 2012; Ethayarajh et al., 2022), training dynamics based methods to diagnose and map out datasets (Swayamdipta et al., 2020; Agarwal and Hooker, 2022; Siddiqui et al., 2022), and papers that provide empirical and theoretical definitions of dataset difficulty (Meding et al., 2022; Baldock et al., 2021; Sorscher et al., 2022). Similarly, previous works have used adversarial filters (Bras et al., 2020) and proxy selection methods (Coleman et al., 2020) to score examples. A different approach taken by several works is to identify certain types of examples such as prototypical examples that match human expectations (Kim et al., 2014; Bien and Tibshirani, 2011), memorized examples (Liu et al., 2021), or outliers and tails in distributions (Carlini et al., 2019).\nThere are also several methods that leverage training dynamics to explicitly maintain/improve accuracy and learning efficiency (Hara et al., 2019; Pleiss et al., 2020b; Toneva et al., 2019; Paul et al., 2021; Jiang et al., 2019; Fayyaz et al., 2022; Jiang et al., 2020), and those that quantify bias in compressed models (Hooker et al., 2021).\nIn this paper, we could not exhaustively cover each of these scores, but as outlined in Sec. 2.1, we aimed to select a sufficiently diverse subset that could plausibly scale to a production stack."
+        },
+        {
+            "heading": "B Additional Details about SNLI Experiments",
+            "text": ""
+        },
+        {
+            "heading": "B.1 Score Implementations",
+            "text": "Our implementation for the scores we tested in Table 1 aims to mirror the implementations given in the original references as closely as possible. Our experiments were mainly carried out on BERTSMALL (L = 4, H = 512, 29.1M parameters), trained for 10 epochs (with a batch size of 128) using the Adam optimizer with a learning\nrate of 1 \u00d7 10\u22124 for the encoder and 1 \u00d7 10\u22123 for the classifier head. The classifier head was a three-layer fully connected neural network with an intermediate dimension of 64\u00d764, with 10% probability drop-out. We specify our implementations below for the influence scores:\nVoG: VoG scores were computed adhering closely to the method described in Agarwal and Hooker (2022), with the exception that the input pixels were replaced with the input embeddings. Gradients were computed at the locations of the ground-truth labels. The pseudo-code given in algorithm 1 describes our implementation in full. The computation is split into two steps for clarity: in the first, we compute the gradients of the presoftmax model outputs at the location of ground truth labels with respect to the outputs of the embedding layer, for the desired number of model checkpoints Nc (we used 10). For each example i, these gradients will be of dimension (input_length, embedding_dim), which we denote by G(c)ijk where c is the checkpoint, or in matrix form G(c)i :\nG (c) i =\n\u2202A (c) i \u2202E (c) i , (2)\nwhere A(c)i denotes the pre-softmax model outputs at the location of the ground truth label and E(c)i denotes the embeddings. Next, the VoG score for each example i can be computed by first computing the gradient means and variances across checkpoints:\n\u00b5i = 1\nNc \u2211 checkpoints c G (c) i ,\nV i = 1\u221a Nc (G (c) i \u2212 \u00b5i) 2.\n(3)\nThe (unnormalized) score vi for each example is then given by the mean of V i (that is, we average over the input embeddings, analogous to how the scores were averaged over pixels in Agarwal and Hooker (2022)). The final scores VoGi can be computed by normalizing vi with respect to either the score mean and standard deviation in each class, as originally prescribed in Agarwal and Hooker (2022), or the score mean and standard deviation for the full dataset:\nVoGi = vi \u2212 \u00b5class\n\u03c3class (class-norm),\nVoGi = vi \u2212 \u00b5dset\n\u03c3dset (dataset-norm).\n(4)\nVoG scores were computed in a \u201cone-shot\u201d manner, using gradients logged from a single training run.\nAlgorithm 1 VoG implementation for language data.\nload model m used for training gradients G\u2190 empty dict for checkpoint c in training checkpoints do\nload m\u2190 c set m to inference for batch \u2208 DataLoader do\nx, y \u2190 batch outputs\u2190 m(x) get embedding layer E from m set embeddings to retain grad Y \u2190 one-hot vector encoding of y compute back. pass on outputs w.r.t Y G[c][batch]\u2190 detached gradients of E zero-out model gradients\nend for end for VoG scores v \u2190 empty dict for batch b \u2208 G[\u00b7] do\nfor example i \u2208 batch do V \u2190 Var(G[c][i]) across checkpoints c v[i]\u2190 mean of V\nend for end for return v\nTracIn: TracIn scores were computed using eq. 1 given in Garima et al. (2020), reproduced here for convenience:\nTracIn(z, z\u2032) =\nk\u2211 i=1 \u03b7i\u2207wL(wti , z) \u00b7 \u2207wL(wti , z\u2032). (5)\nThe content of the above equation is that TracIn computes a score for pairs of examples z, z\u2032, such that high (low) scores correspond to proponents (opponents) to z. \u03b7i denotes the learning rates for checkpoints i \u2208 1, . . . , k. Gradients are taken with respect model weights at these checkpoints. In our fine-tuning experiments, the learning rates are constant across checkpoints \u03b7i = \u03b7, and thus enter as an overall factor to the scores that can be normalized away.\nFollowing the original paper, for generating scores for training examples, we compute the self - influence scores i.e. we set z\u2032 = z. It is not tractable to compute the gradients with respect to\nall of the model weights. A key question, then, is which layer the above gradients should be taken with respect to. We experimented with two possibilities: using the last-layer classifier weights and using the last encoder hidden layer. We found that in both clean and noisy SNLI settings, using the encoder hidden state gave more stable and better results for data pruning, relative to the random sampling baseline (this is what was used in Figs. 1 and 3). The final scores were computed from the L2 norm of the gradient dot products in eq. 5. Scores were computed using 10 model checkpoints from a single training run, logged every 500 iterations during training.\nForgetting Scores: Forgetting scores measure the number of times an example moves from being classified correctly to classified incorrectly. A key hyperparameter we had to tune was the cadence at which forgetting events are computed for each training example. In Toneva et al. (2019), this measurement was done at the batch-level granularity \u2013 that is, forgetting scores were updated each time the example was seen in the minibatch. We found that due to the rapid convergence of fine-tuning, this resulted in too many examples having a zero forgetting score. Fig 6 shows the distribution of forgetting scores for two different cadences; we see that the number of zero forgetting events increased by approximately 26% when the scores were computed every 500 iterations as opposed to every 50 iterations. To get enough resolution, we compute forgetting scores for the entire training dataset every 50 training iterations for the first 2 epochs of training, averaged over three random seeds in order to obtain sufficient precision in the head of the score distribution. For future work, it may be best to go to even finer resolution and compute forgetting scores as frequently as possible early in training, e.g., the first dozen iterations in training.\nEL2N: EL2N scores were computed in the manner described in Paul et al. (2021) by the equation:\nEL2N(z) = \u2225softmax[f(z)]\u2212 y\u22252, (6)\nwhere softmax[f(z)] indicates the softmax of the model outputs and y indicates the one-hot encodings of the labels.\nFinal EL2N scores were obtained by averaging scores over 10 training runs. Consistent with the findings of Fayyaz et al. (2022), we found that it is critical that the scores are computed early in\ntraining. We hypothesize that this is due to the rapid convergence of BERT on the training set; after only 6 epochs of training BERTSMALL has nearly memorized the training set (achieving close to 97% accuracy), which results in an EL2N score close to zero for many examples for which the margin is large (i.e. these examples are always learned). This is confirmed in the distribution of EL2N scores seen in Fig. 7, where there is a greater spread in EL2N scores computed at epoch 2 compared to epoch \u223c7. When computed at epoch \u223c7, the standard deviation of the scores corresponding to 50% of the head of the distribution (i.e. the easiest examples) is on the order of 10\u22124. 10\u22122 is roughly the mean standard deviation for individual scores between 10 re-runs, so the precision with which we can measure the score of an individual example is roughly on the order of \u223c 1/ \u221a 10\u00d7 10\u22122 \u226b 10\u22124. This back-of-the-envelope calculation means that in order resolve the easiest examples correctly for scores computed late in training, one would need to average EL2N scores over an increased number of training re-runs.\nPVI: Pointwise V-information (PVI) scores from Ethayarajh et al. (2022) were computed using eq. 4 of their paper, reproduced here:\nPVI(x\u2192 y) = \u2212 log2 f [\u2205](y) + log2 f [x](y). (7) The scores require fine-tuning a \u201cnull\u201d model, denoted by f [\u2205](y) that is trained on empty or null inputs. f [x](y) denotes the model fine-tuned on training data. Both models were trained for 2 epochs (we find that empirically this is approximately when the V-information is maximized18)\n18Interestingly, we also find that at late training times, PVI\nand final scores were obtained from averaging over 10 random seeds. The scores were computed for models trained on all of the data (and subsequent models were trained on pruned data according to those scores). In future work, it would be interesting to consider iterative pruning, where scores are recomputed for models trained on data pruned using the previous models\u2019 scores."
+        },
+        {
+            "heading": "B.2 Probabilistic Sampling vs. Hard Cut-Off in SNLI",
+            "text": "Each influence score provides a ranking of examples that orders their importance. We considered two different strategies for selecting data once the scores are computed: hard cut-off and probabilistic sampling. For the hard cut-off method, we only retain examples with scores above a certain threshold (e.g., to prune 30% of the \u201ceasy\" data, we would prune the 30% of examples corresponding to the head of the score distribution). The probabilistic method relaxes this condition, and each example has a chance of being retained with a probability equal to the softmax of its score. We used the probabilistic sampling method in two cases: first, in sampling from forgetting scores since this was a discrete score with a vast majority of examples sharing an example score of 0. Therefore, setting a hard cut-off would have removed all of these examples. Second, we used probabilistic sampling for dataset-normalized VoG scores, since pruning from the tail with a hard cut-off resulted in too many examples from the \u201centailment\u201d class being removed (see Fig. 2). For our in-house experiments on customer data, we opted for linear probabilistic\nand EL2N scores become correlated. This offers another explanation for why EL2N scores have be to computed early in training \u2013 the amount of usable bits of information decreases over the course of model training.\nsampling instead of softmax sampling (described in Sec. C.3).\nB.3 Impact of Model Size\nWe investigated the effect of model capacity on pruning by VoG-sampling. Fig. 8 shows test accuracy versus percent of SNLI training data pruned, for both (class-normalized) VoG-score sampling and random sampling, for BERTSMALL and BERTBASE (L = 12, H = 768, 110.1M parameters) (Turc et al., 2019). The BERTBASE encoder was trained using the Adam optimizer with a learning rate of 0.9\u00d7 10\u22124, along with a 3-layer classifier head with an intermediate layer dimension of 256 and a learning rate of 0.95\u00d710\u22123, with 10% drop-out probability.\nAside from having a somewhat larger spread in final test accuracy, we see that the rough qualitative effect of the larger architecture is an overall shift in accuracy for each of the sampling methods. At 45% of the data pruned, sampling by VoG-easy on BERTBASE has a test accuracy of 86.70\u00b10.8%, compared to BERTSMALL which had 85.04\u00b10.2%. This provides some encouraging evidence that VoGbased pruning is useful for performance-efficient sampling of training data across different BERT models."
+        },
+        {
+            "heading": "B.4 Encoder Representations of Scored Data",
+            "text": "In our data pruning plots (Fig. 1), we observed a drop in test accuracy when pruning hard examples for most of the influence scores. In Sorscher\net al. (2022), it is hypothesized that this happens because these examples are support vectors critical in forming the decision boundary between classes and removing them does not result in usable representations of the test data. Phrased differently, we have seen that most training examples can be removed without dramatically impacting test accuracy; the converse of this statement is that a small number of training examples have an outsized impact on test accuracy. We can visualize this explanation in the case of EL2N scores, which are explicitly defined to be the marginal distance between the model predictions and the one-hot encoded labels.\nIn Fig. 9, the left subplot shows the t-SNE representation of the SNLI training data, with five percent of the most difficult EL2N examples highlighted in red. The bulk of these difficult examples lies on the decision boundary between entailment and neutral classes. When none of the data is pruned, the center plot shows the t-SNE representation of the SNLI test data, comprised of three well-defined clusters. When the most difficult EL2N examples are removed from the training set, we see that the representation of the test data (rightmost subplot) is comprised of a less defined clusters of roughly uniform density. In particular, the boundary between contradiction and neutral classes almost completely disappears, indicating that the model cannot resolve the differences between the two classes as well as in the no-pruning scenario."
+        },
+        {
+            "heading": "B.5 Score Distributions and Examples in SNLI",
+            "text": "Score distributions for SNLI are shown in Fig. 10. Examples from the head and tail of each of these distributions is given in Tables 11 through 15."
+        },
+        {
+            "heading": "B.6 Noisy Data-Reduction Experiment Details",
+            "text": "For experiments on SNLI with added noise, we chose to experiment using VoG, TracIn, and PVI scores. These were selected because VoG outperformed other metrics in the non-noisy data reduction setting, and TracIn and PVI due to their potential efficacy in identifying misannotated data.\nNoisy versions of the SNLI datasets were created by shuffling of labels in an isotropic manner, which meant there was a chance (roughly 30%) that any given label would not flip. Therefore, the label noise quoted in Fig. 3 should be taken as an upper\nbound to the true number of misannotations19, as quantified in Table 4."
+        },
+        {
+            "heading": "C Additional Details about In-House Experiments",
+            "text": ""
+        },
+        {
+            "heading": "C.1 Overview of Common Commercial NLU Systems",
+            "text": "The natural language understanding (NLU) component of common commercial systems consist of deterministic systems that cover the most critical and frequently occurring utterances (e.g., \u201cstop!\u201d), while other utterances are covered by multiple statistical (\u201cstat\u201d) models organized in a hierarchical fashion. For example, an utterance spoken to a conversational assistant not covered by deterministic artifacts will typically first be classified to an appropriate domain by a BERT-based domain classifier (DC) model, then a specific intent within that domain by intent classifiers (IC) models, followed\n19In historical data, we often do not have an exact count of the misannotations, but only a rough estimate of the overall noise.\nby named entity recognition (NER) to resolve entities (such as city names, times, etc.) within the utterance. Each BERT-based statistical model was trained on spoken-form Japanese data. Our experiments focus on the fine-tuning stage of model training, performed on in-house data.\nIn our experiments we computed VoG scores for the DC model, but we measure the performance impact of doing so for the composite hierarchical model, including the impact on the accuracy of downstream IC and NER models."
+        },
+        {
+            "heading": "C.2 Distribution of Types of Training Data",
+            "text": "Model training data is collated from multiple, varied sources (e.g., synthetic, human-annotated, weak-signal). Data from different sources may have different label-noise distributions and class distributions, which in turn can impact influence scores computed on that data. Table 5 shows the distribution historical and synthetic data in inhouse data.\nIn in-house experiments, training-data pruning was performed on de-identified historical user data. In the experiments on historical data, this was the only training data used; models were fine-tuned\nsolely on user data. In the user study experiments, stat-model training data was performed on historical data as well as additional supplemental data (e.g., resampled, synthetic, etc.).\nThis difference was motivated by practical concerns. For some smaller (e.g. newly introduced, or low traffic) NLU domains, the amount of historical data available for model training was small in size (less than 20 instances). This combined with domain-wise data imbalance led to regression in that subset of domain. That was fine in offline analyses (since it applied to all pruning conditions) but unacceptable for exposure to real users.\nDue to the cost and operational overheads involved with running the user study, we could not try the same number of sampling techniques as we did for the historical data experiments. In our user study, we tested our most promising technique from the historical data experiments, sampling by dataset-normalized VoG scores, and compared relative to the baseline model."
+        },
+        {
+            "heading": "C.3 Filtering Train Data via Score-Weighted Sampling",
+            "text": "Our approach for filtering in-house data based on influence scores used a slightly different approach than the softmax probabilistic sampling described\nin Appendix B.2. The motivation behind this was that we did not have a robust characterization of the noise in our customer data and found that softmax sampling was too aggressive in downsampling easy-to-learn utterances (and perhaps retaining too many noisy, hardto-learn examples). In order to preserve a larger fraction of these easiest utterances, a sampling approach was used where the probability of sampling was directly proportional to the VoG score. This was accomplished by linearly transforming normalized VoG scores VoGnorm (including negative and positive values) to the range [\u03f5, 1]. The positivetransformed scores were them normalized by dividing by the sum of all positive-transformed scores in order to produce sampling probabilities. This type of transformation aims to preserve the relative ratios between old and new values that existed pre-transformation. That is, if the VoG score of Utterance A was twice the VoG score of Utterance B, the sampling probability for Utterance A will be approximately twice the sampling probability for Utterance B.\nFinally, in order to filter training data by sampling scores we first decide on a proportion of data to prune. This in turns determines the number of training examples to sample via weighted random\nsampling without replacement. See Figure 12 for an example of 50% train-data reduction using this method.\nC.4 VoG Distributions on In-House Data: Additional details\nFig. 11 shows the distribution of VoG scores for the subset of historical training data used to train the statistical models, which comprises a majority of the overall training data. Compared to the SNLI VoG distribution in Fig. 2, the VoG distribution of the historical data looks roughly similar, but has more power in the low-scoring, \u201ceasy\u201d bins. While in historical data 72% of class-normalized scores were less than 0, for SNLI only 66% of scores were less than 0.\nFig. 12 shows the distribution of data retained using dataset-normalized VoG scores. Figure 13 shows the VoG distribution using dataset-\nnormalized VoG scores for the same subset of domains shown in Figure 4.\nVoG scores appear to capture more than just the influence of a domain\u2019s data related to the size that domain\u2019s data, but also align with the intuition that training data associated with domains that have more complex domain definitions provide more of a challenge for the model to predict correctly, and that training on these challenging examples is more likely to influence the learned model parameters than training on easy examples would.\nFor example, while HomeAutomation and HealthAndFitness training data are similar in intentlabel diversity (2.3 bits of entropy for both), they differ greatly in training-data representation (12% vs. <1%). Intuitively, we would expect smaller domains such as HealthAndFitness to exhibit higher average VoG scores than larger domains such as HomeAutomation, which we indeed find. The median class-normalized VoG score for HomeAutomation was -0.31 compared to a median of -0.22 for HealthAndFitness). As shown in the top of Fig. 4, a larger proportion of HomeAutomation training instances were associated with negative VoG scores than for HealthAndFitness (roughly 80% vs. 60%).\nWhile Shopping and Video constitute similar proportions of the training data (6% vs 5%), the intent-label distribution for Shopping exhibits greater diversity than the intent-label distribution for Video (2.5 vs. 1.6 bits), indicating a more complex and difficult prediction task. This difference in intent diversity appears to be reflected in classnormalized VoG scores; Shopping scores tend to\nbe higher (more positive) than Video scores (median of -0.30 in Shopping vs. -0.39 in Video). As shown in Fig. 4, VoG scores for Video data were more densely located in the low-scoring, \u201ceasy\u201d region; 37% of Video vs. 32% of Shopping data were associated with VoG scores below -0.5.\nIn some cases, it can be difficult to reason about the relative influence of one domain\u2019s data on a trained model compared to another domain\u2019s data. For example, in our real-world setting, the Music and Video domains capture similar NLU functionality (media playback) and are associated with comparable intent-label entropy estimates (1.5 vs. 1.6 bits). Unlike for HealthAndFitness, both Music and Video out-represent the majority of other domains in the training data (Music is the second largest domain at 18%, while Video is the eighth largest at 6%). In this case, which domain provides redundant or extraneous data not needed in order to maintain model performance? Appeals to intuition may fail us here, but VoG scores can still be helpful. As shown in Fig. 4, we find that Video training data contains a larger proportion of low-influence data instances than Music (37% of Video vs. 2% of Music of VoG scores were less than -0.5), potentially signaling the existence of redundant or duplicate Video training instances.\nVoG-score summary statistics for de-identified historical training data used to train the candidate model are shown in Table 6 (normalized by class) and in Table 7 (by dataset)."
+        },
+        {
+            "heading": "C.5 Domain-Level Analysis of In-House Experiments",
+            "text": "Per-domain offline results from the user study experiment are shown in Table 8. Per-domain user study results are shown in Table 9.\nExperiments on Historical Data: In our experiments on de-identified historical data, increased representation of smaller domains when sampling by dataset-normalized scores translated to improved DC and IC recall. For HealthAndFitness, dataset-norm VoG sampling was associated with \u2206DCER of 4% vs. 29% for class-norm sampling. A primary contributor to improved DC and IC recall were improvements in Video, which under dataset-normalized sampling increased in trainingdata representation by relative 43% but under classnormalized sampling decreased in representation by relative 1%.\nFor domains such as HomeAutomation and Notifications that decreased in representation when sampling by dataset-norm scores, models trained on dataset-normalized VoG scores were associated with improved DC performance and comparable downstream NLU performance compared to classnorm models where those domain\u2019s training-data representation actually increased.\nUser Study: We analyzed the per-domain results to understand which domains/intents contributed to the observed top-level UER and PDR relative changes (Table 9).\nA primary contributor to the observed top-level UER improvement were Video-related requests. Video UER decreased by relative -11.6%. Postexperiment deep dives show that for the VoG model requests that previously were classified as Video were now classified as Music or Knowledge. We saw that Music traffic slightly increased (rel. +1%) without an associated increase in Music UER, suggesting the majority of requests newly interpreted as Music in the VoG model could by served by the Music domain. On the other hand, Music PDR increased by relative 2.6%, which was a primary\ncontributor to the observed increase in top-level PDR. The simultaneous decrease in Music UER but increase in Music PDR suggests that Music domain could provide some kind of interpretation for a request, but that overall those interpretations were associated with a slight increase in defect rate (e.g. defects related to searching for the wrong artist name, or searching for an album rather than an artist).\nThe user-study impact on VoG-based pruning on the performance of individual domains was not solely determined by whether or not a given domain\u2019s representation was increased/decreased in training data. Both HomeAutomation and Notifications increased in their training-data representation (Figure 5), however we observed oppositedirection impacts in metrics for those domains. HomeAutomation was associated with reduced traffic (rel -1.1%), UER (rel. -5.0%), and PDR (- 2.9%); whereas Notifications was associated with increased traffic (rel. 1.2%), UER (rel. 6.6%) and\nPDR (rel. +3.0%)."
+        },
+        {
+            "heading": "C.6 Label-Value-Trail and Intent-Label Entropy",
+            "text": "In the experiment on in-house data, VoG scores were measured with respect to DC model gradients, which can overlook training utterances that are influential especially for training IC-NER models. In order surface training utterances influential for not only DC model but also IC-NER model training, we combined DC Vog scores with slot-label-trail entropy estimates, which provide a coarse-grained intent-level estimate of NER difficulty.\nAs an example, consider the customer request \u201cplay music by Howard Shore please\u201d, which has the annotation \u201cPlay|Other music|Other by|Other Howard|ArtistName Shore|ArtistName please|Other\u201d. We define the slot-label-trail as the sequence of slots labels and non-Other slot-label values for a given annotation. The slot-label-trail for this example would be \u201cOther Other Other Howard|ArtistName Shore|ArtistName Other\u201d. The frequency of each such slot-label-trail found in the training data is used to compute Shannon entropy estimates for each intent, given by:\nHintent(T ) = \u2212 E t\u223cP [log2 P (t)] , (8)\nwhere P (t) is based on label-trail frequencies found in training data, and T is all label trails in a given intent. Eq. 8 is the formula for computing the Shannon entropy of the distribution of annotation-label-value trails in the training data and is computed separately for each domain-intent combination. Since the log is computing using base 2, resulting entropy estimates are measured in units of bits.\nThe intent-label entropy can be calculated at a\ndomain level in a similar manner. These results are summarized in Table 10.\nWe used the same approach to calculating sampling scores from entropy estimates as we did in the case of converting VoG scores to sampling scores. For a given utterance, the final sampling score was the average of the VoG-based and entropy-based sampling scores. weight. In offline tests, we found that this modification to sampling scores helped to slightly improve composite model performance as measured by SEMER (rel. -1.39%) and IRER (rel. -1.5%), which was reflected in per-domain improvements for the largest-traffic Music and Video intents. This came at the expense of a slight increase in Shopping slotting errors on Shopping offline tests (rel. +6.1%)."
+        },
+        {
+            "heading": "Premise Hypothesis Gold Label Score Measurement VoG (class-normalized) Tail (hardest)",
+            "text": ""
+        },
+        {
+            "heading": "Premise Hypothesis Gold Label Score Measurement",
+            "text": ""
+        },
+        {
+            "heading": "Premise Hypothesis Gold Label Score Measurement",
+            "text": ""
+        },
+        {
+            "heading": "Premise Hypothesis Gold Label Score Measurement Forget Scores Tail (hardest)",
+            "text": ""
+        },
+        {
+            "heading": "Premise Hypothesis Gold Label Score Measurement TracIn Scores Tail (hardest)",
+            "text": ""
+        }
+    ],
+    "title": "Influence Scores at Scale for Efficient Language Data Sampling",
+    "year": 2023
+}

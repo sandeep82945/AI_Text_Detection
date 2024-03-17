@@ -1,0 +1,656 @@
+{
+    "abstractText": "How to reduce compute and memory requirements of neural networks (NNs) without sacrificing performance? Many recent works use sparse Mixtures of Experts (MoEs) to build resource-efficient large language models (LMs). Here we introduce several novel perspectives on MoEs, presenting a general framework that unifies various methods to approximate two-layer NNs (e.g., feedforward blocks of Transformers), including productkey memories (PKMs). Leveraging insights from this framework, we propose methods to improve both MoEs and PKMs. Unlike prior work that compares MoEs with dense baselines under the compute-equal condition, our evaluation condition is parameter-equal, which is crucial to properly evaluate LMs. We show that our MoEs are competitive with the dense Transformer-XL on both the WikiText103 and enwiki8 datasets at two different scales, while being much more resource-efficient. This demonstrates that MoEs are relevant not only to extremely large LMs but also to any-scale resource-efficient LMs. Our code is public.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "R\u00f3bert Csord\u00e1s"
+        },
+        {
+            "affiliations": [],
+            "name": "Kazuki Irie"
+        },
+        {
+            "affiliations": [],
+            "name": "J\u00fcrgen Schmidhuber"
+        }
+    ],
+    "id": "SP:ad9e7a8d8ce59f3d48b6cff377fb9ae5c4a9230a",
+    "references": [
+        {
+            "authors": [
+                "Dzmitry Bahdanau",
+                "Kyunghyun Cho",
+                "Yoshua Bengio."
+            ],
+            "title": "Neural machine translation by jointly learning to align and translate",
+            "venue": "Int. Conf. on Learning Representations (ICLR), San Diego, CA, USA.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Tom B Brown"
+            ],
+            "title": "Language models are fewshot learners",
+            "venue": "Proc. Advances in Neural Information Processing Systems (NeurIPS), Virtual only.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jianpeng Cheng",
+                "Li Dong",
+                "Mirella Lapata."
+            ],
+            "title": "Long short-term memory-networks for machine reading",
+            "venue": "Proc. Conf. on Empirical Methods in Natural Language Processing (EMNLP), pages 551\u2013561, Austin, TX, USA.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Zewen Chi",
+                "Li Dong",
+                "Shaohan Huang",
+                "Damai Dai",
+                "Shuming Ma",
+                "Barun Patra",
+                "Saksham Singhal",
+                "Payal Bajaj",
+                "Xia Song",
+                "Xian-Ling Mao",
+                "Heyan Huang",
+                "Furu Wei."
+            ],
+            "title": "On the representation collapse of sparse mixture of experts",
+            "venue": "Proc. Advances in Neu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Albin Cassirer",
+                "Chris Jones",
+                "Elena Buchatskaya",
+                "David Budden",
+                "Laurent Sifre",
+                "Simon Osindero",
+                "Oriol Vinyals",
+                "Marc\u2019Aurelio Ranzato",
+                "Jack W. Rae",
+                "Erich Elsen",
+                "Koray Kavukcuoglu",
+                "Karen Simonyan"
+            ],
+            "title": "Unified scaling laws for routed language",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "R\u00f3bert Csord\u00e1s",
+                "Kazuki Irie",
+                "J\u00fcrgen Schmidhuber."
+            ],
+            "title": "The neural data router: Adaptive control flow in transformers improves systematic generalization",
+            "venue": "Int. Conf. on Learning Representations (ICLR), Virtual only.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zihang Dai",
+                "Zhilin Yang",
+                "Yiming Yang",
+                "Jaime G Carbonell",
+                "Quoc Le",
+                "Ruslan Salakhutdinov."
+            ],
+            "title": "Transformer-XL: Attentive language models beyond a fixed-length context",
+            "venue": "Proc. Association for Computational Linguistics (ACL), pages 2978\u20132988, Flo-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tri Dao",
+                "Daniel Y. Fu",
+                "Stefano Ermon",
+                "Atri Rudra",
+                "Christopher R\u00e9."
+            ],
+            "title": "Flashattention: Fast and memory-efficient exact attention with io-awareness",
+            "venue": "Proc. Advances in Neural Information Processing Systems (NeurIPS), New Orleans, Louisiana, USA.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mostafa Dehghani",
+                "Stephan Gouws",
+                "Oriol Vinyals",
+                "Jakob Uszkoreit",
+                "Lukasz Kaiser."
+            ],
+            "title": "Universal Transformers",
+            "venue": "Int. Conf. on Learning Representations (ICLR), New Orleans, LA, USA.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Llm.int8(): 8-bit matrix multiplication for transformers at scale",
+            "venue": "In Proc. Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Christopher Olah."
+            ],
+            "title": "Toy models of superposition",
+            "venue": "Transformer Circuits Thread.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "William Fedus",
+                "Barret Zoph",
+                "Noam Shazeer."
+            ],
+            "title": "Switch transformers: Scaling to trillion parameter models with simple and efficient sparsity",
+            "venue": "Journal of Machine Learning Research (JMLR), 23(1):5232\u2013 5270.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jerry A Fodor",
+                "Zenon W Pylyshyn."
+            ],
+            "title": "Connectionism and cognitive architecture: A critical analysis",
+            "venue": "Cognition, 28(1-2):3\u201371.",
+            "year": 1988
+        },
+        {
+            "authors": [
+                "Mor Geva",
+                "Roei Schuster",
+                "Jonathan Berant",
+                "Omer Levy."
+            ],
+            "title": "Transformer feed-forward layers are key-value memories",
+            "venue": "Proc. Conf. on Empirical Methods in Natural Language Processing (EMNLP), pages 5484\u20135495, Punta Cana, Dominican Republic.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xavier Glorot",
+                "Yoshua Bengio."
+            ],
+            "title": "Understanding the difficulty of training deep feedforward neural networks",
+            "venue": "Proc. Int. Conf. on Artificial Intelligence and Statistics (AISTATS), pages 249\u2013256, Sardinia, Italy.",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Xiangyu Zhang",
+                "Shaoqing Ren",
+                "Jian Sun."
+            ],
+            "title": "Delving deep into rectifiers: Surpassing human-level performance on imagenet classification",
+            "venue": "Proc. IEEE Int. Conf. on Computer Vision (ICCV), pages 1026\u20131034, Santiago, Chile.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Dieuwke Hupkes",
+                "Verna Dankers",
+                "Mathijs Mul",
+                "Elia Bruni"
+            ],
+            "title": "Compositionality decomposed: How do neural networks generalise",
+            "venue": "Journal of Artificial Intelligence Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kazuki Irie",
+                "Shankar Kumar",
+                "Michael Nirschl",
+                "Hank Liao."
+            ],
+            "title": "RADMM: Recurrent adaptive mixture model with applications to domain robust language modeling",
+            "venue": "Proc. IEEE Int. Conf. on Acoustics, Speech and Signal Processing (ICASSP), pages 6079\u2013",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Robert A. Jacobs",
+                "Michael I. Jordan",
+                "Steven J. Nowlan",
+                "Geoffrey E. Hinton."
+            ],
+            "title": "Adaptive mixtures of local experts",
+            "venue": "Neural Compututaion, 3(1):79\u201387.",
+            "year": 1991
+        },
+        {
+            "authors": [
+                "Angelos Katharopoulos",
+                "Apoorv Vyas",
+                "Nikolaos Pappas",
+                "Fran\u00e7ois Fleuret."
+            ],
+            "title": "Transformers are rnns: Fast autoregressive transformers with linear attention",
+            "venue": "Proc. Int. Conf. on Machine Learning (ICML), volume 119, pages 5156\u20135165, Virtual Only.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Diederik P. Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "Int. Conf. on Learning Representations (ICLR), San Diego, CA, USA.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Wouter Kool",
+                "Chris J Maddison",
+                "Andriy Mnih."
+            ],
+            "title": "Unbiased gradient estimation with balanced assignments for mixtures of experts",
+            "venue": "I (Still) Can\u2019t Believe It\u2019s Not Better Workshop, NeurIPS, Virtual Only.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Taku Kudo",
+                "John Richardson."
+            ],
+            "title": "Sentencepiece: A simple and language independent subword tokenizer and detokenizer for neural text processing",
+            "venue": "Proc. Conf. on Empirical Methods in Natural Language Processing (EMNLP), pages 66\u201371, Brussels,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Guillaume Lample",
+                "Alexandre Sablayrolles",
+                "Marc\u2019Aurelio Ranzato",
+                "Ludovic Denoyer",
+                "Herv\u00e9 J\u00e9gou"
+            ],
+            "title": "Large memory layers with product keys",
+            "venue": "In Proc. Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Dmitry Lepikhin",
+                "HyoukJoong Lee",
+                "Yuanzhong Xu",
+                "Dehao Chen",
+                "Orhan Firat",
+                "Yanping Huang",
+                "Maxim Krikun",
+                "Noam Shazeer",
+                "Zhifeng Chen."
+            ],
+            "title": "Gshard: Scaling giant models with conditional computation and automatic sharding",
+            "venue": "Int. Conf. on",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mike Lewis",
+                "Shruti Bhosale",
+                "Tim Dettmers",
+                "Naman Goyal",
+                "Luke Zettlemoyer."
+            ],
+            "title": "BASE layers: Simplifying training of large, sparse models",
+            "venue": "Proc. Int. Conf. on Machine Learning (ICML), volume 139, pages 6265\u20136274, Virtual only.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Margaret Li",
+                "Suchin Gururangan",
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Tim Althoff",
+                "Noah A Smith",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Branch-train-merge: Embarrassingly parallel training of expert language models",
+            "venue": "Preprint arXiv:2208.03306.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zonglin Li",
+                "Chong You",
+                "Srinadh Bhojanapalli",
+                "Daliang Li",
+                "Ankit Singh Rawat",
+                "Sashank J. Reddi",
+                "Ke Ye",
+                "Felix Chern",
+                "Felix Yu",
+                "Ruiqi Guo",
+                "Sanjiv Kumar."
+            ],
+            "title": "The lazy neuron phenomenon: On emergence of activation sparsity in transformers",
+            "venue": "Int. Conf. on",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Peter Pagin",
+                "Dag Westerst\u00e5hl."
+            ],
+            "title": "Compositionality I: Definitions and variants",
+            "venue": "Philosophy Compass, 5(3):250\u2013264.",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Ankur P. Parikh",
+                "Oscar T\u00e4ckstr\u00f6m",
+                "Dipanjan Das",
+                "Jakob Uszkoreit."
+            ],
+            "title": "A decomposable attention model for natural language inference",
+            "venue": "Proc. Conf. on Empirical Methods in Natural Language Processing (EMNLP), pages 2249\u20132255, Austin, TX, USA.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "jani",
+                "Sasank Chilamkurthy",
+                "Benoit Steiner",
+                "Lu Fang",
+                "Junjie Bai",
+                "Soumith Chintala"
+            ],
+            "title": "Pytorch: An imperative style, high-performance deep learning library",
+            "venue": "In Proc. Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeff Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jeff Stanway",
+                "Lorrayne Bennett",
+                "Demis Hassabis",
+                "Koray Kavukcuoglu",
+                "Geoffrey Irving."
+            ],
+            "title": "Scaling language models: Methods, analysis & insights from training gopher",
+            "venue": "Preprint arXiv:2112.11446.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research (JMLR), 21:140:1\u2013140:67.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Imanol Schlag",
+                "Kazuki Irie",
+                "J\u00fcrgen Schmidhuber."
+            ],
+            "title": "Linear transformers are secretly fast weight programmers",
+            "venue": "Proc. Int. Conf. on Machine Learning (ICML), volume 139, pages 9355\u20139366, Virtual only.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "J\u00fcrgen Schmidhuber."
+            ],
+            "title": "Learning to control fastweight memories: An alternative to recurrent nets",
+            "venue": "Technical Report FKI-147-91, Institut f\u00fcr Informatik, Technische Universit\u00e4t M\u00fcnchen.",
+            "year": 1991
+        },
+        {
+            "authors": [
+                "Rico Sennrich",
+                "Barry Haddow",
+                "Alexandra Birch."
+            ],
+            "title": "Neural machine translation of rare words with subword units",
+            "venue": "Proc. Association for Computational Linguistics (ACL), pages 1715\u20131725, Berlin, Germany.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Noam Shazeer",
+                "Azalia Mirhoseini",
+                "Krzysztof Maziarz",
+                "Andy Davis",
+                "Quoc Le",
+                "Geoffrey Hinton",
+                "Jeff Dean."
+            ],
+            "title": "Outrageously large neural networks: The sparsely-gated mixture-of-experts layer",
+            "venue": "Int. Conf. on Learning Representations (ICLR), Toulon,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Kai Shen",
+                "Junliang Guo",
+                "Xu Tan",
+                "Siliang Tang",
+                "Rui Wang",
+                "Jiang Bian."
+            ],
+            "title": "A study on relu and softmax in transformer",
+            "venue": "Preprint arXiv:2302.06461.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Richard Sinkhorn."
+            ],
+            "title": "A relationship between arbitrary positive matrices and doubly stochastic matrices",
+            "venue": "The annals of mathematical statistics, 35(2):876\u2013 879.",
+            "year": 1964
+        },
+        {
+            "authors": [
+                "Richard Sinkhorn",
+                "Paul Knopp."
+            ],
+            "title": "Concerning nonnegative matrices and doubly stochastic matrices",
+            "venue": "Pacific Journal of Mathematics, 21(2):343\u2013348.",
+            "year": 1967
+        },
+        {
+            "authors": [
+                "Luca Soldaini",
+                "Kyle Lo."
+            ],
+            "title": "peS2o (Pretraining Efficiently on S2ORC) Dataset",
+            "venue": "Technical report, Allen Institute for AI. https://github.com/ allenai/pes2o.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto."
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https:// github.com/tatsu-lab/stanford_alpaca.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Proc. Advances in Neural Information Processing Systems (NIPS), pages 5998\u20136008, Long",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ofir Zafrir",
+                "Guy Boudoukh",
+                "Peter Izsak",
+                "Moshe Wasserblat."
+            ],
+            "title": "Q8BERT: quantized 8bit BERT",
+            "venue": "Workshop on Energy Efficient Machine Learning and Cognitive Computing - NeurIPS, Vancouver, Canada.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhengyan Zhang",
+                "Yankai Lin",
+                "Zhiyuan Liu",
+                "Peng Li",
+                "Maosong Sun",
+                "Jie Zhou."
+            ],
+            "title": "MoEfication: Transformer feed-forward layers are mixtures of experts",
+            "venue": "Proc. Findings of the Association for Computational Linguistics (ACL), pages 877\u2013890, Dublin,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fedus"
+            ],
+            "title": "The other variants, including S-BASE, use the regularizer proposed by us (Eq. 21). Our small PKM models use 46 subkeys resulting in 462 = 2116 values for the dff-matched case",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Despite impressive results recently achieved by large language models (LLMs; Radford et al. (2019); Brown et al. (2020); Rae et al. (2021)), vast resource requirement remains their obvious limitation. In fact, most existing LLMs, such as GPT-3 (Brown et al., 2020), cannot be trained, finetuned or even evaluated without access to enormous compute. Many recent works strive to develop LLMs that, at least, enable inference with limited resources (e.g., on consumer hardware), e.g., by building \u201csmaller\u201d yet capable LMs (Touvron et al., 2023; Taori et al., 2023; Chiang et al., 2023) or developing post-training quantization methods (Zafrir et al., 2019; Dettmers et al., 2022). While these\n\u2020 Work done at IDSIA. 1https://github.com/robertcsordas/moe\nmethods are gaining popularity, a principled solution for resource-efficient neural networks (NNs) remains elusive.\nOne promising approach explored by several recent works on extremely-large LMs is the sparse mixture of experts (MoE; Shazeer et al. (2017); Lewis et al. (2021); Lepikhin et al. (2021); Fedus et al. (2022); Clark et al. (2022); Chi et al. (2022)). Unlike their dense counterparts, MoEs only compute a subset of their activations (i.e, only a few experts) at each step, offering reduced computation and memory costs. However, MoEs are not yet generally adopted as a generic/to-go approach, perhaps because of certain common beliefs on MoEs: (1) They are hard to train (involving complex engineering tricks to prevent collapsing), (2) they are not competitive against their dense counterparts with the same number of parameters (in fact, prior work focuses on FLOP-equal comparison, \u201cunfairly\u201d comparing MoEs against dense baselines with many fewer trainable parameters), and finally, (3) they are reserved for extremely large models (they are rarely/never considered to further improve the efficiency of \u201csmall\u201d models). Indeed, even prior works on MoE-based Transformer LMs only deploy MoEs in a few feedforward blocks; while ideally, all such blocks should benefit from replacement by MoEs. Here we challenge these common beliefs, and propose novel perspectives on MoEs.\nWe present MoEs within a unified framework of methods that approximate two-layer feedforward networks, which includes product-key memories (PKMs; Lample et al. (2019)) and top-k sparsification. This principled view not only allows us to conceptually group and compare MoEs with PKMs, it also provides insights on design choices for improving these methods. Our resulting MoE Transformer variant outperforms our improved PKMs, and performs as well as or even outperforms the dense baseline, while using a fraction of its compute for both training\nand inference. Importantly, unlike prior work, we compare our MoEs with dense baselines with the same number of total trainable parameters, which is crucial for proper evaluation in language modeling. We conduct experiments on the standard WikiText-103 (at two different model scales) and Enwik8 datasets. We demonstrate that MoEs are not limited to extremely-large LMs, but useful as a generic approach for resource-efficient NNs at any scale, and in line with the recent trend of improving \u201csmaller\u201d models (Touvron et al., 2023; Taori et al., 2023; Chiang et al., 2023). Finally, we release a CUDA kernel for our MoE layers which allows for achieving faster wall clock time and large memory reduction compared to the dense model.2"
+        },
+        {
+            "heading": "2 Background",
+            "text": "Transformers (Vaswani et al., 2017) have two main building blocks: the self-attention layer (Parikh et al., 2016; Cheng et al., 2016; Bahdanau et al., 2015), and the two-layer feedforward, i.e, multi-layer perceptron (MLP) block. Acceleration and memory reduction of the self-attention is rather well explored (see, e.g., linear attention dating back to the unnormalised linear Transformers of 1991 (Schmidhuber, 1991; Katharopoulos et al., 2020; Choromanski et al., 2021; Schlag et al., 2021)), and very efficient implementations (Dao et al., 2022) are also available. In constrast, resource-efficient MLP blocks are still underexplored. This is our main focus, and it is of particular relevance today, as the proportion of the total parameter counts, compute and memory requirements due to MLP blocks in Transformers is increasing in ever-growing LLMs.\nLet dmodel, dff denote positive integers. Each Transformer MLP block consists of one upprojection layer with a weight matrix W1 \u2208 Rdff\u00d7dmodel where typically dff = 4dmodel, and one down-projection layer with parameters W2 \u2208 Rdmodel\u00d7dff that projects it back to the original size. Non-linearity (typically ReLU) is applied between these two layers. That is, an input x \u2208 Rdmodel is transformed to an output y \u2208 Rdmodel as\nu = ReLU (W1x) (1)\ny = W2u (2)\nwhere u \u2208 Rdff , and we omit biases (as well as batch and time dimensions) for simplicity.\n2Our non-expert CUDA implementation still has much room for further optimization.\nAlternatively, this layer can be viewed as a keyvalue memory accessed by attention (Vaswani et al. (2017)3,Geva et al. (2021)), where keys and values are rows and columns of weight matrices W1 and W2:\nW1 =  k\u22ba1 k\u22ba2 ...\nk\u22badff\n (3)\nW2 =  v1 v2 . . . vdff  (4)\nwhere ki \u2208 Rdmodel ,vi \u2208 Rdmodel for i \u2208 {1, ..., dff}. Then, the output is computed as \u201cattention\u201d:\ny = dff\u2211 i=1 viReLU(k \u22ba i x) = dff\u2211 i=1 \u03b1ivi (5)\nwhere \u03b1i = ReLU(k \u22ba i x) \u2208 R\u22650 are the \u201cattention weights.\u201d Note that \u03b1i = u[i] where u[i] \u2208 R denotes the i-th component of u \u2208 Rdff in Eq. 1. Unlike the standard self-attention, the MLP block uses a ReLU activation function (instead of the softmax) without scaling.\nIt has been observed that, in practice, only a few of the factors k\u22bai x are positive (Li et al., 2023; Shen et al., 2023), making the first layer\u2019s output, i.e., u, sparse. Concretely, Shen et al. (2023) report that in a Transformer with dmodel = 256 and dff = 1024, 10% of the channels account for 90% of the total activation mass. We confirm this trend in our own preliminary study. Fig. 1 shows the average number of non-zero units in u of size dff = 2053 in our 47M parameter dense model trained on WikiText103 (we refer to App. A.2 for more details). The number is below 200 for all layers. This suggests that the MLP block can be approximated without a significant performance loss. Note that this is also supported by the findings of Zhang et al. (2022)."
+        },
+        {
+            "heading": "3 Approximating 2-layer MLPs",
+            "text": "Here we present a unified view on methods to approximate 2-layer MLPs (Sec. 2) that includes many existing methods such as MoEs (Sec. 3.3) and PKMs (Sec. 3.2).\n3See the appendix \u201cTwo feedforward Layers = Attention over Parameter\u201d in their paper version \u201carXiv:1706.03762v3.\u201d\nPreliminaries. Let y\u0302 \u2208 Rdmodel denote an approximation of y \u2208 Rdmodel in Eq. 5. Let yi \u2208 Rdmodel denote yi = \u03b1ivi for i \u2208 {1, ..., dff}. The core idea is to approximate the sum in Eq. 5, i.e., y = \u2211dff i=1 yi by only keeping a subset S \u2282 {1, ..., dff} of the key-value pairs, i.e., y\u0302 = \u2211 i\u2208S yi. The intuition of this approximation is as follows. We assume that a good approximation y\u0302 of y is the one that minimizes their Euclidean distance e = ||y\u0302 \u2212 y||22 \u2208 R, which can now be expressed as e = || \u2211 i\u2208S\u0304 \u03b1ivi||22 where S\u0304 denotes the complement of S , i.e., S\u0304 = {1, ..., dff} \\S . Since we have e = || \u2211 i\u2208S\u0304 \u03b1ivi||22 \u2264 \u2211 i\u2208S\u0304 \u03b1i||vi||22 (triangle inequality; where the equality is achieved when vi are orthogonal), this upper-bound \u2211 i\u2208S\u0304 \u03b1i||vi||22 can be minimized if each term ci = \u03b1i||vi||22 \u2208 R are small. If we further assume that all value vectors vi have the same norm, the crucial factor for approximation quality is reduced to the attention weights \u03b1i. In this context, we also call \u03b1i the contribution of key-value pair i.\nLet K be a positive integer. The general idea of all methods discussed in this work is to keep K pairs (ki, vi) whose contribution \u03b1i is the highest, and ignore other low-contribution pairs. The goal is to find the best mechanism to select such K pairs. Here we discuss three variants: Top-K activation (Sec. 3.1), Product-Key Memories (PKMs, Sec. 3.2), and Mixture of Experts (MoEs, Sec. 3.3).\n3.1 Top-K Activation Function The most straightforward implementation of the approximation described above is the top-K activation function:\nEx = arg topk(u,K) \u2282 {1, ..., dff} (6) y\u0302 = \u2211 i\u2208Ex \u03b1ivi (7)\nUnfortunately this only saves less than half of the entire computation: while this allows us to reduce computation of Eq. 2, no computation can be saved in Eq. 1 because full computation of u =\nReLU (W1x) is required for Eq. 6. Going beyond this requires to also introduce some approximation to Eq. 6 as in PKMs (Sec. 3.2) and MoEs (Sec. 3.3)."
+        },
+        {
+            "heading": "3.2 Product-Key Memories (PKMs)",
+            "text": "Product-Key memories (Lample et al., 2019) consist of replacing W1 \u2208 Rdff\u00d7dmodel in Eq. 1 by two matrices Wa,Wb \u2208 R \u221a dff\u00d7 dmodel 2 . It slices the input vector x \u2208 Rdmodel into two halves, xa,xb \u2208 R dmodel 2 , so that x = xa|xb, where | denotes concatenation. The matrix multiplication is then performed on these smaller vectors: ua = Waxa and ub = Wbxb. Then u \u2208 Rdff is calculated by combining the elements of ua \u2208 R \u221a dff and ub \u2208 R \u221a dff in all possible ways (i.e., Cartesian products), similarly to the outer product, but using addition instead of multiplication, i.e., for all i \u2208 {1, ..., dff},\nu[i] = ub[\u230ai/ \u221a dff\u230b] + ua[i mod \u221a dff] (8)\nIn addition to applying Top-K at the output as in Sec 3.1, here Top-K can also be used to accelerate the operation above. By applying Top-K to ua and ub before combining them to compute u, only the K2 << dff components of u[i] have to be calculated, and they are guaranteed to contain the K biggest components of the full u.\nIn the original formulation (Lample et al., 2019), PKMs use a softmax activation function, taking inspiration from self-attention (Vaswani et al., 2017). Instead, we\u2019ll show how a non-competing activation function, such as ReLU is a better choice (see Sec. 6.2)."
+        },
+        {
+            "heading": "3.3 Mixture of Experts (MoE)",
+            "text": "Let NE , G denote positive integers. MoEs partition dff pairs of (ki, vi) (see their definition in Sec. 2) into NE groups of size G each, such that G \u00b7NE = dff. This means that the weight matrices W1 \u2208 Rdff\u00d7dmodel and W2 \u2208 Rdmodel\u00d7dff (Eqs. 1-2) are partitioned into matrices W e1 \u2208 R dff NE \u00d7dmodel and W e2 \u2208 R dmodel\u00d7 dff NE for e \u2208 {1, ..., NE},\nW e1 =  k\u22baeG+1 k\u22baeG+2\n... k\u22ba(e+1)G\n (9)\nW e2 =  veG+1 veG+2 . . . v(e+1)G  (10)\nThe output is computed as: y\u0302 = \u2211 e\u2208Ex W e2 s[e] ReLU(W e 1x) (11)\nwhere s[e] \u2208 R is the e-th element of vector s \u2208 RNE computed by an expert scoring function sel : Rdmodel \u2192 RNE (typically s = sel(x) = softmax(W3x) with W3 \u2208 RNE\u00d7dmodel), and Ex denotes a subset of indices {1, ..., NE} resulting from the Top-K operation on s, i.e., Ex = arg topk(s,K). Note that in some variants, additional re-normalization is applied after Top-K, so that \u2211 e\u2208Ex s[e] = 1, s[e] \u2265 0; we define such an operation as norm topk, see its exact definition in App. A.1 4. The efficiency of MoEs comes from the fact that NE \u226a dff, thus calculating s is cheap. Furthermore, G and K are chosen so that G \u2217K \u226a dff, so the calculation performed by experts is less expensive than the dense MLP.\nGiven the notation above, it is straightforward to see that MoEs can also be viewed as approximating 2-layer MLPs with a trainable component (i.e., the selection function sel to produce s). Similarly to Eqs. 5 and 7, Eq. 11 can be expressed as:\ny\u0302 = \u2211 e\u2208Ex G\u2211 i=1 \u03b1eG+is[e]veG+i (12)\nwhere, compared to Eqs. 5 and 7, the \u201ccontribution scores\u201d of key-value pair i (defined in Sec. 3/Preliminaries) have an additional factor s[e] of an expert group e to which the key-value pair belongs.\nThe key challenge of MoEs is to learn an expert selection mechanism/function sel above that assigns high scores to only a few experts (so that we can ignore others without sacrificing performance), while avoiding a well-known issue, called expert collapsing, where only a few experts are used and the rest are never selected. To avoid this, some regularization is typically applied to the selection score sel(x), encouraging more uniform routing of experts across the whole batch of tokens. We provide a comprehensive review of MoE variants and their details in Sec. 4 and our improved version in Sec. 5."
+        },
+        {
+            "heading": "4 Existing MoE variants",
+            "text": "Several variations of MoEs have been proposed with many different details. Here we briefly review the most popular and representative ones (e.g., we\n4In the case of the softmax(\u00b7) activation function, this is equivalent to applying Top-K to the logits before softmax.\ndo not cover those that make use of reinforcement learning for expert routing) before describing our improved version in Sec. 5. We\u2019ll review their expert selection function and regularization method, and highlight their key characteristics.\nSparsely Gated Mixtures of Experts. Shazeer et al. (2017) have revisited MoEs (Jacobs et al., 1991; Ivakhnenko and Lapa, 1965) with the Top-K operation, allowing a reduction in its resource demands. Their method is basically the one described in Sec. 3.3 (with re-normalization after Top-K) except that they use a noisy gating function:\nsel(x) = softmax(\nW3x+N (0, 1) \u00b7 softplus(W4x)) (13)\nwhere W4 \u2208 RNE\u00d7dmodel , the Gaussian noise term N (0, 1) is element-wise and independent for each channel, and softplus(x) = log(1+ ex). They use the following auxiliary regularization term for load balancing,\nL = CV (\u2211 x\u2208B norm topk(sel(x)) ) (14)\nwhere CV(x) = \u00b5x\u03c3x is the coefficient of variation and B is the set of all tokens in the batch.\nKey characteristics: The scores are normalized after the top-K operation (with K > 1), which is equivalent to applying top-K before the softmax.\nSwitch Transformer. Fedus et al. (2022) integrate the MoE above into the Transformer to obtain their Switch Transformer. In terms of MoE details, one of Fedus et al. (2022)\u2019s key claims is that top-1 routing is enough. Their selection function is simply: sel(x) = softmax(W3x), but they propose a hard load-balancing between experts that run on different hardware accelerators: At most \u00b5 |B|NE tokens are allowed to be routed to an expert, where \u00b5 \u2208 R>0 is the capacity factor (typically between 1 and 1.5), defining how many times more tokens can be processed by one expert compared to the ideal case of uniform routing. Each expert is forbidden to process more than this number of tokens. For regularization, the fraction of the tokens f \u2208 RNE processed by each expert, and the average selection probability p \u2208 RNE for each expert are calculated\n(K = 1; top-1 is used) as:\nfi = 1 |B| \u2211 x\u2208B 1{i \u2208 arg topk(sel(x),K)} (15)\np = 1 |B| \u2211 x\u2208B sel(x) (16)\nL = NEf \u00b7 p (17)\nwhere 1 denotes the indicator function (which is equal to 1 if the argument is true, and 0 otherwise), and \u00b7 denotes dot product. Intuitively, this serves as an adaptive regularization that penalizes experts that are used often with high \u201cweights.\u201d In addition, they use dropout with a high drop rate (40%) in the experts (but only 10% in the normal layers).\nFurthermore, Fedus et al. (2022) also propose to initialize the experts with \u221a\n0.1 G . As we\u2019ll see in\nSec. 5, we use a modified version of this scheme. Note that applying Top-K after softmax encourages collapsing: if the score of the selected expert is increased, the scores of all other experts are automatically decreased. This is not the case for Shazeer et al. (2017): In their method, only the selected experts compete with each other, so if their presence is beneficial, their score can be increased.\nKey characteristics: Note that Top-1 is applied after the softmax without re-normalization.\nBASE layers and S-BASE. Inspired by the routing strategy and the hard capacity factor of the Switch Transformer, Lewis et al. (2021) propose BASE layers. They use top-1 routing and a sigmoid activation \u03c3 in the selection function:\nsel(x) = \u03c3(W3x) (18)\nNow instead of using arg topk, they solve the following linear assignment problem to find the index ex \u2208 {1, ..., NE} of the expert to which each input x \u2208 B is routed,\nmaximize ex\u2208{1,...,NE},x\u2208B \u2211 x\u2208B sel(x)[ex] (19)\ns.t. \u2200i \u2208 {1, ..., NE}, \u2211 x\u2208B 1{ex == i} = |B| NE\nThis guarantees uniform assignment of experts, which is efficient for multi-accelerator training. The output is computed using Eq. 11 with Ex = {ex} (a set with a single element; \u201ctop-1\u201d). However, at inference time, no such balancing is possible because not all tokens of the sequence are\navailable at each step; Ex = {argmax (sel(x))} is used instead. Lewis et al. (2021) show that, while during training, the routing is enforced to be completely uniform, during the test time, the distribution looks exponential (in fact, this is similar to the Switch Transformer but more balanced for BASE).\nThe algorithm for solving the linear assignment problem (Eq. 19) is difficult to implement efficiently on modern accelerators. Clark et al. (2022) have proposed to use the Sinkhorn algorithm (Sinkhorn, 1964; Sinkhorn and Knopp, 1967) instead (resulting in a model called Sinkhorn-BASE or S-BASE), to approximate the solution to this problem (note that similar routing is independently discussed by Kool et al. (2021)). They report that this works well, while being simpler to implement. Thus, our reimplementation of BASE is S-BASE using the Sinkhorn algorithm.\nKey characteristics: During training, Sinkhorn iterations are used on scores to obtain a balanced assignment. The sigmoid activation is always applied to compute the weighting score.\nOverall, all load-balancing methods above are rather complex. We propose simpler but effective approach for MoEs in Sec. 5."
+        },
+        {
+            "heading": "5 Improving Mixture of Experts",
+            "text": "Here we present our improved MoE variant, which we call \u03c3-MoE. We conduct thorough ablation studies on our design choices in Sec. 6.\n\u03c3-MoE Expert Selection Function. Our MoE make use of the top-K operation (unlike BASE). The activation we use on the selection function is sigmoid (as in Eq. 18 of BASE) instead of softmax used in Switch Transformer and Sparsely Gated Mixtures of Experts. This choice is motivated by the view of MoEs as approximate 2-layer MLPs (Sec. 3). In fact, softmax introduces competition between experts. No such competition between channels is used in the regular 2-layer MLP (i.e., there is no constraint on \u03b1i in Eq. 5). This suggests that, in principle, no competition is needed between terms in the sum of Eq. 12 in the MoE either, to induce sparsity. It is also well known to practitioners that softmax as regular activation negatively affects the trainability of standard MLPs. Softmax combined with top-K can also encourage expert collapsing: when the selection score of one expert increases, the score of the others automatically decreases. For all these reasons, we opt for\nsigmoid instead of softmax; we experimentally confirm that this is indeed a good choice.\nAdditionally, looking at MoEs in this framework gives us hints on combining them with Top-K activation (Sec. 3.1) for further acceleration. We can calculate ue = s[e] ReLU(W e1 x) (Eq. 11) for the selected experts and perform an additional Top-K to keep the highest units among them and set the rest to zero. We leave this for future work.\n\u03c3-MoE Initialization. Another design choice guided by the MLP-approximation view of MoEs (Sec. 3) is the initialization scheme for experts. Typically, experts are assumed to be independent, and the standard deviation of the initialization (Glorot and Bengio, 2010; He et al., 2015) of W e2 is calculated based on G instead of dff. Our experiments in Sec. 6.3 show that this is sub-optimal.\nIn contrast, we initialize all weight matrices identically to the pre-layernorm dense baselines, not taking in account the smaller size of the individual experts, i.e., W e1 \u223c N (0, \u221a 2 dmodel\u00b7nlayers ) and\nW e2 \u223c N (0, \u221a 2 dff\u00b7nlayers ) where nlayers denotes the number of layers, using dmodel and dff instead of G. We also take special care when initializing W3 of the selection function. We initialize it to a normal distribution with the same standard deviation as W e1 , but we also ensure that the rows of W3 have the same norm5. This can be easily achieved in practice by initializing the weights to W \u20323 \u223c N (0, 1), rescaling its rows to norm 1, and then rescaling the whole matrix again to have the desired standard deviation. Note that each scalar score in s is the dot product of a row of W3 and x. This initialization method ensures that only the angle between x and the rows of W3 initially affects the score s, rather than an additional random factor resulting from initialization.\n\u03c3-MoE Regularization. As already noted in Sec. 4, existing regularization methods for loadbalancing are complex (e.g., Switch Transformers need to deal separately with the actual selection distribution and the scores, Sparsely Gated Mixture of Experts needs noise in the selection function). In contrast, we propose to simply maximize the entropy of the selection distribution p \u2208 RNE calculated across the entire batch. Intuitively, this is a\n5Having rows with different norms would discourage the use of experts corresponding to rows with small norms, as their selection score would be low even if the angle of the selector (row of W3) fully aligns with x.\nsimple way to encourage equal expert usage within the batch and prevent unnecessary overconfidence in selecting individual experts. Let B be the set of all tokens in the batch (counting through both the batch and time dimensions). We introduce the following regularization term L:\np = 1 |B| \u2211 x\u2208B softmax(W3x) (20)\nL = NE\u2211 e=1 p[e] logp[e] (21)\nFurthermore, we propose to randomly drop complete experts, during training; we refer to this as expert dropout. Unlike the standard dropout on the activation level, we do not apply rescaling, i.e.,\nsel(x) = { \u03c3(Wsx)\u2299m if training \u03c3(Wsx) otherwise\n(22)\nwhere m \u2208 {0, 1}NE , m \u223c Bernoulli(1 \u2212 \u03b4), where \u03b4 is the dropout rate, and \u2299 is the elementwise product. This prevents the dropped experts from being selected while not affecting the other ones. Intuitively, when an expert dropout removes a popular expert, it forces the less popular ones to take over. Thus, the chance of them being trained and improved increases. We experimentally show that our regularization method (Eq. 21) and expert dropout (Eq. 22) are both effective despite their simplicity."
+        },
+        {
+            "heading": "6 Experiments",
+            "text": "Our experimental setup is based on Dai et al. (2019)\u2019s Transformer XL with some modifications: we use pre-layer norm and reduce the number of training steps to 100k to reduce the computational budget. Also, to match the parameter counts between the baseline and MoEs, we slightly modify the hyperparameters of the baselines (Dai et al., 2019). In fact, our MoE CUDA kernel can only work with dimensions divisible by 4. We round the original sizes up to the next suitable number, e.g., we change dmodel of our 47M-parameter WikiText103 model from the original 410 to 412. Furthermore, since MoEs require extra parameters for the expert selection function, we compensate for these by increasing the dff of the baseline model to match the number of parameters. Our modified baseline model on Enwik8 still has 41M parameters and performs similarly to the original Transformer XL\n(see Tab. 1). For WikiText-103, we use subword units (Sennrich et al., 2016) using SentencePiece tokenizer (Kudo and Richardson, 2018) instead of the word-level vocabulary, to avoid extra tricks required to reduce the parameter count and compute requirement resulting from the huge vocabulary size. On WikiText-103, we consider two different model sizes: a 47M-parameter one (denoted by \u201cWT-S\u201d for \u201csmall\u201d), and a 262M-parameter one (\u201cWT-B\u201d for \u201cbig\u201d). We refer to Enwik8 as \u201cE8\u201d in certain tables. For more details, see Appendix B.\nFor all the methods considered, we use them in every MLP block of the model, which is not a common practice in the literature. Typically, MoE (or other approximation methods) is used only once every nth layer or even only in one layer. This is not satisfactory since our goal is to find a generally applicable method that can accelerate all layers across the whole model. Moreover, this amplifies the difference between different methods, helping better illustrate effects of each of the design choices.\n6.1 Top-K\nWe first evaluate the Top-K method (Sec. 3.1). This standalone evaluation is important as Top-K is the basis of both the PKM and the MoE approximations. Tab. 1 shows the results. We observe that not only Top-K in the MLP blocks preserves the performance of Transformers, it even improves performance. We hypothesize that these improvements are due to the reduction in feature interference as described by Elhage et al. (2022). However, we obviously can not arbitrarily reduce K; there should be a trade-off between the denoising effect and the capacity of the network. Here, the optimal value we find is K = 128 or K = 512."
+        },
+        {
+            "heading": "6.2 Product-Key Memory (PKM)",
+            "text": "Our view of Sec. 3 suggests using a noncompetitive activation such as ReLU instead of the softmax used in the original PKM (Lample et al., 2019). Our experiments confirm the benefits of this choice (Tab. 2): the performance of the ReLU variants is much closer to the dense baseline (see also related findings in Shen et al. (2023)). But even the best PKM models underperform the dense baselines, indicating the fundamental limitation of PKMs. Note that, as stated above, we conduct a careful comparison between the approximation method (here, PKM) and the dense baseline using the same number of parameters. For more results and details on PKM, we refer to App. A.3."
+        },
+        {
+            "heading": "6.3 Mixture of Experts (MoE)",
+            "text": "Here we evaluate our \u03c3-MoE models (Sec. 5) on Enwik8 and WikiText-103 as well as two additional datasets, C4 (Raffel et al., 2020) and the newly proposed peS2o (Soldaini and Lo, 2023). Given the large sizes of C4 and peS2o, we cannot afford to train for a full epoch; we train for 100k steps with the same hyperparameters as for WikiText-103.\nMain results. Tab. 3 shows the main results. Our \u03c3-MoE models match the performance of their parameter-equal dense baselines, while achieving significant memory and compute reduction. These models use K = 4 for NE = 16 or NE = 32, which is a \u201cmoderate\u201d level of sparsity but already offering significant compute reduction as shown in the column \u201c% FLOPs\u201d; concrete compute and memory reduction is further shown in Fig. 2 (see Appendix A.5 for details). Naturally, there is a limit on the minimum sparsity level to preserve good performance of MoEs, which is determined by several factors. First, we empirically find that experts with a group size of G < 128 generally degrades performance. Second, our benchmarks with the Top-K operation (Tab. 1) and our ablations (Tab. 10 in the Appendix) show that the minimum number of simultaneously active\nchannels G \u00b7K need to be above a certain critical threshold (usually around 256-512). Finally, we match the number of parameters of the baseline model; this is the last constraint. Under these constraints, we find that the performance of the dense baselines can be matched using 25% of the required FLOPs and memory for activations for our small models, and 12.5% sparsity for the big one (note that FLOPs here do not take into account the linear projection used to select the experts, which is negligible within the range of NE used here).\nIncreasing NE and Impact of Sparsity. The results above demonstrate that our \u03c3-MoEs can be configured to match the desired performance with fewer resources. Here we conduct an extra experiment where we naively increase NE (while keeping K = 4) from 16 to 128. This increases the number of parameters to 238M, while keeping the speed and memory requirements comparable to the original model (column \u201cWT-S*\u201d in Tab. 4). This model achieves a test perplexity of 10.37, which is worse than 9.46 of the 262M dense model (see Tab. 1). Indeed, even when the parameter count is matched, there are other bottlenecks that are crucial, e.g., here dmodel is much smaller (412 vs 1024). We construct another dense baseline by setting every hyperparameter like in the 47M model, except dff, which is set to 16480 to match the number of parameters of the NE = 128 MoE. This baseline achieves a perplexity of 10.03: thus, the gap between the scaled-up MoE and its dense counterpart\nstill remains significant (10.37 vs 10.03), unlike with the MoE with moderate sparsity. This indicates the importance of controlling MoE sparsity to preserve its performance against the dense baseline.\nComparison to Existing MoEs. We also compare our \u03c3-MoE to other MoE variants (Sec. 4), namely Switch Transformer (Fedus et al., 2022), S-BASE (Clark et al., 2022)6 and the basic softmax variant. Tab. 4 shows the results for multiple variants on WikiText-103 and Enwik8. Additionally, we compare \u03c3-MoE to the most important baselines on C4 and peS2o in Tab. 5. As Switch Transformer and S-BASE select only one single expert (K = 1), we increase the expert size by a factor of 4 (instead of G = 128 in our models, we use G = 512), and we decrease NE by the same factor for fair comparison in terms of the parameter count. Neither of them uses our proposed expert dropout. For Switch Transformer, we test a variant with standard dropout in the experts (see App. B for details), and a version without. We also extend S-BASE to K = 4, which is similar to ours, except for the balancing method. Even considering all these cases, our \u03c3-MoE outperforms Switch Transformer and S-BASE. Note that in terms of FLOPs and memory usage, all MoE variants are equivalent given the same hyperparameters (G, dmodel, and K).\nAblation Studies. Finally we conduct ablation studies of individual design choices (Sec. 5). Tab. 4 shows the results. Standard dropout instead of expert dropout leads to performance degradation for most of the cases, except the model with NE = 128 experts. The softmax-based selection functions\n6Unlike the original ones, our implementation does not enforce capacity factor-based hard balancing.\n(with and without re-re-normalization) consistently perform worse than our sigmoid one. The same is true for the standard initialization ; ours is better. Interestingly, removing all regularization methods degrades performance but does not entail catastrophic collapse even with NE = 128. We also examine the best (G, K) combinations, given a constant number (G \u00b7K) of active pairs ki, vi; we find a high K = 4 works best within this range. Further analysis of our \u03c3-MoE can be found in App. A.4.\nAnalyzing expert utilization. A typical failure mode of MoEs is expert collapse, where only a few experts are used while others are completely ignored or underused. Here we conduct an analysis to evaluate whether various models including ours are affected by this issue. For each layer, we compute the proportion of the expert selection weights assigned to each expert (sel(x)) on the entire validation set of WikiText-103. We use WT-S* models from Tab. 4 with 128 experts. A representative layer is shown in Fig. 3. Models with poor performance (see Tab. 4), i.e., Switch Transformer (red) and a \u201cbad\u201d variant of \u03c3-MoE with a softmax and renormalization \u201csoftmax (renom.)\u201d (green),\ncan be easily identified: they severely suffer from the expert collapse problem. The statistics are rather similar for all other models; the fine performance differences among these models do not seem to be due to expert collapse. Remarkably, our entropy-regularized models with expert dropout, especially \u03c3-MoE, are capable of matching the expert usage balancing of S-BASE without using the Sinkhorn activation function. Note that in general, we do not consider uniform expert activation to be optimal: we expect expert specialization, and thus the frequency of their usage should depend on the occurrence of the task they are performing."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "Our novel view unifies methods that approximate 2-layer MLPs, such as Top-K, Mixture of Experts (MoE) and product-key memory (PKM) methods. While Top-K by itself provides limited performance improvements and speedups, further speedup requires PKM or MoE. A non-competitive activation function inspired by our unified view improves both PKM and MoE. Further novel enhancements of MoEs yield our \u03c3-MoE which outperforms existing MoEs. Importantly, our \u03c3-MoE with moderate sparsity matches the performance of parameter-equal dense baselines while being much more resource-efficient. Our new insights improve the training of language models with limited hardware resources, making language modeling research more accessible."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Our experiments show that if we naively increase the number of experts, the performance gap between MoE models and their dense counterparts increases. This indicates the need for careful control of sparsity and hyper-parameters, which remains a challenge for MoEs.\nOur CUDA kernel is sub-optimal and I/O limited. However, even in its current form, it already yields significant performance boosts and memory reduction. We expect that an expert CUDA programmer could improve the speed of our kernel by at least a factor of 2.\nWe do not consider load balancing between hardware accelerators as is done in Switch Transformers and S-BASE. Our goal is to make a larger model fit a single accelerator, or multiple accelerators in the standard data-parallel training. Our preliminary experiments suggest that such balancing entails a performance hit.\nWe could not reproduce the 277M Enwik8 model of Dai et al. (2019), because we could not fit the beaseline model on any of our machines. We tried to use rotary positional encodings with PyTorch 2.0\u2019s memory-efficient attention to reduce it\u2019s memory consumption; however, this resulted in a significant performance degradation (even for the smaller models).\nOur study focuses on end-to-end trainable MoEs. Other MoE methods (Irie et al., 2018; Li et al., 2022) that pre-train LMs on disjoint data, to recombine them later into a single model, are out-of-scope.\nOur study only considers standard Transformers; however, similar acceleration methods are of utmost importance for shared-layer Transformers, such as Universal Transformers (Dehghani et al., 2019) and NDRs (Csord\u00e1s et al., 2022). In fact, layer sharing dramatically reduces the number of parameters. Compensating for this by naively increasing dmodel or dff results in prohibitively high memory overhead and slow execution. In contrast, MoEs allow increasing the number of parameters without such dramatic drawbacks. We leave sharedlayer MoEs for future work."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This research was partially funded by ERC Advanced grant no: 742870, project AlgoRNN, and by Swiss National Science Foundation grant no: 200021_192356, project NEUSYM. We are thank-\nful for hardware donations from NVIDIA and IBM. The resources used for this work were partially provided by Swiss National Supercomputing Centre (CSCS) project s1154, s1205 and d123. Finally, we would like to thank D\u00e1niel Ber\u00e9nyi for his support with the CUDA kernel development."
+        },
+        {
+            "heading": "A Further details and analyses",
+            "text": "A.1 Definition of normalised Top-K Using the setting of Sec. 3.3, we define the normalized top-K operation as follows:\nEx = arg topk(s,K) (23)\ntopk(s)[i] = { s[i] if i \u2208 Ex 0 otherwise\n(24)\nnorm topk(s) = topk(s)\u2211 i topk(s)[i]\n(25)"
+        },
+        {
+            "heading": "A.2 Measuring the Number of Active Channels in u",
+            "text": "In order to explore whether a (ki - vi) sparsitybased approach is feasible, we measure the number of nonzero entries in the up-projected vector u in our baseline models (which, because of the ReLU activation function, is the same as the positive entries). We show the results of our 47M model in Fig. 1. Note that dff = 2053 (See Tab. 8) for the same model, which means that on average only 1-10% of the channels are active. We show the same analysis for the 262M model in Fig. 4. Interestingly, the counts remain the same, even though dff = 4110 for this model. The 41M parameter model on Enwik8 shows a stark difference in the distribution of the channels between layers; see Fig. 5. This suggests that the key factor determining the count distribution is the dataset, and the size of the model plays only a secondary role. Fortunately, the sparsity is very high for all models considered."
+        },
+        {
+            "heading": "A.3 More Details and Results on PKM",
+            "text": "Our PKM (Sec. 3.2) is based on Lample et al. (2019) with the following basic modifications. First, we do not use batch normalization (BN). As Lample et al. (2019) shows that BN is only beneficial for models with a very large memory size, we remove it as it simplifies inference where the effective batch size varies over time. Also, we directly\ndivide the input vectors into two sub-keys without an additional projection. Finally, unlike Lample et al. (2019), we use the same learning rate for all parts of the network.\nIn addition to the parameter-equal comparison of Sec. 6.2, there is another possibly \u201cfair\u201d way of setting the size of the PKM-based model: match the number of values (this would result in fewer parameters because of the key approximation), even though Elhage et al. (2022) suggest that the keys typically play a vital role, and reducing their capacity will cause a performance loss. See Tab. 6 for the corresponding results. Note that, for Enwik8 and Wikitext-103 small, the parameter-equal setting increases the number of sub-keys from 46 to 62 (2116 vs. 3844 values). This helps significantly."
+        },
+        {
+            "heading": "A.4 Further Analyses of Our \u03c3-MoE",
+            "text": "We also examine the best (G, K) given a constant number (G\u00b7K) of active pairs ki, vi. In this setting, reducing K by a factor of m (K \u2032 = Km ) involves increasing G (G\u2032 = mG), which, for a constant number of parameters, reduces NE to N \u2032E = NE m . The results can be seen in the 2nd block of Tab. 10. We find that a higher K is beneficial. Given this, we ask the question how the selection distribution of the models with K > 1 is different from selecting the same experts together and acting as a larger\nexpert. Are these models combining experts in more meaningful ways? To test this, we measure the distribution of experts that are used together on Wikitext-103 with our 47M MoE model with K = 4. The result can be seen in Fig. 6: the network combines experts in a rich way, further supporting the use of K > 1. Note that, it remains an open question whether such \u201ccompositions\u201d may help the generalization and compositional behavior of the network (Fodor and Pylyshyn, 1988; Pagin and Westerst\u00e5hl, 2010; Hupkes et al., 2020).\nDetailed Usage Count Analysis. We show the relative proportion of experts selected for all layers in Fig. 7. For more details, please refer to Sec. 6.3."
+        },
+        {
+            "heading": "A.5 More on Resource Efficiency",
+            "text": "For execution time and memory usage, both the dense MLP and the MoE layers are linear in dmodel (Fig. 9), the MLP is linear in dff, and MoE is linear in G (Fig. 8) and K. For the same number of parameters (except for the selection network, which\nis negligible), dmodel = G \u00b7NE . However, both the memory usage and the execution time of the MoE are almost independent of NE , except for a small linear factor due to the selection network (see Fig. 2). Figures 2, 8 and 9 show the actual measured execution time and memory usage on a RTX 3090 GPU.\nNote that there is no significant difference in terms of speed and memory usage between different MoE variants given the same dmodel, G, and K. This is because they only differ in the selection mechanism and regularization, and not in the way the experts are executed. Since all methods are configured to have the same number of parameters as the dense baselines, and K experts are used in parallel, the factor of reduction in both FLOPs and memory usage is given by KNE . We show this factor for all models in Tab. 7.\nB Implementation details\nWe train all of our models for 100k steps with cosine learning rate decay, starting from the initial learning rate of 0.00025 and decaying to 0. We use the Adam optimizer (Kingma and Ba, 2015) with default PyTorch parameters (Paszke et al., 2019). We use gradient clipping with a max gradient norm of 0.25. We show the other hyperparameters of our dense models in Tab. 8. We train our models with an XL memory of the same size as the context size. However, following Dai et al. (2019), we evaluate the models using a longer memory. Unlike the hyperparameter-tuned memory sizes in Transformer XL, we use 4 times the context size (this approximates the size of the memory by Dai et al. (2019), while being simple).\nThe hyperparameters of the MoE models match those of their dense counterparts with the same number of parameters, except for the MoE-specific ones, which are shown in Tab. 9. \u03b4 denotes the expert dropout and \u03b3 denotes the regularization\nstrength used for the loss L (See Eq. 21). For the non-MoE layers, the same dropout is used as for the baselines. For Switch Transformers, we use \u03b3 = 0.01 with regularization of the form presented in Eq. 17, following Fedus et al. (2022). The other variants, including S-BASE, use the regularizer proposed by us (Eq. 21).\nOur small PKM models use 46 subkeys resulting in 462 = 2116 values for the dff-matched case and 62 subkeys (3844 values) for the parametermatched case. The PKM equivalent of the 262M parameter model on Wikitext-103 has 64 subkeys (4096 values) for the dff-matched and 89 subkeys (7921 values) for the parameter-matched case. The PKM models do not use dropout in the PKM layers, and have 4 heads."
+        },
+        {
+            "heading": "B.1 A Few Words on the CUDA Kernel",
+            "text": "We call the key operation for our MoE layers conditional vector-matrix multiplication, or CVMM, and we define it as follows. Given a batch of vectors, V \u2208 RN\u00d7M , where N is the batch size and M is the number of channels, a set of K matrices M \u2208 RK\u00d7M\u00d7L and selection indices S \u2208\n{0, ...,K \u2212 1}N , CVMM(V ,S,M) \u2208 RN\u00d7L is:\nCVMM(V ,S,M)[n, l] = (26) M\u22121\u2211 m=0 V [n,m]M [S[n],m, l]\nOur CUDA kernel is based on the blog post developing a matrix multiplication kernel by Simon Boehm (https://siboehm.com/articles/ 22/CUDA-MMM). However, there are major differences: unlike standard matrix multiplication, in our case, different matrices could be used for different batch elements of the input. In order to be able to reuse matrices fetched from the global memory of the GPU, we first do a preprocessing step: we sort the selection indices, and obtain a reordering vector. This gives us an ordering of the input and output batch elements, such that the consecutive indices are multiplied by the same matrix with high probability. Fortunately, multiple channels have to be fetched/written out at once, so this reordering has minimal overhead. Our kernel has an additional grid dimension compared to standard matrix multiplication, iterating over the matrix index, k \u2208 {0, ...,K \u2212 1}. We find that skipping matrices that do not have any corresponding inputs has minimal overhead. To avoid checking all elements of the reordering vector, we precompute their offsets.\nOur kernel uses shared memory and register caching; however, it does not use asynchronous loads, which makes it I/O bound. It also does not support tensor cores and mixed precision. The pre-processing step uses the radix sort from the CUB library. However, computing the offsets requires counting the number of vectors assigned to a single matrix. This information, as well as the offset, which is their sum, are freely available as sub-results that the radix sort computes anyways; however, we found no way of extracting it from the CUB implementation. We estimate that by implementing a more efficient preprocessing step, asynchronous loads, and tensor core support, our kernel can be further accelerated by a factor of two."
+        },
+        {
+            "heading": "B.2 Additional Results on MoEs",
+            "text": "Additional results of different MoE variants with more model details are shown in Tab. 10. We repeat the entries from Tab. 4 for easier comparison."
+        }
+    ],
+    "title": "Approximating Two-Layer Feedforward Networks for Efficient Transformers",
+    "year": 2023
+}

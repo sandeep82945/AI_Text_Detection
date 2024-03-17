@@ -1,0 +1,907 @@
+{
+    "abstractText": "Recent instruction fine-tuned models can solve multiple NLP tasks when prompted to do so, with machine translation (MT) being a prominent use case. However, current research often focuses on standard performance benchmarks, leaving compelling fairness and ethical considerations behind. In MT, this might lead to misgendered translations, resulting, among other harms, in the perpetuation of stereotypes and prejudices. In this work, we address this gap by investigating whether and to what extent such models exhibit gender bias in machine translation and how we can mitigate it. Concretely, we compute established gender bias metrics on the WinoMT corpus from English to German and Spanish. We discover that IFT models default to male-inflected translations, even disregarding female occupational stereotypes. Next, using interpretability methods, we unveil that models systematically overlook the pronoun indicating the gender of a target occupation in misgendered translations. Finally, based on this finding, we propose an easy-to-implement and effective bias mitigation solution based on fewshot learning that leads to significantly fairer translations.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Giuseppe Attanasio"
+        },
+        {
+            "affiliations": [],
+            "name": "Flor Miriam Plaza-del-Arco"
+        },
+        {
+            "affiliations": [],
+            "name": "Debora Nozza"
+        },
+        {
+            "affiliations": [],
+            "name": "Anne Lauscher"
+        }
+    ],
+    "id": "SP:3cecdae947e9f5dd07b8cca634210d6df806ed8c",
+    "references": [
+        {
+            "authors": [
+                "Afra Feyza Aky\u00fcrek",
+                "Sejin Paik",
+                "Muhammed Kocyigit",
+                "Seda Akbiyik",
+                "Serife Leman Runyun",
+                "Derry Wijaya."
+            ],
+            "title": "On measuring social biases in promptbased multi-task learning",
+            "venue": "Findings of the Association for Computational Linguistics: NAACL 2022,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Luisa Bentivogli",
+                "Beatrice Savoldi",
+                "Matteo Negri",
+                "Mattia A. Di Gangi",
+                "Roldano Cattoni",
+                "Marco Turchi."
+            ],
+            "title": "Gender in danger? evaluating speech translation technology on the MuST-SHE corpus",
+            "venue": "Proceedings of the 58th Annual Meeting of the Asso-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Su Lin Blodgett",
+                "Solon Barocas",
+                "Hal Daum\u00e9 III",
+                "Hanna Wallach."
+            ],
+            "title": "Language (technology) is power: A critical survey of \u201cbias\u201d in NLP",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 5454\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Venkatesh Saligrama",
+                "Adam T Kalai."
+            ],
+            "title": "Man is to computer programmer as woman is to homemaker? debiasing word embeddings",
+            "venue": "Advances in neural information processing systems, 29.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "2020b. Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Won Ik Cho",
+                "Ji Won Kim",
+                "Seok Min Kim",
+                "Nam Soo Kim."
+            ],
+            "title": "On measuring gender bias in translation of gender-neutral pronouns",
+            "venue": "Proceedings of the First Workshop on Gender Bias in Natural Language Processing, pages 173\u2013181, Florence, Italy. Associa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jason Wei"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chloe Ciora",
+                "Nur Iren",
+                "Malihe Alikhani."
+            ],
+            "title": "Examining covert gender bias: A case study in Turkish and English machine translation models",
+            "venue": "Proceedings of the 14th International Conference on Natural Language Generation, pages 55\u201363, Aberdeen, Scot-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Anna Currey",
+                "Maria Nadejde",
+                "Raghavendra Reddy Pappagari",
+                "Mia Mayer",
+                "Stanislas Lauly",
+                "Xing Niu",
+                "Benjamin Hsu",
+                "Georgiana Dinu"
+            ],
+            "title": "MT-GenEval: A counterfactual and contextual dataset for evaluating",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Joke Daems",
+                "Jani\u00e7a Hackenbuchner."
+            ],
+            "title": "DeBiasByUs: Raising awareness and creating a database of MT bias",
+            "venue": "Proceedings of the 23rd Annual Conference of the European Association for Machine Translation, pages 289\u2013290, Ghent, Belgium. European",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "David Dale",
+                "Elena Voita",
+                "Loic Barrault",
+                "Marta R. Costa-juss\u00e0."
+            ],
+            "title": "Detecting and mitigating hallucinations in machine translation: Model internal workings alone do well, sentence similarity Even better",
+            "venue": "Proceedings of the 61st Annual Meeting of the",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Gpt3",
+            "venue": "int8 (): 8-bit matrix multiplication for transformers at scale. Advances in Neural Information Processing Systems, 35:30318\u2013 30332.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Artidoro Pagnoni",
+                "Ari Holtzman",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Qlora: Efficient finetuning of quantized llms",
+            "venue": "arXiv preprint arXiv:2305.14314.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chris Dyer",
+                "Victor Chahuneau",
+                "Noah A. Smith."
+            ],
+            "title": "A simple, fast, and effective reparameterization of IBM model 2",
+            "venue": "Proceedings of the 2013 Conference of the North American Chapter of the Association for Computational Linguistics: Human",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Carlos Escolano",
+                "Graciela Ojeda",
+                "Christine Basta",
+                "Marta R. Costa-jussa."
+            ],
+            "title": "Multi-task learning for improving gender accuracy in neural machine translation",
+            "venue": "Proceedings of the 18th International Conference on Natural Language Processing",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Joel Escud\u00e9 Font",
+                "Marta R. Costa-juss\u00e0."
+            ],
+            "title": "Equalizing gender bias in neural machine translation with word embeddings techniques",
+            "venue": "Proceedings of the First Workshop on Gender Bias in Natural Language Processing, pages 147\u2013154, Florence, Italy.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Javier Ferrando",
+                "Gerard I. G\u00e1llego",
+                "Belen Alastruey",
+                "Carlos Escolano",
+                "Marta R. Costa-juss\u00e0."
+            ],
+            "title": "Towards opening the black box of neural machine translation: Source and target interpretations of the transformer",
+            "venue": "Proceedings of the 2022 Conference",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hila Gonen",
+                "Kellie Webster."
+            ],
+            "title": "Automatically identifying gender issues in machine translation using perturbations",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2020, pages 1991\u20131995, Online. Association for Computational",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiaochuang Han",
+                "Byron C. Wallace",
+                "Yulia Tsvetkov."
+            ],
+            "title": "Explaining black box predictions and unveiling data artifacts through influence functions",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 5553\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dirk Hovy",
+                "Shannon L. Spruit."
+            ],
+            "title": "The social impact of natural language processing",
+            "venue": "Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers), pages 591\u2013598, Berlin, Germany. Association",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Yunsu Kim",
+                "Duc Thanh Tran",
+                "Hermann Ney"
+            ],
+            "title": "When and why is document-level context useful in neural machine translation",
+            "venue": "In Proceedings of the Fourth Workshop on Discourse in Machine Translation (DiscoMT",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Philipp Koehn."
+            ],
+            "title": "Europarl: A parallel corpus for statistical machine translation",
+            "venue": "Proceedings of Machine Translation Summit X: Papers, pages 79\u201386, Phuket, Thailand.",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Alexandre Lacoste",
+                "Alexandra Luccioni",
+                "Victor Schmidt",
+                "Thomas Dandres."
+            ],
+            "title": "Quantifying the carbon emissions of machine learning",
+            "venue": "arXiv preprint arXiv:1910.09700.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Anne Lauscher",
+                "Debora Nozza",
+                "Ehm Miltersen",
+                "Archie Crowley",
+                "Dirk Hovy."
+            ],
+            "title": "What about \u201cem\u201d? how commercial machine translation fails to handle (neo-)pronouns",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Lin-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shahar Levy",
+                "Koren Lazar",
+                "Gabriel Stanovsky."
+            ],
+            "title": "Collecting a large-scale gender bias dataset for coreference resolution and machine translation",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021, pages 2470\u20132480, Punta Cana,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shayne Longpre",
+                "Le Hou",
+                "Tu Vu",
+                "Albert Webson",
+                "Hyung Won Chung",
+                "Yi Tay",
+                "Denny Zhou",
+                "Quoc V Le",
+                "Barret Zoph",
+                "Jason Wei"
+            ],
+            "title": "The flan collection: Designing data and methods for effective instruction tuning",
+            "venue": "arXiv preprint arXiv:2301.13688",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Li Lucy",
+                "David Bamman."
+            ],
+            "title": "Gender and representation bias in GPT-3 generated stories",
+            "venue": "Proceedings of the Third Workshop on Narrative Understanding, pages 48\u201355, Virtual. Association for Computational Linguistics.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Niklas Muennighoff",
+                "Nouamane Tazi",
+                "Loic Magne",
+                "Nils Reimers."
+            ],
+            "title": "MTEB: Massive text embedding benchmark",
+            "venue": "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics, pages 2014\u20132037,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zaid Alyafeai",
+                "Albert Webson",
+                "Edward Raff",
+                "Colin Raffel"
+            ],
+            "title": "Crosslingual generalization through multitask finetuning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Moin Nadeem",
+                "Anna Bethke",
+                "Siva Reddy."
+            ],
+            "title": "StereoSet: Measuring stereotypical bias in pretrained language models",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Debora Nozza",
+                "Federico Bianchi",
+                "Dirk Hovy."
+            ],
+            "title": "HONEST: Measuring hurtful sentence completion in language models",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Andrea Piergentili",
+                "Dennis Fucci",
+                "Beatrice Savoldi",
+                "Luisa Bentivogli",
+                "Matteo Negri."
+            ],
+            "title": "From inclusive language to gender-neutral machine translation",
+            "venue": "arXiv preprint arXiv:2301.10075.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Andrea Piergentili",
+                "Beatrice Savoldi",
+                "Dennis Fucci",
+                "Matteo Negri",
+                "Luisa Bentivogli."
+            ],
+            "title": "Hi guys or hi folks? benchmarking gender-neutral machine translation with the gente corpus",
+            "venue": "arXiv preprint arXiv:2310.05294.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shrimai Prabhumoye",
+                "Rafal Kocielnik",
+                "Mohammad Shoeybi",
+                "Anima Anandkumar",
+                "Bryan Catanzaro."
+            ],
+            "title": "Few-shot instruction prompts for pretrained language models to detect social biases",
+            "venue": "arXiv preprint arXiv:2112.07868.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Marcelo OR Prates",
+                "Pedro H Avelar",
+                "Lu\u00eds C Lamb."
+            ],
+            "title": "Assessing gender bias in machine translation: a case study with google translate",
+            "venue": "Neural Computing and Applications, 32:6363\u20136381.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Krithika Ramesh",
+                "Gauri Gupta",
+                "Sanjay Singh."
+            ],
+            "title": "Evaluating gender bias in Hindi-English machine translation",
+            "venue": "Proceedings of the 3rd Workshop on Gender Bias in Natural Language Processing, pages 16\u201323, Online. Association for Computational Lin-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ricardo Rei",
+                "Jos\u00e9 G.C. de Souza",
+                "Duarte Alves",
+                "Chrysoula Zerva",
+                "Ana C Farinha",
+                "Taisiya Glushkova",
+                "Alon Lavie",
+                "Luisa Coheur",
+                "Andr\u00e9 F.T. Martins."
+            ],
+            "title": "COMET-22: Unbabel-IST 2022 submission for the metrics shared task",
+            "venue": "Proceedings of the",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ricardo Rei",
+                "Craig Stewart",
+                "Ana C Farinha",
+                "Alon Lavie."
+            ],
+            "title": "Unbabel\u2019s participation in the WMT20 metrics shared task",
+            "venue": "Proceedings of the Fifth Conference on Machine Translation, pages 911\u2013920, Online. Association for Computational Linguistics.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rachel Rudinger",
+                "Jason Naradowsky",
+                "Brian Leonard",
+                "Benjamin Van Durme."
+            ],
+            "title": "Gender bias in coreference resolution",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Teehan",
+                "Teven Le Scao",
+                "Stella Biderman",
+                "Leo Gao",
+                "Thomas Wolf",
+                "Alexander M Rush."
+            ],
+            "title": "Multitask prompted training enables zero-shot task generalization",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gabriele Sarti",
+                "Grzegorz Chrupa\u0142a",
+                "Malvina Nissim",
+                "Arianna Bisazza"
+            ],
+            "title": "Quantifying the plausibility of context reliance in neural machine translation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Gabriele Sarti",
+                "Nils Feldhus",
+                "Ludwig Sickert",
+                "Oskar van der Wal."
+            ],
+            "title": "Inseq: An interpretability toolkit for sequence generation models",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 3: System",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Danielle Saunders",
+                "Bill Byrne."
+            ],
+            "title": "Reducing gender bias in neural machine translation as a domain adaptation problem",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 7724\u20137736, Online. Association",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Danielle Saunders",
+                "Rosie Sallis",
+                "Bill Byrne."
+            ],
+            "title": "Neural machine translation doesn\u2019t translate gender coreference right unless you make it",
+            "venue": "Proceedings of the Second Workshop on Gender Bias in Natural Language Processing, pages 35\u201343, Barcelona, Spain",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Beatrice Savoldi",
+                "Marco Gaido",
+                "Luisa Bentivogli",
+                "Matteo Negri",
+                "Marco Turchi."
+            ],
+            "title": "Gender bias in machine translation",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:845\u2013874.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Timo Schick",
+                "Sahana Udupa",
+                "Hinrich Sch\u00fctze."
+            ],
+            "title": "Self-diagnosis and self-debiasing: A proposal for reducing corpus-based bias in NLP",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:1408\u2013 1424.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Anders S\u00f8gaard",
+                "Anders Johannsen",
+                "Barbara Plank",
+                "Dirk Hovy",
+                "Hector Mart\u00ednez Alonso"
+            ],
+            "title": "What\u2019s in a p-value in NLP",
+            "venue": "In Proceedings of the Eighteenth Conference on Computational Natural Language Learning,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Aarohi Srivastava",
+                "Abhinav Rastogi",
+                "Abhishek Rao",
+                "Abu Awal Md Shoeb",
+                "Abubakar Abid",
+                "Adam Fisch",
+                "Adam R Brown",
+                "Adam Santoro",
+                "Aditya Gupta",
+                "Adri\u00e0 Garriga-Alonso"
+            ],
+            "title": "Beyond the imitation game: Quantifying and extrapolating",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Art\u016brs Stafanovi\u010ds",
+                "Toms Bergmanis",
+                "M\u0101rcis Pinnis."
+            ],
+            "title": "Mitigating gender bias in machine translation with target gender annotations",
+            "venue": "Proceedings of the Fifth Conference on Machine Translation, pages 629\u2013638, Online. Association for Computational Lin-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Gabriel Stanovsky",
+                "Noah A. Smith",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Evaluating gender bias in machine translation",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 1679\u20131684, Florence, Italy. Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tony Sun",
+                "Andrew Gaut",
+                "Shirlyn Tang",
+                "Yuxin Huang",
+                "Mai ElSherief",
+                "Jieyu Zhao",
+                "Diba Mirza",
+                "Elizabeth Belding",
+                "Kai-Wei Chang",
+                "William Yang Wang."
+            ],
+            "title": "Mitigating gender bias in natural language processing: Literature review",
+            "venue": "Proceedings of the",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Mukund Sundararajan",
+                "Ankur Taly",
+                "Qiqi Yan."
+            ],
+            "title": "Axiomatic attribution for deep networks",
+            "venue": "International conference on machine learning, pages 3319\u2013 3328. PMLR.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jonas-Dario Troles",
+                "Ute Schmid."
+            ],
+            "title": "Extending challenge sets to uncover gender bias in machine translation: Impact of stereotypical verbs and adjectives",
+            "venue": "Proceedings of the Sixth Conference on Machine Translation, pages 531\u2013541, Online. Asso-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Eva Vanmassenhove",
+                "Johanna Monti."
+            ],
+            "title": "gENderIT: An annotated English-Italian parallel challenge set for cross-linguistic natural gender phenomena",
+            "venue": "Proceedings of the 3rd Workshop on Gender Bias in Natural Language Processing, pages 1\u20137, Online.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Elena Voita",
+                "Pavel Serdyukov",
+                "Rico Sennrich",
+                "Ivan Titov."
+            ],
+            "title": "Context-aware neural machine translation learns anaphora resolution",
+            "venue": "Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Sylvain Gugger",
+                "Mariama Drame",
+                "Quentin Lhoest",
+                "Alexander Rush."
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Linting Xue",
+                "Noah Constant",
+                "Adam Roberts",
+                "Mihir Kale",
+                "Rami Al-Rfou",
+                "Aditya Siddhant",
+                "Aditya Barua",
+                "Colin Raffel."
+            ],
+            "title": "mt5: A massively multilingual pre-trained text-to-text transformer",
+            "venue": "arXiv preprint arXiv:2010.11934.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kayo Yin",
+                "Patrick Fernandes",
+                "Danish Pruthi",
+                "Aditi Chaudhary",
+                "Andr\u00e9 F.T. Martins",
+                "Graham Neubig"
+            ],
+            "title": "Do context-aware translation models pay",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with bert",
+            "venue": "arXiv preprint arXiv:1904.09675.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jieyu Zhao",
+                "Tianlu Wang",
+                "Mark Yatskar",
+                "Vicente Ordonez",
+                "Kai-Wei Chang."
+            ],
+            "title": "Men also like shopping: Reducing gender bias amplification using corpus-level constraints",
+            "venue": "Proceedings of the 2017 Conference on Empirical Methods in Natural Lan-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jieyu Zhao",
+                "Tianlu Wang",
+                "Mark Yatskar",
+                "Vicente Ordonez",
+                "Kai-Wei Chang."
+            ],
+            "title": "Gender bias in coreference resolution: Evaluation and debiasing methods",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for",
+            "year": 2018
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Instruction fine-tuned (IFT) models, such as FlanT5 (Chung et al., 2022) and mT0 (Muennighoff et al., 2023a), are trained on large corpora of machine learning tasks verbalized in natural language and learned through standard language modeling. The large and diverse mixture of training tasks has led to unmatched transfer performance \u2013 if prompted properly, models are able to virtually solve any standard NLP task, including sentiment analysis, natural language inference, question answering, and more (Sanh et al., 2022).\nHowever, most efforts on their evaluation have focused on standard benchmarks only, with\n1Code and data artifacts at https://github.com/ MilaNLProc/interpretability-mt-gender-bias.\na prominent focus on testing zero-shot abilities (Chung et al., 2022) and cross-lingual generalization (Muennighoff et al., 2023b), and have thus largely ignored the models\u2019 social impact (Hovy and Spruit, 2016). This lacuna is extremely surprising as (a) IFT models are based on pretrained language models, which are widely known to encode societal biases and unfair stereotypes (Nadeem et al., 2021; Nozza et al., 2021, inter alia); and (b) exposing models to many fine-tuning sources can exacerbate biased behaviors as stereotypical demonstrations add up (Srivastava et al., 2022).2 As a result, we expect instruction-tuned models to encode societal biases and unfair stereotypes, possibly even beyond the extent of their base models. Still, few efforts have been spent on bias evaluation and mitigation for these models so far (a notable\n2For a reference, FLAN models are trained on a mixture of 1.8K tasks (Chung et al., 2022).\nexception being provided by Aky\u00fcrek et al. (2022)), putting their societal beneficial use at risk.\nIn this work, we address this research gap by studying occupational gender bias in zero- and fewshot setups in one of the, arguably, most prominent NLP applications to date, machine translation (MT). To this end, we use the established WinoMT benchmark (Stanovsky et al., 2019) and study the translation from English to Spanish and German, two morphologically diverse languages that both require inflecting multiple syntactic items. We experiment with Flan-T5 and mT0, two stateof-the-art IFT models, controlling for several factors such as the prompt template, model size, and decoding strategy. Importantly, we make use of established interpretability tools to shed light on when and how such models use lexical clues when picking the right (or wrong) gender inflection for a target profession. We then use those insights for informing an easy-to-use and effective bias mitigation approach.\nContributions and Findings. Our contributions are three-fold: (1) we provide one the few studies on bias in instruction-tuned models to-date. Focusing on the example of MT and gender bias, we show that despite getting better at zero-shot translation, such models default to male-inflected translations, even in the presence of overt female pronouns and disregarding female occupational stereotypes. (2) To our knowledge, we are among the first to acknowledge the potential of interpretability methods to study IFT language models and why they produce biased predictions. Based on attribution interpretability, we find that models systematically ignore the pronoun (and thus, the conveyed gender information) when producing misgendered translations. In contrast, correctly translated professions relate to higher contributions of the pronoun in the choices taken. (3) Based on our insights, we propose a novel and easy-to-use bias mitigation method \u2013 informed by interpretability scores! The differences in the attribution scores lead us to hypothesize that models that are used in a fewshot setup would benefit from provided translations mostly, if exactly in those examples they would normally overlook the pronoun. We hence propose a few-shot learning-based debiasing approach, in which we use interpretability scores to select the incontext exemplars. Figure 1 shows an example of the resulting approach. The solution is simple-yeteffective, leading to significantly fairer translations\nwith as few as four human-translated exemplars.\nOverall, our findings prove interpretability as a valuable tool for studying and mitigating bias in language models, both as a diagnostic tool and a signal driving bias mitigation approaches. We release code and data artifacts hoping to foster future research in this direction."
+        },
+        {
+            "heading": "2 Experimental Setup",
+            "text": "The primary use case for instruction-tuned models is to tackle standard NLP tasks by formulating a specific request in the input prompt. Here, we experiment with MT, triggered by a specific phrasing such as \u201cTranslate this into Spanish.\u201d\nIn particular, we set to study whether such models exhibit gender bias concerning occupations. While doing so, we apply established interpretability metrics to explain why the model preferred specific gender inflections. Later (\u00a74), we propose a novel debiasing approach based on few-shot learning informed by the interpretability findings."
+        },
+        {
+            "heading": "2.1 Gender Bias in Machine Translation",
+            "text": "Bias Statement. We expect LMs to inflect gender in occupation words according to overt contextual and lexical clues. Instead, a biased model is one, which relies on stereotypical gender-role associations. Both open source and commercial MT systems have been shown to rely on these associations, with a marked tendency to associate women with less prestigious roles (e.g., Stanovsky et al., 2019; Saunders and Byrne, 2020; Chung et al., 2022, inter alia). Echoing Blodgett et al. (2020), such systems risk representational harms, as they portray women in a less favorable light than men.\nDataset. We base our experiments on WinoMT (Stanovsky et al., 2019), a well-known benchmark for evaluating gender bias in MT.\nThe collection is based on templates. Each instance mentions two professions and a pronoun coreferent to one of them (see Figure 1 for an example). When translating from English, a notional gender language, to Spanish or German, two grammatical gender languages, the pronoun dictates the coreferent inflection because of syntactic agreement. For example, the sentence in Figure 1 with \u201cshe\u201d as the leading pronoun should translate to \u201cLa\nmec\u00e1nica\u201d (eng: the female mechanic).3 The task is challenging as many of the occupations found in WinoMT have stereotypical gender-role associations in society (e.g., nurse to women, developer to men). Indeed, the WinoMT corpus distinguishes between stereotypical and anti-stereotypical templates, which permits us to derive more insights.\nEvaluation Metrics. We evaluate gender bias using the measures proposed along with WinoMT Stanovsky et al. (2019). The authors conceptualize bias as differences in group performance indicated by \u2206G and \u2206S . \u2206G corresponds to the difference in performance (F1 macro) between translations with a female and male referent. \u2206S measures the difference in performance between stereotypical and anti-stereotypical examples, as per US Labour statistics in Zhao et al. (2018). Additionally, we also report the overall accuracy."
+        },
+        {
+            "heading": "2.2 Interpretability for Gender Bias in MT",
+            "text": "Interpretability for Translations. For every translated instance, we compute and collect word attribution interpretability scores from target to source tokens. Word attribution scores (i.e., saliency scores), measure each input token\u2019s contribution to the choice of any translation token.\nWe compute word attributions as follows: first, we extract raw attribution scores using Integrated Gradients (IG; Sundararajan et al., 2017), a commonly used feature attribution algorithm. Let Ar = RSr\u00d7Tr\u00d7h be the output of IG, a matrix of attribution scores, where Sr and St are the number of source and target tokens, respectively, and h is the hidden dimension of the input embeddings.\nNext, we aggregate scores applying two consecutive functions, i.e., A = g(f(Ar)), where f : RSr\u00d7Tr\u00d7h \u2192 RS\u00d7T\u00d7h and g : RS\u00d7T\u00d7h \u2192 RS\u00d7T aggregate raw scores over each word\u2019s sub-tokens and the hidden dimension, respectively. S and T are the number of source and target words as split by whitespaces, respectively. We set f to take the highest absolute value in the span, preserving the sign, and g to the Euclidean norm. We provide more details in Appendix B.1. As a result, each item ai,j \u2208 A will reflect the contribution that source word i had in choosing the target word j.\n3WinoMT includes a small set of examples using neutral pronouns to test gender-neutral translation (GNT). As GNT is a developing field, we report preliminary insights on GNT cases (\u00a75). Otherwise, we restrict the rest of the work to binary gender.\nInterpretability Signals for Gender Bias. Word attribution scores provide a clear, measurable quantity to inspect and debug machine translation models. We, therefore, study such scores and relate recurring patterns to misgendered translations.\nWe extracted several word attribution scores. First, we observe the \u201calignment\u201d importance between translations aprof,prof , the importance of the English profession word for the target profession (mechanic and mec\u00e1nico in Figure 1). Then, we also report a control attribution score actrl,prof as the importance of the first source token (\u201cThe\u201d) toward the target profession.\nThe most promising aspect we study is the contribution score apron,prof , i.e. the importance the source pronoun has in choosing the final form of the target profession (she and mec\u00e1nico in Figure 1). Intuitively, the models need to use this overt lexical clue to choose the correct inflection. Note that extracting aprof,pron requires aligning the source and target sentences because WinoMT does not release the profession position within the sentence, while the pronoun position is given. We tested both Fast Align (Dyer et al., 2013) and a custom dictionary matching approach and proceeded with the latter because of better quality. In particular, we prompted GPT-3.5 (Ouyang et al., 2022, gpt-3.5-turbo, accessed in early June 2023) to translate all the target professions in WinoMT into the masculine and feminine inflected forms in Spanish and German.4 After checking and fixing any grammatical errors, we perform hard string matching of the MT output against the word translations."
+        },
+        {
+            "heading": "2.3 Instruction Fine-Tuned Models",
+            "text": "Base Models. We study variants of two recently introduced IFT models.5\nFlan-T5 (Chung et al., 2022) is a sequence-tosequence language model based on the T5 architecture (Raffel et al., 2020). The model has been pre-trained with standard language modeling objectives and subsequently fine-tuned on the FLAN collection (Longpre et al., 2023), counting more than 1,800 NLP tasks in over 60 languages. We test the 80M (Small), 250M (Base), 780M (Large),\n4This dictionary contains a single entry pair per profession. Hence, we do not match professions against multiple correct translations (e.g., we match the Spanish \u201cmaestro/maestra\u201d but not \u201cprofesor/profesora\u201d for \u201cteacher\u201d).\n5We follow the nomenclature from Chung et al. (2022) and refer to these models as instruction fine-tuned models, in favor of alternatives such as multi-task prompted models. See Appendix A for more details.\n3B (XL), and 11B (XXL) model sizes. mT0 (Muennighoff et al., 2023b) is a mT5 model (Xue et al., 2020) fine-tuned on xP3, covering 13 tasks across 46 languages with English prompts. We test the 300M (Small), 580M (Base), 1.2B (Large), 3.7B (XL), and 13B (XXL) model sizes.\nBoth model types have been fine-tuned verbalizing NLP tasks into a text-to-text format and using standard encoder-decoder language modeling loss. Moreover, FLAN and xP3 training mixtures both contain machine translation tasks. For all open models, we use the Hugging Face Transformers library (Wolf et al., 2020).\nModel Configuration and Tuning. We consider two standard prompt templates and five decoding strategies to account for possible variations with instruction-tuned models. See Appendix C.2 for details. In order to assess the translation quality and select the best instruction-tuned model configuration, we perform an extensive evaluation within a benchmark evaluation framework.\nWe use the state-of-the-art Europarl corpus (Koehn, 2005) to evaluate zero-shot translation quality.6 We use the benchmark evaluation metrics COMET (reference-based -22 (Rei et al., 2022) and reference-free -20 (Rei et al., 2020)) and BERTScore (Zhang et al., 2019). We also include BLEU (-2 and -4) (Papineni et al., 2002) for comparison with prior work."
+        },
+        {
+            "heading": "3 Results",
+            "text": ""
+        },
+        {
+            "heading": "3.1 General Translation Quality",
+            "text": "The results on EuroParl (Appendix C.2) show that the best overall quality is obtained with beam search decoding (n=4, no sampling) and the prompt\n6We use the WMT\u2019 06 test splits at https://www.statmt. org/wmt06/shared-task/\ntemplate \u201c{src_text} Translate this to {tgt_lang}?\u201d. Most importantly, we found that model size is key to enabling zero-shot translation (see Table 9). This crucial finding suggests that smaller models (i.e., <11B) do not yield translations of sufficient quality and their usage in a zero-shot setup can be problematic. We will focus on the largest models (XXL variants) for the rest of the paper and simply refer to them as Flan-T5 and mT0 for conciseness.\nTable 1 reports the zero-shot performance of Flan-T5 and mT0 compared to supervised baseline Marian NMT models (Junczys-Dowmunt et al., 2018)7. Flan-T5 and mT0 slightly underperform supervised baselines. However, they show competitive zero-shot performance as measured by COMET-22 and BERTScore. COMET-20 quality estimation metric show less encouraging results, especially for Flan-T5 (see Table 9 for a full breakdown). Overall, these results suggest that zero-shot translation with instruction-tuned models is almost as valid as specialized supervised models, further motivating their adoption in real use cases."
+        },
+        {
+            "heading": "3.2 Gender Bias in Instruction-Tuned Models",
+            "text": "Table 2 reports the results on WinoMT gender bias metrics. We report several interesting findings. Generally, Flan-T5 is competitive. For both languages, it significantly outperforms mT0 in terms of accuracy and bias evaluation. Moreover, considering commercial systems reported in Stanovsky et al. (2019), GPT-3.5 (Ouyang et al., 2022, gpt-3.5-turbo, accessed in early June 2023), and our supervised baseline, Flan-T5 achieves the best accuracy and \u2206G in En-Es, and the best \u2206S in En-De. However, it falls severely short on \u2206S En-Es, where the supervised Marian NMT model tops the board. We addressed this weakness using few-shot learning (\u00a74).\nAs for negative findings, we see that mT0 retains high occupation biases. It is the second worst system for accuracy, \u2206G and \u2206S in En-Es, with similar results in En-De.8 Notably, zero-shot translations from GPT-3.5 are biased and worse than supervised baselines and instruction-tuned Flan-T5. Despite the interesting finding, we do not explore GPT-3.5 further since the attribution\n7En-Es: https://huggingface.co/Helsinki-NLP/ opus-mt-en-es, En-De: https://huggingface.co/ Helsinki-NLP/opus-mt-en-de\n8This negative finding is even more significant considering that systems from Stanovsky et al. (2019) date back to 2019.\ntechniques require access to the model weights. Overall, these findings suggest that instructiontuned models can reasonably solve the task in a zero-shot setup, with Flan models being superior to mT0."
+        },
+        {
+            "heading": "3.3 Inspecting Word Attribution Scores",
+            "text": "Word attribution scores give us additional insights into the model\u2019s biased behavior. Table 3 shows the average word attribution scores introduced in Section 2.2 grouped by model, language, gender, and stereotypical and anti-stereotypical cases. The table also provides disaggregated accuracy for better understanding. Using our dictionary-based string matching, we found the target profession (i.e., inflected in either of the two forms) in 64% (En-Es) and 39% (En-De) for Flan-T5 and 70% and 49% for mT0.9\nMale cases are always associated with the highest accuracy, with a difference of 21% and 62% between male and female cases for Flan-T5 and mT0, respectively. Moreover, stereotypical male cases hold the highest performance across all groups. This finding highlights (1) a strong tendency to default to masculine forms and (2) that male stereotypical cases are easier to translate on average. These results confirm those obtained by observing \u2206G and \u2206S in the previous paragraph.\nIn three out of four cases, stereotypical male cases also hold the highest aprof,prof value. However, while the most accurate cases are those in which the source-target profession attribution is the strongest, the opposite is not true (mT0, En-Es, stereo, M has not the highest aprof,prof ). Therefore, we conclude there is no clear correlation between\n9Manual inspection revealed that fewer matches in En-De are due to the model\u2019s frequent use of synonyms, English profession words, or wrong translation.\naccuracy and aprof,prof . More insightful findings can be derived by the word attribution score apron,prof , i.e., the source pronoun importance for translating the gendered profession. Intuitively, source pronoun should be the model\u2019s primary source of information for selecting the correct gender inflection. If we observe low values for this score, we can assume the model has ignored the pronoun for translating. This pattern is especially true for stereotypical male cases: despite their high accuracy, apron,prof scores are low. We observed an opposite trend for stereotypical female cases, where apron,prof scores are the highest, but accuracy is low. Interestingly, apron,prof is highly asymmetrical between female and male cases. In six out of eight (model, language, and stereotype) groups, apron,prof is higher for females than males. Regarding stereotypical vs. anti-stereotypical occupations, apron,prof is higher for the latter on three out of four modellanguage pairs. This statistic supports the intuition that anti-stereotypical cases are where the model is most challenged, particularly for female professions, which consistently have the lowest accuracy. These findings, taken together, reveal a concerning bias in the way professions are portrayed in the models. Even after making an extra effort to consider pronouns, professions are frequently translated into their male inflection, even when they would be stereotypically associated with the female gender.10\nFinally, we studied how aprof,prof and apron,prof relate to translation errors. Specifically, we computed the average aprof,prof and apron,prof across all correctly and non-correctly translated examples and measured their relative difference. Ta-\n10The word attribution score created as a control variable, actrl,prof , does not show any clear trend as expected.\nble 4 reports the results. aprof,prof does not show any clear associations with errors, and it is hard to relate it to biased behaviors. apron,prof , on the other hand, shows again high asymmetry between female and male cases. Interestingly, models attend to the source pronoun sensibly less when wrongly translating female referents (-14% in both anti-stereotypical and stereotypical cases), but the same is not valid for male cases.\nAll these results support the use of ad-hoc interpretability methods for discovering word attribution scores associations with desirable (or undesirable) behavior, thereby serving as proxies for subsequent interventions."
+        },
+        {
+            "heading": "4 Interpretability-Guided Debiasing",
+            "text": "Taking stock of the findings in Section 3, we know that models overtly ignore gender-marking pronouns but also that interpretability scores provide\nus with a reliable proxy for the phenomenon. Therefore, we hypothesize we can reduce the model\u2019s errors and, in turn, its translation bias by \u201cshowing\u201d examples where it would typically overlook the pronoun, each accompanied by a correct translation. Building on recent evidence that large models can solve tasks via in-context learning (Brown et al., 2020b), we implement this intuition via few-shot prompting. Crucially, we use interpretability scores to select in-context exemplars.\nWe proceed as follows. First, we extract examples with lowest apron,prof importance score, i.e., instances where the model relied the least on the gender-marking pronoun to inflect the profession word. Then, we sample N exemplars from this initial pool and let them be translated by humans. Finally, we use these exemplars as few-shot seeds, simply prepending them to the prompt. Figure 1 shows as end-to-end example of the process.\nWe experiment with N=4, sampling directly from WinoMT, and stratifying on stereotypical/antistereotypical and male/female groups to increase coverage. We translate the seeds ourselves.11 As templates contain one more profession whose gender is unknown (here, NT: non-target), we experiment with either inflecting it to its feminine form (NT-Female), its masculine form (NT-Male), or a randomly choosing between the two (NT-Random). See Appendix D.1 for full details on the few-shot prompt construction.\nAs a baseline debiasing approach, we sample 11There is one Spanish and German native speaker among\nthe authors."
+        },
+        {
+            "heading": "Model Acc \u2206G \u2206S",
+            "text": "and translate N random examples from WinoMT (Random). For a fair comparison with the interpretability-guided sampling, we stratify random sampling too and build the prompts likewise.12"
+        },
+        {
+            "heading": "4.1 Results",
+            "text": "Table 5 reports the comparison between Flan-T5 in zero-shot and using our debiasing approach. We report the best NT variants, which is NT-Female for Spanish and NT-Male for German. See Appendix D for full results.\nIn En-Es, choosing in-context examples guided by interpretability leads to a strong improvement in accuracy (+7.1), \u2206G (-5.1), and \u2206S (-15.5). Improvements in En-De are less marked, and \u2206S gets worse (+9.2 in absolute value). However, lower \u2206S might be artificially given by lower accuracy (Saunders and Byrne, 2020), as it happens for Flan-T5 zero-shot compared to Flan-T5Few-Shot. Moreover, our approach leads to significant improvement over random sampling (see Appendix D.2 for details on significance).\nOverall, these findings prove that interpretability scores, here apron,prof , can serve as a reliable signal to make fairer translations. We highlight how such improvements are enabled by a simple solution that requires no fine-tuning and only four human-written examples."
+        },
+        {
+            "heading": "4.2 Qualitative Analysis",
+            "text": "This section provides a qualitative analysis of the results obtained by Flan-T5Few-Shot in the En-Es setup, compared with the zero-shot Flan-T5.\nTable 6 illustrates instances of wrong gender inflection in zero-shot translation (Flan-T5), contrasting them with the accurate inflection achieved\n12Among the three possible configurations, i.e., RandomNT-Male, Random-NT-Female, and Random-NT-Random, we report here the latter.\nby Flan-T5Few-Shot. In both stereotypical and nonstereotypical examples, we observe a correct shift in articles (\u201cEl\u201d for male, \u201cLa\u201d for female) and gender inflection corresponding to the profession (e.g., \u201cthe librarian\u201d - \u201cel bibliotecario\u201d (male), \u201cla bibliotecaria\u201d (female)). Interestingly, while Flan-T5 translates poorly the profession \u201cclerk\u201d with \u201cel secretario\u201d (second row), Flan-T5Few-Shot chooses the right word and gender inflection (\u201cla empleada\u201d). We attribute this improvement in translation to the presence of the profession \u201cclerk\u201d in the few-shot examples, which likely allows the model to learn the correct profession translation.\nWe also observe the behavior of the Flan-T5 and Flan-T5Few-Shot models across stereotypical and anti-stereotypical examples. Using the fewshot debiasing in Spanish, the model demonstrates a higher success rate in correcting the profession translations associated with anti-stereotypical examples (235) compared to stereotypical examples (80) out of a total of 348 identified examples.\nFinally, we report results aggregated by profession in Table 7 for En-Es. By looking at the professions whose \u2206G changed the most, we see that appraiser, therapist, sheriff, designer, and editor achieved the most significant improvement in correct gender inflection with Flan-T5Few-Shot. On the other hand, veterinarian, teenager, resident, farmer, and advisor worsened. I.e., despite showing overall fairer translations, improvements with Flan-T5Few-Shot are uneven across professions. This finding calls for more fine-grained inspections and overall dataset-level assessments."
+        },
+        {
+            "heading": "5 Gender-Neutral Translation",
+            "text": "To broaden our study and provide groundwork on interpretability for gender-neutral MT, we conducted a preliminary analysis of the 240 WinoMT samples requiring gender-neutral translation. These instances result from compiling templates with a gender-neutral pronoun (e.g., \u201cThe technician told the customer that they could pay with cash.\u201d). Table 10 provides a detailed overview of the results for Flan-T5 and mT0.\nConsidering Flan-T5 and En-Es, we did not find either inflected form in 67 (28%) cases (i.e., they did not match with any entry in our dictionary). From manual inspection, we observed that most cases contained either (1) an alternative valid form or synonym (e.g., \u201cprofesora\u201d for \u201cteacher\u201d instead of \u201cmaestra\u201d) or (2) a semantically related but not\nstrictly correct translation \u2013 e.g., \u201cpasajero\u201d (eng: passenger) for \u201cpedestrian\u201d instead of \u201cpeat\u00f3n\u201d). Interestingly, in some rarer cases, the model replaces the target profession with an indirect object pronoun (e.g., \u201cThe supervisor gave [the employee] feedback on their stellar performance.\u201d -> \u201cEl supervisi\u00f3n [le] dio informaci\u00f3n sobre su trabajo extraordinario.\u201d13). While these cases are a form of GNT, they come at the expense of information loss.\nIn the remaining matching 173 (72%) examples, the model used a male inflection 54% of the times but only 9% a feminine form, with the remaining cases not identified.14 Some professions are exclusively inflected with feminine (e.g., nurse, receptionist) and others masculine (e.g., buyer, chef, chemist) forms. Moreover, we found that the importance given to the pronoun (they/them/their) when choosing a masculine form for the profession (i.e.,\n13Spanish \u201cle\u201d can translate to \u201cto him/her.\u201d 14As per the WinoMT\u2019s official heuristic and morphological\nanalysis tool.\napron,prof ) is lower (median: 0.09) than in feminine cases (median: 0.16). Overall, these findings corroborate those on binary-gender instances because (1) Flan-T5 mostly defaults to masculine, overlooking the clue given by the pronoun, and (2) interpretability scores can be a valuable tool to detect such an unwanted behavior.\nWhether we match it or not, the model inflects the pronoun\u2019s referent profession in most cases. Poor GNT capabilities of instruction-tuned models echo those recently found in commercial systems (Piergentili et al., 2023b). Similar results hold for mT0 (En-Es). In contrast, results on EnDe show a sensibly lower number of matching instances (39% for Flan-T5, 35% for mT0). Through manual inspection, we attribute it mainly to using synonyms and wrong translations for Flan-T5 and failed translations for mT0. We report full results in Appendix C.3."
+        },
+        {
+            "heading": "6 Related Work",
+            "text": "Gender Bias in MT. As for other NLP tasks and models (e.g., Bolukbasi et al., 2016; Zhao et al., 2017; Rudinger et al., 2018, inter alia), the study of gender bias (Sun et al., 2019) has received much attention in MT. For a thorough review on the topic, we refer to Savoldi et al. (2021).\nMost prominently, Stanovsky et al. (2019) presented the WinoMT data set for measuring occupational stereotypical gender bias in translations. Later, the data set was extended by Troles and Schmid (2021) for covering gender stereotypical adjectives and verbs. Prates et al. (2020) analyzed gender bias in Google Translate. Levy et al. (2021)\nfocused on collecting natural data, while Gonen and Webster (2020) assessed gender issues in realworld input. As gender bias in MT is highly related to the typological features of the target languages, several recent studies focused on specific language pairs, e.g., English/Korean (Cho et al., 2019), English/Hindi (Ramesh et al., 2021), English/Turkish (Ciora et al., 2021), and English/Italian (Vanmassenhove and Monti, 2021). Daems and Hackenbuchner (2022) introduced a living community-driven collection of biased MT instances across many language pairs. Apart from data sets and methods for assessing gender bias in MT, researchers also proposed methods for bias mitigation. For instance, Escud\u00e9 Font and Costajuss\u00e0 (2019) focused on embedding-based techniques (e.g., HardDebiasing), while Saunders et al. (2020) relied on gender inflection tags. Stafanovic\u030cs et al. (2020) analyze the effect word-level annotations containing information about subject\u2019s gender. Saunders and Byrne (2020) investigated the use of domain adaptation methods for bias mitigation, and Escolano et al. (2021) proposed to jointly learn the translation, the part-of-speech, and the gender of the target languages. Most recently, researchers have focused more on the role of gender-neutrality. As such, Lauscher et al. (2023) present a study on (neo)pronouns in commercial MT systems, and Piergentili et al. (2023a) propose more inclusive MT through generating gender-neutral translations.\nInterpretability for MT. Previous work in context-aware MT (Voita et al., 2018; Kim et al., 2019; Yin et al., 2021; Sarti et al., 2023a) studied how models use (or do not use) context tokens by looking at internal components (e.g., attention heads, layer activations). More recent solutions enable the study of the impact of source and target tokens (Ferrando et al., 2022) or discover the causes of hallucinations (Dale et al., 2023). Concurrent work by Sarti et al. (2023b) uses post-hoc XAI methods to uncover gender bias in TurkishEnglish neural MT models. We expand their setup to more complex sentences and the notional-togrammatical gender MT in two more languages."
+        },
+        {
+            "heading": "Mitigating Bias in Prompt-based Models.",
+            "text": "Given that sufficiently large LMs exhibit increasingly good few-shot and zero-shot abilities (Brown et al., 2020a), researchers investigated variants of prompting as a particular promising technique. Relevant to us, several works (Sanh et al., 2022) pro-\nposed to tune models for following instructions in multi-task learning regimes achieving surprisingly good task generalizability (e.g., Sanh et al., 2022; Chung et al., 2022, inter alia). However, also prompt-based models are prone to encode and amplify social biases. In this context, Lucy and Bamman (2021) showed that GPT-3 exhibits stereotypical gender bias in story generation. Schick et al. (2021) proposed self-diagnosis and self-debiasing for language models which they test on T5 and GPT-2. (Aky\u00fcrek et al., 2022) investigated whether the form of a prompt, independent of the content, influences the measurable bias. In contrast, Prabhumoye et al. (2021) use instruction-tuned models to detect social biases in given texts.\nIn this work, we are the first to explore the use of interpretability scores for informing bias mitigation in instruction-tuned models, bridging the gap between fairness and transparency in MT."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "This paper introduced the first extensive study on the evaluation and mitigation of gender bias in machine translation with instruction-tuned language models. Prominently, we studied the phenomenon through the lenses of interpretability and found that models systematically overlook lexical clues to inflect gender-marked words. Building on this finding, we proposed a simple and effective debiasing solution based on few-shot learning, where interpretability guides the selection of relevant exemplars."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "This project has in part received funding from Fondazione Cariplo (grant No. 2020-4288, MONICA) and the European Research Council (ERC) under the European Union\u2019s Horizon 2020 research and innovation program (No. 949944, INTEGRATOR). GA, FP, and DN are member of the MilaNLP group and the Data and Marketing Insights Unit of the Bocconi Institute for Data Science and Analysis. AL\u2019s work is funded under the Excellence Strategy of the German Federal Government and the L\u00e4nder."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Our work comes with a number of limitations. We chose German and Spanish as the translation target languages for our analysis. Our choice was motivated by (1) the presence of grammatical\ngender in those languages, (2) their typological diversity, and (3) our access to native speakers of those languages for double-checking the models\u2019 translations and translating our few-shot examples. We know that none of these languages is resourcescarce and that including more languages would strengthen our study. However, given the depth of our study and our qualitative analyses, we leave expanding our findings to more languages for future research.\nThis work focuses on the standard WinoMT benchmark. Yet, the dataset is constructed by slot-filling templates, simplifying the analysis on several aspects (e.g., there is one gender-marking pronoun, only two possible referents, and simple sentence structure). However, we argue that our methodology will serve as essential groundwork for extensions on natural MT setups (e.g., Bentivogli et al., 2020; Currey et al., 2022).\nFinally, we conduct the few-shot experiments only with the largest model variants. Including more model sizes here could lead to deeper insights. We chose to do so due to (1) the lousy translation quality we observed for smaller model sizes and (2) the computational effort associated with an environmental impact. We believe that our findings will generalize to other model sizes, providing a decent overall translation quality."
+        },
+        {
+            "heading": "A A Note on Model Nomenclature",
+            "text": "The terms multitask prompted tuning and instruction finetuning\u2013or simply instruction tuning\u2013refer to the same strategy of recasting existing NLP datasets using natural language and particular prompt-answer templates. Raffel et al. (2020) originally introduced instruction tuning as a complement of pre-training of text-to-text models on a variety of NLP tasks. More recently, instruction tuning has also been used to indicate the training process on human instructions, that lead to the rise of modern assistant LMs (e.g., Ouyang et al., 2022; Chiang et al., 2023; Dettmers et al., 2023, inter alia).\nAlthough the two procedures have conflated, we can reasonably see recasted dataset (e.g., FLAN (Chung et al., 2022) or xP3) as instruction following data. Therefore, in this paper, we adopt the instruction finetuning nomenclature as a reasonble umbrella definition."
+        },
+        {
+            "heading": "B Details on the Experimental Setup",
+            "text": "B.1 Interpretability We use Integrated Gradient (IG) token-level attribution scores (Sundararajan et al., 2017). Following recent work on IG for NLP, we multiply raw scores\nby input embeddings (Han et al., 2020) and integrate over 16 steps from the baseline. We run model inference pass using 8-bit quantization for efficiency (Dettmers et al., 2022). We set aggregation functions f to take the highest absolute value score across the aggregated span, preserving the sign (e.g., f([0.01,\u22120.3, 0.1]) = \u22120.3), and g to the Euclidean norm. We aggregate first over f and then g because we expect token-level per-unit scores to represent token attribution more expressively, and we do not want to lose such information with an initial pooling along the hidden size. We use Inseq (Sarti et al., 2023b) to compute and aggregate the scores."
+        },
+        {
+            "heading": "B.2 The WinoMT Corpus",
+            "text": "WinoMT (Stanovsky et al., 2019) was created by combining the Winogender (Rudinger et al., 2018) and WinoBias (Zhao et al., 2018) coreference test sets. WinoMT consists of 3,888 instances, equally balanced between male and female genders and between stereotypical and non-stereotypical genderoccupation assignments.\nInstances in WinoMT are constructed from templates where two professions interact in an arbitrary activity (e.g., \u201cThe developer argued with the designer\u201d), and a pronoun, either personal or possessive, coreferent of one of the two professions (\u201cbecause she did not like the design\u201d). Two hundred forty corpus instances result from templates compiled using the pronouns they/their/them. They are intended to test genderneutral translation capabilities."
+        },
+        {
+            "heading": "B.3 Translation with Baselines",
+            "text": "We compare IFT models to two competitive baseline translation systems. We test Marian NMT models fine-tuned on the OPUS corpus,15 matching the decoding strategy used for instruction models and no prompts. Moreover, we test GPT-3.5 using top p sampling (p=0.9, temperature=0.2, max_tokens=256) and prompt \u201cTranslate the following sentence into {tgt_lang}: {src_text}\u201d."
+        },
+        {
+            "heading": "C Additional Results",
+            "text": ""
+        },
+        {
+            "heading": "C.1 Gender Bias Evaluation",
+            "text": "Table 8 reports full results on the gender bias evaluation of IFT models and several baselines. For Flan-T5, generally accuracy and fairness improve\n15https://opus.nlpl.eu/"
+        },
+        {
+            "heading": "Q: Translate {src_text_few_shot} to {",
+            "text": "with size. Flan-T5-Small is an exception, being the best model for \u2206S in En-Es. However, low accuracy might induce a very low \u2206S (Saunders and Byrne, 2020). Indeed, the same model is not able to produce meaningful results in En-De. Smaller mT0 models share this trait of low accuracy and unstable translations in \u2206S .\nC.2 Impact of Decoding and Prompt Template\nWe conducted an extensive hyperparameter search on five decoding strategies and two prompt templates. We conducted all tests on the Europarl WMT\u2019 06 test sets. We experimented with greedy search, beam search (n=4, no sampling), top k sampling (k = [5, 10, 20, 50, 80]), top p sampling (p = [0.4, 0.6, 0.8, 0.9, 0.95, 1.0] and temperature = [0.4, 0.7, 1]), and contrastive decoding (k = [2, 5, 10], and penalty alpha = 0.6). As for prompt templates, we used two from the FLAN collection, i.e., \u201c{src_text} Translate this to {tgt_lang}?\u201d and \u201cTranslate from {src_lang} to {tgt_lang}:\\n\\n{src_text}\\n\\n{tgt_lang}:\u201d. 16 We ran an exhaustive grid search on En-Es, identify the best setup, and translate En-De with the best setup found.\nIn line with prior literature, we found that beam search (n=4, no sampling) is the best decoding strategy across all languages, models, and model sizes. Moreover, Figure 3 and 4 show a clear increasing trend in performance as models get bigger, with mT0 being slightly better than Flan-T5 on average. Notably, only the largest models achieve positive quality estimation scores (COMET20), even though non comparable to those of supervised models. Table 9 reports all results on both En-Es and En-De for all tested models."
+        },
+        {
+            "heading": "C.3 Gender-Neutral Translation",
+            "text": "Table 10 reports a complete overview of the results on the 240 gender-neutral instances for Flan-T5-\n16https://github.com/google-research/FLAN/blob/ main/flan/v2/templates.py\nXXL and mT0-XXL. We observe several interesting findings. (1) Both models tend to inflect into masculine or feminine forms more frequently when translating into Spanish (avg: 75%) than German (avg: 37%). (2) Frequent gender inflections \u2013 despite neutral pronoun constructions \u2013 underscore models\u2019 poor capabilities in this task, as they rarely resort to gender-neutral translations. (3) When inflecting the gender, both models use masculine substantially more often than feminine, showing a persistent gender bias even in GNT. (4) apron,prof for masculine translations is lower than that for feminine ones across both languages and models. This finding supports the intuition that models \u201coverlook\u201d overt contextual clues to inflect gender and default to male forms.\nSince En-De has a sensibly lower number of matching instance, we manually inspected them looking for the causes. Table 11 reports full statistics. Flan-T5 omitted the target phrase once; mT0 did the same twice and used a gender neutral plural once. Notably, while Flan-T5 mainly uses synonyms or translates profession words wrongly, mT0 fails many translations by verbatim copying the input sentence to the output."
+        },
+        {
+            "heading": "D Details on the Debiasing",
+            "text": "Table 12 reports the full list of results with different strategies for few-shot prompting. In three cases out of four (En-Es Flan, En-De Flan, and En-Es mT0), the proposed solution for few-shot examples selection leads to better accuracy with at least one variant of the non-target profession. In En-Es, for both Flan-T5 and mT0, the best version is Few-Shot NT-Female (i.e., providing examples where the non-target profession is feminineinflected).\nWe do not report the results for mT0 En-De as the model is not able to handle any few-shot template in this setup. The resulting generation are almost always in a language different than the target one or they are empty."
+        },
+        {
+            "heading": "D.1 Few-Shot Prompt",
+            "text": "We reuse a FLAN few-shot template for our fewshot debiasing approach. Specifically, we concatenate N=4 times the exemplar template reported in Figure 2."
+        },
+        {
+            "heading": "D.2 Statistical Significance",
+            "text": "We compute statistical significance of the difference in performance between few-shot with random sampling of examples and choosing using aprof,prof . We use bootstrap sampling (S\u00f8gaard\net al., 2014, n=1000, sample size-30%). Interpretability informed sampling is better than random sampling in terms of macro F1 score (p \u2264 .01, in En-Es and En-De), and accuracy (p \u2264 .01 in En-Es, p \u2264 .05 in En-De)."
+        },
+        {
+            "heading": "Reason Flan-T5 mT0",
+            "text": ""
+        },
+        {
+            "heading": "E Carbon Footprint",
+            "text": "Experiments were conducted using a private infrastructure, which has a carbon efficiency of 0.29 kgCO2eq/kWh. A cumulative of 184 hours (53 for translation, 14 for evaluation, 117 for generating feature attribution scores) of computation was performed on hardware of type A100 PCIe 80GB (TDP of 250W). Total emissions are estimated to be 13.34 kgCO2eq, none of which were directly offset. Estimations were conducted using the MachineLearning Impact calculator presented in (Lacoste et al., 2019)."
+        },
+        {
+            "heading": "F Release of Data Artifacts",
+            "text": "We release code to reproduce our experiments at https://github.com/MilaNLProc/ interpretability-mt-gender-bias. Moreover, we plan to release all data artifacts produced in our study hoping to foster future research in the field, including (1) integrated gradient scores, (2) human-refined GPT-3.5 translation of WinoMT professions, and (3) human-translated seed demonstrations for few-shot learning. We will release any additional content not listed here in the paper repository."
+        },
+        {
+            "heading": "Spanish German",
+            "text": ""
+        }
+    ],
+    "title": "A Tale of Pronouns: Interpretability Informs Gender Bias Mitigation for Fairer Instruction-Tuned Machine Translation",
+    "year": 2023
+}

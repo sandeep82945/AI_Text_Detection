@@ -1,0 +1,848 @@
+{
+    "abstractText": "Compared to traditional single-turn ad-hoc retrieval, conversational retrieval needs to handle the multi-turn conversation and understand the user\u2019s real query intent. However, most existing methods simply fine-tune the pre-trained adhoc retriever on limited supervised data, making it challenging for the retriever to fully grasp the entirety of the conversation. In this paper, we find that large language models (LLMs) can accurately discover the user\u2019s query intent from the complex conversation context and provide the supervised signal to instruct the retriever in an unsupervised manner. Therefore, we propose a novel method termed INSTRUCTOR to Instruct unsupervised cOnversational dense Retrieval with LLMs. We design an unsupervised training framework that employs LLMs to estimate the session-passage relevance score as the soft label to guide the retriever\u2019s training. Specially, we devise three instructing strategies from context, query and response perspectives to calculate the relevance score more precisely, including conversational retrieval as conversation generation, question rewrite as latent variable and question response as posterior guide. Experimental results show INSTRUCTOR can bring significant improvements across various ad-hoc retrievers, even surpassing the current supervised state-of-the-art method. We also demonstrate the effectiveness of our method under low-resource and zero-shot settings. Our code is publicly available at GitHub 1.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Zhuoran Jin"
+        },
+        {
+            "affiliations": [],
+            "name": "Pengfei Cao"
+        },
+        {
+            "affiliations": [],
+            "name": "Yubo Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Kang Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Jun Zhao"
+        }
+    ],
+    "id": "SP:0618cac4310826eb36c8ff85e1f306f7a03ad988",
+    "references": [
+        {
+            "authors": [
+                "Vaibhav Adlakha",
+                "Shehzaad Dhuliawala",
+                "Kaheer Suleman",
+                "Harm de Vries",
+                "Siva Reddy."
+            ],
+            "title": "TopiOCQA: Open-domain Conversational Question Answering with Topic Switching",
+            "venue": "Transactions of the Association for Computational Linguistics, 10:468\u2013",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Raviteja Anantha",
+                "Svitlana Vakulenko",
+                "Zhucheng Tu",
+                "Shayne Longpre",
+                "Stephen Pulman",
+                "Srinivas Chappidi."
+            ],
+            "title": "Open-domain question answering goes conversational via question rewriting",
+            "venue": "Proceedings of the 2021 Conference of the North Amer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhiyu Chen",
+                "Jie Zhao",
+                "Anjie Fang",
+                "Besnik Fetahu",
+                "Oleg Rokhlenko",
+                "Shervin Malmasi."
+            ],
+            "title": "Reinforced question rewriting for conversational question answering",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing:",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Eunsol Choi",
+                "He He",
+                "Mohit Iyyer",
+                "Mark Yatskar",
+                "Wentau Yih",
+                "Yejin Choi",
+                "Percy Liang",
+                "Luke Zettlemoyer."
+            ],
+            "title": "QuAC: Question answering in context",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, pages",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuyun Dai",
+                "Vincent Y Zhao",
+                "Ji Ma",
+                "Yi Luan",
+                "Jianmo Ni",
+                "Jing Lu",
+                "Anton Bakalov",
+                "Kelvin Guu",
+                "Keith B Hall",
+                "Ming-Wei Chang."
+            ],
+            "title": "Promptagator: Few-shot dense retrieval from 8 examples",
+            "venue": "arXiv preprint arXiv:2209.11755.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jeffrey Dalton",
+                "Chenyan Xiong",
+                "Jamie Callan."
+            ],
+            "title": "Trec cast 2019: The conversational assistance track overview",
+            "venue": "arXiv preprint arXiv:2003.13624.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jeffrey Dalton",
+                "Chenyan Xiong",
+                "Jamie Callan."
+            ],
+            "title": "Cast 2020: The conversational assistance track overview",
+            "venue": "In Proceedings of TREC.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Thibault Formal",
+                "Benjamin Piwowarski",
+                "St\u00e9phane Clinchant."
+            ],
+            "title": "Splade: Sparse lexical and expansion model for first stage ranking",
+            "venue": "Proceedings of the 44th International ACM SIGIR Conference on Research and Development in Information Retrieval,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Xueguang Ma",
+                "Jimmy Lin",
+                "Jamie Callan."
+            ],
+            "title": "Precise zero-shot dense retrieval without relevance labels",
+            "venue": "arXiv preprint arXiv:2212.10496.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuxian Gu",
+                "Jiaxin Wen",
+                "Hao Sun",
+                "Yi Song",
+                "Pei Ke",
+                "Chujie Zheng",
+                "Zheng Zhang",
+                "Jianzhu Yao",
+                "Lei Liu",
+                "Xiaoyan Zhu",
+                "Minlie Huang"
+            ],
+            "title": "Eva2.0: Investigating open-domain chinese dialogue systems with large-scale pre-training",
+            "venue": "Machine Intelligence",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nam Hai Le",
+                "Thomas Gerald",
+                "Thibault Formal",
+                "Jian-Yun Nie",
+                "Benjamin Piwowarski",
+                "Laure Soulier."
+            ],
+            "title": "Cosplade: Contextualizing splade for conversational information retrieval",
+            "venue": "European Conference on Information Retrieval, pages 537\u2013552. Springer.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Etsuko Ishii",
+                "Yan Xu",
+                "Samuel Cahyawijaya",
+                "Bryan Wilie"
+            ],
+            "title": "Can question rewriting help conversational question answering",
+            "venue": "In Proceedings of the Third Workshop on Insights",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Mathilde Caron",
+                "Lucas Hosseini",
+                "Sebastian Riedel",
+                "Piotr Bojanowski",
+                "Armand Joulin",
+                "Edouard Grave."
+            ],
+            "title": "Unsupervised dense information retrieval with contrastive learning",
+            "venue": "Transactions on Machine Learning Research.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Rolf Jagerman",
+                "Honglei Zhuang",
+                "Zhen Qin",
+                "Xuanhui Wang",
+                "Michael Bendersky."
+            ],
+            "title": "Query expansion by prompting large language models",
+            "venue": "arXiv preprint arXiv:2305.03653.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas Oguz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen-tau Yih."
+            ],
+            "title": "Dense passage retrieval for opendomain question answering",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sungdong Kim",
+                "Gangwoo Kim."
+            ],
+            "title": "Saving dense retriever from shortcut dependency in conversational search",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 10278\u201310287, Abu Dhabi, United Arab Emi-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Uszkoreit",
+                "Quoc Le",
+                "Slav Petrov."
+            ],
+            "title": "Natural questions: A benchmark for question answering research",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:452\u2013466.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Percy Liang",
+                "Rishi Bommasani",
+                "Tony Lee",
+                "Dimitris Tsipras",
+                "Dilara Soylu",
+                "Michihiro Yasunaga",
+                "Yian Zhang",
+                "Deepak Narayanan",
+                "Yuhuai Wu",
+                "Ananya Kumar"
+            ],
+            "title": "Holistic evaluation of language models. arXiv preprint arXiv:2211.09110",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Jimmy Lin."
+            ],
+            "title": "Contextualized query embeddings for conversational search",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 1004\u20131015, Online and Punta Cana,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Rodrigo Nogueira",
+                "Ming-Feng Tsai",
+                "Chuan-Ju Wang",
+                "Jimmy Lin."
+            ],
+            "title": "Conversational question reformulation via sequence-to-sequence architectures and pretrained language models",
+            "venue": "arXiv preprint arXiv:2004.01909.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alisa Liu",
+                "Swabha Swayamdipta",
+                "Noah A. Smith",
+                "Yejin Choi."
+            ],
+            "title": "WANLI: Worker and AI collaboration for natural language inference dataset creation",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2022, pages 6826\u20136847, Abu",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "venue": "arXiv preprint arXiv:1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kelong Mao",
+                "Zhicheng Dou",
+                "Haonan Chen",
+                "Fengran Mo",
+                "Hongjin Qian."
+            ],
+            "title": "Large language models know your contextual search intent: A prompting framework for conversational search",
+            "venue": "arXiv preprint arXiv:2303.06573.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kelong Mao",
+                "Zhicheng Dou",
+                "Hongjin Qian."
+            ],
+            "title": "Curriculum contrastive context denoising for fewshot conversational dense retrieval",
+            "venue": "Proceedings of the 45th International ACM SIGIR Conference on Research and Development in Information Retrieval,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelong Mao",
+                "Zhicheng Dou",
+                "Hongjin Qian",
+                "Fengran Mo",
+                "Xiaohua Cheng",
+                "Zhao Cao."
+            ],
+            "title": "ConvTrans: Transforming web search sessions for conversational dense retrieval",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelong Mao",
+                "Hongjin Qian",
+                "Fengran Mo",
+                "Zhicheng Dou",
+                "Bang Liu",
+                "Xiaohua Cheng",
+                "Zhao Cao."
+            ],
+            "title": "Learning denoised and interpretable session representation for conversational search",
+            "venue": "Proceedings of the ACM Web Conference 2023, pages 3193\u2013",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yu Meng",
+                "Jiaxin Huang",
+                "Yu Zhang",
+                "Jiawei Han."
+            ],
+            "title": "Generating training data with language models: Towards zero-shot language understanding",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fengran Mo",
+                "Kelong Mao",
+                "Yutao Zhu",
+                "Yihong Wu",
+                "Kaiyu Huang",
+                "Jian-Yun Nie."
+            ],
+            "title": "Convgqr: Generative query reformulation for conversational search",
+            "venue": "arXiv preprint arXiv:2305.15645.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Fengran Mo",
+                "Jian-Yun Nie",
+                "Kaiyu Huang",
+                "Kelong Mao",
+                "Yutao Zhu",
+                "Peng Li",
+                "Yang Liu."
+            ],
+            "title": "Learning to relate to previous turns in conversational search",
+            "venue": "arXiv preprint arXiv:2306.02553.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tri Nguyen",
+                "Mir Rosenberg",
+                "Xia Song",
+                "Jianfeng Gao",
+                "Saurabh Tiwary",
+                "Rangan Majumder",
+                "Li Deng."
+            ],
+            "title": "Ms marco: A human generated machine reading comprehension dataset",
+            "venue": "choice, 2640:660.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Paul F Christiano",
+                "Jan Leike",
+                "Ryan Lowe."
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "Advances in Neural Information Processing Systems, volume 35, pages 27730\u201327744. Curran Associates, Inc.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hongjin Qian",
+                "Zhicheng Dou."
+            ],
+            "title": "Explicit query rewriting for conversational dense retrieval",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 4725\u2013 4737, Abu Dhabi, United Arab Emirates. Association",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhen Qin",
+                "Rolf Jagerman",
+                "Kai Hui",
+                "Honglei Zhuang",
+                "Junru Wu",
+                "Jiaming Shen",
+                "Tianqi Liu",
+                "Jialu Liu",
+                "Donald Metzler",
+                "Xuanhui Wang"
+            ],
+            "title": "Large language models are effective text rankers with pairwise ranking prompting",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jon Saad-Falcon",
+                "Omar Khattab",
+                "Keshav Santhanam",
+                "Radu Florian",
+                "Martin Franz",
+                "Salim Roukos",
+                "Avirup Sil",
+                "Md Arafat Sultan",
+                "Christopher Potts."
+            ],
+            "title": "Udapdr: Unsupervised domain adaptation via llm prompting and distillation of rerankers",
+            "venue": "arXiv",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Devendra Sachan",
+                "Mike Lewis",
+                "Mandar Joshi",
+                "Armen Aghajanyan",
+                "Wen-tau Yih",
+                "Joelle Pineau",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Improving passage retrieval with zero-shot question generation",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Nat-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Devendra Singh Sachan",
+                "Mike Lewis",
+                "Dani Yogatama",
+                "Luke Zettlemoyer",
+                "Joelle Pineau",
+                "Manzil Zaheer."
+            ],
+            "title": "Questions are all you need to train a dense passage retriever",
+            "venue": "Transactions of the Association for Computational Linguistics.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "drea Santilli",
+                "Thibault Fevry",
+                "Jason Alan Fries",
+                "Ryan Teehan",
+                "Teven Le Scao",
+                "Stella Biderman",
+                "Leo Gao",
+                "Thomas Wolf",
+                "Alexander M Rush"
+            ],
+            "title": "Multitask prompted training enables zero-shot task generalization",
+            "venue": "In International Conference on Learning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tao Shen",
+                "Guodong Long",
+                "Xiubo Geng",
+                "Chongyang Tao",
+                "Tianyi Zhou",
+                "Daxin Jiang."
+            ],
+            "title": "Large language models are strong zero-shot retriever",
+            "venue": "arXiv preprint arXiv:2304.14233.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Weijia Shi",
+                "Sewon Min",
+                "Michihiro Yasunaga",
+                "Minjoon Seo",
+                "Rich James",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Wen-tau Yih."
+            ],
+            "title": "Replug: Retrievalaugmented black-box language models",
+            "venue": "arXiv preprint arXiv:2301.12652.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tian-Xiang Sun",
+                "Xiang-Yang Liu",
+                "Xi-Peng Qiu",
+                "Xuan-Jing Huang."
+            ],
+            "title": "Paradigm shift in natural language processing",
+            "venue": "Machine Intelligence Research, 19(3):169\u2013183.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Weiwei Sun",
+                "Lingyong Yan",
+                "Xinyu Ma",
+                "Pengjie Ren",
+                "Dawei Yin",
+                "Zhaochun Ren."
+            ],
+            "title": "Is chatgpt good at search? investigating large language models as re-ranking agent",
+            "venue": "arXiv preprint arXiv:2304.09542.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Svitlana Vakulenko",
+                "Shayne Longpre",
+                "Zhucheng Tu",
+                "Raviteja Anantha."
+            ],
+            "title": "Question rewriting for conversational question answering",
+            "venue": "Proceedings of the 14th ACM International Conference on Web Search and Data Mining, WSDM \u201921, page 355\u2013363,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Christophe Van Gysel",
+                "Maarten de Rijke."
+            ],
+            "title": "Pytrec_eval: An extremely fast python interface to trec_eval",
+            "venue": "The 41st International ACM SIGIR Conference on Research & Development in Information Retrieval, pages 873\u2013876.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Liang Wang",
+                "Nan Yang",
+                "Furu Wei."
+            ],
+            "title": "Query2doc: Query expansion with large language models",
+            "venue": "arXiv preprint arXiv:2303.07678.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Thomas Wolf."
+            ],
+            "title": "Bloom: A 176b-parameter open-access multilingual language model",
+            "venue": "arXiv preprint 2211.05100.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zeqiu Wu",
+                "Yi Luan",
+                "Hannah Rashkin",
+                "David Reitter",
+                "Hannaneh Hajishirzi",
+                "Mari Ostendorf",
+                "Gaurav Singh Tomar."
+            ],
+            "title": "CONQRR: Conversational query rewriting for retrieval with reinforcement learning",
+            "venue": "Proceedings of the 2022 Conference on Em-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jialin Liu",
+                "Paul N. Bennett",
+                "Junaid Ahmed",
+                "Arnold Overwijk."
+            ],
+            "title": "Approximate nearest neighbor negative contrastive learning for dense text retrieval",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shi Yu",
+                "Jiahua Liu",
+                "Jingqin Yang",
+                "Chenyan Xiong",
+                "Paul Bennett",
+                "Jianfeng Gao",
+                "Zhiyuan Liu."
+            ],
+            "title": "Fewshot generative conversational query rewriting",
+            "venue": "Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Infor-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shi Yu",
+                "Zhenghao Liu",
+                "Chenyan Xiong",
+                "Tao Feng",
+                "Zhiyuan Liu."
+            ],
+            "title": "Few-shot conversational dense retrieval",
+            "venue": "Proceedings of the 44th International ACM SIGIR Conference on Research and Development in Information Retrieval, SIGIR \u201921,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wenhao Yu",
+                "Dan Iter",
+                "Shuohang Wang",
+                "Yichong Xu",
+                "Mingxuan Ju",
+                "Soumya Sanyal",
+                "Chenguang Zhu",
+                "Michael Zeng",
+                "Meng Jiang."
+            ],
+            "title": "Generate rather than retrieve: Large language models are strong context generators",
+            "venue": "The Eleventh Inter-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Lin"
+            ],
+            "title": "2020) demonstrate the effectiveness of T5 to rewrite queries",
+            "venue": "For better QA performance, Chen et al",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wu"
+            ],
+            "title": "2022) also adopt reinforcement learning to directly optimize the rewritten query towards retrieval performance",
+            "venue": "Recently, Qian and Dou",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "modelling. Mao"
+            ],
+            "title": "2023a) presents a prompting framework called LLMCS that leverages LLMs to perform few-shot conversational query rewriting for conversational retrieval",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Gao"
+            ],
+            "title": "2022) first use LLMs to generate the hypothetical document, then ground the generated document to the actual corpus",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "The development of generative language models (Brown et al., 2020; OpenAI, 2023) has sparked a paradigm shift in information-seeking, transitioning from using search engines to interacting with conversational assistants (e.g., ChatGPT). Conversational assistants offer a more flexible and userfriendly experience by addressing users\u2019 queries\n1https://github.com/jinzhuoran/InstructoR/ *Corresponding author.\nthrough multi-turn conversations. However, they still struggle to provide highly accurate and upto-date responses. To mitigate the problems, one promising solution (Izacard and Grave, 2021) is to employ a retrieve-then-generate pipeline. As illustrated in Figure 1(a), to answer the user\u2019s conversational query \u201cDid he like collecting things?\u201d in the conversation, the pipeline first retrieves a small set of reference passages about \u201cNicolas-Claude Fabri de Peiresc\u201d via conversational retrieval and then generates the response conditioned on these passages along with the ongoing conversation.\nConversational retrieval, which focuses on retrieving relevant passages from a large passage collection based on the given conversation session, has gained considerable attention from researchers. Unlike traditional single-turn ad-hoc retrieval, conversational retrieval needs to deal with the complex multi-turn conversation session which consists of both the historical conversation context and the user\u2019s current query. In contrast to standalone queries, conversational queries may contain more complicated linguistic phenomena, such as omissions, coreferences, and ambiguities shown in Figure 1(a). Besides, topic-switching behaviour is natural in information-seeking conversations (Adlakha et al., 2022), introducing a significant amount of noise in the conversation context that is unrelated to the user\u2019s query. Therefore, conversational retrieval is much more challenging than ad-hoc retrieval.\nExisting methods can be mainly categorized into conversational query rewriting and conversational dense retrieval. Conversational query rewriting methods (Yu et al., 2020; Lin et al., 2020) utilize the rewriting models to explicitly reformulate the conversational queries into de-contextualized rewrites and then perform ad-hoc retrieval. While such a two-stage approach offers strong interpretability, its rewriting stage poses difficulties in direct optimization for retrieval performance and leads to increased retrieval latency (Mao et al., 2022a).\nRecently, conversational dense retrieval methods (Lin et al., 2021; Mao et al., 2023b) have shown better retrieval effectiveness. Most existing supervised methods leverage the pre-trained ad-hoc retriever to encode the entire conversation session into a dense embedding and then fine-tune the retriever on conversational retrieval data. However, they still face the following two challenges: (1) Fine-tuning the retriever often requires a large number of labeled session-passage pairs. In practical applications, annotating session-passage pairs is much more difficult than collecting conversation data. Hence, there is a need to train a conversational dense retriever in an unsupervised manner, i.e., without using session-passage pairs; (2) Simply compressing the session into one single vector may mix irrelevant context and neglect crucial information, making it hard for the retriever to comprehend the user\u2019s query in the complex conversation.\nIn this paper, we propose a novel method termed INSTRUCTOR to Instruct unsupervised cOnversational dense Retrieval with large language models (LLMs). The main insight of our INSTRUCTOR is that the powerful LLMs can help us train adhoc retrievers for conversational retrieval without supervision. On the one hand, some research (Liu et al., 2022; Meng et al., 2022; Dai et al., 2022) has demonstrated that LLMs can generate high-quality annotated data with only a few or even without demonstration examples. On the other hand, we find that LLMs have powerful linguistic capabilities (Liang et al., 2022) and can accurately grasp the user\u2019s intent from the complex and noisy conversation context. Based on these findings, we unleash the power of LLMs to judge the relevance between sessions and passages without requiring any training. Specifically, we design a three-stage unsupervised training framework for INSTRUCTOR shown in Figure 1(b). Given a session, INSTRUCTOR first\nretrieves top-K relevant passages via ad-hoc retrievers, then generates session-passage relevance score with frozen LLMs to rerank the top-K passages, and finally uses relevance scores to guide the iterative training of conversational retrieval.\nThe core of INSTRUCTOR lies in how to utilize LLMs to calculate relevance scores. Since the generative process requires LLMs to focus on every token in the session and passage, we approximate the relevance score based on the LLM\u2019s conditional generation log likelihood. To obtain a more accurate score, we propose three instructing strategies from the perspectives of context, query, and response within the conversation, as outlined below: (1) Conversational Retrieval as Conversation Generation: To avoid LLMs being distracted by lengthy and irrelevant context, we decouple conversational dense retrieval into instructional generation subtasks, including conditional context generation and question generation; (2) Question Rewrite as Latent Variable: To resolve the user\u2019s ambiguous query, we model question rewrites generated by black-box LLMs as latent variables to implicitly guide the retriever training, showing superior effectiveness and efficiency compared to the explicit usage of question rewrites for retrieval; (3) Question Response as Posterior Guide: To capture relevance precisely, we find that question response can provide the relevant signal when the passages related to the session are unknown. Therefore, we treat question responses as the posterior guide to further enhance the retriever. We conduct extensive experiments on four datasets and prove all three strategies can bring significant improvements across various ad-hoc retrievers. Moreover, our method surpasses the current supervised state-ofthe-art model without using labeled training data.\nOur contributions are summarized as follows: \u2022 We propose a novel method called INSTRUC-\nTOR to instruct unsupervised conversational dense retrieval with LLMs. To the best of our knowledge, this is the first attempt to utilize LLMs to empower conversational retrieval. \u2022 We devise three instructing strategies to calculate session-passage relevance score, including conversational retrieval as conversation generation, question rewrite as latent variable and question response as posterior guide. \u2022 We demonstrate INSTRUCTOR can bring consistent and significant improvements across various ad-hoc retrievers, with an average Recall@100 improvement of 9.0% and 34.1% on QReCC and TopiOCQA, even surpassing the current supervised state-of-the-art method by 3.2% and 9.7%. We also evaluate our method under low-resource and zero-shot settings."
+        },
+        {
+            "heading": "2 Preliminary",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Task Definition",
+            "text": "We formulate the conversational retrieval task as finding the relevant passage d from a large passage collection D based on the given conversation session st = {ct\u22121, qt}, where ct\u22121 = {q1, a1, q2, a2, ..., qt\u22121, at\u22121} denotes the historical conversation context consisting of t \u2212 1 question-response pairs (q, a), and qt denotes the user\u2019s query of t-th turn. Considering the length limitation of the retriever\u2019s input, we represent the input format of the session st as:\nst = [CLS]\u2295qt\u2295at\u22121\u2295\u00b7\u00b7\u00b7\u2295a1\u2295q1\u2295[SEP], (1)\nwhere [CLS] and [SEP] are special tokens, \u2295 denotes concatenation. We demonstrate that this reverse concatenation works well in Appendix A. We denote the query rewrite of qt as rt. For simplicity, we omit the subscript t in the rest of this paper."
+        },
+        {
+            "heading": "2.2 Embedding Similarity as Retrieval Score",
+            "text": "We adopt the pre-trained ad-hoc retriever as the strong initial conversational retriever, which uses a dual-encoder architecture where sessions and passages are encoded independently. Given a session s and a passage d, we encode them with session encoder fs and passage encoder fd respectively. The retrieval score sim(s, d) between a session s and a passage d is the dot product of the embeddings:\nsim(s, d) = \u27e8fs(s), fd(d)\u27e9 . (2)\nDespite the dual-encoder\u2019s efficiency, the limited model parameters and embedding dimensions hinder its ability to comprehend sessions and passages."
+        },
+        {
+            "heading": "2.3 LLM Likelihood as Relevance Score",
+            "text": "Given a text pair (s, d), we employ generative LLMs to compute the relevance score score(d | s) without any training examples, which approximates the probability of retrieving d based on s. Since the generative process requires LLMs to focus on and explain every token in s and d, we estimate the relevance score score(d | s) as the generation likelihood of d conditioned on s:\nscore(d | s) \u2248 p(d | s) \u221d log p(d | s)\n\u221d 1 m m\u2211 k=1 log p (dk | I, s, d<k) , (3)\nwhere I is the task-specific generation instruction, and m is the sequence length of d. We collectively refer to those resource-intensive LLMs (>100B) which allow limited access through commercial APIs, as black-box LLMs (e.g., ChatGPT and GPT4). Conversely, we refer to those cost-effective LLMs (<10B) that can be called millions of times during training to calculate score(d | s), as whitebox LLMs (e.g., Flan-T5 (Chung et al., 2022) and GPT-Neo (Andonian et al., 2021))."
+        },
+        {
+            "heading": "3 Methodology: INSTRUCTOR",
+            "text": "In this paper, we consider a more realistic setting which is to train a conversational dense retriever in an unsupervised manner, i.e., without using sessionpassage pairs. We only have a certain number of conversation sessions and a large passage collection during the training. Our INSTRUCTOR uses the frozen LLMs\u2019 conditional generation log likelihood as the supervised signal to guide the training of the retriever without direct supervision. According to Sachan et al. (2022b), we adopt an unsupervised training framework to distill knowledge from LLM to retriever. Moreover, we devise three instructing strategies from diverse perspectives in the conversation to calculate the relevance score of session-passage pairs more accurately."
+        },
+        {
+            "heading": "3.1 Unsupervised Training Framework",
+            "text": "In the unsupervised training framework of INSTRUCTOR, we adopt a three-stage approach to instruct the ad-hoc retriever with LLM as shown in Figure 2. For fast passage retrieval, we apply the passage encoder fd to the passage collection D and build passage index I. We froze fd to avoid rebuilding the index during the training.\nCompute Top-K Retrieval Probability. Given a conversation session s, we first retrieve the top-K passages Z with the retriever (student) and compute the retrieval probability of passage z \u2208 Z:\nP (z | s,Z) = exp (sim (s, z) /\u03c4)\u2211 z\u2032\u2208Z exp (sim (s, z \u2032) /\u03c4) , (4)\nwhere \u03c4 denotes a temperature hyperparameter.\nGenerate Top-K Relevance Probability. Since there are no supervised labels for sessions and passages, we use the LLM (instructor) to generate the relevance probability of passage z conditioned on session s as the soft supervised signal:\nP\u0302 (z | s,Z) = exp (score (z | s))\u2211 z\u2032\u2208Z exp (score (z \u2032 | s)) . (5)\nWe provide three different strategies to derive the score(z | s) formula in Section 3.2.\nDistill Knowledge from LLM to Retriever. We train the retriever by minimizing the KL divergence between the relevance probability P\u0302 (z | s,Z) and the retrieval probability P (z | s,Z):\nL = \u2211 z\u2208Z P\u0302 (z | s,Z) log P\u0302 (z | s,Z) P (z | s,Z) . (6)\nWe only update the parameters of session encoder fs during the training."
+        },
+        {
+            "heading": "3.2 Instructing Strategies",
+            "text": "In this section, we measure the relevance score of retrieving passage z according to the session s via score(z | s), which can be estimated as the LLM\u2019s generation log likelihood p(z | s) of z conditioned\non s. To calculate the relevance score more precisely, we will detail our proposed three instructing strategies from context, query and response perspectives within the conversation.\nConversational Retrieval as Conversation Generation (INSTRUCTORCRCG). We find that if we calculate p(z | s) by directly generating z conditioned on s with white-box LLMs, it causes LLMs to be distracted by the lengthy and noisy conversation context c, and unable to focus on the current query q. Therefore, we reformulate conversational retrieval as a task of generating conversation session s conditioned on given passage z, which can be further decoupled into two instructional generation subtasks based on Bayes\u2019 Theorem:\nscorec(z | s) \u2248 p(z | s) \u221d log p(z | c, q)\n= log p(z, c, q)\np(c, q)\n= log p(z)p(c | z)p(q | z, c) p(c)p(q | c) \u221d log p(c | Icz , z) + log p(q | Iqz,c, z, c),\n(7)\nwhere log p(z), log p(c) and log p(q | c) are assumed as constants and can be ignored. As shown in Figure 3(a), we first prompt LLMs with an instruction Icz \u201cPlease create a conversation:\u201d to generate the conversation context c condition on the retrieved passage z, then prompt LLMs with another instruction Iqz,c \u201cPlease continue to write a question:\u201d to generate the current question q condition on the passage z and the ongoing conversation context c. Hence, we can combine log p(c | Icz , z) and log p(q | Iqz,c, z, c) together as the estimate of relevance score scorec(z | s) between s and z.\nQuestion Rewrite as Latent Variable (INSTRUCTORQRLV). We reveal that conversational query rewriting exhibits outstanding performance in topic-switching scenarios illustrated in Appendix A. To solve conversational retrieval from the query perspective, we utilize both black-box and white-box LLMs to rewrite question q. As shown in Table 4, we find that black-box LLMs have a much higher rewrite quality than white-box LLMs, indicating that black-box LLMs have more powerful linguistic capabilities to understand the conversations. However, suffering from limited API usage, we cannot completely use black-box LLMs in INSTRUCTORCRCG. To augment the retriever with the ability of black-box LLMs to tackle the user\u2019s ambiguous query q, we model a query rewrite r as a latent variable and marginalizing over all possible rewrites R:\nscorer(z | s) \u2248 p(z | s) \u221d log p(z | r)p(r | c, q)\n= log p(r | z)p(z)p(r | c, q)\np(r)\n\u221d log p(r | Irc,q, c, q) + log p(r | Irz , z) \u221d 1 |R| \u2211 r\u2208R ( log p(r | Irc,q, c, q) + log p(r | Irz , z) ) .\n(8)\nAs shown in Figure 3(b), we first instruct black-box LLMs to generate a set of potential rewrites r \u2208 R with confidence log p(r | Irc,q, c, q) based on the\ngiven session s. Then we treat R as the references for white-box LLMs to compute log p(r | Irz , z) during the training. In practical implementation, we pre-generate the rewrites for all training sessions, thereby avoiding redundant calls to blackbox LLMs. Our strategy greatly reduces the cost of employing black-box LLMs and demonstrates superior effectiveness and efficiency compared to the explicit usage of question rewrites for retrieval.\nQuestion Response as Posterior Guide (INSTRUCTORQRPG). We find that p(z | s, a) can serve as a more potent supervised signal than p(z | s), as demonstrated in Appendix A. Here, a refers to the gold response or is generated by black-box language models. Therefore, we argue that question response a can provide additional relevance judgement when the passages related to the question are unknown under the unsupervised setting. To precisely identify relevant passages, we incorporate question response generation task into INSTRUCTORCRCG as the posterior guide:\nscorea(z | s) \u2248 p(z | s) \u221d log p(z | c, q, a)\n= log p(z, c, q, a)\np(c, q, a)\n= log p(z)p(c | z)p(q | z, c)p(a | z, c, q) p(c)p(q | c)p(a | c, q) \u221d log p(c | Icz , z) + log p(q | Iqz,c, z, c) + log p(a | Iaz,c,q, z, c, q),\n(9)\nwhere log p(a | c, q) is irrelevant to z, so it is eliminated. As shown in Figure 3(c), we prompt LLMs with instruction Iaz,c,q \u201cPlease respond to the last question:\u201d to generate the response a for the last question q, considering the reference passage z and the conversation session s. log p(a | Iaz,c,q, z, c, q) indicates that more informative passage z can assist LLMs in generating response a more effortlessly."
+        },
+        {
+            "heading": "4 Experimental Setup",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Datasets and Evaluation",
+            "text": "Datasets. We evaluate our INSTRUCTOR in three experimental settings. The first is the unsupervised setting conducted on two popular conversational retrieval datasets: QReCC (Anantha et al., 2021) and TopiOCQA (Adlakha et al., 2022). QReCC is a large-scale dataset for open-domain conversational question answering (ODCQA) with humanrewritten query rewrites. TopiOCQA is a more challenging dataset for ODCQA under topic-switching\nscenarios. The second is the low-resource setting, we sample different numbers of conversation data from TopiOCQA. The third is the zero-shot setting, we train the models on the TopiOCQA training set, then directly evaluate them on two conversational search test sets: CAsT-19 (Dalton et al., 2020) and CAsT-20 (Dalton et al., 2021). More details about these four datasets are shown in Appendix C.\nEvaluation Metrics. In line with prior studies (Mao et al., 2023b), we employ four metrics (%): MRR, NDCG@3, Recall@10, and Recall@100 to comprehensively evaluate the retrieval performance. We use pytrec_eval toolkit (Van Gysel and de Rijke, 2018) to calculate these metrics."
+        },
+        {
+            "heading": "4.2 Implementation Details",
+            "text": "Ad-hoc Retrievers. We adopt four representative ad-hoc retrievers as initial retrievers in INSTRUCTOR: (1) DPR (Karpukhin et al., 2020): A retriever trained on Natural Questions (Kwiatkowski et al., 2019); (2) ANCE (Xiong et al., 2021): A retriever\ntrained on MS MARCO (Nguyen et al., 2016); (3) Contriever (Izacard et al., 2022): An unsupervised retriever trained with contrastive learning; (4) Contriever-msmarco: Contriever fine-tuned on MS MARCO. Except ANCE is initialized with RoBERTa (Liu et al., 2019), all other retrievers are initialized with BERT (Devlin et al., 2019).\nLarge Language Models. We adopt Flan-T5 XL (3B) as the white-box LLM and gpt-3.5-turbo as the black-box LLM. More details about hyperparameter settings can be found in Appendix E."
+        },
+        {
+            "heading": "4.3 Baselines",
+            "text": "Unsupervised Methods. We compare INSTRUCTOR with three unsupervised methods that also adopt LLMs: (1) Rewrite: We use an LLM to reformulate the query, then perform ad-hoc retrieval; (2) HyDE (Gao et al., 2022): An unsupervised method without training the retriever, which adopts an LLM to generate hypothetical documents for the query, then retrieves real documents with hypothetical\ndocuments; (3) query2doc (Wang et al., 2023): A query expansion approach, which expands the original query with LLM\u2019s generated documents. For a fair comparison, we all adopt gpt-3.5-turbo as the LLM, Contriever and Contriever-msmarco as the ad-hoc retrievers to reproduce these three methods on the conversational retrieval task.\nSupervised Methods. We also compare our INSTRUCTOR with several supervised methods: (1) FT: We fine-tune DPR, ANCE, Contriever and Contriever-msmarco on supervised data; (2) SPLADEFT (Formal et al., 2021): A sparse lexicalbased retriever fine-tuned on supervised data; (3) ConvDR (Yu et al., 2021): ANCE fine-tuned on supervised data using knowledge distillation between the query rewrite representation and the latent session representation; (4) LeCoRE (Mao et al., 2023b): The current supervised state-of-the-art method, which extends SPLADE with two wellmatched multi-level denoising methods."
+        },
+        {
+            "heading": "5 Experimental Results",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Unsupervised Conversational Retrieval",
+            "text": "The experimental results of the unsupervised setting on QReCC and TopiOCQA are presented in Table 1, where we have the following observations:\n(1) INSTRUCTOR can bring consistent and significant improvements across various ad-hoc retrievers in Recall@100, with an average improvement of 9.0% on QReCC and 34.1% on TopiOCQA. Remarkable improvement on TopiOCQA shows that our method is effective under challenging topicswitching scenarios, indicating that LLMs can help ad-hoc retrievers understand the complex conversa-\ntion session and discover the user\u2019s query intent. (2) Compared to other unsupervised methods that employ LLMs to generate query rewrites or hypothetical documents during inference time, our trainable method achieves superior performance. We argue that using LLMs to dynamically guide the training of retrievers enables a better transition from ad-hoc retrieval to conversational retrieval.\n(3) Without using any labeled training data, INSTRUCTOR surpasses the current supervised stateof-the-art method LeCoRE, with Recall@100 improvements of 3.2% and 9.7% on QReCC and TopiOCQA. Furthermore, our method can achieve comparable or even better performance than direct finetuning on supervised data. This proves that LLMs have the zero-shot ability to measure text relevance.\n(4) Experimental results validate the effectiveness of all three proposed instructing strategies. INSTRUCTORCRCG, which solely relies on white-box LLMs, gains consistent improvements on QReCC and TopiOCQA. INSTRUCTORQRLV, which incorporates more powerful black-box LLMs, improves significantly on TopiOCQA, but not so much on QReCC. These findings align with our insights presented in Appendix A. Notably, INSTRUCTORQRPG achieves the best retrieval performance, demonstrating the efficacy of utilizing question responses as posterior guidance for the retrievers."
+        },
+        {
+            "heading": "5.2 Low-Resource Conversational Retrieval",
+            "text": "We perform an evaluation of low-resource conversational retrieval on TopiOCQA, using different numbers of conversation data for training to simulate the low-resource scenario. As illustrated in Figure 4, our method can better utilize a small number of training samples than directly fine-tuning the retriever. Only needing 200 samples can bring a 10%-15% performance improvement to the adhoc retriever. Besides, INSTRUCTORQRLV is dataefficient, requiring only 10,000 training samples (costing $5) to achieve excellent performance."
+        },
+        {
+            "heading": "5.3 Zero-Shot Conversational Retrieval",
+            "text": "We also conduct zero-shot conversational retrieval to evaluate the transferability. We first train the retrievers on the TopiOCQA training set and then directly evaluate them on CAsT test sets. According to Table 3, we note the following key findings:\n(1) INSTRUCTOR exhibits an average MRR improvement of 14.5% on CAsT-19 and 18.3% on CAsT-20, highlighting its strong generalization.\nRetriever CAsT-19 CAsT-20MRR NDCG@3 R@10 R@100 MRR NDCG@3 R@10 R@100\nw/o Fine-tuning\nRewriteContriever 40.6 24.5 6.4 26.1 21.7 12.0 7.5 25.1 RewriteContriever-msmarco 63.6 48.2 12.2 43.8 39.6 25.7 14.6 43.5 HyDEContriever 54.7 38.9 9.3 33.2 44.8 33.2 16.0 44.4 HyDEContriever-msmarco 61.5 46.3 11.4 41.4 51.1 36.5 20.0 53.6 query2docContriever 47.8 32.4 7.4 27.6 29.1 17.0 9.2 29.0 query2docContriever-msmarco 65.2 50.6 12.0 41.8 55.9 40.4 20.1 52.2\nSupervised Fine-tuning\nDPRFT 40.9 26.4 5.2 16.4 22.5 13.2 5.5 15.3 ANCEFT 56.2 40.1 8.3 25.3 42.5 26.5 11.1 31.6 ContrieverFT 53.7 38.4 8.2 23.7 35.5 20.8 8.5 22.5 Contriever-msmarcoFT 55.7 41.2 9.0 25.7 36.8 21.8 8.6 25.5\n(2) Directly fine-tuning the retrievers on the supervised data shows poor out-of-distribution generalization. It suggests that conversational retrieval requires the retrievers to comprehend the conversation rather than relying on retrieval shortcuts.\n(3) Unsupervised methods with LLMs like HyDE and query2doc perform well in zero-shot scenarios, indicating the considerable potential of LLMs in zero-shot information retrieval."
+        },
+        {
+            "heading": "5.4 Discussion and Analysis",
+            "text": "Selection of Ad-hoc Retrievers and White-box LLMs. We choose four white-box LLMs (3B): (1) T5-XL-lm-adapt: An improved version of T5;\n(2) T0: T5-XL-lm-adapt with instruction tuning; (3) Flan-T5 XL: A more powerful instruction-tuned T5; (4) FastChat-T5: An open-source chatbot finetuned from Flan-T5 XL. As illustrated in Figure 5, instruction-tuned LLMs are better instructors for retrievers. In addition, conversational LLMs exhibit enhanced dialogue understanding capabilities and may be more suitable for conversational retrieval.\nInvestigation of Different Instructions. We prompt LLMs with three types of instructions: (1) Empty Instruction: We use meaningless space as the instruction; (2) Normal Instruction: We use \u201cPlease write a text:\u201d as the instruction; (3) Spe-\ncific Instruction: We carefully write instructions for different generation tasks in Appendix D. As depicted in Figure 6, well-designed instructions can help LLMs to calculate relevance scores accurately.\nScaling with Number of LLM Parameters. We examine the effect of LLM sizes on retrieval performance improvements. Figure 7 shows the scaling of performance with LLM parameters, including FLAN-T5 small (80M), FLAN-T5 base (250M), FLAN-T5 large (780M) and FLAN-T5 XL (3B). We note that the size of FLAN-T5 is critical for INSTRUCTORCRCG. So we guess that using a larger FLAN-T5 XXL (11B) or Vicuna (13B) will further improve the retriever\u2019s performance. Compared with INSTRUCTORCRCG, INSTRUCTORQRLV has better retrieval performance due to the use of blackbox LLM ChatGPT. Overall, the performances of our proposed three instructing strategies continue to improve as the Flan-T5 parameters increase.\nAnalysis of Different Question Types. Following the previous study (Kim and Kim, 2022), we define three question types, first, no-switch, and switch. The first question is the first question in conversation without any history. The no-switch and switch questions can be distinguished by whether d\u2217t contains similar or same topics as d \u2217 t\u22121, where the d\u2217t is a gold passage at turn t and t > 1. We conduct experiments on TopiOCQA to analyze the impact of our approach on different question types. As shown in Table 1, we find that powerful ad-hoc retrievers like Contriever can solve the first problem very well, but can hardly handle the switch question. After the guidance of our InstructoR, Contriever achieves the most significant performance improvement for the switch problem, indicating that LLM-generated supervision signals can help the retriever understand the complex conversation session and discover the user\u2019s query intent.\nDue to the limited space, more comprehensive analysis is shown in Appendix F, G, H, and I."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this paper, we propose a novel method termed INSTRUCTOR to instruct unsupervised conversational dense retrieval with LLMs. INSTRUCTOR calculates the session-passage relevance score with frozen LLMs as the supervised signal to guide the ad-hoc retriever\u2019s training. To estimate the relevance score more precisely, we devise three strategies from diverse perspectives: conversational retrieval as conversation generation, question rewrite as latent variable and question response as posterior guide. Experimental results show that INSTRUCTOR can bring significant improvements across various ad-hoc retrievers, even surpassing the current supervised state-of-the-art method.\nLimitations\nFor further study, we conclude some limitations of our work as follows:\n\u2022 Limited by computing resources (4 NVIDIA GeForce RTX A6000 GPUs), we can only adopt a white-box LLM (e.g., Flan-T5 XL) with a maximum parameter size of 3B as the instructor. However, we acknowledge that scaling up the LLM\u2019s parameters beyond this limit, such as by utilizing a more powerful model like Vicuna (13B) (Chiang et al., 2023) on A100 GPUs, has the potential to further enhance the overall retrieval performance. \u2022 We estimate the relevance score as the conditional generation log likelihood to provide a passage-level supervised signal. In the future, we will explore a more fine-grained relevance estimation method to provide token-level supervision signals. \u2022 Due to the large capability gap between adhoc retriever and LLM, this results in the discrepancy of predictions between the retriever and a stronger LLM may tend to be severer. How to mitigate the large discrepancy of predictions remains to be studied.\nEthics Statement\nTo ensure the reproducibility of our paper, we will release all source codes, all generated rewrites, and all trained checkpoints upon the acceptance of this paper. We conduct experiments with publicly available conversational retrieval datasets and open-source white-box LLMs. Since our method leverages LLMs to instruct the training of the retrievers, it is important to note that the retrieval results obtained may contain biases from the LLMs. Additionally, we also employ black-box LLMs which can be accessed through OpenAI APIs. However, when considering real-world applications, it is crucial to recognize the potential risks associated with uploading privacy-sensitive conversation data. These factors should be taken into careful consideration for future research and work."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work is supported by the National Key Research and Development Program of China (No. 2020AAA0106400), the National Natural Science Foundation of China (No. 61976211, 62176257). This work is also supported by the Strategic Priority Research Program of Chinese Academy of\nSciences (Grant No.XDA27020100 ), the Youth Innovation Promotion Association CAS, and Yunnan Provincial Major Science and Technology Special Plan Projects (No.202202AD080004)."
+        },
+        {
+            "heading": "A Looking Deeper into Conversational Retrieval",
+            "text": "In this paper, we conduct an in-depth investigation of conversational retrieval on QReCC and TopiOCQA datasets. We employ four ad-hoc retrievers: DPR, ANCE, Contriever and Contriever-msmarco, without fine-tuning them on the conversational retrieval data. To analyze the influence of different input formats on conversational retrieval performance, we conduct experiments with 12 kinds of input formats:\n(1) Question: the question qt at the current turn t;\n(2) Context: the historical conversation context ct\u22121 before turn t;\n(3) Context&Question: the sequential concatenation of the context ct\u22121 and question qt;\n(4) Question&Context: the reverse concatenation of the context ct\u22121 and question qt;\n(5) Answer: the response at to question qt;\n(6) Answer&Question&Context: the reverse concatenation of the context ct\u22121, question qt and response at;\n(7) Flan-T5 XL Rewrite: a query rewrite rt of question qt generated by Flan-T5 XL2 (3B) (Chung et al., 2022);\n(8) Flan-T5 XXL Rewrite: a query rewrite rt of question qt generated by Flan-T5 XXL3 (11B) (Chung et al., 2022);\n(9) T0pp Rewrite: a query rewrite rt of question qt generated by T0pp4 (11B) (Sanh et al., 2022);\n(10) Vicuna Rewrite: a query rewrite rt of question qt generated by Vicuna5 (13B);\n(11) ChatGPT Rewrite: a query rewrite rt of question qt generated by gpt-3.5-turbo6;\n(12) Manual Rewrite: a human-rewritten query rewrite r\u2217t of question qt, only annotated in QReCC dataset.\n2https://huggingface.co/google/flan-t5-xl/ 3https://huggingface.co/google/flan-t5-xxl/ 4https://huggingface.co/bigscience/T0pp/ 5https://github.com/lm-sys/FastChat/ 6https://platform.openai.com/docs/models/\ngpt-3-5\nThe experimental results on QReCC and TopiOCQA are presented in Table 4, where we have the following observations:\n(1) We provide evidence that there exists a retrieval shortcut in conversational retrieval. Following Kim and Kim (2022), we define the shortcut in conversational search as where gold passage d\u2217 can be predicted in top-K predictions even without the current question qt. We find that just using the conversation context gains good performance in QReCC, which suggests that the ad-hoc retrievers cannot really understand the user\u2019s query intent, but rely on spurious lexical cues to predict relevant passages. However, the performance of ad-hoc retrievers will drop sharply in TopiOCQA. This is because there are fewer retrieval shortcuts in the scene of topic switching.\n(2) We reveal that conversational query rewriting is not a silver bullet for conversational retrieval. Query rewrites are not as good as directly using the entire conversation sessions for retrieval in QReCC. Nevertheless, experimental results on TopiOCQA demonstrate query rewriting works well in the scene of topic switching.\n(3) We argue that black-box LLMs have more powerful linguistic capabilities than white-box LLMs. We provide several query rewriting examples in Table 5, 6, 7, 8, 9 and 10. Black-box LLM ChatGPT achieves human-comparable or even better query rewriting quality in QReCC. Sometimes ChatGPT is too smart and will answer questions redundantly (e.g., Figure 8) or refuse to rewrite uncertain questions (e.g., Figure 10). For white-box LLMs, the effect of query rewriting continues to improve as the LLM parameters increase. However, T0pp may not have been sufficiently fine-tuned with instruction data, so it is difficult to follow our instructions to generate rewrites. It is worth mentioning that Vicuna which is an open-source chatbot trained by fine-tuning LLaMA (Touvron et al., 2023) achieves the closest effect to ChatGPT.\n(4) We find that question responses can provide the relevant signal when the gold passages are unknown. Compared with Question&Context, using Answer&Question&Context as the input format has a significant improvement on QReCC and TopiOCQA. Inspire by this, we treat question responses as the posterior guide to further enhance the training of ad-hoc retrievers.\n(5) We find a trick that the reverse concatenation of conversation sessions leads to better retrieval\nperformance. Context&Question shows better results than Question&Context on all four retrievers. Due to the limited context of the ad-hoc retrievers, We use reverse concatenation to avoid losing the important information in the latest conversation."
+        },
+        {
+            "heading": "B Related Work",
+            "text": "B.1 Conversational Retrieval\nDifferent from traditional single-turn ad-hoc retrieval, conversational retrieval needs to deal with the multi-turn conversation context and understand the user\u2019s query intent. To solve conversational retrieval, existing methods are mainly divided into two categories: conversational query rewriting (Yu et al., 2020; Lin et al., 2020; Vakulenko et al., 2021; Qian and Dou, 2022; Mo et al., 2023a,b; Mao et al., 2023a) and conversational dense retrieval (Yu et al., 2021; Lin et al., 2021; Mao et al., 2022a; Ishii et al., 2022; Mao et al., 2022b, 2023b; Hai Le et al., 2023).\nConversational query rewriting methods utilize the rewriting models to explicitly reformulate the conversational queries into de-contextualized rewrites and then perform standard ad-hoc retrieval. Yu et al. (2020) first large amounts of ad hoc search sessions to generate weak supervision data, then fine-tune GPT-2 to rewrite conversational queries. Lin et al. (2020) demonstrate the effectiveness of T5 to rewrite queries. For better QA performance, Chen et al. (2022) propose using QA feedback to supervise the rewriting model with reinforcement learning. Wu et al. (2022) also adopt reinforcement learning to directly optimize the rewritten query towards retrieval performance. Recently, Qian and Dou (2022) propose a unified framework for query rewriting and context modelling. Mao et al. (2023a) presents a prompting framework called LLMCS that leverages LLMs to perform few-shot conversational query rewriting for conversational retrieval.\nConversational dense retrieval methods usually fine-tune the ad-hoc retrievers on a large number of labeled session-passage pairs. Due to the lack of supervised data, Yu et al. (2021) fine-tune the ad-hoc search retriever on conversational search data using knowledge distillation for few-shot retrieval. Kim and Kim (2022) train the dense retriever with hard negatives effectively mitigates the heavy shortcut dependency. Lin et al. (2021) leverage external datasets to produce more pseudorelevance labels for conversational search to overcome the lack of training data. Mao et al. (2022a)\nuse contrastive learning to train the conversational query encoder for context denoising. Recently, Mao et al. (2023b) propose a sparse lexical-based conversational retriever two well-matched multilevel denoising methods.\nB.2 LLM for Information Retrieval\nRecently, some research (Sachan et al., 2022a,b; Yu et al., 2023; Saad-Falcon et al., 2023; Jagerman et al., 2023; Sun et al., 2023; Shen et al., 2023; Shi et al., 2023; Mao et al., 2023a; Qin et al., 2023) has focused on applying LLMs (Brown et al., 2020; Sun et al., 2022; Gu et al., 2023; Workshop et al., 2022; Ouyang et al., 2022; OpenAI, 2023) in information retrieval tasks. Most of these works use LLMs to generate query-related documents to expand the original query in few-shot or zero-shot ad-hoc retrieval scenarios. Dai et al. (2022) prompt LLMs to generate synthetic task-specific training data for few-shot retrieval. Sachan et al. (2022a) use LLMs as the zero-shot reranker to improve passage retrieval in open domain question answering. Given a query, Gao et al. (2022) first use LLMs to generate the hypothetical document, then ground the generated document to the actual corpus. Wang et al. (2023) first generate pseudo documents by few-shot prompting LLMs, and then expands the query with generated pseudo documents. Sun et al. (2023) evaluate the capabilities of ChatGPT and GPT-4 on various passage reranking benchmarks.\nIn this paper, we consider a more realistic setting which is to train a conversational dense retriever in an unsupervised manner, i.e., without using sessionpassage pairs. We only have a certain number of conversation sessions and a large passage collection during the training. To the best of our knowledge, this is the first attempt to leverage LLMs to guide the training of unsupervised conversational retrieval."
+        },
+        {
+            "heading": "C Dataset Details",
+            "text": "Table 11 shows the statistics of QReCC, TopiOCQA, CAsT-19, and CAsT-20 datasets.\nQReCC is the first large-scale open-domain conversational QA dataset that contains humanannotated question rewrites. QReCC contains conversations from QuAC (Choi et al., 2018), TREC CAsT and Natural Questions (Kwiatkowski et al., 2019). In this paper, we focus on solving the conversational retrieval task.\nTopiOCQA is an open-domain conversational QA dataset with topic switches based on Wikipedia. On average, a conversation in TopiOCQA has 13 question-answer turns and involves 4 topics. In contrast to QReCC, TopiOCQA does not provide human-annotated query rewrites.\nCAsT-19 and CAsT-20 are two conversational search datasets released by TREC Conversational Assistance Track (CAsT). Due to the limited number of conversations contained in them, they are often used as the evaluation datasets.\nD Instruction Templates\nD.1 Conversational Retrieval as Conversation Generation\nIcz : Context Generation\nPassage: {passage}. Please create a conversation (consisting of several questions and answers) based on the given passage: Conversation context: {context}.\nIqz,c: Conversational Query Generation\nPassage: {passage}. Conversation context: {context}. Please complete the conversation with a question based on the given passage and conversation context: Question: {question}.\nD.2 Question Rewrite as Latent Variable\nIrc,q: Query Rewrite Generation\nYou are a helpful assistant that need to understand the following conversation. Conversation context: {context}. Question: {question}. To better retrieve the relevant passages, please reformulate the last question of the given conversation context into a complete and de-contextualized question rewrite:\nIrz : Question Generation\nPassage: {passage}.\nPlease write a detailed question based on the given passage:\nQuestion: {question}.\nD.3 Question Response as Posterior Guide\nIaz,c,q: Response Generation\nPassage: {passage}. Conversation context: {context}. Please answer the following question based on the given passage and conversation context: Question: {question}. Answer: {answer}."
+        },
+        {
+            "heading": "E Parameter Settings",
+            "text": "Our implementation is based on HuggingFace\u2019s Transformers7, Sentence Transformers8, Megatron9 and PyTorch10. For ad-hoc retrievers, we adopt DPR11, ANCE12, Contriever13, and Contriever-msmarco14. In our unsupervised training framework, we retrieve the top-K = 32 passages to train the ad-hoc retriever. We set the value of the temperature hyperparameter \u03c4 using crossvalidation. We use the Adam algorithm to optimize retriever parameters. The learning rate is initialized as 1e-6 with warmup and linear decay. The batch size is set to 4. For INSTRUCTORQRLV, we use the manual query rewrites in QReCC and generated query rewrites in TopiOCQA. We sample 15,000 conversations in the TopiOCQA training set and use gpt-3.5-turbo to generate |R| = 3 possible rewrites for each conversation with a temperature is 0.7. To ensure rewriting quality, we use regular expressions to filter out those rewrites\n7https://github.com/huggingface/transformers/ 8https://www.sbert.net/ 9https://github.com/NVIDIA/Megatron-LM/\n10https://github.com/pytorch/pytorch/ 11https://huggingface.co/sentence-transformers/ facebook-dpr-ctx_encoder-single-nq-base/ 12https://huggingface.co/sentence-transformers/ msmarco-roberta-base-ance-firstp/ 13https://huggingface.co/facebook/contriever/ 14https://huggingface.co/facebook/ contriever-msmarco/\nthat follow our instructions incorrectly. We adopt the gold responses in our main experiments for INSTRUCTORQRPG. We also use gpt-3.5-turbo to generate query responses with a temperature is 0.3. All experiments are conducted with 4 NVIDIA GeForce RTX A6000 GPUs.\nF Effect of Top-K Retrieved Passages\nWe conduct experiments with different numbers (K = 2, 4, 8, 16, 32) of retrieved passages during training. As shown in Figure 8 and 9, we find that a smaller number of retrieved passages leads to better NDCG@3 performance, and a larger number of retrieved passages produces better Recall@100 performance. But retrieving too small passages, like K = 2, doesn\u2019t yield reasonable results. In this paper, we set K = 32 which offers a reasonable middle ground, while K = 16 may lead to better performance."
+        },
+        {
+            "heading": "G Ablation of Question Rewrites",
+            "text": "We conduct an ablation study on INSTRUCTORQRLV with Vicuna Rewrite and ChatGPT Rewrite. Vicuna Rewrite denotes the query rewrites generated by Vicuna, and ChatGPT Rewrite denotes the query rewrites generated by gpt-3.5-turbo. As shown in Figure 10, ChatGPT Rewrite performs better than Vicuna Rewrite because of the higher rewriting quality of ChatGPT. Besides, we find that the number |R| of possible rewrites is not the higher the better. This may be\nbecause larger R will contain incorrect rewrites, introducing more noise. Hence, we set |R| to a moderate value of 3 in our main experiments."
+        },
+        {
+            "heading": "H Ablation of Question Responses",
+            "text": "We conduct an ablation study on INSTRUCTORQRPG with Gold Response and Generated Response. Gold Response denotes the real response in the original conversation, and Generated Response denotes the response generated by gpt-3.5-turbo. As illustrated in Figure 11, Generated Response works better than Gold Response when there are a\nsmall number of training samples. However, when there are enough training samples, Gold Response has better performance than Generated Response, especially in NDCG@3. Hence, We adopt the Gold Response for INSTRUCTORQRPG in our main experiments.\nI Recall@N of Different Strategies\nWe also present the Recall@N of different instructing strategies with different numbers N = {1, 3, 5, 10, 20, 50, 100} of retrieved passages in Figure 12. We can find that Contriever-msmarco and INSTRUCTORQRPG are the best combination."
+        }
+    ],
+    "title": "INSTRUCTOR: Instructing Unsupervised Conversational Dense Retrieval with Large Language Models",
+    "year": 2023
+}

@@ -1,0 +1,768 @@
+{
+    "abstractText": "Parameter-efficient fine-tuning (PEFT) methods have provided an effective way for adapting large vision-language models to specific tasks or scenarios. Typically, they learn a very small scale of parameters for pre-trained models in a white-box formulation, which assumes model architectures to be known and parameters to be accessible. However, large models are often not open-source due to considerations of preventing abuse or commercial factors, hence posing a barrier to the deployment of white-box PEFT methods. To alleviate the dependence on model accessibility, we introduce collaborative black-box tuning (CBBT) for both textual prompt optimization and output feature adaptation for black-box models. Specifically, considering that the backpropagation gradients are blocked, we approximate the gradients of textual prompts by analyzing the predictions with perturbed prompts. Secondly, a lightweight adapter is deployed over the output feature of the inaccessible model, further facilitating the model adaptation process. Empowered with these designs, our CBBT is extensively evaluated on eleven downstream benchmarks and achieves remarkable improvements compared to existing black-box VL adaptation methods. Our code will be made publicly available.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Zixian Guo"
+        },
+        {
+            "affiliations": [],
+            "name": "Yuxiang Wei"
+        },
+        {
+            "affiliations": [],
+            "name": "Ming Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Zhilong Ji"
+        },
+        {
+            "affiliations": [],
+            "name": "Jinfeng Bai"
+        },
+        {
+            "affiliations": [],
+            "name": "Yiwen Guo"
+        },
+        {
+            "affiliations": [],
+            "name": "Wangmeng Zuo"
+        }
+    ],
+    "id": "SP:ddd02db30c616c791693ecb23c4d7e9db9334e9c",
+    "references": [
+        {
+            "authors": [
+                "Armen Aghajanyan",
+                "Luke Zettlemoyer",
+                "Sonal Gupta."
+            ],
+            "title": "Intrinsic dimensionality explains the effectiveness of language model fine-tuning",
+            "venue": "arXiv preprint arXiv:2012.13255.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jean-Baptiste Alayrac",
+                "Jeff Donahue",
+                "Pauline Luc",
+                "Antoine Miech",
+                "Iain Barr",
+                "Yana Hasson",
+                "Karel Lenc",
+                "Arthur Mensch",
+                "Katie Millican",
+                "Malcolm Reynolds"
+            ],
+            "title": "Flamingo: a visual language model for few-shot learning. arXiv preprint arXiv:2204.14198",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lukas Bossard",
+                "Matthieu Guillaumin",
+                "Luc Van Gool."
+            ],
+            "title": "Food-101\u2013mining discriminative components with random forests",
+            "venue": "Computer Vision\u2013ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceedings, Part VI 13,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Mircea Cimpoi",
+                "Subhransu Maji",
+                "Iasonas Kokkinos",
+                "Sammy Mohamed",
+                "Andrea Vedaldi."
+            ],
+            "title": "Describing textures in the wild",
+            "venue": "Proceedings of the",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Jia Deng",
+                "Wei Dong",
+                "Richard Socher",
+                "Li-Jia Li",
+                "Kai Li",
+                "Li Fei-Fei."
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "2009 IEEE conference on computer vision and pattern recognition, pages 248\u2013255. Ieee.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Shizhe Diao",
+                "Zhichao Huang",
+                "Ruijia Xu",
+                "Xuechun Li",
+                "Yong Lin",
+                "Xiao Zhou",
+                "Tong Zhang."
+            ],
+            "title": "Blackbox prompt learning for pre-trained language models",
+            "venue": "arXiv preprint arXiv:2201.08531.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhe Dong",
+                "Andriy Mnih",
+                "George Tucker."
+            ],
+            "title": "Disarm: An antithetic gradient estimator for binary latent variables",
+            "venue": "Advances in neural information processing systems, 33:18637\u201318647.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Peng Gao",
+                "Shijie Geng",
+                "Renrui Zhang",
+                "Teli Ma",
+                "Rongyao Fang",
+                "Yongfeng Zhang",
+                "Hongsheng Li",
+                "Yu Qiao."
+            ],
+            "title": "Clip-adapter: Better visionlanguage models with feature adapters",
+            "venue": "arXiv preprint arXiv:2110.04544.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nikolaus Hansen",
+                "Sibylle D M\u00fcller",
+                "Petros Koumoutsakos."
+            ],
+            "title": "Reducing the time complexity of the derandomized evolution strategy with covariance matrix adaptation (cma-es)",
+            "venue": "Evolutionary computation, 11(1):1\u201318.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Patrick Helber",
+                "Benjamin Bischke",
+                "Andreas Dengel",
+                "Damian Borth."
+            ],
+            "title": "Eurosat: A novel dataset and deep learning benchmark for land use and land cover classification",
+            "venue": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Neil Houlsby",
+                "Andrei Giurgiu",
+                "Stanislaw Jastrzebski",
+                "Bruna Morrone",
+                "Quentin De Laroussilhe",
+                "Andrea Gesmundo",
+                "Mona Attariyan",
+                "Sylvain Gelly."
+            ],
+            "title": "Parameter-efficient transfer learning for nlp",
+            "venue": "International Conference on Machine Learning, pages",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Andrew Ilyas",
+                "Logan Engstrom",
+                "Anish Athalye",
+                "Jessy Lin."
+            ],
+            "title": "Black-box adversarial attacks with limited queries and information",
+            "venue": "International conference on machine learning, pages 2137\u20132146. PMLR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Andrew Ilyas",
+                "Logan Engstrom",
+                "Aleksander Madry."
+            ],
+            "title": "Prior convictions: Black-box adversarial attacks with bandits and priors",
+            "venue": "arXiv preprint arXiv:1807.07978.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Chao Jia",
+                "Yinfei Yang",
+                "Ye Xia",
+                "Yi-Ting Chen",
+                "Zarana Parekh",
+                "Hieu Pham",
+                "Quoc Le",
+                "Yun-Hsuan Sung",
+                "Zhen Li",
+                "Tom Duerig."
+            ],
+            "title": "Scaling up visual and vision-language representation learning with noisy text supervision",
+            "venue": "International Conference on",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "arXiv preprint arXiv:1412.6980.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Jonathan Krause",
+                "Michael Stark",
+                "Jia Deng",
+                "Li FeiFei."
+            ],
+            "title": "3d object representations for fine-grained categorization",
+            "venue": "Proceedings of the IEEE international conference on computer vision workshops, pages 554\u2013561.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Fei-Fei Li",
+                "Rob Fergus",
+                "Pietro Perona."
+            ],
+            "title": "Learning generative visual models from few training examples: An incremental bayesian approach tested on 101 object categories",
+            "venue": "2004 conference on computer vision and pattern recognition workshop, pages",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Yangguang Li",
+                "Feng Liang",
+                "Lichen Zhao",
+                "Yufeng Cui",
+                "Wanli Ouyang",
+                "Jing Shao",
+                "Fengwei Yu",
+                "Junjie Yan."
+            ],
+            "title": "Supervision exists everywhere: A data efficient contrastive language-image pre-training paradigm",
+            "venue": "arXiv preprint arXiv:2110.05208.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Li",
+                "Hualiang Wang",
+                "Yiqun Duan",
+                "Xiaomeng Li."
+            ],
+            "title": "Clip surgery for better explainability with enhancement in open-vocabulary tasks",
+            "venue": "arXiv preprint arXiv:2304.05653.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yujie Lu",
+                "Wanrong Zhu",
+                "Xin Eric Wang",
+                "Miguel Eckstein",
+                "William Yang Wang."
+            ],
+            "title": "Imaginationaugmented natural language understanding",
+            "venue": "arXiv preprint arXiv:2204.08535.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuning Lu",
+                "Jianzhuang Liu",
+                "Yonggang Zhang",
+                "Yajing Liu",
+                "Xinmei Tian."
+            ],
+            "title": "Prompt distribution learning",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 5206\u20135215.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Subhransu Maji",
+                "Esa Rahtu",
+                "Juho Kannala",
+                "Matthew Blaschko",
+                "Andrea Vedaldi."
+            ],
+            "title": "Fine-grained visual classification of aircraft",
+            "venue": "arXiv preprint arXiv:1306.5151.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Natalie Maus",
+                "Patrick Chao",
+                "Eric Wong",
+                "Jacob Gardner."
+            ],
+            "title": "Adversarial prompting for black box foundation models",
+            "venue": "arXiv preprint arXiv:2302.04237.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Maria-Elena Nilsback",
+                "Andrew Zisserman."
+            ],
+            "title": "Automated flower classification over a large number of classes",
+            "venue": "2008 Sixth Indian Conference on Computer Vision, Graphics & Image Processing, pages 722\u2013729. IEEE.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Changdae Oh",
+                "Hyeji Hwang",
+                "Hee-young Lee",
+                "YongTaek Lim",
+                "Geunyoung Jung",
+                "Jiyoung Jung",
+                "Hosik Choi",
+                "Kyungwoo Song."
+            ],
+            "title": "Blackvip: Black-box visual prompting for robust transfer learning",
+            "venue": "arXiv preprint arXiv:2303.14773.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yassine Ouali",
+                "Adrian Bulat",
+                "Brais Martinez",
+                "Georgios Tzimiropoulos."
+            ],
+            "title": "Black box few-shot adaptation for vision-language models",
+            "venue": "arXiv preprint arXiv:2304.01752.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Omkar M Parkhi",
+                "Andrea Vedaldi",
+                "Andrew Zisserman",
+                "CV Jawahar."
+            ],
+            "title": "Cats and dogs",
+            "venue": "2012 IEEE conference on computer vision and pattern recognition, pages 3498\u20133505. IEEE.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Yujia Qin",
+                "Xiaozhi Wang",
+                "Yusheng Su",
+                "Yankai Lin",
+                "Ning Ding",
+                "Zhiyuan Liu",
+                "Juanzi Li",
+                "Lei Hou",
+                "Peng Li",
+                "Maosong Sun"
+            ],
+            "title": "Exploring lowdimensional intrinsic task subspace via prompt tuning",
+            "venue": "arXiv preprint arXiv:2110.07867",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark"
+            ],
+            "title": "Learning transferable visual models from natural language supervision",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Peter H Sch\u00f6nemann."
+            ],
+            "title": "A generalized solution of the orthogonal procrustes problem",
+            "venue": "Psychometrika, 31(1):1\u201310.",
+            "year": 1966
+        },
+        {
+            "authors": [
+                "Khurram Soomro",
+                "Amir Roshan Zamir",
+                "Mubarak Shah."
+            ],
+            "title": "Ucf101: A dataset of 101 human actions classes from videos in the wild",
+            "venue": "arXiv preprint arXiv:1212.0402.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "James C Spall."
+            ],
+            "title": "Multivariate stochastic approximation using a simultaneous perturbation gradient approximation",
+            "venue": "IEEE transactions on automatic control, 37(3):332\u2013341.",
+            "year": 1992
+        },
+        {
+            "authors": [
+                "James C Spall."
+            ],
+            "title": "A one-measurement form of simultaneous perturbation stochastic approximation",
+            "venue": "Automatica, 33(1):109\u2013112.",
+            "year": 1997
+        },
+        {
+            "authors": [
+                "James C Spall."
+            ],
+            "title": "An overview of the simultaneous perturbation method for efficient optimization",
+            "venue": "Johns Hopkins apl technical digest, 19(4):482\u2013492.",
+            "year": 1998
+        },
+        {
+            "authors": [
+                "Tianxiang Sun",
+                "Zhengfu He",
+                "Hong Qian",
+                "Yunhua Zhou",
+                "Xuan-Jing Huang",
+                "Xipeng Qiu."
+            ],
+            "title": "Bbtv2: Towards a gradient-free future with large language models",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianxiang Sun",
+                "Yunfan Shao",
+                "Hong Qian",
+                "Xuanjing Huang",
+                "Xipeng Qiu."
+            ],
+            "title": "Black-box tuning for language-model-as-a-service",
+            "venue": "International Conference on Machine Learning, pages 20841\u201320855. PMLR.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ximeng Sun",
+                "Ping Hu",
+                "Kate Saenko."
+            ],
+            "title": "Dualcoop: Fast adaptation to multi-label recognition with limited annotations",
+            "venue": "arXiv preprint arXiv:2206.09541.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yun-Yun Tsai",
+                "Pin-Yu Chen",
+                "Tsung-Yi Ho."
+            ],
+            "title": "Transfer learning without knowing: Reprogramming black-box machine learning models with scarce data and limited resources",
+            "venue": "International Conference on Machine Learning, pages 9614\u20139624. PMLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chun-Chen Tu",
+                "Paishun Ting",
+                "Pin-Yu Chen",
+                "Sijia Liu",
+                "Huan Zhang",
+                "Jinfeng Yi",
+                "Cho-Jui Hsieh",
+                "ShinMing Cheng."
+            ],
+            "title": "Autozoom: Autoencoder-based zeroth order optimization method for attacking blackbox neural networks",
+            "venue": "Proceedings of the AAAI",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Feng Wang",
+                "Manling Li",
+                "Xudong Lin",
+                "Hairong Lv",
+                "Alexander G Schwing",
+                "Heng Ji."
+            ],
+            "title": "Learning to decompose visual features with latent textual prompts",
+            "venue": "arXiv preprint arXiv:2210.04287.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuxin Wen",
+                "Neel Jain",
+                "John Kirchenbauer",
+                "Micah Goldblum",
+                "Jonas Geiping",
+                "Tom Goldstein."
+            ],
+            "title": "Hard prompts made easy: Gradient-based discrete optimization for prompt tuning and discovery",
+            "venue": "arXiv preprint arXiv:2302.03668.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Daan Wierstra",
+                "Tom Schaul",
+                "Tobias Glasmachers",
+                "Yi Sun",
+                "Jan Peters",
+                "J\u00fcrgen Schmidhuber."
+            ],
+            "title": "Natural evolution strategies",
+            "venue": "The Journal of Machine Learning Research, 15(1):949\u2013980.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Ronald J Williams."
+            ],
+            "title": "Simple statistical gradientfollowing algorithms for connectionist reinforcement learning",
+            "venue": "Reinforcement learning, pages 5\u201332.",
+            "year": 1992
+        },
+        {
+            "authors": [
+                "Mitchell Wortsman",
+                "Gabriel Ilharco",
+                "Jong Wook Kim",
+                "Mike Li",
+                "Simon Kornblith",
+                "Rebecca Roelofs",
+                "Raphael Gontijo Lopes",
+                "Hannaneh Hajishirzi",
+                "Ali Farhadi",
+                "Hongseok Namkoong"
+            ],
+            "title": "Robust fine-tuning of zero-shot models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jianxiong Xiao",
+                "James Hays",
+                "Krista A Ehinger",
+                "Aude Oliva",
+                "Antonio Torralba."
+            ],
+            "title": "Sun database: Large-scale scene recognition from abbey to zoo",
+            "venue": "2010 IEEE computer society conference on computer vision and pattern recognition, pages 3485\u20133492.",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "An Yan",
+                "Jiacheng Li",
+                "Wanrong Zhu",
+                "Yujie Lu",
+                "William Yang Wang",
+                "Julian McAuley."
+            ],
+            "title": "Clip also understands text: Prompting clip for phrase understanding",
+            "venue": "arXiv preprint arXiv:2210.05836.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lewei Yao",
+                "Runhui Huang",
+                "Lu Hou",
+                "Guansong Lu",
+                "Minzhe Niu",
+                "Hang Xu",
+                "Xiaodan Liang",
+                "Zhenguo Li",
+                "Xin Jiang",
+                "Chunjing Xu."
+            ],
+            "title": "Filip: Fine-grained interactive language-image pre-training",
+            "venue": "arXiv preprint arXiv:2111.07783.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yang You",
+                "Jing Li",
+                "Sashank Reddi",
+                "Jonathan Hseu",
+                "Sanjiv Kumar",
+                "Srinadh Bhojanapalli",
+                "Xiaodan Song",
+                "James Demmel",
+                "Kurt Keutzer",
+                "Cho-Jui Hsieh."
+            ],
+            "title": "Large batch optimization for deep learning: Training bert in 76 minutes",
+            "venue": "arXiv preprint",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Lu Yuan",
+                "Dongdong Chen",
+                "Yi-Ling Chen",
+                "Noel Codella",
+                "Xiyang Dai",
+                "Jianfeng Gao",
+                "Houdong Hu",
+                "Xuedong Huang",
+                "Boxin Li",
+                "Chunyuan Li"
+            ],
+            "title": "Florence: A new foundation model for computer vision. arXiv preprint arXiv:2111.11432",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Renrui Zhang",
+                "Zhang Wei",
+                "Rongyao Fang",
+                "Peng Gao",
+                "Kunchang Li",
+                "Jifeng Dai",
+                "Yu Qiao",
+                "Hongsheng Li."
+            ],
+            "title": "Tip-adapter: Training-free adaption of clip for few-shot classification",
+            "venue": "arXiv preprint arXiv:2207.09519.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kaiyang Zhou",
+                "Jingkang Yang",
+                "Chen Change Loy",
+                "Ziwei Liu."
+            ],
+            "title": "Conditional prompt learning for vision-language models",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 16816\u201316825.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kaiyang Zhou",
+                "Jingkang Yang",
+                "Chen Change Loy",
+                "Ziwei Liu."
+            ],
+            "title": "Learning to prompt for visionlanguage models",
+            "venue": "International Journal of Computer Vision, 130(9):2337\u20132348.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiao Zhou",
+                "Weizhong Zhang",
+                "Zonghao Chen",
+                "Shizhe Diao",
+                "Tong Zhang."
+            ],
+            "title": "Efficient neural network training via forward and backward propagation sparsification",
+            "venue": "Advances in Neural Information Processing Systems, 34:15216\u201315229.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wen"
+            ],
+            "title": "cent discrete prompt tuning approaches in Maus et al",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large-scale vision-language (VL) models (Radford et al., 2021; Jia et al., 2021; Li et al., 2021; Yao et al., 2021; Alayrac et al., 2022; Yuan et al., 2021) have demonstrated remarkable performance in a wide range of applications. Various model finetuning methods have been proposed to exploit the potential of pre-trained VL models for downstream vision (Zhou et al., 2022b; Lu et al., 2022b; Wang et al., 2022; Sun et al., 2022c; Zhang et al., 2022; Wortsman et al., 2022; Li et al., 2023) and natural language processing (Lu et al., 2022a; Yan\n\u2217Work done when Zixian Guo was an intern at TAL.\net al., 2022) tasks. Most existing methods conduct parameter-efficient fine-tuning (PEFT (Houlsby et al., 2019)), which updates a tiny fraction of the model parameters or introduces a small number of extra parameters for tuning, in order to transfer pre-trained knowledge in a computation- and data-efficient manner.\nAlthough impressive improvements have been achieved, standard PEFT methods need to pass signals forward and backward through the entire pre-trained model to update the parameters, which relies on the availability of the architecture, parameters, and even the inference source code of the model. Nevertheless, the trend of building machine learning models as a service leads to many proprietary services that only provide an API interface for model inference, e.g., ChatGPT, Bard, and GPT4, where the parameters and inference code of the models are not open-source due to commercial or safety considerations. Under such black-box circumstances, existing PEFT methods can hardly be adopted. Thus, it is worthwhile to develop methods that can tune pre-trained VL models in a black-box setting. Moreover, in the era of large foundation models, running super large pre-trained models on local devices can be very costly as the scale of the pre-trained model has constantly increased. Although existing PEFT methods restrict learnable parameters to a fairly small scale, it is still a burden to accommodate models with billions of parameters in limited computing resources for most users.\nTo tackle these problem of tuning black-box VL models, there exist a few very recent efforts. For instance, BlackVIP (Oh et al., 2023) pioneered black-box prompting for VL models by learning an asymmetric autoencoder-style coordinator with a zeroth-order optimization to modify visual prompts in the pixel space. However, modifying prompts in the large pixel space causes inefficiency and the method requires up to 9k parameters in the coordinator to achieve the goal. Besides, the performance\nof their visual prompts is subject to the diverse semantic features of a well-trained generative selfsupervised learning model. Even so, the method demonstrates limited performance improvements after prompting, showing that prompt tuning in the black-box setting is very challenging.\nIn this paper, we propose a collaborative blackbox tuning method dubbed CBBT for tuning pretrained VL models and adapting them to downstream tasks. Unlike in BlackVIP (Oh et al., 2023), we learn the prompt for the textual input instead of images, and we adapt the visual features using an adapter. The basic idea is illustrated in Fig. 1.\nA query-efficient approximation method (Wierstra et al., 2014) is used to estimate the gradients and optimize the textual prompt with the blackbox pre-trained VL model, from which true gradients are not accessible. Specifically, we query the model with randomly perturbed prompts and then summarize the change in model prediction loss to estimate the gradient of learnable parameters (i.e., the prompts). We equip single-step gradient optimization with information from history updates via a momentum strategy, which leads to faster convergence and better results.\nUnder the circumstance where the output features are available for the pre-trained VL models, we further adapt the visual features by introducing a lightweight adapter module. As demonstrated in Fig. 1, the visual adapter can be learned effortlessly by supervised learning, without having knowledge of the pre-trained VL backbone.\nWith the joint optimization of the textual prompt and the visual adapter, our CBBT achieves significant model adaptation performance. To evaluate its effectiveness, we conduct extensive experiments on eleven downstream benchmarks, showing superior performance compared to existing black-box VL adaptation methods.\nThe main contributions of this work can be summarized as follows:\n\u2022 We advocate textual prompting for adapting pretrained black-box VL models to downstream tasks. Satisfactory prompt tuning results are obtained with an effective gradient approximation algorithm.\n\u2022 We expedite the tuning process by utilizing history updates as beneficial information for each optimization step, which brings about accelerated convergence and better results.\n\u2022 We adapt the visual features jointly with the textual prompt when output features are available. The comprehensive comparison shows that our method achieves state-of-the-art performance compared to other black-box tuning approaches."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Black-box Prompt Tuning for Large Language Models. BBT (Sun et al., 2022b) adopts derivativefree optimization using covariance matrix adaptation evolution strategy (CMA-ES) (Hansen et al., 2003) to optimize the prompt in a low-dimensional intrinsic subspace. With this method, the adaptation of large language models works well on natural language tasks, surpassing even the white-box prompting performance. BBTv2 (Sun et al., 2022a) further enhances the capacity of BBT by using deep prompt tuning. BDPL (Diao et al., 2022) tunes a set of discrete prompts for language models by modeling the choice of words in the prompt as a policy of reinforcement learning, and a variance-reduced policy gradient estimator (Williams, 1992; Dong et al., 2020; Zhou et al., 2021) is used to optimize the discrete prompt based on loss value. Black-box Adaptation for VL Models. To the best of our knowledge, BlackVIP (Oh et al., 2023) is the first work to tackle black-box tuning problem of pre-trained VL models. It designs an asymmetric autoencoder-style coordinator to generate inputdependent image-shaped visual prompts and optimize the coordinator by zeroth-order optimization using simultaneous perturbation stochastic approximation (SPSA) (Spall, 1992, 1998, 1997). However, the improvement brought by this method (after visual prompting) is relatively limited compared to the baseline, i.e., the pre-trained CLIP (Radford et al., 2021). LFA (Ouali et al., 2023) liberalizes the regimes of black-box models by assuming precomputed features from pre-trained backbones are accessible. They optimize a projection layer for a better alignment between pre-computed image features and class prototypes by a multi-stage procedure. They first solve the orthogonal procrustes problem (Sch\u00f6nemann, 1966) by singular value decomposition (SVD) and further refine the projection matrix using adaptive reranking loss. Albeit superior adaptation performance is obtained, we advocate that the complex-phased optimization can be substituted by end-to-end supervised learning with a lightweight adapter, which effortlessly provides comparable results given labeled image features."
+        },
+        {
+            "heading": "3 Method",
+            "text": ""
+        },
+        {
+            "heading": "3.1 PEFT in the Black-box Framework",
+            "text": "Here we introduce the general form of prompt tuning and adapter method and the dilemma when applied to black-box VL models. Prompt tuning for VL models. Given a pretrained VL model, e.g., CLIP (Radford et al., 2021), existing soft prompt tuning approaches (Zhou et al., 2022b,a; Sun et al., 2022c) for classification tasks typically prepend learnable embeddings to the class names of the target dataset:\n\u03d5(ci) = [v 1, . . . ,vM , ci] (1)\nwhere i \u2208 {1, . . . , C} denotes the index of classes, ci denotes word embedding of the i-th class name ci. For j \u2208 {1, . . . ,M}, vj is a learnable word embedding whose dimension is the same as the dimension of normal word embeddings in the vocabulary. The prediction of an input image x is obtained by computing similarities between the image feature f and prompted textual class features {ti}Ci=1:\nP (y\u0302 = i|x;\u03d5) = exp(\u27e8ti,f\u27e9/\u03c4)\u2211C j=1 exp(\u27e8tj ,f\u27e9/\u03c4)\n(2)\nwhere the features of images are encoded by pretrained image encoder f = EncI(x), and textual class embeddings are generated by text encoder ti = EncT(\u03d5(ci)). \u27e8\u00b7, \u00b7\u27e9 calculates the cosine similarity and \u03c4 is a temperature parameter.\nThe objective of prompt module \u03d5 is maximizing the classification probability of the ground-truth\nclass of few-shot image samples:\n\u03d5\u2217 = argmin \u03d5 L(y,x,\u03d5)\n= argmin \u03d5\n\u2212 logP (y\u0302 = y|x;\u03d5) (3)\nWhen given a while-box model, it is straightforward to calculate the gradient of with respect to the prompt, and optimization of the prompt can be performed via gradient descent:\n\u03d5t+1 = \u03d5t \u2212 \u03b7t\u2207\u03d5L(y,x,\u03d5) (4)\nUnfortunately, in the black-box setting, the gradients are unable to be backpropagated through the pre-trained black-box EncI and EncT via the chain rule, and the term \u2207\u03d5L(y,x,\u03d5) cannot be directly obtained. Thus, current gradient-based prompt tuning methods are not feasible in this situation. Adapter learning for VL models. Adapter learning methods (Gao et al., 2021; Zhang et al., 2022) for VL models usually manipulate the output features of pre-trained models for adaptation to target tasks. For instance, an adapter module can be introduced to transfer the visual features to new domains with f\u0302 = \u03c8(f), and then the prediction is obtained by:\nP (y\u0302 = i|x;\u03d5) = exp(\u27e8ti, f\u0302\u27e9/\u03c4)\u2211C j=1 exp(\u27e8tj , f\u0302\u27e9/\u03c4)\n(5)\nLearning such an adapter module by minimizing L(y,f ,\u03c8) does not require back-propagation through the entire pre-trained VL model, which provides convenience for adaptation without knowing the details of the backbone model. But access\nto the output features of the pre-trained model is required to construct and optimize the adapter module (Zhang et al., 2022; Ouali et al., 2023). Further Analyses of the Black-box PEFT. Given a black-box pre-trained model, the unavailability of gradients set a barrier to prompt tuning. Therefore, we intuitively have the idea of optimizing the prompt by estimating gradients. Input gradient approximation has been explored in the application of black-box model attacks (Ilyas et al., 2018b,a) and black-box model reprogramming (Tsai et al., 2020). We employ a perturbation-based gradient approximation method to estimate the gradient of learnable parameters in the prompt. The estimated gradient serves as an effective guide for the tuning of the prompt.\nAlthough the gradient approximation technique provides barely satisfactory optimizing guidance, it is still suboptimal compared to the real gradients. Merely conducting single-step gradient descent based on the results of the estimated gradient leads to inefficient training. Inspired by the previous design of optimizers, we try to expedite the optimization based on the estimated gradient with a momentum. The basic idea is that information from previous updates is useful for the current step, and accumulated gradients possibly provide more promising exploration directions. we empirically find that equipping the momentum strategy for gradient approximation brings expedited convergence and remarkable adaptation performance gain.\nAlthough we have no access to the internal variables of typical black-box models, under the circumstance where output features of the pre-trained VL backbone are available, post-processing adapter modules can be directly learned by labeled samples for PEFT.\nMotivated by the above analyses, we propose to adapt black-box VL models with a collaborative PEFT consisting of optimization from two perspectives. Firstly, we tune a textual prompt under the guidance of the estimated gradient. Perturbationbased gradient approximation and effective optimization strategy are used to facilitate the training. Secondly, we learn a lightweight adapter to transfer pre-trained visual features. Joint optimization of the prompt and adapter brings superior adaptation performance. The overview of the proposed model is illustrated in Fig. 1.\nIn the following, we begin by presenting the perturbation-based gradient approximation method\nin Section 3.2. Then, we explain how to expedite the tuning process by leveraging information from previous updates to achieve a better optimization in Section 3.3. Finally, we introduce the adapter module and joint training schedule in Section 3.3."
+        },
+        {
+            "heading": "3.2 Perturbation Based Gradient Approximation",
+            "text": "Suppose the prompt module \u03d5 has parameter \u03b8 with dimension D. Let f(\u03b8) be the loss function defined in Eq. (3). To approximate the gradient of the loss function with respect to \u03b8, one possible avenue is to add a small increment to each dimension of \u03b8 and sum up the slope of all dimensions:\ng = D\u2211 i=1 f(\u03b8 + \u03b2ei)\u2212 f(\u03b8) \u03b2 ei (6)\nwhere ei is a one-hot vector and its i-th element is equal to 1. Such an approximation may work well for low-dimensional parameters but is not suitable for problems where D might be large. For example, the dimension of each word embedding of pre-trained CLIP is 512, i.e., \u03b8 \u2208 RM\u00d7512. Thus M \u00d7 512 independent API calls for the black-box model must be applied to obtain the complete estimated gradient of parameter \u03b8, which causes inefficiency.\nTo alleviate the cost of the above gradient estimation method, we adopt a stochastic perturbationbased gradient estimation technique formulated as:\ngi = b \u00b7 f(\u03b8 + \u03b2\u03f5i)\u2212 f(\u03b8)\n\u03b2 \u00b7 \u03f5i (7)\ngi is the slope of the loss function along the direction of the perturbation. \u03f5i is a vector randomly drawn from a unit sphere with an L2-norm of 1. \u03b2 is a small value controlling the scale of perturbations. b is a scaling factor balancing the bias and variance trade-off of the estimator.\nTo mitigate noise in the estimated gradients, we sample random perturbation \u03f5i for q times, and the gradient of \u03b8 is approximated by averaging the slope of q directions (Wierstra et al., 2014; Ilyas et al., 2018a; Tu et al., 2019):\ng = 1\nq q\u2211 i=1 gi (8)\nThe upper bound of the estimation g w.r.t. the true gradient \u2207f(\u03b8) is analyzed in Tu et al. (2019)\u2019s\npaper as:\nE \u2225g \u2212\u2207f(\u03b8)\u222522 \u2264 4( b2\nD2 +\nb2\nDq +\n(b\u2212D)2\nD2 ) \u00b7 \u2225\u2207f(\u03b8)\u222522 +\n2q + 1\nq b2\u03b22L2\n(9)\nSetting a smaller \u03b2 can reduce the last error term in Eq. (9) but may cause an increase in noise due to numerical precision. Increasing the number of samples q reduces the first error term but consumes more queries for the model API."
+        },
+        {
+            "heading": "3.3 Effective Optimization Based on Estimated Gradient",
+            "text": "To expedite the optimization based on the estimated gradient, we facilitate the tuning process by leveraging the momentum strategy. Specifically, we estimate the first-order moments of the parameters\u2019 gradient bymt = \u03b21 \u00b7mt\u22121 + (1\u2212 \u03b21) \u00b7 gt. The first-order moments accelerate the optimization and reduce the noise in the gradient of each step. And we obtain the adaptive estimation of the secondorder moment by vt = \u03b22 \u00b7 vt\u22121 + (1 \u2212 \u03b22) \u00b7 g2t , which is used to adjust the learning rate of each dimension adaptively.\nIn our experiments, we use optimizers that integrate the momentum as a practical implementation. To analyze the optimization results of different optimizers, we illustrate the trend of normalized loss value |L(\u03b8\u2217)\u2212 L(\u03b8)| / |L(\u03b8\u2217)\u2212 L(\u03b80)| in Fig. 2. Adam (Kingma and Ba, 2014) shows a fast and steady convergence and satisfied final results. We have also tried more advanced techniques, e.g., LAMB (You et al., 2019), but no significant improvement in performance is observed. Empirical results show that optimizing the prompt with Adam optimizer based on the estimated gradient provides\nexpedited convergence and superior adaptation performance."
+        },
+        {
+            "heading": "3.4 Visual Adapter Module",
+            "text": "The pre-trained VL models can be effectively adapted to downstream tasks through the black-box prompt tuning method mentioned above. Meanwhile, under the assumption that having access to the output features of the black-box model (Ouali et al., 2023), a lightweight adapter module can be directly learned from labeled few-shot samples.\nAdapter modules (Houlsby et al., 2019; Gao et al., 2021; Zhang et al., 2022) have been proven to be effective in the adaptation of VL models. During the training process of the adapter, the gradients do not need to be back-propagated through the entire pre-trained model, making it possible to equip the adapter module with black box models of which only the output features are available.\nThe text features have been adapted in our method by tuning the learnable prompt. Thus, we introduce an adapter module only for the visual features to achieve a collaborative adaptation. Specifically, we add an adapter module to the output of the visual encoder of the pre-trained VL model. Access to computed image features and labels allows the adapter to be learned at ease through direct supervised learning. During training, the visual adapter module and text prompts are optimized in turn to achieve a joint adaptation.\nIn our experiment, we attempt two simple but effective adapter designs, CLIP-Adapter (Gao et al., 2021) and Tip-Adapter (Zhang et al., 2022). Both of which can be well suited for the manipulation of image features for better adaptation."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Implementation Details",
+            "text": "Datasets. We perform the few-shot adaptation on black-box pre-trained CLIP (Radford et al., 2021) for image classification tasks following the general protocol in existing methods (Zhou et al., 2022b; Ouali et al., 2023; Oh et al., 2023). In particular, we adopt 11 commonly used datasets to evaluate our method, including ImageNet (Deng et al., 2009), Caltech101 (Li et al., 2004), OxfordPets (Parkhi et al., 2012), StanfordCars (Krause et al., 2013), Flowers102 (Nilsback and Zisserman, 2008), Food101 (Bossard et al., 2014), FGVCAircraft (Maji et al., 2013), SUN397 (Xiao et al., 2010), UCF101 (Soomro et al., 2012), DTD (Cim-\nTable 1: Few-shot adaptation performance on 11 image classification tasks. Black-box methods are indicated with\ngray shadows.\nModel Method Pets Flowers FGVCA DTD EuroSAT Cars Food101 SUN397 Caltech UCF ImageNet Avg. RN50 CoOp (1 ctx) 89.9 85.4 25.7 61.5 80.2 60.8 79.6 66.9 91.9 72.0 62.9 70.6 CLIP-Adapter 87.9 94.7 33.0 67.4 85.9 69.4 77.0 68.0 92.5 77.8 60.4 74.0 Tip-Adapter 89.7 95.2 37.5 67.6 84.4 74.7 78.9 70.6 93.1 78.3 63.9 75.8\nZSCLIP 85.8 66.1 17.3 42.3 37.6 55.6 77.3 58.5 86.3 61.5 58.2 58.8 LFA 86.8 94.6 35.9 66.4 84.1 73.6 76.3 71.3 92.7 77.0 63.7 74.8 Ours (w/o Adapter) 89.2 83.8 23.8 60.9 77.3 59.4 79.6 65.1 91.6 69.6 62.3 69.3 Ours (CLIP-Adapter) 88.0 94.9 35.6 67.4 85.1 73.8 77.3 68.5 93.1 78.6 63.8 75.1\nOurs (Tip-adapter) 89.9 95.2 37.3 68.4 85.3 74.5 78.5 71.0 92.6 79.4 64.6 76.1\nViT/B16\nCoOp (1 ctx) 93.5 91.6 33.1 66.1 85.3 71.4 87.3 72.0 95.7 79.8 71.0 77.0 CoCoOp (1 ctx) 92.8 86.7 31.4 61.7 73.8 68.9 87.1 71.6 94.8 77.4 70.5 74.2 CoCoOp (4 ctx) 92.9 85.8 31.4 61.9 72.5 68.3 87.3 72.2 94.9 77.1 71.0 74.1 CLIP-Adapter 92.1 97.2 43.3 72.7 89.0 79.0 85.8 74.3 96.3 84.2 70.0 80.4 Tip-Adapter 93.3 97.5 46.8 73.7 88.3 83.9 87.5 76.1 95.8 84.3 71.8 81.7\nZSCLIP 89.2 71.3 24.7 44.4 47.6 65.3 86.1 62.5 92.9 66.8 66.7 65.2 BlackVIP 89.7 70.6 25.0 45.2 73.1 65.6 86.6 64.7 93.7 69.1 67.1 68.2\nLFA 92.4 96.8 46.0 71.9 87.3 82.2 87.1 76.7 96.2 84.0 72.6 81.2 Ours (w/o adapter) 93.7 88.6 30.7 64.0 81.0 68.9 87.2 71.1 95.8 78.8 70.6 75.5 Ours (CLIP-Adapter) 92.2 97.2 45.3 73.3 88.8 81.2 86.1 74.8 95.8 84.6 71.9 81.0 Ours (Tip-Adapter) 93.8 97.8 46.6 74.1 88.3 83.5 87.3 75.9 95.9 84.9 72.4 81.9\npoi et al., 2014), and EuroSAT (Helber et al., 2019). For each dataset, labeled few-shot samples from each class are used as training data. Learnable Prompts. The learnable prompts are shared across all classes in the target dataset. By default, the length of the prompt is set to be M = 1, which reduces the number of parameters in the learnable prompt. A small parameter optimization space helps maintain the quality of the estimated gradients with limited resource for exploration, resulting in effective tuning results. The effect of different prompt sizes is analyzed in Sec. 4.4. To initialize the prompt with different length, we use \"a\", \"a photo\", \"a photo of a\", and \"a photo of a a photo of a\" for M = 1, 2, 4, 8, respectively. Adapter Module. Following CLIP-Adapter (Gao et al., 2021), our adaptor module adopts a two-layer MLP that follows the pre-trained visual encoder. The input and output dimensions are the same as the dimension of the CLIP image feature, and the number of hidden units is a quarter. Following Tip-Adapter (Zhang et al., 2022), we use the averaged feature of random augmented training images from 10 epochs as the initialization of the cache to construct the projection layer. Training Details. We employ the official CLIP model to evaluate our proposed method. For a comprehensive comparison, we conduct experiments with different visual backbones, i.e., ResNet50 and ViT/B16. The query number q is set as q = 256 by default, and its effect is discussed in Sec. 4.4. The hyperparameters b and \u03b2 in Eq. (7) are set as D and 1/D, respectively. D is the dimension of the parameter in the prompt.\nFigure 3: Ablation results of \u201cOurs (w/o Adapter)\u201d with different q."
+        },
+        {
+            "heading": "4.2 Few-shot Adaptation Performance on Image Classification",
+            "text": "We conduct extensive experiments on 11 datasets to evaluate our proposed method. Table 1 reports the 16-shot adaptation performance of competing methods. For a comprehensive comparison, we include both white-box PEFT methods (i.e., CoOp (Zhou et al., 2022b), CoCoOp (Zhou et al., 2022a), CLIPAdapter (Gao et al., 2021), and Tip-Adapter (Zhang et al., 2022)) and black-box methods (i.e., BlackVIP (Oh et al., 2023) and LFA (Ouali et al., 2023)). \"ZSCLIP\" denotes the outcomes obtained using manually designed hard prompts.\nFrom Table 1, our black-box prompt tuning method (ViT/B16 backbone) surpasses previous work Oh et al. (2023) with an average accuracy margin of 7.3% across 11 datasets, demonstrating the effectiveness of our black-box textual prompting for the adaptation of the VL model. Furthermore, when the context length of the prompt is fixed as M = 1, our black-box prompt tuning method performs comparably to the white-box prompt method,\ni.e., CoOp (1 ctx), with a slight difference of less than 2%.\nBy assuming pre-computed features are available, LFA (Ouali et al., 2023) optimizes a projection layer in a multi-stage procedure as introduced in Section 2. We advocate that end-to-end learning of adapter methods (Gao et al., 2021; Zhang et al., 2022) provides a much more brief avenue meanwhile gives satisfactory performance. As shown in Table 1, optimizing the adapter module from CLIP-Adapter and Tip-Adapter can achieve comparable performance with LFA. Thus, we integrate our black-box prompt tuning method with these more flexible adapter modules. From Table 1, the collaborative adaptation of black-box prompting and adapter module brings remarkable performance and achieves a new state-of-the-art result."
+        },
+        {
+            "heading": "4.3 Comparison with Black-Box Optimizers",
+            "text": "Existing black-box prompt tuning methods have explored various effective optimization techniques when the gradient is unavailable. Here we compare\nour method with two other different optimization algorithms based on our implementation. In particular, CMA-ES algorithm (Hansen et al., 2003) is considered as state-of-the-art in evolutionary computation and is previously used to optimize the prompt for large language models (Sun et al., 2022b,a). SPSA-GC was proposed by BlackVIP (Oh et al., 2023) to learn a visual prompt for adaptation of pre-trained CLIP.\nFor a fair comparison, we unify the number of API calls per iteration for all competitors to 10. This is achieved by: setting the population size of CMA-ES as 10; setting the number of repeated two-side estimations of SPSA-GC as 5; setting the number of samplings of our perturbation-based gradient approximation as q = 10. The experiments are conducted on CLIP ResNet50 model, and the prompt length was set to 1. All optimizers are trained for 750 iterations until convergence, and the results are listed in Table 2. From the Table, our method outperforms the SPSA-GC algorithm, which is also based on gradient estimation. Although CMA-ES exhibits faster convergence, noticeable fluctuations are observed even in the later stages of training. Our perturbation-based gradient approximation method is more suitable for the adaption of the VL model."
+        },
+        {
+            "heading": "4.4 Ablation Study",
+            "text": "Ablation studies are performed to evaluate the effect of various factors, including the number of queries, the prompt length, the number of few-shot samples, and the collaborative training schedule. The experiments are mainly on the CLIP ResNet50 model. Effect of the number of queries q. The number of samplings q controls the times of querying the black-box model in each iteration. It has a significant impact on the number of API calls required for learning the prompt. Fig. 3 illustrates the adaptation performance with different q values. Generally, larger values of q yield more reliable gradients but also require more time and API calls for the black-box model. To trade-off the performance and computational cost, we use q = 256 for the results presented in Section 4.2. Effect of prompt length. We further investigate the effect of Prompt length M . For comparison, all the experiments are conducted under 16-shot training data, with the same number of sampling (q = 256) and iterations. The results are illustrated in Fig. 4. One can see that the trend of performance on different tasks varies as the context length of the prompt changes. For white-box prompt tuning, longer prompts usually can lead to better adaptation to downstream datasets, e.g., DTD and EuroSAT. However, blindly lengthening the context (e.g. M = 16) will not result in continuously rising performance. Increasing the length of context brings little improvement for OxfordPets. We attribute these results to the varying degrees of data diversity among different tasks.\nBut in the case of black-box models, the experimental phenomenon changes due to the influence of gradient approximation. Lengthening the context of the prompt brings trivial benefits and may even result in noticeable performance degradation. The expanded parameter space of a long context leads to practical difficulties in gradient estimation thus the optimization may lead to a suboptimal result. Increasing the number of sampling q may improve the reliability of estimated gradients, but scaling up q in proportion to the size of the prompt leads to severe inefficiency. Thus, we use the prompt length of 1 as a trade-off. Effect of the number of few-shot samples. The number of few-shot samples determines the amount of training data used to adapt the pre-trained VL model. To demonstrate its effect, we keep the de-\nfault configuration and vary the number of samples used for prompt tuning. Both black box and white box models undergo the same number of iterations. As shown in Fig. 5, increasing the number of samples clearly leads to better adaptation results. Moreover, we observe that in extremely data-scarce scenarios with only 1-shot sample per class, tuning the prompt based on the estimated gradient outperforms white-box tuning on all three datasets. One possible explanation is that optimizing with true gradients can lead to overfitting when the amount of data is too small. In contrast, gradient approximation provides a more robust optimization direction. As the amount of data increases, the advantages of direct white-box learning become more obvious.\nEffect of the collaborative training schedule. In our experiment, the prompt and the adapter module are optimized jointly to maximize their collaborative performance. During training, we alternately update the prompt and the adapter module at different epochs. To assess the effectiveness of this joint optimization schedule, we conducted experiments using three different ways of training: (i) tuning the prompt until convergence and then optimizing the adapter module (P-A); (ii) tuning the adapter module until convergence and then optimizing the prompt (A-P); (iii) our collaborative training schedule (ALT). We train \u201cOurs (CLIP-Adapter)\u201d under the above three schedules, and the results are shown in Table 3. As shown in the table, recurrently updating the prompt and the adapter alternately (ALT) achieves superior collaborative adaptation performance, demonstrating its effectiveness."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "In this paper, we present CBBT, a black-box adaptation approach for VL models. We effectively tune a soft prompt for the text encoder by gradient approximation and jointly learn a lightweight adapter module to transfer the visual features of the pre-trained backbone. Equipped with the textual prompt and the visual adapter, our method achieves a collaborative adaptation for both modalities. Experiments on various datasets show that our CBBT performs favorably against the state-of-the-art methods.\nLimitations\nWe optimize the prompt in the original highdimensional prompt embedding space, which leads to unsatisfactory optimization results for the prompt with a long context, as shown in Section 4.4. The high-dimensional parameter in the prompt also makes the gradient approximation more difficult. We have tried to optimize the prompt in a smaller subspace following the approach in BBT (Sun et al., 2022b). But the adaptation performance decreased a lot even though we only released a small proportion of the original dimensions. The intrinsic dimensionality property (Aghajanyan et al., 2020; Qin et al., 2021) for vision-language pre-trained models needs further investigation.\nBesides, we optimize a continuous prompt with the need for the token embedding layer of pretrained models. Learning a discrete prompt for the adaptation of VL models is worthy of exploration, considering that the discrete text prompt provides an explicit explanation, and discrete text inputs are more suitable for the invocation of the latest pre-trained model APIs with natural language inputs and/or outputs."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work was supported in part by National Key R&D Program of China under Grant No. 2020AAA0104500, and by the National Natural Science Foundation of China (NSFC) under Grant No. U19A2073."
+        },
+        {
+            "heading": "A Generalization Ability of Black-Box Prompt",
+            "text": "To evaluate the generalization ability of our method, we conducted experiments on the extensively evaluated domain shift benchmarks and base-to-new setting (training on samples from base classes, testing on samples from new classes) commonly used in studies for adaptation of CLIP. Generalization to other domains. Following CoOp (Zhou et al., 2022b) and CoCoOp (Zhou et al., 2022a), we evaluate the transferability of the prompt learned from ImageNet to the three specially designed datasets. The results are shown in Table 4. Given the high variance inherent in these trials, the results are averaged over three random re-runs to ensure reliable comparisons.\nOur prompt learned by black-box optimization performs better than CoOp with a clear margin. Moreover, compared to CoCoOp, which relies on input-conditioned prompts generated by a metanetwork, our vanilla prompt demonstrates superior performance on two of the three benchmarks. Generalization from base to new classes. Following CoCoOp (Zhou et al., 2022a), we split the classes of the target dataset into two sets. In the base-to-new setting, the methods are trained using data from base classes and tested separately on base and new classes to evaluate the generalization ability to unseen classes in training. The results are shown in Table 5.\nWhile CoOp improves pre-trained CLIP on base classes, it fails grievously on novel classes. CoCoOp optimizes for each instance to gain more generalization over an entire task. Our method achieves comparable results to CoCoOp by tuning a single prompt with the black-box optimizer. Optimizing the prompt by estimated gradient avoids the trend of overfitting to training samples, thus making up the superior of our method on generalization ability to white-box prompt tuning."
+        },
+        {
+            "heading": "B More Results with Longer Prompt",
+            "text": "In Fig. 4 of our paper, we optimize prompts with different lengths under a fixed training time budget by setting the same number of samplings q as 256 for gradient approximation. Such a setting ensures training efficiency but may lead to suboptimal results for longer prompts, resulting in a performance drop of longer prompts. To demonstrate this, we have conducted experiments in which the value is\nscaled proportionately according to the size of the prompt, and the results are reported in Table 6.\nFrom the table, with sufficient training time available, proportionately scaling the samplings for tuning of the longer prompts achieves stable convergence and clear improvements (especially on EuroSAT). Nonetheless, our optimized prompts consistently outperform hand-crafted hard prompts of any length."
+        },
+        {
+            "heading": "C Computational Time Budget",
+            "text": "The added computation burden of our method compared to white-box prompting methods lies within the multiple samplings required by the gradient approximation. We provide the training duration linked to the tuning methods presented in Table 1 on the EuroSAT dataset in Table 7. All training procedures are conducted on a single 3090 GPU. We record the minutes used for complete training and divide the time by the number of trained epochs to ascertain the time per epoch. While the sampling process inevitably elongates the training period, the overall consumed time is acceptable."
+        },
+        {
+            "heading": "D Analysis of the Error in Gradient Estimation",
+            "text": "The upper bound of the error of gradient approximation is 4 \u2225\u2207f(\u03b8)\u222522 according to Eq. (9). It is a theoretical value obtained through multiple bounding steps in the proof. The actual estimation error of the gradient during training is much lower than the theoretical upper bound since the experiments are conducted on reasonably annotated datasets with pre-trained CLIP and properly initialized prompts. As the training proceeds, the value of the true gradient becomes small, making the error of the estimated gradient, bounded by the true gradient, become small simultaneously. Thus, the results of \"Ours (w/o adapter)\" are closely comparable to \"CoOp (1 ctx)\" in Table 1."
+        },
+        {
+            "heading": "E Applying to Larger Black-Box Models",
+            "text": "It is promising to apply our method to larger blackbox models. In fact, there exist closed-sourced model APIs, e.g., GPT-3, that provide the feature extraction function. It is possible to adapt pre-trained models of this kind by transferring the extracted features. Additionally, inspired by recent discrete prompt tuning approaches in Maus et al. (2023); Wen et al. (2023), it is practically\nfeasible to discretize the learned prompts by projecting the continuous embedding to discrete token space to support a broader range of black-box models that only allows discrete input, e.g., ChatGPT, Bard. Our research will persist in exploring more practical adaptation techniques for vision-language models."
+        }
+    ],
+    "title": "Black-Box Tuning of Vision-Language Models with Effective Gradient Approximation",
+    "year": 2023
+}

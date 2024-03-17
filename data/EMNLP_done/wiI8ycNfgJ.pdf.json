@@ -1,0 +1,547 @@
+{
+    "abstractText": "We propose LLM-FP4 for quantizing both weights and activations in large language models (LLMs) down to 4-bit floating-point values, in a post-training manner. Existing posttraining quantization (PTQ) solutions are primarily integer-based and struggle with bit widths below 8 bits. Compared to integer quantization, floating-point (FP) quantization is more flexible and can better handle long-tail or bell-shaped distributions, and it has emerged as a default choice in many hardware platforms. One characteristic of FP quantization is that its performance largely depends on the choice of exponent bits and clipping range. In this regard, we construct a strong FP-PTQ baseline by searching for the optimal quantization parameters. Furthermore, we observe a high interchannel variance and low intra-channel variance pattern in activation distributions, which adds activation quantization difficulty. We recognize this pattern to be consistent across a spectrum of transformer models designed for diverse tasks, such as LLMs, BERT, and Vision Transformer models. To tackle this, we propose per-channel activation quantization and show that these additional scaling factors can be reparameterized as exponential biases of weights, incurring a negligible cost. Our method, for the first time, can quantize both weights and activations in the LLaMA-13B to only 4-bit and achieves an average score of 63.1 on the common sense zero-shot reasoning tasks, which is only 5.8 lower than the full-precision model, significantly outperforming the previous stateof-the-art by 12.7 points. Code is available at: https://github.com/nbasyl/LLM-FP4.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Shih-yang Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Zechun Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Xijie Huang"
+        },
+        {
+            "affiliations": [],
+            "name": "Pingcheng Dong"
+        },
+        {
+            "affiliations": [],
+            "name": "Kwang-Ting Cheng"
+        }
+    ],
+    "id": "SP:910d3830498bff956d402c22b8458ae41d64df82",
+    "references": [
+        {
+            "authors": [
+                "Hassan Akbari",
+                "Liangzhe Yuan",
+                "Rui Qian",
+                "Wei-Hong Chuang",
+                "Shih-Fu Chang",
+                "Yin Cui",
+                "Boqing Gong."
+            ],
+            "title": "Vatt: Transformers for multimodal selfsupervised learning from raw video, audio and text",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haoli Bai",
+                "Lu Hou",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Irwin King",
+                "Michael Lyu."
+            ],
+            "title": "Towards efficient posttraining quantization of pre-trained language models",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yelysei Bondarenko",
+                "Markus Nagel",
+                "Tijmen Blankevoort"
+            ],
+            "title": "Understanding and overcoming the challenges of efficient transformer quantization",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yaohui Cai",
+                "Zhewei Yao",
+                "Zhen Dong",
+                "Amir Gholami",
+                "Michael W Mahoney",
+                "Kurt Keutzer."
+            ],
+            "title": "Zeroq: A novel zero shot quantization framework",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 13169\u201313178.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yoni Choukroun",
+                "Eli Kravchik",
+                "Fan Yang",
+                "Pavel Kisilev"
+            ],
+            "title": "Low-bit quantization of neural networks for efficient inference",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Llm.int8(): 8-bit matrix multiplication for transformers at scale",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova"
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yifu Ding",
+                "Haotong Qin",
+                "Qinghua Yan",
+                "Zhenhua Chai",
+                "Junjie Liu",
+                "Xiaolin Wei",
+                "Xianglong Liu."
+            ],
+            "title": "Towards accurate post-training quantization for vision transformer",
+            "venue": "Proceedings of the 30th ACM",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Elias Frantar",
+                "Saleh Ashkboos",
+                "Torsten Hoefler",
+                "Dan Alistarh."
+            ],
+            "title": "GPTQ: Accurate post-training compression for generative pretrained transformers",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jared Kaplan",
+                "Sam McCandlish",
+                "Tom Henighan",
+                "Tom B Brown",
+                "Benjamin Chess",
+                "Rewon Child",
+                "Scott Gray",
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Dario Amodei."
+            ],
+            "title": "Scaling laws for neural language models",
+            "venue": "arXiv preprint arXiv:2001.08361.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jacob Devlin Ming-Wei Chang Kenton",
+                "Lee Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of NAACL-HLT, pages 4171\u20134186.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Andrey Kuzmin",
+                "Mart Van Baalen",
+                "Yuwei Ren",
+                "Markus Nagel",
+                "Jorn Peters",
+                "Tijmen Blankevoort."
+            ],
+            "title": "Fp8 quantization: The power of the exponent",
+            "venue": "Advances in Neural Information Processing Systems, 35:14651\u201314662.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jemin Lee",
+                "Yongin Kwon",
+                "Jeman Park",
+                "Misun Yu",
+                "Hwanjun Song"
+            ],
+            "title": "Q-hyvit: Post-training quantization for hybrid vision transformer with bridge block reconstruction",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mike Lewis",
+                "Yinhan Liu",
+                "Naman Goyal",
+                "Marjan Ghazvininejad",
+                "Abdelrahman Mohamed",
+                "Omer Levy",
+                "Veselin Stoyanov",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Bart: Denoising sequence-to-sequence pre-training for natural language",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yuhang Li",
+                "Ruihao Gong",
+                "Xu Tan",
+                "Yang Yang",
+                "Peng Hu",
+                "Qi Zhang",
+                "Fengwei Yu",
+                "Wei Wang",
+                "Shi Gu."
+            ],
+            "title": "Brecq: Pushing the limit of post-training quantization by block reconstruction",
+            "venue": "arXiv preprint arXiv:2102.05426.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zechun Liu",
+                "Barlas Oguz",
+                "Changsheng Zhao",
+                "Ernie Chang",
+                "Pierre Stock",
+                "Yashar Mehdad",
+                "Yangyang Shi",
+                "Raghuraman Krishnamoorthi",
+                "Vikas Chandra."
+            ],
+            "title": "Llm-qat: Data-free quantization aware training for large language models",
+            "venue": "arXiv preprint",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhenhua Liu",
+                "Yunhe Wang",
+                "Kai Han",
+                "Wei Zhang",
+                "Siwei Ma",
+                "Wen Gao."
+            ],
+            "title": "Post-training quantization for vision transformer",
+            "venue": "Advances in Neural Information Processing Systems, 34:28092\u201328103.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Markus Nagel",
+                "Rana Ali Amjad",
+                "Mart Van Baalen",
+                "Christos Louizos",
+                "Tijmen Blankevoort."
+            ],
+            "title": "Up or down? adaptive rounding for post-training quantization",
+            "venue": "International Conference on Machine Learning, pages 7197\u20137206. PMLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Markus Nagel",
+                "Mart van Baalen",
+                "Tijmen Blankevoort",
+                "Max Welling"
+            ],
+            "title": "Data-free quantization through weight equalization and bias correction",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "OpenAI."
+            ],
+            "title": "Gpt-4 technical report",
+            "venue": "ArXiv, abs/2303.08774.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Matthieu Cord",
+                "Matthijs Douze",
+                "Francisco Massa",
+                "Alexandre Sablayrolles",
+                "Herv\u00e9 J\u00e9gou."
+            ],
+            "title": "Training data-efficient image transformers & distillation through attention",
+            "venue": "International conference on machine learning, pages 10347\u201310357.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in neural information processing systems, 30.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel R. Bowman"
+            ],
+            "title": "Glue: A multi-task benchmark and analysis platform for natural language understanding",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Xiuying Wei",
+                "Ruihao Gong",
+                "Yuhang Li",
+                "Xianglong Liu",
+                "Fengwei Yu."
+            ],
+            "title": "QDrop: Randomly dropping quantization for extremely low-bit post-training quantization",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Di Wu",
+                "Qi Tang",
+                "Yongle Zhao",
+                "Ming Zhang",
+                "Ying Fu",
+                "Debing Zhang"
+            ],
+            "title": "Easyquant: Post-training quantization via scale optimization",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Guangxuan Xiao",
+                "Ji Lin",
+                "Mickael Seznec",
+                "Julien Demouth",
+                "Song Han."
+            ],
+            "title": "Smoothquant: Accurate and efficient post-training quantization for large language models",
+            "venue": "arXiv preprint arXiv:2211.10438.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhihang Yuan",
+                "Chenhao Xue",
+                "Yiqi Chen",
+                "Qiang Wu",
+                "Guangyu Sun."
+            ],
+            "title": "Ptq4vit: Post-training quantization for vision transformers with twin uniform quantization",
+            "venue": "Computer Vision\u2013ECCV 2022: 17th European Conference, Tel Aviv, Israel, October",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yijia Zhang",
+                "Lingran Zhao",
+                "Shijie Cao",
+                "Wenqiang Wang",
+                "Ting Cao",
+                "Fan Yang",
+                "Mao Yang",
+                "Shanghang Zhang",
+                "Ningyi Xu"
+            ],
+            "title": "Integer or floating point? new outlooks for low-bit quantization on large language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nagel et al",
+                "Li"
+            ],
+            "title": "2021) where modules are quantized consecutively based on their sequential order, and the input for the current calibrating module is generated using all the previously quantized modules",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yuan et al",
+                "Bai"
+            ],
+            "title": "2022) proposed a new parallel quantization framework. This framework uses the raw output of the full-precision modules as input and makes the calibration of each module independent from one another",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Since the introduction of transformer architecture (Vaswani et al., 2017), transformers have superseded recursive neural networks, emerging as the dominant architecture in numerous natural language processing (NLP) tasks (Kenton and\n*These authors contributed equally to this work\nToutanova, 2019; Lewis et al., 2020). The transformative impact of the transformer has been further propelled by the emergence of models like GPT (Brown et al., 2020; OpenAI, 2023), catapulting the popularity of this architecture to new heights. Meanwhile, the versatility of transformers extends beyond NLP, encompassing diverse domains such as vision (Dosovitskiy et al.; Touvron et al., 2021), audio (Akbari et al., 2021), etc. This trend towards a unified architecture for different modalities represents a groundbreaking development within the realm of deep learning.\nHowever, the advancements in transformer performance are accompanied by a corresponding increase in model size and computational costs (Kaplan et al., 2020). This poses significant challenges when attempting to leverage the full potential of transformer models in use cases where memory or computational resources are limited. Despite the extensive research and widespread adoption of transformers, the field of transformer compression remains relatively underexplored. To address this gap, our study focuses on the compression of transformers, especially through floating-point post-training quantization techniques.\nPost-training quantization (PTQ) offers the advantages of simple to use with minimal fine-tuning requirements (Nagel et al., 2020; Cai et al., 2020). Existing PTQ solutions for transformers primarily focus on integer (INT) quantization (Liu et al., 2021; Yuan et al., 2022), which can be effective in certain scenarios but often break down when bit widths are below 8 bit. On the other hand, floatingpoint (FP) quantization has gained significant traction as a more flexible alternative, capable of better accommodating various activation and weight distributions. In fact, FP8 has emerged as the default choice in various hardware platforms, including the NVIDIA H100.\nDifferent from integer (INT) quantization, a particular challenge in floating-point (FP) quantiza-\ntion is how to select appropriate exponent bits and scale parameters. Improper parameter choices can lead to subpar or divergent quantization results. To tackle this challenge, we introduce a robust recipe for FP quantization, which leverage layer-wise reconstruction to jointly search for optimal exponent bits and maximum values. Compared to previous approaches that utilize gradient updates for exponent bits (Kuzmin et al., 2022), our search-based method proves to be more stable and consistently delivers desirable quantization results, which establishes a strong baseline for FP-PTQ.\nFurthermore, our investigation uncovers an intriguing pattern of activation distributions in transformers, characterized by high inter-channel variance and low intra-channel variance. Similar patterns are also observed in previous works (Xiao et al., 2022; Dettmers et al., 2022), while we argue that this pattern is inherent to transformer architectures and not limited to specific tasks, as we have observed consistent patterns not only in large language models but also in BERT model and even vision transformers. Motivated by these findings, we introduce a novel pre-shifted exponent bias for FP quantization of transformers. Concretely, we leverage the per-channel activation variance computed from calibration data and reparameterize these scales as the exponential bias of the corresponding FP quantized weight vectors. This approach effectively addresses the challenge posed by high inter-channel variance while incurring negligible computational cost.\nIn summary, we study floating-point posttraining quantization (PTQ) for transformer architectures, and the contribution of this paper includes: \u2022 We propose a search-based framework for determining the optimal exponent bias and maximal quantization value. This method outperforms existing techniques in terms of stability and performance, establishing a strong baseline for floatingpoint post-training quantization. \u2022 We propose a novel technique, pre-shifted exponent bias, which effectively addresses the challenge of high inter-channel variance in the transformer with negligible computational overhead. \u2022 Experimental results demonstrate that the proposed method yields the first usable FP4 weight and activation quantized LLaMA-13B model with mere 5.8-point degradation in zero-shot reasoning tasks against the full-precision model, reducing the gap by \u223c70% compared to the previous SoTA.\n\u2022 We further extend our method to BERT and vision transformers. It surpasses the previous best 4- bit quantized BERT by 7.8 points on GLUE dataset and achieves 31.4 points higher accuracy compared to the previous SoTA ViT quantization method for 4-bit DeiT-S on ImageNet dataset."
+        },
+        {
+            "heading": "2 Related Works",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Post-Training Quantization",
+            "text": "Model quantization can be mainly categorized into quantization-aware training (QAT) and posttraining quantization (PTQ), depending on whether it involves additional training for weight finetuning or not. Most PTQ studies are primarily focused on convolutional neural networks (CNNs) (Nagel et al., 2020; Li et al., 2021; Wu et al., 2020; Cai et al., 2020; Nagel et al., 2019). However, with the growing popularity of transformer-based models, only a limited number of works (Bondarenko et al., 2021; Yuan et al., 2022; Ding et al., 2022) have been conducted to realize PTQ on transformers. Moreover, the existing works primarily focus on visual transformer models and exhibit inferior performance when the bit width is below 8. Therefore, in this work, we delve into the challenges of the low-bit PTQ for language transformers."
+        },
+        {
+            "heading": "2.2 Floating-Point Quantization",
+            "text": "Floating-point (FP) quantization has emerged as a promising alternative to integer quantization due to its ability to handle long-tail distributions, and offers increased flexibility (Kuzmin et al., 2022). Additionally, modern GPUs such as H100 (Micikevicius et al., 2022) now support FP quantization. Nonetheless, minimal research has been conducted on FP quantization. Only (Kuzmin et al., 2022) proposes a general FP8 quantization scheme primarily for vision tasks, and (Zhang et al., 2023) adopts a mixture of FP and INT formats quantization for LLMs. In this work, we propose FPQ baseline as a general guideline for low-bit floating-point PTQ to compress language transformer models."
+        },
+        {
+            "heading": "3 Preliminaries",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Formulation of Floating-Point Variables",
+            "text": "A standard floating-point number is represented as:\nXFP = (\u22121)s2p\u2212b(1+ d1 2 + d2 22 + ...+ dm 2m ) (1)\nwhere s \u2208 {0, 1} is the sign bit. di \u2208 {0, 1} is ith mantissa bit, m denoted number of mantissa bits.\np is an integer in [0, 2e \u2212 1], and e denotes number of exponent bits. b is an integer exponent bias. A floating point with j number exponent bits and k mantissa bits is denoted as FP format EjMk."
+        },
+        {
+            "heading": "3.2 Floating-Point Quantization Process",
+            "text": "In integer quantization, the real-valued variable XR is quantized to an integer XINT with the following formula:\nXINT = \u03b1\n\u230a Clip ( XR \u03b1 ,Qmin, Qmax )\u2309 (2)\nwhere \u230a\u00b7\u2309 is the rounding function. XR is the real-valued variable, \u03b1 represents the full-precision scaling factor, and Qmin, Qmax are the min/max value of the quantization range. Similarly, a realvalued variable XR can be converted to floatingpoint XFP in two steps. (1) Scale and clip. In FP quantization, we also scale and clip the real-valued variable before quantization as:\nX \u2032R = Clip(XR, Qmin, Qmax) (3)\nwhere the min/max value range of signed floatingpoint quantization can be calculated from Eq.1:\nQmax = \u2212Qmin = (2\u2212 2\u2212m)22 e\u2212b\u22121 (4)\nHere the integer exponent bias b is another adjustable hyperparameter controlling Qmax and Qmin, which has similar functionality as \u03b1. Therefore, for simplicity, we reformulate Eq. 3 as:\nX \u2032\u2032R = Clip ( XR, Q\u0303min, Q\u0303max ) , (5)\nwhere\nQ\u0303max = \u03b1Qmax = \u03b1 \u00b7 (2\u2212 2\u2212m)22 e\u2212b\u22121\n= \u03b1 \u00b7 2\u2212b \u00b7 (2\u2212 2\u2212m)22e\u22120\u22121\n= 2\u2212b\u0303 \u00b7 (2\u2212 2\u2212m)22e\u22120\u22121 (6)\nNote that we combine the tensor-wise real-valued scaling factor \u03b1 with integer exponent bias b to form a new scaling factor \u03b1\u0303 = 2\u2212b\u0303 = 2\u2212b \u00b7 \u03b1. Here b\u0303 denotes a relaxed tensor-wise real-valued exponent, and we can derive b\u0303 from the desired clipping value Q\u0303max from Eq. 6 as:\nb\u0303 = 2e \u2212 log2Q\u0303max + log2(2\u2212 2\u2212m)\u2212 1 (7)\n(2) Compare and quantize. Different from integer quantization, which simply utilizes the rounding function to convert the real-valued variables to quantized ones, in floating-point quantization, there is an additional step of comparing X \u2032\u2032R with quantization levels and then quantize:\nXFP = \u03b1\u0303 \u00b7 v \u00b7 \u230a X \u2032\u2032R \u03b1\u0303 \u00b7 v \u2309 (8)\nwhere X \u2032\u2032R is clipped real-valued variable (Eq. 5), \u03b1\u0303 is the tensor-wise floating-point scaling factor, and v is an integer power of 2.\nv=\n{ 2\u230alog2|X\n\u2032\u2032 R|+b\u0303\u230b\u2212m if \u230alog2|X\u2032\u2032R|+b\u0303\u230b\u22651\n21\u2212m otherwise (9)\nHere we select the quantization level v according to the magnitude of X\n\u2032\u2032 R \u03b1\u0303 , which equals to X \u2032\u2032 R \u00b7 2b\u0303.\nThen the floating-point quantized variables can be derived with Eq.8. The illustration of the quantization process is in Fig. 1, detailed explanation can also be found in (Micikevicius et al., 2022)."
+        },
+        {
+            "heading": "3.3 Floating-Point Matrix Multiplication",
+            "text": "With the floating-point quantized variables, the matrix multiplication is formulated as:\nOi,kout = X i,: FPW :,k FP = \u03b1\u0303X\u03b1\u0303 k W X\u0303i,:FPW\u0303 :,k FP (10)\nHere in per-tensor activation quantization and perchannel weight quantization, Xi,:FP denotes i th row\nin the activation matrix and W:,kFP denotes k th column in the weight matrix, such that each element Oi,kout in the output matrix is computed by the product of two real-valued scalars \u03b1\u0303X and \u03b1\u0303 k W\ntimes the corresponding quantized activation and weight vectors. We depict all the possible quantization granularity options that support such efficient matrix multiplication in Appendix D."
+        },
+        {
+            "heading": "4 Method",
+            "text": "In this section, we begin by introducing our joint format and max value search, which establishes our strong baseline and already achieves state-ofthe-art results at 8-bit and 6-bit quantization. Then we present an efficient pre-shifted exponent bias to tackle the catastrophic high inter-channel activation variance in transformer models and push the quantization limit to 4-bit."
+        },
+        {
+            "heading": "4.1 Joint Format and Max Value Search",
+            "text": "The objective of post-training quantization is to minimize the perturbation (\u03b4X = XFP \u2212 XR) introduced by quantization to the pre-trained realvalued network:\nmin E[L(XR + \u03b4X)\u2212 L(XR)] (11)\nIn this study, we adopt the setting presented in (Choukroun et al., 2019; Wu et al., 2020), which assumes a positive correlation between the change in the intermediate output of the quantized model and Eq. 11. Therefore, minimizing the distance between the intermediate output of the quantized layer (O\u0302) and the output of the original layer (O) leads to minimize Eq. 11. Hence, the objective loss metric is formulated as:\nmin (O\u0302\u2212O)2 (12)\nwhich is used to search for the optimal FP quantization function in the following proposed framework.\nThe challenges in FP quantization arise from its sensitivity to the quantization format and clipping range. Undesirable format selection will result in a catastrophic error rate. In addition, we observe that the optimal clipping range varies depending on the format used. Previous work (Kuzmin et al., 2022) on floating-point (FP) quantization-aware training (QAT) proposed to learn both the FP format and maximum value with gradients. However, we find this method suffers from over-fitting in PTQ, with accuracy being even worse than na\u00efve MinMax\nmethod, details can be found in Appendix E. Instead, we propose a search-based algorithm that jointly determines the optimal format and its associated clipping range to address this challenge.\nThe searching process is conducted layer by layer with the metric of minimizing Eq. 12. The output of matrix multiplication corresponding to each sub-module is denoted as O = XY, where Y can be either a weight tensor W or another activation tensor.\nThe search space of q-bit FP format includes all formats except for the format with an exponent bit equal to 0, as the quantization of the format with an exponent bit equal to 1 already degenerates to INT quantization. We search for the real-valued exponent bias b\u0303, which equals to the logarithm of the scaling factor. We initialize b\u0303X and b\u0303Y from Eq. 7 with Qmax equals the maximum value of |XR| and |YR|, respectively. We then define the search space of b\u0303X and b\u0303Y by linearly dividing [\u03b31 b\u0303 init X , \u03b32 b\u0303 init X ] and [\u03b31 b\u0303 init Y , \u03b32 b\u0303 init Y\n] into k intervals, where \u03b31 and \u03b32 are empirically set to 0.01 and 1.2, and k = 100.\nThe search process is outlined in Alg.1. We search the quantization scheme in all the matrix multiplication layers in parallel following (Yuan et al., 2022; Bai et al., 2022). The algorithm can be divided into two parts. (1) Do forward propagation to store the intermediate raw output of each layer l. (2) Iteratively update the optimal format and biases for each layer for three rounds by minimizing the reconstruction metric (Eq. 12). We name this search-based framework as Floating Point Quantization Baseline (FPQ baseline), and it can already achieve state-of-the-art results on both 8-bit and 6- bit settings."
+        },
+        {
+            "heading": "4.2 Pre-Shifted Exponent Bias",
+            "text": "In transformer architectures, we observed an intriguing phenomenon of high inter-channel variance. As shown in Fig.2, the magnitudes of values within the same channel are close to each other but exhibit significant differences across different channels. This phenomenon is not only observed in language models (i.e., LLaMA and BERT) but also significant in vision transformer models. Since outlier channels are often orders of magnitude bigger than the rest, they will dominate the quantization precision of the quantized tensor, resulting in less representation capacity for those channels with smaller magnitudes (Xiao et al., 2022). This makes tensor-wise or token-wise scaling factor insufficient for accurate activations quantization.\nAlgorithm 1 FPQ baseline 1: Input: Calibration dataset, Full-precision Model M ,\nQuantization format search space RX (e.g., RX = {E3M0, E2M1, E1M2} for FP4), number of round n = 3, 2: Output: FP q Quantized model 3: for l in 1st to Lth layer in M do 4: Forward & collect raw output Ol = XlY l of layer l; 5: end for 6: for l in 1st to Lth layer in M do 7: Initialize the FP format search space w.r.t Xl and Y l\nas RX = {r 1 X , r2 X , ..., rt X } and RY = {r 1 Y , r2 Y , ....rt Y }.\n8: Initialize bias b\u0303i X , b\u0303i Y with Eq.7 for each format can-\ndidate riX \u2208 RX and r i Y \u2208 RY . 9: Generate search space of b\u0303X in t formats to be\n[\u03b31 b\u0303 init X , \u03b32 b\u0303 init X ] and b\u0303Y to be [\u03b31 b\u0303 init Y , \u03b32 b\u0303 init Y ]. 10: for 0 to n do 11: Search for b\u0303i\nX w.r.t each ri X that minimizes Eq.12\n12: Search for ri X \u2208 RX that minimizes Eq.12 13: Search for b\u0303i\nY w.r.t each ri Y that minimizes Eq.12\n14: Search for ri Y \u2208 RY that minimizes Eq.12 15: end for 16: end for\nHowever, applying per-channel scaling factors for activations poses challenges to efficient matrix multiplication, because the scaling factor is not a shared constant along the multiplication direction and cannot be extracted as Eq. 10. To address this challenge, we introduce pre-shifted exponent bias, which allows us to calculate per-channel scaling factors from activations. These scaling factors are then re-parameterized as the exponent biases of the corresponding weights. This method effectively handles high inter-channel variance while maintaining nearly identical efficiency to per-tensor quantization.\nRecalling in Eq. 7, we extracted the tensor-wise integer exponent bias b and times it with realvalued scaling factor \u03b1 and becomes a new scaling factor \u03b1\u0303 = 2\u2212b\u0303 = 2\u2212b \u00b7 \u03b1. Then, the floating-point quantization formula in Eq. 13 becomes:\nXFP=2 \u2212b\u0303(\u22121)s2p\u22120(1+d1 2 + d2 22 +...+ dm 2m ) (13)\nWe note that after the bias is absorbed in the scaling factor, the original bias term (bori) in the FP formula is always zero. In dealing with the interchannel variance, we devise an innovative usage of this integer exponent bias: we set it to be a perchannel variant (bori \u2208 Zc).\nThen the calculation of the channel-wise integer bias vector (bori) is very straightforward. We first calculate the initial per-channel real-valued scaling factor (2\u2212b\u0303j ) from the per-channel maximum\nvalues:\nb\u0303j=2 e\u2212log2(max(|X :,j R |))+log2(2\u22122 \u2212m)\u22121 (14)\nHere X:,jR denotes the j th channel in the activation matrix. Then we separate b\u0303 to a tensor-wise realvalued scaling factor plus a channel-wise integer scaling factor:\nb\u0303 = \u03c1\u0303+ bori\n= \u03c1\u0303+ clip(\u230ab\u0303\u2212 \u03c1\u0303\u2309, 0, 2e\u22121) (15)\nwhere \u03c1\u0303 \u2208 R1, bori \u2208 Zc. Then the formula for one of the entries in the jth channel of X can be rewrote as follows:\nXFP=2 \u2212b\u0303j (\u22121)s2p\u22120(1 + d1\n2 + ...+ dm 2m )\n=2\u2212\u03c1\u0303(\u22121)s2p\u2212b ori j (1 + d1 2 + ...+ dm 2m )\n(16) Note that the bias bori is constrained to integers within [0, 2e \u2212 1], compatible with the standard floating-point number calculation. Nevertheless, adding different biases for each channel during inference may still cause some extra hardware operations. Thus, we re-parameterized the perchannel activation bias into a weight tensor and pre-computed the weights using the calibration set. This way, the exponent biases shifting only happens in the calibration stage. Then, an element in jth channel of activation tensors X becomes:\nXFP=2 \u2212\u03c1\u0303(\u22121)s2p\u22120(1+ d1\n2 +...+ dm 2m ) (17)\nand the corresponding weight element in jth row of the weight tensor W becomes:\nWFP=2 \u2212b\u0303W(\u22121)s2p\u2212b ori j (1+ d1 2 +...+ dm 2m ) (18)\nAs result, efficient matrix multiplication in Eq.10 is reformulated as:\nOi,kout=X i,: FPW :,k FP = \u03b1\u0303X\u03b1\u0303 k W X\u0303i,:FP(\u03b2\u2299W\u0303 :,k FP) (19)\nwhere \u2299 is the element-wise multiplication, \u03b2 = 2\u2212b\nori and (\u03b2 \u2299 W\u0303:,kFP) can be pre-calculated and stored in low-bit FP format. We depict the overall pre-shifted exponent bias method in Fig.3. This method applies to quantizing all the fullyconnected layers. During the search process, we initialize \u03c1\u0303X as the minj(b\u0303j). Then, we fixed b\u0303X to be the bias calculated from the Eq. 14 and search for the optimal \u03c1\u0303X from [\u03b31 \u03c1\u0303 init X , \u03b32 \u03c1\u0303 init X\n]. Combining pre-shifted exponent bias method with the joint format and max-value search framework(FPQ baseline), we name our method as (FPQ), short for Floating Point Quantization."
+        },
+        {
+            "heading": "5 Experiments",
+            "text": "To validate the effectiveness of the proposed method, we conduct experiments on LLaMA (Touvron et al., 2023) and BERT (Devlin et al., 2019) models in 5.2.1 and Sections 5.2.2. Further, in Section 5.2.3 we show that our method also generalizes well to vision transformer architectures. We present ablation studies on the calibration size\nand search range in Section 5.3, and analyze the hardware costs of implementing FP operators in Section 5.4."
+        },
+        {
+            "heading": "5.1 Experiments Details",
+            "text": "We adopt per-tensor quantization for activation and per-channel quantization for weight. We employ layer reconstruction following the settings of (Yuan et al., 2022; Nagel et al., 2020), and parallel quantization based on the approach outlined in (Bai et al., 2022; Yuan et al., 2022). A more detailed discussion regarding our implementation decisions can be found in Appendix F. For LLaMA models, we quantize all the weight and activation tensors in fully-connected layers for a fair comparison with previous work (Xiao et al., 2022; Liu et al., 2023). For BERT and ViT models, both fully-connected layers and activation-activation multiplication tensors in the self-attention module are quantized. Note that for FPQ on BERT (Devlin et al., 2019) and ViTs models, the reconstruction metric Eq. 12 is substituted with a Hessian approximation loss metric. This substitution is further detailed in Appendix A."
+        },
+        {
+            "heading": "5.2 Main Results",
+            "text": ""
+        },
+        {
+            "heading": "5.2.1 LLM Zero-Shot Reasoning",
+            "text": "We evaluate the effectiveness of FPQ for LLaMA7B/ LLaMA-13B (Touvron et al., 2023) on common sense zero-shot reasoning tasks. For the calibration data, we sample 32 random segments with 2048 tokens length from the C4 (Raffel et al., 2020)\ndataset following the setting of GPTQ (Frantar et al., 2023). The data preprocessing and score calculation are based on EleutherAI evaluation harness1. In Table 1, we compare FPQ to the floatingpoint PTQ baselines, and state-of-the-art PTQ and QAT methods, including SmoothQuant (Xiao et al., 2022) and GPTQ (Frantar et al., 2023), and LLMQAT (Liu et al., 2023).\nIn general, all methods, except for the na\u00efve MinMax INT Quantization, produce comparable outcomes in the 8-bit setting on both LLaMA-7B and LLaMA-13B. Additionally, we observe that the na\u00efve MinMax FP Quantization achieves nearly lossless results and even surpasses the state-ofthe-art integer post-training quantization method, SmoothQuant (Xiao et al., 2022), which indicates that floating-point quantization naturally has a strong capability in handling the distributions in transformers. However, both MinMax FP Quant and FPQ baseline fail when pushing the quan-\n1https://github.com/EleutherAI/lm-evaluation-harness\ntization precision to ultra-low 4/4/4 bit setting, with 28.9% and 23.8% accuracy degradation on LLaMA-7B, respectively. In this extreme case, the previous state-of-the-art PTQ and QAT methods, SmoothQuant (Xiao et al., 2022) and LLMQAT (Liu et al., 2023) also suffer severe accuracy downgrade. In comparison, FPQ demonstrates a strong capability of handling extra-low bit settings and achieves only 8.2/5.8% accuracy drop on LLaMA-7B/13B with 4/4/4 bit-width, outperforming SmoothQuant (Xiao et al., 2022) by a large margin, yet with less bit-width and smaller calibration size. Moreover, FPQ even achieves 5.3% accuracy improvements compared to LLM-QAT (Liu et al., 2023) in the 4/4/4 setting and 1.5% over GPTQ (Frantar et al., 2023) in the 4/4/16 configuration on LLaMA-7B.\nFor practitioners, a crucial consideration is determining the appropriate quantization methods for various bit-widths. Therefore, based on our findings, we offer two recommendations that balance the trade-off between accuracy and\nsearch/optimization efficiency. First of all, since the difference between MinMax FP Quant and the rest of the methods is marginal for the 8/8/8 setting, we recommend simply using the MinMax FP Quant method for the 8/8/8 setting as the MinMax method does not involve search process. However, for more demanding scenarios, especially with activation quantization to 4 bits, we recommend employing FPQ for minimizing accuracy degradation with negligible inference overhead."
+        },
+        {
+            "heading": "5.2.2 BERT Model",
+            "text": "We evaluate the proposed quantization techniques for BERT model on GLUE tasks (Wang et al., 2019). Full-precision BERT-base models finetuned on GLUE datasets are obtained from Huggingface public repository2. We randomly sample 128 data from the training set as the calibration set. In Table 2, FPQ demonstrates remarkable performance, achieving absolute average accuracy improvements of 44.3% compared to BrecQ (Li et al., 2021) and 7.9% over QDrop (Wei et al., 2022) with 4/4/4 bit setting. Further, with 4-bit weight and 8-bit activation, MREM-S/MREM-P (Bai et al., 2022) present a 1.6/1.5% accuracy gap to the fullprecision model with 4096 calibration data, while FPQ achieves almost no accuracy loss with only\n2https://huggingface.co/textattack/bert-base-uncased{TASK_NAME}\n128 calibration data points."
+        },
+        {
+            "heading": "5.2.3 Generalizability on Vision Transformer",
+            "text": "Based on our findings that vision transformers also exhibit a consistent activation distribution pattern as language transformers, characterized by high inter-channel variance and low intra-channel variance, as detailed in Fig. 2, we extended our proposed methods to ViT and compared FPQ with floating-point PTQ baselines and state-of-the-art PTQ method for ViT on the ImageNet classification task. Table 3 shows that findings on ViT are consistent with that on language models: previous state-of-the-art integer-based methods struggled to maintain reasonable accuracy when quantizing the transformer to lower bits. In comparison, the proposed FPQ outperformed both PTQ4ViT and APQViT on 6 bits, and also achieved 40.9% and 31.5% absolute accuracy improvement over PTQ4ViT and APQ-ViT on DeiT-S in the 4-bit configuration."
+        },
+        {
+            "heading": "5.3 Ablation Study",
+            "text": "In this section, we first compare the influence of different calibration sizes on FPQ. We vary the calibration size in {32, 64, 128, 256} and test on MNLI, QQP, and CoLA. Table 4 shows that the evaluation on MNLI and QQP is more robust to different settings, and the variance is more significant on CoLA. We observe that FPQ performs well with a\ncalibration set size of 128 data points. However, we also find that it remains robust and maintains competitive accuracy even with limited access to calibration data, such as when using as few as 32 data points.\nWe investigate the robustness of FPQ to different search ranges (\u03b31, \u03b32). Table 5 presents the results of FPQ using three sets of (\u03b31, \u03b32): (0.01, 1.2), (0.1, 1.2), (0.5, 1.5), on MNLI, QQP, and CoLA. It is observed that no single search range outperforms the others consistently across all tasks. For instance, the search range (0.01, 1.2) performs better than (0.5, 1.5) on MNLI and QQP, but slightly worse on CoLA in the 4-bit configuration. Overall, FPQ exhibits robustness to various \u03b31 and \u03b32, as long as the search range is not overly aggressive."
+        },
+        {
+            "heading": "5.4 Hardware Cost",
+            "text": "We further examine the hardware utilization of lowbit INT, FP, and mixed-format FP multiplication operators, including adder, multiplier, and multiplyaccumulate (MAC) units, in terms of hardware area. Mixed-format FP refers to the multiplication of floating-point numbers with different formats, e.g., E2M1 multiplies with E1M2. We implemented the MAC operator by Verilog HDL and utilized Cadence Genus to obtain the synthesized area under TSMC 40nm technology and 0.5GHz clock frequency.\nTable 6 illustrates the hardware cost of the INT and FP operators, with the multiplier being the pri-\nmary cost for INT and the adder for FP. Notably, the disparity between FP4 and INT4 adders is small, while INT has twice the hardware cost for the multiplier. Moreover, the mixed-format FP4 operator has comparable hardware area as the standard FP4 operator. These findings indicate that the proposed FPQ approach imposes negligible overhead in terms of hardware implementation when compared to the standard FP operators and the hardware cost for FP is comparable with INT."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "This paper presents the first successful demonstration of 4-bit floating-point post-training quantization for weights, activations, and embeddings in natural language transformer architectures, including both large language models and BERT model. We also extend our method to vision transformers and observe its robust generalization ability. Our approach involves a practical search-based technique which establishes a strong baseline and achieves state-of-the-art results for 6-bit and 8-bit quantization. Furthermore, we address the challenge of high inter-channel variance in transformers by proposing pre-shifted exponent bias, which proves highly effective in achieving accurate 4-bit quantization."
+        },
+        {
+            "heading": "Acknowledgement",
+            "text": "This research is supported by National Natural Science Foundation of China/ HKSAR Research Grants Council Joint Research Scheme under Grant NHKUST627/20, and Foshan HKUST Projects under Grant FSUST21\u2212HKUST10E.\nLimitations\nOur experiments were conducted on publicly available datasets with finite sentence lengths, and the generalizability of our method to extremely long sequences or streaming data has not been verified and may require further investigation. In addition, it remains to be seen how our proposed method can generalize to other domains beyond language and vision, such as audio. It would also be interesting to see the applicability of our method to generative tasks and other applications."
+        },
+        {
+            "heading": "A Hessian-Based Loss Metric",
+            "text": "The objective of post-training quantization is to minimize the perturbation (\u03b4X = XFP \u2212 XR) introduced by quantization to the pre-trained realvalued network:\nmin E[L(XR + \u03b4X)\u2212 L(XR)] (20)\nFollowing the Taylor series expansion, we have\nE[L(XR + \u03b4X)\u2212 L(XR)]\n\u2248 \u03b4XT g\u0304(X) + 1 2 \u03b4XT H\u0304(X)\u03b4X \u2248 1 2 \u03b4XT H\u0304(X)\u03b4X\n(21)\nHere, g\u0304(X) is the gradients and H\u0304(X) is the Hessian matrix. Since the pre-trained model is wellconverged, we can assume that g\u0304(X) has near zero value in every element, and thus term \u03b4XT g\u0304(X) can be neglected. The Hessian matrix H\u0304(X) is computed as:\nH\u0304(X) = JTO(X)H\u0304 (O)JO(X) (22)\nwhere JO(X) denotes the Jacobian matrix of the layer output O w.r.t X, and H\u0304(O) is the Hessian matrix w.r.t O. We then substitute the above equation back to equation 21 :\n\u03b4XT H\u0304(X)\u03b4X\n= (JO(X)\u03b4X) T H\u0304(O)(JO(X)\u03b4X)\n\u2248 (O\u0302\u2212O)T H\u0304(O)(O\u0302\u2212O)\n(23)\nHere O\u0302 is the intermediate output of the quantized layer and O is the original layer output. Note that under the assumption that \u03b4X is relatively small (Li et al., 2021), we can approximate (O\u0302 \u2212 O) as JO(X)\u03b4X using first-order Taylor expansion.\nNevertheless, the calculation of H\u0304(O) is still burdensome, therefore, we use the diagonal entries of the Fisher Information Matrix of O to substitute H\u0304(O) following (Li et al., 2021; Yuan et al., 2022), and the new Hessian-based metric becomes:\nE[(O\u0302\u2212O)Tdiag(( \u2202L \u2202O1 )2, ..., ( \u2202L \u2202On )2(O\u0302\u2212O)] (24) Here, each entry of O is assumed to be independent and n denoted the total number of elements in O. In this study, this hessian-based metric is used as the reconstruction metric to search for the optimal FP quantization function for both the weight and activation when performing layer-wise reconstruction in BERT and Vision Transformer models."
+        },
+        {
+            "heading": "B Quantization Error of Different Floating-Point Formats",
+            "text": "Figure 4 compares the quantization error of different formats in 8-bit quantization, including INT8, E2M5, E3M4, E4M3, and E5M2. We apply these formats to different BERT modules in the first, fifth, and last layers. The figures demonstrate that the optimal FP formats differs depending on the specific module that we are quantizing.\nC Inter-Channel Variance Visualization\nFigure 5 and 6 depict the output of different fullyconnected layers in BERT for the MNLI task, DeiTS for the ImageNet-1K task, and LLaMA-7B for the zero-shot reasoning task. The visualizations reveal a noticeable inter-channel variance presented in both language and vision transformers."
+        },
+        {
+            "heading": "D Efficient Matrix Multiplication",
+            "text": "Figure 7 displays a comprehensive list of all the granularity options that allow for efficient matrix multiplication. While per-token quantization theoretically provides greater precision in terms of quantization granularity, the accuracy gains achieved through this method are minimal and do not justify the additional computational overhead required. As a result, we have opted to use pertensor quantization when quantizing activations."
+        },
+        {
+            "heading": "E Learning Format and Maximum Value",
+            "text": "We compare the previous gradient-based method (Kuzmin et al., 2022) with the proposed search-based method for finding the optimal format and maximum value. On DeiT-S, the learnable method only achieves 74.38% accuracy for an 8-bit quantized model on ImageNet, in contrast, FPQ can attain an almost loss-less result of 79.88%. We analyze the gradients for the number of exponent bits e derived in (Kuzmin et al., 2022) and observe that each time the exponent bits change, the gradients experience exponential variations, leading to high instability. Based on this observation, we assert that employing a search-based method to determine the optimal formats is crucial in post-training quantization (PTQ)."
+        },
+        {
+            "heading": "F Reconstruction Choices",
+            "text": "The previous works on integer post-training quantization involves breaking down the target model into\nsub-modules and reconstructing them separately (Nagel et al., 2020; Li et al., 2021; Bai et al., 2022; Yuan et al., 2022). This addresses the problem of over-fitting, given that only a limited amount of unlabeled calibration data is available. In this study we find the layer-wise reconstruction and parallel quantization works best for floating-point PTQ:\nLayer Reconstruction: Recent research (Li et al., 2021; Bai et al., 2022) suggests increasing the reconstruction granularity from layer reconstruction (Nagel et al., 2020) to block reconstruction (Li et al., 2021) or even larger granularity (Lee et al., 2023). This is achieved by jointly optimizing all the linear layers or matrix multiplication components within each module to prevent the propagation of reconstruction errors among the layers. Despite this, we have observed that increasing the recon-\nstruction granularity does not improve the accuracy of FPQ baseline or sometimes even lead to worse results. Therefore, we choose layer reconstruction.\nParallel Quantization: Sequential quantization is the most commonly used approach (Wu et al., 2020; Nagel et al., 2020; Li et al., 2021) where modules are quantized consecutively based on their sequential order, and the input for the current calibrating module is generated using all the previously quantized modules. However, some recent works (Yuan et al., 2022; Bai et al., 2022) proposed a new parallel quantization framework. This framework uses the raw output of the full-precision modules as input and makes the calibration of each module independent from one another. In this work, we use parallel quantization, as it yields better results than its sequential counterparts."
+        }
+    ],
+    "title": "LLM-FP4: 4-Bit Floating-Point Quantized Transformers",
+    "year": 2023
+}

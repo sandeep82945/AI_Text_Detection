@@ -1,0 +1,925 @@
+{
+    "abstractText": "As one of the most exciting features of large language models (LLMs), in-context learning is a mixed blessing. While it allows users to fast-prototype a task solver with only a few training examples, the performance is generally sensitive to various configurations of the prompt such as the choice or order of the training examples. In this paper, we for the first time theoretically and empirically identify that such a paradox is mainly due to the label shift of the in-context model to the data distribution, in which LLMs shift the label marginal p(y) while having a good label conditional p(x|y). With this understanding, we can simply calibrate the in-context predictive distribution by adjusting the label marginal, which is estimated via Monte-Carlo sampling over the in-context model, i.e., generation of LLMs. We call our approach as generative calibration. We conduct exhaustive experiments with 12 text classification tasks and 12 LLMs scaling from 774M to 33B, generally find that the proposed method greatly and consistently outperforms the ICL as well as state-of-the-art calibration methods, by up to 27% absolute in macro-F1. Meanwhile, the proposed method is also stable under different prompt configurations. 1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Zhongtao Jiang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yuanzhe Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Cao Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Jun Zhao"
+        },
+        {
+            "affiliations": [],
+            "name": "Kang Liu"
+        }
+    ],
+    "id": "SP:21851967264d3788f45d1a5f6c2bbd11ae1edb9d",
+    "references": [
+        {
+            "authors": [
+                "David J Aldous",
+                "Illdar A Ibragimov",
+                "Jean Jacod",
+                "David J Aldous."
+            ],
+            "title": "Exchangeability and related topics",
+            "venue": "Springer.",
+            "year": 1985
+        },
+        {
+            "authors": [
+                "Shengnan An",
+                "Bo Zhou",
+                "Zeqi Lin",
+                "Qiang Fu",
+                "Bei Chen",
+                "Nanning Zheng",
+                "Weizhu Chen",
+                "Jian-Guang Lou."
+            ],
+            "title": "Skill-based few-shot selection for in-context learning",
+            "venue": "arXiv preprint arXiv:2305.14210.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kamyar Azizzadenesheli",
+                "Anqi Liu",
+                "Fanny Yang",
+                "Animashree Anandkumar."
+            ],
+            "title": "Regularized learning for domain adaptation under label shifts",
+            "venue": "arXiv preprint arXiv:1903.09734.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Samuel Weinbach."
+            ],
+            "title": "GPT-NeoX-20B: An opensource autoregressive language model",
+            "venue": "Proceedings of the ACL Workshop on Challenges & Perspectives in Creating Large Language Models.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sid Black",
+                "Leo Gao",
+                "Phil Wang",
+                "Connor Leahy",
+                "Stella Biderman."
+            ],
+            "title": "GPT-Neo: Large Scale Autoregressive Language Modeling with MeshTensorflow",
+            "venue": "If you use this software, please cite it using these metadata.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Samuel R Bowman",
+                "Gabor Angeli",
+                "Christopher Potts",
+                "Christopher D Manning."
+            ],
+            "title": "A large annotated corpus for learning natural language inference",
+            "venue": "arXiv preprint arXiv:1508.05326.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mateusz Buda",
+                "Atsuto Maki",
+                "Maciej A Mazurowski."
+            ],
+            "title": "A systematic study of the class imbalance problem in convolutional neural networks",
+            "venue": "Neural networks, 106:249\u2013259.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yanda Chen",
+                "Ruiqi Zhong",
+                "Sheng Zha",
+                "George Karypis",
+                "He He."
+            ],
+            "title": "Meta-learning via language model in-context tuning",
+            "venue": "arXiv preprint arXiv:2110.07814.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Julian Coda-Forno",
+                "Marcel Binz",
+                "Zeynep Akata",
+                "Matthew Botvinick",
+                "Jane X Wang",
+                "Eric Schulz."
+            ],
+            "title": "Meta-in-context learning in large language models",
+            "venue": "arXiv preprint arXiv:2305.12907.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ido Dagan",
+                "Oren Glickman",
+                "Bernardo Magnini."
+            ],
+            "title": "The pascal recognising textual entailment challenge",
+            "venue": "Machine Learning Challenges. Evaluating Predictive Uncertainty, Visual Object Classification, and Recognising Tectual Entailment: First",
+            "year": 2006
+        },
+        {
+            "authors": [
+                "Damai Dai",
+                "Yutao Sun",
+                "Li Dong",
+                "Yaru Hao",
+                "Zhifang Sui",
+                "Furu Wei."
+            ],
+            "title": "Why can gpt learn in-context? language models secretly perform gradient descent as meta optimizers",
+            "venue": "arXiv preprint arXiv:2212.10559.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Marie-Catherine De Marneffe",
+                "Mandy Simons",
+                "Judith Tonhauser."
+            ],
+            "title": "The commitmentbank: Investigating projection in naturally occurring discourse",
+            "venue": "proceedings of Sinn und Bedeutung, volume 23, pages 107\u2013124.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Llm",
+            "venue": "int8 (): 8-bit matrix multiplication for transformers at scale. arXiv preprint arXiv:2208.07339.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Charles Elkan."
+            ],
+            "title": "The foundations of cost-sensitive learning",
+            "venue": "International joint conference on artificial intelligence, volume 17, pages 973\u2013978. Lawrence Erlbaum Associates Ltd.",
+            "year": 2001
+        },
+        {
+            "authors": [
+                "Yu Fei",
+                "Yifan Hou",
+                "Zeming Chen",
+                "Antoine Bosselut."
+            ],
+            "title": "Mitigating label biases for in-context learning",
+            "venue": "arXiv preprint arXiv:2305.19148.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Adam Fisch",
+                "Danqi Chen."
+            ],
+            "title": "Making pre-trained language models better few-shot learners",
+            "venue": "arXiv preprint arXiv:2012.15723.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chi Han",
+                "Ziqi Wang",
+                "Han Zhao",
+                "Heng Ji."
+            ],
+            "title": "In-context learning of large language models explained as kernel regression",
+            "venue": "arXiv preprint arXiv:2305.12766.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhixiong Han",
+                "Yaru Hao",
+                "Li Dong",
+                "Yutao Sun",
+                "Furu Wei."
+            ],
+            "title": "Prototypical calibration for fewshot learning of language models",
+            "venue": "arXiv preprint arXiv:2205.10183.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ari Holtzman",
+                "Peter West",
+                "Vered Shwartz",
+                "Yejin Choi",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Surface form competition: Why the highest probability answer isn\u2019t always right",
+            "venue": "arXiv preprint arXiv:2104.08315.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Harold Hotelling."
+            ],
+            "title": "The generalization of Student\u2019s ratio",
+            "venue": "Springer.",
+            "year": 1992
+        },
+        {
+            "authors": [
+                "Minqing Hu",
+                "Bing Liu."
+            ],
+            "title": "Mining and summarizing customer reviews",
+            "venue": "Proceedings of the tenth ACM SIGKDD international conference on Knowledge discovery and data mining, pages 168\u2013177.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Dan Iter",
+                "Reid Pryzant",
+                "Ruochen Xu",
+                "Shuohang Wang",
+                "Yang Liu",
+                "Yichong Xu",
+                "Chenguang Zhu."
+            ],
+            "title": "In-context demonstration selection with cross entropy difference",
+            "venue": "arXiv preprint arXiv:2305.14726.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Junyeob Kim",
+                "Hyuhng Joon Kim",
+                "Hyunsoo Cho",
+                "Hwiyeol Jo",
+                "Sang-Woo Lee",
+                "Sang-goo Lee",
+                "Kang Min Yoo",
+                "Taeuk Kim."
+            ],
+            "title": "Ground-truth labels matter: A deeper look into input-label demonstrations",
+            "venue": "arXiv preprint arXiv:2205.12685.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Siwon Kim",
+                "Jihun Yi",
+                "Eunji Kim",
+                "Sungroh Yoon."
+            ],
+            "title": "Interpretation of nlp models through input marginalization",
+            "venue": "arXiv preprint arXiv:2010.13984.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Charles X Ling",
+                "Victor S Sheng."
+            ],
+            "title": "Costsensitive learning and the class imbalance problem",
+            "venue": "Encyclopedia of machine learning, 2011:231\u2013235.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Zachary Lipton",
+                "Yu-Xiang Wang",
+                "Alexander Smola."
+            ],
+            "title": "Detecting and correcting for label shift with black box predictors",
+            "venue": "International conference on machine learning, pages 3122\u20133130. PMLR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jiachang Liu",
+                "Dinghan Shen",
+                "Yizhe Zhang",
+                "Bill Dolan",
+                "Lawrence Carin",
+                "Weizhu Chen"
+            ],
+            "title": "What makes good in-context examples for gpt-3? arXiv preprint arXiv:2101.06804",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp."
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming few-shot prompt order sensitivity",
+            "venue": "arXiv preprint arXiv:2104.08786.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Qing Lyu",
+                "Shreya Havaldar",
+                "Adam Stein",
+                "Li Zhang",
+                "Delip Rao",
+                "Eric Wong",
+                "Marianna Apidianaki",
+                "Chris Callison-Burch."
+            ],
+            "title": "Faithful chain-ofthought reasoning",
+            "venue": "arXiv preprint arXiv:2301.13379.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Elliot Meyerson",
+                "Mark J Nelson",
+                "Herbie Bradley",
+                "Arash Moradi",
+                "Amy K Hoover",
+                "Joel Lehman."
+            ],
+            "title": "Language model crossover: Variation through fewshot prompting",
+            "venue": "arXiv preprint arXiv:2302.12170.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Noisy channel language model prompting for few-shot text classification",
+            "venue": "arXiv preprint arXiv:2108.04106.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Xinxi Lyu",
+                "Ari Holtzman",
+                "Mikel Artetxe",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Rethinking the role of demonstrations: What makes in-context learning work? arXiv preprint arXiv:2202.12837",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jane Pan",
+                "Tianyu Gao",
+                "Howard Chen",
+                "Danqi Chen."
+            ],
+            "title": "What in-context learning\" learns\" in-context: Disentangling task recognition and task learning",
+            "venue": "arXiv preprint arXiv:2305.09731.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bo Pang",
+                "Lillian Lee."
+            ],
+            "title": "A sentimental education: Sentiment analysis using subjectivity summarization based on minimum cuts",
+            "venue": "arXiv preprint cs/0409058.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Bo Pang",
+                "Lillian Lee."
+            ],
+            "title": "Seeing stars: Exploiting class relationships for sentiment categorization with respect to rating scales",
+            "venue": "arXiv preprint cs/0506075.",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Bo Peng",
+                "Eric Alcaide",
+                "Quentin Anthony",
+                "Alon Albalak",
+                "Samuel Arcadinho",
+                "Huanqi Cao",
+                "Xin Cheng",
+                "Michael Chung",
+                "Matteo Grella",
+                "Kranthi Kiran GV"
+            ],
+            "title": "Rwkv: Reinventing rnns for the transformer era",
+            "venue": "arXiv preprint arXiv:2305.13048",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ethan Perez",
+                "Douwe Kiela",
+                "Kyunghyun Cho."
+            ],
+            "title": "True few-shot learning with language models",
+            "venue": "Advances in neural information processing systems, 34:11054\u201311070.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jonathan K Pritchard",
+                "Matthew Stephens",
+                "Peter Donnelly."
+            ],
+            "title": "Inference of population structure using multilocus genotype data",
+            "venue": "Genetics, 155(2):945\u2013959.",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yasaman Razeghi",
+                "Robert L Logan IV",
+                "Matt Gardner",
+                "Sameer Singh."
+            ],
+            "title": "Impact of pretraining term frequencies on few-shot reasoning",
+            "venue": "arXiv preprint arXiv:2202.07206.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "Sentence-bert: Sentence embeddings using siamese bert-networks",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing. Association for Computational Linguistics.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ohad Rubin",
+                "Jonathan Herzig",
+                "Jonathan Berant."
+            ],
+            "title": "Learning to retrieve prompts for in-context learning",
+            "venue": "arXiv preprint arXiv:2112.08633.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Marco Saerens",
+                "Patrice Latinne",
+                "Christine Decaestecker."
+            ],
+            "title": "Adjusting the outputs of a classifier to new a priori probabilities: a simple procedure",
+            "venue": "Neural computation, 14(1):21\u201341.",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Bernhard Sch\u00f6lkopf",
+                "Dominik Janzing",
+                "Jonas Peters",
+                "Eleni Sgouritsa",
+                "Kun Zhang",
+                "Joris Mooij."
+            ],
+            "title": "On causal and anticausal learning",
+            "venue": "arXiv preprint arXiv:1206.6471.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Lorraine Schwartz."
+            ],
+            "title": "On bayes procedures",
+            "venue": "Zeitschrift f\u00fcr Wahrscheinlichkeitstheorie und verwandte Gebiete, 4(1):10\u201326.",
+            "year": 1965
+        },
+        {
+            "authors": [
+                "Chenglei Si",
+                "Dan Friedman",
+                "Nitish Joshi",
+                "Shi Feng",
+                "Danqi Chen",
+                "He He."
+            ],
+            "title": "Measuring inductive biases of in-context learning with underspecified demonstrations",
+            "venue": "arXiv preprint arXiv:2305.13299.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Richard Socher",
+                "Alex Perelygin",
+                "Jean Wu",
+                "Jason Chuang",
+                "Christopher D Manning",
+                "Andrew Y Ng",
+                "Christopher Potts."
+            ],
+            "title": "Recursive deep models for semantic compositionality over a sentiment treebank",
+            "venue": "Proceedings of the 2013 conference on empiri-",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Hongjin Su",
+                "Jungo Kasai",
+                "Chen Henry Wu",
+                "Weijia Shi",
+                "Tianlu Wang",
+                "Jiayi Xin",
+                "Rui Zhang",
+                "Mari Ostendorf",
+                "Luke Zettlemoyer",
+                "Noah A Smith"
+            ],
+            "title": "Selective annotation makes language models better fewshot learners. arXiv preprint arXiv:2209.01975",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Johannes von Oswald",
+                "Eyvind Niklasson",
+                "Ettore Randazzo",
+                "Jo\u00e3o Sacramento",
+                "Alexander Mordvintsev",
+                "Andrey Zhmoginov",
+                "Max Vladymyrov."
+            ],
+            "title": "Transformers learn in-context by gradient descent",
+            "venue": "arXiv preprint arXiv:2212.07677.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ellen M Voorhees",
+                "Dawn M Tice."
+            ],
+            "title": "Building a question answering test collection",
+            "venue": "Proceedings of the 23rd annual international ACM SIGIR conference on Research and development in information retrieval, pages 200\u2013207.",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Ben Wang."
+            ],
+            "title": "Mesh-Transformer-JAX: ModelParallel Implementation of Transformer Language Model with JAX",
+            "venue": "https://github.com/ kingoflolz/mesh-transformer-jax.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ben Wang",
+                "Aran Komatsuzaki."
+            ],
+            "title": "GPT-J6B: A 6 Billion Parameter Autoregressive Language Model",
+            "venue": "https://github.com/kingoflolz/ mesh-transformer-jax.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xinyi Wang",
+                "Wanrong Zhu",
+                "William Yang Wang."
+            ],
+            "title": "Large language models are implicitly topic models: Explaining and finding good demonstrations for in-context learning",
+            "venue": "arXiv preprint arXiv:2301.11916.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc Le",
+                "Ed Chi",
+                "Denny Zhou."
+            ],
+            "title": "Self-consistency improves chain of thought reasoning in language models",
+            "venue": "arXiv preprint arXiv:2203.11171.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Yi Tay",
+                "Rishi Bommasani",
+                "Colin Raffel",
+                "Barret Zoph",
+                "Sebastian Borgeaud",
+                "Dani Yogatama",
+                "Maarten Bosma",
+                "Denny Zhou",
+                "Donald Metzler"
+            ],
+            "title": "Emergent abilities of large language models. arXiv preprint arXiv:2206.07682",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "arXiv preprint arXiv:2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jerry Wei",
+                "Jason Wei",
+                "Yi Tay",
+                "Dustin Tran",
+                "Albert Webson",
+                "Yifeng Lu",
+                "Xinyun Chen",
+                "Hanxiao Liu",
+                "Da Huang",
+                "Denny Zhou"
+            ],
+            "title": "Larger language models do in-context learning differently. arXiv preprint arXiv:2303.03846",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhiyong Wu",
+                "Yaoxiang Wang",
+                "Jiacheng Ye",
+                "Lingpeng Kong."
+            ],
+            "title": "Self-adaptive in-context learning",
+            "venue": "arXiv preprint arXiv:2212.10375.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sang Michael Xie",
+                "Aditi Raghunathan",
+                "Percy Liang",
+                "Tengyu Ma."
+            ],
+            "title": "An explanation of in-context learning as implicit bayesian inference",
+            "venue": "arXiv preprint arXiv:2111.02080.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sohee Yang",
+                "Jonghyeon Kim",
+                "Joel Jang",
+                "Seonghyeon Ye",
+                "Hyunji Lee",
+                "Minjoon Seo."
+            ],
+            "title": "Improving probability-based prompt selection through unified evaluation and analysis",
+            "venue": "arXiv preprint arXiv:2305.14877.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Seonghyeon Ye",
+                "Hyeonbin Hwang",
+                "Sohee Yang",
+                "Hyeongu Yun",
+                "Yireun Kim",
+                "Minjoon Seo."
+            ],
+            "title": "In-context instruction learning",
+            "venue": "arXiv preprint arXiv:2302.14691.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models. arXiv preprint arXiv:2205.01068",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiang Zhang",
+                "Junbo Zhao",
+                "Yann LeCun."
+            ],
+            "title": "Character-level convolutional networks for text classification",
+            "venue": "Advances in neural information processing systems, 28.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Zihao Zhao",
+                "Eric Wallace",
+                "Shi Feng",
+                "Dan Klein",
+                "Sameer Singh."
+            ],
+            "title": "Calibrate before use: Improving few-shot performance of language models",
+            "venue": "International Conference on Machine Learning, pages 12697\u201312706. PMLR.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhi-Hua Zhou."
+            ],
+            "title": "Machine learning",
+            "venue": "Springer Nature.",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "The learning paradigm has revolutionized in the era of large language models (LLMs), in which one of the most exciting is in-context learning (ICL) (Brown et al., 2020). Compared to regular supervised learning, LLMs can learn implicitly by prompting a few training examples as demonstrations, i.e., in context. This paradigm allows users including amateurs to fast-prototype a task solver with much less annotated data, while sometimes also gaining remarkable performances.\nThere are plenty of studies empirically analyzing ICL (Zhao et al., 2021; Lu et al., 2021; Min\n1Code implementation is available at https://github. com/changmenseng/generative_calibration.\net al., 2022; Kim et al., 2022; Wei et al., 2023). Notably, ICL is found to be pathogenically sensitive to the prompt configuration, e.g., the template, choice, and even the order permutation of the training examples can cause the performance to vary from nearly chance to state-of-the-art (Gao et al., 2020; Zhao et al., 2021; Lu et al., 2021). This instability motivates lots of efforts on searching for a better prompt in terms of better few-shot training examples (Rubin et al., 2021; Liu et al., 2021; Su et al., 2022; Wu et al., 2022; Wang et al., 2023), better order permutation of those examples (Lu et al., 2021; Wu et al., 2022), and slot position in the template (Holtzman et al., 2021; Min et al., 2021). Another promising direction is calibration (Zhao et al., 2021; Han et al., 2022; Fei et al., 2023) that adjusts the ICL predictive distribution via an estimated bias. Compared with prompt optimization methods, such a stream is usually much more lightweight and gains substantial and consistency improvement, while also reducing the instability. However, many of those ideas are based on heuristic intuitions, and there are few principled investigations characterizing how the prompt affects the predictive distribution.\nThis paper fills this gap. In specific, we focus on the text classification task. We study the in-context model p(x, y), i.e., the joint distribution of the input x and label y given a prompt consisting of a few training examples, while the true data distribution is denoted as q(x, y). Specifically, we identify that the in-context model p(x, y) poses label shift (Saerens et al., 2002) to the data distribution q(x, y) both theoretically and empirically. Our theoretical analysis (Section 3.1) is based on the Bayesian interpretation of ICL (Xie et al., 2021; Wang et al., 2023), showing that the in-context model p(x, y) is not ensured to be a valid estimate of the true data distribution q(x, y), due to the prior preference of LLMs and the limited amount of training examples. Next, we empirically find that the in-context label\nconditional p(x|y) is a good approximation of the data label conditional q(x|y), while the in-context label marginal p(y) generally deviates from the true one q(y), which provides persuasive evidence of label shift in the in-context model (Section 3.2). Then, with this understanding, we can calibrate the in-context classifier p(y|x) by simply adjusting the label marginal p(y), which is naturally obtained by marginalizing out the input x and can be effectively estimated via Monte-Carlo sampling, i.e., generating new instances from the in-context model. We call our approach generative calibration (GC).\nActually, most previous state-of-the-art calibration approaches (Zhao et al., 2021; Han et al., 2022; Fei et al., 2023) implicitly assume that the ICL predictive distribution has a shift on label marginal. However, none of them validate the soundness of that assumption, while we for the first time verify this systematically. What\u2019s more, their estimates of the label marginal are too heuristic to be solid, while our Monte-Carlo estimate is an unbiased one to the in-context label marginal p(y).\nWe conduct exhaustive experiments on 12 text classification tasks and 12 LLMs scaling from 774M to 33B. The results show that the proposed GC greatly and consistently improves the performance of ICL (by up to 27% absolute in macro-F1) and outperforms previous state-of-the-art calibration methods (by up to 9% absolute in macro-F1) for all LLM scales. Meanwhile, GC is also stable towards changes of the choice and order of training examples in the prompt, and exceeds or be competitive to prompt optimization methods, even though some of which are not in the true few-shot learning setting (Perez et al., 2021). Overall, GC is a lightweight and effective approach making LLMs better few-shot learners and saves the effort of cumbersome prompt engineering."
+        },
+        {
+            "heading": "2 Background",
+            "text": "In the ICL paradigm, we have a few training examples Dt = {ei}Ki=1, where each one is independently and identically sampled from the data distribution, which we denote as q(e). Prompting a language model LM with those examples, the continuation distribution is a generative model:\np(e|D\u03c0t ) = pLM(T (e)|D(D\u03c0t )) D(D\u03c0t ) = \u2295Ki=1T (e\u03c0(i))\n(1)\nwhere \u03c0 represents a specific order permutation, \u2295 denotes the text concatenation operation, T (\u00b7) uses\na template to format the example to be a demonstration. We call this distribution the in-context model and use p(e) as its shorthand: p(e) := p(e|D\u03c0t ).\nIn this work, ICL is utilized for classification tasks. Then, each training example ei is a tuple: ei = (xi, yi), where x \u2208 X is the input sequence and y \u2208 Y is its corresponding label. In this case, the generative model factorizes as:\np(x, y) = p(x)p(y|x) = pLM (T (x)|D(D\u03c0t )) pLM (T (y)|D(D\u03c0t )\u2295 T (x)) (2) In most cases, we only use the classifier p(y|x) to predict the label of the given input sequence x. By this intuitive construction, the classifier performs surprisingly well on many NLP tasks, sometimes even achieving state-of-the-art."
+        },
+        {
+            "heading": "3 Distribution Shift of In-context Model",
+            "text": "In this section, we provide both theoretical and empirical evidence showing that the in-context model has a distribution shift on the label."
+        },
+        {
+            "heading": "3.1 A Bayesian View",
+            "text": "It is shown that the in-context model would imitate the prompting examples to generate similar sequences (Meyerson et al., 2023). One principled and popular explanation is that such a model is an approximation of the posterior predictive distribution in Bayesian statistics (Xie et al., 2021; Wang et al., 2023):\np(x, y|D\u03c0t ) \u2248 \u222b p(\u03b8|Dt)p(x, y|\u03b8)d\u03b8\np(\u03b8|Dt) = p(\u03b8) \u220fK i=1 p(xi, yi|\u03b8) p(Dt)\n(3)\nwhere \u03b8 \u2208 \u0398 is a latent parameter controlling the \u201ctopic\u201d of the sequence like LDA (Pritchard et al., 2000) topic model2. p(\u03b8|Dt) is the posterior given the training examples, which softly selects the topic. Also note that this identity approximately holds (\u2248), since Bayesian approaches consider all the examples to be exchangeable3, while clearly, LLMs have order preference. We assume that LLMs have\n2The topic could be viewed as the task. 3Exchangeability means that the joint distribution of a sequence e1:K is invariant to any order permutations p(x1:K) = p(x\u03c0(1):\u03c0(K)). According to de Finetti\u2019s theorem (Aldous et al., 1985), if a random sequence is exchangeable, it is then equivalent to a mixture model that each sample is conditional identically independent given a latent parameter, which forms the null hypothesis of Bayesian inference.\na topic supporting the data distribution of interest, i.e., there exists \u03b8\u22c6 \u2208 \u0398 such that p(\u03b8\u22c6) > 0 and p(x, y|\u03b8\u22c6) = q(x, y). Ideally, if the posterior recognizes the true topic \u03b8\u22c6 of the training examples without uncertainty, i.e., p(\u03b8|Dt) = \u03b4(\u03b8\u2212 \u03b8\u22c6), then the in-context model p(x, y) approaches the true data distribution q(x, y) exactly. According to Schwartz\u2019s theorem for posterior consistency (Schwartz, 1965), this ideal case can be asymptotically realized as the number of training examples K goes to infinity, which is impossible for LLMs4.\nWhen only a few training examples are acceptable to LLMs, there are at least two negative consequences. On one hand, as shown in Equation (3), the prior preference of LLMs, i.e., topic prior p(\u03b8), would dominate the posterior p(\u03b8|Dt). Empirical evidence include common token bias (Zhao et al., 2021; Razeghi et al., 2022) and prediction insensitivity when the training labels are corrupted when K is small (Min et al., 2022; Wei et al., 2023; Pan et al., 2023). On the other hand, it is not enough to express the data distribution with just a few training examples. To see this, consider a movie review sentiment classification task. Suppose there exists a topic \u03b8\u2032 such that p(x, y|\u03b8\u2032) only generates positive reviews5. When we happen to have only a few positive samples in hand, the population of the posterior p(\u03b8|Dt) is easy to fall into regions close to \u03b8\u2032 instead of the true topic \u03b8\u22c6, which would shift the label marginal p(x|y) so that the probability of positive label is risen to a level far beyond the true one. While being widely-observed in previous works in terms of majority bias (Zhao et al., 2021) and underspecification (Si et al., 2023), this phenomenon is formally termed as label shift (Sch\u00f6lkopf et al., 2012), which proposes that 1) the model and data share the same label conditional: p(x|y) = q(x|y), and 2) differ in the label marginal: p(y) \u0338= q(y).\nBesides this theoretical analysis, in what follows, we empirically validate that label shift exists in incontext models."
+        },
+        {
+            "heading": "3.2 Label Shift Empirical Validation",
+            "text": "By assuming to be accessible to a labeled validation set6, we now empirically verify two points\n4Though there may also exists other conditions for a good posterior estimation, e.g., high-quality training examples, we just can\u2019t ensure them to happen in the few-shot scenario.\n5It is reasonable to believe that \u03b8\u2032 has support in the topic prior such that p(\u03b8\u2032) > 0, since there are contiguous positive reviews in the pretraining corpus.\n6Validation set violates the true few-shot learning setting only when it\u2019s used for model development or selection. It is\nof label shift: p(x|y) = q(x|y) and p(y) \u0338= q(y). While the second point is straightforward by simply comparing the empirical label marginals, the first one poses a challenge given that we are agnostic to the true model q(x, y) but only some samples from it (i.e., the validation set). As a surrogate, we don\u2019t seek to verify p(x|y) approaches q(x|y) exactly. We shall show that p(x|y) performs very well in ranking the examples, illustrating that it is a good approximation of q(x|y). Then, our goal is to verify: 1) in-context label conditional p(x|y) is good to q(x|y) and 2) in-context label marginal p(y) is different from the data label marginal q(y).\nOur investigation is on SST2 dataset (Socher et al., 2013) using GPT2-XL (1.5B) (Radford et al., 2019), GPT-NEO (2.7B) (Black et al., 2021) and GPT-J (6B) (Wang, 2021; Wang and Komatsuzaki, 2021). For simplicity, we only display results of GPT2-XL (1.5B) and left others in Appendix E."
+        },
+        {
+            "heading": "3.2.1 In-context Label Conditional is Good",
+            "text": "Without the label marginal p(y), the label conditional p(x|y) alone can\u2019t tell if the input x belongs to the class y. However, it can tell which of the two samples x and x\u2032 is more likely to belong to y instead of other classes. In specific, let\u2019s first consider a binary classification task in which Y = {N,P}, where we denote N and P as negative and positive, respectively. We score each input x as the ratio of label conditionals:\ns(x) := p(x|P ) p(x|N) = p(N)p(P |x) p(P )p(N |x) \u221d p(P |x) p(N |x) (4)\nWhat does this score mean? Since the score is proportional to the odds: the ratio of the probability that the in-context recognition model p(y|x) predicts positive to the probability that it doesn\u2019t, it measures how much more confidence of the positive prediction than the negative prediction. Given this score, we can obtain a rank rs of the entire validation set, where examples of the higher ranking are more likely to be positive. The rank quality can be justified by the receiver operating characteristic curve (ROC) and the area under it AUROC7. AUROC formally stands for the empirical probability that a random positive sample is ranked above a negative sample (Zhou, 2021). Concretely, denote the validation set Dv = DPv \u222a DNv , where the superscript represents the subset that contains all the\nhard to analyze the model if we don\u2019t have a validation set for grounding results.\n7In multiple-class case, we use macro one-to-one AUROC, which is abbreviated as macro-AUROC for simplicity.\nexamples in the corresponding label, AUROC is:\n\u2211 xP\u2208DPv \u2211 xN\u2208DNv 1(rs(x P ) > rs(x N ))\n|DPv ||DNv | (5)\nwhere rs(x) is the rank of x. Now, if a model is perfect, i.e., p(x|y) = q(x|y), it will place all the positive examples above the negative examples, where AUROC reaches its maximum 1. Therefore AUROC somehow measures the closeness between p(x|y) and q(x|y).\nSince the rank is invariant to the x-independent term, e.g., p(P )/p(N) in Equation (4), we can use the odds of the classification distribution p(y|x) to compute AUROC, while this metric is actually evaluating p(x|y). We evaluate the 4-shot ICL performance with prompts having different class balances and orders on SST2, where each prompt configuration is evaluated in three random runs. The results in F1 and AUROC of GPT2-XL (1.5B) are shown in Figure 1(a), where the x-axis represents different prompt configurations. For example, \u201cPNPP\u201d indicates three positive examples and one negative example ordered in the second place in the prompt.\nWe can obtain two findings: 1) On average, ICL achieves very high AUROC values that don\u2019t match the F1 across prompt configurations: the average AUROC performance typically exceeds 0.95, while the average F1 performance hardly reaches 0.8. 2) In contrast to the sensitivity of F1, AUROC is stable to the prompt changes with low variances. These findings provide strong evidence that p(x|y) is a stable good approximation of q(x|y) no matter of prompt configurations, roughly establishing p(x|y) \u2248 q(x|y)."
+        },
+        {
+            "heading": "3.2.2 In-context Label Marginal is Different",
+            "text": "The second point, i.e., p(y) \u0338= q(y) is straightforward to verify by comparing the empirical label marginals of the in-context model and data. First, we need to estimate the in-context label marginal, which is the marginalization of the joint distribution:\np(y) = \u2211 x\u2208X p(x)p(y|x) (6)\nThe exact marginalization is intractable since we can\u2019t enumerate all the sequences in the input space X . Therefore, we apply Monte-Carlo sampling to obtain an unbiased estimate:\np(y) \u2243 p\u0302(y)\n= 1\nL L\u2211 l=1 pLM ( T (y)|D(D\u03c0t )\u2295 T (xl) ) (7) where xl is a sample from pLM (T (x)|D(D\u03c0t )), i.e., a generated sequence of LLMs prompted with training examples in Dt. The whole process is shown in Figure 2. In this paper, we set L = 100, which is enough for a stable estimation (Details are shown in Appendix J). As for the data label marginal q(y), simply counting the number of different labels in the validation set and then normalizing them forms a maximized likelihood estimate. We plot the estimated in-context model and data marginal probability of the positive label p\u0302(y = P ) and q\u0302(y = P ) in Figure 1(b). We can see that the in-context label marginal deviates from the data label marginal in most cases. Concretely, the deviation extent positively correlated with the majority label, which is in expectation as discussed in Section 3.1. Also, GPT2-XL (1.5B) has much prior\npreferences on the positive label, where except the case when all the training examples are negative, i.e., \u201cNNNN\u201d, the marginal probability of the label positive exceeds 0.5 in other cases.\nIn short summary, in-context models are mainly biased by shifting the label marginal, which is generally implicitly assumed in previous works (Zhao et al., 2021; Han et al., 2022; Fei et al., 2023). However, to the best of our knowledge, we are the first to verify this systematically."
+        },
+        {
+            "heading": "4 Generative Calibration",
+            "text": "With the understanding in the previous section, if we accept that p(x|y) = q(x|y), the solution is quite straightforward, that is, adjusting the label marginal to the desired one yields the true label predictive distribution:\nq(y|x) = q(y)q(x|y) q(x) \u221d q(y) p(y) p(y|x) (8)\nwhere the model label marginal p(y) is estimated via Equation (7). The data label marginal q(y) is hard to estimate since we only have a few training examples in our setting. Previous works (Zhao et al., 2021; Min et al., 2021; Han et al., 2022; Fei et al., 2023) typically assume q(y) to be uniform, yielding the following classifier:\nq\u0303(y|x) \u221d p(y|x) p\u0303(y)\n(9)\nWe follow this convention and leave accurate estimation of data label marginal q(y) in future works8.\n8Some methods to estimate the data label marginal include BBSE (Lipton et al., 2018; Azizzadenesheli et al., 2019) or\nSince our method involves multiple generations (for estimating p(y)), we denote it as generative calibration (GC). GC could be also explained via cost-sensitive learning theory (Elkan, 2001; Ling and Sheng, 2008), where the label marginal is one of the most widely-used costs (Buda et al., 2018).\nAlthough previous state-of-the-art calibration methods (Zhao et al., 2021; Han et al., 2022; Fei et al., 2023) share the same form as ours in Equation (9), in contrast to our principled unbiased estimate, their estimates are too heuristic to be solid. For example, contextual calibration (Zhao et al., 2021) estimates the label marginal via heuristically constructed seemingly context-free texts such as \u201cN/A\u201d: p\u0302(y) = p(y|\u201cN/A\u201d). However, these texts are never verified to be context-free as claimed, because LLMs might have a preference bias on them. Also, LLMs barely see these texts in the pretraining corpus, which would pose an out-of-distribution (OOD) (Kim et al., 2020) problem."
+        },
+        {
+            "heading": "5 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Setups",
+            "text": "Datasets We use 12 text classification tasks in our experiments: SST2 and SST5 (Socher et al., 2013), CR (Hu and Liu, 2004), MR (Pang and Lee, 2005), SUBJ (Pang and Lee, 2004), AGNews (Zhang\nEM algorithm in Saerens et al. (2002). Both methods involve estimating expected statistics of p(x, y), which is done by generations similar to estimating p(y). However, we find that their estimates are extremely unstable in our case, causing severe performance drops even compared with vanilla ICL.\net al., 2015), DBPedia (Zhang et al., 2015), TREC (Voorhees and Tice, 2000), CB (De Marneffe et al., 2019), RTE (Dagan et al., 2006), QQP (DataCanary et al., 2017) and SNLI (Bowman et al., 2015). For datasets whose testing set size is greater than 2000, we sub-sample 2000 examples for evaluation. The prompt template and example generations of each dataset are shown in Appendix A and B, respectively.\nLanguage Models We investigate 12 LLMs in a wide range of scales, including Transformer-based models GPT2-Large (774M), GPT2-XL (1.5B) (Radford et al., 2019), GPT-NEO (2.7B) (Black et al., 2021), GPT-J (6B) (Wang, 2021; Wang and Komatsuzaki, 2021), GPTNEOX (20B) (Andonian et al., 2021; Black et al., 2022), OPT (13B and 30B) (Zhang et al., 2022), LLaMA (13B and 33B) (Touvron et al., 2023) and recently proposed RNN-based models RWKV (3B, 7B, and 14B) (Peng et al., 2023).\nCompared Methods Besides vanilla ICL, we include the following stateof-the-art ICL calibration methods for comparison: 1) Noisy channel (NC) (Min et al., 2021) changes the slot position of the input and output in the template, and then uses the label likelihood p(x|y) = pLM(T (x)|D\u22121(D\u03c0t ),T (y)) for prediction, where D\u22121(D\u03c0t ) denotes the concatenation of flipped demonstrations. Since p(x|y) \u221d p(x|y)/p(y), this method actually has the same form as ours in Equation (9), so we categorize it as a calibration method. 2) Contextual calibration (CC) (Zhao et al., 2021) estimates the label marginal via context-free texts. 3) Domain-context calibration (DC) (Fei et al., 2023) proposes a further requirement for the context-free texts: they must be also context-free in the task domain. They construct such domain context-free texts by randomly sampling and concatenating words from the task dataset. 4) Prototypical calibration (PC) (Han et al., 2022) learns a Gaussian mixture model (GMM) from the output probability vectors. They then consider each cluster corresponds uniquely to a label, where the learned cluster weights are the estimated label marginal. For a fair comparison, we learn the GMM on the set of generative sequences as the same as GC.\nWe consider 2, 4, and 8-shot true few-shot learning settings. For evaluating each method, we ran-\ndomly sample the original training set of the dataset to construct the training examples. LLMs scaling less than 30B are evaluated in 5 runs, while those larger than 30B are evaluated in 2 runs using different random seeds. This finally yields 1944 runs for each method, which the results should be solid. The performance is measured by macro-F1. Implementation details are shown in Appendix C. We also present time complexity analysis in Appendix D."
+        },
+        {
+            "heading": "5.2 Main Results",
+            "text": "We plot the average 4-shot performance across different datasets in different runs in Figure 3. For the 2 and 8-shot results please refer to Appendix F. We find that our proposed GC is effective in the following aspects: 1) The proposed GC significantly improves the ICL performance, by up to 27% absolute (2-shot case of GPT2-Large (774M)). The improvement is consistency for LLMs in all parameter scales. Notably, our approach enables small models to outperform larger models\u2019 vanilla ICL performances. For example, GC lifts GPT2-XL (1.5B) to 0.64 in macroF1, while OPT\u2019s (30B) ICL performance is only 0.57, despite being over 20 times larger. Also, note that the improvement is more obvious for smaller models, which is useful in the limited resources scenario. 2) The proposed GC outperforms all the calibration baselines, by up to 7% absolute (4-shot case of LLaMA (33B)), suggesting that our method is not only theoretically guaranteed to be superior (being an unbiased estimate of p(y)), but also empirically verified to be better."
+        },
+        {
+            "heading": "6 Analysis",
+            "text": "Following the finding that GC generally outperforms ICL and other calibration methods, we conduct further analysis in this section."
+        },
+        {
+            "heading": "6.1 Robustness",
+            "text": "Since we\u2019ve shown in Section 3 that p(x|y) is a good and stable approximation of q(x|y) no matter of the prompt configurations, if the estimated p(y) is solid, then GC is expected to be also robust towards changes of the prompt. This is verified empirically, as shown in Figure 4 that depicts the 4-shot performance distribution of 10 randomly sampled training sets and 10 random order arrangements of one particular training set for GPT2-XL\n(1.5B) (Results of GPT-NEO (2.7B), GPT-J (6B), and LLaMA (13B) can be found in Appendix H). It is obvious that the proposed GC greatly and consistently reduces the performance variance for almost all datasets. For instance, GC reduces the choice standard deviation from 0.25 to 0.03 for GPT2-XL (1.5B) on AGNews, while CC only achieves 0.10.\nTo further show that GC does address the majority and recency bias (Zhao et al., 2021) introduced by the choice and order of training examples, we conduct 4-shot experiments with prompts that have different class balances and orders in SST2 dataset, where each prompt configuration is evaluated in three random runs. The results of GPT-XL (1.5B) are shown in Figure 5. According to Zhao et al. (2021) and our analysis in Section 3.2, LLMs tend to predict labels that appear more frequently in the prompt and are closer to the testing input, which\nis damageable to the performance. For example, if all the training examples are positive, i.e., \u201cPPPP\u201d in Figure 5, LLMs would pathogenically predict all the testing inputs as positive, leading to an extremely low F1 performance. As shown, our pro-\nposed GC greatly and consistently alleviates this issue across all the prompt configurations, where the increase is up to 54%."
+        },
+        {
+            "heading": "6.2 Comparison with Prompt Optimization Methods",
+            "text": "In addition to calibration methods, we also compare our approach against prompt optimization methods for order and choice of training examples, where 4-shot results for all LLMs are shown in Figure 6 (2 and 8-shot results are shown in Appendix I)."
+        },
+        {
+            "heading": "6.2.1 Order",
+            "text": "We compare GC with LocalE and GlobalE (Lu et al., 2021), which aim to find the best order permutation of the training examples in the true fewshot setting based on heuristic scores. We only reproduce the 2 and 4-shot results because these methods would rate every order permutation, where the complexity is O(K!) and larger shot is computational prohibitive. As shown in Figure 6, our proposed GC exceeds both order optimization methods by considerable margins, while being much more efficient with complexity O(L)."
+        },
+        {
+            "heading": "6.2.2 Choice",
+            "text": "We compare GC with KATE (Liu et al., 2021), which for each testing example, it retrieves the K-th most similar training examples in the whole training set to construct the prompt. Note that this method violates the true-few shot learning setting by accessing a large training set containing much more examples than that of ours9. We include two implementations that use BM25 and RobertaLarge fine-tuned on text similarity and natural language inference tasks (Reimers and Gurevych, 2019) for retrieval, denoted as KATE-BM25 and KATE-RoBERTa. As shown in Figure 6, though with only a few training examples, the proposed GC is usually competitive with choice optimization methods. For example, 4-shot performance gaps between GC and KATE-BM25 don\u2019t exceed 0.03 for GPT2-XL (1.5B), OPT (13B), OPT (30B), LLaMA (13B) and LLaMA (33B).\nIn general, GC outperforms or is competitive with strong prompt optimization methods, thus saving the effort of cumbersome prompt engineering.\n9For example, SNLI has 56k training examples in the training set, which is over 10k times more than our case."
+        },
+        {
+            "heading": "7 Related Works",
+            "text": "In-context learning, or few-shot prompting (Brown et al., 2020) has become one of the most curious emergent abilities (Wei et al., 2022a) of LLMs, which benefits in fast-prototyping and much less requirement of annotated data. ICL also forms the basis of its further extensions, including chain of thoughts (CoT) (Wei et al., 2022b; Wang et al., 2022; Lyu et al., 2023), in-context instruction learning (ICIL) (Ye et al., 2023), meta-ICL (Coda-Forno et al., 2023) and so on.\nThere are many works empirically analyzing in-context learning, which generally find that incontext learning is pathogenically unstable towards the template, choice, and order of the training examples (Gao et al., 2020; Zhao et al., 2021; Lu et al., 2021). This motivates numerous works trying to find a better prompt in terms of template (Min et al., 2021), choice (Rubin et al., 2021; Su et al., 2022; Wang et al., 2023; Iter et al., 2023; An et al., 2023), and order of the training examples (Lu et al., 2021; Wu et al., 2022). However, most of them either violate the true few-shot learning (Perez et al., 2021), or are complicated learning-based (Wang et al., 2023), or both (Rubin et al., 2021), which deviates from the original intention of ICL. On the other hand, except for a few works that fine-tune LLMs to learn in-context (Chen et al., 2021; CodaForno et al., 2023), most LLMs are pretrained on a large amount of raw text. So it is not reasonable to believe that LLMs faithfully express the label distribution of a given task. To address this, other lines of work try to calibrate the in-context classifier by estimating and then countering this bias introduced from the prompt (Zhao et al., 2021; Yang et al., 2023; Han et al., 2022). These methods are much more lightweight compared to prompt optimization methods but fail in their heuristic bias estimations.\nTheoretical understanding is also attractive to researchers. For example, Dai et al. (2022); von Oswald et al. (2022) find surprising similarities between ICL and gradient descent formally and empirically, establishing explanations via implicit gradient descent. Han et al. (2023) provide an explanation of ICL under the view of kernel regression. Xie et al. (2021) demonstrate ICL as implicit Bayesian inference, where it occurs when the LLM infers a shared latent topic of demonstrations in the prompt. While their theory is appealing, they assume the pre-trained data distribution as a mixture of hidden Markov models (HMMs), and con-\nduct experiments on a small-scale synthetic dataset, which is far different from the real case."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "In this work, we for the first time theoretically and empirically identify that the in-context model mainly poses a label shift to the data distribution. We then propose generative calibration, a lightweight solution to mitigate this distribution shift. Exhaustive experimental results on 12 tasks and 12 LLMs demonstrate the effectiveness of our approach, in its improvement and stability."
+        },
+        {
+            "heading": "Acknowledgement",
+            "text": "This work was supported by the National Key R&D Program of China (2022ZD0160503) and the National Natural Science Foundation of China (No.62276264). This research was also supported by Meituan.\nLimitations\nThe main limitation of this work is to assume the data label marginal q(y) to be uniform. Though to the best of our knowledge there is no work researching this problem and previous works also follow this assumption, this assumption is not true in general realistic cases containing much label imbalance scenarios. However, estimating q(y) in a true few-shot learning setting is challenging since we only have a few training samples and an unlabeled testing set in hand. We\u2019ve actually experimented with BBSE (Lipton et al., 2018) and EM algorithm in (Saerens et al., 2002), which naturally fit our idea because they require samples from the model distribution. However, the estimate is just plausible in a few runs accidentally, in general we fail to obtain consistent solid estimates, especially for the dataset which the number of labels is large such as DBPedia. Although this limitation is important, it\ndoesn\u2019t affect main claims of this paper. We leave this point for future works.\nThis work is also limited by using AUROC to measure the closeness of p(x|y) and q(x|y). Note that AUROC is high is just a necessary condition to say p(x|y) and q(x|y) are close, but not the sufficient condition. Therefore, when AURCO is high, we can\u2019t rigorously say the p(x|y) and q(x|y) are close. To the matter of fact, for our method to be effective, we don\u2019t need the model label conditional p(x|y) to be close to the true one, we only need the in-context model to perform well in inter-label ranking: it can put most of the positive examples in the front, and most of the negative samples in the back (in a binary classification setting). If so, all we need is to set a proper decision threshold (an 1D decision boundary), which is actually what our calibration method do: if the model has shift on the positive label, i.e., p(P ) > p(N), the proposed GC actually increases the decision threshold from the default 1 to p(P )p(N) , i.e., predict P when p(P |x) p(N |x) > p(P ) p(N) and predict N otherwise. Choosing this decision boundary can ensure that the model label marginal is uniform but not biased to any specific labels. So a high AUROC is actually enough for our method to work."
+        },
+        {
+            "heading": "A Prompt Template",
+            "text": "Table 1 shows prompt templates used for different datasets."
+        },
+        {
+            "heading": "B Example Generations",
+            "text": "Table 2 shows example generations using GPT2XL (1.5B) of different datasets. Note that the sequences are generated by vanilla sampling, therefore they might not be a coherent sentence. But they are reasonable to estimate the in-context label marginal.\nC Implementation Details\nWe use LLM.int8() (Dettmers et al., 2022) quantization for all LLMs to reduce the memory usage10. This techniques allows us to use LLMs in a few consumer GPUs. Specifically, we use two servers with 8 NVIDIA GeForce RTX 2080Ti (11GB memory) and 10 NVIDIA GeForce RTX 3090 (24GB memory) in the experiments, where device usages of different LLMs are shown in Tabel 3. We cache the prompt hidden states to improve the inference speed since the ICL prompt remains unchanged for every testing example. Note that RNN-based models RWKV requires much less memory compared to Transformer-based models in the same scale. This is because the cached hidden states of RWKV are only of length 1, while that of Transformerbased models equal to the prompt length.\nIn the generation process, the prompt is the ICL demonstration prompt D plus the input slot name, e.g., \u201cReview: <x>\\nSentiment: <y>\\n\\nReview:\u201d\n10HuggingFace\u2019s transformers library supports this feature, see https://huggingface.co/docs/transformers/ v4.30.0/en/perf_infer_gpu_one.\nfor SST2. Given that each slot is split by a line break as shown in Table 1, when the generation encounters a line break, we force the next contiguous tokens to be the next slot phrase of the template. The maximum generated length is set to 384."
+        },
+        {
+            "heading": "D Time Complexity",
+            "text": "In deployment, if we have N testing examples, the method includes L generations and N ICL inferences, which the time complexity is O(L + N). When N \u226b L, the additional time cost of the generation can be neglected. Time complexities of different methods are shown in Table 4. As seen, our method is superior or on par to previous methods."
+        },
+        {
+            "heading": "E Additional Results of Label Shift",
+            "text": "Empirical Validation\nAs a supplement to Section 3.2, Figure 7 and 8 display the macro-F1/AUROC performances and estimated in-context label marginals across different prompt configurations on SST2 of GPT-NEO (2.7B) and GPT-J (6B), respectively. The results show similar trends with that of GPT2-XL (1.5B), as detailed in 3.2."
+        },
+        {
+            "heading": "F Full Results of Main Experiments",
+            "text": "We provide full results of main experiments in section 5. Figure 9 shows the average 2 and 8-shot\nperformances on 12 datasets. We also show 2, 4, and 8-shot full results (averaged by random runs) of different calibration methods on different datasets in Table 5, 6, and 7."
+        },
+        {
+            "heading": "G Hotelling\u2019s T-square test",
+            "text": "We show that the improvement of GC to the other methods is statistically significant. Concretely, the complete method performance is represented by a matrix with shape M \u00d7 12, where each row contains results of 12 datasets in a random run (each run has different training examples randomly sample from the dataset training set). We then use Hotelling\u2019s t-square test (Hotelling, 1992) to test whether the 12-dimensional performance vectors of two methods have the same mean, where the null hypothesis is that their means are the same. To compute the test static, the covariance matrix of samples should be invertible, requiring M > 12, while in our main experiments, we only run each method in 5 or 2 random runs. Since running each method of each LLM more than 12 times is prohibitively time-consuming, here we only consider the 4-shot case of GPT2-XL (1.5B), where we set M = 50. As shown in Table 8, GC is significant different from other methods given that the p-values are lower than 0.01."
+        },
+        {
+            "heading": "H Additional Results of Robustness Analysis",
+            "text": "Figure 10 and 11 show sensitivity results of GPTNEO (2.7B) and GPT-J (6B) to further support Section 6.1."
+        },
+        {
+            "heading": "I Additional Results of Comparison with Prompt Optimization Methods",
+            "text": "Figure 12 shows 2 and 8-shot comparison results of the proposed GC and prompt optimization methods to further support section 6.2."
+        },
+        {
+            "heading": "J Effect of the Number of Generations",
+            "text": "We study the effect of the number of generations, i.e., L in Equation (7). As shown in Figure 13, as the number of generations increases, the model performance rapidly increases and converges. Also, the performance has been improved considerably when the number of generations is small, which\nbenefits in the limited computational resource scenario."
+        }
+    ],
+    "title": "Generative Calibration for In-context Learning",
+    "year": 2023
+}

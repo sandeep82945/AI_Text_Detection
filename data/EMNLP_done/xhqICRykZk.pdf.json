@@ -1,0 +1,963 @@
+{
+    "abstractText": "In this paper, we study a challenging task of zero-shot referring image segmentation. This task aims to identify the instance mask that is most related to a referring expression without training on pixel-level annotations. Previous research takes advantage of pre-trained crossmodal models, e.g., CLIP, to align instancelevel masks with referring expressions. Yet, CLIP only considers the global-level alignment of image-text pairs, neglecting fine-grained matching between the referring sentence and local image regions. To address this challenge, we introduce a Text Augmented Spatial-aware (TAS) zero-shot referring image segmentation framework that is training-free and robust to various visual encoders. TAS incorporates a mask proposal network for instance-level mask extraction, a text-augmented visual-text matching score for mining the image-text correlation, and a spatial rectifier for mask post-processing. Notably, the text-augmented visual-text matching score leverages a P -score and an N -score in addition to the typical visual-text matching score. The P -score is utilized to close the visual-text domain gap through a surrogate captioning model, where the score is computed between the surrogate model-generated texts and the referring expression. The N -score considers the fine-grained alignment of region-text pairs via negative phrase mining, encouraging the masked image to be repelled from the mined distracting phrases. Extensive experiments are conducted on various datasets, including RefCOCO, RefCOCO+, and RefCOCOg. The proposed method clearly outperforms state-ofthe-art zero-shot referring image segmentation methods.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yucheng Suo"
+        },
+        {
+            "affiliations": [],
+            "name": "Linchao Zhu"
+        },
+        {
+            "affiliations": [],
+            "name": "Yi Yang"
+        }
+    ],
+    "id": "SP:38ffafeeb96581673c26c00d8068ff642a05f002",
+    "references": [
+        {
+            "authors": [
+                "Jean-Baptiste Alayrac",
+                "Jeff Donahue",
+                "Pauline Luc",
+                "Antoine Miech",
+                "Iain Barr",
+                "Yana Hasson",
+                "Karel Lenc",
+                "Arthur Mensch",
+                "Katherine Millican",
+                "Malcolm Reynolds"
+            ],
+            "title": "Flamingo: a visual language model for few-shot learning",
+            "venue": "Advances in Neural",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hangbo Bao",
+                "Wenhui Wang",
+                "Li Dong",
+                "Qiang Liu",
+                "Owais Khan Mohammed",
+                "Kriti Aggarwal",
+                "Subhojit Som",
+                "Songhao Piao",
+                "Furu Wei."
+            ],
+            "title": "Vlmo: Unified vision-language pre-training with mixture-ofmodality-experts",
+            "venue": "Advances in Neural Information",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Daniel Bolya",
+                "Chong Zhou",
+                "Fanyi Xiao",
+                "Yong Jae Lee."
+            ],
+            "title": "Yolact: Real-time instance segmentation",
+            "venue": "Proceedings of the IEEE/CVF international conference on computer vision, pages 9157\u20139166.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "M. Bravo",
+                "S. Mittal",
+                "S. Ging",
+                "T. Brox."
+            ],
+            "title": "Openvocabulary attribute detection",
+            "venue": "IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Soravit Changpinyo",
+                "Piyush Sharma",
+                "Nan Ding",
+                "Radu Soricut."
+            ],
+            "title": "Conceptual 12m: Pushing webscale image-text pre-training to recognize long-tail visual concepts",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yangming Cheng",
+                "Liulei Li",
+                "Yuanyou Xu",
+                "Xiaodi Li",
+                "Zongxin Yang",
+                "Wenguan Wang",
+                "Yi Yang."
+            ],
+            "title": "Segment and track anything",
+            "venue": "arXiv preprint arXiv:2305.06558.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Henghui Ding",
+                "Chang Liu",
+                "Suchen Wang",
+                "Xudong Jiang."
+            ],
+            "title": "Vision-language transformer and query generation for referring segmentation",
+            "venue": "Proceedings of the IEEE/CVF International Conference on Computer Vision, pages 16321\u201316330.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jian Ding",
+                "Nan Xue",
+                "Gui-Song Xia",
+                "Dengxin Dai."
+            ],
+            "title": "Decoupling zero-shot semantic segmentation",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 11583\u2013 11592.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiuye Gu",
+                "Tsung-Yi Lin",
+                "Weicheng Kuo",
+                "Yin Cui."
+            ],
+            "title": "Open-vocabulary object detection via vision and language knowledge distillation",
+            "venue": "arXiv preprint arXiv:2104.13921.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sheng He",
+                "Rina Bao",
+                "Jingpeng Li",
+                "P Ellen Grant",
+                "Yangming Ou."
+            ],
+            "title": "Accuracy of segment-anything model (sam) in medical image segmentation tasks",
+            "venue": "arXiv preprint arXiv:2304.09324.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Matthew Honnibal",
+                "Mark Johnson."
+            ],
+            "title": "An improved non-monotonic transition system for dependency parsing",
+            "venue": "Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, pages 1373\u20131378, Lisbon, Portugal. As-",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ronghang Hu",
+                "Marcus Rohrbach",
+                "Trevor Darrell."
+            ],
+            "title": "Segmentation from natural language expressions",
+            "venue": "Computer Vision\u2013ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11\u201314, 2016, Proceedings, Part I 14, pages",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Shaofei Huang",
+                "Tianrui Hui",
+                "Si Liu",
+                "Guanbin Li",
+                "Yunchao Wei",
+                "Jizhong Han",
+                "Luoqi Liu",
+                "Bo Li."
+            ],
+            "title": "Referring image segmentation via cross-modal progressive comprehension",
+            "venue": "Proceedings of the",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wei Ji",
+                "Jingjing Li",
+                "Qi Bi",
+                "Wenbo Li",
+                "Li Cheng."
+            ],
+            "title": "Segment anything is not always perfect: An investigation of sam on different real-world applications",
+            "venue": "arXiv preprint arXiv:2304.05750.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chao Jia",
+                "Yinfei Yang",
+                "Ye Xia",
+                "Yi-Ting Chen",
+                "Zarana Parekh",
+                "HieuT. Pham",
+                "QuocV. Le",
+                "Yun-Hsuan Sung",
+                "Zhen Li",
+                "Tom Duerig"
+            ],
+            "title": "Scaling up visual and vision-language representation learning with noisy text supervision",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kwanyoung Kim",
+                "Yujin Oh",
+                "JongChul Ye"
+            ],
+            "title": "Zegot: Zero-shot segmentation through optimal transport of text prompts",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Namyup Kim",
+                "Dongwon Kim",
+                "Cuiling Lan",
+                "Wenjun Zeng",
+                "Suha Kwak."
+            ],
+            "title": "Restr: Convolutionfree referring image segmentation using transformers",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Boyi Li",
+                "Kilian Q Weinberger",
+                "Serge Belongie",
+                "Vladlen Koltun",
+                "Ren\u00e9 Ranftl."
+            ],
+            "title": "Languagedriven semantic segmentation",
+            "venue": "arXiv preprint arXiv:2201.03546.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiahao Li",
+                "Greg Shakhnarovich",
+                "Raymond A Yeh."
+            ],
+            "title": "Adapting clip for phrase localization without further training",
+            "venue": "arXiv preprint arXiv:2204.03647.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi."
+            ],
+            "title": "Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models",
+            "venue": "arXiv preprint arXiv:2301.12597.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Caiming Xiong",
+                "Steven Hoi."
+            ],
+            "title": "Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation",
+            "venue": "International Conference on Machine Learning, pages 12888\u201312900. PMLR.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Ramprasaath Selvaraju",
+                "Akhilesh Gotmare",
+                "Shafiq Joty",
+                "Caiming Xiong",
+                "Steven Chu Hong Hoi."
+            ],
+            "title": "Align before fuse: Vision and language representation learning with momentum distillation",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wei Li",
+                "Linchao Zhu",
+                "Longyin Wen",
+                "Yi Yang."
+            ],
+            "title": "Decap: Decoding clip latents for zero-shot captioning via text-only training",
+            "venue": "arXiv preprint arXiv:2303.03032.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yi Li",
+                "Hualiang Wang",
+                "Yiqun Duan",
+                "Xiaomeng Li."
+            ],
+            "title": "Clip surgery for better explainability with enhancement in open-vocabulary tasks",
+            "venue": "arXiv preprint arXiv:2304.05653.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yuheng Li",
+                "Mingzhe Hu",
+                "Xiaofeng Yang."
+            ],
+            "title": "Polyp-sam: Transfer sam for polyp segmentation",
+            "venue": "arXiv preprint arXiv:2305.00293.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Feng Liang",
+                "Bichen Wu",
+                "Xiaoliang Dai",
+                "Kunpeng Li",
+                "Yinan Zhao",
+                "Hang Zhang",
+                "Peizhao Zhang",
+                "Peter Vajda",
+                "Diana Marculescu"
+            ],
+            "title": "Open-vocabulary semantic segmentation with mask-adapted clip",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Feng Liang",
+                "Bichen Wu",
+                "Xiaoliang Dai",
+                "Kunpeng Li",
+                "Yinan Zhao",
+                "Hang Zhang",
+                "Peizhao Zhang",
+                "Peter Vajda",
+                "Diana Marculescu."
+            ],
+            "title": "Open-vocabulary semantic segmentation with mask-adapted clip",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chuang Lin",
+                "Peize Sun",
+                "Yi Jiang",
+                "Ping Luo",
+                "Lizhen Qu",
+                "Gholamreza Haffari",
+                "Zehuan Yuan",
+                "Jianfei Cai"
+            ],
+            "title": "Learning object-language alignments for open-vocabulary object detection",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiang Liu",
+                "Hui Ding",
+                "Zhaowei Cai",
+                "Yuting Zhang",
+                "Ravi Kumar Satzoda",
+                "Vijay Mahadevan",
+                "R Manmatha."
+            ],
+            "title": "Polyformer: Referring image segmentation as sequential polygon generation",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vi-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jonathan Long",
+                "Evan Shelhamer",
+                "Trevor Darrell."
+            ],
+            "title": "Fully convolutional networks for semantic segmentation",
+            "venue": "Proceedings of the IEEE conference on computer vision and pattern recognition, pages 3431\u20133440.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Gen Luo",
+                "Yiyi Zhou",
+                "Xiaoshuai Sun",
+                "Liujuan Cao",
+                "Chenglin Wu",
+                "Cheng Deng",
+                "Rongrong Ji."
+            ],
+            "title": "Multi-task collaborative network for joint referring expression comprehension and segmentation",
+            "venue": "Proceedings of the IEEE/CVF Conference on computer",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Huaishao Luo",
+                "Junwei Bao",
+                "Youzheng Wu",
+                "Xiaodong He",
+                "Tianrui Li"
+            ],
+            "title": "Segclip: Patch aggregation with learnable centers for open-vocabulary semantic segmentation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "George A Miller."
+            ],
+            "title": "Wordnet: a lexical database for english",
+            "venue": "Communications of the ACM, 38(11):39\u201341.",
+            "year": 1995
+        },
+        {
+            "authors": [
+                "Ron Mokady",
+                "Amir Hertz",
+                "Amit H Bermano."
+            ],
+            "title": "Clipcap: Clip prefix for image captioning",
+            "venue": "arXiv preprint arXiv:2111.09734.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Minheng Ni",
+                "Yabo Zhang",
+                "Kailai Feng",
+                "Xiaoming Li",
+                "Yiwen Guo",
+                "Wangmeng Zuo."
+            ],
+            "title": "Ref-diff: Zero-shot referring image segmentation with generative models",
+            "venue": "arXiv preprint arXiv:2308.16777.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyeonwoo Noh",
+                "Seunghoon Hong",
+                "Bohyung Han."
+            ],
+            "title": "Learning deconvolution network for semantic segmentation",
+            "venue": "Proceedings of the IEEE international conference on computer vision, pages 1520\u2013 1528.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jie Qin",
+                "Jie Wu",
+                "Pengxiang Yan",
+                "Ming Li",
+                "Ren Yuxi",
+                "Xuefeng Xiao",
+                "Yitong Wang",
+                "Rui Wang",
+                "Shilei Wen",
+                "Xin Pan"
+            ],
+            "title": "Freeseg: Unified, universal and open-vocabulary image segmentation",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark"
+            ],
+            "title": "Learning transferable visual models from natural language supervision",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yongming Rao",
+                "Wenliang Zhao",
+                "Guangyi Chen",
+                "Yansong Tang",
+                "Zheng Zhu",
+                "Guan Huang",
+                "Jie Zhou",
+                "Jiwen Lu"
+            ],
+            "title": "Denseclip: Language-guided dense prediction with context-aware prompting",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Robin Strudel",
+                "Ricardo Garcia",
+                "Ivan Laptev",
+                "Cordelia Schmid."
+            ],
+            "title": "Segmenter: Transformer for semantic segmentation",
+            "venue": "Proceedings of the IEEE/CVF international conference on computer vision, pages 7262\u20137272.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Robin Strudel",
+                "Ivan Laptev",
+                "Cordelia Schmid."
+            ],
+            "title": "Weakly-supervised segmentation of referring expressions",
+            "venue": "arXiv preprint arXiv:2205.04725.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sanjay Subramanian",
+                "Will Merrill",
+                "Trevor Darrell",
+                "Matt Gardner",
+                "Sameer Singh",
+                "Anna Rohrbach."
+            ],
+            "title": "Reclip: A strong zero-shot baseline for referring expression comprehension",
+            "venue": "arXiv preprint arXiv:2204.05991.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jianfeng Wang",
+                "Zhengyuan Yang",
+                "Xiaowei Hu",
+                "Linjie Li",
+                "Kevin Lin",
+                "Zhe Gan",
+                "Zicheng Liu",
+                "Ce Liu",
+                "Lijuan Wang."
+            ],
+            "title": "Git: A generative image-to-text transformer for vision and language",
+            "venue": "arXiv preprint arXiv:2205.14100.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Luting Wang",
+                "Yi Liu",
+                "Penghui Du",
+                "Zihan Ding",
+                "Yue Liao",
+                "Qiaosong Qi",
+                "Biaolong Chen",
+                "Si Liu."
+            ],
+            "title": "Object-aware distillation pyramid for openvocabulary object detection",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Hangbo Bao",
+                "Li Dong",
+                "Johan Bjorck",
+                "Zhiliang Peng",
+                "Qiang Liu",
+                "Kriti Aggarwal",
+                "Owais Khan Mohammed",
+                "Saksham Singhal",
+                "Subhojit Som"
+            ],
+            "title": "Image as a foreign language: Beit pretraining for all vision and vision-language tasks",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Hangbo Bao",
+                "Li Dong",
+                "Johan Bjorck",
+                "Zhiliang Peng",
+                "Qiang Liu",
+                "Kriti Aggarwal",
+                "Owais Khan Mohammed",
+                "Saksham Singhal",
+                "Subhojit Som"
+            ],
+            "title": "Image as a foreign language: Beit pretraining for vision and vision-language tasks",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xinlong Wang",
+                "Zhiding Yu",
+                "Shalini De Mello",
+                "Jan Kautz",
+                "Anima Anandkumar",
+                "Chunhua Shen",
+                "Jose M Alvarez."
+            ],
+            "title": "Freesolo: Learning to segment objects without annotations",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xinlong Wang",
+                "Xiaosong Zhang",
+                "Yue Cao",
+                "Wen Wang",
+                "Chunhua Shen",
+                "Tiejun Huang."
+            ],
+            "title": "Seggpt: Segmenting everything in context",
+            "venue": "arXiv preprint arXiv:2304.03284.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhaoqing Wang",
+                "Yu Lu",
+                "Qiang Li",
+                "Xunqiang Tao",
+                "Yandong Guo",
+                "Mingming Gong",
+                "Tongliang Liu."
+            ],
+            "title": "Cris: Clip-driven referring image segmentation",
+            "venue": "Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiarui Xu",
+                "Sifei Liu",
+                "Arash Vahdat",
+                "Wonmin Byeon",
+                "Xiaolong Wang",
+                "Shalini De Mello."
+            ],
+            "title": "Openvocabulary panoptic segmentation with text-to-image diffusion models",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jilan Xu",
+                "Junlin Hou",
+                "Yuejie Zhang",
+                "Rui Feng",
+                "Yi Wang",
+                "Yu Qiao",
+                "Weidi Xie."
+            ],
+            "title": "Learning openvocabulary semantic segmentation models from natural language supervision",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Li Xu",
+                "Mark He Huang",
+                "Xindi Shang",
+                "Zehuan Yuan",
+                "Ying Sun",
+                "Jun Liu."
+            ],
+            "title": "Meta compositional referring expression segmentation",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 19478\u201319487.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mengde Xu",
+                "Zheng Zhang",
+                "Fangyun Wei",
+                "Han Hu",
+                "Xiang Bai"
+            ],
+            "title": "2023d. Side adapter network for openvocabulary semantic segmentation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mengde Xu",
+                "Zheng Zhang",
+                "Fangyun Wei",
+                "Yutong Lin",
+                "Yue Cao",
+                "Han Hu",
+                "Xiang Bai."
+            ],
+            "title": "A simple baseline for open-vocabulary semantic segmentation with pre-trained vision-language model",
+            "venue": "Computer Vision\u2013ECCV 2022: 17th European Confer-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yi Yang",
+                "Yueting Zhuang",
+                "Yunhe Pan."
+            ],
+            "title": "Multiple knowledge representation for big data artificial intelligence: framework, applications, and case studies",
+            "venue": "Frontiers of Information Technology & Electronic Engineering, 22(12):1551\u20131558.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhao Yang",
+                "Jiaqi Wang",
+                "Yansong Tang",
+                "Kai Chen",
+                "Hengshuang Zhao",
+                "Philip HS Torr."
+            ],
+            "title": "Lavt: Language-aware vision transformer for referring image segmentation",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Licheng Yu",
+                "Patrick Poirson",
+                "Shan Yang",
+                "Alexander C Berg",
+                "Tamara L Berg."
+            ],
+            "title": "Modeling context in referring expressions",
+            "venue": "Computer Vision\u2013ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11-14, 2016, Proceedings, Part",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Seonghoon Yu",
+                "Paul Hongsuck Seo",
+                "Jeany Son."
+            ],
+            "title": "Zero-shot referring image segmentation with global-local context features",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 19456\u201319465.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models. arXiv preprint arXiv:2205.01068",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xu Zhao",
+                "Wenchao Ding",
+                "Yongqi An",
+                "Yinglong Du",
+                "Tao Yu",
+                "Min Li",
+                "Ming Tang",
+                "Jinqiao Wang."
+            ],
+            "title": "Fast segment anything",
+            "venue": "arXiv preprint arXiv:2306.12156.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yiwu Zhong",
+                "Jianwei Yang",
+                "Pengchuan Zhang",
+                "Chunyuan Li",
+                "Noel Codella",
+                "Liunian Harold Li",
+                "Luowei Zhou",
+                "Xiyang Dai",
+                "Lu Yuan",
+                "Yin Li"
+            ],
+            "title": "Regionclip: Region-based language-image pretraining",
+            "venue": "In Proceedings of the IEEE/CVF Conference",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chong Zhou",
+                "ChenChange Loy",
+                "Bo Dai"
+            ],
+            "title": "Extract free dense labels from clip",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Deyao Zhu",
+                "Jun Chen",
+                "Kilichbek Haydarov",
+                "Xiaoqian Shen",
+                "Wenxuan Zhang",
+                "Mohamed Elhoseiny."
+            ],
+            "title": "Chatgpt asks, blip-2 answers: Automatic questioning towards enriched visual descriptions",
+            "venue": "arXiv preprint arXiv:2303.06594.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xueyan Zou",
+                "Jianwei Yang",
+                "Hao Zhang",
+                "Feng Li",
+                "Linjie Li",
+                "Jianfeng Gao",
+                "Yong Jae Lee."
+            ],
+            "title": "Segment everything everywhere all at once",
+            "venue": "arXiv preprint arXiv:2304.06718.",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Different from the traditional semantic segmentation tasks that predict masks belonging to predefined categories (Bolya et al., 2019; Strudel et al.,\n\u2020Corresponding author.\n2021; Noh et al., 2015; Long et al., 2015), referring expression segmentation is a challenging task that requires identifying a specific object described by a referring expression (Yu et al., 2016; Yang et al., 2022; Wang et al., 2022d; Kim et al., 2022). The task has wide application scenarios such as robot interaction, and image editing (Xu et al., 2023c). The acquisition of precise referring expressions and dense mask annotations is labor-intensive, thereby limiting the practicality in real-world applications. Moreover, the quality and precision of the obtained annotations cannot be guaranteed regarding the labor-intensive annotation process. Therefore, we investigate zero-shot referring image segmentation to reduce labor costs as training on annotations is not required under this setting.\nRecently, a zero-shot referring image segmentation framework is proposed (Yu et al., 2023). This framework initially extracts instance masks through an off-the-shelf mask proposal network. Subsequently, the appropriate mask is selected by com-\nputing a global-local CLIP (Radford et al., 2021) similarity between the referring expressions and the masked images. However, the method focuses on the single object in each mask proposal and does not consider other distracting objects within the image. Moreover, since CLIP is trained on image-text pairs, directly applying it to the referring expression segmentation task that requires fine-grained region-text matching could degenerate the matching accuracy (Zhong et al., 2022). Another challenge arises from the domain gap between masked images and natural images (Ding et al., 2022; Xu et al., 2022; Liang et al., 2023), which affects the alignment between masked images and referring expressions.\nTo this end, we introduce a Text Augmented Spatial-aware (TAS) zero-shot referring expression image segmentation framework composed of a mask proposal network, a text-augmented visualtext matching score, and a spatial rectifier. We utilize the off-the-shell Segment Anything Model (SAM) (Kirillov et al., 2023) as the mask proposal network to obtain high-quality instance-level masks.\nTo enhance the region-text aligning ability of CLIP and bridge the domain gap between the masked images and the natural images, a textaugmented visual-text matching score consisting of three components is calculated. The first score, called V -score, is the masked image text matching score used for measuring the similarity between masked images and referring expressions. The second component is the P -score. It bridges the textvisual domain gap by translating masked images into texts. Specifically, a caption is generated for each masked image, followed by calculating its similarity with the referring expression. The inclusion of captions enhances the consistency between the referring expressions and the masked images. To improve fine-grained region-text matching accuracy, we further repel distracting objects in the image by calculating the N -score. The N -score is the cosine similarity between masked images and negative expressions. We mine these negative expressions by extracting noun phrases from the captions of the input images. The mask that is most related to the referring expression is selected according to a linear combination of the above scores.\nAnother challenge arises from the limitation of CLIP in comprehending orientation descriptions, as highlighted by (Subramanian et al., 2022). To\naddress this issue, we propose a spatial rectifier as a post-processing module. For instance, to find out the mask corresponding to the referring expression \"man to the left\", we calculate the center point coordinates of all the masks and pick the mask with the highest text-augmented visual-text matching score from the left half of the masks.\nWithout modifying the CLIP architecture or further fine-tuning, our method facilitates CLIP prediction using a text-augmenting manner, boosting the zero-shot referring expression segmentation performance. We conduct experiments and ablation studies on RefCOCO, RefCOCO+, and RefCOCOg. The proposed framework outperforms previous methods."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Zero-shot Segmentation",
+            "text": "As the rising of image-text pair pre-training multimodal models like CLIP (Radford et al., 2021), ALIGN (Jia et al., 2021), ALBEF (Li et al., 2021), researchers spend effort in combining cross-modal knowledge (Yang et al., 2021) with dense prediction tasks like detection (Du et al.; Gu et al., 2021; Lin et al., 2022; Bravo et al., 2023; Wang et al., 2023a) and segmentation (Kim et al., 2023; Liang et al., 2022; Luo et al., 2022; Rao et al., 2021; Xu et al., 2023d; Zhou et al., 2021; Qin et al., 2023; Liang et al., 2023; Xu et al., 2023a,b). However, the text used in these works is restricted to object class words or attributes (Li et al., 2022a). Recently, a trend of unified segmentation networks brings dense prediction tasks to a new era (Wang et al., 2023c; Zou et al., 2023). A representative work is Segment Anything Model (SAM) (Kirillov et al., 2023). SAM takes any form of prompt (point, bounding box) to generate masks for a specific area, or to generate masks for all instances without any prompt. A series of works based on SAM aims to apply it in different using scenarios (Ji et al., 2023; He et al., 2023; Li et al., 2023d; Cheng et al., 2023)."
+        },
+        {
+            "heading": "2.2 Referring Image Segmentation",
+            "text": "Referring image segmentation differs from traditional semantic segmentation and instance segmentation since it needs comprehension for a sentence describing a specific object (Hu et al., 2016; Yu et al., 2016; Subramanian et al., 2022). Plenty of fully supervised methods achieve impressive performance (Wang et al., 2022d; Yang et al., 2022;\nXu et al., 2023c; Liu et al., 2023; Kim et al., 2022; Luo et al., 2020; Ding et al., 2021; Huang et al., 2020), yet these works require pixel-level annotations along with precise referring expressions which are labor-intensive. Recently, a weakly supervised method is proposed, which trains a network only based on the image text pair data (Strudel et al., 2022). Another work goes a step further by utilizing CLIP to directly retrieve FreeSOLO (Wang et al., 2022c) proposed masks without any training procedure (Yu et al., 2023)."
+        },
+        {
+            "heading": "2.3 Image Captioning",
+            "text": "Image captioning, a classic multi-modal task, aims to generate a piece of text for an image(Li et al., 2023b; Changpinyo et al., 2021; Mokady et al., 2021; Wang et al., 2022a, 2023b, 2022a). As the training data amount gets tremendous, the parameter of the state-of-the-art models grows rapidly (Li et al., 2022c; Zhang et al., 2022; Bao et al., 2022; Chung et al., 2022; Wang et al., 2022b; Alayrac et al., 2022). Recent advance in large language models enriches the text diversity of the generated captions (Zhu et al., 2023; Brown et al., 2020; Ouyang et al., 2022). In this paper, we adopt the widely used image captioning network BLIP-2 (Li et al., 2023a)."
+        },
+        {
+            "heading": "3 Method",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Overall Framework",
+            "text": "This paper focuses on zero-shot referring expression image segmentation. Our main objective is to enhance the fine-grained region-text matching capability of image-text contrastive models and\nbridge the gap between masked images and natural images (Liang et al., 2023) without modifying the model architecture. To achieve the goal, our intuition is to exploit fine-grained regional information using positive and negative texts since text descriptions summarize the key information in masked images. Therefore, we propose a new Text Augmented Spatial-aware (TAS) framework consisting of three main components: a mask proposal network, a text-augmented visual-text matching score, and a spatial rectifier. The mask proposal network first extracts instance-level mask proposals, then the text-augmented visual-text matching score is calculated between all masked images and the referring expression to measure the similarity between masks and the text. After post-processed by the spatial rectifier, the mask most related to the referring expression is selected."
+        },
+        {
+            "heading": "3.2 Mask Proposal Network",
+            "text": "Previous works (Yu et al., 2023; Zhou et al., 2021) indicate that it is suboptimal to directly apply CLIP on dense-prediction tasks. Therefore, we follow previous works (Yu et al., 2023; Liang et al., 2023; Xu et al., 2022) to decompose the task into two procedures: mask proposal extraction and masked image-text matching. To obtain mask proposals, we adopt the strong off-the-shell mask extractor, i.e., SAM (Kirillov et al., 2023), as the mask proposal network. The mask proposal network plays a vital role as the upper bound performance heavily relies on the quality of the extracted masks. FreeSOLO vs. SAM. Zero-shot referring expression segmentation is to identify a specific object\naccording to the referring expression. Hence, mask proposal networks with a stronger ability to distinguish instances can yield higher upper-bound performance. Previous work leverage FreeSOLO (Wang et al., 2022c), a class-agnostic instance segmentation network, to obtain all masks. However, we empirically find that the recently proposed SAM (Kirillov et al., 2023) shows strong performance in segmenting single objects. Figure 3 presents a qualitative comparison between mask proposal networks. SAM exhibits superior performance in separating objects, achieving a higher upper-bound performance. We observe that FreeSOLO faces challenges in distinguishing instances under occlusion or in clustered scenarios, whereas SAM is capable of handling such situations effectively. To achieve higher performance, we opt for SAM as the mask proposal network."
+        },
+        {
+            "heading": "3.3 Text-augmented visual-text matching score",
+            "text": "The mask proposal network provides instance-level masks, but these masks do not inherently contain semantics. To find the mask most related to the referring expression, the typical method is to calculate the cosine similarity between masked images and the referring expression using image-text contrastive pre-trained models like CLIP. One of the issues is that CLIP may be incapable of fine-grained region-text matching (Zhong et al., 2022) since it is trained on image-text pairs. Moreover, the domain gap between masked images and natural images degenerates the masked image-text matching accuracy. To alleviate these issues and facilitate CLIP prediction, we mine regional information using complementary texts. Therefore, we introduce a text-augmented visual-text matching score composed of a V -score, a P -score, and an N -score. V -score. Given an input image I \u2208 RH\u00d7W\u00d73 and\na referring expression Tr. SAM extracts a series of binary masks M from the image. Every mask proposal m \u2208 M is applied to the input image I . Then the foreground area of the masked image is cropped and fed to the CLIP visual encoder following the approach of previous works (Yu et al., 2023; Liang et al., 2023). The visual feature and text feature extracted by CLIP are used to calculate the cosine similarity. This procedure can be formulated as:\nIm = crop(I,m), (1) Svm = cos(Ev(Im),Et(Tr)), (2)\nwhere crop represents the masking and cropping operation. Ev and Et indicate the CLIP visual encoder and the CLIP text encoder, respectively. cos means the cosine similarity between two types of features. We term the result as Sv, which represents the visual-text matching score.\nNote that the CLIP vision encoder and the CLIP text encoder can be substituted by any image-text contrastive pre-trained models. P -score. As mentioned earlier, the domain gap between the natural images and masked images affects the visual-text alignment. To bridge this gap, we introduce a P -score to improve the alignment quality by leveraging a surrogate captioning model. The idea is to transfer the masked images into texts, which provides CLIP with complementary object information. Specifically, we use an image captioning model to generate a complementary caption C for each masked image. We encode the captions using the CLIP text encoder and calculate the cosine similarity with the referring expressions. The procedure can be summarized as:\nSpm = cos(Et(Cm),Et(Tr)). (3)\nSp is the P -score measuring the similarity between captions and referring expressions. Note that the P - score is flexible to any captioning model. However, the effectiveness of Sp highly depends on the quality of generated captions. Better caption models could bring higher performance. N -score. V -score and P -score promote alignment between masked images and referring expressions. Considering the existence of many objects in the image being unrelated to the referring expression, we further propose an N -score to filter out these objects. To identify distracting objects, we collect negative expressions for these objects. Then we regard the similarity between masked images and negative expressions as a negative N -score. The\neffectiveness of the score depends on these negative expressions. To mine unrelated expressions, we first generate an overall caption for the input image. The overall caption summarizes all objects in the image. We then extract noun phrases from the caption using spacy (Honnibal and Johnson, 2015) and regard them as potential negative expressions. Note that there might be phrases indicating the same object in the referring expression. To avoid this situation, we use Wordnet (Miller, 1995) to eliminate the phrases that contain synonyms with the subject in the referring expression. Specifically, we calculate the path similarity of the two synsets to determine whether to eliminate the synonyms. Empirically, we find the strict rules help TAS to identify distinct objects in these datasets. For instance, we believe \"young man\" and \"the boy\" are not synonyms. This ensures that the negative objects identified are distinct from the object mentioned in the referring expression. The remaining noun phrases set Tn is used to calculate the cosine similarity with the masked images. Sn is defined as the averaged similarity value over the phrases:\nSnm = \u2212 1 |Tn| \u2211 T\u2208Tn cos(Ev(Im),Et(T )). (4)\nIt is worth mentioning that Sn is a negative score since it measures the probability of a masked image representing an object unrelated to the target referring expression. We enhance fine-grained object region-text matching by eliminating regions for distracting objects. Sn is also flexible to captioning models, while detailed captions help to capture more negative expressions. The text-augmented visual-text matching score. The final text-augmented visual-text matching score can be obtained by linearly combining the three above-mentioned scores since all scores are the cosine similarity calculated in the common CLIP feature space. The output mask is the one with the highest score.\nSm = S v m + \u03b1S p m + \u03bbS n m, (5)\nm\u0302 = argmax m\u2208M Sm. (6)\nThe final mask m\u0302 is selected by choosing the one with the highest S. Without changing the feature space and modifying the structure, the textaugmented visual-text matching score enhances fin-grained region-text matching only using augmented texts."
+        },
+        {
+            "heading": "3.4 Spatial Rectifier",
+            "text": "As revealed in (Subramanian et al., 2022), the textimage pair training scheme does not consider spatial relations. In other words, CLIP cannot distinguish orientation descriptions such as \u201cthe left cat\u201d or \u201cthe giraffe to the right\u201d. To this end, we propose a rule-based spatial resolver for post-processing forcing the framework to select masks from the specific region. The procedure can be decomposed into three steps: orientation description identification, position calculation, and spatial rectifying. Orientation description identification. First, we extract descriptive words for the subject of the referring expression Tr via spacy (Honnibal and Johnson, 2015) and check whether there are orientation words like \"up, bottom, left, right\". If no orientation words are found in the descriptive words, we do not apply spatial rectification. Position calculation. Second, to spatially rectify the predictions, we need the location information of each mask proposal. The center point of each mask is used as a proxy for location. Specifically, the center point location of each mask is calculated by averaging the coordinates of all foreground pixels. Spatial rectifying. After obtaining center point locations, we choose the mask with the highest overall score S under the corresponding area of the orientation. For instance, we pick the mask for the expression \u201cthe left cat\u201d from the masks whose center point location is in the left half of all the center points. Having this post-processing procedure, we restrict CLIP to pay attention to specific areas when dealing with orientation descriptions, thereby rectifying wrong predictions."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Dataset and Metrics",
+            "text": "The proposed method is evaluated on the widely used referring image segmentation datasets, i.e. RefCOCO, RefCOCO+, and RefCOCOg. All images in the three datasets come from the MSCOCO dataset and are labeled with carefully designed referring expressions for instances. We also report the performance on the PhraseCut test set. In terms of the metrics, we adopt overall Intersection over Union (oIoU), mean Intersection over Union (mIoU) following previous works."
+        },
+        {
+            "heading": "4.2 Implementation Details",
+            "text": "We adopt the default ViT-H SAM, the hyperparameter \u201cpredicted iou threshold\u201d and \u201cstability score threshold\u201d are set to 0.7, \"points per side\" is set to 8. For BLIP-2, we adopt the smallest OPT2.7b model. As for CLIP, we use RN50 and ViTB/32 models with an input size of 224\u00d7 224. We set \u03bb to 0.7 for RefCOCO and RefCOCO+, 1 for RefCOCOg, and \u03b1 = 0.1 for all datasets. When using SAM as the mask generator, we noticed a high number of redundant proposals. SAM often produces masks for different parts of the same object, leading to issues with visual semantic granularity. In our approach, we have implemented a straightforward yet effective method to filter out irrelevant mask proposals, thereby reducing semantic ambiguity. Specifically, after generating all initial mask proposals, we measure the overlap between any two masks and eliminate smaller masks that are subsets of larger ones. It is important to note that in the experiments section, all methods are evaluated based on these refined mask proposals."
+        },
+        {
+            "heading": "4.3 Baselines",
+            "text": "Baseline methods can be summarized into two types: activation map-based and similarity-based. For activation map-based methods, we apply the mask proposals to the activation map, then choose the mask with the largest average activation score. Following previous work, Grad-CAM (Selvaraju et al.), Score Map (Zhou et al., 2021), and ClipSurgery (Li et al., 2023c) are adopted. Note that Score Map is acquired by MaskCLIP. Similaritybased methods are to calculate masked image-text similarities. Following previous work, we adopt Region Token (Li et al., 2022b) which utilizes mask proposals to filter the region tokens in every layer of the CLIP visual encoder, Global-Local (Yu et al., 2023) uses Freesolo as the mask proposal network and calculates the Global-Local image and text similarity using CLIP. Note that for a fair comparison, we also report the results using SAM. Text-only (Li et al., 2023a) is to calculate the cosine similarity between the captions for masked images and the referring expressions. This baseline is to test the relevance of the caption and referring expression.\nCLIP-only (Radford et al., 2021) is a simple baseline that directly calculates the similarity between the cropped masked image and referring expression. We also compare with TSEG (Strudel et al., 2022), a weakly supervised training method."
+        },
+        {
+            "heading": "4.4 Results",
+            "text": "Performance on different datasets. Results on RefCOCO, RefCOCO+ and RefCOCOg are shown in Table 1. For a fair comparison, we reimplement the Global-Local (Yu et al., 2023) method using masks extracted from SAM. TAS outperforms all baseline methods in terms of oIoU and mIoU. Previous works that leverage CLIP visual encoder activation maps perform poorly in all datasets. Compared with the previous SOTA method using FreeSOLO to extract masks, TAS surpasses in both metrics, especially in mIoU. We also report mIoU and oIoU results on the test set of the PhraseCut dataset in Table 2. Our method also outperforms the previous method. Qualitative analysis. Figure 4 shows the qualitative comparison of TAS and previous methods. Note that all the masks are extracted by SAM. TAS is able to comprehend long complex referring expressions and pick the most accurate object mask. With the help of the spatial rectifier, TAS deals well with orientation-related referring expressions."
+        },
+        {
+            "heading": "4.5 Ablation Study",
+            "text": "Sensitive toward \u03b1 and \u03b2. We propose the textaugmented visual-text matching score, a linear\ncombination of different types of scores. To explore whether the score is sensitive toward the weights \u03b1 and \u03bb, we conduct an ablation study. Results are shown in Table 3, \u03b1 and \u03bb are tuned separately. TAS is not sensitive to \u03bb, we select 0.7 to achieve a balance of mIoU and oIoU improvement. A large \u03b1 harms the performance, therefore we set the value to 0.1. Importance of the proposed modules. To further prove the effectiveness of the proposed textaugmented visual-text matching score and the spatial rectifier, we conduct an ablation study on the validation set of RefCOCO. The mIoU and oIoU results are reported with different combinations of the modules in Table 4. Scap and Sneg are the P -score and the N -score respectively. \u201cSpatial\u201d represents the spatial rectifier aforementioned. The first line in the table is the result that only uses Simg, which is also the CLIP-Only baseline result. From the table, we observe that all modules contribute to performance improvement. In particular, the Spatial rectifier plays a vital role in the RefCOCO dataset since RefCOCO contains many orientation descriptions. Influence on the input format of masked images. In table 5, we study two input types of masked images for the BLIP-2 and CLIP. The first method is cropping, which is widely used in previous works(Xu et al., 2022; Liang et al., 2023; Yu et al., 2023). Another method is blurring (Subramanian et al., 2022), we blur the background of the cropped area using a Gaussian kernel. Blurring make the model recognize the mask area with background information. From the table, we find that for the captioning model BLIP-2, blurring is better than crop. However, cropping is better than blurring for CLIP. We suppose the reason is the cropping left black background which helps CLIP to focus on the foreground object. However, for BLIP-2, blurring helps generate context-aware de-\nscriptions, enhancing comprehension of the referring expression. Importance of the image captioning model. Our intuition is to use texts to enhance region-text alignment and bridge the domain gap between natural images and masked images. The quality of texts depends on the captioning model. To explore the importance of the captioning model, we substitute the BLIP-2 model with GIT-base captioning model (Wang et al., 2022a) and test the performance. Re-\nsults are shown in Table 6, we find that the captioning model has little affection on performance. Better captioning models bring better mIoU and oIoU performance. Is TAS generalizable to other image-text contrastive models? To explore whether TAS is generalizable to other image-text contrastive models, we conduct an ablation study, and the results are shown in Table 7. On BLIP-2 (Li et al., 2023a) and ALBEF (Li et al., 2021), TAS makes impressive improvements. We believe TAS is a versatile method that helps any image-text contrastive model. Is TAS practicable in real-world scenarios? TAS does not require high computing resources. All experiments were conducted on a single RTX 3090, which is applicable in real-world applications. The GPU memory consumption for the entire pipeline is about 22GB, including mask generation (SAM), captioner (BLIP2), and masked image-text matching (CLIP). We also test the inference speed on a\nrandom selection of 500 images on a single RTX 3090. The CLIP-Only baseline method (mask generation + masked image-text matching) obtains 1.88 seconds per image. The Global-Local method costs 2.01 seconds per image. Our method TAS (mask generation + captioner + masked image-text matching) achieves 3.63 seconds per image. By employing strategies like 8-bit blip-2 models and FastSAM (Zhao et al., 2023), it would be possible to enhance the efficiency under constrained computational resources."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "In this paper, we propose a Text Augmented Spatialaware (TAS) framework for zero-shot referring image segmentation composed of a mask proposal network, a text-augmented visual-text matching score, and a spatial rectifier. We leverage off-theshell SAM to obtain instance-level masks. Then the text-augmented visual-text matching score is calculated to select the mask corresponding to the referring expression. The score uses positive text and negative text to bridge the visual-text domain gap and enhance fine-grained region-text alignment with the help of a caption model. Followed by the post-processing operation in the spatial rectifier, TAS is able to deal with long sentences with orientation descriptions. Experiments on RefCOCO, RefCOCO+, and RefCOCOg demonstrate the effectiveness of our method. Future work may need to enhance comprehension of hard expressions over non-salient instances in the image. One potential way is to leverage the reasoning ability of Large language models like GPT4."
+        },
+        {
+            "heading": "6 Limitations",
+            "text": "While our approach yields favorable results across all datasets based on mIoU and oIoU metrics, there exist certain limitations that warrant further investigation. One such limitation is that SAM occasionally fails to generate ideal mask proposals, thereby restricting the potential for optimal performance. Additionally, the effectiveness of our approach is contingent upon the image-text contrastive model employed. Specifically, we have found that the BLIP-2 image-text contrastive model outperforms CLIP, whereas the Albef image-text contrastive model shows poor performance when applied to masked images.\nAnother potential limitation of TAS is the ability to deal with complex scenarios. A potential\nresearch topic is to directly identify the most appropriate mask from noisy proposals. In other words, future works may work on designing a more robust method to deal with the semantic granularity of the mask proposals. Recent work uses diffusion models as a condition to work on this problem (Ni et al., 2023). Finally, the understanding of the metaphor and antonomasia within the referring expression remains insufficient. We observe there are expressions requiring human-level comprehension which is extremely hard for current image-text models. Future work may benefit from the comprehension and reasoning ability of Large Language Models (LLM)."
+        },
+        {
+            "heading": "7 Acknowledgement",
+            "text": "This work is partially supported by Major program of the National Natural Science Foundation of China (Grant Number: T2293723). This work is also partially supported by the Fundamental Research Funds for the Central Universities (Grant Number: 226-2023-00126, 226-2022-00051)."
+        },
+        {
+            "heading": "8 Ethics Statement",
+            "text": "The datasets used in this work are publicly available."
+        }
+    ],
+    "title": "Text Augmented Spatial-aware Zero-shot Referring Image Segmentation",
+    "year": 2023
+}

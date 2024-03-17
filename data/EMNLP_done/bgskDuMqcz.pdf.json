@@ -1,0 +1,675 @@
+{
+    "abstractText": "Large language models (LLMs) have showcased their capability with few-shot inference known as in-context learning. However, indomain demonstrations are not always readily available in real scenarios, leading to crossdomain in-context learning. Besides, LLMs are still facing challenges in long-tail knowledge in unseen and unfamiliar domains. The above limitations demonstrate the necessity of Unsupervised Domain Adaptation (UDA). In this paper, we study the UDA problem under an in-context learning setting to adapt language models from the source domain to the target domain without any target labels. The core idea is to retrieve a subset of cross-domain elements that are the most similar to the query, and elicit language model to adapt in an in-context manner by learning both target domain distribution and the discriminative task signal simultaneously with the augmented cross-domain incontext examples. We devise different prompting and training strategies, accounting for different LM architectures to learn the target distribution via language modeling. With extensive experiments on Sentiment Analysis (SA) and Named Entity Recognition (NER) tasks, we thoroughly study the effectiveness of ICL for domain transfer and demonstrate significant improvements over baseline models.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Quanyu Long"
+        },
+        {
+            "affiliations": [],
+            "name": "Wenya Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Sinno Jialin Pan"
+        }
+    ],
+    "id": "SP:1c511301025be223eba1f81902cb1a42191352b3",
+    "references": [
+        {
+            "authors": [
+                "Julio Cesar Salinas Alvarado",
+                "Karin Verspoor",
+                "Timothy Baldwin."
+            ],
+            "title": "Domain adaption of named entity recognition to support credit risk assessment",
+            "venue": "Proceedings of the Australasian Language Technology Association Workshop 2015, pages 84\u201390.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Akari Asai",
+                "Sewon Min",
+                "Zexuan Zhong",
+                "Danqi Chen."
+            ],
+            "title": "Acl 2023 tutorial: Retrieval-based language models and applications",
+            "venue": "ACL 2023.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ting Chen",
+                "Simon Kornblith",
+                "Mohammad Norouzi",
+                "Geoffrey Hinton."
+            ],
+            "title": "A simple framework for contrastive learning of visual representations",
+            "venue": "International Conference on Machine Learning, pages 1597\u20131607. PMLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alexandra Chronopoulou",
+                "Christos Baziotis",
+                "Alexandros Potamianos."
+            ],
+            "title": "An embarrassingly simple approach for transfer learning from pretrained language models",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Asso-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Kartikay Khandelwal",
+                "Naman Goyal",
+                "Vishrav Chaudhary",
+                "Guillaume Wenzek",
+                "Francisco Guzm\u00e1n",
+                "\u00c9douard Grave",
+                "Myle Ott",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Unsupervised cross-lingual representation learning at scale",
+            "venue": "Pro-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Leon Derczynski",
+                "Eric Nichols",
+                "Marieke Van Erp",
+                "Nut Limsopatham."
+            ],
+            "title": "Results of the wnut2017 shared task on novel and emerging entity recognition",
+            "venue": "Proceedings of the 3rd Workshop on Noisy Usergenerated Text, pages 140\u2013147.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Com-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yaroslav Ganin",
+                "Evgeniya Ustinova",
+                "Hana Ajakan",
+                "Pascal Germain",
+                "Hugo Larochelle",
+                "Fran\u00e7ois Laviolette",
+                "Mario Marchand",
+                "Victor Lempitsky."
+            ],
+            "title": "Domain-adversarial training of neural networks",
+            "venue": "The journal of machine learning research, 17(1):2096\u2013",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Xingcheng Yao",
+                "Danqi Chen."
+            ],
+            "title": "Simcse: Simple contrastive learning of sentence embeddings",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 6894\u20136910.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Mingwei Chang."
+            ],
+            "title": "Retrieval augmented language model pre-training",
+            "venue": "International conference on machine learning, pages 3929\u20133938. PMLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiaochuang Han",
+                "Jacob Eisenstein."
+            ],
+            "title": "Unsupervised domain adaptation of contextualized embeddings for sequence labeling",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Haoqi Fan",
+                "Yuxin Wu",
+                "Saining Xie",
+                "Ross Girshick."
+            ],
+            "title": "Momentum contrast for unsupervised visual representation learning",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 9729\u20139738.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ruidan He",
+                "Wee Sun Lee",
+                "Hwee Tou Ng",
+                "Daniel Dahlmeier."
+            ],
+            "title": "Adaptive semi-supervised learning for cross-domain sentiment classification",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, pages 3467\u2013",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "Lora: Low-rank adaptation of large language models",
+            "venue": "In International Conference on Learning Representations",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Patrick Lewis",
+                "Maria Lomeli",
+                "Lucas Hosseini",
+                "Fabio Petroni",
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Armand Joulin",
+                "Sebastian Riedel",
+                "Edouard Grave."
+            ],
+            "title": "Few-shot learning with retrieval augmented language models",
+            "venue": "arXiv preprint",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Constantinos Karouzos",
+                "Georgios Paraskevopoulos",
+                "Alexandros Potamianos."
+            ],
+            "title": "Udalm: Unsupervised domain adaptation through language modeling",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computa-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jin-Dong Kim",
+                "Tomoko Ohta",
+                "Sampo Pyysalo",
+                "Yoshinobu Kano",
+                "Jun\u2019ichi Tsujii"
+            ],
+            "title": "Overview of bionlp\u201909 shared task on event extraction",
+            "venue": "In Proceedings of the BioNLP 2009 workshop companion volume for shared task,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Diederik P. Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "CoRR, abs/1412.6980.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Guillaume Lample",
+                "Miguel Ballesteros",
+                "Sandeep Subramanian",
+                "Kazuya Kawakami",
+                "Chris Dyer"
+            ],
+            "title": "Neural architectures for named entity recognition",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Jinhyuk Lee",
+                "Wonjin Yoon",
+                "Sungdong Kim",
+                "Donghyeon Kim",
+                "Sunkyu Kim",
+                "Chan Ho So",
+                "Jaewoo Kang."
+            ],
+            "title": "Biobert: a pre-trained biomedical language representation model for biomedical text mining",
+            "venue": "Bioinformatics, 36:1234 \u2013 1240.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Patrick Lewis",
+                "Ethan Perez",
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich K\u00fcttler",
+                "Mike Lewis",
+                "Wen-tau Yih",
+                "Tim Rockt\u00e4schel"
+            ],
+            "title": "Retrieval-augmented generation for knowledge-intensive nlp tasks",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jiao Li",
+                "Yueping Sun",
+                "Robin J. Johnson",
+                "Daniela Sciaky",
+                "Chih-Hsuan Wei",
+                "Robert Leaman",
+                "Allan Peter Davis",
+                "Carolyn J. Mattingly",
+                "Thomas C. Wiegers",
+                "Zhiyong Lu"
+            ],
+            "title": "Biocreative v cdr task corpus: a resource for chemical disease relation extraction",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Jiachang Liu",
+                "Dinghan Shen",
+                "Yizhe Zhang",
+                "William B Dolan",
+                "Lawrence Carin",
+                "Weizhu Chen"
+            ],
+            "title": "What makes good in-context examples for gpt-3? In Proceedings of Deep Learning Inside Out (DeeLIO 2022)",
+            "venue": "The 3rd Workshop on Knowledge Extrac-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "venue": "arXiv preprint arXiv:1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Quanyu Long",
+                "Tianze Luo",
+                "Wenya Wang",
+                "Sinno Pan."
+            ],
+            "title": "Domain confused contrastive learning for unsupervised domain adaptation",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics:",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Xuezhe Ma",
+                "Eduard Hovy."
+            ],
+            "title": "End-to-end sequence labeling via bi-directional lstm-cnns-crf",
+            "venue": "Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 1064\u20131074.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Julian McAuley",
+                "Christopher Targett",
+                "Qinfeng Shi",
+                "Anton Van Den Hengel."
+            ],
+            "title": "Image-based recommendations on styles and substitutes",
+            "venue": "Proceedings of the 38th international ACM SIGIR conference on research and development in information retrieval,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Xinxi Lyu",
+                "Ari Holtzman",
+                "Mikel Artetxe",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Rethinking the role of demonstrations: What makes in-context learning work",
+            "venue": "In Conference on Empirical Methods in Natural Language",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sinno Jialin Pan",
+                "Xiaochuan Ni",
+                "Jian-Tao Sun",
+                "Qiang Yang",
+                "Zheng Chen."
+            ],
+            "title": "Cross-domain sentiment classification via spectral feature alignment",
+            "venue": "Proceedings of the 19th international conference on World wide web, pages 751\u2013760.",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Ohad Rubin",
+                "Jonathan Herzig",
+                "Jonathan Berant."
+            ],
+            "title": "Learning to retrieve prompts for in-context learning",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Erik Tjong Kim Sang",
+                "Fien De Meulder."
+            ],
+            "title": "Introduction to the conll-2003 shared task: Languageindependent named entity recognition",
+            "venue": "Proceedings of the Seventh Conference on Natural Language Learning at HLT-NAACL 2003, pages 142\u2013147.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Weijia Shi",
+                "Sewon Min",
+                "Michihiro Yasunaga",
+                "Minjoon Seo",
+                "Rich James",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Wen-tau Yih."
+            ],
+            "title": "Replug: Retrievalaugmented black-box language models",
+            "venue": "arXiv preprint arXiv:2301.12652.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nakov",
+                "Anna Divoli",
+                "Manuel Ma\u00f1a-L\u00f3pez",
+                "Jacinto Mata",
+                "W. John Wilbur."
+            ],
+            "title": "Overview of biocreative ii gene mention recognition",
+            "venue": "Genome Biology, 9:S2 \u2013 S2.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Benjamin Strauss",
+                "Bethany Toma",
+                "Alan Ritter",
+                "MarieCatherine De Marneffe",
+                "Wei Xu."
+            ],
+            "title": "Results of the wnut16 named entity recognition shared task",
+            "venue": "Proceedings of the 2nd Workshop on Noisy Usergenerated Text (WNUT), pages 138\u2013144.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto."
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https:// github.com/tatsu-lab/stanford_alpaca.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Thuy Vu",
+                "Dinh Phung",
+                "Gholamreza Haffari."
+            ],
+            "title": "Effective unsupervised domain adaptation with adversarially trained language models",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 6163\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xinyu Wang",
+                "Yong Jiang",
+                "Nguyen Bach",
+                "Tao Wang",
+                "Zhongqiang Huang",
+                "Fei Huang",
+                "Kewei Tu."
+            ],
+            "title": "Improving named entity recognition by external context retrieving and cooperative learning",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yizhong Wang",
+                "Yeganeh Kordi",
+                "Swaroop Mishra",
+                "Alisa Liu",
+                "Noah A Smith",
+                "Daniel Khashabi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Self-instruct: Aligning language model with self generated instructions",
+            "venue": "arXiv preprint arXiv:2212.10560.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sang Michael Xie",
+                "Aditi Raghunathan",
+                "Percy Liang",
+                "Tengyu Ma."
+            ],
+            "title": "An explanation of in-context learning as implicit bayesian inference",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hai Ye",
+                "Qingyu Tan",
+                "Ruidan He",
+                "Juntao Li",
+                "Hwee Tou Ng",
+                "Lidong Bing."
+            ],
+            "title": "Feature adaptation of pre-trained language models across languages and domains with robust self-training",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with bert",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zihao Zhao",
+                "Eric Wallace",
+                "Shi Feng",
+                "Dan Klein",
+                "Sameer Singh."
+            ],
+            "title": "Calibrate before use: Improving few-shot performance of language models",
+            "venue": "International Conference on Machine Learning, pages 12697\u201312706. PMLR.",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "text": "Large language models (LLMs) have showcased their capability with few-shot inference known as in-context learning. However, indomain demonstrations are not always readily available in real scenarios, leading to crossdomain in-context learning. Besides, LLMs are still facing challenges in long-tail knowledge in unseen and unfamiliar domains. The above limitations demonstrate the necessity of Unsupervised Domain Adaptation (UDA). In this paper, we study the UDA problem under an in-context learning setting to adapt language models from the source domain to the target domain without any target labels. The core idea is to retrieve a subset of cross-domain elements that are the most similar to the query, and elicit language model to adapt in an in-context manner by learning both target domain distribution and the discriminative task signal simultaneously with the augmented cross-domain incontext examples. We devise different prompting and training strategies, accounting for different LM architectures to learn the target distribution via language modeling. With extensive experiments on Sentiment Analysis (SA) and Named Entity Recognition (NER) tasks, we thoroughly study the effectiveness of ICL for domain transfer and demonstrate significant improvements over baseline models."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "Large Language Models (LLMs) have demonstrated remarkable success in various tasks via incontext learning (ICL) with task instructions and few-shot demonstrations (input-label pairs) (Zhao et al., 2021; Liu et al., 2022; Min et al., 2022), eliminating the need for fine-tuning from task-specific labels. Nevertheless, in-domain demonstrations are usually absent in real scenarios since the target domain labels are unavailable. Sourcing labeled examples from other domains may suffer from huge syntactic and semantic domain shifts. Moreover,\nLLMs are prone to generating unpredictable outputs in undesired formats, and they are struggling with long-tail knowledge for unseen and unfamiliar domains where topics and genres are less frequently encountered in the training corpus (Asai et al., 2023). Therefore, the limitations above call for effective adaptation strategies to transfer knowledge of LMs from a labeled source domain to the unlabeled target domain, known as Unsupervised Domain Adaptation (UDA).\nTo bridge the domain gap, UDA aims to adapt models that learn domain-agnostic features from labeled source samples and unlabeled target samples. Some studies have proposed discrepancy measures to align source and target distributions in the representation space (Ganin et al., 2016; Ye et al., 2020; Long et al., 2022). However, these methods mainly focus on feature alignment and only apply to encoder-based LMs. Other studies focus on adaptive pre-training including an additional post\npre-training phase of masked language modeling (MLM) on target unlabeled data to learn the target domain distribution (Han and Eisenstein, 2019; Karouzos et al., 2021). However, different training phases make the learned diverse knowledge hard to remember, and such methods are also only applicable to encoder-only LMs which are usually smaller in scale. Therefore, few studies have investigated how to update knowledge of unfamiliar domains for larger LMs (e.g., decoder-only LMs). And few studies try to relate source-labeled samples to target unlabeled examples in a single training stage, while vast amounts of target unlabeled data can serve as a knowledge-rich datastore.\nIn this paper, we propose to retrieve similar examples from the target unlabeled corpus to serve as the context of a source query and perform adaptive in-context learning by concatenating the source query and target contexts as the input prompt. The core idea is to elicit LMs to learn target distribution and discriminative task signals simultaneously with the retrieved cross-domain examples. Fig. 1 shows an illustrative example. For each input from the source domain, we compose its context with semantically similar texts retrieved from the target unlabeled domain to enrich semantics and reduce the domain difference in the surface form. Then the model will learn the task discrimination taking both the source input and the target context. To further mitigate domain shift, we propose to learn the target distribution using the language modeling mechanism (causal or masked language modeling) simultaneously by predicting tokens from the target context, which acts as a proxy to the target distribution. Combining the two goals encourages the model to learn domain-agnostic and task-aware information which is beneficial for knowledge transfer.\nWe propose a domain-adaptive in-context learning (DAICL) framework for different LM architectures, including encoder-only and decoder-only models, and observe consistent advantages. To account for the architectural difference, we devise distinct prompting and fine-tuning strategies. For the encoder-only model, we append contexts retrieved from the target domain to each source input. The model is trained to predict source input labels and masked tokens in the appended contexts. For the decoder-only model, we instead prepend examples before the source input. The model is trained to predict each token autoregressively in the prompt\nas well as the response output. Overall, we make the following contributions:\n\u2022 We propose domain-adaptive in-context learning with retrieval augmentation in which we mix the source input and semantically rich target contexts to learn two in-context objectives simultaneously;\n\u2022 We proposed a unified framework with efficient prompting and fine-tuning strategies accounting for different architectures (encoderonly LMs and decoder-only LMs);\n\u2022 We thoroughly study the effectiveness of in-context learning for UDA. Our experiments surprisingly reveal that retrieving outof-distribution demonstrations fails for LLMs\u2019 few-shot inference and fine-tuning is still beneficial for domain adaptation."
+        },
+        {
+            "heading": "2 Problem Definition",
+            "text": "Consider a scenario where we have access to two distinct domains: a source domain and a target domain. The source domain dataset, denoted as DS , consists of n labeled data sampled i.i.d. from the source distribution, DS = {xSi , yi}1,...,n, where xSi represents sequences of tokens, yi represents the corresponding label. On the other hand, the unlabeled target domain dataset, denoted as DT = {xTj }1,...,m, comprises m unlabeled data points, which are also sampled i.i.d. from the target domain. The primary objective of Unsupervised Domain Adaptation (UDA) is to adapt the knowledge learned from the source domain in such a way that allows it to generalize on the target domain effectively. This adaptation process involves leveraging the unlabeled data from the target domain to learn the target distribution and mitigate the domain shift.\nThis paper focuses on the UDA problem over two application scenarios: Named Entity Recognition (NER)1 and Sentiment Analysis (SA). We describe our method and pivot discussions around these two tasks in the following sections."
+        },
+        {
+            "heading": "3 Method",
+            "text": "We propose a novel framework, Domain Adaptive In-Context Learning (DAICL), capable of training\n1In our work, we only need to predict the entity spans, ignoring the entity type, because the label spaces for different domains are different when considering entity type. However, we still refer to this task as NER for short.\nLMs to adapt with the help of retrieved contexts. We begin by introducing the overall framework in Section 3.1. Next, we present specific designs for Encoder-only language models in Section 3.2; and Decoder-only language models in Section 3.3. For decoder-only models, we present two settings: inference-only (Section 3.3.1) and fine-tuning (Section) 3.3.2."
+        },
+        {
+            "heading": "3.1 In-Context Adaptation",
+            "text": "The term In-Context Learning has been commonly referred to as few-shot prompting in LLMs. To be clear, in this work, we instead use In-Context Learning to emphasize the idea of learning a model with semantically rich contexts. Here context should be differentiated with demonstration, the latter one represents input-label pairs in few-shot prompting. Under the setting of UDA where target labels are not accessible, context is composed of input-only examples from the unlabeled target domain. Next, we present an overall framework to construct suitable contexts and adapt LMs with suitable contexts."
+        },
+        {
+            "heading": "3.1.1 Context Construction with Retrieval",
+            "text": "Given an input sentence from the source domain, we first search for semantically similar examples from the unlabeled target domain. This is analogous to retrieval and re-rank given a search query. Retrieval-augmented LM approaches (Guu et al., 2020; Lewis et al., 2020; Asai et al., 2023) apply a parametrized dense retriever to train with the task model. In this paper, we fix the retriever part and use the off-the-shelf scoring language models. For the SA task, we use SimCSE (Gao et al., 2021) which produces semantically meaningful sentence embeddings after being trained with contrastive learning (Chen et al., 2020; He et al., 2020). Here cosine similarity is used to retrieve\ntop-ranked (most similar) examples from the target domain. For NER, we use BERTScore (Zhang et al., 2020; Wang et al., 2021), because it gives a metric for each sentence based on the similarity of token representation, which is more crucial for the task of NER.\nSpecifically, given a source sentence xS paired with label y, we retrieve top-k relevant chunks of texts from the target unlabeled dataset DT . The retrieved examples are denoted as xT = {xT1 , \u00b7 \u00b7 \u00b7 , xTk } which will serve as the contexts to enrich the semantics for the source input."
+        },
+        {
+            "heading": "3.1.2 Domain-Adaptive In-Context Learning",
+            "text": "With the retrieved context consisting of k most semantically similar examples to the source input, we seek a strategy to integrate this context into the source input and design a training objective that could learn target distribution and at the same time be able to discriminate the task label. To this end, we propose to combine the following two objectives given the concatenated text sequences [xS ;xT ]. Objective 1: In-context Task Learning \u2013 a supervised task to predict the task label y. Objective 2: In-context Language Modeling \u2013 a token prediction task to predict tokens from the target context xT :\nLSup(\u03b8) = \u2212 log Pr\u03b8 ( y \u2223\u2223xS , xT ); (1)\nLLM (\u03b8) = \u2212 log Pr\u03b8 ( tTi \u2223\u2223xS , xT ), tTi \u2208 xT , (2)\nwhere \u03b8 represents the parameters for a language model. Ideally, the first objective (1) aims to learn task discrimination with the help of context. Note that unlike single-domain task prediction which only takes xS as input, here we augment the source input with target contexts to learn task-aware information across domains. The second objective (2)\nencourages the model to learn the target distribution by predicting tokens in the target context xT . By mixing with a source input, the model learns to fuse the distributions from two different domains in order to bridge the domain gap. When combining these two objectives, we expect that the model learns task-aware knowledge that is indistinguishable from the two domains."
+        },
+        {
+            "heading": "3.2 Encoder-only LMs with ICL",
+            "text": "This section describes domain-adaptive in-context learning with encoder-only LMs, e.g., BERT (Devlin et al., 2019). As discussed in Section 3.1, for each input xS , we first retrieve top-k sentences xT from the target domain as the context for xS . For encoder-only models, the retrieved sentences are then concatenated at the end of the source input.\n[xS ;xT ] = [ xS ; \u27e8SEP\u27e9 ;xT1 ; \u00b7 \u00b7 \u00b7 ;xTk ] , (3)\nwhere \u27e8SEP\u27e9 is a separation token. To perform in-context learning, recall from Section 3.1, two objectives (language modeling and task learning) are involved. An overview of the training process for encoder-only models on the NER task is shown in Fig. 2. For the language modeling objective, we perform unsupervised Masked Language Modeling (MLM) on the target domain. We randomly sample 15% tokens from the target context [xT1 ; \u00b7 \u00b7 \u00b7 ;xTk ] and replace them with the [MASK] token. We denote the set of indices for the masked tokens as M and the original ground-truth tokens for these masked positions are referred to as tTM = {ti|i \u2208 M}. The masked input becomes [x;xTM ], where x T M denotes the collection of target contexts after masking. With the bidirectional structure of the encoder-only LMs, the representation for each masked token in the target domain encodes both the target context and the source input. As such, the MLM objective encourages the encoder to learn the target distribution that is indistinguishable from the source domain.\nFor the task objective, we use different prediction mechanisms for different tasks. For SA, we use average pooling on top of each token in the source input xS before being fed into the classifier. For NER, we apply an additional CRF layer (Ma and Hovy, 2016; Lample et al., 2016) on top of the LM feature which is a common practice for token-level classifications.\nFormally, the joint objective is to minimize the negative log-likelihood of the ground truth task\nlabel y and masked tokens tTM :\nmin \u03b8 \u2211 (xS ,y)\u223cDS \u2212 [ log Pr\u03b8(y|xS , xTM )\n+ \u03bb log Pr\u03b8(t T M |xS , xTM )\n] , (4)\nwhere \u03bb represents a scaling factor."
+        },
+        {
+            "heading": "3.3 Decoder-only LMs with ICL",
+            "text": "Recently, decoder-only LMs have received excessive attention and have motivated continuous developments to scale up in order to solve various NLP tasks under zero-shot or few-shot settings, such as GPT-3 (Brown et al., 2020), LLaMA (Touvron et al., 2023), and ChatGPT. Despite the increasing scalability, they are still prone to producing unpredictable outputs in undesired formats. For example, ChatGPT gives subpar performance for NER (see Table 1). This reflects the necessity of decoder-only LMs for learning to adapt to the target domain."
+        },
+        {
+            "heading": "3.3.1 Cross-Domain Few-Shot Inference",
+            "text": "Recent works show that providing few-shot ICL demonstrations (input-label pairs) contributes to performance gains (Zhao et al., 2021; Liu et al., 2022; Min et al., 2022). However, there are no in-distribution demonstrations available when performing inference on the unlabeled target domain. Therefore, in many real scenarios, we often select out-of-distribution (OOD) input-label pairs from another domain irrespective of the possible huge domain shift from the target query. In UDA, we have access to the entire labeled source dataset, thus we could retrieve similar demonstrations from the source domain given a target query. We provide prompts and examples in Fig. 3 showing how to use retrieved input-label pairs from the source domain as demonstrations.\nIn our experiments with ChatGPT (see Table. 1 and Table. 2), surprisingly we find that retrieving OOD demonstrations fails in most adaptation scenarios; even randomly sampling crossdomain demonstrations can bring non-trivial performance gains comparing with the retrieval approaches. However, fine-tuning much smaller LMs with in-context domain adaptation gives the best performances in most cases in our experiments. This phenomenon suggests we still need to finetune decoder-only LMs to update specific domain knowledge which will be discussed in the next section."
+        },
+        {
+            "heading": "3.3.2 Fine-tuning",
+            "text": "In this work, we fine-tune LLaMA (Touvron et al., 2023) with a parameter efficient approach, i.e., Low-Rank Adaptation (LoRA) (Hu et al., 2021). LoRA maintains the weights of pre-trained LMs while introducing trainable rank decomposition matrices into each transformer layer, making it feasible to fine-tune larger LMs with much fewer computational resources 2.\nSimilar to the method proposed in Section 3.2, we first retrieve top-k contexts from the target unlabeled set, given a source input query. We then insert these contexts in between the instruction and the source input sentence3 (see an example in Fig. 4). Next, we finetune the decoder-only LMs given the crafted example [prompt;xT ;xS ; y] = [t0, t1, t2, \u00b7 \u00b7 \u00b7 ] and the source label. Specifically, with the Casual Language Modeling (CLM) mech-\n2In our experiment, trainable parameters only account for 0.24% of the entire LLaMA-7B parameters.\n3We follow the template from Standford Alpaca (Taori et al., 2023)\nanism, the objective is to predict the next token ti:\nmin \u03b8 \u2211 i \u2212 log Pr \u03b8 (ti|t0, t1, \u00b7 \u00b7 \u00b7 , ti\u22121). (5)\nDifferent from section 3.2, for decoder-only LMs, the retrieved target contexts xT need to be positioned before the source input xS as the model will learn in an autoregressive manner. Moreover, instead of only calculating token prediction loss on the response/output y which is adopted for the In-context Task Learning objective as discussed in Section 3.1, we propose to compute the loss on every token within [prompt;xT ;xS ; y]. Objective (5) can be decomposed into two objectives: 1) When ti \u2208 xT , the loss corresponds to token predictions in the target domain, analogous to the in-context language modeling objective; 2) When ti \u2208 y, the loss relates to in-context task learning which aims to generate task label given both target contexts and the source input. The objective (5) thus merges two proposed in-context objectives into a unified function."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Datasets",
+            "text": "NER datasets We experiment on 7 NER datasets covering four domains: News, Social media, Financial, and Biomedical. Under the News domain, CoNLL-03 English dataset (Sang and De Meulder, 2003) is the most popular NER dataset, and we treat it as the source domain dataset. The other three domains serve as target domains. For the Social Media domain, we use WNUT-16 (Strauss et al., 2016) and WNUT-17 (Derczynski et al., 2017) collected from Twitter. For the Financial domain, we use\nFIN (Alvarado et al., 2015) which is a dataset of financial agreements. For the Biomedical domain: we use BC2GM (Smith et al., 2008), BioNLP09 (Kim et al., 2009), and BC5CDR (Li et al., 2016). Note that for different domains, entity types are different. For unsupervised domain adaptation, to ensure source and target domains share the same label space, we remove the entity types and convert all label formats to the BIO scheme4, similar to the problem of entity span prediction. Sentiment Analysis datasets We use the Amazon review dataset (He et al., 2018) which contains four domains: Book (BK), Electronics (E), Beauty (BT), and Music (M). The original crawled reviews contain star ratings (1 to 5 stars). Following previous work (He et al., 2018; Ye et al., 2020), we label them with rating < 3, > 3, = 3 as negative, positive, and neutral respectively. There are in total 12 adaptation scenarios, and we select 6 of them in our experiment.\nStatistics and the data splits of all the datasets can be found in Appendix A."
+        },
+        {
+            "heading": "4.2 Experiment Configurations",
+            "text": "For our retrieval system, we use SimCSE RobertaLarge (Gao et al., 2021) trained on NLI datasets5 as the retrieval model for the SA task, and use RoBERTa-large (Liu et al., 2019) for BERTScore (Zhang et al., 2020) for the NER task6. We set k = 5 for top-k retrieval from the target domain. For the encoder-only model, we select XLM-RoBERTa-large (Conneau et al., 2020) as a basis which has 561M parameters. For the decoder-only model, we use LLaMA-7B7 (Touvron et al., 2023) and fine-tune it with LoRA (Hu et al., 2021). For inference-only LMs, we choose ChatGPT and LLaMA-Alpaca8. For ChatGPT, we use gpt-3.5-turbo9. LLaMA-Alpaca uses LoRA to fine-tune the LLaMA-7B model on Alpaca (Taori et al., 2023) dataset which is generated with SelfInstruct (Wang et al., 2022)."
+        },
+        {
+            "heading": "4.3 Implementation Details",
+            "text": "For training the RoBERTa model, we fine-tune contextualized embeddings using AdamW (Kingma\n4For example, entity \u201cLos Angeles\u201d has the label \u201cB-LOC I-LOC\u201d, we convert it to \u201cB I\u201d.\n5https://github.com/princeton-nlp/SimCSE 6https://github.com/Tiiiger/bert_score 7For computing efficiency, we adopt the 7B model, but our\nmethod can be easily extended to larger LM families. 8https://huggingface.co/tloen/alpaca-lora-7b 9May 24 version of ChatGPT is used for experiments.\nand Ba, 2015; Loshchilov and Hutter, 2018). In the experiments on NER datasets, the learning rate is set to 1e-5 for RoBERTa and 0.05 for CRF. For SA datasets, we set the learning rate to 5e-5 and use a linear scheduler with warm-up steps 10% of the total training steps. The weight factor \u03bb in (4) equals to 0.2.\nFor LLaMA-LoRA, we set the rank r to be 16, dropout rate to be 0.05. Trainable parameters only account for 0.24% of the entire LLaMA-7B parameters. We fine-tune LLaMA-LoRA with batch size 256, learning rate 3e-4, and train 5 epochs with early stopping. With the help of LoRA, each adaptation scenario only requires less than 1 hour of training time on a single A100 GPU."
+        },
+        {
+            "heading": "4.4 Results",
+            "text": "We experiment with the following settings and baselines. For Inference-only experiments: No demo performs zero-shot inference on each target test input without demonstrations. Rand demo samples demonstrations randomly from the source domain. Retr demo retrieves top-5 demonstrations from the source domain, corresponding to the approach mentioned in Section 3.3.1. For fine-tuning experiments: No-ICL does not retrieve any target context for each source input. The model is only trained on source inputs. ICL-rand investigates the effectiveness of the task objective (1). Instead of retrieval, we randomly sample contexts from the target domain. In this case, the model is not exposed to semantically similar contexts in the target domain to enhance knowledge transfer via (1). ICL-sup only trains the model via the task objective (1). This investigates the effectiveness of the language modeling objective (2). For the encoderonly model, we do not mask any token. For the decoder-only model, we calculate the loss corresponding to the response/output positions. ICL-source further investigates the effectiveness of the target contexts. Here we retrieve contexts solely from the source domain instead of the target domain. Hence, the model learns to perform the task and language modeling within the source distribution. DAICL is our proposed method domain-adaptive in-context learning as shown in Section 3.2 and Section 3.3.2. As described in Section 3.1, this\nmethod retrieves related contexts from the target domain and combines two objectives to perform domain-adaptive ICL.\nThe experiment results for NER and SA are illustrated in Table 1 and Table 2, respectively. Below we conclude with some interesting findings.\nAdaptive ICL benefits UDA by learning two objectives simultaneously. Given the results in Table 1 and Table 2, we can observe that our proposed method DAICL which learns two objectives simultaneously surpasses baselines with a large margin in most adaptation scenarios. From the result of ICL-sup, we find that training with the task objective alone could slightly help UDA. As discussed in Section 3, the benefit originates from incorporating the target contexts for task discrimination. By comparing DAICL with ICL-sup and ICL-source, we can conclude that the proposed in-context adaptation strategy enhances domain adaptation by jointly learning the task signal and language modeling simultaneously.\nRetrieving OOD examples could be disappointing for LLMs. From the RoBERTa results of ICLrand, we find that random target contexts can improve NER (compared with No-ICL) by a small margin. One possible reason is that random contexts from the target domain could still encourage the model to learn the target distribution via (2).\nHowever, ICL-rand significantly impedes the performance of Sentiment Analysis. We conjecture that ICL-rand might select target contexts with opposite sentiment labels from the source input, negatively affecting the learning process.\nSurprisingly, ChatGPT with random out-ofdistribution (OOD) demonstrations achieves higher scores than retrieval in all NER and SA experiments (Rand demo vs. Retr demo). Previous work reveals that choosing demonstration examples that are close to the test input significantly enhances the effectiveness of ICL (Liu et al., 2022; Rubin et al., 2022). However, they retrieve from a labeled training set in which the distributions of the text and label space are identical with the test input. In contrast, in transfer setting which is close to the real-world scenario, we only have OOD input-label pairs from another labeled dataset. We make a hypothesis regarding this observation, for crossdomain ICL, providing diverse and distinct OOD demonstrations is more beneficial for LLMs to understand the task and generalize.\nFine-tuning is still beneficial for UDA. Under the UDA setting where labels only exist in the source domain, we can prompt LLMs with input-label pairs from the source domain to infer the target label (inference-only). Another option is to fine-tune smaller LMs to adapt task-aware knowledge from the source to the target domains. A natural ques-\nE\u2192BK BT\u2192BK BK\u2192BT BK\u2192M BK\u2192E M\u2192BT Ave. Inference only\nLLaMA-Alpaca No demo 61.53 61.53 63.72 58.86 59.41 63.72 61.46 Rand demo 54.33 55.45 60.48 49.09 51.98 63.78 55.85 Retr demo 60.9 63.58 69.35 60.33 61.36 67.82 64.06 ChatGPT No demo 72.68 72.68 72.27 70.06 69.83 72.27 71.63 Rand demo 73.10 73.27 74.37 71.18 71.44 74.3 72.94 Retr demo 73.07 71.92 73.82 69.69 71.00 73.57 72.18\nFine-tuning\nRoBERTa\nLong et al. (2022) 70.330.3 70.920.6 64.131.4 64.671.7 62.360.7 65,400.8 66.30 Ye et al. (2020) 70.900.4 71.380.8 67.480.4 67.160.6 64.001.2 70.710.3 68.61 No-ICL 68.330.5 69.850.6 65.921.1 61.471.7 61.360.7 67.430.8 65.73 ICL-rand 67.610.8 68.740.6 64.801.3 61.591.9 61.440.9 66.721.7 65.15 ICL-sup 69.68\u20200.6 71.15 \u2020 0.5 68.79 \u2020 1.4 64.88 \u2020 1.1 63.16 \u2020 1.0 69.15 \u2020 1.1 67.80 ICL-source 68.700.8 70.64\u20200.8 65.291.4 61.812.2 61.751.4 66.891.9 65.84 DAICL 71.21\u20200.5 72.81 \u2020 0.9 68.64 \u2020 1.7 66.93 \u2020 0.8 66.08 \u2020 0.7 71.44 \u2020 0.9 69.52\nLLaMA-LoRA No-ICL 74.15 74.30 72.97 70.42 70.08 70.15 72.01 ICL-rand 65.22 64.17 60.48 61.95 59.36 63.44 62.43 ICL-sup 76.10 75.20 72.25 71.63 71.78 70.54 72.75 ICL-source 70.18 68.45 68.46 63.27 67.23 67.94 67.59 DAICL 77.30 76.30 74.02 73.40 70.38 72.37 74.13\nTable 2: Accuracy(%) results of Amazon Review Sentiment Analysis. For example, E\u2192BK represents training on Electronics (E) and adapting to Book (BK). There are 4 domains available, we choose 6 out of 12 adaptation tasks.\ntion to ask is can the few-shot prompting paradigm substitute the fine-tuning paradigm? In NER experiments, ChatGPT achieves very low performances, but fine-tuning a much smaller RoBERTa model achieves state-of-the-art scores in most adaptation scenarios. In SA experiments, fine-tuning LLaMA with even fewer trainable parameters (1.7M) outperforms all the other methods. Hence, we hypothesize that although LLMs have strong generalization ability, they cannot tackle problems in all domains. When it comes to UDA, designing an effective adaptation strategy is still beneficial."
+        },
+        {
+            "heading": "4.5 Analysis",
+            "text": "Adaptive ICL or Adaptive Pre-training? In Section 3.1, we propose to learn the two objectives simultaneously with the help of the target contexts. What if we separate the two objectives into different training stages? In the first stage, we continue pre-training LMs on the unlabeled target domain dataset with the language modeling objective. In the second stage, supervised fine-tuning is performed on the labeled source domain dataset with the task objective. This two-step UDA procedure is called adaptive pre-training or post pretraining (Han and Eisenstein, 2019; Vu et al., 2020; Karouzos et al., 2021). There are two differences between adaptive pre-training and adaptive ICL which we propose: 1) adaptive ICL mixes a source input with target contexts when performing task predictions while adaptive pre-training only takes\nthe source input; 2) adaptive ICL learns two losses simultaneously, and for decoder-only model, we only have one type of task which merges these two losses intrinsically.\nTo compare the two approaches, we conduct experiments on LLaMA-LoRA to perform adaptive pre-training. In the first stage, we pre-train LoRA weights using target unlabeled texts. In the second stage, we start from the LoRA checkpoint obtained in the previous stage and continue fine-tuning it with task supervision. We use the same Alpaca template but do not provide demonstrative context. Results can be found in Table 3. No ICL is identical to the second stage in adaptive pre-training.\nWe could observe that pre-training only gains marginal benefits for SA tasks compared with NoICL. We conjecture that the domain gap is smaller in SA datasets than in NER datasets. The proposed adaptive ICL strategy outperforms adaptive pre-training, which could be attributed to the fact that the decoder-only model under adaptive ICL can learn the two objectives with demonstrative contexts."
+        },
+        {
+            "heading": "5 Related Work",
+            "text": "Unsupervised Domain Adaptation Traditional methods include Pseudo-labeling (Ye et al., 2020), Pivot-based approach (Pan et al., 2010), and adversarial neural network (Ganin et al., 2016). Recently, Adaptive pre-training on domainspecific corpora has proven to be an effective process for adaptation, such as BioBERT (Lee et al., 2019) which is a specialized variant of BERT. Han and Eisenstein (2019) proposes AdaptaBERT, which includes a second phase of unsupervised pretraining for BERT in unsupervised domain adaptation. Karouzos et al. (2021) proposes a mixed multi-task loss to learn classification and MLM. Chronopoulou et al. (2019) utilizes an auxiliary LM loss to prevent catastrophic forgetting in transfer learning. Retrieval-Augmented Language Models Retrieval-based LMs have shown to be effective in improving LM performance (Asai et al., 2023). The retriever with various knowledge datastores can provide up-to-date information since LMs cannot memorize all long-tail knowledge in the parameters. REALM (Guu et al., 2020) pre-trains and finetunes an encoder-only model jointly with a knowledge retriever by modeling documents as latent variables and marginalizing over all possible documents. While RAG (Lewis et al., 2020) fine-tunes an encoder-decoder model with a non-parametric retriever by fixing the search index. Atlas (Izacard et al., 2022) combines RAG with pre-training on open-domain QA and knowledge-intensive tasks. Replug (Shi et al., 2023) proposes adapting the dense retriever to the black-box large language models to reduce the generating perplexity. In-Context Learning In the context of ICL, previous studies indicate that it primarily exposes the model\u2019s infrastructure learned during pre-training. Xie et al. (2022) provides evidence that ICL can be interpreted as a type of Bayesian inference, where demonstrations act as noisy evidence. (Min et al., 2022) shows that the advantages of ICL mainly stem from having the appropriate distribution of inputs and labels, rather than solely focusing on the correctness of individual labels. Previous research has revealed that in scenarios where abundant training data is accessible, retrieving examples that are similar to the test input as demonstrations significantly enhances ICL performance. Liu et al. (2022) introduces a retrieval module for GPT-3 (Brown et al., 2020)\nand they also fine-tune the retrieval model, leading to stronger ICL performance. Rubin et al. (2022) trains a dense retriever to select demonstrations that have a positive impact on the learning process."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this work, we propose domain-adaptive incontext learning to acquire knowledge of both the target domain distribution and the discriminative task signal simultaneously. We develop different prompting and fine-tuning strategies that take into account various LM architectures and different language modeling mechanisms. Overall, our framework demonstrates significant performance gains over an extensive spectrum of cross-domain experiments, and we perceive that fine-tuning is still effective and promising in the era of large language models when it involves domain shift."
+        },
+        {
+            "heading": "7 Limitations",
+            "text": "Our retrieval system is based on SimCSE and BERTScore to choose semantically similar contexts following previous work. However, we do not explore other scoring and re-ranking metrics, or explore methods to train a dense retriever. On the other hand, it is hard to tell what makes a good demonstration simply based on a retrieval system, considering that the retrieval system does not have access to the inference task. We leave this for future work to explore what is a good demonstrative example when encountering domain shift."
+        },
+        {
+            "heading": "8 Ethics Statement",
+            "text": "To ensure the ethical use of Artificial Intelligence in the legal field, we have taken measures such as anonymizing sensitive information in real-world datasets. In addition, our model\u2019s predictions should be served as supportive references for judges, assisting them in making judgments more efficiently, rather than solely determining the judgments."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work is partially supported by the 2020 Microsoft Research Asia collaborative research grant. Sinno J. Pan thanks for the support from HK Global STEM Professorship and the JC STEM Lab of Machine Learning and Symbolic Reasoning."
+        },
+        {
+            "heading": "A Datasets",
+            "text": "For NER datasets, we select CoNLL-03 training as the source labeled dataset and a CoNLL-03 dev set as the validation set for adaptation. When adapting to a target domain, for example, WNUT16, we use WNUT16 training set as the unlabeled target dataset by discarding all labels from this training set. That is, in our approach, for the finetuning setting, we retrieve text-only examples from WNUT16 training dataset as the contexts of source input CoNLL03. Statistics can be found in Table 4\nFor the Amazon review dataset, it does not remove neutral labels, which is advantageous in unsupervised domain adaptation (UDA) scenarios where label information from the target domain is unavailable. A summary of this dataset can be found in Table 5. For SA, each dataset consists of two sets. Set 1 contains 6,000 instances with balanced class labels, while Set 2 comprises instances randomly sampled from a larger dataset (McAuley et al., 2015), preserving the authentic label distribution. It is important to note that there is no overlap between the examples in these two sets. Following the approach outlined in (He et al., 2018), Set 1 is used as the training set for the source domain. While the label distribution in the target domain is unpredictable and beyond our control in real-life scenarios, it is more reasonable to use Set 2 as the unlabeled set for the target domain. Finally, the model is evaluated on Set 1 from the target domain. Regarding the data split, a validation set is created\nby randomly sampling 1000 instances from the source labeled Set 1. For example, when performing E\u2192BK adaptation task, we use Electronics Set 1 as the training set and validation set, we use Book Set 2 as the target unlabeled set, and we retrieve similar examples from this set as contexts. The evaluation will be performed in Book Set 1."
+        },
+        {
+            "heading": "B Example Input and Output Pairs of",
+            "text": "ChatGPT and LLaMA"
+        }
+    ],
+    "title": "Adapt in Contexts: Retrieval-Augmented Domain Adaptation via In-Context Learning",
+    "year": 2023
+}

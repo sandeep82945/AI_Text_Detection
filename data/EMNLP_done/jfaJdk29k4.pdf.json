@@ -1,0 +1,832 @@
+{
+    "abstractText": "The task of Question Generation over Knowledge Bases (KBQG) aims to convert a logical form into a natural language question. For the sake of expensive cost of large-scale question annotation, the methods of KBQG under low-resource scenarios urgently need to be developed. However, current methods heavily rely on annotated data for fine-tuning, which is not well-suited for few-shot question generation. The emergence of Large Language Models (LLMs) has shown their impressive generalization ability in few-shot tasks. Inspired by Chain-of-Thought (CoT) prompting, which is an in-context learning strategy for reasoning, we formulate KBQG task as a reasoning problem, where the generation of a complete question is split into a series of sub-question generation. Our proposed prompting method KQG-CoT first selects supportive logical forms from the unlabeled data pool taking account of the characteristics of the logical form. Then, we construct a task-specific prompt to guide LLMs to generate complicated questions based on selective logic forms. To further ensure prompt quality, we extend KQG-CoT into KQG-CoT+ via sorting the logical forms by their complexity. We conduct extensive experiments over three public KBQG datasets. The results demonstrate that our prompting method consistently outperforms other prompting baselines on the evaluated datasets. Remarkably, our KQG-CoT+ method could surpass existing fewshot SoTA results of the PathQuestions dataset by 18.25, 10.72, and 10.18 absolute points on BLEU-4, METEOR, and ROUGE-L, respectively.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yuanyuan Liang"
+        },
+        {
+            "affiliations": [],
+            "name": "Jianing Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Hanlun Zhu"
+        },
+        {
+            "affiliations": [],
+            "name": "Lei Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Weining Qian"
+        },
+        {
+            "affiliations": [],
+            "name": "Yunshi Lan"
+        }
+    ],
+    "id": "SP:810cc6b37ae0215756388095dc45b6b83fcfeb5f",
+    "references": [
+        {
+            "authors": [
+                "Berkeley R Andrus",
+                "Yeganeh Nasiri",
+                "Shilong Cui",
+                "Benjamin Cullen",
+                "Nancy Fulda."
+            ],
+            "title": "Enhanced story comprehension for large language models through dynamic document-based knowledge graphs",
+            "venue": "Proceedings of the AAAI Conference on Artificial",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Satanjeev Banerjee",
+                "Alon Lavie."
+            ],
+            "title": "METEOR: An automatic metric for MT evaluation with improved correlation with human judgments",
+            "venue": "Proceedings of the ACL Workshop on Intrinsic and Extrinsic Evaluation Measures for Machine Transla-",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Jonathan Berant",
+                "Andrew Chou",
+                "Roy Frostig",
+                "Percy Liang."
+            ],
+            "title": "Semantic parsing on Freebase from question-answer pairs",
+            "venue": "Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing, pages 1533\u20131544, Seattle, Wash-",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Yongrui Chen",
+                "Huiying Li",
+                "Yuncheng Hua",
+                "Guilin Qi."
+            ],
+            "title": "Formal query building with query structure prediction for complex question answering over knowledge base",
+            "venue": "arXiv pr arXiv:2109.03614.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yu Chen",
+                "Lingfei Wu",
+                "Mohammed Zaki."
+            ],
+            "title": "Toward subgraph-guided knowledge graph question generation with graph neural networks",
+            "venue": "IEEE transactions on neural networks and learning systems, PP.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shizhe Diao",
+                "Pengcheng Wang",
+                "Yong Lin",
+                "Tong Zhang"
+            ],
+            "title": "Active prompting with chain-ofthought for large language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xinya Du",
+                "Junru Shao",
+                "Claire Cardie."
+            ],
+            "title": "Learning to ask: Neural question generation for reading comprehension",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 1342\u20131352,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Zichu Fei",
+                "Qi Zhang",
+                "Yaqian Zhou."
+            ],
+            "title": "Iterative gnn-based decoder for question generation",
+            "venue": "Proceedings of the 2021 conference on empirical",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zichu Fei",
+                "Xin Zhou",
+                "Tao Gui",
+                "Qi Zhang",
+                "Xuanjing Huang."
+            ],
+            "title": "LFKQG: A controlled generation framework with local fine-tuning for question generation over knowledge bases",
+            "venue": "Proceedings of the 29th International Conference on Computational Lin-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Aman Madaan",
+                "Shuyan Zhou",
+                "Uri Alon",
+                "Pengfei Liu",
+                "Yiming Yang",
+                "Jamie Callan",
+                "Graham Neubig."
+            ],
+            "title": "Pal: Program-aided language models",
+            "venue": "arXiv pr arXiv:2211.10435.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yu Gu",
+                "Sue Kase",
+                "Michelle Vanni",
+                "Brian Sadler",
+                "Percy Liang",
+                "Xifeng Yan",
+                "Yu Su"
+            ],
+            "title": "Beyond i.i.d.: Three levels of generalization for question answering on knowledge bases",
+            "venue": "In Proceedings of the Web Conference",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shasha Guo",
+                "Jing Zhang",
+                "Yanling Wang",
+                "Qianyi Zhang",
+                "Cuiping Li",
+                "Hong Chen."
+            ],
+            "title": "DSM: Question generation over knowledge base via modeling diverse subgraphs with meta-learner",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "John A Hartigan",
+                "Manchek A Wong."
+            ],
+            "title": "Algorithm as 136: A k-means clustering algorithm",
+            "venue": "Journal of the royal statistical society. series c (applied statistics), 28(1):100\u2013108.",
+            "year": 1979
+        },
+        {
+            "authors": [
+                "Amr Hendy",
+                "Mohamed Abdelrehim",
+                "Amr Sharaf",
+                "Vikas Raunak",
+                "Mohamed Gabr",
+                "Hitokazu Matsushita",
+                "Young Jin Kim",
+                "Mohamed Afify",
+                "Hany Hassan Awadalla."
+            ],
+            "title": "How good are gpt models at machine translation? a comprehensive evaluation",
+            "venue": "arXiv",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "T. Hospedales",
+                "A. Antoniou",
+                "P. Micaelli",
+                "A. Storkey."
+            ],
+            "title": "Meta-learning in neural networks: A survey",
+            "venue": "IEEE Transactions on Pattern Analysis Machine Intelligence, 44(09):5149\u20135169.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Minki Kang",
+                "Jin Myung Kwak",
+                "Jinheon Baek",
+                "Sung Ju Hwang."
+            ],
+            "title": "Knowledge-consistent dialogue generation with knowledge graphs",
+            "venue": "ICML 2022 Workshop on Knowledge Retrieval and Language Models.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zden\u011bk Kasner",
+                "Ioannis Konstas",
+                "Ond\u0159ej Du\u0161ek."
+            ],
+            "title": "Mind the labels: Describing relations in knowledge graphs with pretrained models",
+            "venue": "arXiv pr arXiv:2210.07373.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pei Ke",
+                "Haozhe Ji",
+                "Yu Ran",
+                "Xin Cui",
+                "Liwei Wang",
+                "Linfeng Song",
+                "Xiaoyan Zhu",
+                "Minlie Huang."
+            ],
+            "title": "JointGT: Graph-text joint representation learning for text generation from knowledge graphs",
+            "venue": "Findings of the Association for Computational Linguis-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Vishwajeet Kumar",
+                "Yuncheng Hua",
+                "Ganesh Ramakrishnan",
+                "Guilin Qi",
+                "Lianli Gao",
+                "Yuan-Fang Li."
+            ],
+            "title": "Difficulty-controllable multi-hop question generation from knowledge graphs",
+            "venue": "The Semantic Web\u2013ISWC 2019: 18th International Semantic Web Conference,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Che-Hao Lee",
+                "Tzu-Yu Chen",
+                "Liang-Pu Chen",
+                "Ping-Che Yang",
+                "Richard Tzong-Han Tsai."
+            ],
+            "title": "Automatic question generation from children\u2019s stories for companion chatbot",
+            "venue": "2018 IEEE International Conference on Information Reuse and Integration (IRI),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tianle Li",
+                "Xueguang Ma",
+                "Alex Zhuang",
+                "Yu Gu",
+                "Yu Su",
+                "Wenhu Chen."
+            ],
+            "title": "Few-shot in-context learning for knowledge base question answering",
+            "venue": "The 61st Annual Meeting of the Association for Computational Linguistics.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin."
+            ],
+            "title": "ROUGE: A package for automatic evaluation of summaries",
+            "venue": "Text Summarization Branches Out, pages 74\u201381, Barcelona, Spain. Association for Computational Linguistics.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Jiachang Liu",
+                "Dinghan Shen",
+                "Yizhe Zhang",
+                "Bill Dolan",
+                "Lawrence Carin",
+                "Weizhu Chen"
+            ],
+            "title": "What makes good in-context examples for GPT-3",
+            "venue": "In Proceedings of Deep Learning Inside Out (DeeLIO",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yang Liu",
+                "Dan Iter",
+                "Yichong Xu",
+                "Shuohang Wang",
+                "Ruochen Xu",
+                "Chenguang Zhu."
+            ],
+            "title": "Gpteval: Nlg evaluation using gpt-4 with better human alignment",
+            "venue": "arXiv pr arXiv:2303.16634.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp."
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming fewshot prompt order sensitivity",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Compu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp."
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming fewshot prompt order sensitivity",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Compu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Andrea Madotto",
+                "Zhaojiang Lin",
+                "Chien-Sheng Wu",
+                "Pascale Fung."
+            ],
+            "title": "Personalizing dialogue agents via meta-learning",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 5454\u20135459, Florence, Italy. Asso-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Fei Mi",
+                "Minlie Huang",
+                "Jiyong Zhang",
+                "Boi Faltings."
+            ],
+            "title": "Meta-learning for low-resource natural language generation in task-oriented dialogue systems",
+            "venue": "Proceedings of the Twenty-Eighth International Joint Conference on Artificial Intelligence, IJCAI-19,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Fedor Moiseev",
+                "Zhe Dong",
+                "Enrique Alfonseca",
+                "Martin Jaggi."
+            ],
+            "title": "SKILL: Structured knowledge infusion for large language models",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics:",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "J. Mach. Learn. Res., 21(1).",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "SentenceBERT: Sentence embeddings using Siamese BERTnetworks",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natu-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ohad Rubin",
+                "Jonathan Herzig",
+                "Jonathan Berant."
+            ],
+            "title": "Learning to retrieve prompts for in-context learning",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Tech-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Laura Eline Ruis",
+                "Akbir Khan",
+                "Stella Biderman",
+                "Sara Hooker",
+                "Tim Rockt\u00e4schel",
+                "Edward Grefenstette"
+            ],
+            "title": "Large language models are not zero-shot communicators",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Iulian Vlad Serban",
+                "Alberto Garc\u00eda-Dur\u00e1n",
+                "Caglar Gulcehre",
+                "Sungjin Ahn",
+                "Sarath Chandar",
+                "Aaron Courville",
+                "Yoshua Bengio."
+            ],
+            "title": "Generating factoid questions with recurrent neural networks: The 30M factoid question-answer corpus",
+            "venue": "Proceedings",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Yiping Song",
+                "Zequn Liu",
+                "Wei Bi",
+                "Rui Yan",
+                "Ming Zhang"
+            ],
+            "title": "Learning to customize model",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hongjin Su",
+                "Jungo Kasai",
+                "Chen Henry Wu",
+                "Weijia Shi",
+                "Tianlu Wang",
+                "Jiayi Xin",
+                "Rui Zhang",
+                "Mari Ostendorf",
+                "Luke Zettlemoyer",
+                "Noah A Smith"
+            ],
+            "title": "Selective annotation makes language models better fewshot learners. arXiv pr arXiv:2209.01975",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mirac Suzgun",
+                "Nathan Scales",
+                "Nathanael Sch\u00e4rli",
+                "Sebastian Gehrmann",
+                "Yi Tay",
+                "Hyung Won Chung",
+                "Aakanksha Chowdhery",
+                "Quoc V Le",
+                "Ed H Chi",
+                "Denny Zhou",
+                "Jason Wei"
+            ],
+            "title": "Challenging big-bench tasks and whether chain-of-thought can solve them",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alon Talmor",
+                "Jonathan Berant."
+            ],
+            "title": "The web as a knowledge-base for answering complex questions",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technolo-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alon Talmor",
+                "Jonathan Berant."
+            ],
+            "title": "The web as a knowledge-base for answering complex questions",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technolo-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Milena Trajanoska",
+                "Riste Stojanov",
+                "Dimitar Trajanov."
+            ],
+            "title": "Enhancing knowledge graph construction using large language models",
+            "venue": "arXiv.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Josef Valvoda",
+                "Yimai Fang",
+                "David Vandyke."
+            ],
+            "title": "Prompting for a conversation: How to control a dialog model? In Proceedings of the Second Workshop on When Creative AI Meets Conversational AI, pages 1\u20138, Gyeongju, Republic of Korea",
+            "venue": "Association for",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141 ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in Neural Information Processing Systems. Curran Associates, Inc.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Lei Wang",
+                "Wanyu Xu",
+                "Yihuai Lan",
+                "Zhiqiang Hu",
+                "Yunshi Lan",
+                "Roy Ka-Wei Lee",
+                "Ee-Peng Lim."
+            ],
+            "title": "Plan-and-solve prompting: Improving zeroshot chain-of-thought reasoning by large language models",
+            "venue": "arXiv pr arXiv:2305.04091.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Longyue Wang",
+                "Chenyang Lyu",
+                "Tianbo Ji",
+                "Zhirui Zhang",
+                "Dian Yu",
+                "Shuming Shi",
+                "Zhaopeng Tu"
+            ],
+            "title": "2023b. Document-level machine translation with large language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "brian ichter",
+                "Fei Xia",
+                "Ed H. Chi",
+                "Quoc V Le",
+                "Denny Zhou"
+            ],
+            "title": "2022. Chain of thought prompting elicits reasoning in large language models",
+            "venue": "In Advances in Neural Information Processing Systems",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tingyu Xie",
+                "Qi Li",
+                "Jian Zhang",
+                "Yan Zhang",
+                "Zuozhu Liu",
+                "Hongwei Wang"
+            ],
+            "title": "Empirical study of zero-shot ner with chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Guanming Xiong",
+                "Junwei Bao",
+                "Wen Zhao",
+                "Youzheng Wu",
+                "Xiaodong He."
+            ],
+            "title": "Autoqgs: Auto-prompt for low-resource knowledge-based question generation from sparql",
+            "venue": "Proceedings of the 31st ACM International Conference on Information Knowledge",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xianjun Yang",
+                "Yan Li",
+                "Xinlu Zhang",
+                "Haifeng Chen",
+                "Wei Cheng."
+            ],
+            "title": "Exploring the limits of chatgpt for query or aspect-based text summarization",
+            "venue": "arXiv pr arXiv:2302.08081.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhengyuan Yang",
+                "Zhe Gan",
+                "Jianfeng Wang",
+                "Xiaowei Hu",
+                "Yumao Lu",
+                "Zicheng Liu",
+                "Lijuan Wang."
+            ],
+            "title": "An empirical study of gpt-3 for few-shot knowledgebased vqa",
+            "venue": "The 36th AAAI Conference on Artificial Intelligence (AAAI).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xi Ye",
+                "Semih Yavuz",
+                "Kazuma Hashimoto",
+                "Yingbo Zhou",
+                "Caiming Xiong."
+            ],
+            "title": "RNG-KBQA: Generation augmented iterative ranking for knowledge base question answering",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiali Zeng",
+                "Yongjing Yin",
+                "Yang Liu",
+                "Yubin Ge",
+                "Jinsong Su."
+            ],
+            "title": "Domain adaptive meta-learning for dialogue state tracking",
+            "venue": "IEEE/ACM Transactions on Audio, Speech, and Language Processing, 29:2493\u2013 2501.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Biao Zhang",
+                "Barry Haddow",
+                "Alexandra Birch."
+            ],
+            "title": "Prompting large language model for machine translation: A case study",
+            "venue": "arXiv pr arXiv:2301.07069.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Faisal Ladhak",
+                "Esin Durmus",
+                "Percy Liang",
+                "Kathleen McKeown",
+                "Tatsunori B. Hashimoto"
+            ],
+            "title": "Benchmarking large language models for news summarization",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhuosheng Zhang",
+                "Aston Zhang",
+                "Mu Li",
+                "Alex Smola."
+            ],
+            "title": "Automatic chain of thought prompting in large language models",
+            "venue": "The Eleventh International Conference on Learning Representations.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yingxiu Zhao",
+                "Zhiliang Tian",
+                "Huaxiu Yao",
+                "Yinhe Zheng",
+                "Dongkyu Lee",
+                "Yiping Song",
+                "Jian Sun",
+                "Nevin Zhang."
+            ],
+            "title": "Improving meta-learning for lowresource text classification and generation via memory imitation",
+            "venue": "Proceedings of the 60th Annual",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Denny Zhou",
+                "Nathanael Sch\u00e4rli",
+                "Le Hou",
+                "Jason Wei",
+                "Nathan Scales",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Claire Cui",
+                "Olivier Bousquet",
+                "Quoc V Le",
+                "Ed H. Chi."
+            ],
+            "title": "Least-to-most prompting enables complex reasoning in large language models",
+            "venue": "The",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mantong Zhou",
+                "Minlie Huang",
+                "Xiaoyan Zhu."
+            ],
+            "title": "An interpretable reasoning network for multi-relation question answering",
+            "venue": "Proceedings of the 27th International Conference on Computational Linguistics, pages 2010\u20132022, Santa Fe, New Mexico, USA. As-",
+            "year": 2018
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Question generation task requires a system to produce natural language questions based on the given context. KBQG (Guo et al., 2022) is one of the imperative question generation tasks when the given\n\u2217*Corresponding author\ncontext derived from Knowledge Bases (KBs) is in the form of logical. KBQG has attracted increasing interests from both the industry and academia due to its potential for data augmentation in QA systems (Xiong et al., 2022; Chen et al., 2023) and its ability to assist dialogue systems in creating coherent questions (Lee et al., 2018).\nExisting studies (Kumar et al., 2019; Ke et al., 2021; Fei et al., 2022; Guo et al., 2022; Chen et al., 2023) for KBQG tasks have predominantly utilized neural network-based approaches and demonstrated impressive performance by conducting finetuning on extensive training datasets. However, as the collection of KBQG data is labor-intensive, researchers start paying attention to the few-shot KBQG tasks (Xiong et al., 2022), where a great challenge is posed for suppliers with limited resources: 1) A great deal of annotated data is demanded to allow the existing fine-tuned models to generalize well over different logical forms. However, due to the limitations of low-resource availability, training conventional models by fine-tuning on the full data becomes unrealistic. 2) A logical form is composed of entities, relations, and query grammar. Having logical forms with various combinations of these basic components is crucial to\nuphold the model\u2019s capability for compositional generalization. The lack of data leads to a compositional challenge to the KBQG tasks (Gu et al., 2021). 3) Certain logical forms can become complex when operations such as aggregation, superlatives, and comparisons are involved. Representing these logical forms presents additional challenges. Moreover, developing a KBQG method that incorporates diverse and elaborate expressions becomes particularly difficult in such low-resource scenarios (Xiong et al., 2022; Guo et al., 2022).\nRecently, LLMs such as GPT-3 and Codex (Gao et al., 2022; Suzgun et al., 2022; Wei et al., 2022; Wang et al., 2023a) have proven their strong generalizability on a wide range of few-shot and zeroshot tasks with CoT, including text interpretation, computer vision, planning and reasoning. Meanwhile, a line of work (Kasner et al., 2022; Moiseev et al., 2022; Andrus et al., 2022; Trajanoska et al., 2023; Xie et al., 2023) validates that LLMs have the strong capability to accurately capture the semantics of relations between values in the data, enabling to transform the structured instructions to narrative text. The above studies inspire us to explore few-shot KBQG tasks by prompting LLMs with CoT.\nHowever, how to apply LLMs to KBQG with CoT is still unclear. On one hand, KBQG differs from tasks like code generation or question answering, as it involves incorporating KB-specific items into the input instead of self-contained narratives. Therefore, formatting the input in an easily understandable manner while considering the KB schema is crucial. On the other hand, the challenge lies in designing effective CoT prompts (Wei et al., 2022) that can enhance the performance of LLMs in the context of few-shot KBQG.\nIn this work, we propose KQG-CoT framework, which is the first attempt for training-free few-shot KBQG with LLMs. As shown in Figure 1, our framework consists of two main steps, the objects of which are supportive logical forms selection from an unlabeled data pool and prompt construction. To acquire coherent logical forms, we employ a clustering technique to carefully choose multiple logical forms that serve as representatives, considering both their syntactic and semantic characteristics. To construct prompt, inspired by the principle of CoT (Wei et al., 2022), we take the selected logical forms as exemplars and write rationales to split the generation of a complete question into mul-\ntiple steps. We concatenate the above rationales with the queried logical form to form a prompt, which guides a LLM to outcome a reasoning process of generating a complex question aligning with the logical form. We further improve KQG-CoT to KQG-CoT+ via sorting the supportive logical forms by complexity.\nAs previous methods rely heavily on the training instances to fine-tune a KBQG model. KQGCoT does not need numerous logical form question pairs to train the models. We test the performance of our prompting methods under few-shot setting on three public datasets, namely WebQuestions (Kumar et al., 2019), PathQuestions (Zhou et al., 2018), and GrailQA (Gu et al., 2021). We conduct a comprehensive comparison with a range of commonly used CoT baseline methods including Auto-CoT (Zhang et al., 2023c), Active-CoT (Diao et al., 2023), Random-CoT (Brown et al., 2020) and so on. The experimental results show that we can outperform all of them with an observable margin. Besides, we also compare with a set of SoTA systems trained with full data or few data. Our few-shot method could achieve competitive results to the full training methods. Remarkably, our fewshot method could surpass existing few-shot SoTA results of PathQuestions dataset by 18.25, 10.72 and 10.18 absolute points on BLEU-4, METEOR and ROUGE-L, respectively.\nKQG-CoT provides a simple but effective solution to few-shot KBQG problem, we expect it could serve as an important baseline for future investigation to KBQG tasks under low-resource scenarios.\nOur main contributions are summarized as follows:\n\u2022 By encoding and clustering the skeletons of logical forms, we successfully retrieved supportive logical forms that are particularly suitable for constructing effective prompts.\n\u2022 We reorganized the sequence of examples and utilized the CoT method to construct prompts that are highly effective for large language models.\n\u2022 The experimental results indicate that our method surpasses the baseline by a significant margin and achieves performance levels that are comparable to fine-tuned methods."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Knowledge Base Question Generation. The early approaches for KBQG tasks are template-based methods. Berant et al. (2013 and Talmor and Berant (2018a) utilized search engines and manual annotation to construct the natural language questions based on logical forms. However, template-based methods rely on manual intervention, which is hard to be scaled up. With the advancement of deep neural networks, neural network-based methods have emerged as a prominent and widely adopted approach. Kumar et al. (2019) and Chen et al. (2023) proposed end-to-end models based on Transformer and Graph2seq models, which are capable of generating complex, multi-hop questions based on a subgraph. Follow-up studies (Fei et al., 2022; Guo et al., 2022) developed more complicated models for KBQG, which ensure the relevance between the generated questions and subgraphs. Xiong et al. (2022) proposed a method for low-resource KBQG, where an auto-prompter is developed to paraphrase a logical form into a description, so that a pre-trained language model can be fine-tuned with the augmented data. Our work is different from this one as our method focuses on solving few-shot KBQG challenge with frozen LLMs. Few-shot Learning for Text Generation. In recent years, significant progress has been made in the field of few-shot learning for text generation. One line of work develops meta-learning frameworks for text generation (Mi et al., 2019; Madotto et al., 2019; Zeng et al., 2021; Hospedales et al., 2022), which aims to acquire an optimal initialization that enables accurate and rapid adaptation to a new task, even when limited data is available. Other line of work proposes different augmentation algorithms to synthesize the data for training (Song et al., 2019; Zhao et al., 2022), so that conventional text generation models can be applied to the augmented data. Most recently, LLMs are leveraged to solve few-shot text generation tasks such as text summarization (Yang et al., 2023; Zhang et al., 2023b; Liu et al., 2023), machine translation (Wang et al., 2023b; Hendy et al., 2023), dialogue generation (Zhang et al., 2023a; Valvoda et al., 2022; Kang et al., 2022) and so on. There is no existing study applying LLMs to few-shot KBQG tasks. In-Context Learning with LLMs. Without gradient updates, In-Context Learning (ICL) effectively tackles a wide range of NLP tasks by incorporating a small number of prompted examples as part of\nthe input (Ruis et al., 2023) to help LLMs understand the tasks. Multiple studies (Su et al., 2022; Rubin et al., 2022) explored the selection of examples that are similar to the query during prompt construction. Recent researches (Lu et al., 2022a; Liu et al., 2022; Diao et al., 2023; Wang et al., 2023c) highlight that the order of these examples in the prompt has a substantial influence. CoT is a prompting strategy decomposing complex tasks into sub-tasks, helping the model to derive the correct answers progressively (Wei et al., 2022; Zhou et al., 2023). It has been widely used in mathematical word problem solving, common-sense reasoning, and symbolic reasoning. Our work incorporates CoT strategy into KBQG tasks, where iterative process enables LLMs to ultimately obtain a complex question aligning with the logical form."
+        },
+        {
+            "heading": "3 Methodology",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Problem Formulation",
+            "text": "A KB consists of a set of triples. A logical form is a structural expression of a subgraph in the KB, which may consist of complex operations (e.g., aggregation, comparative and superlative) and can be utilized to execute against a KB. The task of KBQG requires a system to generate a natural language question when given a logical form and the corresponding KBs with consistent semantics."
+        },
+        {
+            "heading": "3.2 Method Overview",
+            "text": "Recently, the LLM has shown its impressive incontext few-shot learning capabilities. Instead of fine-tuning a pre-trained model to adapt it to a downstream task, we can simply apply it to a new task with a few examples as prompt during inference (Yang et al., 2022; Li et al., 2023). For the KBQG task, we adopt a two-stage method to design CoT prompts, which effectively enable the LLM to comprehend complex logical forms and generate questions. Concretely, the first stage Supportive Logical Forms Selection focuses on identifying supportive examples that represent various syntax patterns of logical forms. To accomplish this, we encode the structure of logical forms, perform clustering, and employ sampling techniques to select top-k supportive logical forms. Once these supportive examples are selected, we leverage LLMs with CoT prompts to generate natural language questions. This leads us to the second stage, Prompt Construction, which involves producing sub-questions as rationales. Through this process,\nwe can ultimately formulate a complex question that adequately captures the semantic of the logical form. A schematic diagram of our method is displayed in Figure 2."
+        },
+        {
+            "heading": "3.3 Supportive Logical Forms Selection",
+            "text": "Zhang et al. (2023c) has shown that when constructing demonstrations, we need to mitigate the effect of few-shot CoT errors by differentiating the design of demonstrations. In KBQG tasks, supportive logical forms are those that can cover diverse logical rules, so as to offer more syntax information for LLMs to generate questions. Unlike the narrative inputs, the logical form is a combination of program structures and schema items (i.e., entities and relations). Therefore, it is essential to take both aspects into consideration when selecting supportive logical forms. In our approach, we utilize Structure Encoding and Clustering, followed by a Logical Form Sampling process to select supportive logical forms. Structure Encoding and Clustering. To ensure the logical forms can be drafted for unseen questions, we extract their structures by converting the schema items into symbolic variables. Specifically, we keep the grammars in the logical form unchangeable. Then, we replace the relation with symbol \u201cr\u201d and we replace the entity with \u201ce\u201d. This structure is also known as a abstract query graph (Chen et al., 2021), which reflects the topology and the component classes of logical forms. For instance, the raw logical form is:\n(AND medicine.routed_drug\n(JOIN medicine.routed_drug.marketed_formulations m.0hqs1x)).\nIt becomes the following structure after conversion:\n(AND r (JOIN r e)).\nOnce we have obtained the structure of the logical forms, which filters out the semantic meaning of the logical forms. We encode the structure representation into a fix-length embedding. In detail, we view the structure as a sequence of tokens. We encode the contexts of the sequence with Sentence-Transformers (Reimers and Gurevych, 2019), which is an advanced model for text embedding. The encoded vectors are well-suited for calculating the similarity between sentences. We extract the final hidden state of as the vectorized representation of the sentence. After that, we utilize\nthe K-means (Hartigan and Wong, 1979) clustering algorithm to group the encoded structure into k clusters based on their syntactic similarity. Logical Form Sampling. Each cluster contains a group of logical forms with the similar structure, we randomly pick up a structure from each group and obtain k representative structures. As each structure may correspond to multiple logical forms. We further identify k logical forms with distinct semantics deriving from the k selected structures. To this end, we iteratively sample logical forms holding the maximum diversity of semantics. Specifically, for the first logical form, we randomly pick up one from the candidates. Then we search logical forms for another structure. We greedily pick up a candidate with least semantic similarity to the selected logical forms, where the similarity is measured by the encoding of the original logical forms. We repeat the process until we have gone through k structures as shown in Figure 2.\nTo help the LLMs fully understand the logical forms, we substitute the entities in the original logical forms with their surface names in the KB. In this way, we obtain k supportive logical forms."
+        },
+        {
+            "heading": "3.4 Prompt Construction",
+            "text": "Since some logical forms have complicated semantics and even nested syntactic structures are included. Following the CoT method, we construct a reasoning chain prompt based on the supportive logical forms retrieved above. For each example, we need to generate a reasoning chain based on logical forms to elicit LLMs generate questions from simple to complicated. To this end, we hold two criteria when constructing reasoning chains:\n(i) The templates should break up the generation of a complicated question into a step by step process.\n(ii) The templates should clearly identify the subcomponent in a logical form that requires LLMs to focus on for each step.\nTherefore, we first break down a logical form in a nested manner, where the follow-up logical forms include the preceding logical forms. Specifically, the first step usually generates a simple question querying one-hop relation from the topic entity. The second step usually generates a question querying two-hop relation chain involving the above one-hop relation. As we can see from Figure 2, the first step of prompt\nparses the entire logical form into one-hop relation subgraph1 \u201c(AND sports.sport.team_coaches John Russo)\u201d which leads to a simple subquestion1 \u201csport team coach john russo \u201d. The second step includes the parsed logical form appended to the previous step as a component and generates question \u201cWhich sport does john russo coach?\u201d based on the subgraph2 and subquestion1. As a result, we continuously expand the logical form until a complete question is formed. This step-bystep process ensures that the generated question is semantically coherent and grammatically accurate.\nDuring inference, we concatenate all the demonstrations and queried logical form as the final prompt. Based on the example in Figure 2, the prompt includes \u201cInput: (AND ... Input: (JOIN ... Input: (COUNT ... S.A.\u201d. After receiving the prompt, LLMs outcome the predictions that clarifies the intermediate generation steps of subquestion1, subquestion2, and subquestion3. And the last subquestion will be our final predicted question, which is \u201cWhat is the number of aircraft manufacturer in the legal structure of s.a. ?\u201d."
+        },
+        {
+            "heading": "4 Experiment",
+            "text": "In this section, we first introduce the KBQG datasets used to evaluate the performance of our proposed method and the comparable baseline methods. Next, we present the implementation details and demonstrate the experimental results."
+        },
+        {
+            "heading": "4.1 Data and Metrics",
+            "text": "We evaluate our prompting method on the following three public datasets: WebQuestions (WQ) (Kumar et al., 2019)1 is a KBQG dataset combining instances from WebQuestionsSP (Serban et al., 2016) and Com-\n1https://github.com/liyuanfang/mhqg\nplexWebQuestions (Talmor and Berant, 2018b). It provides questions, answers, and annotated subgraphs. This dataset is commonly evaluated in existing work (Guo et al., 2022). PathQuestions (PQ) (Zhou et al., 2018)2 is a commonly used KBQG dataset constructed from a KBQA dataset. It contains questions inquiring a chain of relations, wherein the path between the topic entities and answer entities is 2-hop or 3-hop. GrailQA (GQ) (Gu et al., 2021)3 is a large-scale KBQA dataset built on Freebase, which covers 86 domains. It covers complex questions which require counting, ranking and even superlative inquiry. Each question is associated with a sexpression, which can be viewed as a logic form.\nWe collect the annotated the logic form from the training set as the data pool and leave the original questions untouched. The questions in the validation or test set are sampled to evaluate our method. Statistics of evaluated datasets are shown in Table 1.\nFollowing previous KBQG studies, we rely on a set of well-established metrics as for KBQG evaluation: BLEU-4 (Papineni et al., 2002), METEOR (Banerjee and Lavie, 2005) and ROUGEL (Lin, 2004). BLEU-4 and ROUGE-L can be viewed as precision and recall for text generation tasks, respectively. METEOR is a comprehensive metric beyond exact matches, which also accounts for partial matches and variations in word order. We denote them as B, M and R, respectively."
+        },
+        {
+            "heading": "4.2 Comparable Methods",
+            "text": "We denote our prompting method as KQG-CoT. Previous studies (Lu et al., 2022b) have proven that the order of the exemplars is significant to the prompt results, we implement an improved version\n2https://github.com/zmtkeke/IRN 3https://dki-lab.github.io/GrailQA/\nby sorting the demonstrations from short to long after sampling. We denote this method as KQGCoT+.\nAs there is no existing attempt for few-shot KBQG tasks with LLMs, we adopt five general prompting methods under few-shot scenarios as our baselines. Standard Prompt (Brown et al., 2020) is a standard prompting method of in-context learning, where k random logical forms and questions are concatenated to form the prompt. The prediction is one-step generation. Random-CoT is an intuitive CoT prompting baseline where k logical forms are randomly selected from the data pool and we follow the original work (Brown et al., 2020) to describe the sub-task in a narrative. Manual-CoT (Wei et al., 2022) is a CoT prompting with k human-written exemplars as demonstrations and the sub-task is presented in narratives. Active-CoT (Diao et al., 2023) is an ensemble framework for CoT prompting. The multiple logical forms are randomly selected as a validation set. Then multiple measurements (e.g., disagreement, variance) are leveraged as the uncertainty value for each logical form to produce the final question. Auto-CoT (Zhang et al., 2023c) automatically constructs prompt by selecting k demonstrations with a cluster-based algorithm and the sub-task is presented in narratives. We simply adopt the prompting method to KBQG tasks by encoding all logical form in a textual way."
+        },
+        {
+            "heading": "4.3 Implementation Details",
+            "text": "For encoding of logical forms, we utilize allMiniLM-L6-v24 checkpoint from the SentenceTransformers library in Huggingface for effective\n4https://huggingface.co/sentence-transformers/ all-MiniLM-L6-v2\nencoding. As this is a few-shot scenario, we manually write the rationales for the k demonstrations in the chain prompt. We utilize text-davinci-003 from OpenAI API5 to generate questions and set the number of clusters as k = 126."
+        },
+        {
+            "heading": "4.4 Main Results",
+            "text": ""
+        },
+        {
+            "heading": "Full Training",
+            "text": ""
+        },
+        {
+            "heading": "Few-shot Evaluation",
+            "text": ""
+        },
+        {
+            "heading": "Full Training",
+            "text": ""
+        },
+        {
+            "heading": "Few-shot Evaluation",
+            "text": "Comparison with Baselines. Table 2 showcases the experimental results of our methods and baseline approaches. We have the following observations based on it:\n1) Comparing all CoT prompting methods, in the few-shot setting, our KQG-CoT+ prompting\n5https://openai.com/blog/openai-codex/ 6Detailed prompt design of KQG-CoT+ is presented in\nAppendix A.3.\nconsistently outperforms other method across all KBQG datasets by a remarkable margin. Specifically, KQG-CoT+ improves the performance of the competitive Auto-CoT by 0.72 to 2.12 absolute values for all datasets. Meanwhile, KQG-CoT also outperforms existing CoT prompting methods on BLEU-4 of all the datasets.\n2) Comparing CoT methods with standard prompting, we notice that all the CoT prompting methods outperform the standard prompting method, which indicates that, to generate questions with complex logic and long dependency, splitting the entire generation task into sub-tasks are crucial for maintaining the coherence and accuracy of the questions.\n3) Comparing Auto-CoT, KQG-CoT and KQGCoT+, even though all these methods adapt clustering to select k demonstrations, KQG-CoT and KQG-CoT+ are more effective as we elaborately design encoding algorithm and prompt templates for KBQG tasks, which makes it fit more into the question generation from the logical forms. Comparison with Other Systems. We further compare our prompting methods with other KBQG systems on the WQ and PQ datasets. According to our knowledge, we are the first to work on the KBQG task using the GQ dataset, so there are no existing methods available for comparison.\nIn Table 3, we can see that with 12 demonstrations, our method can outperform majority of fulltrained systems on WQ dataset, where all training data is leveraged to train a model. KQG-CoT+ prompting method can achieve 29.73%, 31.08% and 55.46% for BLEU-4, ROUGE-L and METEOR respectively, which are close to the SoTA results.\nIn Table 4, we can see that for PQ dataset, our method can still achieve better results than most of existing full-trained KBQG models. Compared with existing methods under few-shot settings, our methods can significantly improve the BLEU-4 over AutoQGS by around 20 absolute points. It is worth noting that AutoQGS takes 0.1% training instances for training and we simply leverage 12 instances for inference, which highlights superiority of our methods."
+        },
+        {
+            "heading": "4.5 More Analysis",
+            "text": "Human Evaluation. We further conduct human evaluation by randomly sampling 300 examples from the test set of WQ dataset. The generated\nquestions are rated on a scale of 1 to 5 considering the aspects of syntactic correctness, complexity, and relevance to the given logical forms. We ask three annotators to score the generated questions with 1-point being poor and 5-point being perfect. The score of each question is averaged over all annotators. We present the results in Table 6, where we can observe a similar trend between human and automatic evaluation. Our approach outperforms all comparable methods, the evaluated scores of which are close to the ground truth. Ablation Study. We conduct ablation study to assess the effectiveness of components of our model and display the results in Table 7. We first exclude the CoT reasoning chain, and observe a performance drop of the evaluate metrics. This indicates\nthat CoT plays an important role in generating complicated questions. Then we remove the K-means algorithm and randomly select supportive logical forms. The decrease of the results indicates that our clustering algorithm could provide more diverse logical forms as our demonstrations. We further encode the entire logical forms without extracting their structures. The results decrease which indicate that the structure is a significant indicator to obtain the clusters7.\nEffect of k. We investigate the effect of k in Figure 3. As observed, with an increase of the number of demonstrations, both our methods and RandomCoT show increasing BLEU-4 and ROUGE-L scores. This indicates that the number of demonstrations is significant in activate the potentials of LLMs. Compared with Random-CoT, our method shows a larger gain when the value of k becomes large, this indicates that our methods indeed pick up the most representative logical form as the demonstrations. Case Study. To provide a comprehensive compar-\n7The ablation study on WQ and PQ is presented in Appendix A.1.\nison between KQG-CoT+ method and the baseline models on GQ dataset, we present multiple example cases in Table 5. Our method elicits the intermediate generation steps and provides more guidance to LLMs so that our KQG-CoT+ generates questions that are grammatically correct and semantically close to the given logical form. In contrast, baseline methods may encounter issues such as inconsistency in the logical form, misplaced modifiers, or unsmooth expressions. Effectiveness of Structured Encoding and Clustering. To demonstrate the effectiveness of the proposed Structured Encoding and Clustering in selecting diverse structures, we conducted a quantitative assessment of the average semantic similarity between the logical forms extracted using our method and the baseline method at K=8 on the GrailQA dataset. The results are presented in Table 8. The data from the initial segment, shown in the table below, reveals that the logical forms chosen by our method exhibit a lower average semantic similarity. When viewed collectively, these findings offer strong evidence for the efficacy of our proposed approach.\nImpact of Sorted Order. To assess the impact of the sorted order of demonstrations in KQGCoT+, we compared the performance of Auto-CoT and Active-CoT using the same sorted order of demonstrations in KQG-CoT+ (i.e., Auto-CoT+ and Active-CoT+) and conducted experiments on the GrailQA dataset . The Table 9 shows that, compared to the Active-CoT+ and Auto-CoT+ methods, our proposed KQG-CoT+ method still exhibits significant improvements.\nKQG-CoT Improve KBQA Task. To confirm the efficacy of our approach in enhancing the\nperformance of KBQA methods, we initiated a data augmentation procedure for the WebQuestions dataset. It\u2019s important to highlight that the augmented dataset was merely half the size of the original dataset. Next, we trained the KBQA method RnG-KBQA (Ye et al., 2022) by combining the augmented and original datasets, resulting in the improved version called RnG-KBQA+. The results, as outlined in Table 10, demonstrate that we conducted a relatively straightforward augmentation on a limited dataset subset. Nevertheless, the F1 score of the original KBQA method witnessed a notable increase of 2.8%. This demonstrates that our proposed KBQG method provides significant assistance to downstream KBQA tasks8."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "In this paper, we presented the KQG-CoT approach to tackle few-shot KBQG tasks. KQG-CoT retrieves relevant logical forms from unlabeled data and incorporates their characteristics. It then generates explicit prompt to showcase the reasoning process for complex question generation based on the selected examples. Experimental results demonstrate that our approach achieves state-of-the-art performance compared to baselines and even shows competitive results to full-training methods."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Our proposed prompting method, KQG-CoT, partially relies on handcrafted prompts when writing the subquestions. However, handcrafted prompts are usually based on the personal knowledge and experience of the exports, which can introduce subjective biases."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work was supported by Natural Science Foundation of China (Project No. 62206097) and Shanghai Pujiang Talent Program (Project No. 22PJ1403000). We sincerely thank the anonymous reviewers for their valuable comments and feedback.\n8Further analysis will be presented in Appendix A.4."
+        },
+        {
+            "heading": "A Appendix",
+            "text": ""
+        },
+        {
+            "heading": "A.1 Ablation Study on More Datasets",
+            "text": "We display Table 12 to show more ablation studies on WQ and PQ datasets. We can also recognize the significance of our CoT reasoning chain, K-means algorithm, and structure encoding.\nA.2 Illustrative Examples of KQG-CoT+ Prompt\nWe present a selection of illustrative examples showcasing our proposed prompts and predictions on WQ, GQ, and PQ in Table 13, Table 14 and Table 15, respectively. As"
+        },
+        {
+            "heading": "A.3 Detailed Prompt Design of KQG-CoT+",
+            "text": "To enhance the guidance provided to LLM in question generation, we have included a descriptive sentence in the demonstrations, which states: \u201cLet\u2019s engage in a step-by-step exercise of generating questions from logical forms. We have provided several examples, each comprising an \u2019Input\u2019 logical form and a corresponding \u2019Subquestion\u2019 that we aim to generate. By deconstructing the input logical form into basic components, we can generate questions iteratively until we get the final question. For each \u2019Subgraph\u2019, we can construct a relevant \u2019Subquestion\u2019 phrase to assist in generating the subsequent question in the sequence.\u201d."
+        },
+        {
+            "heading": "A.4 Effect of Demonstration Order",
+            "text": "During the experiment, we made a noteworthy observation regarding the impact of demonstration order on the performance of our method. We conducted a comprehensive exploration of various sorting techniques, including uncertainty-based sort-\ning (Diao et al., 2023), random sorting, and sorting based on the number of logical form jumps. The detailed experimental results are presented in Table 11. It becomes evident that arranging the demonstrations in ascending order of the number of logical form jumps leads to the most favorable outcomes. This finding highlights the structural complexity of logical forms when organizing the demonstrations."
+        }
+    ],
+    "title": "Prompting Large Language Models with Chain-of-Thought for Few-Shot Knowledge Base Question Generation",
+    "year": 2023
+}

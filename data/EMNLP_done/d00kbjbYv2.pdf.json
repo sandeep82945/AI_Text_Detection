@@ -1,0 +1,822 @@
+{
+    "abstractText": "Various techniques have been developed in recent years to improve dense retrieval (DR), such as unsupervised contrastive learning and pseudo-query generation. Existing DRs, however, often suffer from effectiveness tradeoffs between supervised and zero-shot retrieval, which some argue was due to the limited model capacity. We contradict this hypothesis and show that a generalizable DR can be trained to achieve high accuracy in both supervised and zero-shot retrieval without increasing model size. In particular, we systematically examine the contrastive learning of DRs, under the framework of Data Augmentation (DA). Our study shows that common DA practices such as query augmentation with generative models and pseudo-relevance label creation using a cross-encoder, are often inefficient and suboptimal. We hence propose a new DA approach with diverse queries and sources of supervision to progressively train a generalizable DR. As a result, DRAGON,1 our Dense Retriever trained with diverse AuGmentatiON, is the first BERTbase-sized DR to achieve state-of-the-art effectiveness in both supervised and zero-shot evaluations and even competes with models using more complex late interaction.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Sheng-Chieh Lin"
+        },
+        {
+            "affiliations": [],
+            "name": "Akari Asai"
+        },
+        {
+            "affiliations": [],
+            "name": "Minghan Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Barlas Oguz"
+        },
+        {
+            "affiliations": [],
+            "name": "Jimmy Lin"
+        },
+        {
+            "affiliations": [],
+            "name": "Yashar Mehdad"
+        },
+        {
+            "affiliations": [],
+            "name": "Wen-tau Yih"
+        },
+        {
+            "affiliations": [],
+            "name": "Xilun Chen"
+        }
+    ],
+    "id": "SP:c3bcd3a232605fa3f044a286745c3b1e1acb0411",
+    "references": [
+        {
+            "authors": [
+                "Akari Asai",
+                "Timo Schick",
+                "Patrick Lewis",
+                "Xilun Chen",
+                "Gautier Izacard",
+                "Sebastian Riedel",
+                "Hannaneh Hajishirzi",
+                "Wen-tau Yih."
+            ],
+            "title": "Task-aware retrieval with instructions",
+            "venue": "Proc. Findings of ACL, pages 3650\u20133675.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Payal Bajaj",
+                "Daniel Campos",
+                "Nick Craswell",
+                "Li Deng",
+                "Jianfeng Gao",
+                "Xiaodong Liu",
+                "Rangan Majumder",
+                "Andrew McNamara",
+                "Bhaskar Mitra",
+                "Tri Nguyen"
+            ],
+            "title": "2016. MS MARCO: A human generated machine reading comprehension dataset. arXiv:1611.09268",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Yoshua Bengio",
+                "J\u00e9r\u00f4me Louradour",
+                "Ronan Collobert",
+                "Jason Weston."
+            ],
+            "title": "Curriculum learning",
+            "venue": "Proc. ICML, page 41\u201348.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Wei-Cheng Chang",
+                "Felix X. Yu",
+                "Yin-Wen Chang",
+                "Yiming Yang",
+                "Sanjiv Kumar."
+            ],
+            "title": "Pre-training tasks for embedding-based large-scale retrieval",
+            "venue": "Proc. ICLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ting Chen",
+                "Simon Kornblith",
+                "Mohammad Norouzi",
+                "Geoffrey Hinton."
+            ],
+            "title": "A simple framework for contrastive learning of visual representations",
+            "venue": "Proc. ICML.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xilun Chen",
+                "Kushal Lakhotia",
+                "Barlas Oguz",
+                "Anchit Gupta",
+                "Patrick Lewis",
+                "Stan Peshterliev",
+                "Yashar Mehdad",
+                "Sonal Gupta",
+                "Wen-tau Yih."
+            ],
+            "title": "Salient phrase aware dense retrieval: Can a dense retriever imitate a sparse one? In Proc",
+            "venue": "Findings of",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nick Craswell",
+                "Bhaskar Mitra",
+                "Daniel Campos."
+            ],
+            "title": "Overview of the TREC 2019 deep learning track",
+            "venue": "Proc. TREC.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nick Craswell",
+                "Bhaskar Mitra",
+                "Emine Yilmaz",
+                "Daniel Campos."
+            ],
+            "title": "Overview of the TREC 2020 deep learning track",
+            "venue": "Proc. TREC.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhuyun Dai",
+                "Vincent Y. Zhao",
+                "Ji Ma",
+                "Yi Luan",
+                "Jianmo Ni",
+                "Jing Lu",
+                "Anton Bakalov",
+                "Kelvin Guu",
+                "Keith B. Hall",
+                "Ming-Wei Chang."
+            ],
+            "title": "Promptagator: Few-shot dense retrieval from 8 examples",
+            "venue": "arXiv:2209.11755.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "arXiv:1810.04805.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Thibault Formal",
+                "Carlos Lassance",
+                "Benjamin Piwowarski",
+                "St\u00e9phane Clinchant."
+            ],
+            "title": "From distillation to hard negative sampling: Making sparse neural IR models more effective",
+            "venue": "Proc. SIGIR, page 2353\u20132359.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Thibault Formal",
+                "Carlos Lassance",
+                "Benjamin Piwowarski",
+                "St\u00e9phane Clinchant."
+            ],
+            "title": "SPLADE v2: Sparse lexical and expansion model for information retrieval",
+            "venue": "arXiv:2109.10086.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Jamie Callan."
+            ],
+            "title": "Condenser: a pretraining architecture for dense retrieval",
+            "venue": "Proc. EMNLP, pages 981\u2013993.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Jamie Callan."
+            ],
+            "title": "Unsupervised corpus aware language model pre-training for dense passage retrieval",
+            "venue": "Proc. ACL, pages 2843\u20132853.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ruiqi Guo",
+                "Philip Sun",
+                "Erik Lindgren",
+                "Quan Geng",
+                "David Simcha",
+                "Felix Chern",
+                "Sanjiv Kumar."
+            ],
+            "title": "Accelerating large-scale inference with anisotropic vector quantization",
+            "venue": "Proc. ICML.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Geoffrey Hinton",
+                "Oriol Vinyals",
+                "Jeffrey Dean."
+            ],
+            "title": "Distilling the knowledge in a neural network",
+            "venue": "Proc. NIPS.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Sebastian Hofst\u00e4tter",
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Jimmy Lin",
+                "Allan Hanbury."
+            ],
+            "title": "Efficiently teaching an effective dense retriever with balanced topic aware sampling",
+            "venue": "Proc. SIGIR, page 113\u2013122.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sebastian Hofst\u00e4tter",
+                "Sophia Althammer",
+                "Michael Schr\u00f6der",
+                "Mete Sertkan",
+                "Allan Hanbury."
+            ],
+            "title": "Improving efficient neural ranking models with cross-architecture knowledge distillation",
+            "venue": "arXiv:2010.02666.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Mathilde Caron",
+                "Lucas Hosseini",
+                "Sebastian Riedel",
+                "Piotr Bojanowski",
+                "Armand Joulin",
+                "Edouard Grave."
+            ],
+            "title": "Unsupervised dense information retrieval with contrastive learning",
+            "venue": "arXiv:2112.09118.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Patrick Lewis",
+                "Maria Lomeli",
+                "Lucas Hosseini",
+                "Fabio Petroni",
+                "Timo Schick",
+                "Jane DwivediYu",
+                "Armand Joulin",
+                "Sebastian Riedel",
+                "Edouard Grave."
+            ],
+            "title": "Few-shot Learning with Retrieval Augmented Language Models",
+            "venue": "arXiv:2208.03299.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jeff Johnson",
+                "Matthijs Douze",
+                "Herv\u00e9 J\u00e9gou."
+            ],
+            "title": "Billion-scale similarity search with GPUs",
+            "venue": "IEEE Transactions on Big Data, pages 535\u2013547.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas Oguz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen-tau Yih."
+            ],
+            "title": "Dense passage retrieval for opendomain question answering",
+            "venue": "Proc. EMNLP, pages 6769\u20136781.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Carlos Lassance",
+                "Stephane Clinchant."
+            ],
+            "title": "The tale of two MSMARCO - and their unfair comparisons",
+            "venue": "Proc. SIGIR, page 2431\u20132435.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kenton Lee",
+                "Ming-Wei Chang",
+                "Kristina Toutanova."
+            ],
+            "title": "Latent retrieval for weakly supervised open domain question answering",
+            "venue": "Proc. ACL, pages 6086\u20136096.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jimmy Lin",
+                "Xueguang Ma",
+                "Sheng-Chieh Lin",
+                "JhengHong Yang",
+                "Ronak Pradeep",
+                "Rodrigo Nogueira."
+            ],
+            "title": "Pyserini: A python toolkit for reproducible information retrieval research with sparse and dense representations",
+            "venue": "Proc. SIGIR, page 2356\u20132362.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Jimmy Lin."
+            ],
+            "title": "In-batch negatives for knowledge distillation with tightly-coupled teachers for dense retrieval",
+            "venue": "Proc. RepL4NLP, pages 163\u2013173.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhenghao Lin",
+                "Yeyun Gong",
+                "Xiao Liu",
+                "Hang Zhang",
+                "Chen Lin",
+                "Anlei Dong",
+                "Jian Jiao",
+                "Jingwen Lu",
+                "Daxin Jiang",
+                "Rangan Majumder",
+                "Nan Duan."
+            ],
+            "title": "Prod: Progressive distillation for dense retrieval",
+            "venue": "arXiv:2209.13335.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shuqi Lu",
+                "Di He",
+                "Chenyan Xiong",
+                "Guolin Ke",
+                "Waleed Malik",
+                "Zhicheng Dou",
+                "Paul Bennett",
+                "Tie-Yan Liu",
+                "Arnold Overwijk."
+            ],
+            "title": "Less is more: Pretrain a strong Siamese encoder for dense text retrieval using a weak decoder",
+            "venue": "Proc. EMNLP, pages 2780\u20132791.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xueguang Ma",
+                "Kai Sun",
+                "Ronak Pradeep",
+                "Jimmy Lin."
+            ],
+            "title": "A replication study of dense passage retriever",
+            "venue": "arXiv:2104.05740.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Joel Mackenzie",
+                "Andrew Trotman",
+                "Jimmy Lin."
+            ],
+            "title": "Wacky weights in learned sparse representations and the revenge of score-at-a-time query evaluation",
+            "venue": "arXiv:2110.11540.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alex Mallen",
+                "Akari Asai",
+                "Victor Zhong",
+                "Rajarshi Das",
+                "Daniel Khashabi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "When not to trust language models: Investigating effectiveness of parametric and non-parametric memories",
+            "venue": "Proc. ACL, pages 9802\u20139822.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rui Meng",
+                "Ye Liu",
+                "Semih Yavuz",
+                "Divyansh Agarwal",
+                "Lifu Tu",
+                "Ning Yu",
+                "Jianguo Zhang",
+                "Meghana Bhat",
+                "Yingbo Zhou."
+            ],
+            "title": "AugTriever: Unsupervised dense retrieval by scalable data augmentation",
+            "venue": "arXiv:2212.08841.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jianmo Ni",
+                "Chen Qu",
+                "Jing Lu",
+                "Zhuyun Dai",
+                "Gustavo Hernandez Abrego",
+                "Ji Ma",
+                "Vincent Zhao",
+                "Yi Luan",
+                "Keith Hall",
+                "Ming-Wei Chang",
+                "Yinfei Yang."
+            ],
+            "title": "Large dual encoders are generalizable retrievers",
+            "venue": "Proc. EMNLP, pages 9844\u20139855.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rodrigo Nogueira",
+                "Jimmy Lin"
+            ],
+            "title": "From doc2query to docTTTTTquery",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Barlas Oguz",
+                "Kushal Lakhotia",
+                "Anchit Gupta",
+                "Patrick Lewis",
+                "Vladimir Karpukhin",
+                "Aleksandra Piktus",
+                "Xilun Chen",
+                "Sebastian Riedel",
+                "Scott Yih",
+                "Sonal Gupta",
+                "Yashar Mehdad."
+            ],
+            "title": "Domain-matched pre-training tasks for dense retrieval",
+            "venue": "Proc.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yingqi Qu",
+                "Yuchen Ding",
+                "Jing Liu",
+                "Kai Liu",
+                "Ruiyang Ren",
+                "Wayne Xin Zhao",
+                "Daxiang Dong",
+                "Hua Wu",
+                "Haifeng Wang."
+            ],
+            "title": "RocketQA: An optimized training approach to dense passage retrieval for opendomain question answering",
+            "venue": "Proc. NAACL, pages",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "J. Mach. Learn. Res., 21(140):1\u201367.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "SentenceBERT: Sentence embeddings using Siamese BERTnetworks",
+            "venue": "Proc. EMNLP, pages 3982\u20133992.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ruiyang Ren",
+                "Yingqi Qu",
+                "Jing Liu",
+                "Wayne Xin Zhao",
+                "QiaoQiao She",
+                "Hua Wu",
+                "Haifeng Wang",
+                "Ji-Rong Wen."
+            ],
+            "title": "RocketQAv2: A joint training method for dense passage retrieval and passage re-ranking",
+            "venue": "Proc. EMNLP, pages 2825\u20132835.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Keshav Santhanam",
+                "Omar Khattab",
+                "Christopher Potts",
+                "Matei Zaharia."
+            ],
+            "title": "Plaid: An efficient engine for late interaction retrieval",
+            "venue": "arXiv:2205.09707.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Keshav Santhanam",
+                "Omar Khattab",
+                "Jon Saad-Falcon",
+                "Christopher Potts",
+                "Matei Zaharia."
+            ],
+            "title": "ColBERTv2: Effective and efficient retrieval via lightweight late interaction",
+            "venue": "Proc. NAACL, pages 3715\u20133734.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Weijia Shi",
+                "Sewon Min",
+                "Michihiro Yasunaga",
+                "Minjoon Seo",
+                "Rich James",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Wen-tau Yih."
+            ],
+            "title": "Replug: Retrieval-augmented black-box language models",
+            "venue": "arXiv:2301.12652.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nandan Thakur",
+                "Nils Reimers",
+                "Johannes Daxenberger",
+                "Iryna Gurevych."
+            ],
+            "title": "Augmented SBERT: Data augmentation method for improving bi-encoders for pairwise sentence scoring tasks",
+            "venue": "Proc. NAACL, pages 296\u2013310.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nandan Thakur",
+                "Nils Reimers",
+                "Andreas R\u00fcckl\u00e9",
+                "Abhishek Srivastava",
+                "Iryna Gurevych."
+            ],
+            "title": "BEIR: A heterogeneous benchmark for zero-shot evaluation of information retrieval models",
+            "venue": "Proc. NIPS.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kexin Wang",
+                "Nandan Thakur",
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "GPL: Generative pseudo labeling for unsupervised domain adaptation of dense retrieval",
+            "venue": "Proc. NAACL, pages 2345\u20132360.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xing Wu",
+                "Guangyuan Ma",
+                "Meng Lin",
+                "Zijia Lin",
+                "Zhongyuan Wang",
+                "Songlin Hu."
+            ],
+            "title": "Contextual masked auto-encoder for dense passage retrieval",
+            "venue": "arXiv:2208.07670.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shitao Xiao",
+                "Zheng Liu",
+                "Yingxia Shao",
+                "Zhao Cao."
+            ],
+            "title": "RetroMAE: Pre-training retrieval-oriented language models via masked auto-encoder",
+            "venue": "Proc. EMNLP, pages 538\u2013548.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ji Xin",
+                "Chenyan Xiong",
+                "Ashwin Srinivasan",
+                "Ankita Sharma",
+                "Damien Jose",
+                "Paul Bennett."
+            ],
+            "title": "Zeroshot dense retrieval with momentum adversarial domain invariant representations",
+            "venue": "Proc. ACL, pages 4008\u20134020.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yue Yu",
+                "Chenyan Xiong",
+                "Si Sun",
+                "Chao Zhang",
+                "Arnold Overwijk."
+            ],
+            "title": "COCO-DR: Combating distribution shift in zero-shot dense retrieval with contrastive and distributionally robust learning",
+            "venue": "Proc. EMNLP, pages 1462\u20131479.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hansi Zeng",
+                "Hamed Zamani",
+                "Vishwa Vinay."
+            ],
+            "title": "Curriculum learning for dense retrieval distillation",
+            "venue": "Proc. SIGIR, page 1979\u20131983.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "thanam"
+            ],
+            "title": "COT-MAE: https: //huggingface.co/caskcsg/cotma e_base_msmarco_retriever; (4) RetroMAE: https://huggingface.co/Shita o/RetroMAE_BEIR",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Karpukhin"
+            ],
+            "title": "2020), we use asymmetric dual encoder with two distinctly parameterized encoders and leverage in-batch negative mining. Note that symmetric dual encoder shows poor generalization capability",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hofst\u00e4tter"
+            ],
+            "title": "2020) to improve the effectiveness of DR (Lin et al., 2021b; Qu et al., 2021). However, they only take the advantage of soft labels from KD and use the relevant passages labeled by humans",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zeng"
+            ],
+            "title": "2022) mines more positive samples using cross encoder to further augment the limited relevance labels by humans. Nevertheless, it is challenging for cross encoders to augment relevance labels for queries in scale due to its low",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "efficiency. Chen"
+            ],
+            "title": "2022) first explore label augmentation using singe sparse retrieval model on large-scale queries and demonstrate that a dense retriever can mimic a teacher of a sparse retriever (e.g., BM25)",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiao et al",
+                "Wu"
+            ],
+            "title": "Our work is similar to contrastive pre-training but instead of creating large-scale training data in an unsupervised or weakly supervised manner, we investigate how to conduct supervised contrastive learning on",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Bi-encoder based neural retrievers allow documents to be pre-computed independently of queries and stored, enabling end-to-end retrieval among huge corpus for downstream knowledgeintensive tasks (Karpukhin et al., 2020; Reimers and Gurevych, 2019). Recently, Thakur et al. (2021b) show that bi-encoder retrievers still underperform BM25 in real-world scenarios, where training data is scarce. One potential solution is\n\u2217This work is done during Sheng-Chieh\u2019s internship at Meta. \u2020Xilun and Sheng-Chieh contributed equally to this work. 1The code and model checkpoints are available at: https: //github.com/facebookresearch/dpr-scale\nto design more expressive representations to capture more fine-grained token-level information; e.g., SPLADE++ (Formal et al., 2022) and ColBERTv2 (Santhanam et al., 2022b) in Figure 1. However, these designs add complexity and latency to retrieval systems (Mackenzie et al., 2021).\nBy contrast, dense retrieval (DR) is a simpler biencoder retriever that maps queries and documents into low-dimensional vectors and computes text similarity through a simple dot product. Top-k retrieval can be performed directly using ANN search libraries (Johnson et al., 2021; Guo et al., 2020). Recently, various methods have been proposed to improve DR effectiveness while keeping its simple architecture, such as pre-training (Lee et al., 2019; Chang et al., 2020), query augmentation (Oguz et al., 2022), and distillation (Ren et al., 2021; Zeng et al., 2022). For example, pre-training on MS MARCO corpus improves accuracy in the fully supervised setting while leveraging other corpora can improve transfer in the zero-shot setting. However, improvement in one setting is only achieved at the expense of the other. Figure 1 plots existing state-of-the-art DR models with respect to their effectiveness on these two axes, which presents a\nclear tradeoff between supervised and zero-shot effectiveness (the blue line). The only exception, GTR-XXL (Ni et al., 2022), breaks the effectiveness tradeoff at the expense of efficiency (i.e., query encoding), which leverages very large pre-trained models with 40 times more parameters. This effectiveness tradeoff prompts some to hypothesize that we have fully exploited the capacity of BERT-basesized DR model (Ni et al., 2022) and explore how to cleverly increase model parameters without sacrificing retrieval efficiency. For example, the recent work (Wang et al., 2022; Dai et al., 2022) proposes to train one expert dense retriever for each specific scenario, resulting in slow adaptation to real-world applications (Asai et al., 2023).\nIn this work, we contradict this hypothesis and show that a generalizable DR can indeed be trained to achieve state-of-the-art effectiveness in both supervised and zero-shot evaluations without increasing model size. To this end, we first investigate the important factors contributing to the recent progress of DR. For example, DR seems to gain zero-shot transfer capability from pre-training on large-scale and diverse training queries (Izacard et al., 2021; Yu et al., 2022) while knowledge distillation can improve the supervision quality by automatically identifying relevant passages which are not labeled by humans (Ren et al., 2021; Zeng et al., 2022). To better understand these approaches, we devise a unified framework of data augmentation (DA) for contrastive learning. Under the framework, the previous work can be viewed as DA with different recipes of query augmentation and relevance label augmentation shown in Table 1. The DA framework also helps us design comprehensive studies for better DR training.\nGuided by a detailed empirical exploration along the space of our DA framework, we find the following: (1) for relevance label augmentation, we identify that the key to training a generalizable dense retriever is to create diverse relevance labels for each query, for which we use multiple retrievers instead of a strong cross encoder; (2) with such diverse relevance labels, dense retrievers can be trained effectively using cheap and large-scale augmented queries (e.g., cropped sentences from a corpus) instead of the more expensive neural generative queries. This finding opens the door to further building cheap but useful training data in scale for DR in the future. Finally, we find that it is suboptimal for a dense retriever to learn the\ndiverse relevance labels from multiple retrievers directly. Thus, we propose a simple strategy to progressively augment relevance labels which guides dense retrievers to learn diverse relevance signals more effectively.\nOur final model is trained on 28 million augmented queries consisting of two types (cropped sentences and synthetic queries), as well as progressive relevance label augmentation using diverse (sparse, dense, and multi-vector) retrievers. As shown in Figure 1, DRAGON, a Dense Retriever trained with diverse AuGmentatiON, is the first dense retriever to break the supervised and zero-shot effectiveness tradeoff without increasing model size or retrieval complexity; e.g., GTR-XXL, SPLADE++ and ColBERTv2.\nWe summarize our contributions as follows: (1) We conduct a systematic study of DR training under the lens of data augmentation, which provides some surprising but key insights into training a generalizable dense retriever; (2) We propose a progressive label augmentation strategy to guide a dense retriever to learn the diverse but complex relevance labels; (3) DRAGON, our BERT-base-sized DR, reaches state-of-the-art retrieval effectiveness in both supervised and zero-shot evaluations."
+        },
+        {
+            "heading": "2 Background",
+            "text": "In this section, we first introduce the retrieval task and contrastive learning for dense retrieval. We then provide a unified framework for understanding recent approaches to improve dense retrieval training as instances of data augmentation."
+        },
+        {
+            "heading": "2.1 Training Dense Retrieval Models",
+            "text": "Given a query q, our task is to retrieve a list of documents to maximize some ranking metrics such as nDCG or MRR. Dense retrieval (DR) based on pre-trained transformers (Devlin et al., 2018; Raffel et al., 2020) encodes queries and documents as low dimensional vectors with a bi-encoder architecture and uses the dot product between the encoded\nvectors as the similarity score:\ns(q, d) \u225c eq[CLS] \u00b7 ed[CLS] , (1)\nwhere eq[CLS] and ed[CLS] are the [CLS] vectors at the last layer of BERT (Devlin et al., 2018).\nContrastive Learning is a commonly used method for training DR models by contrasting positive pairs against negatives. Specifically, given a query q and its relevant document d+, we minimize the InfoNCE loss:\n\u2212 log exp(s(q, d +)) exp(s(q, d+)) + k\u2211\nj=1 exp(s(q, d\u2212j ))\n. (2)"
+        },
+        {
+            "heading": "2.2 A Unified Framework of Improved Dense Retrieval Training: Data Augmentation",
+            "text": "Data augmentation (DA) for contrastive learning has been widely used in many machine learning tasks (Chen et al., 2020; Thakur et al., 2021a). In fact, many recent approaches to train better DR, such as knowledge distillation, contrastive pretraining and pseudo query generation (GenQ), can be considered DA with different recipes respectively listed in the first three main rows of Table 1. We compare the DA recipes from the perspectives of query and relevance label augmentation. We refer readers to Appendix A.9 for more related work of advanced DR training strategies. Query Augmentation. There are two common automatic approaches to increase the size of training queries from a given corpus, sentence cropping and pseudo query generation. The former can easily scale up query size without any expensive computation, which is used by the models for contrastive pre-training (the second section of Table 1; Gao and Callan, 2022; Izacard et al., 2021; Wu et al., 2022). The latter generates quality but more expensive human-like queries using large language models for DR pre-training (Oguz et al., 2022) or domain adaptation (the third section of Table 1; Wang et al., 2022; Dai et al., 2022). Concurrently to our work, Meng et al. (2023) explore various approaches to query augmentation, such as span selection and document summarization. Relevance Label Augmentation. The aforementioned approaches to query augmentation often assume that the (or part of the) original document is relevant to the augmented queries, which may not be true and only provides a single view of relevance labeling. The recent work (the first section of Table 1; Ren et al., 2021; Zeng et al., 2022) improve\nDR training with the positive passages predicted by cross encoders. These knowledge distillation approaches further improve training data quality through label augmentation, inspiring us to conduct relevance label augmentation on the augmented queries (i.e., cropped sentences and GenQ)."
+        },
+        {
+            "heading": "2.3 Settings for Empirical Studies",
+            "text": "We introduce some basic experimental settings to facilitate the presentation of our empirical studies on data augmentation in Section 3. More detailed settings can be found in Section 4. Following previous work (Izacard et al., 2021; Xiao et al., 2022; Yu et al., 2022; Formal et al., 2022; Santhanam et al., 2022b), we consider MS MARCO (Bajaj et al., 2016) as supervised data and BEIR datasets for zero-shot evaluations. Thus, we use the 8.8 million MS MARCO passage corpus to conduct data augmentation and evaluate our trained models on MS MARCO Dev, consisting of 6980 queries from the development set with one relevant passage per query on average. We report MRR@10 (abbreviated as RR@10) and Recall@1000 (R@1K) as the evaluation metrics. For zero-shot evaluations, we use BEIR (Thakur et al., 2021b), consisting of 18 IR datasets spanning diverse domains and tasks including retrieval, question answering, fact checking, question paraphrasing, and citation prediction. We report the averaged nDCG@10 over 13 public BEIR datasets, named BEIR-13, making the numbers comparable to most existing approaches (Formal et al., 2021; Santhanam et al., 2022b).2"
+        },
+        {
+            "heading": "3 Pilot Studies on Data Augmentation",
+            "text": "In this section, we first discuss the exploration space of data augmentation (DA) based on the framework in Section 2.2 and then conduct empirical studies on how to better train a dense retriever. Based on the empirical studies, we propose our DA recipe to train DRAGON, a Dense Retriever with diverse AuGmentatiON."
+        },
+        {
+            "heading": "3.1 An Exploration of Data Augmentation",
+            "text": "Query Augmentation. Following the discussion in Section 2.2, we consider the two common approaches to automatic query augmentation. Specifically, for sentence cropping, following Chen et al. (2022), we use the collection of 28 million sentences from the MS MARCO corpus 2CQADupStack, Robust04, Signal-1M, TREC-NEWS, BioASQ are excluded\nconsisting of 8.8 million passages. As for pseudo query generation, we use the 28 million synthetic queries sampled from the query pool generated by doct5query (Nogueira and Lin, 2019). In addition, we also consider augmenting the type of queries by mixing cropped sentences and synthetic queries."
+        },
+        {
+            "heading": "Label Augmentation with Diverse Supervisions.",
+            "text": "Although cross encoder (CE) is known to create relevance labels with strong supervision, we hypothesize that CE still cannot capture diverse matching signals between text pairs. A query is often relevant to many documents from different perspectives (e.g., semantic or lexical matching), which cannot capture by a single labeling scheme (a strong model or even human). In this work, we seek multiple sources of supervisions from existing sparse, dense and multi-vector retrievers, which are more efficient than CE and suitable for labeling a large number of queries (see discussion in Section 5)."
+        },
+        {
+            "heading": "3.2 Training with Diverse Supervisions",
+            "text": "We have introduced our searching space for query and label augmentation (with diverse supervisions); however, training a dense retriever on such augmented data is not trivial. First, how can we create training data using a teacher from any augmented queries (i.e., cropped sentences or pseudo generative queries)? Second, with the training data sets created from multiple teachers, how can we train a dense retriever to digest the multiple supervisions?\nFormally speaking, given N teachers, for each augmented query q, we retrieve N ranked lists (i.e., P1q ,P2q , \u00b7 \u00b7 \u00b7 ,PNq with each list has K passages) from the corpus with the respective teachers. We consider the ranked list Pnq from the n-th teacher a source of supervision since the top-k and last-k\u2032 passages in Pnq contain the teacher\u2019s view on what is relevant and less relevant for the given query. We then discuss possible strategies to train a dense retriever with diverse supervisions.\nFused Supervision. An intuitive strategy is to fuse the multiple sources into a single high-quality supervision, which dense retrievers can learn from. For the augmented query q, we conduct linear score fusion (Ma et al., 2021) on the N ranked lists to form a new ranked list Fq as a fused supervision. Uniform Supervision. Another simple strategy is to provide a dense retriever with equal exposures to multiple sources of supervisions. Specifically, given a query, we uniformly sample a source of supervision; i.e., a ranked list Pnq , where n \u223c\nU(1, N). This approach naturally encourages the positive samples appearing in more ranked lists to be sampled and vice versa. The advantage is that fusion weight tuning is not required. Furthermore, models can see diverse supervisions from different teachers in contrast to fused supervision, which may be dominated by a single strong teacher.\nProgressive Supervision. The previous two approaches directly give models supervisions from multiple teachers at once; however, learning directly from the mixture of supervision is challenging, especially for DR models which compute text matching with simple dot product. Inspired by the success of curriculum learning (Zeng et al., 2022), we propose an approach to progressive label augmentation to guide DR training with progressively more challenging supervision. Specifically, we train our models with uniform supervision for N iterations and at each iteration, we augment relevance label using additional teacher, as illustrated in Figure 2; i.e., at iteration T \u2264 N , we uniformly sample a source of supervision, Pnq , where n \u223c U(1, T ) (see Appendix A.6 for more study and explanation). A key factor of this approach is how to arrange the order for easy-to-hard supervisions; namely, the trajectory of progressive supervision.\nWith any aforementioned strategy to obtain diverse supervisions, we train our dense retrievers using contrastive loss in Eq. (2). Specifically, given a query q, we first obtain a source of supervision either from sampling (Pnq ) or fusion (Fq); then, we randomly sample a positive and hard negative from the top 10 passages and top 46\u201350 passages, respectively to form a triplet. The sampling scheme\nhas been empirically proved to well preserve the supervised signal from a single teacher (Chen et al., 2022) (also see our study in Appendix A.5). In this work, we further extend the sampling scheme to obtain diverse supervisions from multiple teachers."
+        },
+        {
+            "heading": "3.3 Empirical Studies",
+            "text": "Strategies to Obtain Diverse Supervisions. We first conduct empirical studies on how to better train a dense retriever in a simplified setting by using the MS MARCO cropped sentences as augmented queries and obtain supervised labels using three teachers with diverse relevance score computation: uniCOIL (sparse), Contriever (dense) and ColBERTv2 (multi-vector). To compare the different strategies discussed in Section 3.2, We report the models trained with single (columns 0\u20132) and multiple (columns 3\u20135) sources of supervisions for 20 epochs and 60 epochs, respectively. For progressive supervision, we follow the supervision trajectory: uniCOIL\u2192 Contriever \u2192 ColBERTv2 with 20 epochs for each of the three iterations (N = 3). Note that for fused supervision, we use MS MARCO Dev queries to tune and obtain the best hyperparameters to create fusion list.\nThe results are tabulated in Table 2. We observe that when learning from a single supervision (columns 0\u20132), there is a tradeoff between supervised and zero-shot retrieval effectiveness. Learning from the fusion list only sees a slight improvement over supervised evaluation while no improvement observes in zero-shot evaluations (columns 0\u20132 vs 3). By contrast, the model sees notable improvements in zero-shot evaluations when trained with uniform supervision (columns 0\u20133 vs 4), indi-\ncating that learning from the diverse relevance labels from multiple retrievers separately rather than single strong supervision (ColBERTv2 or fused supervision) is key to gain generalization capability. Finally, we observe that progressive supervision can further guide a dense retriever to gain generalization capability over uniform supervision (column 4 vs 5). Thus, we use progressive supervision in the following experiments.\nTrajectory of Progressive Supervision. We then study how to better arrange the trajectories of progressive supervision in Table 3. We observe that different trajectories have much impact on models\u2019 zero-shot retrieval effectiveness while a minor impact on supervised evaluation can be seen. For example, switching the sampling order between uniCOIL and Contriever results in a degrade of 1 point on the averaged nDCG@10 over BEIR-13 (row 0 vs 1) while reversing the whole trajectory leads to a degrade with more than 1.5 points (row 0 vs 3). This observation reflects an intuition that the retrievers with better generalization capability may capture more complex matching signal between text pairs (ColBERTv2 shows better generalization capability than the other two teachers); thus, their relevance labels should be augmented at a later stage of model training. Finally, in row 3, we follow the trajectory in row 0 but only use ColBERTv2 as the only source of supervision instead of obtaining uniform supervision from the three teachers at the last iteration. This change results in worse zero-shot retrieval effectiveness, indicating that learning from diverse supervisions is key to training a generalizable dense retriever.\nQuery Augmentation. We study the impacts of query augmentation on models\u2019 effectiveness under the scenario where supervision is given, which has not been studied so far in the field of dense retrieval. With the best trajectory of progressive supervision, we compare models trained using cropped sentences (rectangles), generative queries (GenQ; cir-\ncles), their mixture (triangles) and human queries (cross) in Figure 3. We observe that query size is the key to successful training. Although training with limited (0.8M) cropped sentences cannot perform well in MS MARCO dataset, scaling up the size (28M) sees significant improvement over the model trained on 0.8M human queries. Similarly, in Figure 3 (b), model\u2019s generalization capability shows a huge jump when scaling up query size. While surprisingly, cropped sentences can help dense retrievers to gain more generalization capability than human-like GenQ, a mixture of cropped sentences and GenQ yields strong retrieval effectiveness in supervised and zero-shot evaluations, when the query size is not large enough (0.8\u20138M)."
+        },
+        {
+            "heading": "3.4 Training our DRAGONs",
+            "text": "With the empirical studies on DR training, we then propose the final recipe to train our DRAGON. We train DRAGON for 20 epochs (around 130K steps) at each iteration, with the trajectory of progressive supervision: uniCOIL\u2192 Contriever \u2192 GTRXXL \u2192 ColBERTv2 \u2192 SPLADE++. We list all the teacher model checkpoints for label augmentation in Appendix A.2. This trajectory is based on models\u2019 retrieval effectiveness on BEIR with the intuition gained from Section 3.3 that a more generalizable model creates relevance labels with more complex matching signals. For query augmentation, we mix half of cropped sentences and synthetic queries as training queries. Note that we do not further fine-tune our models on the MS MARCO training queries. In addition, we train other three DRAGON variants. DRAGON-S and DRAGON-Q only use cropped sentences and synthetic queries, respectively. As for DRAGON+, we follow the same training procedure of DRAGON but switch the initialization from BERT to the masked auto-encoding pre-trained model, RetroMAE.3 We 3https://huggingface.co/Shitao/RetroMAE\nwill discuss the impacts of initialization in Section 5. The implementation of DRAGONs and the fully augmented training data are detailed in Appendix A.3 and A.4, respectively."
+        },
+        {
+            "heading": "4 Comparison with the State of the Art",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Datasets and Baseline Models",
+            "text": "In addition to MS MARCO development queries, we evaluate model supervised effectiveness on the TREC DL (Craswell et al., 2019, 2020) queries, created by the organizers of the 2019 (2020) Deep Learning Tracks at the Text REtrieval Conferences (TRECs), where 43 (53) queries with on average 95 (68) graded relevance labels per query (in contrast to 6980 queries with on average 1 non-graded relevance label per query in MS MARCO Dev) are released. We report nDCG@10, used by the organizers as the main metric. For zero-shot evaluations, we report models\u2019 effectiveness on all the 18 datasets in BEIR (Thakur et al., 2021b). In addition, we use LoTTE (Santhanam et al., 2022b) consisting of questions and answers posted on StackExchange with five topics including writing, recreation, science, technology, and lifestyle. We evaluate models\u2019 retrieval effectiveness in the pooled setting, where the passages and queries from the five topics are aggregated. Following Santhanam et al. (2022b), the retrieval effectiveness of Success@5 on search and forum queries are reported. The detailed evaluation on LoTTE is listed in Appendix A.8.\nWe compare DRAGONs with dense retrievers using the backbone of bert-base-uncased trained with advanced techniques, such as knowledge distillation (Ren et al., 2021; Zeng et al., 2022), contrastive pre-training (Gao and Callan, 2022; Izacard et al., 2021; Yu et al., 2022), masked auto-encoding pretraining (Wu et al., 2022; Xiao et al., 2022) and domain adaptation (Wang et al., 2022; Dai et al., 2022). We refer readers to more detailed baseline model descriptions in Appendix A.1."
+        },
+        {
+            "heading": "4.2 Results",
+            "text": "Supervised Evaluations. The first main row in Table 4 reports models\u2019 retrieval effectiveness on MS MARCO passage ranking dataset. We first observe that some baseline dense retrievers which perform well in MS MARCO Dev set are either pre-trained on MS MARCO corpus (coCondenser and COTMAE) or well fine-tuned on MS MARCO training queries with cross-encoder distillation (CL-DRD\nand RocketQAv2). However, their retrieval effectiveness on MS MARCO Dev set is not well correlated to TREC DL queries, which have fine-grained human labels with different degrees of relevance. We hypothesize that these models are able to retrieve the most relevant passage from the corpus but cannot retrieve diverse passages with different degrees of relevance. By contrast, all the variants of DRAGON trained with diverse augmented relevance labels show consistently strong effectiveness in MS MARCO Dev and TREC DL queries.\nZero-Shot Evaluations. The second main row in Table 4 reports models\u2019 zero-shot retrieval effectiveness on the BEIR datasets. We observe a reverse trend that those dense retrievers performing relatively poorly in MS MARCO Dev queries have\nbetter zero-shot retrieval effectiveness (e.g., Contriever, COCO-DR and RetroMAE). These models are pre-trained (with data augmentation) on a corpus other than MS MARCO to combat domain shift issue in dense retrieval (Xin et al., 2022; Yu et al., 2022). On the other hand, DRAGONs trained on augmented data from MS MARCO corpus only transfer well to BEIR datasets. Furthermore, DRAGON+ reaches state-of-the-art retrieval effectiveness on BEIR as the sparse retriever, SPLADE++.4 In addition, all the DRAGON variants outperform other dense retrievers by a large margin and compete SPLADE++ and ColBERTv2 in the LoTTE dataset. It is worth mentioning that the models trained with domain adaptation (columns\n4See our BEIR leaderboard submission here.\n9\u2013B) perform better than the others (columns 3\u20138) but still underperform DRAGON in zero-shot evaluations. Using DRAGON as the base model for domain adaptation is possible to gain DR zero-shot effectiveness, which we leave to our future work.\nA comparison between DRAGON-S and DRAGON-Q (columns C and D) shows that augmented query type has an impact on retrieval effectiveness in different datasets. DRAGON-S trained on cropped sentences surprisingly sees the highest retrieval effectiveness on BEIR but only sacrifices a bit on MS MARCO datasets. This means that cropped sentences, the cheap query type (compared to neural generative queries), are sufficiently helpful for models to learn domain-invariant retrieval capability. By contrast, we observe that DRAGON-Q trained with human-like queries performs poorly compared to DRAGON-S on the datasets where queries are far different from human-like queries, such as ArguAna (45.5 vs 51.5) and CQADupStack (34.4 vs 35.9), while mixing different types of queries (DRAGON) can mitigate the issue. Finally, DRAGON+, combined with masking auto-encoding (MAE) pre-training and our approach, sees further improvement on zero-shot evaluations without sacrificing in-domain ones, indicating that MAE pre-training may be orthogonal to our approach based on contrastive learning.\nTo sum up, DRAGONs advance state-of-the-art zero-shot effectiveness while keeping strong effectiveness in supervised evaluation. The experimental results demonstrate that our data augmentation approaches enable dense retrievers to learn domaininvariant matching signal between text pairs as the other models with fine-grained late interaction (SPLADE++ and ColBERTv2) or 40 times larger model size (GTR-XXL)."
+        },
+        {
+            "heading": "5 Discussions",
+            "text": "Is it necessary to augment relevance labels with a cross encoder? To answer this question, we further train DRAGON-S with the augmented relevance labels from a cross encoder (CE). Specifically, we create a ranked list of CE by first retrieving top 1000 passages with DRAGON-S and re-ranking them with the CE for each cropped sentence as a query. With the CE ranked list, we conduct another iteration (20 epochs) of training for DRAGON-S; however, we do not see retrieval effectiveness improvement in Table 5 (column 0 vs 1). In addition, the retrieval effectiveness becomes even worse when we further train DRAGON-S by only sampling CE ranked list instead of uniformly sampling all the six ranked lists (column 1 vs 2). Finally, we initialize from bert-base-uncased and re-train the model for three iterations (60 epochs) only with the CE ranked list.5 We observe that its effectiveness (column 3) is even worse than the models trained with the ranked lists from three retrievers (see columns 4 and 5 in Table 2). This result contradicts the general belief that CE provides the strongest supervision to a dense retriever (Hofst\u00e4tter et al., 2020). Moreover, it demonstrates the effectiveness of using diverse supervisions to train a generalizable dense retriever, rather than relying on a single strong supervision. Furthermore, leveraging all the retrievers to augment labels is still more efficient than a cross encoder (see Appendix A.7).\nDoes DRAGON benefit from unsupervised pretraining? Table 6 compares the models trained from different checkpoint initialization. Note that for Contriever and RetroMAE, we initialize from the checkpoint with only unsupervised pre-training (without fine-tuning on MS MARCO). We observe that our approach benefits from further masked auto-encoding rather than contrastive pre-training (rows 2,3 vs 1). The result is sensible since our 5We do not notice effective improvement with more iterations of training both in supervised and zero-shot evaluations.\napproach can be considered an improved version of contrastive pre-training, which appears to be orthogonal to masked auto-encoding pre-training. We leave the investigation of improving DR with generative and contrastive pre-training combined for future research. Can we use the soft labels from multiple teachers? In the literature, using the relevance scores from a teacher as soft labels is a standard of knowledge distillation (Lin et al., 2021b; Hofst\u00e4tter et al., 2021). However, in our study, even when training with uniform supervision from a sparse and dense retriever (i.e., uniCOIL and Contriever), it is challenging to normalize their relevance scores and create universal soft labels, yielding significant supervised and zero-shot effectiveness drops. We suspect that dense and sparse retrievers have many different views on relevance score computation; thus, it is even harder for a dense retriever to learn the score distributions from the different teachers. Why sentence cropping yields a generalizable dense retriever? Figure 4 showcases the augmented queries by sentence cropping and neural generation and their respectively augmented relevant passages other than the original passages. We observe two main differences between the cropped sentences and generative queries. Cropped sentences provide diverse queries from a passage; i.e., the two cropped sentences in Figure 4 include slightly different topics (Manhattan Project and atomic energy). By contrast, all generative queries surround the same main topic, Manhattan Project, about the original passages. Second, the cropped sentences have more unique augmented relevant passages than generative queries. This is maybe because a cropped sentence, containing more information (keywords), is more challenging than a generative human-like query. Thus, teachers show more disagreement between each other on cropped sentences. We hypothesize that a dense retriever trained on cropped sentences can capture more diverse supervised signals from multiple teachers than generative queries. This explains the reason why DRAGON-S shows better generalization capability than DRAGON-Q."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "We present DRAGON, a Dense Retriever trained with diverse AuGmentatiON and a unified framework of data augmentation (DA) to understand the recent progress of training dense retrievers. Based on the framework, we extensively study how to improve dense retrieval training through query and relevance label augmentation. Our experiments uncover some insights into training a dense retriever, which contradicts common wisdom that cross encoder is the most effective teacher and human-like queries are the most suitable training data for dense retrieval. Then, we propose a diverse data augmentation recipe, query augmentation with the mixture of sentence cropping and generative queries, and progressive relevance label augmentation with multiple teachers. With our proposed recipe of DA, DRAGON is the first to demonstrate that a single BERT-basesized dense retriever can achieve state-of-the-art effectiveness in both supervised and zero-shot retrieval tasks. We believe that DRAGON can serve as a strong foundation retrieval model for domain adaptation retrieval tasks (Wang et al., 2022; Dai et al., 2022) or the existing retrieval augmented language models (Izacard et al., 2022; Shi et al., 2023; Mallen et al., 2023)."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Despite of the easy usage of single-vector dense retrieval compared to the models with more finegrained late interactions (e.g., SPLADE++ and ColBERTv2), the limitations of DRAGONs are mainly from the cost of training. First, to conduct diverse relevance label augmentation, well trained dense, sparse and multi-vector retrievers are required. Second, to optimize DRAGONs\u2019 effectiveness, we scale up training queries to the size of 28 millions (compared to 0.8 millions in MS MARCO training queries) and leverage the progressive training strategy, which costs five days of training time with 32 A100 (40 GB) GPUs. The training cost can be reduced by removing repetitive or meaningless queries, which we leave for future work."
+        },
+        {
+            "heading": "A Appendices",
+            "text": ""
+        },
+        {
+            "heading": "A.1 Baseline Models",
+            "text": "We compare DRAGON with dense retrievers using the backbone of bert-base-uncased trained with advanced techniques. (1) Knowledge Distillation: RocketQAv2 (Ren et al., 2021) distills knowledge from a cross encoder while CL-DRD (Ren et al., 2021) combines curriculum learning and crossencoder distillation. They all use cross encoders\u2019 knowledge to augment positive relevance labels as our approach. (2) Contrastive Pre-training: coCondenser (Gao and Callan, 2022), Contriever (Izacard et al., 2021) and COCO-DR (Yu et al., 2022) are first pre-trained on different corpus listed in Table 1, and then fine-tuned on MS MARCO training queries. (3) Masked Auto-Encoding Pre-Training: COT-MAE (Wu et al., 2022) and RetroMAE (Xiao et al., 2022) are first pre-trained to recover polluted sentences and then fine-tuned on MS MARCO training queries. For RetroMAE, we use the variant with the best BEIR retrieval effectiveness for comparison. (4) Domain adaptation: We consider GPL (Wang et al., 2022) and Promptagator (PTR; Dai et al., 2022), which use generative models to create pseudo relevance data for each corpus in BEIR and train one expert dense retriever for each corpus. This approach requires the target corpus while training. Note that COCO-DR can also be considered domain adaptation on BEIR although it uses one model for all tasks.\nNote that coCondenser and COT-MAE are finetuned on the \u201cnon-standard\u201d MS MARCO passage corpus that has been augmented with title. Thus, we also conduct inference on the corpus with title for them; otherwise, we use the official MS MARCO passage corpus. In addition, we also report the retrieval effectiveness of GTR-XXL (Ni et al., 2022) and ColBERTv2 (Santhanam et al., 2022b) from their original papers and conduct retrieval for SPLADE++ using Pyserini (Lin et al., 2021a) for reference. We list all the other model checkpoints used for evaluations in Appendix A.2."
+        },
+        {
+            "heading": "A.2 Model Checkpoints",
+            "text": "Teacher Models: (1) uniCOIL: https://hu ggingface.co/castorini/unicoil-m smarco-passage; (2) Contriever: https: //huggingface.co/facebook/contri ever-msmarco; (3) GTR-XXL: https://hu ggingface.co/sentence-transformer s/gtr-t5-xxl; (4) ColBERTv2: https://\ngithub.com/stanford-futuredata/Co lBERT; (5) SPLADE++: http://download -de.europe.naverlabs.com/Splade_"
+        },
+        {
+            "heading": "Release_Jan22/splade_distil_CoCo",
+            "text": "denser_medium.tar.gz; (6) Cross encoder: https://huggingface.co/cross-enc oder/ms-marco-MiniLM-L-12-v2.\nBaseline Models: (1) CL-DRD: https://gi thub.com/HansiZeng/CL-DRD; (2) RocketQAv2: we directly copy the numbers from Santhanam et al. (2022b); (3) COT-MAE: https: //huggingface.co/caskcsg/cotma e_base_msmarco_retriever; (4) RetroMAE: https://huggingface.co/Shita o/RetroMAE_BEIR; (5) coCondenser: https: //huggingface.co/Luyu/co-conde nser-marco-retriever; (6) Contriever: https://huggingface.co/faceboo k/contriever-msmarco; (7) COCODR: https://huggingface.co/OpenMatch /cocodr-base-msmarco; (8) Promptagator (PTR) and GPL: we directly copy the numbers from their original papers (Dai et al., 2022; Wang et al., 2022).\nA.3 Implementation Details\nWe train our dense retrievers initialized from bertbase-uncased on 32 A100 GPUs (40GB) with a per-GPU batch size of 64 and a learning rate of 3e \u2212 5. Each batch includes an augmented query with its positives and hard negatives. Following Karpukhin et al. (2020), we use asymmetric dual encoder with two distinctly parameterized encoders and leverage in-batch negative mining. Note that symmetric dual encoder shows poor generalization capability in our initial experiments. We set the maximum query and passage lengths to 32 and 128 for MS MARCO training and evaluation. For BEIR evaluation, we set maximum input lengths to 512."
+        },
+        {
+            "heading": "A.4 MS MARCO Dataset Statistics",
+            "text": "Table 7 lists the data statistics of MS MARCO dataset, including the original training queries and test queries (i.e., Dev, DL19 and DL20). In addition, we also list the augmented queries used to train DRAGONs with full relevance label augmentation by five teachers.\nA.5 Impacts of Top-k Positive Sampling\nIn Section 3.2, we mention that our sampling scheme treats top 10 passages from each teacher ranked list as positives and top 45\u201350 as negatives. We further conduct experiment to study the impact of the positive sampling scheme. Following the experiment setups in Section 3.3, we use the sentences cropped from MS MARCO corpus as augmented queries and we conduct progressive label augmentation using top-k passages as positive. The results are tabulated in Table 8. We observe that treating top-10 passages from each teacher as positives yields the best supervised and zero-shot effectiveness. On the other hand, using only the top passage as positive results in significant effectiveness drop. This result indicates that the top passage labeled by a teacher cannot transfer its knowledge well to a student. This result is similar to the observation from Chen et al. (2022)."
+        },
+        {
+            "heading": "A.6 An Intuition Behind Uniform and Progressive Supervisions",
+            "text": "As shown in Section 3.2, uniform supervision provides good supervision without fusion weight tuning as fused supervision. Intuitively, a positive retrieved by more teachers has a higher probability to be sampled and may be more relevant to a query. To provide a sense of why uniform supervision works, we estimate the accuracy of supervision by computing the probability of each positive sampled under uniform supervision, and rank the positives according to the simulated probability. For example, at the 3rd iteration of progressive training, given a query, a positive passage is labeled positive by all the three teachers, the probability of the passages being sampled is 13 \u00b7 ( 1 k + 1 k + 1 k ) = 1 k . In our experiments,\neach teacher labels the top 10 (k = 10) retrieved passages as positives in our labeling scheme. Note that, in the case where multiple positives have equal probability, we further rank them according to their sum of reciprocal rank. For instance, if the two passages (e.g., p1 and p2) are retrieved by all the three teachers; then, we further rank them according to their scores 1r11 + 1 r12 + 1r13 and 1 r21 + 1r22 + 1 r23\n, where rmn denotes the rank of the passage pm by the n-th teacher. In addition, we also estimate the diversity of supervision by computing the number of positive passages in union sets from the sources of supervisions.\nTable 9 reports the detailed effectiveness and supervision quality (accuracy and diversity) comparison at each training iteration between uniform and progressive supervision as discussed in our pilot study. We observe that uniform supervision provides accurate and diverse supervision in the beginning of training; however, the generalization improvement over iteration is less than progressive supervision."
+        },
+        {
+            "heading": "A.7 Latency Measurement for Relevance Label Augmentation",
+            "text": "We measure the latency of label augmentation using batch retrieval on a single NVIDIA A100 40GB GPU for GPU search and 60 Intel(R) Xeon(R) Platinum 8275CL CPUs @ 3.00GHz for CPU search. For cross encoder, we conduct label augmentation by re-ranking text pairs with a batch size of 100. For dense retrieval (Contriever and GTR-XXL) and sparse retrieval, we use Faiss-GPU index and Lucene index from Pyserini (Lin et al., 2021a) with 60 threads, respectively, and search with a batch size of 100. Note that we use a batch size of 25 to encode queries using GTR-XXL due to GPU mem-\nory constraint, which is also the main bottleneck for GTR-XXL batch retrieval. For ColBERTv2, we use the improved version of multi-vector retrieval, PLAID (Santhanam et al., 2022a), and search with a batch size of 1, which is the only option.\nTable 10 compares the latency cost per query for relevance label augmentation with different neural rankers and demonstrates that leveraging all the retrievers to augment relevance labels are still more efficient than a cross encoder."
+        },
+        {
+            "heading": "A.8 Detailed evaluation on LoTTE",
+            "text": "Table 11 lists DRAGON\u2019s effectiveness on five topics without aggregation. Although all the variants of DRAGON show strong effectiveness on LoTTE, we find that DRAGONs perform poorly on the Forum queries about topics of science and technology compared to SPLADE++ and ColBERTv2. Combining science corpus pre-training with DRAGON training strategy is a possible solution."
+        },
+        {
+            "heading": "A.9 More Related Work",
+            "text": "Knowledge Distillation. Our work is closely related to the previous work exploring knowledge distillation (KD; Hinton et al., 2015) from ColBERT, cross encoder or their ensemble (Hofst\u00e4tter et al., 2021; Hofst\u00e4tter et al., 2020) to improve the effectiveness of DR (Lin et al., 2021b; Qu et al., 2021). However, they only take the advantage of soft labels from KD and use the relevant passages labeled by humans. The recent work (Ren et al., 2021; Zeng et al., 2022) mines more positive samples using cross encoder to further augment the limited relevance labels by humans. Nevertheless, it is challenging for cross encoders to augment relevance labels for queries in scale due to its low efficiency. Chen et al. (2022) first explore label augmentation using singe sparse retrieval model on large-scale queries and demonstrate that a dense retriever can mimic a teacher of a sparse retriever (e.g., BM25). Different from the previous work, we explore label augmentation using multiple supervisions on large-scale augmented queries. Curriculum Learning. Easy-to-hard training strategies (Bengio et al., 2009) have been applied to improve many machine learning tasks, including dense retrieval (Zeng et al., 2022; Lin et al., 2022). The previous work focuses on distilling complex knowledge from cross encoders to a dense retriever with a curriculum training strategy and demonstrates improved effectiveness in supervised retrieval tasks. In our work, we explore to progressively train a dense retriever with the diverse supervisions from dense, sparse and multi-vector retrievers to improve both supervised and zero-shot effectiveness. Pre-Training. There are two popular approaches to pre-training a dense retriever. The first one is contrastive pre-training, aiming to increase the size of training data by creating artificial text pairs (Lee et al., 2019; Chang et al., 2020; Izacard et al., 2021) from a corpus or collecting question\u2013answer pairs (Oguz et al., 2022; Ni et al., 2022) from websites. The second one is masked auto encoding pre-training, where models are trained to recover the corrupted texts (Gao and Callan, 2021; Lu et al., 2021; Xiao et al., 2022; Wu et al., 2022). Our work is similar to contrastive pre-training but instead of creating large-scale training data in an unsupervised or weakly supervised manner, we investigate how to conduct supervised contrastive learning on artificially created text pairs. We demonstrate that\ncombining masked auto encoding pre-training and our supervised contrastive learning can further improve models\u2019 generalization capability."
+        }
+    ],
+    "title": "How to Train Your DRAGON: Diverse Augmentation Towards Generalizable Dense Retrieval",
+    "year": 2023
+}

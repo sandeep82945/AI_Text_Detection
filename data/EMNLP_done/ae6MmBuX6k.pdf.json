@@ -1,0 +1,635 @@
+{
+    "abstractText": "Large language models (LLMs) have showcased remarkable capabilities in complex reasoning through chain of thought (CoT) prompting. Recently, there has been a growing interest in transferring these reasoning abilities from LLMs to smaller models. However, achieving both the diversity and consistency in rationales presents a challenge. In this paper, we focus on enhancing these two aspects and propose Multi-CoT Consistent Knowledge Distillation (MCC-KD) to efficiently distill the reasoning capabilities. In MCC-KD, we generate multiple rationales for each question and enforce consistency among the corresponding predictions by minimizing the bidirectional KL-divergence between the answer distributions. We investigate the effectiveness of MCC-KD with different model architectures (LLaMA/FlanT5) and various model scales (3B/7B/11B/13B) on both mathematical reasoning and commonsense reasoning benchmarks. The empirical results not only confirm MCC-KD\u2019s superior performance on in-distribution datasets but also highlight its robust generalization ability on out-of-distribution datasets.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Hongzhan Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Siyue Wu"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiaojun Quan"
+        },
+        {
+            "affiliations": [],
+            "name": "Rui Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Ming Yan"
+        },
+        {
+            "affiliations": [],
+            "name": "Ji Zhang"
+        }
+    ],
+    "id": "SP:59400be2aa263a2bc0eafede5f1ba11d99703e8a",
+    "references": [
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Advances in Neural Information Processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Howard Chen",
+                "Jacqueline He",
+                "Karthik Narasimhan",
+                "Danqi Chen"
+            ],
+            "title": "Can rationalization improve robustness",
+            "venue": "In Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Tech-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Karl Cobbe",
+                "Vineet Kosaraju",
+                "Mohammad Bavarian",
+                "Mark Chen",
+                "Heewoo Jun",
+                "Lukasz Kaiser",
+                "Matthias Plappert",
+                "Jerry Tworek",
+                "Jacob Hilton",
+                "Reiichiro Nakano"
+            ],
+            "title": "Training verifiers to solve math word problems",
+            "venue": "arXiv preprint arXiv:2110.14168",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yao Fu",
+                "Hao Peng",
+                "Litu Ou",
+                "Ashish Sabharwal",
+                "Tushar Khot."
+            ],
+            "title": "Specializing smaller language models towards multi-step reasoning",
+            "venue": "arXiv preprint arXiv:2301.12726.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mor Geva",
+                "Daniel Khashabi",
+                "Elad Segal",
+                "Tushar Khot",
+                "Dan Roth",
+                "Jonathan Berant."
+            ],
+            "title": "Did aristotle use a laptop? a question answering benchmark with implicit reasoning strategies",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:346\u2013",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Arnav Gudibande",
+                "Eric Wallace",
+                "Charlie Snell",
+                "Xinyang Geng",
+                "Hao Liu",
+                "Pieter Abbeel",
+                "Sergey Levine",
+                "Dawn Song."
+            ],
+            "title": "The false promise of imitating proprietary llms",
+            "venue": "arXiv preprint arXiv:2305.15717.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Peter Hase",
+                "Mohit Bansal."
+            ],
+            "title": "When can models learn from explanations? a formal framework for understanding the roles of explanation data",
+            "venue": "Proceedings of the First Workshop on Learning with Natural Language Supervision, pages 29\u201339, Dublin,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Geoffrey Hinton",
+                "Oriol Vinyals",
+                "Jeff Dean."
+            ],
+            "title": "Distilling the knowledge in a neural network",
+            "venue": "arXiv preprint arXiv:1503.02531.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Namgyu Ho",
+                "Laura Schmid",
+                "Se-Young Yun."
+            ],
+            "title": "Large language models are reasoning teachers",
+            "venue": "arXiv preprint arXiv:2212.10071.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jordan Hoffmann",
+                "Sebastian Borgeaud",
+                "Arthur Mensch",
+                "Elena Buchatskaya",
+                "Trevor Cai",
+                "Eliza Rutherford",
+                "Diego de Las Casas",
+                "Lisa Anne Hendricks",
+                "Johannes Welbl",
+                "Aidan Clark"
+            ],
+            "title": "Training compute-optimal large language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mohammad Javad Hosseini",
+                "Hannaneh Hajishirzi",
+                "Oren Etzioni",
+                "Nate Kushman."
+            ],
+            "title": "Learning to solve arithmetic word problems with verb categorization",
+            "venue": "Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP),",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Cheng-Yu Hsieh",
+                "Chun-Liang Li",
+                "Chih-Kuan Yeh",
+                "Hootan Nakhost",
+                "Yasuhisa Fujii",
+                "Alexander Ratner",
+                "Ranjay Krishna",
+                "Chen-Yu Lee",
+                "Tomas Pfister"
+            ],
+            "title": "Distilling step-by-step! outperforming larger language models with less training data and smaller",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "Lora: Low-rank adaptation of large language models",
+            "venue": "In International Conference on Learning Representations",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yuxin Jiang",
+                "Chunkit Chan",
+                "Mingyang Chen",
+                "Wei Wang."
+            ],
+            "title": "Lion: Adversarial distillation of closed-source large language model",
+            "venue": "arXiv preprint arXiv:2305.12870.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Diederik P. Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "CoRR, abs/1412.6980.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa."
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "venue": "arXiv preprint arXiv:2205.11916.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rik Koncel-Kedziorski",
+                "Hannaneh Hajishirzi",
+                "Ashish Sabharwal",
+                "Oren Etzioni",
+                "Siena Dumas Ang."
+            ],
+            "title": "Parsing algebraic word problems into equations",
+            "venue": "Transactions of the Association for Computational Linguistics, 3:585\u2013597.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Rik Koncel-Kedziorski",
+                "Subhro Roy",
+                "Aida Amini",
+                "Nate Kushman",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "MAWPS: A math word problem repository",
+            "venue": "Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics: Hu-",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Wang Ling",
+                "Dani Yogatama",
+                "Chris Dyer",
+                "Phil Blunsom."
+            ],
+            "title": "Program induction by rationale generation: Learning to solve and explain algebraic word problems",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Lucie Charlotte Magister",
+                "Jonathan Mallinson",
+                "Jakub Adamek",
+                "Eric Malmi",
+                "Aliaksei Severyn."
+            ],
+            "title": "Teaching small language models to reason",
+            "venue": "arXiv preprint arXiv:2212.08410.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shen-yun Miao",
+                "Chao-Chun Liang",
+                "Keh-Yih Su."
+            ],
+            "title": "A diverse corpus for evaluating and developing English math word problem solvers",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 975\u2013984, Online.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Xinxi Lyu",
+                "Ari Holtzman",
+                "Mikel Artetxe",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Rethinking the role of demonstrations: What makes in-context learning work? arXiv preprint arXiv:2202.12837",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Geondo Park",
+                "Gyeongman Kim",
+                "Eunho Yang."
+            ],
+            "title": "Distilling linguistic context for language model compression",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 364\u2013378, Online and Punta Cana, Dominican",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Arkil Patel",
+                "Satwik Bhattamishra",
+                "Navin Goyal"
+            ],
+            "title": "Are NLP models really able to solve simple math word problems",
+            "venue": "In Proceedings of the 2021 Conference of the North American Chapter of the Association",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Subhro Roy",
+                "Dan Roth."
+            ],
+            "title": "Solving general arithmetic word problems",
+            "venue": "Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, pages 1743\u20131752, Lisbon, Portugal. Association for Computational Linguistics.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Victor Sanh",
+                "Lysandre Debut",
+                "Julien Chaumond",
+                "Thomas Wolf."
+            ],
+            "title": "Distilbert, a distilled version of bert: smaller, faster, cheaper and lighter",
+            "venue": "arXiv preprint arXiv:1910.01108.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kumar Shridhar",
+                "Alessandro Stolfo",
+                "Mrinmaya Sachan."
+            ],
+            "title": "Distilling multi-step reasoning capabilities of large language models into smaller models via semantic decompositions",
+            "venue": "arXiv preprint arXiv:2212.00193.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aarohi Srivastava",
+                "Abhinav Rastogi",
+                "Abhishek Rao",
+                "Abu Awal Md Shoeb",
+                "Abubakar Abid",
+                "Adam Fisch",
+                "Adam R Brown",
+                "Adam Santoro",
+                "Aditya Gupta",
+                "Adri\u00e0 Garriga-Alonso"
+            ],
+            "title": "Beyond the imitation game: Quantifying and extrapolating",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Siqi Sun",
+                "Yu Cheng",
+                "Zhe Gan",
+                "Jingjing Liu."
+            ],
+            "title": "Patient knowledge distillation for BERT model compression",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natu-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alon Talmor",
+                "Jonathan Herzig",
+                "Nicholas Lourie",
+                "Jonathan Berant."
+            ],
+            "title": "CommonsenseQA: A question answering challenge targeting commonsense knowledge",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Iulia Turc",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Well-read students learn better: On the importance of pre-training compact models",
+            "venue": "arXiv preprint arXiv:1908.08962.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in Neural Information Processing Systems, 30.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Peifeng Wang",
+                "Aaron Chan",
+                "Filip Ilievski",
+                "Muhao Chen",
+                "Xiang Ren."
+            ],
+            "title": "Pinto: Faithful language reasoning using prompt-generated rationales",
+            "venue": "arXiv preprint arXiv:2211.01562.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc Le",
+                "Ed Chi",
+                "Sharan Narang",
+                "Aakanksha Chowdhery",
+                "Denny Zhou."
+            ],
+            "title": "Self-consistency improves chain of thought reasoning in language models",
+            "venue": "arXiv preprint arXiv:2203.11171.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "arXiv preprint arXiv:2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Huihan Yao",
+                "Ying Chen",
+                "Qinyuan Ye",
+                "Xisen Jin",
+                "Xiang Ren."
+            ],
+            "title": "Refining language models with compositional explanations",
+            "venue": "Advances in Neural Information Processing Systems, 34:8954\u20138967.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ho"
+            ],
+            "title": "2023), we perform a sample-wise random split with a train-dev-test ratio",
+            "venue": "GSM8K (Cobbe et al.,",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Recently, large language models (LLMs) such as ChatGPT have exhibited impressive emergent capabilities, showcasing their competence in various tasks, including those demanding complex reasoning. While directly providing answers without generating intermediate steps may lead to errors and limited interpretability, chain of thought (CoT) (Wei et al., 2022) prompting enables LLMs to break down reasoning tasks into a series of intermediate steps, guiding the model to generate the subsequent steps before arriving at the final answer. The effectiveness of CoT prompting has been demonstrated on diverse reasoning tasks (Kojima et al., 2022).\n\u2217Corresponding author.\nDespite the effectiveness of CoT prompting, recent studies (Wei et al., 2022; Magister et al., 2022; Fu et al., 2023) have shown that these reasoning capabilities only manifest in language models with over 100 billion parameters, such as PaLM (540B) (Chowdhery et al., 2022) and GPT-3 (175B) (Brown et al., 2020). These LLMs with massive parameter sizes require significant computational resources during both training and inference, which restrict their deployment on resource-limited platforms. While LLMs could be accessed through API calls, there are still several challenges to overcome, including network instability, difficulty in customizing the models, and privacy concerns.\nTherefore, an alternative approach is to deploy smaller language models such as LLaMA-7B/13B (Touvron et al., 2023) and FlanT5-XL/XXL (Chung et al., 2022), which have fewer than 13 billion parameters. Through knowledge distillation (KD) (Hinton et al., 2015), the reasoning capabilities can be transferred from LLMs to these smaller models. However, traditional KD techniques require the teacher model to provide output logits or hidden layer features, which cannot be readily applied to LLMs due to the limited accessibility of their internals. One potential solution is to leverage rationales generated by LLMs to train smaller mod-\nels, thereby acquiring their reasoning abilities (Ho et al., 2022; Magister et al., 2022; Fu et al., 2023).\nHowever, these methods for rationale distillation also face several challenges. Firstly, the limited diversity in reasoning paths may lead to a dilemma where the student model simply mimics the superficial style of the teacher model\u2019s outputs (Gudibande et al., 2023) or overfits the training data, resulting in limited generalization capabilities. Secondly, despite the existence of multiple rationales leading to the same answer for each given question (as depicted in Figure 1), these methods neglect the consistency among different rationales in reaching the predicted answer when training the student model. Such oversights can undermine the stability of student models during training and impair their generalization capabilities.\nTo address these challenges, we propose MultiCoT Consistent Knowledge Distillation (MCCKD), a novel solution that incorporates two pivotal characteristics. Firstly, this approach leverages multiple diverse rationales for each given question and aims to improve their consistency in predicting the answer. This improvement is expected to enhance the stability and generalizability of the student models. Secondly, we introduce a similaritybased method to facilitate the selection of diverse rationales. MCC-KD draws inspiration from realworld teaching scenarios, where presenting multiple distinct solutions to one problem benefits the student\u2019s learning process. With these inherent advantages, MCC-KD enables the smaller models to acquire reasoning capabilities from larger models through effective knowledge distillation.\nWe conduct extensive experiments with LLaMA (Touvron et al., 2023) and FlanT5 (Chung et al., 2022) on both mathematical reasoning and commonsense reasoning benchmarks. The empirical results demonstrate the effectiveness and superiority of MCC-KD over previous CoT-based knowledge distillation methods. For example, MCCKD achieves an accuracy improvement from point 38.01 to 41.58 on the GSM8K (Cobbe et al., 2021) dataset with LLaMA-7B. Moreover, the generalization experiments reveal that MCC-KD achieves a substantial accuracy improvement, raising the performance from point 47.69 to 49.52 on the outof-distribution dataset ASDiv (Miao et al., 2020) using FlanT5-XXL. These findings provide compelling evidence of the effectiveness and robustness of MCC-KD."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "In this section, we briefly review the related work on chain of thought and knowledge distillation."
+        },
+        {
+            "heading": "2.1 Chain of Thought",
+            "text": "The idea of using natural language rationales to solve mathematical problems through a series of intermediate steps is first pioneered by Ling et al. (2017). Then it has been further shown that natural language rationales or intermediate steps can improve language models\u2019 performance (Yao et al., 2021; Hase and Bansal, 2022) and robustness (Chen et al., 2022) on various reasoning tasks. Following this idea, chain of thought (Wei et al., 2022) prompting enables LLMs to generate CoTs or rationales themselves using in-context learning (Min et al., 2022) and few-shot prompting (Brown et al., 2020), thereby enhancing the models\u2019 capabilities to solve complex reasoning tasks. Wang et al. (2022b) introduce a multi-round voting mechanism to further improve the CoT prompting. On the other hand, Kojima et al. (2022) propose zero-shot-CoT prompting that leverages zero-shot prompting to guide LLMs, revealing their capabilities to generate CoTs or rationales without the need for manuallywritten contextual prompts. However, Hoffmann et al. (2022) and Chowdhery et al. (2022) unveil that CoT prompting requires the model\u2019s parameters to reach a certain scale to be effective."
+        },
+        {
+            "heading": "2.2 Knowledge Distillation",
+            "text": "Knowledge distillation (KD) (Hinton et al., 2015) aims to train smaller models by distilling knowledge from larger models, reducing model size while preserving high performance and generalization abilities. However, existing methods, such as response-based KD (Hinton et al., 2015; Turc et al., 2019), feature-based KD (Sun et al., 2019), and relation-based KD (Park et al., 2021), all require access to the internal parameters of the teacher model, which are often impractical for LLMs.\nConsidering that many LLMs are capable of generating high-quality rationales, an alternative approach to knowledge distillation is to leverage the rationales generated by LLMs as distillation training data. Motivated by this, previous works (Shridhar et al., 2022; Hsieh et al., 2023; Ho et al., 2022; Magister et al., 2022) employ LLMs as teacher models to generate chain of thought data as rationales, using the data to transfer the reasoning capabilities into smaller student models. Further-\nmore, Fu et al. (2023) specialize the model\u2019s ability towards a target task using chain of thought distillation. Jiang et al. (2023) explore a teacher-feedback mechanism relying on LLMs to generate rationales of challenging instructions, aiding student models to learn from difficult samples. Wang et al. (2022a) introduce a pipeline consisting of a rationalizing module and a reasoning module, resembling the teacher-student architecture, but it still requires LLMs to generate rationales for smaller models during the inference. The key distinction between these previous works and ours lies in that we explore the consistency among diverse rationales when training the student model to improve its stability."
+        },
+        {
+            "heading": "3 Method",
+            "text": "We introduce Multi-CoT Consistent Knowledge Distillation (MCC-KD), an approach designed to enhance the generalization and robustness of smaller student models during knowledge distillation. In particular, MCC-KD enforces the consistency among diverse chain of thoughts (CoTs) generated by the teacher LLMs in three key steps. Firstly, given an input question, we utilize zeroshot CoT prompting (Kojima et al., 2022) to obtain multiple CoTs as rationales from a LLM such as GPT-3.5. Secondly, we filter out rationales that exhibit limited diversity. Lastly, we impose constraints on the outputs from multiple rationales to\nfacilitate their consistency. The overall framework of MCC-KD is illustrated in Figure 2."
+        },
+        {
+            "heading": "3.1 Rationale Extraction",
+            "text": "Following (Kojima et al., 2022), we prompt the teacher model to generate rationales for each question. Formally, let x represent a question, r denote a rationale generated by the teacher, and a indicate the final answer predicted by the teacher from x and r. A resulting training sample is constructed by concatenating x, r, and a in the following format: <x> <r> Therefore, the answer is <a>.\nTo ensure the abundance and diversity of the generated rationales, we employ a combination of techniques. Firstly, we increase the sampling temperature \u03c4 (\u03c4 = 1.3 in this study) along with the number of sampling iterations. This approach aids in generating a greater variety of rationales. Secondly, to ensure the accuracy of the generated samples, we conduct verification for both the answer and the rationale. For answer verification, we compare the predicted answer a with the ground truth answer to confirm its correctness. For rationale verification, we find that the correctness of rationales typically aligns with the correctness of answers under most circumstances."
+        },
+        {
+            "heading": "3.2 Rationale Filtering",
+            "text": "The diversity of reasoning rationales plays a crucial role in transferring reasoning capabilities from teacher LLMs to student models (Gudibande et al.,\n2023). However, based on our observations, the teacher model still tends to generate similar rationales even with different sampling temperatures (as shown in Table 16 in Appendix B.3). In order to obtain more diverse rationales, we develop a filtering strategy based on N-gram. For each rationale, we convert it into a set of N-gram (specifically, 3- gram in this study) segments. Subsequently, we calculate the Jaccard similarity among these sets. To be more specific, considering that there are M rationales {r1, r2, . . . , rM} extracted for the input question, each rationale ri is decomposed into a set Si of segments. We then compare each pair of segment sets using the Jaccard similarity score to identify the most similar rationales:\n(k, l) = argmax 1\u2264i,j\u2264M,i \u0338=j |Si \u2229 Sj | |Si \u222a Sj | , (1)\nwhere k and l represent the indices of the selected rationale pair, rk and rl, respectively. Subsequently, we randomly retain one of the two rationales while discarding the other. This iterative process continues until we accumulate a predefined number, denoted as K (set to 5 in our experiments), of rationales for the given question."
+        },
+        {
+            "heading": "3.3 Multi-CoT Consistent Distillation",
+            "text": "As previously discussed, LLMs typically generate multiple valid rationales for a given input question. This work is built on the assumption that ensuring consistency among the predicted answers is crucial when training the student model with these rationales. For the input question and the K retained rationales (r1, r2, ..., rK) after filtering, we ensure consistency in the predictions of the student model by minimizing the variations in the probabilities of the answers from these different rationales. Single-token answer We first consider the scenario where the answer consists of a single token, where the prediction corresponds to a probability distribution over the vocabulary. For a given rationale ri, let p represent the predicted distribution obtained for the answer, and for another rationale rj , let q represent the predicted distribution. In order to ensure consistency between these two rationales, we apply bidirectional KL-divergence to their corresponding distributions as our training objective:\nLkl(p, q) = V\u2211 i=1 (pi log pi qi + qi log qi pi ), (2)\nwhere V denotes the size of the vocabulary. Multi-token answer As for the answer consisting of T tokens, each token having its own distribution, we define P = {p1,p2, . . . ,pT } as the set of predicted distributions for the answer obtained through rationale ri, where pt represents the probability distribution of the t-th token in the answer. Similarly, we use Q = {q1, q2, . . . , qT } to represent the predicted distributions obtained through rationale rj . To achieve multi-CoT consistency, we calculate the bidirectional KL-divergence for each token according to Equation 2 and take the average divergence to obtain the training objective:\nLkl(P ,Q) = 1\nT T\u2211 t=1 Lkl(pt, qt). (3)\nPairwise rationale sampling Since there are K rationales available for each question, we randomly select two distinct ones from the set of rationales in each training epoch to compute the Lkl loss."
+        },
+        {
+            "heading": "3.4 Overall Objective",
+            "text": "The overall objective function is defined as a combination of the cross-entropy loss (Lce) in traditional causal language modeling, computed on rationale and answer tokens, and the multi-CoT consistent loss (Lkl), which ensures consistency in the model\u2019s answer distribution. The objective function can be represented as follows:\nL = Lce + \u03b1Lkl, (4)\nwhere \u03b1 is a hyperparameter used to adjust the strength of the KL-divergence constraint."
+        },
+        {
+            "heading": "4 Experimental Setup",
+            "text": "In this section, we present the datasets and backbone models utilized in our experiments."
+        },
+        {
+            "heading": "4.1 Datasets",
+            "text": "To evaluate our method, we adopt both mathematical reasoning and commonsense reasoning tasks, following Ho et al. (2022) and Fu et al. (2023). For in-distribution mathematical reasoning, we employ the benchmarks GSM8K (Cobbe et al., 2021), SVAMP (Patel et al., 2021), and ASDiv (Miao et al., 2020). Additionally, we also employ out-ofdistribution (OOD) mathematical reasoning benchmarks to assess the OOD generalization capability, including SingleEq (Koncel-Kedziorski et al., 2015), AddSub (Hosseini et al., 2014), and MultiArith (Roy and Roth, 2015) from the Math World\nProblem Repository (Koncel-Kedziorski et al., 2016). In the realm of commonsense reasoning, we employ CommonsenseQA (Talmor et al., 2019) as the in-distribution dataset. For OOD evaluations of commonsense reasoning, we utilize Date Understanding, Tracking Shuffled Objects from the BIG-bench (Srivastava et al., 2022), Coin Flip from Kojima et al. (2022), as well as the StrategyQA (Geva et al., 2021) dataset. Further statistics of these datasets are provided in Appendix B."
+        },
+        {
+            "heading": "4.2 Backbone Models",
+            "text": "We use GPT-3.5-Turbo as the teacher model and prompt it to generate chain of thought samples (rationales). Following the filtering process introduced in Section 3.2, we retain K=5 rationales for each question across all our training datasets. As for the student models, we employ the instructiontuned FlanT5-XL/XXL (3B/11B) (Chung et al., 2022) and LLaMA-7B/13B (Touvron et al., 2023), which are initialized with pre-trained weights obtained from Hugging Face1. For the purpose of accelerating training and conserving GPU memory, we apply LoRA (Hu et al., 2021) throughout all of our experiments. The model configurations are summarized in Table 1, and additional details regarding the settings can be found in Appendix A."
+        },
+        {
+            "heading": "4.3 Baseline Methods",
+            "text": "In order to evaluate the effectiveness of MCC-KD, we conduct experiments and compare its performance with existing CoT-based distillation methods (Ho et al., 2022; Fu et al., 2023; Magister et al., 2022), which utilize LLMs as teacher models to generate rationales and distill their reasoning abilities directly into smaller student models. For a fair\n1https://huggingface.co/models\ncomparison, we also implement a baseline method called Vanilla KD on our training datasets. Vanilla KD is a CoT-based distillation method that does not incorporate diversity filtering and the multi-CoT consistency constraint."
+        },
+        {
+            "heading": "5 Results and Analysis",
+            "text": "In this section, we present the main results, ablation studies, and additional experiments."
+        },
+        {
+            "heading": "5.1 Main Results",
+            "text": "The main results for mathematical and commonsense reasoning tasks are provided in Table 2. The baseline results are obtained from their respective original papers (Ho et al., 2022; Magister et al., 2022; Fu et al., 2023). We evaluate the performance of the teacher model through our own testing. It can be observed that MCC-KD outperforms current baseline methods in all mathematical reasoning tasks, namely GSM8K, ASDiv, and SVAMP, when compared with models of similar size. These results highlight significant improvements achieved by MCC-KD. The performance gap between the FlanT5 (Vanilla KD) that we implement and Fu et al. (2023) can be explained by the difference in teacher model selection. Fu et al. (2023) utilize code-davinci-002 as the teacher model, while we utilize GPT-3.5-turbo as the teacher model. For the commonsense reasoning tasks, MCC-KD surpasses current baseline methods and even exceeds the performance of the teacher model on the CommonsenseQA dataset. This outcome clearly demonstrates the effectiveness of MCC-KD in addressing commonsense reasoning tasks. Notably, the distilled models are able to generate reasoning paths directly, eliminating the necessity for any CoT prompting throughout our experiments."
+        },
+        {
+            "heading": "5.2 Ablation Study",
+            "text": "This ablation study aims to examine the influence of components in MCC-KD. Results are averaged over three runs using randomly selected seeds. Multi-CoT consistency constraint To assess the impact of the multi-CoT consistency constraint, we perform ablation experiments on different variants of MCC-KD using LLaMA-7B models without the consistency constraint. As presented in Table 3, we observe a significant decrease in performance on both mathematical and commonsense reasoning tasks when the consistency constraint is removed.\nRationale filtering We then explore the effectiveness of rationale filtering in MCC-KD. In the experiment setting without rationale filtering, we randomly sample 5 rationales for each question, maintaining the same quantity as the experiment setting with rationale filtering. Additionally, we ensure that the correctness rate of the selected rationales remains consistent between both experiment settings. As demonstrated in Table 3, we observe a noticeable decline in performance after removing the rationale filtering process, highlighting the critical importance of rationale diversity.\nStudent model architecture Furthermore, we examine the effectiveness of MCC-KD on two distinct model architectures: FlanT5-XL for the encoder-decoder Transformer architecture (Vaswani et al., 2017) and LLaMA-7B for the decoder-only architecture. We compare MCC-KD with the vanilla knowledge distillation (KD) approach. As presented in Table 2, MCC-KD consistently enhances performance in comparison to vanilla KD across various model architectures."
+        },
+        {
+            "heading": "5.3 Out-of-Distribution Generalization",
+            "text": "In line with the work of Fu et al. (2023), we explore the ability of MCC-KD to enhance the generalization capabilities of models. We apply MCCKD to the in-distribution mathematical reasoning dataset (GSM8K) and select the optimal checkpoints for evaluation on out-of-distribution mathematical reasoning datasets (ASDiv, SVAMP, MultiArith, SingleEq, and AddSub). Similarly, we assess the generalization performance on commonsense reasoning tasks using both the in-distribution dataset (CommonsenseQA) and out-of-distribution datasets (StrategyQA, Date Understanding, Tracking Shuffled Objects, and Coin Flip). The results are presented in Table 4 and Table 5, respectively. In mathematical reasoning, MCC-KD demonstrates further improvements in models\u2019 generalization capabilities compared to the findings of Fu et al. (2023) as well as the vanilla KD approach. In commonsense reasoning, MCC-KD exhibits a consistent trend of enhancing generalization capabilities when compared to the vanilla KD approach."
+        },
+        {
+            "heading": "5.4 Diversity of Rationales",
+            "text": "In this section, we delve into the significance of rationale diversity within the context of MCC-KD. We contend that diversity among the rationales generated by the teacher model is a crucial factor for effective reasoning learning by the student model. To measure the degree of diversity among rationales, we employ the Jaccard similarity metric, where a higher score indicates greater similarity and vice\nversa. By manipulating the diversity of training instances, we assess the efficacy of MCC-KD. In our experiments, we utilize the LLaMA-13B model as the student model and incorporate two rationales for each question during training. As illustrated in Figure 3, the performance of MCC-KD exhibits a corresponding improvement with increasing diversity among the rationales, as observed on both the ASDiv and SVAMP development sets."
+        },
+        {
+            "heading": "5.5 The Number of Rationales",
+            "text": "We also examine the performance of MCC-KD with varying numbers of rationales on the SVAMP\nand ASDiv datasets. Note that for each training epoch, our method randomly selects two distinct rationales from a set of K rationales per question as the training instances. Hence, we modify the value of K for each question to assess its impact. To ensure sufficient training, we empirically set the number of training epochs to 24. The student model employed in these experiments is LLaMA7B. As depicted in Figure 4, we observe that as the number of rationales increases, the model\u2019s performance on both the ASDiv and SVAMP datasets improves correspondingly. Specifically, when the number of rationales is increased from 2 to 5, there\nis a significant enhancement in performance on both datasets. However, when the number is further increased from 5 to 10, the performance gains become less pronounced. Therefore, taking into account computational efficiency, we opt to use 5 rationales in our experiments."
+        },
+        {
+            "heading": "5.6 Rationale Correctness",
+            "text": "Ensuring LLMs to generate completely accurate rationales poses a challenge, especially when dealing with complex reasoning datasets. Striking a balance between a higher correctness rate and larger data quantity is crucial, considering the increased expenses associated with LLMs\u2019 API calls. To investigate the impact of the correctness rate for teacher-generated rationales, we randomly select two rationales from the raw rationales as training instances for each question. We approximate the correctness of rationales by comparing the predicted answers with the ground-truth answers. Figure 5 illustrates the impact of the correctness rate of the generated rationales on the ASDiv and SVAMP datasets, using LLaMA-7B as the student model. As depicted in the figure, there is minimal performance difference when the correctness rate exceeds 90%. However, a significant degradation in model performance is observed when the correctness rate falls around 80% or below. To maintain high performance, we ensure a correctness rate of over 90% throughout our experiments."
+        },
+        {
+            "heading": "5.7 Consistency Weight",
+            "text": "In the training objective of MCC-KD, we introduce hyperparameter \u03b1 to balance the multi-CoT consistency constraint. To investigate its impact on the\nperformance of LLaMA-13B, we present results for two different values of \u03b1 on the GSM8K and CommonsenseQA datasets in Figure 6. The results indicate that our method shows a preference for a smaller \u03b1 of 0.01 on the mathematical reasoning task of GSM8K, while it favors a larger \u03b1 of 0.1 on the commonsense reasoning task of CommonsenseQA. Therefore, we empirically select \u03b1 values close to 0.01 for mathematical reasoning datasets (GSM8K, ASDiv, and SVAMP), and close to 0.1 for the commonsense reasoning dataset (CommonsenseQA) throughout our experiments."
+        },
+        {
+            "heading": "5.8 Combining with Self-Consistency",
+            "text": "We note that self-consistency (Wang et al., 2022b) also employs a consistency strategy for maintaining consistency among diverse rationales, which shares similarities with our method. However, selfconsistency requires LLMs to generate multiple rationales and answers during the inference phase, determining the final answer based on the highest vote count. In contrast, our MCC-KD involves the imposition of consistency constraints on diverse rationales during the training phase.\nIn this section, we investigate the incorporation of self-consistency (SC, 5 rationales for voting) and MCC-KD on the GSM8K dataset, employing the LLaMA-7B model. As observed in Table 6, while both MCC-KD and self-consistency can improve the Vanilla KD approach, the performance of MCCKD can be further enhanced through the application of self-consistency. Note that MCC-KD and selfconsistency work in distinct phases, making direct comparisons of their results inappropriate."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this paper, we propose Multi-CoT Consistent Knowledge Distillation (MCC-KD) to transfer reasoning capabilities from larger language models (LLMs) to smaller models. The primary objective is to address the diversity and consistency challenges present in existing knowledge distillation methods for this purpose. Our approach leverages multiple rationales for each given question and focuses on improving their consistency in predicting the answer. Extensive experiments are conducted using different model architectures, including LLaMA and FlanT5, and a range of model scales, such as 3B, 7B, 11B, and 13B. The experiments cover both mathematical and commonsense reasoning benchmarks. The results clearly demonstrate the superior performance of MCC-KD on both in-distribution and out-of-distribution tasks. These findings confirm that MCC-KD enhances the stability and generalizability of the student models."
+        },
+        {
+            "heading": "Acknowledgement",
+            "text": "This work was supported by the National Natural Science Foundation of China (No. 62176270) and the Guangdong Basic and Applied Basic Research Foundation (No. 2023A1515012832).\nLimitations\nThere are three potential limitations of our work. First, the reliance on LLMs for generating rationales introduces a potential limitation in terms of cost associated with API calls. Second, there still exists a significant gap between the student model and the teacher model in mathematical reasoning tasks, requiring future efforts to reduce this disparity. Third, this work focuses solely on exploring only one single teacher model, overlooking the potential benefits and insights that could arise from considering different LLMs as the teachers."
+        },
+        {
+            "heading": "A Models",
+            "text": "A.1 Model Configurations We employ four distinct models, namely FlanT5XL, FlanT5-XXL, LLaMA-7B, and LLaMA-13B, as our student backbone models. The FlanT5 models utilize an encoder-decoder Transformer architecture, whereas the LLaMA models adopt a decoder-only Transformer architecture. Note that the FlanT5 models have undergone instruction tuning, whereas the LLaMA models have not. Based on our empirical observations, the FlanT5 models exhibit stronger performance in commonsense reasoning tasks, while the LLaMA models excel in mathematical reasoning tasks. The configurations of these models are provided in Table 7.\nA.2 Experiment Settings We train all the student models on GeForce RTX 4090 GPUs using the model parallelism technique. For further accelerating the training and saving memory, we utilize quantization techniques and LoRA (Hu et al., 2021). We apply LoRA to four weight matrices in the attention module (Wq,Wk,Wv,Wo) and three weight matrices in the MLP module. Similar to the objective function proposed by Hinton et al. (2015), we search for the temperature parameter in the KL function. Through all experiments, we use Adam (Kingma and Ba, 2014) as our optimizer, and we set the learning rate to be 1e-5 in most datasets. With LLaMA-7B as the backbone model, we employ gradient accumulation, with mini-batch size of 2 and accumulation steps of 2. For different datasets, the value of \u03b1 ranges from 0.01 to 0.1. See Table 8 for more details.\nA.3 Smaller Student Model Prior endeavors (Sanh et al., 2019; Sun et al., 2019) in the field of knowledge distillation have primarily focused on using smaller models as the recipients of knowledge transfer. The primary focus of our research resides in the transference of reasoning capabilities from LLMs to more compact counterparts, employing a chain-of-thought (COT)\nprompting approach. Notably, existing research (Wei et al., 2022; Fu et al., 2023; Kojima et al., 2022) has demonstrated that the capacity for intricate reasoning within LLMs is typically inherent to larger models with over 100 billion parameters.\nWe conduct an experiment utilizing FlanT5-base (250M) on the SVAMP and ASDiv datasets. The results presented in Table 9 indicate that when employing a smaller model as the student, the improvements achieved through knowledge distillation are relatively modest in comparison to those observed with larger counterparts. This observation suggests that the limited improvement attained with a smaller student model stems primarily from the model\u2019s inherent reasoning capacity rather than the effectiveness of the distillation method."
+        },
+        {
+            "heading": "B Datasets",
+            "text": "B.1 Mathematical Reasoning Datasets\nFor mathematical reasoning, we mainly use GSM8K (Cobbe et al., 2021), ASDiv (Miao et al., 2020) and SVAMP (Patel et al., 2021) as our training datasets. Following Ho et al. (2022) and Fu et al. (2023), we perform a sample-wise random split with a train-dev-test ratio of 70:15:15 (Table 10). Whereas the GSM8K dataset has the official split of training and testing sets but no development set, we randomly split the original test set with a dev-test ratio of 50:50. In order to keep consistency with the GSM8K dataset and SVAMP dataset, we only evaluate the models\u2019 mathematical reasoning abilities on the ASDiv dataset by filtering out samples with non-numeric answers. Since the MultiArith (Roy and Roth, 2015), Sin-\ngleEq (Koncel-Kedziorski et al., 2015) and AddSub (Hosseini et al., 2014) datasets are too small, we use these datasets for our out-of-distribution experiments only (Table 11). We don\u2019t train on the AQuA (Ling et al., 2017) dataset, as it has 100,000 examples, which is too costly to infer with an LLM.\nB.2 Commonsense Reasoning Datasets For commonsense reasoning, we select CommonsenseQA (Talmor et al., 2019) as our training dataset. We perform a random split of 1221 instances from the original training set to create the test set. This number corresponds to the size of the CommonsenseQA\u2019s original development set (Table 10). We do not use the Date Understanding, Tracking Shuffled Objects and Coin Flip as our training datasets due to the small size of those datasets (Table 11), but we use them to evaluate model\u2019s out-of-distribution performance. The strategyQA (Geva et al., 2021) dataset may contain private or personal information which GPT-3.5-Turbo refuses to answer (Table 12). For the CommonsenseQA datasets, the GPT-3.5-Turbo may also refuse to answer certain questions (Table 13). However, the proportion of such cases is much smaller compared with StrategyQA, and it still provides useful information in the rationales even when the teacher model refuses to give a choice.\nFor all commonsense reasoning datasets, we utilize choices-answer format for each question. The CommonsenseQA dataset has five choices per question, and the Tracking Shuffled Objects has three choices per question. See Table 14 for more de-\ntails. There are no choices for the answers in the CoinFlip and the StrategyQA datasets. Since the answers in CoinFlip and StrategyQA are in the form of \u201cYes\u201d or \u201cNo\u201d, we transform them into binary choices-answer format, for example: (A) Yes and (B) No. Examples of the transformed datasets can be seen in Table 12 and Table 15.\nB.3 Diversity of Generated Rationales When the sampling temperature is too low (e.g., \u03c4 = 1), the teacher model tends to generate the same rationales for the same question repeatedly. On the other hand, when the temperature is too high (e.g., \u03c4 = 1.5), it can lead to a significant decrease in the quality of the generated rationales by the teacher model. Hence, we choose an appropriate temperature \u03c4 = 1.3 to balance the generation of diverse rationales while maintaining their quality. However, we observe that even with sampling temperature \u03c4 = 1.3, the teacher model may still exhibit a tendency to generate somewhat similar rationales occasionally, as shown in Table 16. We argue that the diversity among teacher-generated rationales is a crucial factor, as higher diversity implies more diverse of solutions. We believe that there should be minimal diversity between rationales in order for effective distillation."
+        }
+    ],
+    "title": "MCC-KD: Multi-CoT Consistent Knowledge Distillation",
+    "year": 2023
+}

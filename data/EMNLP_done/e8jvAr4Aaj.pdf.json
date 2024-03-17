@@ -1,0 +1,906 @@
+{
+    "abstractText": "Query rewriting plays a vital role in enhancing conversational search by transforming contextdependent user queries into standalone forms. Existing approaches primarily leverage humanrewritten queries as labels to train query rewriting models. However, human rewrites may lack sufficient information for optimal retrieval performance. To overcome this limitation, we propose utilizing large language models (LLMs) as query rewriters, enabling the generation of informative query rewrites through well-designed instructions. We define four essential properties for well-formed rewrites and incorporate all of them into the instruction. In addition, we introduce the role of rewrite editors for LLMs when initial query rewrites are available, forming a \u201crewrite-then-edit\u201d process. Furthermore, we propose distilling the rewriting capabilities of LLMs into smaller models to reduce rewriting latency. Our experimental evaluation on the QReCC dataset demonstrates that informative query rewrites can yield substantially improved retrieval performance compared to human rewrites, especially with sparse retrievers.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Fanghua Ye"
+        },
+        {
+            "affiliations": [],
+            "name": "Meng Fang"
+        },
+        {
+            "affiliations": [],
+            "name": "Shenghui Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Emine Yilmaz"
+        }
+    ],
+    "id": "SP:d62a7062d8ab863e1edcccbdbe99fd16454fa722",
+    "references": [
+        {
+            "authors": [
+                "Raviteja Anantha",
+                "Svitlana Vakulenko",
+                "Zhucheng Tu",
+                "Shayne Longpre",
+                "Stephen Pulman",
+                "Srinivas Chappidi."
+            ],
+            "title": "Open-domain question answering goes conversational via question rewriting",
+            "venue": "Proceedings of the 2021 Conference of the North Amer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhiyu Chen",
+                "Jie Zhao",
+                "Anjie Fang",
+                "Besnik Fetahu",
+                "Oleg Rokhlenko",
+                "Shervin Malmasi."
+            ],
+            "title": "Reinforced question rewriting for conversational question answering",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing:",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Eunsol Choi",
+                "He He",
+                "Mohit Iyyer",
+                "Mark Yatskar",
+                "Wentau Yih",
+                "Yejin Choi",
+                "Percy Liang",
+                "Luke Zettlemoyer."
+            ],
+            "title": "QuAC: Question answering in context",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, pages",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jeffrey Dalton",
+                "Chenyan Xiong",
+                "Jamie Callan"
+            ],
+            "title": "Cast 2020: The conversational assistance track overview",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jeffrey Dalton",
+                "Chenyan Xiong",
+                "Vaibhav Kumar",
+                "Jamie Callan."
+            ],
+            "title": "Cast-19: A dataset for conversational information seeking",
+            "venue": "Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information Retrieval,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qingxiu Dong",
+                "Lei Li",
+                "Damai Dai",
+                "Ce Zheng",
+                "Zhiyong Wu",
+                "Baobao Chang",
+                "Xu Sun",
+                "Jingjing Xu",
+                "Zhifang Sui."
+            ],
+            "title": "A survey for in-context learning",
+            "venue": "arXiv preprint arXiv:2301.00234.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ahmed Elgohary",
+                "Denis Peskov",
+                "Jordan BoydGraber."
+            ],
+            "title": "Can you unpack that? learning to rewrite questions-in-context",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jianfeng Gao",
+                "Chenyan Xiong",
+                "Paul Bennett",
+                "Nick Craswell."
+            ],
+            "title": "Neural Approaches to Conversational Information Retrieval, volume 44",
+            "venue": "Springer Nature.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jianping Gou",
+                "Baosheng Yu",
+                "Stephen J Maybank",
+                "Dacheng Tao."
+            ],
+            "title": "Knowledge distillation: A survey",
+            "venue": "International Journal of Computer Vision, 129:1789\u20131819.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhibin Gou",
+                "Zhihong Shao",
+                "Yeyun Gong",
+                "Yelong Shen",
+                "Yujiu Yang",
+                "Nan Duan",
+                "Weizhu Chen."
+            ],
+            "title": "Critic: Large language models can self-correct with tool-interactive critiquing",
+            "venue": "arXiv preprint arXiv:2305.11738.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wen-tau Yih"
+            ],
+            "title": "Dense passage retrieval for open",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tom Kwiatkowski",
+                "Jennimaria Palomaki",
+                "Olivia Redfield",
+                "Michael Collins",
+                "Ankur Parikh",
+                "Chris Alberti",
+                "Danielle Epstein",
+                "Illia Polosukhin",
+                "Jacob Devlin",
+                "Kenton Lee"
+            ],
+            "title": "Natural questions: a benchmark for question answering research",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yongqi Li",
+                "Wenjie Li",
+                "Liqiang Nie."
+            ],
+            "title": "Dynamic graph reasoning for conversational open-domain question answering",
+            "venue": "ACM Transactions on Information Systems (TOIS), 40(4):1\u201324.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yongqi Li",
+                "Wenjie Li",
+                "Liqiang Nie."
+            ],
+            "title": "MMCoQA: Conversational question answering over text, tables, and images",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 4220\u2013",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin."
+            ],
+            "title": "ROUGE: A package for automatic evaluation of summaries",
+            "venue": "Text Summarization Branches Out, pages 74\u201381, Barcelona, Spain. Association for Computational Linguistics.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Jimmy Lin",
+                "Xueguang Ma",
+                "Sheng-Chieh Lin",
+                "JhengHong Yang",
+                "Ronak Pradeep",
+                "Rodrigo Nogueira."
+            ],
+            "title": "Pyserini: A python toolkit for reproducible information retrieval research with sparse and dense representations",
+            "venue": "Proceedings of the 44th Inter-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Jimmy Lin."
+            ],
+            "title": "Contextualized query embeddings for conversational search",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 1004\u20131015, Online and Punta Cana,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Rodrigo Nogueira",
+                "Ming-Feng Tsai",
+                "Chuan-Ju Wang",
+                "Jimmy Lin."
+            ],
+            "title": "Conversational question reformulation via sequence-to-sequence architectures and pretrained language models",
+            "venue": "arXiv preprint arXiv:2004.01909.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sheng-Chieh Lin",
+                "Jheng-Hong Yang",
+                "Rodrigo Nogueira",
+                "Ming-Feng Tsai",
+                "Chuan-Ju Wang",
+                "Jimmy Lin."
+            ],
+            "title": "Multi-stage conversational passage retrieval: An approach to fusing term importance estimation and neural query rewriting",
+            "venue": "ACM Transactions on",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haokun Liu",
+                "Derek Tam",
+                "Mohammed Muqeeth",
+                "Jay Mohta",
+                "Tenghao Huang",
+                "Mohit Bansal",
+                "Colin A Raffel."
+            ],
+            "title": "Few-shot parameter-efficient fine-tuning is better and cheaper than in-context learning",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "arXiv preprint arXiv:1711.05101.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Lucie Charlotte Magister",
+                "Jonathan Mallinson",
+                "Jakub Adamek",
+                "Eric Malmi",
+                "Aliaksei Severyn."
+            ],
+            "title": "Teaching small language models to reason",
+            "venue": "arXiv preprint arXiv:2212.08410.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelong Mao",
+                "Zhicheng Dou",
+                "Hongjin Qian."
+            ],
+            "title": "Curriculum contrastive context denoising for fewshot conversational dense retrieval",
+            "venue": "Proceedings of the 45th International ACM SIGIR Conference on Research and Development in Information Retrieval,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Raja Marjieh",
+                "Ilia Sucholutsky",
+                "Pol van Rijn",
+                "Nori Jacoby",
+                "Thomas L Griffiths."
+            ],
+            "title": "What language reveals about perception: Distilling psychophysical knowledge from large language models",
+            "venue": "arXiv preprint arXiv:2302.01308.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "MetaICL: Learning to learn in context",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Tech-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Xinxi Lyu",
+                "Ari Holtzman",
+                "Mikel Artetxe",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Rethinking the role of demonstrations: What makes in-context learning work",
+            "venue": "In Proceedings of the 2022 Conference on Empirical Methods",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fengran Mo",
+                "Kelong Mao",
+                "Yutao Zhu",
+                "Yihong Wu",
+                "Kaiyu Huang",
+                "Jian-Yun Nie."
+            ],
+            "title": "Convgqr: Generative query reformulation for conversational search",
+            "venue": "arXiv preprint arXiv:2305.15645.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Marius Mosbach",
+                "Tiago Pimentel",
+                "Shauli Ravfogel",
+                "Dietrich Klakow",
+                "Yanai Elazar."
+            ],
+            "title": "Few-shot fine-tuning vs",
+            "venue": "in-context learning: A fair comparison and evaluation. arXiv preprint arXiv:2305.16938.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jianmo Ni",
+                "Chen Qu",
+                "Jing Lu",
+                "Zhuyun Dai",
+                "Gustavo Hernandez Abrego",
+                "Ji Ma",
+                "Vincent Zhao",
+                "Yi Luan",
+                "Keith Hall",
+                "Ming-Wei Chang",
+                "Yinfei Yang."
+            ],
+            "title": "Large dual encoders are generalizable retrievers",
+            "venue": "Proceedings of the 2022 Conference on Empirical",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Paul Owoicho",
+                "Ivan Sekuli\u0107",
+                "Mohammad Aliannejadi",
+                "Jeffrey Dalton",
+                "Fabio Crestani."
+            ],
+            "title": "Exploiting simulated user feedback for conversational search: Ranking, rewriting, and beyond",
+            "venue": "arXiv preprint arXiv:2304.13874.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Baolin Peng",
+                "Chunyuan Li",
+                "Pengcheng He",
+                "Michel Galley",
+                "Jianfeng Gao."
+            ],
+            "title": "Instruction tuning with gpt-4",
+            "venue": "arXiv preprint arXiv:2304.03277.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hongjin Qian",
+                "Zhicheng Dou."
+            ],
+            "title": "Explicit query rewriting for conversational dense retrieval",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 4725\u2013 4737, Abu Dhabi, United Arab Emirates. Association",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Filip Radlinski",
+                "Nick Craswell."
+            ],
+            "title": "A theoretical framework for conversational search",
+            "venue": "Proceedings of the 2017 conference on conference human information interaction and retrieval, pages 117\u2013126.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ori Ram",
+                "Yoav Levine",
+                "Itay Dalmedigos",
+                "Dor Muhlgay",
+                "Amnon Shashua",
+                "Kevin Leyton-Brown",
+                "Yoav Shoham."
+            ],
+            "title": "In-context retrieval-augmented language models",
+            "venue": "arXiv preprint arXiv:2302.00083.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Stephen Robertson",
+                "Hugo Zaragoza"
+            ],
+            "title": "The probabilistic relevance framework: Bm25 and beyond",
+            "venue": "Foundations and Trends\u00ae in Information Retrieval,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Corbin Rosset",
+                "Chenyan Xiong",
+                "Xia Song",
+                "Daniel Campos",
+                "Nick Craswell",
+                "Saurabh Tiwary",
+                "Paul Bennett."
+            ],
+            "title": "Leading conversational search by suggesting useful questions",
+            "venue": "Proceedings of the web conference 2020, pages 1160\u20131170.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kumar Shridhar",
+                "Alessandro Stolfo",
+                "Mrinmaya Sachan."
+            ],
+            "title": "Distilling multi-step reasoning capabilities of large language models into smaller models via semantic decompositions",
+            "venue": "arXiv preprint arXiv:2212.00193.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Simeng Sun",
+                "Yang Liu",
+                "Dan Iter",
+                "Chenguang Zhu",
+                "Mohit Iyyer"
+            ],
+            "title": "How does in-context learning help prompt tuning? arXiv preprint arXiv:2302.11521",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Svitlana Vakulenko",
+                "Shayne Longpre",
+                "Zhucheng Tu",
+                "Raviteja Anantha."
+            ],
+            "title": "Question rewriting for conversational question answering",
+            "venue": "Proceedings of the 14th ACM international conference on web search and data mining, pages 355\u2013363.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Christophe Van Gysel",
+                "Maarten de Rijke."
+            ],
+            "title": "Pytrec_eval: An extremely fast python interface to trec_eval",
+            "venue": "The 41st International ACM SIGIR Conference on Research & Development in Information Retrieval, pages 873\u2013876.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Nikos Voskarides",
+                "Dan Li",
+                "Pengjie Ren",
+                "Evangelos Kanoulas",
+                "Maarten de Rijke."
+            ],
+            "title": "Query resolution for conversational search with limited supervision",
+            "venue": "Proceedings of the 43rd International ACM SIGIR conference on research and development in",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhenduo Wang",
+                "Zhichao Xu",
+                "Qingyao Ai",
+                "Vivek Srikumar."
+            ],
+            "title": "An in-depth investigation of user response simulation for conversational search",
+            "venue": "arXiv preprint arXiv:2304.07944.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Maarten Bosma",
+                "Vincent Y Zhao",
+                "Kelvin Guu",
+                "Adams Wei Yu",
+                "Brian Lester",
+                "Nan Du",
+                "Andrew M Dai",
+                "Quoc V Le."
+            ],
+            "title": "Finetuned language models are zero-shot learners",
+            "venue": "arXiv preprint arXiv:2109.01652.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jerry Wei",
+                "Jason Wei",
+                "Yi Tay",
+                "Dustin Tran",
+                "Albert Webson",
+                "Yifeng Lu",
+                "Xinyun Chen",
+                "Hanxiao Liu",
+                "Da Huang",
+                "Denny Zhou"
+            ],
+            "title": "Larger language models do in-context learning differently. arXiv preprint arXiv:2303.03846",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zeqiu Wu",
+                "Yi Luan",
+                "Hannah Rashkin",
+                "David Reitter",
+                "Hannaneh Hajishirzi",
+                "Mari Ostendorf",
+                "Gaurav Singh Tomar."
+            ],
+            "title": "CONQRR: Conversational query rewriting for retrieval with reinforcement learning",
+            "venue": "Proceedings of the 2022 Conference on Em-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lee Xiong",
+                "Chenyan Xiong",
+                "Ye Li",
+                "Kwok-Fung Tang",
+                "Jialin Liu",
+                "Paul Bennett",
+                "Junaid Ahmed",
+                "Arnold Overwijk."
+            ],
+            "title": "Approximate nearest neighbor negative contrastive learning for dense text retrieval",
+            "venue": "arXiv preprint arXiv:2007.00808.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jingjing Xu",
+                "Yuechen Wang",
+                "Duyu Tang",
+                "Nan Duan",
+                "Pengcheng Yang",
+                "Qi Zeng",
+                "Ming Zhou",
+                "Xu Sun."
+            ],
+            "title": "Asking clarification questions in knowledgebased question answering",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natu-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Fanghua Ye",
+                "Yue Feng",
+                "Emine Yilmaz."
+            ],
+            "title": "ASSIST: Towards label noise-robust dialogue state tracking",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2022, pages 2719\u20132731, Dublin, Ireland. Association for Computational Lin-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fanghua Ye",
+                "Xi Wang",
+                "Jie Huang",
+                "Shenghui Li",
+                "Samuel Stern",
+                "Emine Yilmaz"
+            ],
+            "title": "2022b. MetaASSIST: Robust dialogue state tracking with meta learning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shi Yu",
+                "Jiahua Liu",
+                "Jingqin Yang",
+                "Chenyan Xiong",
+                "Paul Bennett",
+                "Jianfeng Gao",
+                "Zhiyuan Liu."
+            ],
+            "title": "Fewshot generative conversational query rewriting",
+            "venue": "Proceedings of the 43rd International ACM SIGIR conference on research and development in Informa-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shi Yu",
+                "Zhenghao Liu",
+                "Chenyan Xiong",
+                "Tao Feng",
+                "Zhiyuan Liu."
+            ],
+            "title": "Few-shot conversational dense retrieval",
+            "venue": "Proceedings of the 44th International ACM SIGIR Conference on research and development in information retrieval, pages 829\u2013838.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yifei Yuan",
+                "Chen Shi",
+                "Runze Wang",
+                "Liyi Chen",
+                "Feijun Jiang",
+                "Yuan You",
+                "Wai Lam."
+            ],
+            "title": "McQueen: a benchmark for multimodal conversational query rewrite",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yutao Zhu",
+                "Huaying Yuan",
+                "Shuting Wang",
+                "Jiongnan Liu",
+                "Wenhan Liu",
+                "Chenlong Deng",
+                "Zhicheng Dou",
+                "Ji-Rong Wen."
+            ],
+            "title": "Large language models for information retrieval: A survey",
+            "venue": "arXiv preprint arXiv:2308.07107.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wu"
+            ],
+            "title": "We note that some questions in the test set lack valid gold passage labels. As these questions are irrelevant for retrieval evaluation, we remove them from the test",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "A: Sara"
+            ],
+            "title": "Evans\u2019s third studio album",
+            "venue": "Born to Fly, was released on October",
+            "year": 2000
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Conversational search has gained significant prominence in recent years with the proliferation of digital virtual assistants and chatbots, enabling users to engage in multiple rounds of interactions to obtain information (Radlinski and Craswell, 2017; Dalton et al., 2021; Gao et al., 2023). This emerging search paradigm offers remarkable advantages in assisting users with intricate information needs and complex tasks (Yu et al., 2021). However, a fundamental challenge in conversational search lies in accurately determining users\u2019 current search intents within the conversational context.\nAn effective approach that has gained increasing attention addresses this challenge of conversational\n1Our implementation is available at: https://github. com/smartyfh/InfoCQR.\ncontext modeling by performing query rewriting (Elgohary et al., 2019; Yu et al., 2020; Vakulenko et al., 2021; Wu et al., 2022; Mo et al., 2023). This approach transforms context-dependent user queries into self-contained queries, thereby allowing the utilization of existing off-the-shelf retrievers that have been extensively validated for standalone queries. For example, the user query \u201cDid she do well?\u201d illustrated in Figure 1 can be rewritten into \u201cDid Elizabeth Blackwell do well as a lecturer in midwifery?\u201d which is context-independent.\nPrevious studies (Anantha et al., 2021; Vakulenko et al., 2021; Qian and Dou, 2022; Hao et al., 2022) predominantly depend on human-rewritten queries as supervised labels to train query rewriting models. Although human-rewritten queries tend to perform better than the original queries, they may not be informative enough for optimal retrieval performance (Chen et al., 2022; Wu et al., 2022). This limitation arises from the fact that human rewriters are only concerned with addressing ambiguity issues, such as coreference and omission, when transforming the original query into a self-contained\nform. Such a simple rewriting strategy may overlook lots of valuable information within the conversational context (refer to Figure 1 for an example), which has the potential to enhance the effectiveness of the retriever. As a consequence, existing query rewriting models learned from human rewrites can only achieve sub-optimal performance.\nA straightforward approach to improving the informativeness of rewritten queries is to provide human annotators with more comprehensive instructions so that they can rewrite the original queries to be not only unambiguous but also informative. However, this approach has several disadvantages, including being expensive, increasing workload for human annotators, and potentially leading to higher inconsistencies among rewrites from different annotators. Therefore, it is necessary to explore alternative approaches.\nIn this paper, we propose the utilization of large language models (LLMs) for query rewriting, leveraging their impressive capabilities in following instructions and demonstrations (Brown et al., 2020; Wei et al., 2021; Ouyang et al., 2022; Wei et al., 2023). We consider two settings to prompt LLMs as query rewriters. In the zero-shot learning setting, only an instruction is provided, while in the few-shot learning setting, both an instruction and a few demonstrations are given. To develop suitable instructions, we first identify four essential properties that characterize a well-formed rewritten query. Then, we design an instruction that incorporates all four properties. However, generating rewrites with all these properties may pose challenges for LLMs due to the intricacy of the instruction (Ouyang et al., 2022; Jang et al., 2023). In view of this, we propose an additional role for LLMs as rewrite editors. Inspired by the fact that humans excel at editing rather than creating from scratch, the purpose of the rewrite editor is to edit initial rewrites provided, forming a \u201crewrite-then-edit\u201d process. These initial rewrites can be generated by smaller query rewriting models or even by the LLM itself. Furthermore, considering the potential time overhead and high costs associated with LLMs, we suggest distilling their rewriting capabilities into smaller models using their generated rewrites as training labels.\nOur contributions are summarized as follows:\n\u2022 We are the first to introduce the concept of informative conversational query rewriting and meticulously identify four desirable properties that a well-crafted rewritten query should possess.\n\u2022 We propose to prompt LLMs as both query rewriters and rewrite editors by providing clear instructions that incorporate all the desirable properties. In addition, we employ distillation techniques to condense the rewriting capabilities of LLMs into smaller models to improve rewriting efficiency.\n\u2022 We demonstrate the effectiveness of informative query rewriting with two off-the-shelf retrievers (sparse and dense) on the QReCC dataset. Our results show that informative query rewrites can outperform human rewrites, particularly in the context of sparse retrieval."
+        },
+        {
+            "heading": "2 Task Formulation",
+            "text": "The primary objective of conversational search is to identify relevant passages from a vast collection of passages in response to the current user query. Formally, let Qi and Ai be the user query and system response at turn i, respectively. Furthermore, let Xt = {Q1, A1, . . . , Qt\u22121, At\u22121} represent the conversational context up to turn t. Then, the task of conversational search can be formulated as retrieving top-k relevant passages, denoted as Rk, from a large passage collection C given the current user query Qt and its associated context Xt. This retrieval process is accomplished by a retriever defined as f : (Qt,Xt, C) \u2192 Rk, where Rk is a subset of C and k is considerably smaller than the total number of passages in C.\nThe unique challenge in conversational search is incorporating the conversational context while retrieving relevant passages, which cannot be directly addressed by existing retrievers designed for standalone queries. Additionally, re-training retrievers tailored for conversational queries can be expensive or even infeasible due to complex system designs or limited data availability (Wu et al., 2022). To overcome the need for re-training, query rewriting is employed as an effective solution (Lin et al., 2021c; Mo et al., 2023). Query rewriting involves transforming the context-dependent user query Qt into a self-contained standalone query Q\u2032t by extracting relevant information from the context Xt. Consequently, any existing off-the-shelf retrieval systems designed for standalone queries can be leveraged by taking Q\u2032t as the input query to find passages that are relevant to the original user query Qt, i.e., f : (Q\u2032t, C) \u2192 Rk.\nThe utilization of query rewriting shifts the challenge of modeling conversational context from the retriever end to the query rewriting model end. As"
+        },
+        {
+            "heading": "Q: Who proposed that atoms are the basic units of matter?",
+            "text": ""
+        },
+        {
+            "heading": "A: John Dalton proposed that each chemical element is composed of atoms of a single, unique type, and they can combine to form more complex structures called chemical compounds.",
+            "text": ""
+        },
+        {
+            "heading": "Q: Who proposed that atoms are the basic units of matter?",
+            "text": ""
+        },
+        {
+            "heading": "A: John Dalton proposed that each chemical element is composed of atoms of a single, unique type, and they can combine to form more complex structures called chemical compounds.",
+            "text": ""
+        },
+        {
+            "heading": "Q: What job did Elizabeth Blackwell have?",
+            "text": ""
+        },
+        {
+            "heading": "A: A lecturer in midwifery.",
+            "text": ""
+        },
+        {
+            "heading": "Q: What job did Elizabeth Blackwell have?",
+            "text": ""
+        },
+        {
+            "heading": "A: A lecturer in midwifery.",
+            "text": "thus, the effectiveness of retrieval results heavily relies on the employed query rewriting models. Only when appropriate rewritten queries are generated can an off-the-shelf retrieval system return highly relevant passages."
+        },
+        {
+            "heading": "3 Approach",
+            "text": "In contrast to relying on human annotators to generate more informative rewrites or developing more complex models to closely replicate existing human rewrites, we propose to prompt LLMs to generate informative query rewrites simply by providing clear instructions and appropriate demonstrations, avoiding the requirement for extensive human effort and complicated model designs. Figure 2 illustrates our proposed approach."
+        },
+        {
+            "heading": "3.1 Prompting LLM as Query Rewriter",
+            "text": "Recent work (Wei et al., 2021; Ouyang et al., 2022; Peng et al., 2023) has demonstrated the strong capability of LLMs in following given instructions to generate coherent and contextually appropriate text. Inspired by this, it is natural to consider employing LLMs as query rewriters. Before delving into the details of how we can prompt an LLM as a query rewriter, we first describe the desirable properties\nthat a well-crafted rewritten query should possess:\n\u2022 Correctness: The rewritten query should preserve the meaning of the original query, ensuring that the user\u2019s intent remains unchanged.\n\u2022 Clarity: The rewritten query should be unambiguous and independent of the conversational context, enabling it to be comprehensible by people outside the conversational context. This clarity can be achieved by addressing coreference and omission issues arising in the original query.\n\u2022 Informativeness: The rewritten query should incorporate as much valuable and relevant information from the conversational context as possible, thereby providing more useful information to the off-the-shelf retriever.\n\u2022 Nonredundancy: The rewritten query should avoid duplicating any query previously raised in the conversational context, as it is important to ensure that the rewritten query only conveys the intent and meaning of the current query.\nIn order to effectively instruct an LLM in generating query rewrites that embody the aforementioned four properties, it is essential to formulate\nappropriate instructions. As an illustrative example, we adopt the following instruction in this work:\n\u201cGiven a question and its context, decontextualize the question by addressing coreference and omission issues. The resulting question should retain its original meaning and be as informative as possible, and should not duplicate any previously asked questions in the context.\u201d2\nThis instruction takes all four desirable properties of a good rewritten query into account simultaneously. Building upon this instruction, we explore two settings to prompt an LLM for query rewriting."
+        },
+        {
+            "heading": "3.1.1 Zero-Shot Learning (ZSL) Setting",
+            "text": "In the ZSL setting, the LLM is instructed to generate a rewritten query Q\u2032t using only the information provided by the current query Qt and its associated conversational context Xt, without having access to any human-labeled instances. In this setting, we entirely rely on the LLM\u2019s capability to understand and follow instructions to perform query rewriting. Specifically, we append Xt and Qt to the instruction I as the prompt and feed this prompt to the LLM for sampling the rewrite Q\u2032t:\nQ\u2032t \u223c LLM(I||Xt||Qt), (1)\nwhere || denotes concatenation. The detailed format of the prompt is shown in Appendix D."
+        },
+        {
+            "heading": "3.1.2 Few-Shot Learning (FSL) Setting",
+            "text": "In the FSL setting, the LLM is provided with both the instruction and a small number of demonstrations. This type of prompting is commonly referred to as in-context learning, which has been shown to be effective in adapting LLMs to new tasks (Brown et al., 2020; Min et al., 2022a,b; Wei et al., 2023; Sun et al., 2023; Ram et al., 2023). In this setting, each demonstration consists of a query Q, a conversational context X , and a rewrite Q\u2032. We denote the concatenation of these demonstrations as:\nD = (X 1, Q1, Q\u20321)|| . . . ||(X n, Qn, Q\u2032n), (2)\nwhere n represents the total number of demonstrations. By placing D between the instruction I and\n2Note that in this instruction, we use the term \u201cquestion\u201d instead of \u201cquery\u201d, as each query is referred to as a question in the dataset we employed for experimentation. We believe this tiny variation would not significantly impact the quality of generated rewrites. Additionally, other instructions with a similar meaning can also be applied.\nthe test instance (Xt, Qt) as the prompt to the LLM, the rewrite Q\u2032t is then sampled as follows:\nQ\u2032t \u223c LLM(I||D||Xt||Qt). (3)\nNote that the query rewrites utilized in the demonstrations should be well-designed, ensuring that they have the aforementioned four properties. Otherwise, the LLM may be misled by these demonstrations. For a more detailed description of the demonstrations used in our experiments, please refer to Appendix D."
+        },
+        {
+            "heading": "3.2 Prompting LLM as Rewrite Editor",
+            "text": "Despite the proficiency of LLMs in following instructions and demonstrations, recent work (Dong et al., 2022; Liu et al., 2022; Mosbach et al., 2023) suggests that they may encounter difficulties when faced with complex tasks or intricate requirements. This limitation highlights that it can be challenging for LLMs to generate query rewrites with all the desirable properties mentioned above. In order to address this challenge, we propose an alternative approach in which an LLM is prompted as a rewrite editor whose primary function is to edit provided initial rewrites instead of being prompted as a query rewriter who needs to generate query rewrites from scratch. This approach draws inspiration from the observation that humans often find it easier to edit existing content than to create it from scratch.\nIn this work, we adopt the FSL setting to prompt LLMs as rewrite editors. In addition to the query Q, the conversational context X , and the rewrite Q\u2032, we introduce an initial rewrite Q\u0302 for each demonstration. We represent the concatenation of these augmented demonstrations as:\nD\u0303 = (X 1, Q1, Q\u03021, Q\u20321)|| . . . ||(X n, Qn, Q\u0302n, Q\u2032n). (4) For a test instance (Xt, Qt), accompanied by an initial rewrite Q\u0302t, we obtain the edited (final) rewrite Q\u2032t through the following procedure:\nQ\u2032t \u223c LLM(I\u0303||D\u0303||Xt||Qt||Q\u0302t), (5)\nwhere I\u0303 denotes the modified instruction. Please refer to Figure 2 and Appendix D for details.\nThe initial rewrite can be generated by a small query rewriting model, such as T5QR (Lin et al., 2020; Wu et al., 2022). It can also be generated by an LLM, following the prompting method described in the previous subsection. When an LLM is employed as both the query rewriter and rewrite editor, the \u201crewrite-then-edit\u201d process enables the LLM to perform self-correction (Gou et al., 2023)."
+        },
+        {
+            "heading": "3.3 Distillation: LLM as Rewriting Teacher",
+            "text": "One major obstacle in effectively leveraging LLMs for query rewriting is the substantial demand for memory and computational resources (Hsieh et al., 2023), which can further result in significant time overhead. Besides, the cost can be extremely high when there is a lack of in-house models, necessitating the reliance on third-party API services as the only option. To address these issues, we propose to fine-tune a small query rewriting model using rewrites generated by an LLM as ground-truth labels. In this approach, the LLM assumes the role of a teacher, while the smaller query rewriting model acts as a student. The fine-tuning process distills the teacher\u2019s rewriting capabilities into the student. This technique is known as knowledge distillation (Gou et al., 2021) and has recently been utilized to distill LLMs for various other tasks (Shridhar et al., 2022; Magister et al., 2022; Marjieh et al., 2023).\nFollowing previous work (Lin et al., 2020; Wu et al., 2022), we adopt T5 (Raffel et al., 2020) as the student model (i.e., the small query rewriting model). The input to the model is the concatenation of all utterances in the conversational context Xt and the current user query Qt. In order to differentiate between user queries and system responses, we prepend a special token <Que> to each user query and a special token <Ans> to each system response. The output of the model is the rewrite Q\u2032t, which is sampled from the employed LLM. The model is fine-tuned using the standard cross-entropy loss to maximize the likelihood of generating Q\u2032t."
+        },
+        {
+            "heading": "4 Experimental Setup",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Dataset & Evaluation Metrics",
+            "text": "Following previous work (Wu et al., 2022; Mo et al., 2023), we leverage QReCC (Anantha et al., 2021) as our experimental dataset. QReCC consists of 14K open-domain English conversations with a total of 80K question-answer pairs. Each user question is accompanied by a human-rewritten query, and the answers to questions within the same conversation may be distributed across multiple web pages. There are in total 10M web pages with each divided into several passages, leading to a collection of 54M passages3. The task of conversational search is to find relevant passages for each question from this large collection and gold passage labels are provided if any. The conversations in QReCC\n3The dataset and passage collection are available at https: //zenodo.org/record/5115890#.YZ8kab3MI-Q.\nare sourced from three existing datasets, including QuAC (Choi et al., 2018), Natural Questions (Kwiatkowski et al., 2019), and TREC CAsT-19 (Dalton et al., 2020). For ease of differentiation, we refer to these subsets as QuAC-Conv, NQ-Conv, and TREC-Conv, respectively. Note that TRECConv only appears in the test set. For a comprehensive evaluation, we present experimental results not only on the overall dataset but also on each subset. For additional information and statistics regarding the dataset, please refer to Appendix A.\nTo evaluate the retrieval results, we adopt mean reciprocal rank (MRR), mean average precision (MAP), and Recall@10 (R@10) as evaluation metrics. We employ the pytrec_eval toolkit (Van Gysel and de Rijke, 2018) for the computation of all metric values."
+        },
+        {
+            "heading": "4.2 Comparison Methods",
+            "text": "Since our focus is on the effectiveness of informative query rewrites, two straightforward baseline methods are Original, which uses the user question in its original form as the search query, and Human, which utilizes the query rewritten by a human as the search query. We also include three supervised models as baselines, including T5QR (Lin et al., 2020), which fine-tunes the T5-base model (Raffel et al., 2020) as a seq2seq query rewriter, ConQRR (Wu et al., 2022), which employs reinforcement learning to train query rewriting models by directly optimizing retrieval performance, and ConvGQR (Mo et al., 2023), which combines query rewriting with potential answer generation to improve the informativeness of the search query.\nFor our proposed approach, we investigate four variants, namely RW(ZSL), RW(FSL), ED(Self), and ED(T5QR). RW(ZSL) prompts an LLM as a query rewriter in the ZSL setting, while RW(FSL) prompts an LLM as a query rewriter in the FSL setting. By comparison, ED(Self) prompts an LLM as a rewrite editor, wherein the initial rewrites are generated by RW(FSL) with the same LLM applied. ED(T5QR) also prompts an LLM as a rewrite editor, but the initial rewrites are generated by T5QR. For simplicity, we only prompt LLMs as rewrite editors in the FSL setting."
+        },
+        {
+            "heading": "4.3 Retrieval Systems",
+            "text": "We experiment with two types of off-the-shelf retrievers to explore the effects of informativeness in query rewrites on conversational search:\nBM25 BM25 (Robertson et al., 2009) is a classic sparse retriever. Following Anantha et al. (2021), we employ Pyserini (Lin et al., 2021a) with hyparameters k1 = 0.82 and b = 0.68.\nGTR GTR (Ni et al., 2022) is a recently proposed dense retriever4. It has a shared dual-encoder architecture and achieves state-of-the-art performance on multiple retrieval benchmarks."
+        },
+        {
+            "heading": "4.4 Implementation Details",
+            "text": "We adopt ChatGPT (gpt-3.5-turbo) provided by OpenAI through their official API5 as the LLM in our experiments. During inference, we use greedy decoding with a temperature of 0. In the FSL setting, we utilize four demonstrations (i.e., n = 4). We employ Pyserini (Lin et al., 2021a) for sparse retrieval and Faiss (Johnson et al., 2019) for dense retrieval. For each user query, we retrieve 100 passages (i.e., k = 100). We disregard test instances without valid gold passage labels. As a result, we have 8209 test instances in total, with 6396, 1442, and 371 test instances for QuAC-Conv, NQ-Conv, and TREC-Conv, respectively. For more implementation details, please refer to Appendix B.\n4We use the T5-base version https://huggingface.co/ sentence-transformers/gtr-t5-base.\n5platform.openai.com/docs/api-reference/chat"
+        },
+        {
+            "heading": "5 Experimental Results",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Main Results",
+            "text": "Table 1 presents the retrieval performance of different query rewriting methods on the QReCC test set and its subsets. Our key findings are summarized as follows. (I) All query rewriting methods outperform the original query, validating the importance of query rewriting. (II) Our approaches, ED(Self) and ED(T5QR), consistently achieve the best and second-best results on the overall QReCC test set. Notably, they both surpass human rewrites. For example, ED(Self) demonstrates a substantial absolute improvement of 9.58 in MRR scores for sparse retrieval compared to human rewrites. RW(FSL) also performs better than human rewrites, while RW(ZSL) fails to show consistent improvements over human rewrites. These results emphasize the value of informative query rewriting and in-context demonstrations. (III) The supervised models, T5QR and ConQRR, exhibit worse performance than human rewrites, suggesting that relying solely on learning from human rewrites leads to sub-optimal results. Although ConvGQR beats human rewrites in sparse retrieval, its performance gain mainly derives from generated potential answers rather than more informative query rewrites. (IV) Dense retrieval improvements are\nless effective than sparse retrieval. For example, ED(Self) only outperforms human rewrites by 1.84 MRR scores when using the dense retriever GTR. This discrepancy arises due to the need for domainspecific passage and query encoders in dense retrieval. In our experiments, the GTR model is kept fixed without fine-tuning, which limits the full potential of dense retrieval. Besides, ConvGQR also shows inferior dense retrieval performance, further indicating that a fixed general dense retriever cannot fully demonstrate the superiority of informative query rewrites. (V) Breaking down the results by subsets reveals that our proposed approaches can consistently achieve higher performance on the QuAC-Conv subset. They also prevail in terms of MRR and MAP for sparse retrieval and achieve the second-best results for dense retrieval on the NQConv subset. However, our approaches are inferior to human rewrites and T5QR on the TREC-Conv subset. One reason is that TREC-Conv contains many obscure questions, making it challenging for an LLM to accurately understand true user needs. It is seen that even human rewrites perform worse on TREC-Conv than on QuAC-Conv and NQ-Conv in sparse retrieval. Additionally, the questions in TREC-Conv are more self-contained and require less rewriting, as evidenced by higher ROUGE-1 scores (Lin, 2004) between human rewrites and original questions compared to QuAC-Conv and NQ-Conv. Specifically, the ROUGE-1 scores on TREC-Conv, QuAC-Conv, and NQ-Conv are 80.60, 69.73, and 72.16, respectively. (VI) Both ED(Self) and ED(T5QR) outperform RW(FSL), showing the significance of prompting LLMs as rewrite editors. While ED(T5QR) performs worse than ED(Self) on the overall QReCC test set, it excels on the NQConv and TREC-Conv subsets, benefiting from the fact that T5QR is trained with human rewrites.\nIn summary, this study confirms the importance\nof informative query rewriting and the effectiveness of our proposed approaches of prompting LLMs as query rewriters and rewrite editors. The study also suggests that it is crucial to take query characteristics into account when performing query rewriting with LLMs, which we leave as our future work."
+        },
+        {
+            "heading": "5.2 Quantitative Analyses of Query Rewrites",
+            "text": "The previous results have demonstrated the effectiveness of informative query rewrites generated by our proposed approaches in enhancing conversational search. To gain more insights into the quality of these rewrites, we employ the average number of tokens per rewrite as a measurement of informativeness and the percentage of tokens in human rewrites that also appear in the generated rewrites as a measurement of correctness. We assume that a rewrite containing more tokens from the corresponding human rewrite is more likely to be correct. The results are shown in Table 2. We observe that our proposed approaches consistently generate longer rewrites than human rewrites, with ED(Self) producing the longest rewrites overall. This implies that the rewrites generated by our proposed approaches are more informative. We also observe that T5QR generates shorter rewrites than human rewrites, indicating that relying solely on learning from human rewrites fails to produce informative rewrites. Moreover, our proposed approaches, albeit without supervised fine-tuning, achieve relatively high correctness compared to human rewrites. For example, more than 76% of tokens in human rewrites are included in the rewrites generated by ED(Self). ED(T5QR) even exhibits higher correctness than T5QR on the QuAC-Conv and NQ-Conv subsets. Finally, the longer rewrites and higher percentage of shared tokens with human rewrites (except RW on TREC-Conv), compared to the original queries, suggest to some extent that the rewrites generated by our approaches have fair clarity."
+        },
+        {
+            "heading": "5.3 Ablation Study",
+            "text": "We conduct an ablation study by removing the informativeness requirement from the instruction utilized by RW(ZSL) (i.e., removing the phrase \u201cand be as informative as possible\u201d), resulting in a modified version denoted as R\u0302W(ZSL). Table 3 reports the results. We find that for both sparse and dense retrieval, R\u0302W(ZSL) achieves lower performance across all three evaluation metrics than RW(ZSL), demonstrating that it is valuable to incorporate informativeness requirement into the instruction for generating informative query rewrites. Interestingly, R\u0302W(ZSL) outperforms human rewrites in terms of MRR and MAP for sparse retrieval, which again verifies the notion that human rewrites may fail to yield optimal retrieval performance. See Appendix C.3 for ablation results of the other three desirable properties."
+        },
+        {
+            "heading": "5.4 Distillation Results",
+            "text": "Figure 3 shows the distillation results using BM25 as the retriever. In this study, we sample 10K training instances and employ RW(FSL) and ED(Self) to generate labels for fine-tuning the T5QR model. For comparison, we include the results with human rewrites as training labels. We find that distillation outperforms using human rewrites as labels on the QReCC test set. Notably, distillation with only 10K training instances can achieve superior results than directly utilizing human rewrites as search queries in terms of MRR and MAP. On the QuAC-Conv and NQ-Conv subsets, distillation also consistently demonstrates improved performance. However, for TREC-Conv, fine-tuning with human rewrites leads to better outcomes. Distillation not only improves retrieval performance but also reduces time overhead. See Appendix C.4 for latency analyses."
+        },
+        {
+            "heading": "6 Related Work",
+            "text": "Conversational search addresses users\u2019 information needs through iterative interactions (Radlinski\nand Craswell, 2017; Rosset et al., 2020). It allows users to provide and seek clarifications (Xu et al., 2019) and explore multiple aspects of a topic, thereby excelling at fulfilling complex information needs. The primary challenge in conversational search is accurately identifying users\u2019 search intents from their contextualized and potentially ambiguous queries (Ye et al., 2022a; Keyvan and Huang, 2022; Ye et al., 2022b; Wang et al., 2023; Owoicho et al., 2023; Zhu et al., 2023).\nMost existing work (Yu et al., 2021; Lin et al., 2021b; Kim and Kim, 2022; Li et al., 2022a; Mao et al., 2022) addresses this challenge by regarding the concatenation of the current user query with its associated conversational context as a standalone query. However, using this concatenation directly as input to search systems could result in poor retrieval performance (Lin et al., 2021b). Moreover, this approach requires training specialized retrievers such as dual encoders (Karpukhin et al., 2020; Xiong et al., 2020; Khattab and Zaharia, 2020), which can be challenging or even impractical in many real-world scenarios (Wu et al., 2022).\nAnother line of research addresses this challenge through query rewriting (Elgohary et al., 2019; Wu et al., 2022; Qian and Dou, 2022; Yuan et al., 2022; Li et al., 2022b; Mo et al., 2023), which converts the original query into a standalone one. However, these approaches mainly rely on human rewrites to train query rewriting models. As shown in our experiments, human rewrites may lack sufficient informativeness, hence leading to sub-optimal performance of these rewriting models.\nAlternatively, some studies employ query expansion to address this challenge. They select relevant terms from the conversational context (Voskarides et al., 2020; Kumar and Callan, 2020) or generate potential answers (Mo et al., 2023) to augment the original query. The latter can be seamlessly integrated into our approach to leverage the knowledge within LLMs. We leave this study as future work."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "In this work, we propose to prompt LLMs as query rewriters and rewrite editors for informative query rewrite generation. We are the first to introduce the concept of informative query rewriting and identify four properties that characterize a well-formed rewrite. We also propose distilling the rewriting capabilities of LLMs into smaller models to improve efficiency. Our experiments verify the significance of informativeness in query rewrites and the effectiveness of using LLMs for generating rewrites.\nDespite the superb performance achieved by our proposed approach, there are multiple future directions that are worthy of exploration. For example, we can train an auxiliary model to decide whether queries generated by prompting LLMs should be preferred to those generated by models that have been finetuned on human rewrites. We can also combine human rewrites and LLM rewrites as labels through a proper weighting strategy to finetune query rewriting models. Furthermore, in this work, we have used a fixed set of demonstrations for all test queries. To achieve the best performance, it is essential to find appropriate demonstrations for each specific query. This would be an effective solution to tackle obscure or complicated queries. Another future direction can be parameter-efficient fine-tuning (e.g., LoRA (Hu et al., 2021)) of LLMs with retrieval performance as feedback. In this way, we will aim to optimize the helpfulness of rewritten queries rather than informativeness.\nLimitations\nWe identify three limitations of our proposed approach. Firstly, the utilization of LLMs as query rewriters and rewrite editors inevitably suffers from the shortcomings associated with LLMs. Our experiments indicate that LLMs do not always follow provided instructions, resulting in generated rewrites that fail to possess the four desirable properties. For example, these rewrites may contain duplicate questions from the conversational context, thereby violating the nonredundancy requirement. In Appendix C.5, we present a case study demonstrating that the original user query may even be misinterpreted, leading to incorrect query rewrites.\nSecondly, although our experimental results have demonstrated improved retrieval performance, it is essential to emphasize that the effectiveness of informative query rewriting is highly dependent on the formatting of the passage collection. In scenar-\nios where passages are relatively short, the introduction of more information in the search query may have a detrimental effect, as it becomes more challenging for retrieval systems to determine the most relevant passages. Conversely, informative query rewriting should prove beneficial in the context of long passages or document retrieval.\nThirdly, in this work, we have experimented with only one LLM, namely ChatGPT, and therefore our findings may be biased toward this specific model. It is unclear if other LLMs can achieve the same level of performance. Further investigation with more LLMs is worthwhile.\nEthics Statement\nQuery rewriting plays a crucial role as an intermediary process in conversational search, facilitating a clearer comprehension of user search intents. This process is beneficial in generating appropriate responses to users. The effectiveness of this approach can be further enhanced through informative query rewriting, resulting in the retrieval of more relevant passages. Nevertheless, it is important to acknowledge that our proposed approaches are subject to the inherent limitations of LLMs, such as hallucinations, biases, and toxicity. It is also important to filter out passages that contain offensive text from the passage collection to ensure reliable retrieval results when applying our proposed approaches in practical scenarios."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work was funded by the EPSRC Fellowship titled \u201cTask Based Information Retrieval\u201d (grant reference number EP/P024289/1) and the Alan Turing Institute."
+        },
+        {
+            "heading": "A Additional Dataset Details",
+            "text": "The original QReCC dataset is only divided into a training set and a test set. Following Kim and Kim (2022), we sample 2K conversations from the training set as the development set. The statistics are summarized in Table 4. To ensure that the first user question is always self-contained and unambiguous, we replace all first questions with their corresponding human rewrites. This pre-processing aligns with previous work (Anantha et al., 2021; Wu et al., 2022). We note that some questions in the test set lack valid gold passage labels. As these questions are irrelevant for retrieval evaluation, we remove them from the test set. Consequently, our final test set consists of 8,209 questions, with 6,396 for QuAC-Conv, 1,442 for NQ-Conv, and 371 for TREC-Conv. This filtering also helps reduce costs associated with using OpenAI APIs."
+        },
+        {
+            "heading": "B Additional Implementation Details",
+            "text": "Throughout our experiments, we leverage ChatGPT as the LLM and set the maximum number of generation tokens to 2,560 for all four variants of our proposed approach, namely RW(ZSL), RW(FSL), ED(Self), and ED(T5QR). ED(Self) utilizes the rewrites generated by RW(FSL) as initial rewrites, while ED(T5QR) takes the rewrites produced by T5QR as initial results. For training, we initialize T5QR with the t5-base checkpoint from HuggingFace6 and select the best model based on the highest BLEU score (Papineni et al., 2002) with human rewrites on the development set. The training process involves 10 epochs with a batch size of 16 and\n6huggingface.co/docs/transformers/model_doc/t5\ngradient accumulation steps of 2 (i.e., an overall batch size of 32). We employ AdamW (Loshchilov and Hutter, 2017) as the optimizer and creat a linear schedule with warmup to adjust the learning rate dynamically. The peak learning rate is set to 1e-5, and the warmup ratio is 0.1. The maximum conversational context length is restricted to 384, and the maximum output length is set to 64. We use a fixed random seed of 42 and conduct experiments on a single TITAN RTX GPU card with 24GB memory. Greedy decoding is used for inference.\nTo conduct distillation, we first sample 10K questions from the training set and 2K questions from the development set. We then apply RW(FSL) and ED(Self) to generate rewrites as pseudo labels for training the T5QR model. In this experiment, the training settings remain the same as the previous one, except that the number of gradient accumulation steps is set to 1 (i.e., an overall batch size of 16) and the BLEU score is calculated based on the generated pseudo labels rather than human rewrites. We perform testing on the full test set.\nWe use Pyserini (Lin et al., 2021a) to construct the sparse index for the BM25 retrieval model, with default hyparameters of k1 = 0.82 and b = 0.68. These values were chosen according to the retrieval performance on MS MARCO (Bajaj et al., 2016), a non-conversational retrieval dataset. We adopt Faiss (Johnson et al., 2019) to build the dense index for the GTR retrieval model. When encoding queries and passages, the maximum length is set to 384 and the dimension of embedding vectors is 768. We utilize cosine similarity between a query vector and a passage vector to estimate their relevance. Building the dense index for 54M passages requires around 320GB of RAM. To efficiently handle this, we split the passage collection into 8 parts, conduct retrieval on each part, and subsequently merge the results."
+        },
+        {
+            "heading": "C Additional Experimental Results",
+            "text": "C.1 Pairwise Comparison of Query Rewriting Methods\nWe provide a more in-depth analysis of different query rewriting methods by comparing the performance of every two methods on each instance within the QReCC test set. We leverage reciprocal rank (RR) as the evaluation metric and measure the ratio of instances where the first method outperforms (win) or achieves equal performance (tie) to the second method. The results are illus-\ntrated in Figure 4. It can be seen that our proposed approaches, RW(FSL), ED(Self), and ED(T5QR), win more instances than human rewrites. For example, ED(Self) achieves higher performance in approximately 36% of instances, whereas human rewrites are better in only about 26.6% of instances. It can also be seen that T5QR outperforms human rewrites in only 12.6% of instances, again confirming that learning solely from human rewrites is not ideal. Moreover, we observe that ED(T5QR) outperforms T5QR in 38.4% of instances, while T5QR only wins in 16.3% of instances. This demonstrates that prompting LLMs as rewrite editors is effective in generating higher-quality query rewrites. Among the four variants of our proposed approach, we find that they share a relatively high tie ratio. For example, ED(Self) and RW(FSL) achieve equal performance in 73.2% of instances. This is reasonable since ED(Self) takes the rewrites produced by RW(FSL) as initial rewrites. This analysis reveals that no single method possesses superior efficacy over all other methods, thereby indicating considerable potential for future research. It is crucial to emphasize that while we assert the limited informativeness of human rewrites in a general sense, it is possible that some\nhuman rewrites are already informative enough.\nC.2 Main Results with Different Evaluation Metrics\nHere, we expand the range of evaluation metrics to assess the retrieval performance more comprehensively. Specifically, we utilize normalized discounted cumulative gain with a cutoff rank of 3 (NDCG@3) and Recall@5 (R@5) to evaluate the relevance of top-ranked passages. Additionally, we employ Recall@100 (R@100) to consider the relevance of lower-ranked passages. The results are presented in Table 5. We find that our proposed approaches can substantially outperform human rewrites and all supervised baselines in terms of NDCG@3 and R@5 on the QReCC test set. For example, ED(Self) shows an absolute improvement of 10.46 in NDCG@3 compared to human rewrites. This finding indicates that our approaches can effectively rank relevant passages higher, which is particularly valuable for downstream tasks such as question answering, where only the top-ranked passages are typically considered. Regarding R@100, we find that human rewrites consistently demonstrate the best performance. This is rational since human rewrites possess a higher guarantee of correctness. Although our proposed approaches are able to generate more informative query rewrites, they suffer from a lower guarantee of correctness as they are built upon LLMs. However, it is worth noting that our approach ED(T5QR) achieves the second-best results for both sparse and dense retrieval. Concerning the performance on the three subsets, our findings are similar to those presented in Section 5.1. Our approaches consistently achieve the best or second-best results in terms of NDCG@3 and R@5 on the QuAC-Conv and NQ-Conv subsets. However, they fall short of human rewrites and T5QR on the TREC-Conv subset. Nevertheless, our approach ED(T5QR) achieves higher performance than ConQRR, even though it employs reinforcement learning to optimize the model with retrieval performance as the reward. We conduct further analysis on the trend of re-\ncall values by varying the cutoff rank k within the range of {5, 10, 20, 30, 100}. Recall, which represents the fraction of relevant passages retrieved, is an important metric for evaluating the performance of retrieval results, particularly from a holistic point of view. The results of sparse retrieval and dense retrieval are illustrated in Figure 5 and Figure 6, respectively. As anticipated, increasing the value of k leads to higher recall values across all methods, as a larger number of relevant passages are likely to be included in the results. Notably, our proposed approaches RW(FSL), ED(Self), and ED(T5QR) demonstrate commendable performance at different cutoff ranks (i.e., different values of k). They can surpass human rewrites when considering small values of k. However, they are inferior to human rewrites when k becomes large. This observation suggests that the quality of rewrites generated by our approaches exhibits a higher variability. Even though many rewrites outperform human rewrites, there are also cases where the generated rewrites are significantly inferior. It is worthwhile to con-\nduct further research to optimize the worst-case performance of our proposed approach.\nC.3 Additional Ablation Study\nIn Table 6, we report the ablation results by removing each of the four desirable properties from the instruction in RW(ZSL). From the table, we can see\nthat all the four properties contribute to the performance improvement. Removing any one of them will lead to performance degradation. In particular, we can observe that removing either the correctness or clarity property leads to the most performance drop. This is because these two properties are crucial to ensure that the rewrites preserve the meaning of the original queries and are self-contained. Since the clarity requirement also contributes to the informativeness of rewritten queries, removing the informativeness requirement only seems to decrease the performance not that much.\nIn summary, this ablation study verifies that our proposed four properties in the instructions are essential to the success of prompting LLMs as query rewriters and informative query rewriting is critical for achieving better retrieval performance.\nC.4 Additional Distillation Results\nThe distillation results using GTR as the retrieval model are depicted in Figure 7. It can be observed that distillation outperforms using human rewrites as labels by a large margin on the QReCC test set. On the QuAC-Conv subset, distillation also consistently demonstrates superior performance. On the NQ-Conv subset, distillation surpasses the utilization of human rewrites as labels when RW(FSL) is employed as the teacher model.\nDistillation offers benefits not only in enhancing retrieval performance but also in reducing time overhead. The rewriting latency comparison between T5QR and RW(FSL), with RW(FSL) serving as the teacher model, is presented in Table 7. The results indicate that the student model T5QR exhibits a significantly higher rewriting speed, approximately six times faster than RW(FSL).\nC.5 Case Study\nWe perform a case study to help understand the impact of informative query rewrites on retrieval performance more intuitively. We employ RW(FSL)\nas the query rewriter and BM25 as the retriever in this study. Table 8 showcases two successful examples. In the first example, adding the information \u201cduring his time as Chancellor of the University of Chicago\u201d is crucial to understanding the original query comprehensively, thereby significantly improving the ranking of the relevant passage. In the second example, the added information exhibits a high degree of overlap with the gold passage, which also leads to better retrieval performance. Table 9 showcases one unsuccessful example. In this example, our approach RW(FSL) misinterprets the user query and expands it using wrong contextual information, resulting in worse retrieval performance."
+        },
+        {
+            "heading": "D Prompts",
+            "text": "The prompts for utilizing LLMs as zero-shot and few-shot query rewriters and few-shot rewrite editors are presented in Table 10, Table 11, and Table 12, respectively.\nGiven a question and its context, decontextualize the question by addressing coreference and omission issues. The resulting question should retain its original meaning and be as informative as possible, and should not duplicate any previously asked questions in the context.\nGiven a question and its context, decontextualize the question by addressing coreference and omission issues. The resulting question should retain its original meaning and be as informative as possible, and should not duplicate any previously asked questions in the context.\nContext: [Q: When was Born to Fly released? A: Sara Evans\u2019s third studio album, Born to Fly, was released on October 10, 2000. ] Question: Was Born to Fly well received by critics? Rewrite: Was Born to Fly well received by critics?\nContext: [Q: When was Keith Carradine born?"
+        },
+        {
+            "heading": "A: Keith Ian Carradine was born August 8, 1949.",
+            "text": "Q: Is he married?"
+        },
+        {
+            "heading": "A: Keith Carradine married Sandra Will on February 6, 1982. ] Question: Do they have any children? Rewrite: Do Keith Carradine and Sandra Will have any children?",
+            "text": "Context: [Q: Who proposed that atoms are the basic units of matter? A: John Dalton proposed that each chemical element is composed of atoms of a single, unique type, and they can combine to form more complex structures called chemical compounds. ] Question: How did the proposal come about? Rewrite: How did John Dalton\u2019s proposal that each chemical element is composed of atoms of a single unique type, and they can combine to form more complex structures called chemical compounds come about?\nContext: [Q: What is it called when two liquids separate?"
+        },
+        {
+            "heading": "A: Decantation is a process for the separation of mixtures of immiscible liquids or of a liquid and a solid mixture such as a suspension.",
+            "text": ""
+        },
+        {
+            "heading": "Q: How does the separation occur?",
+            "text": "A: The layer closer to the top of the container-the less dense of the two liquids, or the liquid from which the precipitate or sediment has settled out-is poured off. ] Question: Then what happens? Rewrite: Then what happens after the layer closer to the top of the container is poured off with decantation?\nGiven a question and its context and a rewrite that decontextualizes the question, edit the rewrite to create a revised version that fully addresses coreferences and omissions in the question without changing the original meaning of the question but providing more information. The new rewrite should not duplicate any previously asked questions in the context. If there is no need to edit the rewrite, return the rewrite as-is.\nContext: [Q: When was Born to Fly released? A: Sara Evans\u2019s third studio album, Born to Fly, was released on October 10, 2000. ] Question: Was Born to Fly well received by critics? Rewrite: Was Born to Fly well received by critics? Edit: Was Born to Fly well received by critics?\nContext: [Q: When was Keith Carradine born?"
+        },
+        {
+            "heading": "A: Keith Ian Carradine was born August 8, 1949.",
+            "text": "Q: Is he married? A: Keith Carradine married Sandra Will on February 6, 1982. ] Question: Do they have any children? Rewrite: Does Keith Carradine have any children? Edit: Do Keith Carradine and Sandra Will have any children?\nContext: [Q: Who proposed that atoms are the basic units of matter? A: John Dalton proposed that each chemical element is composed of atoms of a single, unique type, and they can combine to form more complex structures called chemical compounds. ] Question: How did the proposal come about? Rewrite: How did John Dalton\u2019s proposal come about? Edit: How did John Dalton\u2019s proposal that each chemical element is composed of atoms of a single unique type, and they can combine to form more complex structures called chemical compounds come about?\nContext: [Q: What is it called when two liquids separate?"
+        },
+        {
+            "heading": "A: Decantation is a process for the separation of mixtures of immiscible liquids or of a liquid and a solid mixture such as a suspension.",
+            "text": ""
+        },
+        {
+            "heading": "Q: How does the separation occur?",
+            "text": "A: The layer closer to the top of the container-the less dense of the two liquids, or the liquid from which the precipitate or sediment has settled out-is poured off. ] Question: Then what happens? Rewrite: Then what happens after the layer closer to the top of the container is poured off? Edit: Then what happens after the layer closer to the top of the container is poured off with decantation?"
+        }
+    ],
+    "title": "Enhancing Conversational Search: Large Language Model-Aided Informative Query Rewriting",
+    "year": 2023
+}

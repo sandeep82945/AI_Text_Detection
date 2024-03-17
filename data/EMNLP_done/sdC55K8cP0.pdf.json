@@ -1,0 +1,934 @@
+{
+    "abstractText": "This paper presents the first few-shot LLMbased chatbot that almost never hallucinates and has high conversationality and low latency. WikiChat is grounded on the English Wikipedia, the largest curated free-text corpus. WikiChat generates a response from an LLM, retains only the grounded facts, and combines them with additional information it retrieves from the corpus to form factual and engaging responses. We distill WikiChat based on GPT-4 into a 7B-parameter LLaMA model with minimal loss of quality, to significantly improve its latency, cost and privacy, and facilitate research and deployment1. Using a novel hybrid human-and-LLM evaluation methodology, we show that our best system achieves 97.3% factual accuracy in simulated conversations. It significantly outperforms all retrieval-based and LLM-based baselines, and by 3.9%, 38.6% and 51.0% on head, tail and recent knowledge compared to GPT-4. Compared to previous state-of-the-art retrieval-based chatbots, WikiChat is also significantly more informative and engaging, just like an LLM. WikiChat achieves 97.9% factual accuracy in conversations with human users about recent topics, 55.0% better than GPT-4, while receiving significantly higher user ratings and more favorable comments.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Sina J. Semnani"
+        },
+        {
+            "affiliations": [],
+            "name": "Violet Z. Yao"
+        },
+        {
+            "affiliations": [],
+            "name": "Heidi C. Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Monica S. Lam"
+        }
+    ],
+    "id": "SP:c941bcabc34262c28357c5a102dfdb249217c5da",
+    "references": [
+        {
+            "authors": [
+                "Yejin Bang",
+                "Samuel Cahyawijaya",
+                "Nayeon Lee",
+                "Wenliang Dai",
+                "Dan Su",
+                "Bryan Wilie",
+                "Holy Lovenia",
+                "Ziwei Ji",
+                "Tiezheng Yu",
+                "Willy Chung",
+                "Quyet V. Do",
+                "Yan Xu",
+                "Pascale Fung"
+            ],
+            "title": "A multitask, multilingual, multimodal evaluation of chatgpt on reasoning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jianzhu Bao",
+                "Rui Wang",
+                "Yasheng Wang",
+                "Aixin Sun",
+                "Yitong Li",
+                "Fei Mi",
+                "Ruifeng Xu."
+            ],
+            "title": "A synthetic data generation framework for grounded dialogues",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1:",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Ilya Sutskever",
+                "Dario Amodei."
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Processing Systems 2020, NeurIPS 2020, December 6-12,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jifan Chen",
+                "Aniruddh Sriram",
+                "Eunsol Choi",
+                "Greg Durrett."
+            ],
+            "title": "Generating literal and implied subquestions to fact-check complex claims",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 3495\u20133516,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Moya Chen",
+                "Douwe Kiela",
+                "Mojtaba Komeili",
+                "Spencer Poff",
+                "Stephen Roller",
+                "Kurt Shuster",
+                "Arthur Szlam",
+                "Jason Weston",
+                "Jing Xu"
+            ],
+            "title": "Blenderbot 2.0: An open source chatbot that builds long-term memory and searches the internet. https://parl.ai",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Cheng-Han Chiang",
+                "Hung yi Lee"
+            ],
+            "title": "Can large language models be an alternative to human evaluations",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tri Dao",
+                "Daniel Y. Fu",
+                "Stefano Ermon",
+                "Atri Rudra",
+                "Christopher R\u00e9."
+            ],
+            "title": "FlashAttention: Fast and memory-efficient exact attention with IO-awareness",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nicola De Cao",
+                "Wilker Aziz",
+                "Ivan Titov."
+            ],
+            "title": "Editing factual knowledge in language models",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 6491\u2013 6506, Online and Punta Cana, Dominican Republic.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Emily Dinan",
+                "Stephen Roller",
+                "Kurt Shuster",
+                "Angela Fan",
+                "Michael Auli",
+                "Jason Weston."
+            ],
+            "title": "Wizard of wikipedia: Knowledge-powered conversational agents",
+            "venue": "7th International Conference on Learning Representations, ICLR 2019, New Orleans, LA, USA,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nouha Dziri",
+                "Hannah Rashkin",
+                "Tal Linzen",
+                "David Reitter."
+            ],
+            "title": "Evaluating attribution in dialogue systems: The BEGIN benchmark",
+            "venue": "Transactions of the Association for Computational Linguistics, 10:1066\u2013 1083.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sarah E. Finch",
+                "Ellie S. Paek",
+                "Jinho D. Choi."
+            ],
+            "title": "Leveraging large language models for automated dialogue analysis",
+            "venue": "Proceedings of the 24th Meeting of the Special Interest Group on Discourse and Dialogue, pages 202\u2013215, Prague, Czechia. Association",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Zhuyun Dai",
+                "Panupong Pasupat",
+                "Anthony Chen",
+                "Arun Tejasvi Chaganty",
+                "Yicheng Fan",
+                "Vincent Zhao",
+                "Ni Lao",
+                "Hongrae Lee",
+                "Da-Cheng Juan",
+                "Kelvin Guu"
+            ],
+            "title": "RARR: Researching and revising what language models say, using language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ben Goodrich",
+                "Vinay Rao",
+                "Peter J. Liu",
+                "Mohammad Saleh."
+            ],
+            "title": "Assessing the factual accuracy of generated text",
+            "venue": "Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Prakhar Gupta",
+                "Chien-Sheng Wu",
+                "Wenhao Liu",
+                "Caiming Xiong."
+            ],
+            "title": "DialFact: A benchmark for fact-checking in dialogue",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Ming-Wei Chang."
+            ],
+            "title": "Realm: Retrievalaugmented language model pre-training",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, ICML\u201920. JMLR.org.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xingwei He",
+                "Zhenghao Lin",
+                "Yeyun Gong",
+                "A-Long Jin",
+                "Hang Zhang",
+                "Chen Lin",
+                "Jian Jiao",
+                "Siu Ming Yiu",
+                "Nan Duan",
+                "Weizhu Chen"
+            ],
+            "title": "Annollm: Making large language models to be better crowdsourced annotators",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ari Holtzman",
+                "Jan Buys",
+                "Li Du",
+                "Maxwell Forbes",
+                "Yejin Choi."
+            ],
+            "title": "The curious case of neural text degeneration",
+            "venue": "8th International Conference on Learning Representations, ICLR 2020, Addis Ababa, Ethiopia, April 26-30, 2020. OpenReview.net.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Or Honovich",
+                "Leshem Choshen",
+                "Roee Aharoni",
+                "Ella Neeman",
+                "Idan Szpektor",
+                "Omri Abend."
+            ],
+            "title": "q2: Evaluating factual consistency in knowledgegrounded dialogues via question generation and question answering",
+            "venue": "Proceedings of the 2021 Confer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Krystal Hu."
+            ],
+            "title": "Chatgpt sets record for fastestgrowing user base - analyst note",
+            "venue": "Accessed: 1019-2023.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "HuggingFace."
+            ],
+            "title": "Text generation inference",
+            "venue": "https://github.com/huggingface/ text-generation-inference/.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Patrick Lewis",
+                "Maria Lomeli",
+                "Lucas Hosseini",
+                "Fabio Petroni",
+                "Timo Schick",
+                "Jane DwivediYu",
+                "Armand Joulin",
+                "Sebastian Riedel",
+                "Edouard Grave"
+            ],
+            "title": "Atlas: Few-shot learning with retrieval augmented language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Joel Jang",
+                "Seonghyeon Ye",
+                "Changho Lee",
+                "Sohee Yang",
+                "Joongbo Shin",
+                "Janghoon Han",
+                "Gyeonghun Kim",
+                "Minjoon Seo."
+            ],
+            "title": "TemporalWiki: A lifelong benchmark for training and evaluating ever-evolving language models",
+            "venue": "Proceedings of the 2022 Con-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhengbao Jiang",
+                "Frank F. Xu",
+                "Luyu Gao",
+                "Zhiqing Sun",
+                "Qian Liu",
+                "Jane Dwivedi-Yu",
+                "Yiming Yang",
+                "Jamie Callan",
+                "Graham Neubig"
+            ],
+            "title": "Active retrieval augmented generation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Kocmi",
+                "Christian Federmann"
+            ],
+            "title": "Large language models are state-of-the-art evaluators of translation quality",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mojtaba Komeili",
+                "Kurt Shuster",
+                "Jason Weston."
+            ],
+            "title": "Internet-augmented dialogue generation",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 8460\u20138478, Dublin, Ireland. Association",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Amrith Krishna",
+                "Sebastian Riedel",
+                "Andreas Vlachos."
+            ],
+            "title": "ProoFVer: Natural logic theorem proving for fact verification",
+            "venue": "Transactions of the Association for Computational Linguistics, 10:1013\u20131030.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Patrick S.H. Lewis",
+                "Ethan Perez",
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich K\u00fcttler",
+                "Mike Lewis",
+                "Wen-tau Yih",
+                "Tim Rockt\u00e4schel",
+                "Sebastian Riedel",
+                "Douwe Kiela"
+            ],
+            "title": "Retrieval-augmented generation",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Huayang Li",
+                "Yixuan Su",
+                "Deng Cai",
+                "Yan Wang",
+                "Lemao Liu"
+            ],
+            "title": "A survey on retrieval-augmented text generation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Margaret Li",
+                "Jason Weston",
+                "Stephen Roller"
+            ],
+            "title": "Acute-eval: Improved dialogue evaluation with optimized questions and multi-turn comparisons",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nelson F. Liu",
+                "Tianyi Zhang",
+                "Percy Liang."
+            ],
+            "title": "Evaluating verifiability in generative search engines",
+            "venue": "ArXiv:2304.09848.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yang Liu",
+                "Dan Iter",
+                "Yichong Xu",
+                "Shuohang Wang",
+                "Ruochen Xu",
+                "Chenguang Zhu"
+            ],
+            "title": "2023b. G-eval: Nlg evaluation using gpt-4 with better human alignment",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhenghao Liu",
+                "Chenyan Xiong",
+                "Maosong Sun",
+                "Zhiyuan Liu."
+            ],
+            "title": "Fine-grained fact verification with kernel graph attention network",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 7342\u20137351, On-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alex Mallen",
+                "Akari Asai",
+                "Victor Zhong",
+                "Rajarshi Das",
+                "Hannaneh Hajishirzi",
+                "Daniel Khashabi"
+            ],
+            "title": "When not to trust language models: Investigating effectiveness and limitations of parametric and nonparametric memories",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kevin Meng",
+                "David Bau",
+                "Alex Andonian",
+                "Yonatan Belinkov."
+            ],
+            "title": "Locating and editing factual associations in GPT",
+            "venue": "Advances in Neural Information Processing Systems, 36.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Kalpesh Krishna",
+                "Xinxi Lyu",
+                "Mike Lewis",
+                "Wen tau Yih",
+                "Pang Wei Koh",
+                "Mohit Iyyer",
+                "Luke Zettlemoyer",
+                "Hannaneh Hajishirzi"
+            ],
+            "title": "Factscore: Fine-grained atomic evaluation of factual precision in long form text generation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Eric Mitchell",
+                "Charles Lin",
+                "Antoine Bosselut",
+                "Christopher D. Manning",
+                "Chelsea Finn."
+            ],
+            "title": "Memorybased model editing at scale",
+            "venue": "International Conference on Machine Learning, ICML 2022, 17-23 July 2022, Baltimore, Maryland, USA, volume 162 of",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Suraj Nair",
+                "Eugene Yang",
+                "Dawn Lawrie",
+                "Kevin Duh",
+                "Paul McNamee",
+                "Kenton Murray",
+                "James Mayfield",
+                "Douglas W. Oard."
+            ],
+            "title": "Transfer learning approaches for building cross-language dense retrieval models",
+            "venue": "Advances in Information Retrieval, page",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Fabio Petroni",
+                "Aleksandra Piktus",
+                "Angela Fan",
+                "Patrick Lewis",
+                "Majid Yazdani",
+                "Nicola De Cao",
+                "James Thorne",
+                "Yacine Jernite",
+                "Vladimir Karpukhin",
+                "Jean Maillard",
+                "Vassilis Plachouras",
+                "Tim Rockt\u00e4schel",
+                "Sebastian Riedel"
+            ],
+            "title": "KILT: a benchmark for knowledge",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hongjin Qian",
+                "Zhicheng Dou",
+                "Jiejun Tan",
+                "Haonan Chen",
+                "Haoqi Gu",
+                "Ruofei Lai",
+                "Xinyu Zhang",
+                "Zhao Cao",
+                "Ji-Rong Wen"
+            ],
+            "title": "Optimizing factual accuracy",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Stephen Roller",
+                "Emily Dinan",
+                "Naman Goyal",
+                "Da Ju",
+                "Mary Williamson",
+                "Yinhan Liu",
+                "Jing Xu",
+                "Myle Ott",
+                "Eric Michael Smith",
+                "Y-Lan Boureau",
+                "Jason Weston."
+            ],
+            "title": "Recipes for building an open-domain chatbot",
+            "venue": "Proceedings of the 16th Conference of",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Keshav Santhanam",
+                "Omar Khattab",
+                "Christopher Potts",
+                "Matei Zaharia."
+            ],
+            "title": "Plaid: An efficient engine for late interaction retrieval",
+            "venue": "Proceedings of the 31st ACM International Conference on Information & Knowledge Management.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Keshav Santhanam",
+                "Omar Khattab",
+                "Jon Saad-Falcon",
+                "Christopher Potts",
+                "Matei Zaharia."
+            ],
+            "title": "ColBERTv2: Effective and efficient retrieval via lightweight late interaction",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Angela Fan",
+                "Christopher Akiki",
+                "Ellie Pavlick",
+                "Suzana Ili\u0107",
+                "Daniel Hesslow",
+                "Roman Castagn\u00e9",
+                "Alexandra Sasha Luccioni",
+                "Fran\u00e7ois Yvon",
+                "Matthias Gall\u00e9"
+            ],
+            "title": "Bloom: A 176bparameter open-access multilingual language model",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jost Schatzmann",
+                "Kallirroi Georgila",
+                "Steve Young."
+            ],
+            "title": "Quantitative evaluation of user simulation techniques for spoken dialogue systems",
+            "venue": "Proceedings of the 6th SIGdial Workshop on Discourse and Dialogue, pages 45\u201354, Lisbon, Portugal. Special Inter-",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Weijia Shi",
+                "Sewon Min",
+                "Michihiro Yasunaga",
+                "Minjoon Seo",
+                "Rich James",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Wen tau Yih"
+            ],
+            "title": "Replug: Retrieval-augmented black-box language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kurt Shuster",
+                "Mojtaba Komeili",
+                "Leonard Adolphs",
+                "Stephen Roller",
+                "Arthur Szlam",
+                "Jason Weston."
+            ],
+            "title": "Language models that seek for knowledge: Modular search & generation for dialogue and prompt completion",
+            "venue": "Findings of the Association",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kurt Shuster",
+                "Spencer Poff",
+                "Moya Chen",
+                "Douwe Kiela",
+                "Jason Weston."
+            ],
+            "title": "Retrieval augmentation reduces hallucination in conversation",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021, pages 3784\u20133803, Punta Cana, Do-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jason Weston"
+            ],
+            "title": "Blenderbot 3: a deployed conversational agent that continually learns to responsibly engage",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Charlie Snell",
+                "Dan Klein",
+                "Ruiqi Zhong"
+            ],
+            "title": "Learning by distilling context",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kai Sun",
+                "Yifan Ethan Xu",
+                "Hanwen Zha",
+                "Yue Liu",
+                "Xin Luna Dong"
+            ],
+            "title": "Head-to-tail: How knowledgeable are large language models (llm)? a.k.a. will llms replace knowledge graphs",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto."
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https:// github.com/tatsu-lab/stanford_alpaca.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "James Thorne",
+                "Andreas Vlachos",
+                "Christos Christodoulopoulos",
+                "Arpit Mittal."
+            ],
+            "title": "FEVER: a large-scale dataset for fact extraction and VERification",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Harsh Trivedi",
+                "Niranjan Balasubramanian",
+                "Tushar Khot",
+                "Ashish Sabharwal."
+            ],
+            "title": "Interleaving retrieval with chain-of-thought reasoning for knowledgeintensive multi-step questions",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Com-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dazhen Wan",
+                "Zheng Zhang",
+                "Qi Zhu",
+                "Lizi Liao",
+                "Minlie Huang."
+            ],
+            "title": "A unified dialogue user simulator for few-shot data augmentation",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2022, pages 3788\u20133799, Abu Dhabi, United Arab",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed H. Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "ArXiv preprint, abs/2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Simig",
+                "Punit Singh Koura",
+                "Anjali Sridhar",
+                "Tianlu Wang",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Opt: Open pretrained transformer language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zihan Zhang",
+                "Meng Fang",
+                "Ling Chen",
+                "Mohammad-Reza Namazi-Rad",
+                "Jun Wang"
+            ],
+            "title": "How do large language models capture the ever-changing world knowledge? a review of recent advances",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ruochen Zhao",
+                "Xingxuan Li",
+                "Shafiq Joty",
+                "Chengwei Qin",
+                "Lidong Bing"
+            ],
+            "title": "Verify-and-edit: A knowledge-enhanced chain-of-thought framework",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chujie Zheng",
+                "Sahand Sabour",
+                "Jiaxin Wen",
+                "Zheng Zhang",
+                "Minlie Huang."
+            ],
+            "title": "AugESC: Dialogue augmentation with large language models for emotional support conversation",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2023,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qi Zhu",
+                "Zheng Zhang",
+                "Yan Fang",
+                "Xiang Li",
+                "Ryuichi Takanobu",
+                "Jinchao Li",
+                "Baolin Peng",
+                "Jianfeng Gao",
+                "Xiaoyan Zhu",
+                "Minlie Huang."
+            ],
+            "title": "ConvLab-2: An open-source toolkit for building, evaluating, and diagnosing dialogue systems",
+            "venue": "Proceedings of the",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "WikiChat G4: Novak"
+            ],
+            "title": "Djokovic had an impressive performance throughout the 2023 Australian Open. Leading up to the final, he dropped only one set, showcasing his dominance and skill on the court",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "WikiChat G4: Stefanos"
+            ],
+            "title": "Tsitsipas had a strong performance during the 2023 Australian Open before facing Djokovic in the final",
+            "venue": "Khachanov on his",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Carlos Alcaraz"
+            ],
+            "title": "User: That\u2019s awesome! Speaking of Carlos Alcaraz, how did he perform in the 2023 Australian Open? Did he make it far in the tournament? WikiChat",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "chatbot twice"
+            ],
+            "title": "User: I just heard about the 2023 Australian Open Men\u2019s singles final. Can you tell me more about it? Atlas: It was held in Melbourne, Australia. User: That\u2019s great! Can you tell me more about",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "text": "WikiChat generates a response from an LLM, retains only the grounded facts, and combines them with additional information it retrieves from the corpus to form factual and engaging responses. We distill WikiChat based on GPT-4 into a 7B-parameter LLaMA model with minimal loss of quality, to significantly improve its latency, cost and privacy, and facilitate research and deployment1.\nUsing a novel hybrid human-and-LLM evaluation methodology, we show that our best system achieves 97.3% factual accuracy in simulated conversations. It significantly outperforms all retrieval-based and LLM-based baselines, and by 3.9%, 38.6% and 51.0% on head, tail and recent knowledge compared to GPT-4. Compared to previous state-of-the-art retrieval-based chatbots, WikiChat is also significantly more informative and engaging, just like an LLM.\nWikiChat achieves 97.9% factual accuracy in conversations with human users about recent topics, 55.0% better than GPT-4, while receiving significantly higher user ratings and more favorable comments."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "Recent dramatic advances in LLM chatbots have made them indispensable tools for millions of people (Hu, 2023) who have come to rely on their broad skill set. Yet, LLM chatbots are prone to providing misleading information, or hallucination (Bang et al., 2023), often using a convincing and confident language. Notably, LLMs do not speak accurately about recent events that occurred\n*Equal contribution 1Code and model available at https://github.com/\nstanford-oval/WikiChat.\nafter their pre-training, and are far less knowledgeable about less popular, or tail, topics (Mallen et al., 2022; Sun et al., 2023). Therefore, for knowledgeintensive tasks (Lewis et al., 2020), users need to painstakingly verify any information they receive with external sources lest they be misled.\nThis paper focuses on three metrics for knowledge-intensive dialogues: factuality, conversationality, and latency. A knowledge-based chatbot needs to be first and foremost factual. We assume access to a source of trusted text corpus; here the English Wikipedia is assumed to be factual. While LLMs tend to hallucinate, they can carry out natural and engaging conversations rather than giving dry answers to users\u2019 questions. We refer to the ability to give relevant, informational, natural, non-repetitive and temporally accurate answers collectively as conversationality. We single out latency as the third metric of focus because solutions addressing factuality like Gao et al. (2023); Jiang et al. (2023); Trivedi et al. (2023); Zhao et al. (2023) tend to incur a high latency that degrades user experience and hinders adoption."
+        },
+        {
+            "heading": "1.1 Current Approaches",
+            "text": "The basis of factuality in this work is information retrieval (IR), which bases the chatbot\u2019s responses on retrieved information from a trusted corpus (Zhang et al., 2023; Li et al., 2022; Shuster et al., 2021). The retrieve-then-generate approach generates a response from data retrieved with the user query (Lewis et al., 2020; Trivedi et al., 2023; Izacard et al., 2022; Shuster et al., 2022b; Chen et al., 2021). Previous work is either not evaluated on conversational tasks (Lewis et al., 2020; Trivedi et al., 2023; Shi et al., 2023), or as we show in this paper, is likely to generate irrelevant and unnatural outputs when properly evaluated (Izacard et al., 2022). More importantly, chatbots based on retrieve-then-generate pipelines may still hallucinate. In popular academic datasets like Wizard of\nWikipedia (Dinan et al., 2019) and Wizard of Internet (Komeili et al., 2022), which are widely used to train retrieve-then-generate chatbots, crowdworkers are free to add ungrounded information to their responses; in a GPT-4-based commercial system like Bing Chat, only 58.7% of the facts generated are grounded in what it retrieves (Liu et al., 2023a).\nAnother IR approach is to fact-check a system\u2019s outputs and remove errors (Gao et al., 2023; Jiang et al., 2023). When applied to LLM chatbots, the responses are conversational, but as shown in this paper, are lacking in content for recent or tail topics. Other IR approaches require expensive changes to the pre-training process of language models (Lewis et al., 2020; Guu et al., 2020).\nComplementary to IR, Knowledge Editing updates model weights to include recent knowledge as it becomes available (De Cao et al., 2021; Meng et al., 2022; Mitchell et al., 2022). Similarly, Continual Learning can be used to add new knowledge to LLMs (Jang et al., 2022). While these approaches improve factuality on recent knowledge, they cannot address the tail knowledge problem."
+        },
+        {
+            "heading": "1.2 WikiChat Overview",
+            "text": "This paper presents WikiChat, the first few-shot chatbot that provides up-to-date and fact-checked information with high conversationality and low\nlatency.\nFew-Shot Knowledge-Grounded Chatbots. Our 7-stage pipeline (Figure 1) combines the best of IR approaches: We (1) use the user utterance to retrieve information that LLMs may not be aware of, and (2) leverage the generative power of LLMs by asking them for responses and fact-checking them. All this curated information is used to draft and refine the final response.\nIt is not easy to stop LLMs from hallucinating. In retrieve-then-generate pipelines, when IR does not retrieve any relevant information or when no relevant information is available in the knowledge corpus, LLMs hallucinate to pick up the slack. Thus, WikiChat summarizes and filters the retrieved information instead of generating a response directly. We fact-check every claim generated by LLMs separately and teach the system to say \u201cI don\u2019t know\u201d when necessary. We teach it to understand the time context; e.g. a future tense in an article may refer to a past event at the time of the conversation. Most importantly, we do not prematurely optimize for speed by forgoing these needed steps, but rely on model distillation to reduce the latency only once high quality is achieved.\nThe resulting pipeline is not specific to any corpus. While this paper applies this pipeline to\nWikipedia, the largest corpus of curated knowledge, to create WikiChat, it is applicable to any free-text corpus, including personal and corporate confidential information. The pipeline is not specific to any LLM either, and we apply it to three different LLMs in this paper.\nDistillation for improved latency, affordability, and privacy. Not only is our 7-stage LLMbased pipeline slow and expensive, sending user data to LLM APIs does not provide the privacy and confidentiality needed by many applications. The simplicity in each of our stages makes it possible to effectively distill our best system into a smaller multi-tasking model, which is responsive and affordable, and can be deployed locally for privacy. We release this model to aid further research and reproducibility of our results.\nEvaluation of LLM-based agents. We find that LLM-based chatbots have surpassed the quality of systems that conventional static crowdsourced benchmarks (Dinan et al., 2019; Komeili et al., 2022) were meant to evaluate. For example, these benchmarks mainly evaluate the ability to chat about the head knowledge, which LLM chatbots are already very good at. We devise a human-andLLM hybrid evaluation methodology that can adequately analyze all chatbots, regardless of whether they are knowledge-grounded or LLM-based."
+        },
+        {
+            "heading": "1.3 Contributions",
+            "text": "We create a factual and engaging open-domain chatbot with a 7-stage pipeline using a few-shot prompted LLM, as shown in Figure 1. We validate the concept with three GPT-4, GPT-3.5, and LLaMA (Touvron et al., 2023) based chatbots grounded in Wikipedia.\nOur experiments with simulated users show that the GPT-4-based WikiChat (WikiChat G4) achieves a 97.3% factual accuracy of its claims in simulated conversations. Each version of WikiChat is more accurate than the LLM it is based on by an average of 31.2%, 27.8% and 50.2% for GPT-4, GPT3.5 and LLaMA respectively. It also outperforms the fine-tuned SOTA retrieval-based Atlas (Izacard et al., 2022) in factuality and, unlike Atlas, matches the conversationality of LLMs.\nOur real user study shows that WikiChat achieves 97.9% in factuality on conversations of recent topics, 2.3 times more factual than GPT-4, while receiving higher user ratings.\nWe are the first to demonstrate the feasibility\nof distilling a multi-part system built with incontext learning (Brown et al., 2020) into a smaller yet effective model. Our distillation of WikiChat G4 into a 7B-parameter LLaMA achieves a factual accuracy of 91.1%, outperforming much larger baselines, while having 3.2 times lower endto-end latency than its teacher model.\nWe introduce an efficient and effective human-and-LLM methodology for evaluating knowledge-grounded chatbots in settings beyond what is possible with just crowdsourcing."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Knowledge-Grounded Chatbots. Information retrieval is commonly used to develop knowledgegrounded chatbots (Shuster et al., 2021). BlenderBot 2 (Chen et al., 2021) incorporates Internet search. SeeKeR (Shuster et al., 2022a) outperforms BlenderBot 2 (Chen et al., 2021) by utilizing a single language model for three modular tasks: generating search queries, producing relevant knowledge from retrieved documents, and generating the final response. BlenderBot 3 (Shuster et al., 2022b) fine-tunes a 175B-parameter OPT (Zhang et al., 2022) on the combination of 20 question answering and dialogue datasets. Atlas (Izacard et al., 2022) is a state-of-the-art model on the KILT benchmark (Petroni et al., 2021), which consists of 11 knowledge-oriented tasks including Wizard of Wikipedia (Dinan et al., 2019).\nEvaluating Factuality. FEVER (Thorne et al., 2018) is a popular crowdsourced dataset that compares claims against evidence retrieved from Wikipedia, and was extended to dialogues by Gupta et al. (2022). The state-of-the-art system on this dataset (Krishna et al., 2022) has an accuracy of 81% when compared against human labels. Q2 (Honovich et al., 2021) uses question answering and natural language inference models to evaluate the factuality of dialogue agents. Dziri et al. (2022) compare this and several other automatic metrics to human evaluation and find that automatic metrics fall significantly behind human performance, and rely on spurious correlations. Concurrently and similarly to our work, Min et al. (2023) break down long system outputs to claims and evaluate their factuality using retrieval. Their best model has a significant 13% error rate on individual claims. Given the high error rates for these automatic metrics, our evaluation methodology (Section 5) incorporates human judgement where needed. Approaches\nlike Qian et al. (2023) and TripleScore (Goodrich et al., 2019) only consider simple entity-relations between retrieved documents and system outputs, while we generalize that notion to all forms of facts."
+        },
+        {
+            "heading": "3 Design of WikiChat",
+            "text": "Given the history of a conversation with a user, WikiChat generates its next utterance by (1) curating information that is correct and relevant to the conversation context, and (2) using the gathered information to form the response. Each stage of the pipeline in Figure 1 is implemented using in-context learning. All prompts are included in Appendix F."
+        },
+        {
+            "heading": "3.1 Curating Information",
+            "text": "LLMs have the ability to interpret the user utterance, formulate responses that are out of the reach of retrieval or require aggregating information from many sources or drawing conclusions, as shown by the following example:\nUser: Do you think Apple will continue to be a big player in the technology industry? GPT-4: Yes, . . . Apple has a strong track record of innovation, a loyal customer base, and a robust financial position. . . . the most valuable company globally, with a market capitalization of over $2 trillion. . . . continues to explore new technologies such as augmented reality, artificial intelligence, and autonomous vehicles. This will help them to stay ahead of the competition.\nUnfortunately, LLMs cannot be trusted to be factual, thus we need to fact-check their outputs. Furthermore, LLMs are unaware of recent events. Thus, we use both LLM generation and IR."
+        },
+        {
+            "heading": "3.1.1 Retrieval from Corpus",
+            "text": "During a conversation with a user, WikiChat identifies when accessing external information is needed. This could be because the last user utterance contains a direct question (e.g. \u201cWho is Stephen Curry?\u201d) or otherwise requires additional information for a comprehensive response (e.g. \u201cI really like Stephen Curry.\u201d).\nStage 1. WikiChat generates a search query that captures the user\u2019s interest with a prompt (Table 17). We discovered that existing systems especially struggle with the temporal context. WikiChat generates the inferred time of the user\u2019s need alongside the query. The query time can be one of recent, year=yyyy, or none for when the retrieved information should be as recent as possible, for a specific year, or the time is not important, respectively.\nThe query is sent to an information retrieval system to obtain relevant passages from the corpus, and the top results are re-ranked based on the temporal information to get NIR passages.\nStage 2. Since these passages may contain a mixture of relevant and irrelevant sections, WikiChat extracts relevant sections of the retrieved passages and summarizes them into bullet points while filtering out the irrelevant parts (Table 18)."
+        },
+        {
+            "heading": "3.1.2 LLM Generation and Fact-Checking",
+            "text": "Stage 3. We prompt the LLM to generate a response to the history of the conversation (Table 19). This response often contains interesting and relevant knowledge, but is inherently unreliable.\nStage 4. The LLM response is broken down to multiple claims (Chen et al., 2022) (Table 20). This stage resolves co-references to reduce ambiguity, and resolves relative time information like \u201ccurrent\u201d and \u201clast year\u201d, to make all claims self-contained.\nWe use IR to retrieve Nevidence passages from the knowledge corpus for each claim to serve as evidence. We use the same time-based re-ranking as in Section 3.1.1 to better handle time-sensitive topics.\nStage 5. The verification prompt (Table 21) uses chain-of-thought prompting (Wei et al., 2022) to assign each claim to one of three classes: whether the retrieved evidence supports the claim, refutes the claim, or if there is not enough information in the evidence to make this decision. Only claims that are supported by the evidence are kept."
+        },
+        {
+            "heading": "3.2 Forming the Response",
+            "text": "The next step is to use the curated information to form an appealing response. Our experiments show that writing the final response in one go while satisfying all conversationality criteria is challenging with in-context learning, especially that the limited context length makes it difficult to provide enough multi-turn conversations as few-shot examples to cover all the necessary aspects. Thus, we use a two-step approach:\nStage 6. WikiChat generates a draft response from the given list of bullet points and the history of the conversation (Table 22).\nStage 7. It then generates feedback and refines the response based on relevance, naturalness, nonrepetitiveness, and temporal correctness (Table 23). The feedback contains the model\u2019s reasoning on each criterion and a score between 0 and 100 for each. Refinement is conditioned on this feedback\nand the scores as a chain of thought. Concurrent to this work, Madaan et al. (2023) have explored the idea of prompting LLMs to refine their own generations in other settings.\nAs discussed in Section 1.2, it is hard for LLMs to say \u201cI don\u2019t know\u201d. In the special case where the curation stages return no relevant information, the draft prompt is skipped and instead a \u201cSorry, I\u2019m not sure\u201d is sent to the refinement prompt, which dresses it up to match the conversation."
+        },
+        {
+            "heading": "4 Model Distillation",
+            "text": "To improve latency, cost and privacy, we distill WikiChat based on a teacher LLM into a smaller student model. We use WikiChat based on GPT-4 (i.e. WikiChat G4) as the teacher, and the publicly available LLaMA (Touvron et al., 2023) model as the student to obtain WikiChat L.\nEach few-shot prompt consists of an instruction I and several examples. We use a user simulator (described in Section 5.1) to talk to the teacher WikiChat about topics from Wikipedia, while recording the inputs the underlying teacher LLM sees, and the outputs it generates for those inputs. We use these input-output pairs and the instruction I (but not the few-shot examples) to fine-tune the student LLM. We distill all 7 subtasks of WikiChat into the same student model in a multi-task setting. The LLaMA-based WikiChat calls LLaMA in each of the pipeline stages by specifying instruction I and the input.\nDistillation lowers the latency because the student LLM is many times smaller than the teacher LLM, and has a shorter input length as it sees no few-shot examples, similar to context distillation (Snell et al., 2022).\nFurthermore, we remove chains of thought from the outputs of stages 5 and 7 (verification and refinement), and merge stages 6 and 7. No drop in our metrics of factuality and conversationality is observed, suggesting that chain-of-thought prompting and refinement may only be necessary for incontext learning. Fine-tuned models can learn these tasks from just inputs and outputs given a big enough training set."
+        },
+        {
+            "heading": "5 A Novel Evaluation Methodology",
+            "text": "Most existing conversational benchmarks are crowdsourced and static. As Komeili et al. (2022) says about their use of crowdsourcing, \u201cThe intent . . . is that [crowdworkers] can choose a topic\nthey . . . have enough knowledge of so that they can conduct a reasonable conversation.\u201d Since LLMs are already good conversants about familiar topics, testing them on these topics would lead to the false conclusion that no innovation is necessary.\nFurthermore, static benchmarks quickly lose their effectiveness in evaluating chatbots\u2019 use of up-to-date information whenever a new LLM is released. For example, Wizard of Wikipedia does not contain any topics that are not seen by GPT-3, GPT-4 or LLaMA during their pre-training.\nHere we propose a novel combination of simulated and real user conversations, as well as human and LLM-based evaluations, to understand the factuality and conversationality of modern chatbots."
+        },
+        {
+            "heading": "5.1 Collecting Dialogues",
+            "text": "Conversation Topics. In our experiment, we pick an article from the knowledge corpus Wikipedia as a starter topic. We choose a diverse set of topics covering the space of head, tail, and recent knowledge. Similar to Mallen et al. (2022), we use the total number of views of a Wikipedia article as a proxy for how frequently that topic is likely to be discussed on the Web and therefore the pre-training data of LLMs, given that views in Wikipedia are to a large degree generated from other online sources.\nHead: These are articles with the highest total view count, up to the end of 2020, which is before the cut-off date of the pre-training data of all LLMs we evaluate. Example article titles include \u201cSting (musician)\u201d, \u201cBarack Obama\u201d, and \u201cGmail\u201d. The view count ranges from 68M to 16M for the head topics.\nTail: These are the least viewed articles, with less than 1000 views. Examples are \u201cAmelia Gething\u201d, \u201cLast Tycoon Stakes\u201d, and \u201c2008 CONCACAF Women\u2019s Olympic Qualifying Tournament\u201d.\nRecent: These are the most edited Wikipedia articles in the first four months of 2023, which is after the cut-off date of LLMs. Examples include big news stories of 2023 like \u201c2023 Speaker of the United States House of Representatives election\u201d and \u201cYeti Airlines Flight 691\u201d.\nWe manually remove topics that might be uncomfortable to talk about due to violence or explicit content, and ensure a diverse set of domains.\nDialogues. For cost-effectiveness, we use simulated conversations and validate them against a smaller real user study. Rule-based and neural user simulators have long been used to build and eval-\nuate task-oriented dialogue systems (Schatzmann et al., 2005; Zhu et al., 2020; Wan et al., 2022), and to generate training data for chatbots (Bao et al., 2023; Zheng et al., 2023). We use LLMs to simulate users in order to evaluate knowledge-based chatbots. LLMs are good, fast, and cost-effective at simulating users. Via prompting, we can control the personality and specify the conversation topic. We also make sure the simulator can continue the conversation by making relevant comments or asking interesting questions, and handle the case where the chatbot under evaluation gives inconsistent responses."
+        },
+        {
+            "heading": "5.2 Evaluation",
+            "text": "Factuality Evaluated Manually. To evaluate factuality, we use a hybrid human-LLM approach. We first use a GPT-4 prompt to break down each chatbot response into small self-contained claims, and retrieve evidence for it using IR. We need to manually determine whether an extracted claim is backed by the retrieved evidence because LLMs underperform humans on this task (Section 2). We ask crowdworkers to determine whether each claim is supported, refuted, or there is not enough information in the retrieved paragraphs. See Appendix E for more details about human evaluation and our quality control.\nWhen the crowdsource workers classify a claim as \u201cnot enough information\u201d, we need to ensure that the information is truly not available in Wikipedia, and not because IR has not retrieved the right paragraphs. The authors of this paper double check these rare cases against the entire Wikipedia.\nConversationality Evaluated Automatically. Based on prior work on how chatbots should be human-like, natural, knowledgeable (Li et al., 2019) and non-repetitive (Roller et al., 2021), and our own observations of chatbots\u2019 weaknesses, we propose five response-level metrics to measure conversationality:\n1. Relevant: On-topic and directly addresses the user\u2019s question. 2. Informational: Provides a suitable amount of information (whether or not it is factual). 3. Natural: Uses appropriate and engaging language to create an enjoyable experience. 4. Non-Repetitive: Does not repeat previously mentioned information. 5. Temporally Correct: Provides up-to-date information and uses the appropriate tense.\nLLMs have been shown to be effective in evaluating soft qualities (Chiang and yi Lee, 2023; He et al., 2023; Kocmi and Federmann, 2023; Liu et al., 2023b; Finch et al., 2023), consistently better aligned with expert human evaluation than any other automatic metric. Thus, we use GPT-4 to evaluate these qualities in chatbot responses. The LLM is instructed to, given a conversation history and a chatbot response, \u201cthink out loud\u201d (Wei et al., 2022) about its reasoning for each criterion and provide a score. For each turn, all metrics are rated from 1 to 5, except for temporal correctness which is converted to a binary score. We report the average of each metric over all simulated conversation turns. We find that the inter-annotator agreement between GPT-4 ratings and one of the authors is about the same as the agreement between two authors (Appendix B)."
+        },
+        {
+            "heading": "6 Implementation",
+            "text": "WikiChat Using GPT. We create two versions of WikiChat based on GPT models: WikiChat G3.5 is based on GPT-3.5 (text-davinci-003); WikiChat G4 is based on GPT-4 (gpt-4-0314)2.\nDistilling WikiChat to LLaMA. We use LLaMA as the target of distillation as it currently has the highest quality-to-size ratio among the publicly available language models. We generate training data from 750 Wikipedia articles covering head, tail and recent topics; these are disjoint from the set of topics we use for evaluation. Simulating a 10-turn conversation between the user simulator and WikiChat G4 for each topic results in a total of 37,499 (instruction, input, output) tuples. We hold out 5% of these conversations for validation, and fine-tune a 7B-parameter LLaMA on the rest.\nInformation Retrieval System. We use ColBERT v2 (Santhanam et al., 2022b) and PLAID (Santhanam et al., 2022a) over Wikipedia as our IR system. We use the WikiExtractor tool3 to extract the clean text from the English Wikipedia dump obtained on 4/28/2023. Like ColBERT, we divide each article (ignoring tables and information boxes) into disjoint text blocks referred to as passages and prepend them with their article title. We limit the combined length of the passage and title to 120 words. In WikiChat, we set Nevidence = 2 and NIR = 3. These are chosen empirically to obtain a high recall on our development set.\n2Accessed via the Microsoft Azure OpenAI API 3https://github.com/attardi/wikiextractor"
+        },
+        {
+            "heading": "7 Simulated Dialogues Experiment",
+            "text": "Our first experiment analyzes how our systems perform under various scenarios using simulated users."
+        },
+        {
+            "heading": "7.1 Experiment Setup",
+            "text": "We compare WikiChat to several LLM baselines: a 7B-parameter LLaMA, GPT-3.5, and GPT-4, all prompted to act as knowledge-oriented chatbots (See Table 19 for the prompt). We also compare with Atlas (Izacard et al., 2022), a fine-tuned retrieval-based model, which has the state-of-theart results on Wizard of Wikipedia and several other datasets in KILT (Petroni et al., 2021). We update its knowledge source and fine-tune its model to use the same Wikipedia dump as WikiChat (Appendix B).\nWe simulate users using GPT-4 due to its higher quality. Each chatbot carries out conversations on 20 topics in each of the head, tail, and recent knowledge categories. For each conversation, we simu-\nlate 10 turns (5 user turns and 5 chatbot turns) with the user starting the conversation. This is comparable with other datasets: Wizard-of-Wikipedia and Wizard-of-Internet have 9 and 5 turns per dialogue on average, respectively. Examples of simulated conversations can be found in Appendix A.\nTo mimic how a curious user with limited knowledge may explore a topic, only the title and the first sentence of a Wikipedia article on a topic is shown to the user simulator (prompt in Table 16), but it is free to explore related topics from its own general knowledge. The chatbot\u2019s response is not limited to what is in the article.\nTable 1 summarizes our main results for WikiChat and all baselines on simulated conversations."
+        },
+        {
+            "heading": "7.2 Factuality",
+            "text": "We define the factual accuracy of a chatbot to be the percentage of claims the bot makes in a given dialogue set, that are supported by the knowledge corpus. As mentioned in Section 5.2, this is done by\nobtaining per-claim judgments of factuality from crowdworkers. We obtain 3 judgements for each of the 5974 claims our chatbots output in total.\nThe first column of Table 1 shows the results of our human evaluation of factual accuracy. WikiChat G4 achieves an impressive factual accuracy of 98.8%, 94.6%, and 98.5% for head, tail, and recent topics, respectively. WikiChat G4 scores on average 8.1% and 6.2% higher than WikiChat G3.5 and WikiChat L. WikiChat\u2019s GPT-4, GPT-3.5, and LLaMA versions outperform their base LLMs with an average of 31.2%, 27.8%, and 50.2% respectively, with this gap increasing significantly in recent and tail knowledge. These results suggest that our pipeline is able to effectively mitigate the hallucination of LLMs.\nNote that GPT-4 scores lower in tail and recent knowledge compared to head, by 38.9% and 47.4%, respectively, and the score for recent knowledge would be much lower had the simulated user not occasionally talked about older background information in the conversations. This illustrates that the common practice of solely evaluating on head knowledge would not have properly shown this weakness of LLMs.\nAll three versions of WikiChat outperform the SOTA fine-tuned model Atlas on average in factuality,"
+        },
+        {
+            "heading": "7.3 Conversationality",
+            "text": "Each version of WikiChat improves factuality over its base model without sacrificing conversationality. Even WikiChat L is as good or better than LLaMA in all metrics, while scoring within 0.1 to 0.3 points of its teacher WikiChat G4.\nAtlas sacrifices substantial conversationality for factuality. Our analysis of 100 sampled dialogue turns reveals how Atlas underperforms in each metric. Informationality: it often gives short onesentence answers when a detailed description is warranted. Relevance: it is less likely to address the user\u2019s questions. Naturalness: Atlas mainly copies from the retrieved passages instead of matching the tone of the conversation. Non-repetition: it sometimes generates repetitive, near duplicate responses. Temporal accuracy: it confuses different dates."
+        },
+        {
+            "heading": "7.4 Latency",
+            "text": "We measure the end-to-end latency and cost of our various chatbots. Retrieval from Wikipedia only accounts for about 0.2 seconds per turn and is negligible compared to the time spent waiting for LLM\noutputs. All API calls are done in parallel when possible, e.g. the stages 1-2 and 3-4 are independent and therefore done in parallel. LLaMA models are served on a single local NVIDIA A100 GPU using HuggingFace\u2019s TGI library (HuggingFace, 2023).\nTable 2 shows the average cost and latency of various chatbots, LLaMA costs are negligible compared to the cost of other LLMs. Distilling WikiChat G4 into WikiChat L lowers its per-claim latency 3.2 times, bringing it in line with GPT-4. This makes WikiChat L a viable alternative to the baselines: has similarly low latency, costs less and is significantly more factual.\nWe note that a naive implementation of WikiChat L took about 15 seconds per output claim. We reduced the latency 6.5 times by (1) fusing stages 6-7, (2) removing chains of thought, (3) using TGI with FlashAttention (Dao et al., 2022), and other optimizations."
+        },
+        {
+            "heading": "7.5 Analysis of Results",
+            "text": "WikiChat makes more claims than all baselines in all subsets (Table 13). WikiChat G4, WikiChat G3.5 and WikiChat L make an average of 3.6, 3.5 and 3.3 claims per turn, compared to 2.5, 2.2, and 2.0 claims of their base LLMs, and only 1.4 claims of Atlas. Our chatbots make more claims in the head subset as more information is available.\nBoth information retrieval (Stages 1 and 2) and the underlying LLM (Stages 3 to 5) contribute to WikiChat (Table 12.) 27.0%, 32.2% and 24.5% of the claims in the final response of WikiChat G4, WikiChat G3.5 and WikiChat L come from fact-checked LLM responses and the rest are from IR. This is the content that retrieve-thengenerate systems cannot produce.\nOn average, about one-third of the claims in LLM responses do not pass WikiChat\u2019s factchecking (Table 12). The number of rejections is much higher in tail and recent subsets. This matches our expectation on where LLMs make\nmore factual errors. Removing these errors during the fact-checking stage is WikiChat\u2019s main weapon against hallucination. WikiChat L has the highest rejection rate on tail (54.0%) and recent (64.4%) subsets because the underlying LLaMA model hallucinates a lot more.\nWikiChat says \u201cI don\u2019t know\u201d when necessary (Table 11). Our pipeline is carefully designed to prevent hallucination when no relevant information is available. This is more prevalent for tail and recent knowledge, where the simulated user is likely to ask about the information that is not yet available in Wikipedia.\nWikiChat\u2019s refinement stage improves conversationality, especially in tail and recent topics (Table 15). Comparing the BLEU scores (Papineni et al., 2002) of the draft and the final responses (Table 14), we notice that WikiChat makes the most changes on tail and recent topics. Refinement improves naturalness, informationality and relevance of all versions of WikiChat by 0.1 to 0.4 points, and temporal correctness by 2.3% to 3.3%.\n8 A Real User Study\nWe conduct a study where participants are asked to chat about a recent topic of their choice, a scenario that is particularly challenging for LLMs. We use Prolific (Prolific, 2023) to recruit 40 participants (20 female) for our user study. Each person is randomly assigned to either WikiChat G4 or GPT-4 without telling them which, and chats for 5 user turns. After each turn, they are asked to rate the response on a scale of 1 to 5. Afterwards, we ask each participant to comment on their experience. More details in Appendix D.\nTable 3 shows the average factual accuracy (human evaluated) and real user ratings. WikiChat achieves an accuracy of 97.9%, which is similar to that of simulated conversations. It outperforms GPT-4 in factuality by 55.0%, and achieves a statistically significant higher rating of 3.8 vs 3.4.\nMost participants who talked to WikiChat G4 reported a positive experience. Multiple participants praised its ability to provide \u201caccurate and \u201cupto-date information\u201d and multiple said that it is \u201cnatural\u201d, \u201cconversational\u201d, \u201cdetailed\u201d and \u201cdirect\u201d. They commented that it is \u201cfun to play with\u201d and \u201cimpressive\u201d in finding information.\n5 participants complained about the latency of the system caused mainly by fact-checking, as the study was conducted using the slower WikiChat G4.\n6 complained that the chatbot did not give a direct answer to some of their requests. However, it turns out that WikiChat G4 was right in giving no information, because Wikipedia truly lacked the information they sought. We did not find a single valid complaint of hallucination.\nGPT-4 received some favorable comments from 10 participants, noting that it is informational and that that it gave \u201creasonable\u201d answers and seemed \u201ceducated\u201d. However, it received 10 complaints: 6 on a lack of specificity: \u201cdid not include a key piece of information\u201d, or that \u201cits responses were vague\u201d, \u201cnot nuanced\u201d and \u201cwas generic and regurgitated surface level information\u201d; 2 on how it completely misunderstood them (due to obvious hallucination in its responses); 2 on wrong or outdated responses.\nMore concerning, however, was that conversations that received favorable comments also contain numerous plausible but factually incorrect responses, except that the users did not realize that. This shows how easy it is to be mislead by LLMbased chatbots.\nIn summary, our user study suggests that WikiChat G4 is successful as an engaging and factual chatbot while GPT-4 frequently hallucinates."
+        },
+        {
+            "heading": "9 Conclusion",
+            "text": "This paper shows how we can create a conversational, factual, open-domain chatbot out of LLMs. The key insight is to properly combine retrieved data with the generative content from LLMs, with meticulous claim-by-claim fact-checking. We validate this methodology by creating WikiChat, which is grounded in Wikipedia, the largest hand-curated public text corpus.\nOur best system achieves 97.3% and 97.9% factual accuracy on simulated and real conversations respectively, when GPT-4 only achieves 66.1% and 42.9%. WikiChat resembles LLMs in conversationality and is preferred over GPT-4.\nWe also show that a distilled LLaMA model with just 7B parameters can perform like a 175Bparameter WikiChat G3.5 model and be as fast, cheaper and more factual than GPT-4. This expands the applicability of this technology.\nLimitations\nApplications of today\u2019s LLM-based chatbots are constantly expanding. This work focuses only on knowledge-intensive dialogue. As such, other settings where chatbots are used to perform tasks (e.g. \u201cwrite an email for me\u201d) or perform personalized chitchat (e.g. companion chatbots) might not benefit from WikiChat\u2019s pipeline. More targeted study and evaluation of these settings is required to properly balance the generative power of LLMs and the factual knowledge injected from an external corpus for these applications. Settings where a chatbot needs to exhibit initiatives (e.g. try to be persuasive) are also outside the scope of this paper. We also only consider one-hop information retrieval, because it is the most natural and prevalent form of users\u2019 information need. Multi-hop retrieval could improve information access for more complex queries.\nThis work has only been tested on open-domain conversations. Generalizability of WikiChat to specialized domains like medical or legal has not been evaluated.\nThis work has only been evaluated on English conversations. Extending this work to more languages will be limited by the quality of available LLMs and retrieval systems in those languages. Incorporating recent work on multi-lingual models (Scao et al., 2022) and information retrieval systems (Nair et al., 2022) is a promising future direction.\nEthical Considerations\nThis study was approved by our institution\u2019s IRB. When conducting crowdsourcing for factuality, we compensate each worker for $0.2 per task, and we have one task per (system, dialogue turn, claim). This means that since there are more claims in longer chatbot responses, workers are compensated more for longer responses. In the end, each worker receives about $12 per hour of work. For our user study on the Prolific platform, each participant is compensated $2 to participate in a 10-minute user study, for a compensation rate of $12 per hour of work. Prolific recommends a rate of $8-$16.\nWhen conducting the user study, participants are provided with information on what the study entails and what information is collected (only their conversations, ratings, and the comments they provide). They are asked not to share any personally identifiable information, and were able to contact\nthe authors for questions. The only dataset we collect in this paper is the conversations from the user study. The simulated conversations used for fine-tuning LLaMA and testing chatbots are based on topics from Wikipedia articles, and topics involving violence, sexual content or other potentially disturbing matters were excluded.\nWe release the code and the fine-tuned LLaMA7B model in accordance with its original license agreement. We believe this will encourage research and deployment of more reliable and trustworthy chatbots, to the benefit of end-users. We do not anticipate harm resulting from the approaches and modifications proposed in this paper.\nOverall, the computation done for the paper includes about 120 GPU-hours on an NVIDIA A100 GPU for fine-tuning and running inference on a LLaMA-7B model. Additionally, we have made several thousand API calls to OpenAI for inference of GPT-3.5 and GPT-4, but it is not feasible to estimate the environmental cost of using these models due to the lack of public information on their hardware, architecture etc."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work is supported in part by the National Science Foundation, the Alfred P. Sloan Foundation, the Verdant Foundation, Microsoft Azure AI credit, KDDI, JPMorgan Chase, and the Stanford HumanCentered Artificial Intelligence (HAI) Institute. We also thank the reviewers for their valuable comments and suggestions."
+        },
+        {
+            "heading": "A Example Conversations",
+            "text": "Tables 4, 5, 6, and 7 provide examples of conversations between our user simulator and four chatbots, on the same topic: the 2023 Australian Open Men\u2019s singles 4. Tables 8 and 9 show two conversations between human users and GPT-4 and WikiChat G4, from our user study. The simulations were done using a Wikipedia dump on 4/28/2023. The user study was conducted on 6/17/2023 using a Wikipedia dump of the same date.\n4https://en.wikipedia.org/wiki/2023_ Australian_Open_%E2%80%93_Men%27s_singles\nlated user. Factual errors are highlighted in yellow. Note that the user simulator has access to the first sentence of the Wikipedia article, and here it tries to correct the chatbot twice.\nuser. Factual errors are highlighted in yellow."
+        },
+        {
+            "heading": "B Experiment Details",
+            "text": "Statistical significance tests For statistical significance tests throughout the paper, we use independent two-sample t-test and consider the difference significant if p \u2264 0.05.\nSimulation Topics. We obtain the number of visits and edits of each Wikipedia article using the Wikimedia API 5.\nAs mentioned in the paper, to select the recent topics, we look at the most edited Wikipedia articles in the first four months of 2023. Filtering based on the creation date did not lead to meaningful articles as there are many articles about old topics that just received articles in Wikipedia. Instead, in our experience, most of the highly edited Wikipedia articles are about actual new topics.\nHyperparameters. We use temperature of 0 and greedy decoding for all experiments, except the user simulator which has a temparature of 1.0 and nucleus sampling (Holtzman et al., 2020) with p=0.5. We use no repetition penalty, except for a repetition penalty of 1.1 for the baseline LLaMA model, because we find that repetition penalty of 1.0 (i.e. no penalty) results in the model frequently degenerating (Holtzman et al., 2020) repetitions.\nIn most prompts of WikiChat, we include at most the last five turns of the dialogue history to reduce the chance of causing confusion for the few-shot models in longer conversations.\nBaseline Atlas. We use the 3B-parameter AtlasXL and update its index to the same Wikipedia index as WikiChat for a fair comparison. We reproduce their best model on Wizard of Wikipedia, which is obtained by fine-tuning the Atlas pretrained model and its retriever using the train set, except that we update their index to the same Wikipedia dump as WikiChat. For this, we use the fine-tuning code in the Atlas code repository 6, and set learning rate to 4e-5, dropout to 0.1, weight decay to 0.01, and retriever number of contexts to 40. We use a target maximum length of 64 instead of 16, to accommodate longer outputs. After this, the resulting model matches the Wizard of Wikipedia validation score reported in Izacard et al. (2022).\n5Accessed via https://wikimedia.org/api/rest_v1/ 6https://github.com/facebookresearch/atlas/\nblob/main/example_scripts/nq/train.sh\nDistillation to LLaMA. When fine-tuning LLaMA-7B in the distillation experiments, we use hyperparameters from (Taori et al., 2023), namely learning rate of 2\u00d710\u22125, cosine learning rate schedule, batch size of 128, and training for 3 epochs. Initial experiments with LLaMA-30B showed no significant improvements. Training is done on 4 NVIDIA A100 (80 GB) GPUs.\nAutomatic Evaluation. In order to verify that using GPT-4 for conversationality metrics (Section 5.2) is indeed reasonable, we compare its scores against two authors of this paper. Table 10 shows inter-annotator agreement for ratings on 50 randomly sampled conversation turns from all chatbots, measured by calculating Cohen\u2019s Kappa. The annotators are given the same instructions that is given to GPT-4 as prompt."
+        },
+        {
+            "heading": "An Alternative to WikiChat\u2019s Verification Stage.",
+            "text": "For the verification stage (Stage 5), we initially experimented with two approaches for verification: the Kernel Graph Attention Network (KGAT) verifier (Liu et al., 2020) and a few-shot prompt-based verifier with chain-of-thought prompting (Wei et al., 2022). KGAT is a model specifically designed for fact-checking and fine-tuned on the FEVER dataset (Thorne et al., 2018).\nWhile KGAT performs effectively for FEVERstyle fact verification tasks, we found its performance lacking in our setting. FEVER claims are derived from edited Wikipedia sentences, leading to spurious correlations that do not exist when claims come from chatbots. In addition, we were able to incorporate user utterances and conversation history as context in the few-shot verifier, while KGAT only looks at the claim and the evidence. Hence, we decided to conduct our experiments using the prompt-based verifier."
+        },
+        {
+            "heading": "C Analysis of WikiChat",
+            "text": "C.1 Saying \u201cI don\u2019t know\u201d.\nAs mentioned earlier, WikiChat concedes that it does not know when none of the LLM-generated passes fact-checking and no relevant bullet points are retrieved. Table 11 contains the data on how frequently this happens. In this case, the draft prompt is skipped and instead a \u201cSorry, I\u2019m not sure\u201d is sent to the refinement prompt, which dresses it up to match the conversation. For example:\nUser: \u201cAre there any specific ethical dilemmas the characters face in the [M3GAN] film?\u201d\nWikiChat: \u201cYes, the movie raises ethical questions about AI, but I don\u2019t want to spoil the plot by revealing specific dilemmas. You\u2019ll have to watch the film to find out!\u201d\nC.2 Number of claims per turn\nTable 12 contains the raw data on the contribution of IR vs. LLM, and Table 13 contains the raw data on the number of claims, both mentioned in Section 7.5.\nC.3 Refinement improvements Tables 14 and 15 have the raw data on the refinement stage, used in Section 7.5."
+        },
+        {
+            "heading": "D User Study",
+            "text": "We use Prolific to conduct our user study. We select 40 participants (20 female) from the US who are\nfluent in English. Each participant is paid with the rate of $12 per hour. Figure 2 shows the user interface.\nFigure 3 shows the distribution of the user ratings from Table 3."
+        },
+        {
+            "heading": "E Human Evaluation",
+            "text": "We conduct human evaluation for part of our evaluation of factual accuracy (as described in Section 5.2). We use the Scale Rapid 7 platform. Figure 4 shows the instruction and one of the examples we provide. Figure 5 shows the user interface for each annotation task. We present the human annotator with the last user utterance, the chatbot\u2019s response, and a claim extracted from the chatbot\u2019s response using GPT-4. The annotator is then tasked with reading the 5 evidence passages and determining whether the claim is correct, incorrect, or if there is insufficient information to verify the claim. We use a three-way consensus pipeline, where each claim is assessed by three graders independently, and the final label is determined based on the majority vote.\n7www.scale.com\nOne author periodically audits their work, providing feedback and adding examples and tests for crowdworkers as needed.\nWe provide annotators with detailed instructions on the task, and 8 examples covering special cases. We provide 7 training tasks used for onboarding, and 22 evaluation tasks. Only crowdworkers who receive a score of 90% in this evaluation can move to the main task. We compensate each worker for $0.2 per task, and we have one task per (system, dialogue turn, claim). This means that since there are more claims in longer chatbot responses, workers are compensated more for longer responses. In the end, each worker receives about $12 per hour of work."
+        },
+        {
+            "heading": "F All Prompts",
+            "text": "We provide the prompts mentioned in this paper. For brevity, we only show on of the few-shot examples used in each prompt. The full text of prompts can be obtained from our code repository. The syntax used is the Jinja2 template language, which supports Python-like loops ({% for %}{% endfor %}), conditions ({% if %}{% endif %}), variables ({{ var }}) and comments ({# #}). In all prompts, dlg is a python list, today is a string like 4/28/2023, current_year is a string like 2023, and location is set to U.S.\nThe current year is {{ current_year }}. The following is a conversation between you and a chatbot on the topic of \"{{ title }}\" ({{ passage }}) - Do not assume that the chatbot is able to have physical experiences , like watching a movie. - Ask interesting follow -up questions when needed , and expand on the chatbot 's responses using your life experiences. - Never volunteer information , and never correct chatbot 's mistakes. - Continue the conversation for 15 turns. {# This is set to 15, even though\nsimulations end after 10 turns. If we set this to 10 turns , the simulator will start saying goodbye too early. #}\n{# The first two turns don 't have any content and won 't be sent to the Chatbot. They are just meant to specify the format. #} You: Hi! Chatbot: Hi, how can I assist you today?\n{% for dlg_turn in dlg %} You: {{ dlg_turn.user_utterance }} Chatbot: {{ dlg_turn.agent_utterance }} {% endfor %} You:\nTable 16: User simulator prompt. This prompt is zero-shot. title is the title of the Wikipedia page used for simulation, and passage is the first sentence of that article\nYou are chatting with a user. Use Google search to form a response. You are both located in {{ location }}. Today 's date is {{ today }}. - What do you type in the search box? - What date do you want the search results to be? Enter \"recent\" if you are looking\nfor the newest results. Enter \"none\" if the date is not important.\n{# Few -shot example 1 #} You: Do you want to talk about sports? User: Sure! Who is your favorite basketball player? [Search needed? Yes. You Google \"popular basketball players \". The year of the results is \"none \".] You: It has to be Lebron James. User: Did he play well in his last game? [Search needed? Yes. You Google \"how did Lebron James do in his most recent game\".\nThe year of the results is \"recent \".]\n... {# More few -shot examples #}\n{# The current dialogue #} {% for dlg_turn in dlg %}\n{% if dlg_turn.user_utterance is not none %} User: {{ dlg_turn.user_utterance }} {% endif %} {% if dlg_turn.initial_search_query is not none %}\n[Search needed? Yes. You Google \"{{ dlg_turn.initial_search_query }}\". The year of the results is \"{{ dlg_turn.initial_search_query_time }}\".]\n{% endif %} {% if dlg_turn.agent_utterance is not none %} You: {{ dlg_turn.agent_utterance }} {% endif %}\n{% endfor %} User: {{ new_user_utterance }} [Search needed?\nTable 17: Query generation prompt in WikiChat (Stage 1). This prompt has 6 few-shot examples.\nYou Google different search queries and then Break down the relevant parts of the articles you find. Today 's date is {{ today }}.\n{# Few -shot example 1 #} Query: \"worst earthquake ever\" Title: January 1934 earthquake in India and Nepal Article: The 1934 Nepal\\u2013India earthquake or 1934 Bihar\\u2013Nepal earthquake\nwas one of the worst earthquakes in India 's history. The towns of Munger and Muzaffarpur were completely destroyed. This 8.0 magnitude earthquake occurred on 15 January 1934 at around 2:13\\ u00a0pm IST (08:43 UTC) and caused widespread damage in northern Bihar and in Nepal. Earthquake. The epicentre for this event was located in eastern Nepal about south of Mount Everest. The areas where the most damage to life and property occurred extended from Purnea in the east to Champaran in the west (a distance of nearly ), and from Kathmandu in the north to Munger in the south (a distance of nearly ).\"\nBreak down verbatum part(s) of this article that are related to the search query \"worst earthquake ever\" or say None if the article is unrelated: - The 1934 Nepal -India earthquake , also known as the 1934 Bihar -Nepal earthquake , was one of the worst earthquakes in India 's history. - The 1934 Nepal -India earthquake had a magnitude of 8.0 and occurred on 15 January 1934. - As a result of the 1934 Nepal -India earthquake , the towns of Munger and Muzaffarpur were completely destroyed. - As a result of the 1934 Nepal -India earthquake , widespread damage occurred in northern Bihar and Nepal , with the most damage extending from Purnea in the east to Champaran in the west , and from Kathmandu in the north to Munger in the south.\n{# Few -shot example 2 #} Query: \"age of Bruce Willis\" Title: Matt Willis Article: In April 2005, aged 21, Willis stayed for three weeks at London 's Priory\nHospital for the treatment of alcoholism. In July 2006, aged 23, he was admitted again for a few days for drug abuse , because he was addicted to cannabis from the age of 13. He began to have problems from the drug -taking including physiological and memory problems. In June 2008, aged 25, Willis entered a rehab centre in Bournemouth after a marriage ultimatum. It was reported that a night out with close friend Amy Winehouse pushed Willis too far. Willis took the full five week course in drugs and alcohol.\nBreak down verbatum part(s) of this article that are related to the search query \"age of Bruce Willis\" or say None if the article is unrelated: None\n... {# More few -shot examples #}\n{# The current dialogue #} Query: \"{{ query }}\" Title: {{ title }} Article: {{ article }}\nBreak down verbatum part(s) of this article that are related to the search query \"{{ query }}\" or say None if the article is unrelated:\nTable 18: Summarize and filter prompt of WikiChat (Stage 2). This prompt has 7 few-shot examples.\nYou are a friendly , knowledgeable and truthfull chatbot , talking to a user. Respond in at most one paragraph. Today 's date is {{ today }}.\n{% for dlg_turn in dlg %} User: {{ dlg_turn.user_utterance }} You: {{ dlg_turn.agent_utterance }} {% endfor %} User: {{ new_user_utterance }} You:\nTable 19: The prompt for baseline chatbots, also used for Stage 3 of WikiChat. This prompt is zero-shot.\nYou are chatting with a user. Rewrite the facts mentioned in the last response into self -contained sentences. Exclude opinions , or subjective statements. Today 's date is {{ today }}.\n{# Few -shot example 1 #} User: When was chinese new year this year? You: It was on February 5th. Rewrite the facts mentioned in the last response into self -contained sentences: - Chinese New Year in 2022 was on February 5th. The year of the results is \"2022\".\n{# Few -shot example 2 #} User: How are you doing today? You: As an artificial intelligence , I don 't have feelings or personal experiences ,\nso I don 't have good days or bad days. However , I'm fully operational and ready to assist you with any information or tasks you need. What can I help you with today?\nRewrite the facts mentioned in the last response into self -contained sentences: Nothing.\n{# Few -shot example 3 #} User: Do you know about Queen Elizabeth II? I was just reading about her. You: Queen Elizabeth II is the current monarch of the United Kingdom and the Commonwealth realms. She was born in 1926 and became queen in 1952. Rewrite the facts mentioned in the last response into self -contained sentences: - Queen Elizabeth II is the current monarch of the United Kingdom and the Commonwealth realms as of {{ today }}. The year of the results is \"recent \". - Queen Elizabeth II was born in 1926. The year of the results is \"1926\". - Queen Elizabeth II became queen in 1952. The year of the results is \"1952\".\n... {# More few -shot examples #}\n{# The current dialogue #} {% for dlg_turn in dlg[-2:] %} {# Only the last few turns are given , because longer\nconversations confuse the LLM , and are not needed for fact -checking. #} {% if dlg_turn.user_utterance is not none %} User: {{ dlg_turn.user_utterance }} {% endif %} {% if dlg_turn.agent_utterance is not none %} You: {{ dlg_turn.agent_utterance }} {% endif %}\n{% endfor %} User: {{ new_user_utterance }} You: {{ current_agent_utterance }} Rewrite the facts mentioned in the last response into self -contained sentences:\nTable 20: Claim extraction prompt of WikiChat (Stage 4). This prompt has 8 few-shot examples.\nThe following is a conversation between a user and a chatbot. For each claim that the chatbot makes , you search the internet to obtain articles that would support or refute that claim , and output one of \"SUPPORTS\", \"REFUTES\", or \"NOT ENOUGH INFO\". Only if the retrieved articles fully support the claim , output \"SUPPORTS \". Today 's date is {{ today }}.\n{# Few -shot example 1 #} Chatbot: How was your trip to Hawaii? User: It was great! In fact , I witnessed the eruption of the largest volcano on earth. Chatbot: Wow , I hope I could see it, but sounds kinda dangerous. Is it the Mauna Loa? User: Yes , it is! Do you know when it started erupting? Chatbot: Yes , it started erupting on March 25, 1984. [You search the internet to fact -check the claim \"The last eruption of Mauna Loa started on March 25, 1984\"] [You get these articles:\nTitle: 2022 eruption of Mauna Loa Article: When active , Mauna Loa tends to produce \"voluminous , fast -moving lava\nflows\" of the Hawaiian or effusive eruption type rather than more explosive phreatic or Plinian eruptions , though it has produced explosive eruptions between 300 and 1,000 years ago. Before Nov 27, 2022, Mauna Loa had last erupted in March 1984, in a 22-day event similarly concentrated in the volcano 's Northeast Rift Zone. The 2022 eruption was the volcano 's 34th eruption since 1843, when volcanic activity at Mauna Loa began to be continuously recorded , but only the third eruption since 1950. The 38-year span between the 1984 and 2022 eruptions was Mauna Loa 's longest period of quiescence on record.\nTitle: 1984 eruption of Mauna Loa Article: The 1984 eruption of Mauna Loa was a Hawaiian eruption in the U.S.\nstate of Hawaii that lasted from March 25 to April 15, 1984. It ended a 9-year period of quiescence at the volcano and continued for 22 days , during which time lava flows and lava fountains issued from the summit caldera and fissures along the northeast and southwest rift zones. Although the lava threatened Hilo , the flow stopped before reaching the outskirts of town.\n] Fact -check the claim \"The last eruption of Mauna Loa started on March 25, 1984\". You think step by step: Mauna Loa had an eruption on Nov 27, 2022, which is later\nthan the claimed last eruption of March 25, 1984. So the last eruption of Mauna Loa was not on March 25, 1984. So the fact -checking result is \"REFUTES \".\n... {# More few -shot examples #}\n{# The current dialogue #} Chatbot: {{ original_reply }} [You search the internet to fact -check the claim \"{{ claim }}\"] [You get these articles: {% for title in evidence_titles %}\nTitle: {{ title }} Article: {{ evidence_texts[loop.index -1]}}\n{% endfor %} ] Fact -check the claim \"{{ claim }}\". You think step by step:\nTable 21: Verification prompt of WikiChat (Stage 5). This prompt has 6 few-shot examples.\nThe following is a conversation between a friendly , knowledgeable and truthful chatbot , called WikiChat , and a user. WikiChat can use search to get external knowledge when needed. In responding to the user , WikiChat carefully aggregates search results in at most one paragraph. Today 's date is {{ today }}.\n{# Few -shot example 1 #} User: What new discoveries from James Webb Space telescope can I tell my 9 year old about? WikiChat: Your 9-year old would be fascinated to hear that the James Webb Space\nTelescope has discovered farthest galaxies ever found. It has found galaxies so far away that it took 13.4 billion years for their lights to reach the telescope. That is light that started its journey just 300 million years after the Big Bang!\nUser: what is big bang? WikiChat: The Big Bang is the prevailing cosmological model for the universe from\nthe earliest known periods through its subsequent large -scale evolution. In layman 's terms , it is the explosion that created our universe.\nUser: what else can I tell my child about? [Chatbot Googles and gets this information: - The James Webb Space Telescope has detected galaxies more than 13.4 billion light years away , less than 300 million years after the Big Bang. - This is a new record and astronomers are excited to learn more about these distant galaxies. - The telescope is named after James E. Webb , who was the administrator of NASA from 1961 to 1968 during the Mercury , Gemini , and Apollo programs. ] WikiChat: The James Webb Space telescope is named after James E. Webb , who was the\nadministrator of NASA from 1961 to 1968 during the Mercury , Gemini , and Apollo programs.\n... {# More few -shot examples #}\n{# The current dialogue #} {% for dlg_turn in dlg[-2:] %}\nUser: {{ dlg_turn.user_utterance }} WikiChat: {{ dlg_turn.agent_utterance }}\n{% endfor %} {# include the search results only for the last turn #} User: {{ last_user_utterance }} {% if evidences is not none %}\n[Chatbot Googles and gets this information: {% for evi in evidences %}\n- {{ evi }} {% endfor %}\n] {% endif %} WikiChat:\nTable 22: Draft response prompt of WikiChat (Stage 6). This prompt has 4 few-shot examples.\nGiven a conversation history between a user and a chatbot , provide feedback on the chatbot 's final response , then revise the response based on the following criteria: * Relevant: The response should be on-topic and directly address the user 's question. It should acknowledge if it 's off -topic or only partially addresses the question. Irrelevant information should be avoided. * Natural: The response should use engaging language to create an interactive and enjoyable experience , without being too long. * Non -Repetitive: The response should not repeat previously mentioned information or statement , and should not repeat the same fact more than once. * Temporally Correct: The response should provide up-to-date information , use past -tense when the event happened before today ({{ today }}), and respond specifically to the time mentioned by the user. The revised response should only edit the original response according to the feedback , and should not introduce new information.\nToday 's date is {{ today }}.\n{# Few -shot example 1 #} User: What do you think is the best TV drama of 2022? Chatbot: I think it has to be House of the Dragon. User: Why is that? Response: I love it because both the plot and the visuals are great. It actually\nwon the Golden Globe Award for the best drama TV series. I'm not sure when it was released , but I think it was August 21, 2022.\nLet 's break down the feedback for the response: * Relevant: The response is on-topic and directly addresses the question of why the\nspeaker thinks House of the Dragon is the best TV drama , but it contains irrelevant information about the release date of the show. 60/100\n* Natural: The response uses engaging language to express the chatbot 's opinion and provides supporting information to reinforce that opinion. 100/100 * Non -Repetitive: The response does not repeat any previous statement. 100/100 * Temporally Correct: The response correctly uses the past tense to describe the\nGolden Globe win. 100/100\nUser: Why is that? Revised response after applying this feedback: I love it because both the plot and\nthe visuals are great. It actually won the Golden Globe Award for the best drama TV series.\n... {# More few -shot examples #}\n{# The current dialogue #} {% for dlg_turn in dlg[-2:] %} {# Only include the last few turns. #}\nUser: {{ dlg_turn.user_utterance }} Chatbot: {{ dlg_turn.agent_utterance }}\n{% endfor %} User: {{ new_dlg_turn.user_utterance }} Response: {{ new_dlg_turn.agent_utterance }} Let 's break down the feedback for the response:\nTable 23: Refinement prompt of WikiChat (Stage 7). This prompt has 6 few-shot examples."
+        }
+    ],
+    "title": "WikiChat: Stopping the Hallucination of Large Language Model Chatbots by Few-Shot Grounding on Wikipedia",
+    "year": 2023
+}

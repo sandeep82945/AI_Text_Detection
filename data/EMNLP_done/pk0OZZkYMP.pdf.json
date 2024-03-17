@@ -1,0 +1,653 @@
+{
+    "abstractText": "Modular neural networks without additional training have recently been shown to surpass end-to-end neural networks on challenging vision\u2013language tasks. The latest such methods simultaneously introduce LLM-based code generation to build programs and a number of skill-specific, task-oriented modules to execute them. In this paper, we focus on ViperGPT and ask where its additional performance comes from and how much is due to the (state-of-art, end-to-end) BLIP-2 model it subsumes vs. additional symbolic components. To do so, we conduct a controlled study (comparing end-toend, modular, and prompting-based methods across several VQA benchmarks). We find that ViperGPT\u2019s reported gains over BLIP-2 can be attributed to its selection of task-specific modules, and when we run ViperGPT using a more task-agnostic selection of modules, these gains go away. ViperGPT retains much of its performance if we make prominent alterations to its selection of modules: e.g. removing or retaining only BLIP-2. We also compare ViperGPT against a prompting-based decomposition strategy and find that, on some benchmarks, modular approaches significantly benefit by representing subtasks with natural language, instead of code. Our code is fully available at https://github.com/brown-palm/ visual-question-decomposition.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Apoorv Khandelwal"
+        },
+        {
+            "affiliations": [],
+            "name": "Ellie Pavlick"
+        },
+        {
+            "affiliations": [],
+            "name": "Chen Sun"
+        }
+    ],
+    "id": "SP:267888c334f53dfb00f1847a6646dbd140b6f9c2",
+    "references": [
+        {
+            "authors": [
+                "Jean-Baptiste Alayrac",
+                "Jeff Donahue",
+                "Pauline Luc",
+                "Antoine Miech",
+                "Iain Barr",
+                "Yana Hasson",
+                "Karel Lenc",
+                "Arthur Mensch",
+                "Katherine Millican",
+                "Malcolm Reynolds"
+            ],
+            "title": "Flamingo: a visual language model for few-shot learning",
+            "venue": "Advances in Neural",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Andreas",
+                "Marcus Rohrbach",
+                "Trevor Darrell",
+                "Dan Klein."
+            ],
+            "title": "Neural module networks",
+            "venue": "2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 39\u201348.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Bob McGrew",
+                "Dario Amodei",
+                "Sam McCandlish",
+                "Ilya Sutskever",
+                "Wojciech Zaremba."
+            ],
+            "title": "Evaluating large language models trained on code",
+            "venue": "ArXiv, abs/2107.03374.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ting Chen",
+                "Saurabh Saxena",
+                "Lala Li",
+                "David J Fleet",
+                "Geoffrey Hinton."
+            ],
+            "title": "Pix2seq: A language modeling framework for object detection",
+            "venue": "arXiv preprint arXiv:2109.10852.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xi Chen",
+                "Xiao Wang",
+                "Soravit Changpinyo",
+                "AJ Piergiovanni",
+                "Piotr Padlewski",
+                "Daniel Salz",
+                "Sebastian Goodman",
+                "Adam Grycner",
+                "Basil Mustafa",
+                "Lucas Beyer"
+            ],
+            "title": "Pali: A jointly-scaled multilingual language-image model",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Llm.int8(): 8-bit matrix multiplication for transformers at scale",
+            "venue": "In The 36th Conference on Neural Information Processing Systems (NeurIPS),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Dheeru Dua",
+                "Shivanshu Gupta",
+                "Sameer Singh",
+                "Matt Gardner."
+            ],
+            "title": "Successive prompting for decomposing complex questions",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 1251\u20131265, Abu",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuxin Fang",
+                "Wen Wang",
+                "Binhui Xie",
+                "Quan Sun",
+                "Ledell Wu",
+                "Xinggang Wang",
+                "Tiejun Huang",
+                "Xinlong Wang",
+                "Yue Cao."
+            ],
+            "title": "Eva: Exploring the limits of masked visual representation learning at scale",
+            "venue": "Proceedings of the IEEE/CVF Conference on Com-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yash Goyal",
+                "Tejas Khot",
+                "Douglas Summers-Stay",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Tanmay Gupta",
+                "Aniruddha Kembhavi."
+            ],
+            "title": "Visual programming: Compositional visual reasoning without training",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 14953\u201314962.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ronghang Hu",
+                "Jacob Andreas",
+                "Marcus Rohrbach",
+                "Trevor Darrell",
+                "Kate Saenko."
+            ],
+            "title": "Learning to reason: End-to-end module networks for visual question answering",
+            "venue": "Proceedings of the IEEE international conference on computer vision, pages",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Drew A. Hudson",
+                "Christopher D. Manning."
+            ],
+            "title": "Gqa: A new dataset for real-world visual reasoning and compositional question answering",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 6693\u2013",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Justin Johnson",
+                "Bharath Hariharan",
+                "Laurens van der Maaten",
+                "Judy Hoffman",
+                "Li Fei-Fei",
+                "C. Lawrence Zitnick",
+                "Ross B. Girshick."
+            ],
+            "title": "Inferring and executing programs for visual reasoning",
+            "venue": "2017 IEEE International Conference on Computer Vision (ICCV),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ehsan Kamalloo",
+                "Nouha Dziri",
+                "Charles L.A. Clarke",
+                "Davood Rafiei."
+            ],
+            "title": "Evaluating open-domain question answering in the era of large language models",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (ACL).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tushar Khot",
+                "Harsh Trivedi",
+                "Matthew Finlayson",
+                "Yao Fu",
+                "Kyle Richardson",
+                "Peter Clark",
+                "Ashish Sabharwal"
+            ],
+            "title": "Decomposed prompting: A modular",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa."
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "venue": "The 36th Conference on Neural Information Processing Systems (NeurIPS), pages 22199\u201322213.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kenton Lee",
+                "Ming-Wei Chang",
+                "Kristina Toutanova."
+            ],
+            "title": "Latent retrieval for weakly supervised open domain question answering",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 6086\u20136096, Florence, Italy.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi."
+            ],
+            "title": "Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models",
+            "venue": "Proceedings of the 40th International Conference on Machine Learning (ICML).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Liunian Harold Li",
+                "Pengchuan Zhang",
+                "Haotian Zhang",
+                "Jianwei Yang",
+                "Chunyuan Li",
+                "Yiwu Zhong",
+                "Lijuan Wang",
+                "Lu Yuan",
+                "Lei Zhang",
+                "Jenq-Neng Hwang"
+            ],
+            "title": "Grounded language-image pre-training",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Com-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiasen Lu",
+                "Christopher Clark",
+                "Rowan Zellers",
+                "Roozbeh Mottaghi",
+                "Aniruddha Kembhavi."
+            ],
+            "title": "Unifiedio: A unified model for vision, language, and multimodal tasks",
+            "venue": "The Eleventh International Conference on Learning Representations (ICLR).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Pan Lu",
+                "Swaroop Mishra",
+                "Tony Xia",
+                "Liang Qiu",
+                "KaiWei Chang",
+                "Song-Chun Zhu",
+                "Oyvind Tafjord",
+                "Peter Clark",
+                "Ashwin Kalyan."
+            ],
+            "title": "Learn to explain: Multimodal reasoning via thought chains for science question answering",
+            "venue": "The 36th Conference on Neu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kenneth Marino",
+                "Mohammad Rastegari",
+                "Ali Farhadi",
+                "Roozbeh Mottaghi."
+            ],
+            "title": "Ok-vqa: A visual question answering benchmark requiring external knowledge",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aaron Parisi",
+                "Yao Zhao",
+                "Noah Fiedel."
+            ],
+            "title": "Talm: Tool augmented language models",
+            "venue": "arXiv preprint arXiv:2205.12255.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ofir Press",
+                "Muru Zhang",
+                "Sewon Min",
+                "Ludwig Schmidt",
+                "Noah A. Smith",
+                "Mike Lewis."
+            ],
+            "title": "Measuring and narrowing the compositionality gap in language models",
+            "venue": "ArXiv, abs/2210.03350.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark"
+            ],
+            "title": "Learning transferable visual models from natural language supervision",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ren\u00e9 Ranftl",
+                "Katrin Lasinger",
+                "David Hafner",
+                "Konrad Schindler",
+                "Vladlen Koltun."
+            ],
+            "title": "Towards robust monocular depth estimation: Mixing datasets for zero-shot cross-dataset transfer",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Roberto Dess\u00ec",
+                "Roberta Raileanu",
+                "Maria Lomeli",
+                "Luke Zettlemoyer",
+                "Nicola Cancedda",
+                "Thomas Scialom."
+            ],
+            "title": "Toolformer: Language models can teach themselves to use tools",
+            "venue": "arXiv preprint arXiv:2302.04761.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dustin Schwenk",
+                "Apoorv Khandelwal",
+                "Christopher Clark",
+                "Kenneth Marino",
+                "Roozbeh Mottaghi."
+            ],
+            "title": "A-okvqa: A benchmark for visual question answering using world knowledge",
+            "venue": "Proceedings of the European Conference on Computer Vision (ECCV),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Amanpreet Singh",
+                "Ronghang Hu",
+                "Vedanuj Goswami",
+                "Guillaume Couairon",
+                "Wojciech Galuba",
+                "Marcus Rohrbach",
+                "Douwe Kiela."
+            ],
+            "title": "Flava: A foundational language and vision alignment model",
+            "venue": "Proceedings of the IEEE/CVF Conference on Com-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sanjay Subramanian",
+                "Medhini G. Narasimhan",
+                "Kushal Khangaonkar",
+                "Kevin Yang",
+                "Arsha Nagrani",
+                "Cordelia Schmid",
+                "Andy Zeng",
+                "Trevor Darrell",
+                "Dan Klein."
+            ],
+            "title": "Modular visual question answering via code generation",
+            "venue": "Proceedings of the 61st Annual Meet-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "D\u00eddac Sur\u00eds",
+                "Sachit Menon",
+                "Carl Vondrick."
+            ],
+            "title": "Vipergpt: Visual inference via python execution for reasoning",
+            "venue": "ArXiv, abs/2303.08128.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jianfeng Wang",
+                "Zhengyuan Yang",
+                "Xiaowei Hu",
+                "Linjie Li",
+                "Kevin Lin",
+                "Zhe Gan",
+                "Zicheng Liu",
+                "Ce Liu",
+                "Lijuan Wang."
+            ],
+            "title": "GIT: A generative image-to-text transformer for vision and language",
+            "venue": "Transactions on Machine Learning Research (TMLR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peng Wang",
+                "An Yang",
+                "Rui Men",
+                "Junyang Lin",
+                "Shuai Bai",
+                "Zhikang Li",
+                "Jianxin Ma",
+                "Chang Zhou",
+                "Jingren Zhou",
+                "Hongxia Yang."
+            ],
+            "title": "Ofa: Unifying architectures, tasks, and modalities through a simple sequence-to-sequence learning framework",
+            "venue": "Inter-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Hangbo Bao",
+                "Li Dong",
+                "Johan Bjorck",
+                "Zhiliang Peng",
+                "Qiang Liu",
+                "Kriti Aggarwal",
+                "Owais Khan Mohammed",
+                "Saksham Singhal",
+                "Subhojit Som"
+            ],
+            "title": "Image as a foreign language: Beit pretraining for vision and vision-language tasks",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed Huai hsin Chi",
+                "F. Xia",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain-of-thought prompting elicits reasoning in large language models",
+            "venue": "The 36th Conference on Neural Information Processing Sys-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kexin Yi",
+                "Jiajun Wu",
+                "Chuang Gan",
+                "Antonio Torralba",
+                "Pushmeet Kohli",
+                "Josh Tenenbaum."
+            ],
+            "title": "Neuralsymbolic vqa: Disentangling reasoning from vision and language understanding",
+            "venue": "Advances in neural information processing systems, 31.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jiahui Yu",
+                "Zirui Wang",
+                "Vijay Vasudevan",
+                "Legg Yeung",
+                "Mojtaba Seyedhosseini",
+                "Yonghui Wu."
+            ],
+            "title": "Coca: Contrastive captioners are image-text foundation models",
+            "venue": "Transactions on Machine Learning Research (TMLR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yan Zeng",
+                "Xinsong Zhang",
+                "Hang Li."
+            ],
+            "title": "Multigrained vision language pre-training: Aligning texts with visual concepts",
+            "venue": "Proceedings of the 39th International Conference on Machine Learning (ICML), pages 25994\u201326009.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Denny Zhou",
+                "Nathanael Sch\u00e4rli",
+                "Le Hou",
+                "Jason Wei",
+                "Nathan Scales",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Olivier Bousquet",
+                "Quoc Le",
+                "Ed Chi."
+            ],
+            "title": "Leastto-most prompting enables complex reasoning in large language models",
+            "venue": "The Eleventh International",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "B ViperGPT"
+            ],
+            "title": "Design Choices We make a few modifications (listed in Sec. 2.2) to the ViperGPT method (from the original design (Sur\u00eds et al., 2023)) to improve conformity for the VQA task and ensure fairness when",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "isons\u201d (Hudson",
+                "Manning"
+            ],
+            "title": "What color are the cups to the left of the tray on top of the table?\u201d is a multi-step composition (focusing on spatial relationships and attribute recognition)",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "End-to-end neural networks (Li et al., 2023) have been the predominant solution for vision\u2013 language tasks, like Visual Question Answering (VQA) (Goyal et al., 2017). However, these methods suffer from a lack of interpretability and generalization capabilities. Instead, modular (or neurosymbolic) approaches (Andreas et al., 2015; Johnson et al., 2017; Hu et al., 2017; Yi et al., 2018) have been long suggested as effective solutions which address both of these limitations. These methods synthesize symbolic programs that are\neasily interpretable and can be executed (leveraging distinct image or language processing modules) to solve the task at hand. The most recent such models (Gupta and Kembhavi, 2023; Sur\u00eds et al., 2023; Subramanian et al., 2023) are training-free: they leverage large language models (LLMs) to generate programs and subsume powerful neural networks as modules. Such approaches demonstrate strong results and outperform end-to-end neural networks on zero-shot vision\u2013language tasks.\nThese recent modular approaches typically include state-of-the-art end-to-end networks, among a complex schema of other modules and engineering designs. As a result, the contribution of these networks is difficult to disentangle from the modularity of their overall system. Thus, in this paper, we analyze ViperGPT, in which BLIP-2 (Li et al., 2023) is a constituent module, as a representative example of a recent and performant modular system for vision\u2013language tasks. BLIP-2 can particularly (and in contrast from ViperGPT\u2019s other modules) solve VQA tasks on its own. We ask: where does its additional performance come from, and how much is due to the underlying BLIP-2 model vs. the additional symbolic components? To answer our research questions, we conduct a controlled study, comparing end-to-end, modular, and prompting-based approaches (Sec. 2) on several VQA benchmarks (Sec. 3). We make the following specific contributions:\n1. In Section 4, we find that ViperGPT\u2019s advantage over BLIP-2 alone is likely due to the task-specific engineering in ViperGPT. Specifically, we run ViperGPT in a task-agnostic setting, in which we do not preselect different subsets of modules for each task (as is done in Sur\u00eds et al. (2023)). We find that, without the task-specific module selection, the average gain of ViperGPT over BLIP-2 disappears (dropping from +8.7% to -0.8%). Moreover, we find that removing the BLIP-2 module re-\ntains a significant percentage of ViperGPT\u2019s task-agnostic performance (i.e. 84% for the direct answer setting and 87% for the multiple choice setting). And, retaining only the BLIP-2 module comprises 95% and 122% of ViperGPT\u2019s task-agnostic performance in those settings.\n2. In Section 5, we find that a prompting-based (rather than code-based) method for question decomposition still constitutes 92% of the performance of an equivalent ViperGPT variant for direct answer benchmarks. Moreover, this method actually exceeds ViperGPT by +12% on average for multiple choice benchmarks. (To the best of our knowledge, our prompting-based method also presents the highest score in the multiple choice setting of A-OKVQA (Schwenk et al., 2022) compared to any other training-free method.) These results suggest that, on some benchmarks, modular approaches significantly benefit by representing subtasks with natural language, instead of code.\n3. In Section 6, we explore ViperGPT\u2019s generalization to out-of-domain benchmarks. Unlike for in-domain datasets, we find that providing task-specific in-context examples actually leads to a performance drop by 11% for A-OKVQA\u2019s direct answer setting and 2% on average for A-OKVQA and ScienceQA multiple choice settings. We additionally ana-\nlyze the code that is generated by ViperGPT and observe higher runtime error rates for AOKVQA\u2019s direct answer setting (3%) and the multiple choice benchmarks (12\u201318%) than the in-domain direct answer benchmarks (1\u2013 2%). Finally, while the syntax error rate is 0% for all direct answer benchmarks, it is 1\u20133% for multiple choice benchmarks."
+        },
+        {
+            "heading": "2 Models",
+            "text": "In this section, we share specific design decisions and implementation details for each of the three model families we assess in this paper (i.e. end-toend, modular, and prompting-based). We additionally visualize these approaches in Fig. 1."
+        },
+        {
+            "heading": "2.1 End-to-end",
+            "text": "As the end-to-end model in our analyses, we use BLIP-2 (Li et al., 2023), an open-source stateof-the-art vision-language model which can be used for image captioning and zero-shot VQA. For VQA, this model first encodes images using a pretrained image encoder and projects the resulting encoding into the input space of a pre-trained language model. That language model is then used to generate a textual prediction, given the aforementioned image projection and VQA question.\nAs in Li et al. (2023), we prompt this model with \u201cQuestion: {} Short answer: []\u201d. For the direct answer setting, we generate text directly from the language model. For the multiple choice setting, we select the choice with the maximum log likelihood for text generation.\nWe use the same settings as Sur\u00eds et al. (2023, ViperGPT) (i.e. the modular approach in Sec. 2.2) to load and run the model. Specifically, we use the ViT-g/14 image encoder from EVA-CLIP (Fang et al., 2023) and FlanT5-XXL encoder\u2013decoder language model (Chung et al., 2022). We make predictions using 8-bit inference (Dettmers et al., 2022) and generate text with beam search (width = 5, length penalty = -1)."
+        },
+        {
+            "heading": "2.2 Modular",
+            "text": "In this paper, we use ViperGPT (Sur\u00eds et al., 2023), which is a recent modular system for vision\u2013 language tasks.\nViperGPT prompts a language model with a VQA question and an API\u2014which is an interface for manipulating images\u2014to generate a Python program. This API is written in code and describes a class ImagePatch and several functions, like .find, .simple_query, etc. These functions invoke both symbolic algorithms (e.g. for iterating through elements, sorting lists, computing Euclidean distances, etc.) and trained neural network modules (for object detection, VQA, LLM queries, etc.). When the Python program is executed, these functions should manipulate the VQA image and answer the question.\nAs a simple example, the question \u201cHow many black cats are in the image?\u201d might be written as:\ndef execute_command(image) -> str: image_patch = ImagePatch(image) cat_patches = image_patch.find('cat') black_cat_patches = [ p for p in cat_patches if p.verify_property('cat', 'black')\n] return len(black_cat_patches)\nThe program can then be executed using the Python interpreter and several modules. In this case, ImagePatch.find(object_name: str) -> list[ImagePatch] utilizes an object detection module to find all cats and ImagePatch.verify_property(object_name: str, property: str) -> bool utilizes text\u2013 image similarity for determining whether those cats are black.\nImplementation. Our implementation of ViperGPT uses the code1 released with the original\n1https://github.com/cvlab-columbia/viper\nViperGPT paper (Sur\u00eds et al., 2023). However, as that codebase currently2 differs from the original paper in several ways, we have modified it to re-align it with the original report. Specifically, we switch the code-generation model from ChatGPT to Codex, revert the module set and prompt text to those in Sur\u00eds et al. (2023, Appendix A\u2013B), and otherwise make minor corrections to the behavior and execution of ImagePatch and execute_command. However, we find that only the full API prompt is made available\u2014not the task-specific prompts\u2014preventing us from exactly replicating Sur\u00eds et al. (2023).\nDesign choices. In our experiments and like Sur\u00eds et al. (2023), we prompt Codex (code-davinci-002) (Chen et al., 2021a) for code generation and use the same set of neural modules: GLIP (Li et al., 2022), MiDaS (Ranftl et al., 2020), BLIP-2 (Li et al., 2023), X-VLM (Zeng et al., 2022), and InstructGPT (text-davinci-003) (Ouyang et al., 2022).\nFor fairness in comparing with the model in Sec. 2.3, we make a few additional design decisions that deviate from Sur\u00eds et al. (2023). For our task-agnostic variant (Sec. 4), we use the full ImagePatch API and external functions (excluding the VideoSegment class) in our prompt. We specify further modifications for our other variants in Sec. 4. We prompt the model with the following signature: \u201cdef execute_command(image) -> str:\u201d (i.e. we explicitly add \u201c-> str\u201d to better conform to the VQA task). During multiple choice, Sur\u00eds et al. (2023) provides another argument, possible_choices, to the signature. However, we extend this argument with an explicit list of these choices.\nFor the direct answer setting, we use the text as returned by the program as our predicted answer. This text may be generated by a number of modules (e.g. BLIP-2 or InstructGPT) or as a hardcoded string in the program itself. For the multiple choice setting, the returned text is not guaranteed to match a choice in the provided list. So, we map the returned text to the nearest choice by prompting InstructGPT (text-davinci-003) with \u201cChoices: {} Candidate: {} Most similar choice: []\u201d. We select the choice with the highest log likelihood.\nWe elaborate further on our design choices and how they make our experiments more fair in Appendix B.\n2As of October 22, 2023."
+        },
+        {
+            "heading": "2.3 Successive Prompting",
+            "text": "Building programs is not the only way to decompose problems. Recent work in NLP has found that large language models improve performance at reasoning tasks when solving problems stepby-step (Wei et al., 2022; Kojima et al., 2022). For question answering, decomposing a question and answering one sub-question at a time leads to further improvements (Press et al., 2022; Zhou et al., 2023; Dua et al., 2022; Khot et al., 2023). Moreover, recent work has started to invoke vision\u2013 langauge models based on the outputs of langauge models.\nAs a convergence of these directions, we introduce a training-free method that jointly and successively prompts an LLM (InstructGPT: text-davinci-002) and VLM (BLIP-2) to decompose visual questions in natural language. We call this \u201cSuccessive Prompting\u201d (following Dua et al. (2022)). At each step, our method uses the LLM to ask one follow-up question at a time. Each follow-up question is answered independently by the vision\u2013language model. In the subsequent step, the LLM uses all prior follow-up questions and answers to generate the next follow-up question. After some number of steps (as decided by the LLM), the LLM should stop proposing follow-up questions and will instead provide an answer to the original question. We constrain the LLM\u2019s behavior by appending the more likely prefix of \u201cFollow-up:\u201d or \u201cAnswer to the original question:\u201d (i.e. the stopping criteria) to the prompt at the end of each step.\nIn order to prompt a large language model for this task, we provide a high-level instruction along with three dataset-specific in-context demonstrations of visual question decompositions.\nOur method generates text directly, which can be used for the direct answer setting. Like with ViperGPT, we also prompt our method with an explicit list of choices during the multiple choice setting. And, for the multiple choice setting, we select the choice with the highest log likelihood as the predicted answer."
+        },
+        {
+            "heading": "3 Evaluation",
+            "text": "We evaluate variants of end-to-end, modular, and prompt-based methods (Sec. 2) on a set of VQA benchmarks (Sec. 3.1) using direct answer and multiple choice evaluation metrics (Secs. 3.2 and 3.3)."
+        },
+        {
+            "heading": "3.1 Benchmarks",
+            "text": "We evaluate methods on a set of five diverse VQA benchmarks: VQAv2 (Goyal et al., 2017), GQA (Hudson and Manning, 2019), OKVQA (Marino et al., 2019), A-OKVQA (Schwenk et al., 2022), and ScienceQA (Lu et al., 2022). We use the following dataset splits as our benchmarks: validation (1000 random samples) for VQAv2, testdev for GQA, testing for OK-VQA, validation for A-OKVQA, and validation (IMG subset, QCIM \u2192 A format) for ScienceQA.\nThese datasets vary in the amount of perception, compositionality, knowledge, and reasoning their problems require. More specifically: VQAv2 is a longstanding benchmark whose questions require primitive computer vision skills (e.g. classification, counting, etc). GQA focuses on compositional questions and various reasoning skills. OKVQA requires \u201coutside knowledge\u201d about many categories of objects and usually entails detecting an object and asking for knowledge about that object. A-OKVQA features \u201copen-domain\u201d questions that might also require some kind of commonsense, visual, or physical reasoning. ScienceQA features scientific questions (of elementary through high school difficulty) that require both background knowledge and multiple steps of reasoning to solve. We elaborate further in Appendix D."
+        },
+        {
+            "heading": "3.2 Metrics: Direct Answer",
+            "text": "We evaluate the direct answer setting for VQAv2, GQA, OK-VQA, and A-OKVQA. In this setting, a method will predict a textual answer given an image and question. We report scores using (1) the existing metric for each dataset and (2) the new InstructGPT-eval metric from (Kamalloo et al., 2023).\nWe observe that while the general trends (determining which models perform better or worse) remain the same between metrics (1) and (2), the actual gap may differ significantly. See Appendix A for further discussion of why (2) is a more robust measure of model performance for our experiments. We include (1) for posterity in Tables 1 and 2, but make comparisons in our text using (2), unless specified otherwise.\n(1) Existing metrics. GQA uses exact-match accuracy with a single ground truth annotation. VQAv2, OK-VQA, and A-OKVQA use the VQAv2 evaluation metric: a prediction is matched with 10 ground truth annotations (i.e. acc =\nmax(1.0, num_matches / 3)). Note: VQAv2 and OK-VQA pre-process answers before matching.\n(2) InstructGPT-eval. Kamalloo et al. (2023) find that lexical matching metrics for open-domain question answering tasks in NLP perform poorly for predictions generated by large language models. We make similar observations for the existing direct answer metrics in the VQA datasets we benchmark: such scores correlate quite poorly with our intuitions for open-ended text generated by language models. For example, the prediction \u201criding a horse\u201d would be marked incorrect when ground truth answers are variants of \u201chorseback riding\u201d. Instead, Kamalloo et al. (2023) suggest an evaluation metric (InstructGPT-eval) that prompts InstructGPT (text-davinci-003) (Ouyang et al., 2022) with3:\nQuestion: What is he doing? Answer: horseback riding Candidate: riding a horse"
+        },
+        {
+            "heading": "Is the candidate correct? [yes/no]",
+            "text": "Kamalloo et al. (2023) demonstrates a substantial increase of +0.52 in Kendall\u2019s \u03c4 correlation with human judgements using their introduced metric instead of exact match on the NQ-Open benchmark (Lee et al., 2019)."
+        },
+        {
+            "heading": "3.3 Metrics: Multiple Choice",
+            "text": "We evaluate the multiple choice setting for AOKVQA and ScienceQA. In this setting, a method will similarly be given an image and question, but also a list of textual choices. The method is required to select one of those choices as its predicted answer. We evaluate this setting using the standard accuracy metric."
+        },
+        {
+            "heading": "4 Selecting Modules in ViperGPT",
+            "text": "In Sur\u00eds et al. (2023), the choice of modules is different for each task. This contrasts with end-toend models like BLIP-2 which are purported to be task-agnostic. To draw a more direct comparison, we evaluate ViperGPT\u2019s performance when given the full API (Sur\u00eds et al., 2023, Appendix B) and set of all corresponding modules. We refer to this as the \u201ctask-agnostic\u201d setting (Table 1). We find that, in this case, the gain of ViperGPT over\n3A list of or-separated answers is provided when several ground truth annotations are available. Although (Kamalloo et al., 2023) tests if the generated response starts with \u201cyes\u201d or \u201cno\u201d, we instead compare the log likelihood of generating \u201cyes\u201d or \u201cno\u201d for additional robustness.\nBLIP-2 is reduced from +6.2% to +2.1% on GQA and +11.1% to -3.6% on OK-VQA (using the existing metrics).4 We continue to observe that our task-agnostic ViperGPT variant usually does not perform better than BLIP-2 across benchmarks and metrics, with the exception of the multiple choice setting of A-OKVQA, on which ViperGPT does outperform BLIP-2 significantly.\nSince ViperGPT relies on BLIP-2 as one of its modules (i.e. in simple_query for simple visual queries), we wonder how much influence BLIP-2 has in the ViperGPT framework. Moreover, how much does ViperGPT gain from having modules and functions in addition to BLIP-2?\nAccordingly, we run two ablations: we evaluate the performance of ViperGPT without BLIP-2 and with only BLIP-2 (i.e. with no other modules). We also report these evaluations in Table 1.\nTo do so, we modify the full API prompt provided to ViperGPT. For \u201conly BLIP-2\u201d, we delete all modules and functions in the prompt besides ImagePatch.simple_query. As the prompt for this module included in-context demonstrations relying on other (now removed) modules, we had to re-write these demonstrations. We either rewrite the existing problem (\u201czero-shot\u201d) or rewrite three random training set examples for each dataset (\u201cfewshot\u201d). For \u201cwithout BLIP-2\u201d, we simply delete ImagePatch.simple_query and all references to it from the prompt. We show examples for both procedures in Appendix C.\nBecause ViperGPT has no other image-to-text modules, we expect that excluding BLIP-2 (i.e. \u201cwithout BLIP-2\u201d) should have a highly detrimental effect on the VQA performance of ViperGPT. However, we instead observe that the variant retains 84% and 87% of the average performance, respectively, for the direct answer and multiple choice benchmarks. This indicates that including many modules improves the robustness of the ViperGPT model, in that ViperGPT is able to compensate by using other modules to replace BLIP-2.\nWe find that using Viper with BLIP-2 as the only module (i.e. \u201conly BLIP-2\u201d) also retains significant performance in the direct answer setting: i.e. by 95% on average. Moreover, this variant actually gains performance (+6% on A-OKVQA and +12% on ScienceQA) in the multiple choice setting. This\n4In this comparison, we use our own replicated result for the performance of BLIP-2 on GQA and OK-VQA for consistency, although they may deviate from prior reports (Li et al., 2023) by 2\u20135%.\nresult seems to indicate that the BLIP-2 module is doing most of the heavy-lifting within ViperGPT for the VQA benchmarks."
+        },
+        {
+            "heading": "5 Decomposing Problems with Programs or Prompting?",
+            "text": "One of ViperGPT\u2019s major contributions is that it decomposes problems into Python programs: it inherently gains the compositionality and logical reasoning that is built into programming languages. However, recent work in NLP suggests that questions can also be iteratively decomposed and solved more effectively than end-to-end approaches using step-by-step natural langauge prompting (Press et al., 2022). Here, we measure the gains related to ViperGPT\u2019s choice of building logical, executable programs in Python, rather than by using the interface of natural language and reasoning implicitly within LLMs.\nWe want to enable as direct a comparison as possible between natural language prompting with our method and program generation with Viper. Thus, we choose the same VLM (BLIP-2) as ViperGPT and an analogous LLM to Codex (code-davinci-002)\u2014specifically, we use InstructGPT (text-davinci-002). We present the results of our method (\u201cSuccessive Prompting\u201d) in Table 2 and Fig. 2 and directly compare against the \u201conly BLIP-2\u201d variants of ViperGPT. We have also used the same in-context examples for each dataset for both ViperGPT (\u201conly BLIP-2, few-shot\u201d) and Successive Prompting, which helps keep the comparison more fair.\nOur prompting method performs comparably (i.e. retaining 92% of the performance on average)\nto ViperGPT on GQA, OK-VQA, and A-OKVQA in the direct answer setting, and is noticably better (i.e. +4% and +17%) on the multiple choice setting for A-OKVQA and ScienceQA. To the best of our knowledge, our method actually presents the highest A-OKVQA multiple-choice score compared to any other training-free method.\nOur method presents intermediate results that are in the form of natural language expressions and strictly subject to downstream operations by neural networks. On the other hand, ViperGPT can present Pythonic data types, like lists and numbers, as well as image regions. Unlike our prompting method, ViperGPT does result in a more diverse set of intermediate representations, some of which can be symbolically manipulated, and is designed to leverage a diverse set of neural networks.\nBut from this experiment, we determine that it is not strictly necessary to decompose problems using programs in order to realize performance gains. Instead, natural language prompting can offer a simpler alternative. While ViperGPT leverages the intrinsic compositonality and logical execution of programming languages, our method uses conditional generation on intermediate results and a flexible natural language interface for reasoning, while remaining similarly effective.\nIn Appendix G, we tried to identify patterns in questions to determine whether they were more suitable for formal or natural language-based decomposition. We could not find any clear patterns, following simple question type breakdowns of the original datasets, but are hopeful that future work will explore this further and reveal better insights."
+        },
+        {
+            "heading": "6 How well does ViperGPT generalize to out-of-distribution tasks?",
+            "text": "As we have observed in Sec. 4, ViperGPT has been designed around a specific set of tasks (including GQA and OK-VQA), especially in its selection of modules and prompt. On the other hand, a core motivation for modular and neuro-symbolic approaches is that these should have better generalization capabilities to unseen tasks. So, we further wonder how robust ViperGPT is to out-ofdistribution tasks. In particular, we consider AOKVQA and (especially) ScienceQA as out-ofdistribution (compared to GQA and OK-VQA).\nFirst, we investigate changes to the prompt of ViperGPT. Will adding task-specific in-context examples improve the model\u2019s robustness to new tasks? In Table 1, we compare zero-shot and fewshot variants of \u201cViperGPT (only BLIP-2)\u201d. We can see that including few-shot examples consistently improves performance on the \u201cin-domain\u201d tasks (VQAv2, GQA, and OK-VQA) by +2% on average. But, this consistently hurts performance on the \u201cout-of-distribution\u201d tasks (A-OKVQA and ScienceQA) by 11% on A-OKVQA\u2019s direct answer setting and 2% on average for their multiple choice settings.\nWe also look at the correctness of the programs generated by ViperGPT in Table 3. We find that the generated code is (on average) 3x as likely to encounter runtime errors for A-OKVQA compared\nto the other benchmarks in the direct answer setting. We find that this rate increases by another 3x (i.e. 12%) for A-OKVQA in the multiple choice setting. And, ScienceQA holds the highest rate of runtime failures overall at 18%. In the multiple choice setting, A-OKVQA and ScienceQA produce code that cannot be parsed (i.e. with syntax errors) 1% and 3% of the time. On the other hand, the rate of parsing exceptions is consistently 0% for benchmarks (including A-OKVQA) in the direct answer setting."
+        },
+        {
+            "heading": "7 Related Work",
+            "text": "Visual Question Answering. Visual Question Answering is a common vision\u2013language task with many variants: in our paper, we benchmark several mainstream VQA datasets (Goyal et al., 2017; Hudson and Manning, 2019; Marino et al., 2019; Schwenk et al., 2022; Lu et al., 2022), requiring a broad range of skills: related to computer vision and perception, compositional understanding, outside and world knowledge, scientific and commonsense reasoning, and more.\nEnd-to-end models. End-to-end models are the predominant approach in deep learning. In particular, we consider vision\u2013language models here. We observe that recent, state-of-art vision\u2013language models may rely on large-scale pretraining (Radford et al., 2021; Singh et al., 2022; Yu et al., 2022; Wang et al., 2023; Li et al., 2023), be trained on\nmany tasks with a unified architecture (Chen et al., 2021b; Wang et al., 2022b; Lu et al., 2023), or both (Wang et al., 2022a; Alayrac et al., 2022; Chen et al., 2022). In this paper, we focus on the first category and find BLIP-2 (Li et al., 2023), which utilizes a frozen image encoder and language model, as a suitable and effective representative.\nNeuro-symbolic methods. Several prior methods have attempted neuro-symbolic approaches for visual reasoning tasks (Andreas et al., 2015; Johnson et al., 2017; Hu et al., 2017; Yi et al., 2018). However, until now, these methods were learned by training and found middling success in doing so. More recently, a few training-free approaches have been suggested that leverage the powerful in-context and program generation abilities of modern large language models (Gupta and Kembhavi,\n2023; Sur\u00eds et al., 2023; Subramanian et al., 2023). Simultaneously, these approaches adopt SOTA neural networks in their set of modules. All together, these methods present the first competitive neurosymbolic solutions for visual reasoning tasks.\nNatural language reasoning and tool-use. Recently, it has been found in NLP that large language models can more effectively perform reasoning tasks by reasoning step-by-step (Wei et al., 2022; Kojima et al., 2022). A few works have extended a similar capability in LLMs for complex problem and question decomposition (Press et al., 2022; Zhou et al., 2023; Dua et al., 2022; Khot et al., 2023). Finally, recent works have learned ways to prompt language models to call tools (Parisi et al., 2022; Schick et al., 2023). All of these emergent research directions jointly enable the prompting\napproach we present in Sec. 5."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "In this paper, we have analyzed ViperGPT (Sur\u00eds et al., 2023), a recent and intricate modular approach for vision\u2013language tasks. We unbox ViperGPT, asking the research question: where does its performance come from? Observing that one of ViperGPT\u2019s five modules (i.e. BLIP-2 (Li et al., 2023)) often outperforms or constitutes a majority of its own performance, we investigate this module\u2019s role further. Through our experiments, we find that while ViperGPT\u2019s marginal gains over BLIP-2 are a direct result of its task-specific module selection, its modularity improves its overall robustness and it can perform well even without the (seemingly critical) BLIP-2 module. Additionally, we investigate ViperGPT\u2019s choice of generating Python programs. We ask if this is necessary and, alternatively, propose a method relying on prompting large language models and vision\u2013language models to instead decompose visual questions with natural language. Our method performs comparably to the relevant ViperGPT variants and, to the best of our knowledge, even reports the highest multiple choice accuracy on A-OKVQA (Schwenk et al., 2022) by any training-free method to date.\nLimitations\nAlthough the experiments in our paper are selfcontained and designed to be directly comparable with each other, the absolute scores we report differ from other reports. For example, our results for BLIP-2 on GQA and OK-VQA are within 2\u20135% of the original reports. We attribute such differences to possible differences in model inference settings between (Sur\u00eds et al., 2023)\u2014which we follow and e.g. runs the model with 8-bit inference\u2014and (Li et al., 2023).\nIn our \u201cViperGPT (only BLIP-2)\u201d experiments, we find that the method often calls BLIP-2 directly in a single step and might not offer any mechanisms beyond BLIP-2 in that case."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "We would like to thank Michael A. Lepori for his generous feedback on this work. This work is partially supported by the Samsung Advanced Institute of Technology and a Brown University Presidential Fellowship for Apoorv Khandelwal. Our research was conducted using computational resources and\nservices at the Center for Computation and Visualization, Brown University."
+        },
+        {
+            "heading": "A Existing Metrics vs. InstructGPT-eval",
+            "text": "We observe that existing VQA metrics correlate poorly with (our) human judgments for evaluating model predictions. We analyze predictions for our model types (i.e. \u201cBLIP-2\u201d, \u201cViperGPT (taskagnostic)\u201d, and \u201cSuccessive\u201d in Tables 1 and 2) on random training split subsets (N = 50) of VQAv2, GQA, and A-OKVQA. We specifically find that, when the existing and new (InstructGPT-eval) evaluation metrics disagree, InstructGPT-eval is correct 93% of the time. In Fig. 3, we show two examples of such disagreements between existing VQA metrics and the open-ended metric. Therefore, we include the results of existing metrics in our paper for posterity, but do not find these reliable (especially for open-ended text generated by models like InstructGPT). We instead make comparisons in our paper using the InstructGPT-eval metric. We observe that trends (i.e. which model performs better) are usually the same for both metrics, but the actual gaps may differ significantly.\nB ViperGPT Design Choices\nWe make a few modifications (listed in Sec. 2.2) to the ViperGPT method (from the original design (Sur\u00eds et al., 2023)) to improve conformity for the VQA task and ensure fairness when comparing to our prompting-based approach in Sec. 2.3. We elaborate further here.\nAs we always expect the executable program to return a string for VQA, we explicitly add \u201c-> str\u201d to the function signature in the prompt. By design, our prompting-based approach can similarly only result in a string.\nFor the multiple choice setting, we provide an explicit list of choices in the code-generation prompt (e.g. \u201c# possible answers : [\u2019dog\u2019, \u2019cat\u2019, \u2019foo\u2019, \u2019bar\u2019]\u201d after the question prompt). We do this, so the code generation model benefits from awareness of these choices when generating the program. Similarly, our prompting-based method is provided with a list of choices in conjunction with the question, prior to proposing follow-up questions.\nUnlike the Successive Prompting method, the ViperGPT program is not guaranteed to produce a result that matches one of the multiple choices. So we map this result to the most similar choice using InstructGPT (text-davinci-003). We make this choice because text-davinci-003 is already used by a module in ViperGPT and for the open-ended evaluation metric.\nC ViperGPT Variants"
+        },
+        {
+            "heading": "D Datasets",
+            "text": "1. VQAv2: This is a classic VQA benchmark. Many of the questions involve tasks (like classification, attribute detection, and counting) and require primitive computer vision skills.\nFor example, \u201cWhat color are the pants?\u201d might entail (1) detecting the pants in the image and (2) determining their color.\n2. GQA: This is a benchmark that focuses on compositional questions. Requires an \u201carray of reasoning skills such as object and attribute recognition, transitive relation tracking, spatial reasoning, logical inference and comparisons\u201d (Hudson and Manning, 2019). For example, \u201cWhat color are the cups to the left of the tray on top of the table?\u201d is a multi-step composition (focusing on spatial relationships and attribute recognition).\n3. OK-VQA: Requires \u201coutside knowledge\u201d\nabout many categories of objects. Usually requires detecting an object and asking for knowledge about that object. Example (Sur\u00eds et al., 2023, Figure 5): \u201cThe real live version of this toy does what in the winter?\u201d. Involves locating and identifying the toy, then asking about the rest.\n4. A-OKVQA: A follow-up benchmark to OKVQA. Instead of asking for closed-domain knowledge about objects, this features \u201copendomain\u201d questions that might also require some kind of commonsense, visual, or physical reasoning. For example, \u201cWhich position will the red jacket most likely finish in?\u201d in-\nvolves (1) identifying the context (a ski race), (2) locating all the racers, (3) identifying the racer who is wearing the red jacket, (4) determining the orientation of the race (e.g. left-toright), and (5) determining the \u201cindex\u201d of the red jacket racer among all racers along this orientation. The question\u2019s textual prior appears contextually insufficient and proposing a program based on this alone (as in ViperGPT) could be fragile and quite difficult.\n5. ScienceQA: This benchmark features scientific questions (of elementary through high school difficulty) that require both background knowledge and multiple steps of reasoning to solve. Their example question is \u201cWhich type of force from the baby\u2019s hand opens the cabinet door?\u201d (choices: push, pull). The given reasoning is that (paraphrased) \u201cThe direction of push is away from and pull is towards the acting object. The baby\u2019s hand applies a force to the cabinet door that causes the door to open. The direction of the door opening is towards the baby, so the force is pull.\u201d Without seeing the image, it is not apparent, but what determines whether the baby is opening or closing the door is the fine-grained detail that the baby\u2019s hand is curled over the top of the cabinet door, not grasping the handle or pushing the door\u2019s surface. The current stage of visual programming models are not capable of such difficult multi-step reasoning chains and planning around such fine details. Instead, we find that ViperGPT tends to default to its end-to-end VQA module instead."
+        },
+        {
+            "heading": "E Log likelihood of generating continuations",
+            "text": "We use a weighted byte-length normalization for generating the log likelihood of a continuation, i.e.\nm+(n\u22121)\u2211 j=m logP (xj |x0:j) Lxk\u2211m+(n\u22121) k=m Lxk (1)\nwhere x is a list of tokens (with m tokens in the prompt and n tokens in the continuation) and the byte-length of the token xi is Lxi ."
+        },
+        {
+            "heading": "F Runtime Failure Rate of ViperGPT",
+            "text": "As an extension to Table 3, we further breakdown ViperGPT failures for runtime errors in Table 4."
+        },
+        {
+            "heading": "G Failure Rates By Question Type",
+            "text": ""
+        },
+        {
+            "heading": "H Successive Prompting Example",
+            "text": "Question: Has the food this woman is preparing been fried?\nFollow-up: What's in the image? Follow-up answer: a person is preparing\na salad on the counter Follow-up: Has the lettuce been fried? Follow-up answer: no Answer to the original question: no"
+        }
+    ],
+    "title": "Analyzing Modular Approaches for Visual Question Decomposition",
+    "year": 2023
+}

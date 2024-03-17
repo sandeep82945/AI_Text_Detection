@@ -1,0 +1,171 @@
+{
+    "abstractText": "The aim of implicit discourse relation recognition is to comprehend the sense of connection between two arguments. In this work, we present a classification method that is solely based on generative models. Our proposed approach employs a combination of instruction templates and in-context learning to refine the generative model for effectively addressing the implicit discourse relation recognition task. Furthermore, we utilize Chain-of-Thoughts to partition the inference process into a sequence of three successive stages. This strategy enables us to fully utilize the autoregressive generative model\u2019s potential for knowledge acquisition and inference, ultimately leading to enhanced performance on this natural language understanding task. The results of our experiments, evaluated on benchmark datasets PDTB 2.0, PDTB 3.0, and the CoNLL16 shared task, demonstrate superior performance compared to previous state-of-the-art models.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yuxiang Lu"
+        },
+        {
+            "affiliations": [],
+            "name": "Yu Hong"
+        },
+        {
+            "affiliations": [],
+            "name": "Zhipang Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Guodong Zhou"
+        }
+    ],
+    "id": "SP:dbccdd1e738f10796cf2e5cee95891d5b34285f0",
+    "references": [
+        {
+            "authors": [
+                "nie L Webber"
+            ],
+            "title": "The penn discourse treebank",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Chengwei Qin",
+                "Aston Zhang",
+                "Zhuosheng Zhang",
+                "Jiaao Chen",
+                "Michihiro Yasunaga",
+                "Diyi Yang"
+            ],
+            "title": "Is chatgpt a general-purpose natural language processing task solver? arXiv preprint arXiv:2302.06476",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wei Xiang",
+                "Bang Wang",
+                "Lu Dai",
+                "Yijun Mo."
+            ],
+            "title": "Encoding and fusing semantic connection and linguistic evidence for implicit discourse relation recognition",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2022, pages 3247\u20133257,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wei Xiang",
+                "Zhenglin Wang",
+                "Lu Dai",
+                "Bang Wang."
+            ],
+            "title": "ConnPrompt: Connective-cloze prompt learning for implicit discourse relation recognition",
+            "venue": "Proceedings of the 29th International Conference on Computational Linguistics, pages 902\u2013911,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nianwen Xue",
+                "Hwee Tou Ng",
+                "Sameer Pradhan",
+                "Attapol Rutherford",
+                "Bonnie Webber",
+                "Chuan Wang",
+                "Hongmin Wang."
+            ],
+            "title": "Conll 2016 shared task on multilingual shallow discourse parsing",
+            "venue": "Proceedings of the CoNLL-16 shared task, pages 1\u201319.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Hao Zhou",
+                "Man Lan",
+                "Yuanbin Wu",
+                "Yuefeng Chen",
+                "Meirong Ma."
+            ],
+            "title": "Prompt-based connective prediction method for fine-grained implicit discourse relation recognition",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2022, pages",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Discourse relation recognition refers to identifying the sense of the relation between two arguments. This task is categorized into two types: explicit discourse relation recognition (EDRR) and implicit discourse relation recognition (IDRR) depending on whether explicit connectives, such as \"because\" and \"but\", are present or absent between the argument pair. Our work investigates the potential of generative models and natural language generation for improving the performance of IDRR.\nRecognizing implicit discourse relations involves comprehending and examining the semantic connections between argument pairs. Previous works have commonly employed semantic encoding to enhance the model\u2019s classification accuracy (Liu et al., 2020; Dou et al., 2021; Xiang et al., 2022a). Generative models have also been utilized\n\u2217 Corresponding author\nfor IDRR. As an example, generation tasks have been used as an auxiliary task (Jiang et al., 2021) and in a limited form that restricts prompt learning (Zhou et al., 2022; Xiang et al., 2022b). With the emergence of large language models, there is a growing interest in utilizing generative models rather than encoder-only models for NLP applications. However, some studies also suggest that generic generative models do not perform as well as fine-tuning relatively small encoder-only models for NLU tasks (Qin et al., 2023). Our experiments also reveal that employing generative models to directly generate relation sense in the context of IDRR is an ineffective approach.\nThis work investigates how simple yet effective methods (IICOT) can unleash the inference capabilities of generative models. Figure 1 illustrates our approach of utilizing a thinking process to guide the model\u2019s output (COT). Specifically, we do not allow the model to output the relation sense directly; we compel the model to first identify whether the argument pair pertains to implicit or explicit relation data. This approach reduces the unwanted noise generated by explicit data. Next, the model\nidentifies a reasonable conjunction between the argument pairs and bases its final inference on this analysis. To optimize the model\u2019s performance, we formulate a prefix prompt for better guidance which is in the form of instructions (I). By fine-tuning the instructions, we enhance the model\u2019s ability to learn and understand the task definition. Additionally, we employ the In-context learning (Min et al., 2022) (I) approach to provide additional examples to aid the model\u2019s comprehension of the prompt.\nContributions: Our work makes the following contributions. (a) We use generative methods on the IDRR task and explore methods for improving the inference power of generative models. (b) We investigate the impact of instruction learning, incontext learning, and Chain-of-Thoughts (COT) on the performance of generative models. Through our exploration, we are able to identify the causes and effects of these learning methods. (c) We achieve state-of-the-art performance on all three datasets, indicating the effectiveness of our approach."
+        },
+        {
+            "heading": "2 Apporach",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Instruction Learning",
+            "text": "The primary objective of instruction fine-tuning is to enhance the language models\u2019 capacity to respond to natural language instructions. The method entails utilizing supervised signals to instruct language models on performing tasks described in instructions. As a result of instruction fine-tuning, language models learn to follow instructions and\nrespond to the same tasks. To test this approach, we devise instruction fine-tuning templates, as illustrated in Figure 2. The templates provide a comprehensive task definition for the model, enabling a deeper understanding of the task at hand. They utilize natural language to guide the model\u2019s thought process and restrict the format of the model\u2019s output to facilitate subsequent evaluation."
+        },
+        {
+            "heading": "2.2 In-context Learning",
+            "text": "In-context learning enables a language model to grasp a task and produce answers to queries based on given illustrative examples. Essentially, it entails training a proficient language model for estimating a conditional probability distribution model, relative to a specific condition. However, we have discovered in our research that providing the model with a specific number of instances during training enhances its adherence to format and facilitates more effective convergence. During our experiments, we meticulously prepare an example to represent each of the four relation senses, which is visually illustrated in Appendix A."
+        },
+        {
+            "heading": "2.3 Chain-of-Thoughts",
+            "text": "While regular training methods require models to tackle complex problems in a single step, people prefer an incremental approach, breaking down problems into smaller components to facilitate complex reasoning. This inclination towards incremental thinking enables people to engage in more nuanced and effective problem-solving. Our approach presents a simple yet effective method of prompting that mimics thinking process in the form of natural language prompts, as shown in Figure 2. Rather than providing a categorical answer directly, the model first considers whether the implied relationship is explicit or implicit. It then identifies appropriate connectives between pairs of arguments before finally providing the answer.\nIn the autoregressive generative mode, each token output by the model is influenced by its predecessors, creating a natural progression of thought. The reasoning process under standard generation prompt and with COT1 is depicted in Figure 1. The latter method requires the model to provide a COT before producing a response. By incorporating COT into the prompting strategy, the performance\n1The training set of PDTB 2.0 and PDTB 3.0 lacks explicit data on implicit chapter relations. To enhance the model\u2019s ability to generate the intended COT, a limited amount of explicit data was artificially incorporated.\nof the model improves. All the specific prompt templates we used are in the Appendix B"
+        },
+        {
+            "heading": "3 Experiment",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Experiment Settings",
+            "text": "This study involves conducting experiments on three benchmark datasets: PDTB 2.0 (Prasad et al., 2008), PDTB 3.0 (Prasad et al., 2019), and CoNLL16 (Xue et al., 2016). Notably, the CoNLL16 dataset lacks manually annotated ligatures in 450 training data instances. To address this, we utilize the gpt-3.5-turbo model to predict the ligatures and establish them as the ground trut. Detailed statistics for each dataset and the settings of hyperparameters can be found in Appendix C. To ensure reproducibility, we will make all of our source code publicly availableh2."
+        },
+        {
+            "heading": "3.2 Main results",
+            "text": "Table 1 and 2 present the results of our 4-way and binary classification performance on PDTB 2.0, PDTB 3.0, and CoNLL16 benchmark datasets. We employ the flan-t5 pre-trained model, a t5-based\n2https://github.com/Destiny-Lu/IICOT_IDRR.\nmodel specifically fine-tuned for a broad range of natural language processing tasks to better suit instruction learning. Remarkably, our approach outperforms current state-of-the-art methods in all datasets. Specifically, we achieve an impressive 4.62% increase in the Contingency category on PDTB 2.0, while realizing significant improvements in all of the categories on PDTB 3.0."
+        },
+        {
+            "heading": "3.3 Ablation Experiments",
+            "text": "Table 3 presents the findings of our ablation experiments, where Fine-tuning denotes that the input is only the argument pair while the direct output relation sense; Instruction indicates that the task definition directs the model to output labels; ICL refers to In-context learning; Conn refers to predicting connected words; Rel denotes predicting explicit or implicit data.\nOur ablation experiments lead to four key conclusions: First, using instruction and ICL improves the model\u2019s performance in comparison to directly outputting results. Providing a certain amount of example enhances the model\u2019s understanding of the task. Second, appending Rel or Conn to ICL\n(a) Representation distribution with COT (b) Representation distribution without COT\nFigure 3: The noise reduction effect of COT is demonstrated through the distribution.\nto predict chains before labels further improve the model\u2019s reasoning ability. Third, without ICL, adding both Rel and Conn also lead to a performance improvement. This indicates that the COT approach is highly effective. Fourth, the optimal value is reached by combining the approaches mentioned above, thereby demonstrating their individual validity and mutual reinforcement."
+        },
+        {
+            "heading": "4 Analysis",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Explicit Data",
+            "text": "Our experiment of the CoNLL16 task reveals that incorporating both Explicit and Implicit judgments into the COT further enhances model performance. Accordingly, we propose the inclusion of explicit data in the PDTB dataset to scrutinize whether the performance improves. Our experimental findings (Appendix D) demonstrate that the performance improves upon the inclusion of a limited amount of explicit data. However, with increasing amounts of explicit data, the performance deteriorates substantially. This is because the distribution of explicit data differs from implicit data and the introduction of more explicit data results in amplified noise.\nFigure 4 and 5 demonstrate that an increase in explicit data corresponds to a decrease in the model\u2019s accuracy in distinguishing between explicit and implicit data. Nonetheless, the model maintains a high accuracy rate of 96.83% and exhibits optimal performance at the 20% threshold of explicit data. These results suggest that the model remains relatively unaffected by noise and that successful data augmentation has been achieved."
+        },
+        {
+            "heading": "4.2 How Chain-of-Thoughts works",
+            "text": "Denoising It is believed that the model achieves denoising ability while generating COT. In order to demonstrate the denoising process, we analyze the output vectors of the model in terms of their\nrepresentations. This allows us to gain insight into the denoising mechanism of the model.\nThe t-SNE method is frequently preferred for visualizing high-dimensional data, as it effectively presents local relationships and clustering structures. Specifically, t-SNE is adept at capturing similarities and differences within the data. Figure 3-(b) illustrates the model that incorporates Rel within the COT framework. This contrasts the COT model shown in Figure 3-(a), which does not feature these judgments. The generative model, such as flan-T5, lacks a dedicated token [CLS], unlike the BERT model. Consequently, in our study, we employ the encoding vector of the [BOS] token to represent the sentence after applying t-SNE dimensionality reduction. This approach enables us to examine the distribution pattern. The COT judgment effectively reduces noise and facilitates the acquisition of semantic knowledge pertaining to explicit data. The results demonstrate that the different types of data are well-separated upon the inclusion of COT judgment.\nMitigating overfitting It is our contention that the efficacy of COT also lies in its ability to alleviate model overfitting. Figure 6 presents data on training loss, loss on the development (dev) set during training, and changes in dev set performance for models trained both with and without COT. The table illustrates that abstaining from COT leads to a further drop in training loss, but also to a shift in dev set loss from low to high, along with a trend of decreasing performance. These phenomena suggest that the model overfits the training data.\nCOT enhances the informational content of model outputs. Although it increases the complexity of the task, this additional information effectively guides the model towards the desired direction, thereby mitigating the potential of overfitting."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "We aim to enhance the reasoning capabilities of generative models in IDRR by employing a generation task framework and incorporating Instruction learning, in-context learning, and COT. Through our approach, we achieve a notable improvement over the baseline model, leading to state-of-the-art performance on three benchmark datasets.\nIn our future research, we plan to further investigate the utilization of generative models and even large language models. Specifically, we aim to explore the efficacy of larger models, including the\nimplementation of knowledge distillation to transfer knowledge from large models to smaller ones."
+        },
+        {
+            "heading": "Acknowledgment",
+            "text": "The research is supported by National Key R&D Program of China (2020YFB1313601) and National Science Foundation of China (62376182, 62076174)."
+        },
+        {
+            "heading": "6 Limitations",
+            "text": "The current design of our COT is not yet perfect, leaving ample room for improvement. Furthermore, our experimentation has been limited to the English corpus, without exploring other languages."
+        },
+        {
+            "heading": "B Chain-of-Thoughts prompt",
+            "text": "Only label: Instruction: The task is to determine whether they have a temporal, comparative, contingency, or extensional relationship. This analysis should consider both implicit and explicit relationships. Conn & Label: Instruction: The task is to determine the conjunction that connects two given text fragments and identify whether they have a temporal, comparative, contingency, or extensional relationship. This analysis should consider both implicit and explicit relation sense. The expected output format is: \"conjunction-relationship\".\nRel & Conn & Label: Instruction: The task is to determine the conjunction that connects two given text fragments and identify whether they have a temporal, comparative, contingency, or extensional relationship. This analysis should consider both implicit and explicit relation sense. The expected output format is: \"type-\nconjunction-relationship\"."
+        },
+        {
+            "heading": "C Dataset statistics and the hyperparameters",
+            "text": "Table 4 presents the statistical information for specific datasets. In our evaluation process, we exclusively employ implicit data from the PDTB 2.0 dataset and PDTB 3.0 dataset. Conversely, for the CoNLL16 dataset, we utilize all available data in accordance with the official partitioning strategy.\nDuring our training process, we employ a batch size of 16 and set the learning rate to 5e-5. We train the AdamW optimizer for 5 epochs, utilizing the default parameter settings. Moreover, we incorporate both warmup and linear learning rate decay strategies, with a warmup ratio of 0.1."
+        },
+        {
+            "heading": "D Add Explicit Data",
+            "text": "To examine the impact of explicit data on model performance, we gradually augment the amount of explicit data in the training sets of PDTB 2.0 and PDTB 3.0. The experiment results are detailed in Figure 4 and 5."
+        },
+        {
+            "heading": "E Observation of Overfitting",
+            "text": "The presence of overfitting can be readily observed by analyzing the training loss, evaluation set loss, and performance variation in the absence of the COT model. In contrast, the inclusion of the COT model leads to improved performance. It is important to highlight that the training steps differ between the two experiments due to the utilization of the early stop strategy."
+        }
+    ],
+    "title": "Enhancing Reasoning Capabilities by Instruction Learning and Chain-of-Thoughts for Implicit Discourse Relation Recognition",
+    "year": 2023
+}

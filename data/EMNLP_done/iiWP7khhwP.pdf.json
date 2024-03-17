@@ -1,0 +1,633 @@
+{
+    "abstractText": "The computational cost of transformer-based language models grows quadratically with the sequence length. In this paper, we introduce the selective cache, which stores the selected key-value pairs from the previous context. By selecting important key-value pairs the model makes better use of the cache so that in limited cache size, a longer context history can be stored. We design three kinds of selection methods. The first is based on human language processing. The key-value pairs are selected if they correspond to tokens that are fixated longer, as recorded in eye-tracking-while-reading experiments. We also incorporate the cognitivelyinspired selection process into the language model as a trainable process, resulting in two additional methods with improved performance. The selection task is converted into a pruning task so they can be trained with differentiable masks. We demonstrate that the proposed selective cache improves the language modeling performance across different datasets.1 With the same number of stored key-value pairs (cache size), our selective cache outperforms XL cache (Dai et al., 2019) and compressive cache (Rae et al., 2019) by considerable margins.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Xinting Huang"
+        },
+        {
+            "affiliations": [],
+            "name": "Nora Hollenstein"
+        }
+    ],
+    "id": "SP:6d83e66a793218178c9d48cb9af01e4cd1b237a3",
+    "references": [
+        {
+            "authors": [
+                "Abien Fred Agarap."
+            ],
+            "title": "Deep learning using rectified linear units (relu)",
+            "venue": "arXiv preprint arXiv:1803.08375.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Maria Barrett",
+                "Ana Valeria Gonz\u00e1lez-Gardu\u00f1o",
+                "Lea Frermann",
+                "Anders S\u00f8gaard."
+            ],
+            "title": "Unsupervised induction of linguistic categories with records of reading, speaking, and writing",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Iz Beltagy",
+                "Matthew E Peters",
+                "Arman Cohan."
+            ],
+            "title": "Longformer: The long-document transformer",
+            "venue": "arXiv preprint arXiv:2004.05150.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Stephanie Brandl",
+                "Nora Hollenstein."
+            ],
+            "title": "Every word counts: A multilingual analysis of individual human alignment with model attention",
+            "venue": "Proceedings of the 2nd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aydar Bulatov",
+                "Yury Kuratov",
+                "Mikhail Burtsev."
+            ],
+            "title": "Recurrent memory transformer",
+            "venue": "Advances in Neural Information Processing Systems, 35:11079\u2013 11091.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rewon Child",
+                "Scott Gray",
+                "Alec Radford",
+                "Ilya Sutskever."
+            ],
+            "title": "Generating long sequences with sparse transformers",
+            "venue": "arXiv preprint arXiv:1904.10509.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Uschi Cop",
+                "Nicolas Dirix",
+                "Denis Drieghe",
+                "Wouter Duyck."
+            ],
+            "title": "Presenting geco: An eyetracking corpus of monolingual and bilingual sentence reading",
+            "venue": "Behavior research methods, 49(2):602\u2013615.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Gon\u00e7alo M Correia",
+                "Vlad Niculae",
+                "Andr\u00e9 FT Martins."
+            ],
+            "title": "Adaptively sparse transformers",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zihang Dai",
+                "Zhilin Yang",
+                "Yiming Yang",
+                "Jaime G Carbonell",
+                "Quoc Le",
+                "Ruslan Salakhutdinov"
+            ],
+            "title": "Transformer-xl: Attentive language models beyond",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nicola De Cao",
+                "Michael Sejr Schlichtkrull",
+                "Wilker Aziz",
+                "Ivan Titov."
+            ],
+            "title": "How do decisions emerge across layers in neural models? interpretation with differentiable masking",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Lan-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Com-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Lucas Beyer",
+                "Alexander Kolesnikov",
+                "Dirk Weissenborn",
+                "Xiaohua Zhai",
+                "Thomas Unterthiner",
+                "Mostafa Dehghani",
+                "Matthias Minderer",
+                "Georg Heigold",
+                "Sylvain Gelly"
+            ],
+            "title": "An image is worth 16x16 words: Transformers",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Michael Hahn",
+                "Frank Keller."
+            ],
+            "title": "Modeling task effects in human reading with neural network-based attention",
+            "venue": "Cognition, 230:105289.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nora Hollenstein",
+                "Lisa Beinborn."
+            ],
+            "title": "Relative importance in sentence processing",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nora Hollenstein",
+                "Jonathan Rotsztejn",
+                "Marius Troendle",
+                "Andreas Pedroni",
+                "Ce Zhang",
+                "Nicolas Langer."
+            ],
+            "title": "Zuco, a simultaneous eeg and eye-tracking resource for natural sentence reading",
+            "venue": "Scientific data, 5(1):1\u201313.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Nora Hollenstein",
+                "Marius Troendle",
+                "Ce Zhang",
+                "Nicolas Langer"
+            ],
+            "title": "ZuCo 2.0: A dataset of physiological recordings during natural reading and annotation",
+            "venue": "In Proceedings of the Twelfth Language Resources and Evaluation Conference,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nora Hollenstein",
+                "Ce Zhang."
+            ],
+            "title": "Entity recognition at first sight: Improving NER with eye movement information",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Lan-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Eric Jang",
+                "Shixiang Gu",
+                "Ben Poole."
+            ],
+            "title": "Categorical reparameterization with gumbel-softmax",
+            "venue": "arXiv preprint arXiv:1611.01144.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Alan Kennedy",
+                "Robin Hill",
+                "Jo\u00ebl Pynte."
+            ],
+            "title": "The dundee corpus",
+            "venue": "Proceedings of the 12th European conference on eye movement.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Varun Khurana",
+                "Yaman Kumar",
+                "Nora Hollenstein",
+                "Rajesh Kumar",
+                "Balaji Krishnamurthy."
+            ],
+            "title": "Synthesizing human gaze feedback for improved nlp performance",
+            "venue": "Proceedings of the 17th Conference of the European Chapter of the Association for Compu-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Max Welling."
+            ],
+            "title": "Autoencoding variational bayes",
+            "venue": "arXiv preprint arXiv:1312.6114.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Alexander Kirillov",
+                "Eric Mintun",
+                "Nikhila Ravi",
+                "Hanzi Mao",
+                "Chloe Rolland",
+                "Laura Gustafson",
+                "Tete Xiao",
+                "Spencer Whitehead",
+                "Alexander C. Berg",
+                "Wan-Yen Lo",
+                "Piotr Doll\u00e1r",
+                "Ross Girshick."
+            ],
+            "title": "Segment anything",
+            "venue": "arXiv:2304.02643.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nikita Kitaev",
+                "\u0141ukasz Kaiser",
+                "Anselm Levskaya."
+            ],
+            "title": "Reformer: The efficient transformer",
+            "venue": "arXiv preprint arXiv:2001.04451.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Taku Kudo",
+                "John Richardson."
+            ],
+            "title": "SentencePiece: A simple and language independent subword tokenizer and detokenizer for neural text processing",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing: System",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Christos Louizos",
+                "Max Welling",
+                "Diederik P Kingma."
+            ],
+            "title": "Learning sparse neural networks through l_0 regularization",
+            "venue": "arXiv preprint arXiv:1712.01312.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Chris J Maddison",
+                "Andriy Mnih",
+                "Yee Whye Teh."
+            ],
+            "title": "The concrete distribution: A continuous relaxation of discrete random variables",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Matt Mahoney"
+            ],
+            "title": "Large text compression benchmark",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Pedro Henrique Martins",
+                "Zita Marinho",
+                "Andr\u00e9 FT Martins."
+            ],
+            "title": "former: Infinite memory transformerformer: Infinite memory transformer",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sandeep Mathias",
+                "Diptesh Kanojia",
+                "Abhijit Mishra",
+                "Pushpak Bhattacharya"
+            ],
+            "title": "A survey on using gaze",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Caiming Xiong",
+                "James Bradbury",
+                "Richard Socher."
+            ],
+            "title": "Pointer sentinel mixture models",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Abhijit Mishra",
+                "Kuntal Dey",
+                "Pushpak Bhattacharyya."
+            ],
+            "title": "Learning cognitive features from gaze data for sentiment and sarcasm classification using convolutional neural network",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "jani",
+                "Sasank Chilamkurthy",
+                "Benoit Steiner",
+                "Lu Fang",
+                "Junjie Bai",
+                "Soumith Chintala"
+            ],
+            "title": "Pytorch: An imperative style, high-performance deep learning library",
+            "venue": "In Advances in Neural Information Processing Systems",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jack W Rae",
+                "Anna Potapenko",
+                "Siddhant M Jayakumar",
+                "Chloe Hillier",
+                "Timothy P Lillicrap."
+            ],
+            "title": "Compressive transformers for long-range sequence modelling",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Anirudh Ravula",
+                "Chris Alberti",
+                "Joshua Ainslie",
+                "Li Yang",
+                "Philip Minh Pham",
+                "Qifan Wang",
+                "Santiago Ontanon",
+                "Sumit Kumar Sanghai",
+                "Vaclav Cvicek",
+                "Zach Fisher."
+            ],
+            "title": "Etc: Encoding long and structured inputs in transformers",
+            "venue": "2020 Conference on Em-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Keith Rayner",
+                "Susan A Duffy."
+            ],
+            "title": "Lexical complexity and fixation times in reading: Effects of word frequency, verb complexity, and lexical ambiguity",
+            "venue": "Memory & cognition, 14(3):191\u2013201.",
+            "year": 1986
+        },
+        {
+            "authors": [
+                "Keith Rayner",
+                "Timothy J Slattery",
+                "Denis Drieghe",
+                "Simon P Liversedge."
+            ],
+            "title": "Eye movements and word skipping during reading: effects of word length and predictability",
+            "venue": "Journal of Experimental Psychology: Human Perception and Performance, 37(2):514.",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "David Grangier"
+            ],
+            "title": "Efficient content-based sparse",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Noam Shazeer"
+            ],
+            "title": "Glu variants improve transformer",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "nrich",
+                "Ivan Titov"
+            ],
+            "title": "Analyzing multi-head",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hao Ma"
+            ],
+            "title": "Linformer: Self-attention with",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Clara Ma",
+                "Yacine Jernite",
+                "Julien Plu",
+                "Canwen Xu",
+                "Teven Le Scao",
+                "Sylvain Gugger",
+                "Mariama Drame",
+                "Quentin Lhoest",
+                "Alexander Rush."
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "venue": "Proceedings of the 2020 Conference on Empirical",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yuhuai Wu",
+                "Markus Norman Rabe",
+                "DeLesley Hutchins",
+                "Christian Szegedy."
+            ],
+            "title": "Memorizing transformers",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kangyan Zhou",
+                "Shrimai Prabhumoye",
+                "Alan W Black."
+            ],
+            "title": "A dataset for document grounded conversations",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, pages 708\u2013713.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Zhenhai Zhu",
+                "Radu Soricut."
+            ],
+            "title": "H-transformer1d: Fast one-dimensional hierarchical attention for sequences",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natu-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "C Hard"
+            ],
+            "title": "Concrete Distribution The Hard Concrete distribution is based on Binary Concrete distribution (Maddison et al., 2016; Jang et al., 2016), which is defined on the interval (0, 1) and can be regarded as a relaxed version",
+            "year": 2016
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Transformers (Vaswani et al., 2017) have been used as the backbone architecture of various models and achieve state-of-the-art results in a wide range of tasks (Devlin et al., 2019; Dosovitskiy et al., 2020; OpenAI, 2023; Kirillov et al., 2023). Compared to other architectures such as Recurrent Neural Networks, its attention mechanism directly connects long-distance elements in the input sequence. Thus, it better captures long-range dependencies. However, it also constitutes the bottleneck in Transformers. The time and space complexity of Transformer\n1Our code is available at https://github.com/ huangxt39/SelectiveCacheForLM\nattention is O(n2). Hence, the computational cost becomes prohibitively expensive or even makes the task infeasible when processing long sequences. Extensive research is performed to address this problem, introducing a number of X-former models (Wang et al., 2020; Kitaev et al., 2020; Choromanski et al., 2022).\nWhile many proposed models successfully mitigate the problem to some extent, there are still open limitations such as the storage cost of preserving the whole sequence in memory and the inability to be directly inserted into existing pretrained models. In this paper, we propose a novel cache that stores past key-value pairs, namely the selective cache, for auto-regressive language modeling (LM). This method aims to make better use of the cache introduced in Transformer-XL (Dai et al., 2019) by selecting more informative key-value pairs. Different from prior works such as (Rae et al., 2019), it distills the previous context by extracting or selecting, instead of averaging. In other words, some key-value pairs are kept in the cache as it is, while others are simply discarded. It is utilized as easily as the cache in Transformer-XL, that is, the stored keys and values are simply prepended to the current keys and values.\nWe explore three selection methods for the cache: (1) using eye fixation duration as importance scores, (2) using neural networks which learn to select, and (3) replace. The first one uses eye-movement data. We simply consider the total reading time of each word. Long-fixated words are important for language comprehension (Rayner and Duffy, 1986) and are usually difficult to infer from the context (Rayner et al., 2011). Furthermore, fixation duration correlates with the gradient-based saliency in Transformer language models (Hollenstein and Beinborn, 2021). Thus, selecting key-value pairs associated with long-fixated tokens is a cognitively plausible modeling decision. The second method is to train a selector neural network. By learn-\ning to prune key-value pairs, the selector learns to select. It is based on a neural network pruning method (Louizos et al., 2017), which uses differentiable stochastic masks and L0 penalty. The selector learns to mask out unimportant key-value pairs so it can be used to select them. Finally, the third method uses the same technique but applies the mask and its opposite mask simultaneously, in order to train a replacer network that directly learns the trade-off. The motivation is to simulate the actual situation where adding new items to the cache results in discarding old ones. In addition, we introduce a novel method for training the selector and replacer network. By sampling a previous snippet of context to train the network and stopping gradient during cache updating, we avoid backpropagation through time (BPTT), while the network can still learn to model long-term dependency.\nExperimental results show that using these methods improves the model\u2019s performance, especially the latter two. They bring about considerable performance gain against XL cache and compressive cache (we use these two terms to refer to the methods used in Dai et al., 2019 and Rae et al., 2019, respectively) with the same total cache size.\nMoreover, thanks to the enhanced interpretability of selective cache, we can directly investigate which tokens are stored. We find that the trained selector and replacer tend to keep named entities and rare tokens, which is a common tendency found in many prior works (Sun et al., 2021; Wu et al., 2022; Hutchins et al., 2022). We also show that the selective cache can preserve information from a very distant context, or even from an infinite distance, depending on the characteristics of the processed document."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Transformers have difficulty processing long sequences. There are a lot of works trying to address this limitation. Linformer (Wang et al., 2020) and Performer (Choromanski et al., 2022) introduce new self-attention mechanisms, which can approximate the original full attention with linear space and time complexity. Many works utilize sparsity to achieve efficient long-range attention, including strided attention (Child et al., 2019; Beltagy et al., 2020), global attention by a few tokens (Beltagy et al., 2020; Zaheer et al., 2020; Ravula et al., 2020) and random attention to a limited number of tokens (Zaheer et al., 2020). Moreover, suitable\nsparsity patterns can be learned for each attention head (Sukhbaatar et al., 2019; Correia et al., 2019). Some other works (Kitaev et al., 2020; Roy et al., 2021) use clustering techniques to partition elements in the sequence and perform intra-cluster attention. Besides, hierarchical structure (Zhu and Soricut, 2021; Ren et al., 2021) is incorporated into the attention mechanism to reduce computational complexity. Long documents can also be split into segments and processed in a recurrent manner. Block-Recurrent Transformer (Hutchins et al., 2022) use a set of hidden representations to store past information and use cross-attention to interact with them, while Memory Recurrent Transformer (Bulatov et al., 2022) utilizes dedicated memory tokens to do so.\nTransformer-XL (Dai et al., 2019) achieves this segment-level recurrence by the cache mechanism, which stores the past hidden states and uses them as an extended context when the model processes the next input sequence. Compressive Transformer (Rae et al., 2019) extends the Transformer-XL with a secondary cache which compresses the old hidden states. On the other hand, Memorizing Transformer (Wu et al., 2022) expands the cache to an enormous size, and uses an approximate k-nearestneighbor (kNN) search to retrieve key-value pairs from the cache efficiently. \u221e-former (Martins et al., 2022) utilizes a continuous-space attention mechanism and represents the input sequence as a continuous signal, so that the long-term memory can be represented with lower precision. ExpireSpan (Sukhbaatar et al., 2021) computes a span for each hidden state that determines how long it should stay in memory.\nIn this paper, we make use of eye-tracking data, which has been incorporated into many NLP frameworks (Mathias et al., 2020). Eye-tracking data provides advantages to NLP models in terms of both their performance and interpretability. Research has demonstrated that incorporating eyetracking features can enhance prediction accuracy in tasks like named entity recognition (Hollenstein and Zhang, 2019; Tokunaga et al., 2017), part-ofspeech tagging (Barrett et al., 2018), sentiment analysis (Mishra et al., 2017) and general NLP benchmark tasks (Khurana et al., 2023). In the meantime, eye-tracking data is utilized to explore the correlation between human behavior and neural attention (Hahn and Keller, 2023; Sood et al., 2020; Brandl and Hollenstein, 2022).\nWe also use a pruning technique based on stochastic masks (Louizos et al., 2017), which is mainly used in neural network pruning (Louizos et al., 2017) and interpretation (Voita et al., 2019; De Cao et al., 2020). Different from these approaches, we aim to improve performance by using it to select important parts of previous context. Even though the technique is used for different purposes in different scenarios, it actually does the same thing, i.e., learns what is less important."
+        },
+        {
+            "heading": "3 Model",
+            "text": "In this paper, we use decoder-only transformers (Vaswani et al., 2017) to perform auto-regressive LM tasks. Long documents are split into segments of 512 tokens. The segments are not shuffled and fed into the model sequentially. In other words, the language model processes the document step by step, one segment at a time, as is done in (Dai et al., 2019; Wu et al., 2022).\nAt each step, Transformer-XL (Dai et al., 2019) caches and fixes (stops gradient) the hidden state sequence computed for the current segment. In the next step, it is reused to extend the context. Although in (Dai et al., 2019), the hidden states are cached, we follow the practice in (Wu et al., 2022) and save the key-value pairs into the cache for the purpose of efficiency. When doing attention, the keys and values are prepended to the current keys and values. When the XL cache size Cxl is greater than the input segment length Cinp, the XL cache is a first-in-first-out (FIFO) queue.\nWhen using cached representations, it is necessary to use relative position embeddings. We use T5 relative position embeddings (Raffel et al., 2020), which adds different biases to different relative offsets when doing attention.\nWhen switching to a new document, the cache may contain some content from the old document, we apply document masks to solve this problem. Concretely, for the cached key-value pairs, we keep track of their document IDs. Each token can only attend to other tokens with the same document ID.\nThese are the common settings used for all our experiments involving the cache, including baselines and proposed models."
+        },
+        {
+            "heading": "3.1 Selective Cache",
+            "text": "We aim to make better use of the cache by selecting those key-value pairs which are more beneficial than others. The selective cache is a FIFO queue\nand is of a fixed size like XL cache. At each step, the key-value pairs that satisfy a certain criterion are selected and saved into the selective cache. In the meantime, the same number of old key-value pairs are discarded. Like XL cache, the selective cache is also non-differentiable. In this paper, all the models that use selective cache also use XL cache in the meantime. The selective cache serves as a secondary cache and selects tokens discarded by XL cache, like the compressive cache (Rae et al., 2019). So the model contains a detailed recent context, as well as a distilled context that covers a wider historical period. The cached keys and values from the selective cache are concatenated with those from XL cache and those from the current input. See illustration in Figure 1.\nWe also introduce a set of trainable bias parameters, the selective cache bias. They are used in the same manner as T5 position embeddings. Recall that T5 position embeddings are scalars added to the dot product of queries and keys. When the query attends to the keys in selective cache, the position embedding that corresponds to the maximum distance is used. Meanwhile, the selective cache bias (also a scalar) is added to the dot product as well. For each layer, there are m bias parameters, where m is the number of heads. So the same bias is used for all attention scores of one head."
+        },
+        {
+            "heading": "3.2 Using Eye-fixation Duration as Criterion",
+            "text": "A crucial component of the selective cache is the selection criterion. One plausible choice is human fixation data. While eye-tracking data contains various information about human eye movements during reading, we simply utilize the total reading time (TRT) of each word, which is the sum of all fixation duration on a single word. If an input token is associated with a TRT longer than a cer-\ntain threshold, its corresponding key-value pairs are selected into the cache in all attention layers. The threshold is a hyperparameter that needs to be tuned. Because human reading is optimized for efficiency and accuracy, they only fixate words to the extent necessary for task success (Hahn and Keller, 2023). Long fixated words are usually important and are likely to contain new information which cannot be inferred from the context.\nHowever, there is no available eye-tracking data for the LM datasets used in this paper. We choose to use a simple long short-term memory (LSTM) network to predict the fixation duration for the text in LM datasets. It is trained on the available eyetracking corpora. After training it is able to predict the TRT within an acceptable error range (see Appendix B). The fixation prediction model only processes the text once at the preprocessing stage. The predicted fixation duration is used repeatedly for many epochs when training the language model."
+        },
+        {
+            "heading": "3.3 Using Selector Network as Criterion",
+            "text": "We introduce an automatic selector, which gives free rein to the model and let it decide which tokens should be cached. It is a small neural network integrated into the self-attention layer. The selection task is converted into a task similar to network pruning. The language model is provided with some previous key-value pairs when doing the LM task, the selector is encouraged to prune some of the key-value pairs. Its architecture is described in Appendix E.\nBinary Masks For a sequence of past hidden states [\u20d7h1, h\u20d72, \u00b7 \u00b7 \u00b7 , h\u20d7n] (the time index is omitted here for simplicity), the selector network takes the hidden states as input and outputs binary masks for each of them [z1, z2, \u00b7 \u00b7 \u00b7 , zn]. The masks are used in self-attention as follows:\nsij = q\u20d7i \u00b7 k\u20d7j + ln zj (1)\nwhere s, q\u20d7, k\u20d7 are the attention score before softmax, the query, and the key respectively. So when zj is zero, the corresponding key-value pair is masked out, when zj is one, the attention score is not affected. Note that here the position embeddings, document masks, and selective cache bias are all omitted for simplicity.\nIn the meantime, L0 norm is applied to the pre-\ndicted masks.\n||z||0 = n\u2211\nj=1\n1[R\u0338=0](zj) (2)\nwhere ||z||0 denotes L0 norm, 1(\u00b7) stands for indicator function. L0 norm penalizes the number of non-zero values. It imposes a constant penalty everywhere except for zj = 0. It encourages the selector to completely switch off some key-value pairs.\nAs we can see, L0 norm is not a differentiable function and has zero derivative almost everywhere. Meanwhile, the outputs zj are not produced from a continuous function either.\nStochastic Masks The solution to these two problems is to use the stochastic masks drawn from some distributions controlled by the selector, and the L0 norm becomes the expected number of nonzero masks. More specifically, we use Hard Concrete distribution (Louizos et al., 2017), which is a mixture of discrete and continuous distributions, ranging in the closed interval [0, 1]. It gives nonzero probability to the two endpoints 0, 1, while between 0 and 1 the probability density function is continuous, as shown in Figure 2. The Hard Concrete distribution contains a few parameters, one of which is log\u03b1. It controls the probability mass skewing towards 0 or 1. See Appendix C for more information.\nWith the Hard Concrete distribution, the selector is trained as follows: On the one hand, the network outputs the parameter log\u03b1j for each input hidden state h\u20d7j . Then one sample zj is drawn from each distribution and is used to mask attention scores as Equation 1. With the reparameterization trick (Kingma and Welling, 2013), the gradient can backpropagate through the sampling process\nto the selector network. The training objective of language modeling would encourage the selector to output larger log\u03b1, so that extra information can be obtained to help predict the next token. On the other hand, L0 norm is treated in expectation, which becomes a differentiable function of log\u03b1. It encourages the selector to output smaller log\u03b1.\nWith the influence of both aspects, important key-value pairs are likely to be kept. When the selector is used as the selection criterion, the log\u03b1j is compared with threshold 0. If log\u03b1j > 0, k\u20d7j and v\u20d7j are put into the selective cache.\nWhen using selector, the training loss becomes:\nL = LLM + \u03bbL0 (3)\nwhere L is the total loss, LLM is the language modeling loss. L0 represents the L0 norm. \u03bb is the coefficient. A key problem is to determine \u03bb. We design an adaptive \u03bb as follows:\n\u03bbt = r 2 t \u00b7\u03bb\u2032 rt = rt\u22121\u22170.9+ #selected #total \u22170.1 (4)\nwhere rt is a running average of the selection ratio, \u03bbt is the coefficient used at step t. \u03bb\u2032 is a hyperparameter. In this way, if the selection ratio grows too big, the \u201csuppression force\" also increases.\nSimultaneously Selecting and Training The selective cache stores context of multiple previous steps, one way to train the selector is to backpropagate gradient through all relevant steps. We avoid this by separating the selecting and training process. We sample a random snippet of length Csnp = 128 from previous context to train the selector, i.e., perform the pruning task, while it also performs selection as a non-differentiable process. In other words, during training, some additional keys and values are prepended to the concatenation of selective cache, XL cache, and current keys and values. We control how distant the snippet is through a geometric distribution parameterized by a hyperparameter l. It should be determined based on how long the dependency we intend to capture. See more details in Appendix D."
+        },
+        {
+            "heading": "3.4 Removal of Similar Instances",
+            "text": "In preliminary experiments of training the selector, we find that some tokens are repeatedly selected. Because the selector network makes decisions on token-level, it does not have the overall information, e.g., which kind of information is already selected.\nFor this reason, it is possible that it selects very similar representations. To address this issue, we calculate the distance matrix of the selected values in each step. Values with a distance smaller than a certain threshold are considered in the same \u201ccluster\". Only one key-value pair in each \u201ccluster\" is finally selected. See more details in Appendix F. In this process, we only calculate the distance matrix once among the selected values. This process can be regarded as a secondary selection. In the following part of the paper, we refer to this technique as removal of similar instances (RSI)."
+        },
+        {
+            "heading": "3.5 Replacement-Based Selective Cache",
+            "text": "When training the selector network, the L0 penalty implies the capacity limit of the selective cache. Because the cache size is fixed, storing some new key-value pairs means discarding some old ones. Inspired by this process, we further propose a way to directly model this trade-off. Concretely, the key-value pairs are grouped two by two, a neural network compares the two key-value pairs and masks out either of them.\nSuppose that the representations at position j and j\u2032 are compared. The approach calculates stochastic masks as follows.\nlog\u03b1jj\u2032 = frpl(\u20d7hj ,\u2206tj)\u2212 frpl(\u20d7hj\u2032 ,\u2206tj\u2032) (5) zjj\u2032 \u223c HardConcrete(log\u03b1jj\u2032 , \u03b2, \u03b3, \u03b6) (6)\nwhere frpl(\u00b7) denotes the neural network trained (we refer to it as the replacer network, see its architecture in Appendix E), \u2206tj is the time interval between the current step and the previous step when processing position j. HardConcrete represents the Hard Concrete distribution, \u03b2, \u03b3, \u03b6 are constant parameters. Then the sampled random mask zjj\u2032 is used as follows.\nsij = q\u20d7i \u00b7 k\u20d7j + ln zjj\u2032 (7) sij\u2032 = q\u20d7i \u00b7 k\u20d7j\u2032 + ln ( 1\u2212 zjj\u2032 ) (8)\nTherefore, ideally, only one of the two can be attended. Intuitively, if the key k\u20d7j and value v\u20d7j provide more important information for the current step, the replacer network should output a higher \u201cscore\" frpl(\u20d7hj ,\u2206tj) which results in high log\u03b1jj\u2032 . The cost, on the other hand, is masking out k\u20d7j\u2032 and v\u20d7j\u2032 .\nHowever, this one-to-one relationship deviates from the actual situation. Adding one into the cache does not necessarily result in removing the other,\nthe removed key-value pair could be any one in the cache. Nevertheless, we still opt to use this relationship for its simplicity.\nWhen training the replacer, there is no need for L0 penalty. We again use a random snippet of previous context for training. A random set of keyvalue pairs in selective cache is chosen to do the one-to-one comparison with those in the snippet. The replacer network outputs masks, and each of the masks and its opposite mask are applied to one in the snippet and one in the selective cache respectively.\nWhen updating, the replacement-based selective cache is not a first-in-first-out queue anymore. The input sequence is compared with the selective cache element-wise. The key-value pair with higher \u201cscore\" frpl(\u20d7hj ,\u2206tj) is retained. Importantly, when switching to a new document, the key-value pair from the new document is always preserved no matter what the replacer outputs."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": "We evaluate the models described above on three datasets using two different model sizes. The experiments are all language modeling and the performance is evaluated by perplexity per token. Besides, we also do various qualitative and quantitative analyses on the models. From these analyses, we provide strong evidence of the effectiveness of the proposed models."
+        },
+        {
+            "heading": "4.1 Data",
+            "text": "We introduce the language modeling datasets used in the experiments. The eye-tracking corpora are described in Appendix A\nPG-19 PG-19 language modeling benchmark is a LM dataset introduced by Rae et al. (2019). It includes a collection of English books published before 1919 from the Project Gutenberg books library. Each document in the PG-19 is a full-length book. However, due to limited computational resources, we only use 1% of the training set, which is 286 books, around 18M tokens. The documents are randomly selected and then fixed. So the same set of documents is used for all models. On the other hand, we use full validation and test set, which contain 3M and 7M tokens respectively. Even though only 1% is used, the training data still has a reasonable size and is enough for fine-tuning.\nWikiText-2 The WikiText language modeling dataset (Merity et al., 2016) consists of articles from Wikipedia. It provides two sizes, WikiText-2 and WikiText-103. They share the same validation and test set, while the training set of WikiText-2 is a truncated version of that of WikiText-103.\nCMU-DoG CMU Document Grounded Conversations Dataset (Zhou et al., 2018) provides conversation data about the contents of specified documents. Following (Martins et al., 2022), we also use it to test long-range modeling. The dataset contains conversations about movies, the Wikipedia article about the movie is also provided. In this paper, to test the models\u2019 ability on modeling long-dependency, we concatenate all conversations to their corresponding Wikipedia articles. The resulting document takes the following form: (WikiArticle,Converstation 1,\u00b7\u00b7\u00b7 ,Converstation n). Note that the Wikipedia article accounts for only a small portion (1.3%) of a concatenated document on average."
+        },
+        {
+            "heading": "4.2 Experimental Methods",
+            "text": "Due to limited computational resources, we do not train the language models from scratch. We finetune a pretrained language model. We extract the decoder of T5v1.1-LM-adapted 2, and remove the encoder-decoder attention layers from it. It is a version of T5 (Raffel et al., 2020) adapted to LM objective during pretraining. We choose it because it not only uses relative position embedding which is necessary for our purpose, but also is available in a wide range of sizes. Its Small and Base sizes suit our budget. Even though taking only a part of it seems crude, we find it works well on LM tasks in general, even before our fine-tuning.\nWe fine-tune two sizes of T5v1.1-LM-adapted, namely Small and Base. We simply refer to them as T5 Small and T5 Base. The former has 8 layers and 6 heads, and the latter has 12 layers and 12 heads.\nThe input size is always Cinp = 512 tokens. There are two groups of experiments with total cache size of 512 and 640 respectively. In the first group one baseline is pure XL cache of size Cxl = 512, in other words, same as TransformerXL (Dai et al., 2019). The other baseline is Compressive Transformer (Rae et al., 2019). We imple-\n2https://github.com/google-research/text-to-text-transfertransformer/blob/main/released_checkpoints.md\nment their compressive cache in our experimental framework and use the best configuration reported in their paper. For each model, we choose the best cache size configuration between (Cxl, C2nd) = (256, 256) or (128, 384), where C2nd is the size of the secondary cache. In other words, given the total size limit, we treat the cache sizes as hyperparameters and search for the best one. In the second group the total cache size is 640 tokens. Because our replacement-based selective cache needs to be greater or equal to the input size, i.e., >= 512, and meanwhile, XL cache plays an important role so it is necessary to have a minimum size of it. Thus we use (Cxl, C2nd) = (128, 512). For compressive cache, we choose the best configuration between (Cxl, C2nd) = (128, 512) or (256, 384), or (384, 256). See more details in Appendix G."
+        },
+        {
+            "heading": "4.3 Results",
+            "text": "Table 1 shows the results on three datasets (see Appendix H for statistical significance). We can clearly see that using selective cache achieves the best results in all scenarios. Partly replacing XL cache with selective cache results in considerable gains across datasets and model sizes.\nWe can see that the fixation-based selection surpasses XL cache, especially on PG-19 dataset, which demonstrates the validity of using eye fixation. It achieves similar performance as compressive cache. On the other hand, using the selector network brings about larger improvement, because it allows the model to select what it needs. Note that this is not because of larger selective\ncache size, the configuration of cache size shown in the table is the optimal configuration. Moreover, replacement-based selective cache produces even larger improvements. In general, the most substantial performance gains are on the concatenated CMU-DoG dataset. While using XL cache and compressive cache only slightly reduces the perplexity, using selective cache reduces the perplexity by substantial margins. Regarding RSI, it slightly improves the performance in general. It appears to be more effective when the selector is used. It is probably because the key-value pairs selected are more homogeneous in that case.\nIn addition, the compressive cache shows smaller improvements on PG-19 compared to (Rae et al., 2019), we think it is because of different experimental settings. For example, we fine-tune pretrained models while they train from scratch; we keep the total cache size the same when comparing models; we use smaller models and datasets."
+        },
+        {
+            "heading": "4.4 Analysis",
+            "text": "Tokens selected by selector Figure 3 show the input tokens corresponding to the selected key-value pairs (See Appendix K.1 and K.3 for more examples). It\u2019s obvious that the selector has a strong tendency to select named entities. Other than capitalized nouns and some rare tokens, it also selects some normal nouns that are keywords of the text, e.g., \u201cexploration\". Note that there is no explicit guidance for this behavior during training. It\u2019s interesting that this pattern is automatically learned with a simple LM objective and a L0 penalty. One\npossibility is that keeping the named entities in the cache largely facilitates the prediction when the target tokens are themselves. More importantly, it seems that the selector tends to select tokens starting from the second token of a noun phrase. For example, \u201cDoctor <Newberry>\" (using \u201c<>\" to represent the selection), \u201cGrand <Canyon>\" etc. This is a reasonable behavior because when the first token of these noun phrases occurs as the input token, the target is very likely to be the second token. In other words, given that in real data distribution p(2nd token|1st token) is much larger than p(2nd token), so successfully modeling this conditional probability can reduce perplexity significantly. But it is hard without seeing any precedents. Keeping these tokens in cache largely helps to model this kind of conditional probability. From these examples, we can see that the selector tries to make the best use of the cache.\nEffect of RSI In the examples shown, RSI seems to work well, at least from the observation of input tokens. The selector repeatedly selects \u201cCanyon\". By RSI, only the last one is kept (bottom right corner), and all other \u201cCanyon\" tokens are removed. To some extent, it avoids storing similar information in the cache repeatedly, thus saving space for other kinds of representations that carry more diversified information.\nEffect on token-level loss We also examine the selective cache from the output side, i.e., the tokenlevel cross-entropy loss. We find that the model makes worse predictions on named entities after masking out part of the selective cache. This, to some extent, explains where the overall perplexity improvements come from. See Appendix K.2.\nCombining the findings from both sides, we find the model mainly uses selective cache to store rare tokens or names of characters and places. Impor-\ntantly, this retrieval-based working pattern is in line with prior works (Sun et al., 2021; Wu et al., 2022; Hutchins et al., 2022). Therefore, this pattern is not because of the design of selective cache, but rather a general tendency.\nReplacement process As for replacement-based selective cache, we calculate the replacement ratio over time. As we expect, we find that the replacement ratio is very high at the beginning of a document, then it quickly decreases and finally stabilizes around a certain level. This is because the density of important key-value pairs in the cache increases over time. Interestingly, on the concatenated CUM-DoG dataset, the replacement ratio stabilizes around zero, which means it preserves the beginning of the document for many steps. Importantly, we observe the same tendency as when using the selector. Most of the newly added tokens in each step belong to named entities. See Appendix L.\nFixation-based selection The fixation duration is predicted by a separate LSTM network. We examine the selected tokens and find that the fixation duration is reasonable in general (see Appendix M). It does not simply stick with a single kind of token such as named entities or rare words. It usually focuses on the core actions in the sentence and the subject and the object of the action, as well as some relevant adjectives and dates. Therefore, it largely reflects human reading behavior (Tokunaga et al., 2017).\nRegarding the reason why fixation-based selection is good but not good enough, we think it mainly lies in the discrepancy between the LM task and the task that humans are doing. On the one hand, humans are performing a task of language comprehension when reading. On the other hand, a lookup table for noun phrases could be more advan-\ntageous for prediction when they appear multiple times."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "In this work, we propose the selective cache that stores selected key-value pairs from previous context for language models, which significantly increases the length of the context that a language model can attend to. Moreover, we propose three different ways to select important key-value pairs, namely using fixation duration, the selector network and the replacer network. The experimental results from different datasets and model sizes demonstrate the effectiveness of the proposed approaches. Without increasing total cache size, the selective cache outperforms XL cache by considerable margins. Moreover, further analyses reveal important characteristics of the selective cache, such as the neural network-based selection tends to select named entities and rare tokens, as shown by the increased interpretability of our models.\nLimitations\nDue to limited computational resources, we evaluate the proposed selective cache by fine-tuning pretrained models on small datasets. In contrast, most of other relevant works train models from scratch on very large language modeling datasets. It is possible that the selective cache performs better or worse in different settings. We cannot directly compare our results with other related work because of the same reason. Moreover, among all the datasets commonly used to evaluate long-range models, we only use PG-19. Other datasets include character-level LM datasets text8 and enwik8 (Mahoney, 2011), source code datasets GitHub (Wu et al., 2022). We have to train from scratch if we evaluate models on those datasets. Finally, while processing long sequences is an ability needed in many applications, we only apply the selective cache on language modeling tasks. The effect of selective cache on other modalities, such as speech and time series is also worth investigating. We hope that future work will continue to evaluate our models on a wider range of datasets and experimental settings."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "We acknowledge the computing resources provided at the UCloud platform at SDU eScience Cen-\nter. We thank the anonymous reviewers for their thoughtful comments on the paper."
+        },
+        {
+            "heading": "A Eye-tracking Corpora",
+            "text": "To train a fixation prediction model, we gather eye-tracking data from four eye-tracking Corpora. Namely, Dundee (Kennedy et al., 2003), GECO (Cop et al., 2017), ZuCo1 (Hollenstein et al., 2018), and ZuCo2 (Hollenstein et al., 2020). We only take the eye-tracking data during natural reading of English text. The collected data comprises multiple domains such as news, novels, movie reviews, and Wikipedia articles. All data is recorded by professional researchers and equipment, with a minimum of 10 subjects reading the same text. There are 1.6 million tokens in total (including repeated text read by different subjects). The total reading time (TRT) of each word is normalized across corpora and averaged over subjects, and then evenly mapped to {0, 1, \u00b7 \u00b7 \u00b7 , 11}."
+        },
+        {
+            "heading": "B Fixation Prediction Model",
+            "text": "We train a fixation prediction model, which uses the same tokenizer and embedding layer as the main transformer language model (the embedding layer is frozen for the sake of generalization on unseen tokens). The model predicts fixation duration on token-level. The original word-level fixation duration is converted to token-level in order to train the model. The conversion is slightly complex: TRT of a word is first assigned to each character of it, then a small number is assigned to the last character of the word (mainly to give small values to punctuation). After tokenizing the word we obtain the span of each subword, and take the maximum value in the span to get the final token-level fixation data. We do it in this way because the tokenizer we are using only provides character-level span information. This is not a perfect solution but it works fine in most cases.\nThe fixation prediction model consists of an embedding layer (T5 embedding), a two-layer bidirectional LSTM, and a one-hidden-layer MLP on top of it. The best model achieves an MSE of 4.02 on a randomly held-out test set (25% of all data)."
+        },
+        {
+            "heading": "C Hard Concrete Distribution",
+            "text": "The Hard Concrete distribution is based on Binary Concrete distribution (Maddison et al., 2016; Jang et al., 2016), which is defined on the interval (0, 1) and can be regarded as a relaxed version of Bernoulli distribution (see Figure 2). The Binary Concrete distribution is parameterized by log\u03b1 and\n\u03b2. The location parameter log\u03b1 controls the probability mass skewing towards 0 or 1, while \u03b2 controls how sharp the probability density is, or the degree of approximation to a real Bernoulli distribution. The following function can be used to draw samples from this distribution:\ns = Sigmoid ((log u\u2212 log (1\u2212 u) + log\u03b1)/\u03b2) (9) where u is drawn from a uniform distribution u \u223c U(0, 1), s is the sample drawn from Binary Concrete distribution. To obtain the Hard Concrete distribution, the Binary Concrete distribution is first stretched to (\u03b3, \u03b6) interval, where \u03b3 < 0 and \u03b6 > 1. It is then rectified to [0, 1].\ns\u0304 = s(\u03b6 \u2212 \u03b3) + \u03b3 (10)\nz = min(1,max(0, s\u0304)) (11)\nwhere z is the sample drawn from the Hard Concrete distribution. In the second step, the probability mass between (\u03b3, 0) is \"folded\" to the 0 point, and the probability mass between (1, \u03b6) is also \"folded\" to the point at 1. The stretching and rectifying operations result in non-zero probability at the two endpoints, as well as a continuous curve between them. Figure 2 shows how parameter log\u03b1 affects the distribution. For more information about the probability density function and cumulative density function of Hard Concrete distribution, see Appendix B of (Louizos et al., 2017).\nWhen using stochastic masks, the L0 norm is treated in expectation. Then Equation 2 becomes:\nE[||z||0] = n\u2211\nj=1\nE[1[R \u0338=0](zj)] (12)\n= n\u2211\nj=1\np(zj > 0) (13)\n= n\u2211\nj=1\n(1\u2212Qs\u0304j (0)) (14)\nwhere Qs\u0304j (\u00b7) is the cumulative density function of s\u0304, which is the stretched distribution introduced in Equation 10. The last term is a function of its parameters. n\u2211 j=1 (1\u2212Qs\u0304j (0)) = n\u2211 j=1 Sigmoid(log\u03b1j\u2212\u03b2 log \u2212\u03b3 \u03b6 )\n(15)\nIn this paper, we follow the recommendation in (Louizos et al., 2017) and use \u03b2 = 2/3, \u03b3 = \u22120.1, \u03b6 = 1.1 when training the model with the selector network. Thus the selector only predicts log\u03b1."
+        },
+        {
+            "heading": "D Training Selector over Previous Snippets",
+            "text": "To train the selector, the model maintains a list of previous snippets. Two hyperparameters l and Csnp control the length of the list (the number of snippets stored) and the size of snippets respectively. Note that in this paper, Csnp = 128. At the end of the current step, a consecutive sub-sequence of hidden states and key-value pairs are randomly selected from all current hidden states [\u20d7h1, \u00b7 \u00b7 \u00b7 h\u20d7n] and all current keys and values [\u20d7k1, \u00b7 \u00b7 \u00b7 k\u20d7n], [v\u20d71, \u00b7 \u00b7 \u00b7 v\u20d7n]. They do not receive gradient as well. If the list is not full, the selected snippet is then appended to the list, otherwise a random old snippet is replaced by it. At the beginning of the next step, one random snippet in the list is selected. The stored hidden states are fed into the selector, and the corresponding keys and values are prepended to the main key and value matrix. The selector produces masks that control the attention to the snippet. Therefore, the selector is trained on a snippet of the previous context, and the time interval between that context and the current input is random. The probability of selecting a snippet from the kth previous step is (1\u2212 1l ) k\u22121 1 l , which is a geometric distribution. Thus l should be set according to the average length of documents.\nOn the other hand, at the end of each step, the selector selects key-value pairs. But this process does not update the selector. The self-attention layer then learns to attend to whatever is selected. During testing, since the selector does not need training, the list of snippets is always empty, and there are no snippets prepended to the current keys and values."
+        },
+        {
+            "heading": "E Architecture of Selector and Replacer Network",
+            "text": "The selector network consists of one fullyconnected layer, one ReLU activation function (Agarap, 2018), and one fully-connected layer sequentially. The input size, hidden size, and output size are H,H/4, 1 respectively, where H is the dimensionality of hidden states of the language model. For each self-attention layer, there is a sepa-\nrate selector network, so that the selection criterion is adapted to the need of each layer.\nWe use the same architecture for the replacer network, with the exception that we add time information. The time interval \u2206t is first converted into a vector and then concatenated with the hidden states. In mathematical form, t\u20d7j = \u2206t \u00b7 [ 12dt\u22121 \u00b7 \u00b7 \u00b7 1 20 ], where dt is the dimensionality for time embedding. In this paper, we use dt = 8. So the input size, hidden size, and output size of replacer is H + 8, H/4, 1, where H is the dimensionality of the hidden states."
+        },
+        {
+            "heading": "F Detailed Description of RSI",
+            "text": "In the case of selector network, suppose that the output log\u03b1 for [\u20d7h1, \u00b7 \u00b7 \u00b7 , h\u20d7n] are greater than 0, then their corresponding key-value pairs are selected, i.e., [\u20d7k1,r, \u00b7 \u00b7 \u00b7 , k\u20d7n,r], [v\u20d71,r, \u00b7 \u00b7 \u00b7 , v\u20d7n,r],\u2200r \u2208 {1, \u00b7 \u00b7 \u00b7 ,m}, where r is the index of the head, m is the number of heads. Then a distance matrix D \u2208 Rn\u00d7n is calculated. Each entry Dij is the Euclidean distance between the concatenated values, i.e., Concate(v\u20d7i,1, \u00b7 \u00b7 \u00b7 , v\u20d7i,m) and Concate(v\u20d7j,1, \u00b7 \u00b7 \u00b7 , v\u20d7j,m). The reason for choosing values instead of hidden states is that the implementation is simpler. Then the distance matrix is compared with a threshold and converted into a binary matrix D\u0304, whose entries are equal to 1 for distances less than the threshold, and 0 otherwise. Therefore, each row or column represents a collection of similar representations. Then its elements along and above the diagonal are set to be 0, resulting in a strictly lower triangular matrix D\u0302. Finally, the sum of each column is calculated, if \u2211n\ni=1 D\u0302ij = 0, then k\u20d7j,r, v\u20d7j,r are remained. If\u2211n i=1 D\u0302ij > 0, the corresponding key-value pairs are discarded. The additional computation involved in these operations is mainly on the distance calculation. Since this operation is implemented with high-performance code by most popular deep learning frameworks, and the distance is only calculated for selected representations, it does not add much extra computation.\nFigure 4 shows the case where v\u20d71, v\u20d73 are similar and v\u20d72, v\u20d74, v\u20d75 are similar.\nAgain, like the coefficient for L0 norm, we find a constant threshold is not appropriate. The overall magnitude of distance varies across different layers. Therefore, we use a threshold that is determined by the average distance. Specifically, threshold = \u03b7 1 n2 \u2211 ij Dij , where \u03b7 is a hyperparameter. Note\nthat in practice, \u03b7 is usually not a small value, so the vectors in the same cluster only bear a limited resemblance.\nG Implementation Details\nBatching and Processing Figure 5 shows how the model is trained with batches of documents. In all of our experiments, the documents are shuffled and then packed in this way. The models process a batch of segments at a time, each segment comes from a different document. The segments are always aligned, i.e., the segments at the same position in the batch dimension are consecutive. Therefore, there are separate caches for each position in the batch dimension. Because the selected number of key-value pairs is different for each cache, we iterate over the batch dimension to update each cache respectively. The cache is emptied at the beginning of each epoch, as well as the beginning and the end of the evaluation. When the model encounters a new document, e.g., from document A to document B in Figure 5, the cache is not emptied. It is unnecessary to do so because the document masks (Section 3) can prevent the model from attending the old document.\nDuring training and validation, the model stops at the shortest row in Figure 5, i.e., at the end of document I in this example, for the sake of efficiency. During testing, the model finishes all the documents, i.e., it stops at the end of document D. The documents are packed in a way such that the rows in Figure 5 have lengths that are as similar to one another as possible. This is important since some documents (especially in PG-19) are\nextremely long, and uneven lengths cause a lot of waste.\nImplementation Details T5 Small has 8 layers, 6 heads of dimension of 64 in each layer, an embedding size of 512, an FFN hidden layer of size 1024. T5 Base has 12 layers, 12 heads of dimension of 64 in each layer, an embedding size of 768, an FFN hidden layer of size 2048. The two models use GEGLU activation (Shazeer, 2020) in FFN layer. The two models use a sentence-piece (Kudo and Richardson, 2018) tokenizer with a vocabulary size of 32K.\nIn preliminary experiments, we fine-tune the T5 Small with XL cache and T5 Base with XL cache on truncated PG-19 dataset using learning rate of {1 \u00b7 10\u22123, 1 \u00b7 10\u22124, 5 \u00b7 10\u22125, 2 \u00b7 10\u22125}, as well as a constant learning rate and a linearly decaying learning rate. We find that a constant learning rate of 1 \u00b7 10\u22124 works best for both models, when trained for 100K steps. Therefore, we use it for all the experiments presented in this paper. In the following part of this section, unless otherwise specified, the same setting applies to all models. We use AdamW (Loshchilov and Hutter, 2018) optimizer, with weight decay of 0.01. We also use fp16 16-bit mixed precision training. We run all experiments on Tesla T4 GPUs. The models are implemented in Pytorch (Paszke et al., 2019) and based on Huggingface Transformer (Wolf et al., 2020).\nFor experiments done on the truncated PG-19 dataset, we train the models for 100K steps (59.28 epochs). After 50K steps, the models are evaluated on the validation set every 10K steps, and the best checkpoints are then tested on the test set when the training is finished. We use batch size of 32 for models using T5 Small, and use batch size of 16 and gradient accumulation of 2 steps for models using T5 Base. Note that we train the models on 1% of training data from PG-19 for about 60\nepochs instead of training 60% of data for 1 epoch. The reason is that we would like to compare the performance when the models reach convergence. For experiments done on WikiText2 dataset, we train all models that use T5 Small for 50 epochs, with batch size of 32. We train models that use T5 base for 40 epochs (these models converge faster) with batch size of 16 and gradient accumulation of 2 steps. The models are evaluated on validation set every epoch. The best checkpoints are then tested on the test set. For experiments done on the concatenated CMU-DoG dataset, we train all models for 30 epochs, because we find the models start to overfit after 15-20 epochs. we use batch size of 8 and accumulate gradient for 2 steps. We use the same evaluation process as WikiText2.\nFor compressive cache, we implement the best configuration reported in (Rae et al., 2019), namely, 1D convolution as the compression function trained with attention-reconstruction loss. We follow the compression rate reported in their experiments on PG-19 and use the compression rate of 2. The other experimental settings are the same as other models in this paper, e.g., fine-tuning instead of training from scratch. Recall that we keep track of document IDs to use document masks, the document ID of the first hidden state in the sliding window of convolution operation is assigned as the document ID of the compressed hidden state.\nFor fixation-based selective cache, we transform the original fixation duration to values ranging from 0 to 11, thus the prediction is also mostly in this range (See preprocessing of eye-tracking data in Appendix A). we then experiment with thresholds of 8, 9, 10 and find 9 works best, which means there are roughly 25% of key-value pairs are selected in each step. Given that Cinp = 512, Cslc = 256, the selective cache only covers two previous steps.\nFor selector-based selective cache, when training the selector, the size of the context snippet\nCsnp = 128 throughout all experiments, which is removed during evaluation. we haven\u2019t tried other values for Csnp because we assume it does not affect the performance as long as it is not too small. Besides the cache size, another important hyperparameter is the length of the list that stores previous snippets l. Recall that in Section D, the probability of selecting a snippet from the kth previous step is a geometric distribution with parameter l. In general, It is better to set larger l for modeling longer dependency. We search the best hyperparameter l from choices of {3, 5, 7} for PG-19 and WikiText2 datasets, and from {6, 9, 12} for CMU-DoG dataset, using a model fine-tuned from T5 small. For PG-19, the best l = 5; For WikiText2, the best l = 3; For CMU-DoG, the best l = 9, and in this dataset the performance is almost the same with different choices. Another hyperparamter is \u03bb\u2032 in Equation 4. In preliminary experiments, we find \u03bb\u2032 = 0.01 works the best in general among {0.03, 0.01, 0.003} and use it for all experiments involving L0 norm. As for the \u03b7 that is used to control the threshold for RSI (See Section 3.4), we simply set \u03b7 = 0.5 in all experiments.\nAs for replacement-based selective cache, we adopt the same hyperparameters when possible. Concretely, I use Csnp = 128, Cslc = 512, Cxl = 128, Cinp = 512. We also use l = 5 for PG-19, l = 3 for WikiText2, l = 9 for CMU-DoG."
+        },
+        {
+            "heading": "H Statistical Significance",
+            "text": "We measure the statistical significance of the results. We did 3 runs with different random seeds for 3 configurations, namely T5 Small + XL of size 512, T5 Small + XL, CPR of size (256,256), T5 Small + XL, SLC (slc, RSI) of size (128, 384). We measure the standard deviation of the perplexity as shown in Table 2. Note that we train models on PG-19 dataset for only 10K steps, while we use the same experimental setting on other datasets. We can see the standard deviation is much smaller than the gap between different models."
+        },
+        {
+            "heading": "I Training and Inference Cost",
+            "text": "We measure the number of parameters, speed and memory usage of different configurations, as shown in Table 3. For all these configurations, we use the same hyperparameters (batch size, model size, etc.) and experiment on the same device (2 Tesla T4) to ensure fair comparisons. We can see the training and inference cost of the proposed\nmethods are comparable to the compressive cache, and higher than vanilla and XL cache. While these numbers will change on different hardware, we believe the relative proportion will be largely consistent."
+        },
+        {
+            "heading": "J Comparison to Simple Baselines",
+            "text": "Other than fixation duration and neural networks, we also experiment with two less-sophisticated baselines. (1) The first one (\u201cfreq\") selects rare tokens. We calculate the token frequency on the training set, and select those tokens whose frequency is lower than the threshold into the selective cache. We determine the threshold so that, on average, around a quarter of tokens in each step are selected (same as when using fixation duration). (2) The second one (\u201centropy\") uses information entropy. When doing auto-regressive LM, the language model estimates the distribution of the next token P(Xi|x<i), the entropy of the distribution is H(Xi) = \u2212 \u2211 xi\u2208V P(xi|x<i) log P(xi|x<i), where V denotes the vocabulary. If the entropy of Xi is large enough, the observed next token will be selected. Intuitively, when the entropy is large, the model is uncertain about the next token, or it\u2019s hard to infer from the context, so seeing the next token provides new information. Similarly, we determine the threshold so that the same proportion of tokens are selected in each step.\nThe experimental results of the new baselines are shown in Table 4. From the table, we can see that the frequency is a better selection criterion than the entropy in general. Compared to Table 1, the frequency and the fixation duration achieve similar performance. On PG-19, the latter performs slightly better, while on CMU-DoG the former performs better. However, the frequency and fixationbased methods demonstrate different selection patterns. E.g., when using frequency as selection criterion, the model selects almost all digits and selects more named entity-related tokens.\nNote that the models with selector and replacer networks still show considerable improvements compared to these two baselines. Therefore, even though neural network-based selection tends to select rare tokens, aspects other than frequency also play an important role."
+        },
+        {
+            "heading": "K Analysis of Selector Network",
+            "text": "K.1 Selected Tokens\nOther than Figure 3, we show more examples in Figure 6. We can see the same pattern as described previously.\nK.2 Effect on Token-Level Loss\nWe run two identical models which use selector and selective cache. One model runs normally, while the cached key-value pairs in selective cache of the other model are randomly masked (50% probability). The model cannot attend to those key-value pairs, but those still occupy the room in selective cache. The differences in cross-entropy loss between these two models are then calculated on token-level. In other words, we measure whether the model makes better or worse predictions when predicting each token. Figure 7 shows the resulting loss difference. Note that in previous figures of selected tokens, the color is associated with the input token, while in this figure the color is associated with the prediction target token. We purposely choose the input sequence that is from the same document as the previous example, and a few steps after that. Orange color means the loss increases after masking, green means the loss decreases. Deeper color represents bigger values. The difference values that exceed 1.0 or -1.0 are represented in full color.\nK.3 Difference across Layers Figure 8 shows examples of the selected tokens in other layers. We can see the selection ratio is different across layers, as well as the \u201cquality\" of selection. Besides selecting named entities and rare tokens, no other meaningful patterns are found. The pattern only appears in a few layers. The pattern shown in the figure is consistent in the whole dataset.\nK.4 Performance on CMU-DoG It is interesting to see how the selector performs in CMU-DoG dataset as shown in Figure 9. Recall that the document in this dataset consists of one Wikipedia article and many conversations based on that article. Therefore, keeping the article in memory is a considerable advantage when doing LM on this dataset.\nIt is obvious that the selector treats the Wikipedia article and the conversations very differently. The selection ratio drops drastically when coming to the conversation part (in the middle of the third block in Figure 9). This means that the selective cache stores the background article and receives minimal updates afterward. Therefore, the background article can be preserved for many steps. Note that this beneficial pattern is learned by the model itself, and there is no token type embedding or something similar to explicitly distinguish two types of inputs. Furthermore, this example reveals a key difference between the selective cache and\ncompressive cache. The latter defines a fixed compressive rate beforehand, while selective cache is adaptive to the varying density of information in the input and has varying compressive rates.\nIn addition, different from previous examples on PG-19 and WikiText2, in this example the selector not only selects named entities or rare words, but also selects some common words such as \u201cshark\", \u201ctank\", even including a verb \u201cescape\". This shows that the selection is not necessarily restricted to named entities or rare words. The selector can further learn to select other kinds of tokens such as keywords."
+        },
+        {
+            "heading": "L Analysis of Replacer Network",
+            "text": "L.1 Analysis of Replacement Process Figure 10 shows how the replacement ratio changes over time. The peaks in the figure correspond to the start of a new document. It seems that the selective cache can preserve items for infinite steps on CMUDoG, since there are some nearly zero replacement ratios. We found this is the case for most layers.\nFigure 11 shows an example of replacement. Both new key-value pairs and the cached ones are shown. They are aligned to show that \u201cshops\" and \u201c,\" are compared (more precisely, their corresponding inner representations), \u201cdistricts\" and \u201c@\" are compared, etc. Note that the \u201ccache\" rows contain non-continuous context, while \u201cnew\" rows contain a continuous input sequence."
+        },
+        {
+            "heading": "M Tokens Selected According to Fixation Duration",
+            "text": "Figure 12 shows the selected token according to fixation duration. we can see the differences compared to those selected by the selector network. Humans are doing comprehension when reading, such as building the relationship map between characters and understanding the plot, and the longfixated tokens are key information for that. As we can see, an important difference is that verbs compose a substantial proportion in those tokens selected by fixation duration, while they are excluded by the selector network. We think those verbs are also helpful for predicting future tokens, but that requires higher-level abilities. It is possible that when combined with a more advanced or much larger language model which has the capacity to do complex reasoning and comprehension over previous distant context, the fixation-based selection can bring about much larger performance gains.\nMeanwhile, another important advantage of using fixation duration is that it does not require training or fine-tuning together with the language model. So it can be used to select key-value pairs for those very large pretrained language models that are too expensive to calculate gradients."
+        }
+    ],
+    "title": "Long-Range Language Modeling with Selective Cache",
+    "year": 2023
+}

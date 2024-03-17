@@ -1,0 +1,925 @@
+{
+    "abstractText": "Many text mining models are constructed by fine-tuning a large deep pre-trained language model (PLM) in downstream tasks. However, a significant challenge nowadays is maintaining performance when we use a lightweight model with limited labelled samples. We present DisCo, a semi-supervised learning (SSL) framework for fine-tuning a cohort of small student models generated from a large PLM using knowledge distillation. Our key insight is to share complementary knowledge among distilled student cohorts to promote their SSL effectiveness. DisCo employs a novel co-training technique to optimize a cohort of multiple small student models by promoting knowledge sharing among students under diversified views: model views produced by different distillation strategies and data views produced by various input augmentations. We evaluate DisCo on both semi-supervised text classification and extractive summarization tasks. Experimental results show that DisCo can produce student models that are 7.6\u00d7 smaller and 4.8\u00d7 faster in inference than the baseline PLMs while maintaining comparable performance. We also show that DisCo-generated student models outperform the similar-sized models elaborately tuned in distinct tasks.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Weifeng Jiang"
+        },
+        {
+            "affiliations": [],
+            "name": "Qianren Mao"
+        },
+        {
+            "affiliations": [],
+            "name": "Chenghua Lin"
+        },
+        {
+            "affiliations": [],
+            "name": "Jianxin Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Ting Deng"
+        },
+        {
+            "affiliations": [],
+            "name": "Weiyi Yang"
+        },
+        {
+            "affiliations": [],
+            "name": "Zheng Wang"
+        }
+    ],
+    "id": "SP:375315bc87803b01464373faae143c071af6aadb",
+    "references": [
+        {
+            "authors": [
+                "Jimmy Ba",
+                "Rich Caruana"
+            ],
+            "title": "Do deep nets really need to be deep? In Advances in Neural Information Processing Systems",
+            "venue": "Annual Conference on Neural Information Processing Systems",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "David Berthelot",
+                "Nicholas Carlini",
+                "Ian J. Goodfellow",
+                "Nicolas Papernot",
+                "Avital Oliver",
+                "Colin Raffel."
+            ],
+            "title": "Mixmatch: A holistic approach to semisupervised learning",
+            "venue": "Advances in Neural Information Processing Systems 32: Annual Conference",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "David Berthelot",
+                "Rebecca Roelofs",
+                "Kihyuk Sohn",
+                "Nicholas Carlini",
+                "Alexey Kurakin."
+            ],
+            "title": "Adamatch: A unified approach to semi-supervised learning and domain adaptation",
+            "venue": "The Tenth International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Avrim Blum",
+                "Tom M. Mitchell."
+            ],
+            "title": "Combining labeled and unlabeled data with co-training",
+            "venue": "Proceedings of the Eleventh Annual Conference on Computational Learning Theory, COLT, pages 92\u2013100. ACM.",
+            "year": 1998
+        },
+        {
+            "authors": [
+                "Ming-Wei Chang",
+                "Lev-Arie Ratinov",
+                "Dan Roth",
+                "Vivek Srikumar."
+            ],
+            "title": "Importance of semantic representation: Dataless classification",
+            "venue": "Proceedings of the Twenty-Third AAAI Conference on Artificial Intelligence, AAAI, pages 830\u2013835. AAAI Press.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Pratik Chaudhari",
+                "Anna Choromanska",
+                "Stefano Soatto",
+                "Yann LeCun",
+                "Carlo Baldassi",
+                "Christian Borgs",
+                "Jennifer T. Chayes",
+                "Levent Sagun",
+                "Riccardo Zecchina."
+            ],
+            "title": "Entropy-sgd: Biasing gradient descent into wide valleys",
+            "venue": "5th International Confer-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jiaao Chen",
+                "Zichao Yang",
+                "Diyi Yang."
+            ],
+            "title": "Mixtext: Linguistically-informed interpolation of hidden space for semi-supervised text classification",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, ACL, (Volume",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "G\u00fcnes Erkan",
+                "Dragomir R. Radev."
+            ],
+            "title": "Lexrank: Graph-based lexical centrality as salience in text summarization",
+            "venue": "J. Artif. Intell. Res., 22:457\u2013479.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Yue Fan",
+                "Anna Kukleva",
+                "Dengxin Dai",
+                "Bernt Schiele."
+            ],
+            "title": "Revisiting consistency regularization for semi-supervised learning",
+            "venue": "Int. J. Comput. Vis., 131(3):626\u2013643.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tommaso Furlanello",
+                "Zachary Lipton",
+                "Michael Tschannen",
+                "Laurent Itti",
+                "Anima Anandkumar."
+            ],
+            "title": "Born again neural networks",
+            "venue": "Proceedings of the 35th International Conference on Machine Learning, volume 80 of Proceedings of Machine Learning",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Xingcheng Yao",
+                "Danqi Chen."
+            ],
+            "title": "Simcse: Simple contrastive learning of sentence embeddings",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, EMNLP, pages 6894\u20136910. Association for Compu-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Suchin Gururangan",
+                "Tam Dang",
+                "Dallas Card",
+                "Noah A. Smith."
+            ],
+            "title": "Variational pretraining for semi-supervised text classification",
+            "venue": "Proceedings of the 57th Conference of the Association for Computational Linguistics, ACL, (Volume 1: Long Papers),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Karl Moritz Hermann",
+                "Tom\u00e1s Kocisk\u00fd",
+                "Edward Grefenstette",
+                "Lasse Espeholt",
+                "Will Kay",
+                "Mustafa Suleyman",
+                "Phil Blunsom."
+            ],
+            "title": "Teaching machines to read and comprehend",
+            "venue": "Advances in Neural Information Processing Systems 28: Annual Conference on Neu-",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Geoffrey E Hinton",
+                "Nitish Srivastava",
+                "Alex Krizhevsky",
+                "Ilya Sutskever",
+                "Ruslan R Salakhutdinov."
+            ],
+            "title": "Improving neural networks by preventing coadaptation of feature detectors",
+            "venue": "arXiv preprint arXiv:1207.0580.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Geoffrey E. Hinton",
+                "Oriol Vinyals",
+                "Jeffrey Dean."
+            ],
+            "title": "Distilling the knowledge in a neural network",
+            "venue": "NIPS Deep Learning and Representation Learning Workshop.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Haoming Jiang",
+                "Pengcheng He",
+                "Weizhu Chen",
+                "Xiaodong Liu",
+                "Jianfeng Gao",
+                "Tuo Zhao."
+            ],
+            "title": "SMART: robust and efficient fine-tuning for pretrained natural language models through principled regularized optimization",
+            "venue": "Proceedings of the 58th",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiaoqi Jiao",
+                "Yichun Yin",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Xiao Chen",
+                "Linlin Li",
+                "Fang Wang",
+                "Qun Liu."
+            ],
+            "title": "Tinybert: Distilling BERT for natural language understanding",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP, volume EMNLP 2020",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Taehyeon Kim",
+                "Jaehoon Oh",
+                "Nakyil Kim",
+                "Sangwook Cho",
+                "Se-Young Yun."
+            ],
+            "title": "Comparing kullbackleibler divergence and mean squared error loss in knowledge distillation",
+            "venue": "Proceedings of the Thirtieth International Joint Conference on Artificial In-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yoon Kim."
+            ],
+            "title": "Convolutional neural networks for sentence classification",
+            "venue": "Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing, EMNLP, pages 1746\u20131751. Association for Computational Linguistics.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Alexey Kurakin",
+                "Ian J. Goodfellow",
+                "Samy Bengio."
+            ],
+            "title": "Adversarial examples in the physical world",
+            "venue": "5th International Conference on Learning Representations, ICLR,Workshop Track Proceedings. OpenReview.net.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Dong-Hyun Lee"
+            ],
+            "title": "Pseudo-label: The simple and efficient semi-supervised learning method for deep neural networks",
+            "venue": "Workshop on challenges in representation learning, ICML, volume 3, page 896.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Haejun Lee",
+                "Drew A. Hudson",
+                "Kangwook Lee",
+                "Christopher D. Manning."
+            ],
+            "title": "SLM: learning a discourse language representation with sentence unshuffling",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ju Hyoung Lee",
+                "Sang-Ki Ko",
+                "Yo-Sub Han."
+            ],
+            "title": "Salnet: Semi-supervised few-shot text classification with attention-based lexicon construction",
+            "venue": "Thirty-Fifth AAAI Conference on Artificial Intelligence, AAAI, pages 13189\u201313197. AAAI Press.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hao Li",
+                "Zheng Xu",
+                "Gavin Taylor",
+                "Christoph Studer",
+                "Tom Goldstein."
+            ],
+            "title": "Visualizing the loss landscape of neural nets",
+            "venue": "Advances in Neural Information Processing Systems 31: Annual Conference on Neural Information Processing Systems, NeurIPS, pages",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin",
+                "Eduard H. Hovy."
+            ],
+            "title": "Automatic evaluation of summaries using n-gram co-occurrence statistics",
+            "venue": "Human Language Technology Conference of the North American Chapter of the Association for Computational Linguistics, HLT-NAACL.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Chen Liu",
+                "Mengchao Zhang",
+                "Zhibing Fu",
+                "Panpan Hou",
+                "Yu Li."
+            ],
+            "title": "Flitext: A faster and lighter semisupervised text classification with convolution networks",
+            "venue": "Proceedings of the 2021 Conference on",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yang Liu",
+                "Mirella Lapata."
+            ],
+            "title": "Text summarization with pretrained encoders",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized BERT pretraining approach",
+            "venue": "CoRR, abs/1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Charles Lovering",
+                "Rohan Jha",
+                "Tal Linzen",
+                "Ellie Pavlick."
+            ],
+            "title": "Predicting inductive biases of pretrained models",
+            "venue": "9th International Conference on Learning Representations, ICLR 2021, Virtual Event, Austria, May 3-7, 2021. OpenReview.net.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Pablo N Mendes",
+                "Max Jakob",
+                "Christian Bizer."
+            ],
+            "title": "DBpedia: A multilingual cross-domain knowledge base",
+            "venue": "European Language Resources Association (ELRA).",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Caiming Xiong",
+                "James Bradbury",
+                "Richard Socher."
+            ],
+            "title": "Pointer sentinel mixture models",
+            "venue": "5th International Conference on Learning Representations, ICLR,Conference Track Proceedings. OpenReview.net.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Rada Mihalcea",
+                "Paul Tarau."
+            ],
+            "title": "Textrank: Bringing order into text",
+            "venue": "Proceedings of the 2004 Conference on Empirical Methods in Natural Language Processing, EMNLP, pages 404\u2013411. Association for Computational Linguistics.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Seyed-Iman Mirzadeh",
+                "Mehrdad Farajtabar",
+                "Ang Li",
+                "Nir Levine",
+                "Akihiro Matsukawa",
+                "Hassan Ghasemzadeh."
+            ],
+            "title": "Improved knowledge distillation via teacher assistant",
+            "venue": "The Thirty-Fourth AAAI Conference on Artificial Intelligence, AAAI, pages",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Takeru Miyato",
+                "Shin-ichi Maeda",
+                "Masanori Koyama",
+                "Shin Ishii."
+            ],
+            "title": "Virtual adversarial training: A regularization method for supervised and semisupervised learning",
+            "venue": "IEEE Trans. Pattern Anal. Mach. Intell., 41(8):1979\u20131993.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Gabriel Pereyra",
+                "George Tucker",
+                "Jan Chorowski",
+                "Lukasz Kaiser",
+                "Geoffrey E. Hinton."
+            ],
+            "title": "Regularizing neural networks by penalizing confident output distributions",
+            "venue": "5th International Conference on Learning Representations, ICLR. OpenReview.net.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Siyuan Qiao",
+                "Wei Shen",
+                "Zhishuai Zhang",
+                "Bo Wang",
+                "Alan L. Yuille."
+            ],
+            "title": "Deep co-training for semisupervised image recognition",
+            "venue": "Proceedings of the 15th European Conference Computer Vision, ECCV, volume 11219 of Lecture Notes in Computer Science,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Karthik Narasimhan",
+                "Tim Salimans",
+                "Ilya Sutskever"
+            ],
+            "title": "Improving language understanding by generative pre-training",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "J. Mach. Learn. Res.,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Antti Rasmus",
+                "Mathias Berglund",
+                "Mikko Honkala",
+                "Harri Valpola",
+                "Tapani Raiko."
+            ],
+            "title": "Semi-supervised learning with ladder networks",
+            "venue": "Advances in Neural Information Processing Systems 28: Annual Conference on Neural Information Processing Systems 2015,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Mehdi Sajjadi",
+                "Mehran Javanmardi",
+                "Tolga Tasdizen."
+            ],
+            "title": "Regularization with stochastic transformations and perturbations for deep semi-supervised learning",
+            "venue": "Advances in Neural Information Processing Systems 29: Annual Conference on Neural Information",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Victor Sanh",
+                "Lysandre Debut",
+                "Julien Chaumond",
+                "Thomas Wolf."
+            ],
+            "title": "Distilbert, a distilled version of BERT: smaller, faster, cheaper and lighter",
+            "venue": "CoRR, abs/1910.01108.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Dinghan Shen",
+                "Mingzhi Zheng",
+                "Yelong Shen",
+                "Yanru Qu",
+                "Weizhu Chen."
+            ],
+            "title": "A simple but tough-to-beat data augmentation approach for natural language understanding and generation",
+            "venue": "CoRR, abs/2009.13818.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kihyuk Sohn",
+                "David Berthelot",
+                "Nicholas Carlini",
+                "Zizhao Zhang",
+                "Han Zhang",
+                "Colin Raffel",
+                "Ekin Dogus Cubuk",
+                "Alexey Kurakin",
+                "Chun-Liang Li."
+            ],
+            "title": "Fixmatch: Simplifying semi-supervised learning with consistency and confidence",
+            "venue": "Advances in Neural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wonchul Son",
+                "Jaemin Na",
+                "Junyong Choi",
+                "Wonjun Hwang."
+            ],
+            "title": "Densely guided knowledge distillation using multiple teacher assistants",
+            "venue": "2021 IEEE/CVF International Conference on Computer Vision, ICCV, pages 9375\u20139384. IEEE.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Siqi Sun",
+                "Yu Cheng",
+                "Zhe Gan",
+                "Jingjing Liu."
+            ],
+            "title": "Patient knowledge distillation for BERT model compression",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Nat-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "David Brooks",
+                "Gu-Yeon Wei."
+            ],
+            "title": "Edgebert: Sentence-level energy optimizations for latencyaware multi-task NLP inference",
+            "venue": "MICRO \u201921: 54th Annual IEEE/ACM International Symposium on Microarchitecture, Virtual Event, Greece, October",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Antti Tarvainen",
+                "Harri Valpola."
+            ],
+            "title": "Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results",
+            "venue": "5th International Conference on Learning Representations, ICLR, Workshop Track Proceedings.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ilya O. Tolstikhin",
+                "Neil Houlsby",
+                "Alexander Kolesnikov",
+                "Lucas Beyer",
+                "Xiaohua Zhai",
+                "Thomas Unterthiner",
+                "Jessica Yung",
+                "Andreas Steiner",
+                "Daniel Keysers",
+                "Jakob Uszkoreit",
+                "Mario Lucic",
+                "Alexey Dosovitskiy"
+            ],
+            "title": "Mlp-mixer: An all-mlp architecture",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in Neural Information Processing Systems 30: Annual Conference on Neural In-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Furu Wei",
+                "Li Dong",
+                "Hangbo Bao",
+                "Nan Yang",
+                "Ming Zhou."
+            ],
+            "title": "Minilm: Deep selfattention distillation for task-agnostic compression of pre-trained transformers",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Con-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yidong Wang",
+                "Hao Chen",
+                "Yue Fan",
+                "SUN Wang",
+                "Ran Tao",
+                "Wenxin Hou",
+                "Renjie Wang",
+                "Linyi Yang",
+                "Zhi Zhou",
+                "Lan-Zhe Guo"
+            ],
+            "title": "2022a. Usb: A unified semi-supervised learning benchmark for classification",
+            "venue": "In Thirty-sixth Conference on Neural Informa-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yiming Wang",
+                "Qianren Mao",
+                "Junnan Liu",
+                "Weifeng Jiang",
+                "Hongdong Zhu",
+                "Jianxin Li."
+            ],
+            "title": "Noiseinjected consistency training and entropy-constrained pseudo labeling for semi-supervised extractive summarization",
+            "venue": "Proceedings of the 29th International",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuofeng Wu",
+                "Sinong Wang",
+                "Jiatao Gu",
+                "Madian Khabsa",
+                "Fei Sun",
+                "Hao Ma."
+            ],
+            "title": "CLEAR: contrastive learning for sentence representation",
+            "venue": "CoRR, abs/2012.15466.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qizhe Xie",
+                "Zihang Dai",
+                "Eduard H. Hovy",
+                "Thang Luong",
+                "Quoc Le."
+            ],
+            "title": "Unsupervised data augmentation for consistency training",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Conference",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hai-Ming Xu",
+                "Lingqiao Liu",
+                "Ehsan Abbasnejad."
+            ],
+            "title": "Progressive class semantic matching for semisupervised text classification",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Hu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuanmeng Yan",
+                "Rumei Li",
+                "Sirui Wang",
+                "Fuzheng Zhang",
+                "Wei Wu",
+                "Weiran Xu."
+            ],
+            "title": "Consert: A contrastive framework for self-supervised sentence representation transfer",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Lin-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Weiyi Yang",
+                "Richong Zhang",
+                "Junfan Chen",
+                "Lihong Wang",
+                "Jaein Kim."
+            ],
+            "title": "Prototype-guided pseudo labeling for semi-supervised text classification",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Vol-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bowen Zhang",
+                "Yidong Wang",
+                "Wenxin Hou",
+                "Hao Wu",
+                "Jindong Wang",
+                "Manabu Okumura",
+                "Takahiro Shinozaki."
+            ],
+            "title": "Flexmatch: Boosting semi-supervised learning with curriculum pseudo labeling",
+            "venue": "Advances in Neural Information Processing Systems 34:",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiang Zhang",
+                "Junbo Jake Zhao",
+                "Yann LeCun."
+            ],
+            "title": "Character-level convolutional networks for text classification",
+            "venue": "Advances in Neural Information Processing Systems 28: Annual Conference on Neural Information Processing Systems, NeurIPS, pages 649\u2013",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ying Zhang",
+                "Tao Xiang",
+                "Timothy M. Hospedales",
+                "Huchuan Lu."
+            ],
+            "title": "Deep mutual learning",
+            "venue": "2018 IEEE Conference on Computer Vision and Pattern Recognition, CVPR, pages 4320\u20134328. Computer Vision Foundation / IEEE Computer Society.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Kun Zhao",
+                "Bohao Yang",
+                "Chenghua Lin",
+                "Wenge Rong",
+                "Aline Villavicencio",
+                "Xiaohui Cui."
+            ],
+            "title": "Evaluating open-domain dialogues in latent space with next sentence prediction and mutual information",
+            "venue": "Proceedings of the 61st Annual Meeting of the As-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mingkai Zheng",
+                "Shan You",
+                "Lang Huang",
+                "Fei Wang",
+                "Chen Qian",
+                "Chang Xu."
+            ],
+            "title": "Simmatch: Semisupervised learning with similarity matching",
+            "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR, pages 14451\u201314461. IEEE.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "stage. TinyBERT (Jiao"
+            ],
+            "title": "2020) sets a twostage knowledge distillation procedure that contains general-domain and tasks-specific distillation in Transformer (Vaswani et al., 2017)",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Shen et al"
+            ],
+            "title": "The ratio of dropout is set to 0.1. Adam optimizer with \u03b21 = 0.9, \u03b22 = 0.999 is used for fine-tuning. We set the learning rate 1e-4 for extractive summarization and 5e-3 for text classification, in which the learning rate warm-up",
+            "year": 2020
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large pre-trained language models (PLMs), such as BERT (Devlin et al., 2019), GPT-3 (Brown et al., 2020), play a crucial role in the development of natural language processing applications, where one prominent training regime is to fine-tune the large and expensive PLMs for the downstream tasks of interest (Jiao et al., 2020).\nMinimizing the model size and accelerating the model inference are desired for systems with limited computation resources, such as mobile (Liu\n\u2217 Internship achievements at Zhongguancun Laboratory. \u2020 Qianren Mao is the corresponding author.\net al., 2021) and edge (Tambe et al., 2021) devices. Therefore, maintaining the generalization ability of the reduced-sized model is crucial and feasible (Sun et al., 2019; Sanh et al., 2019; Jiao et al., 2020; Wang et al., 2020).\nSemi-supervised learning (SSL) emerges as a practical paradigm to improve model generalization by leveraging both limited labelled data and extensive unlabeled data (Rasmus et al., 2015; Lee et al., 2013; Tarvainen and Valpola, 2017; Miyato et al., 2019; Berthelot et al., 2019; Sohn et al., 2020; Fan et al., 2023; Zhang et al., 2021; Berthelot et al., 2022; Zheng et al., 2022; Yang et al., 2023). While promising, combining SSL with a reduced-size model derived from PLMs still necessitates a well-defined learning strategy to achieve improved downstream performances (Wang et al., 2022a). This necessity arises because these shallow networks typically have lower capacity, and the scarcity of labeled data further curtails the model\u2019s optimization abilities. Besides, a major hurdle is a lack of labelled data samples \u2013 a particular problem for text mining tasks because the labelling text is labour-intensive and error-prone (Gururangan et al., 2019; Chen et al., 2020; Xie et al., 2020; Lee et al., 2021; Xu et al., 2022; Zhao et al., 2023).\nThis paper thus targets using SSL to leverage distilled PLMs in a situation where only limited labelled data is available and fast model inference is needed on resource-constrained devices. To this end, we use the well-established teacher-student knowledge distillation technique to construct small student models from a teacher PLM and then finetune them in the downstream SSL tasks. We aim to improve the effectiveness of fine-tuning small student models for text-mining tasks with limited labelled samples.\nWe present DisCo, a novel co-training approach aimed at enhancing the SSL performances by using distilled small models and few labelled data. The student models in the DisCo acquire complemen-\ntary information from multiple views, thereby improving the generalization ability despite the small model size and limited labelled samples. we introduce two types of view diversities for co-training: i) model view diversity, which leverages diversified initializations for student models in the cohort, ii) data view diversity, which incorporates varied noisy samples for student models in the cohort. Specifically, the model view diversity is generated by different task-agnostic knowledge distillations from the teacher model. The data view diversity is achieved through various embedding-based data augmentations to the input instances.\nIntuitively, DisCo with the model view encourages the student models to learn from each other interactively and maintain reciprocal collaboration. The student cohort with the model views increases each participating model\u2019s posterior entropy (Chaudhari et al., 2017; Pereyra et al., 2017; Zhang et al., 2018), helping them to converge to a flatter minimum with better generalization. At the same time, DisCo with the data views regularizes student predictions to be invariant when applying noises to input examples. Doing so improves the models\u2019 robustness on diverse noisy samples generated from the same instance. This, in turn, helps the models to obtain missing inductive biases on learning behaviour, i.e., adding more inductive biases to the models can lessen their variance (Xie et al., 2020; Lovering et al., 2021).\nWe have implemented a working prototype of DisCo1 and applied it to text classification and extractive summarization tasks. We show that by cotraining just two student models, DisCo can deliver faster inference while maintaining the performance level of the large PLM. Specifically, DisCo can produce a student model that is 7.6\u00d7 smaller (4- layer TinyBERT) with 4.8\u00d7 faster inference time by achieving superior ROUGE performance in extractive summarization than the source teacher model (12-layer BERT). It also achieves a better or comparable text classification performance compared to the previous state-of-the-art (SOTA) SSL methods with 12-layer BERT while maintaining a lightweight architecture with only 6-layer TinyBERT. We also show that DisCo substantially outperforms other SSL baselines by delivering higher accuracy when using the same student models in model size.\n1Code and data are available at: https://github.com/ LiteSSLHub/DisCo."
+        },
+        {
+            "heading": "2 Methodology",
+            "text": "2.1 Overview of DisCo DisCo jointly trains distilled student cohorts to improve model effectiveness in a complementary way from diversified views. As a working example, we explain how to use a dual-student DisCo to train two kinds of student models (see Figure 1). Extension to more students is straightforward (see section 2.3). To this end, DisCo introduces two initialization views during the co-training process: (i) model views which are different student model variants distilled from the teacher model, and (ii) data views which are different data augmented instances produced by the training input.\nIn DisCo, two kinds of compressed students (represented by two different colours in Figure 1(a)) are generated by the same teacher. This process allows us to pre-encode the model view specifically for DisCo. Additionally, we duplicate copies of a single student model to receive supervised and unsupervised data individually. In the supervised learning phase, DisCo optimizes two students using labelled samples. In the unsupervised learning phase, each student model concurrently shares the parameters with its corresponding duplicate, which is trained by supervised learning. The subsequent consistency training loss then optimizes the students using unlabeled samples.\nFor an ablation comparison of DisCo, we introduce the variant of DisCo only equipped with the model view, shown in Figure 1(b). In this variant, labelled and unlabeled data are duplicated and would be fed to the students directly. DisCo and its variant ensure reciprocal collaboration among the distilled students and can enhance the generalization ability of the student cohort by the consistency constraint. In this section, we introduce DisCo from two aspects: knowledge distillation and the co-training strategy."
+        },
+        {
+            "heading": "2.2 Student Model Generation",
+            "text": "Our current implementation uses knowledge distillation to generate small-sized models from a PLM. Like the task-agnostic distillation of TinyBERT2 (Jiao et al., 2020), we use the original BERT without fine-tuning as the teacher model to generate the student models (In most cases, two student models at least are generated in our implementation). The task-agnostic distillation method is\n2https://github.com/huawei-noah/ Pretrained-Language-Model/tree/master/TinyBERT\nconvenient for using any teacher network directly. We use a large-scale general-domain corpus of WikiText-1033 released by Merity et al. (2017) as the training data of the distillation. The student mimics the teacher\u2019s behaviour through the representation distillation from BERT layers: (i) the output of the embedding layer, (ii) the hidden states, and (iii) attention matrices."
+        },
+        {
+            "heading": "2.2.1 Model View Encoding",
+            "text": "To ensure the grouped students present a different view of the teacher, we distil different BERT layers from the same teacher. Model view encoding diversifies the individual student by leveraging different knowledge of the teacher. We propose two different strategies for the knowledge distillation process: (i) Separated-layer KD (SKD): the student learns from the alternate k-layer of the teacher. For instance, {3, 6, 9, 12} are the 4 alternate layers of BERT. (ii) Connected-layer KD (CKD): the student learns from the continuous K-layer of the teacher. For example, {1, 2, 3, 4} are the continuous 4 layers of BERT. In the case of dual-student DisCo, the two students with two kinds of knowledge distillation strategies are represented as SAK and SBK . The co-training framework will encourage the distinct individual model to teach each other in a complementary manner underlying model view initialization.\nWith consistency constraints, our co-training framework can obtain valid inductive biases on model views, enabling student peers to teach each other and to generalize unseen data. Apart from the model views, we also introduce data views produced by various data augmentations of inputs to expand the inductive biases.\n3https://huggingface.co/datasets/wikitext"
+        },
+        {
+            "heading": "2.2.2 Data View Encoding",
+            "text": "We use different data augmentation strategies at the token embedding layer to create different data views from the input samples. Our intuition is that advanced data augmentation can introduce extra inductive biases since they are based on random sampling at the token embedding layer with minimal semantic impact (Xie et al., 2020; Wu et al., 2020; Yan et al., 2021; Gao et al., 2021). Inspired by ConSERT (Yan et al., 2021) and SimCSE (Gao et al., 2021), we adopt convenient data augmentation methods: adversarial attack (Kurakin et al., 2017), token shuffling (Lee et al., 2020), cutoff (Shen et al., 2020) and dropout (Hinton et al., 2012), described as follows. Adversarial Attack (AD). We implement it with Smoothness-Inducing Adversarial Regularization (SIAR)4 (Jiang et al., 2020), which encourages the model\u2019s output not to change too much when a small perturbation is injected to the input. Token Shuffling (TS). This strategy is slightly similar to Lee et al. (2020) and Yan et al. (2021), and we implement it by passing the shuffled position IDs to the embedding layer while keeping the order of the token IDs unchanged. Cutoff (CO). This method randomly erases some tokens for token cutoff in the embedding matrix. Dropout (DO). As same as in BERT, this scheme randomly drops elements by a specific probability and sets their values to zero.\nDisCo incorporates two forms of data view during co-training: a HARD FORM and a SOFT FORM. Taking dual-student networks for example, we use\n4The adversarial perturbed embeddings are generated in the AD strategy by maximizing the supervised loss.\ntwo different data augmentation approaches, such as AD and DO, to implement the HARD FORM data view. Regarding the SOFT FORM data view, we apply the same data augmentation approach, including AD with two rounds of random initialization to ensure distinct views. In DisCo, each student obtains perturbation differences through the various combinations of the HARD FORM and SOFT FORM."
+        },
+        {
+            "heading": "2.2.3 Co-training Framework",
+            "text": "Formally, we are provided with a semi-supervised dataset D, D = S \u222a U. S = {(x\u0302, y\u0302)} is labelled data, where (x\u0302, y\u0302) will be used for two kinds of students identically. U = {x\u2217} is unlabeled data, and two copies are made for two kinds of students identically. For X \u2208 D, let \u03d5A(X) and \u03d5B(X) denote the two data views of data X. A pair of models (S AK = fA and S BK = fB) are two distilled student models which we treat as the model view of dualstudent DisCo. Student fA only uses \u03d5A(X), and Student fB uses \u03d5B(X).\nBy training collaboratively with the cohort of students fA and fB, the co-training optimization objective allows them to share the complementary information, which improves the generalization ability of a network. Supervised Student Cohort Optimization. For supervised parts, we use the categorical CrossEntropy (CE) loss function for optimizing student fA and student fB, respectively. They are trained with the labeled data (x\u0302, y\u0302) sampled from S.\nLsA =CE( fA(\u03d5A(x\u0302)), y\u0302), (1)\nLsB =CE( fB(\u03d5B(x\u0302)), y\u0302). (2)\nUnsupervised Student Cohort Optimization. In standard co-training, multiple classifiers are expected to provide consistent predictions on unlabeled data x\u2217 \u2208 U.\nThe consistency cost of the unlabeled data x\u2217\nis computed from the two student output logits: zA(\u03d5A(x\u2217)) and zB(\u03d5B(x\u2217)). We use the Mean\nSquare Error (MSE) to encourage the two students to predict similarly:\nLuA,B =MSE(zA(\u03d5A(x\u2217)), zB(\u03d5B(x\u2217))), (3)\nLuB,A =MSE(zB(\u03d5B(x\u2217)), zA(\u03d5A(x\u2217))). (4)\nOverall Training Objective. Finally, we combine supervised cross-entropy loss with unsupervised consistency loss and train the model by minimizing the joint loss:\nL\u0398=LsA +LsB + \u00b5(t, n) \u00b7 \u03bb \u00b7 (LuA,B +LuB,A), (5)\nwhere \u00b5(t, n) = min( tn , 1). It represents the rampup weight starting from zero, gradually increasing along with a linear curve during the initial n training steps. \u03bb is the hyperparameter balancing supervised and unsupervised learning."
+        },
+        {
+            "heading": "2.3 Co-training of Multi-student Peers",
+            "text": "So far, our discussion has been focused on training two students. DisCo can be naturally extended to support not only two students in the student cohort but more student networks. Given K networks \u03981, \u03982, ..., \u0398K(K \u2265 2), the objective function for optimising all \u0398k, (1\u2264k \u2264K), becomes:\nL\u0398= K\u2211\nk=1\n( Lsk + \u00b5(t, n) \u00b7 \u03bb \u00b7 Lui,k ) , (6)\nLui,k = 1\nK \u22121 K\u2211 i=1,i,k MSE(zi(\u03d5i(x\u2217)), zk(\u03d5k(x\u2217)). (7)\nEquation (5), is now a particular case of (6) with k = 2. With more than two networks in the cohort, a learning strategy for each student of DisCo takes the ensemble of other K\u22121 student peers to provide mimicry targets. Namely, each student learns from all other students in the cohort individually."
+        },
+        {
+            "heading": "3 Experiments",
+            "text": "Datasets. We evaluate DisCo on extractive summarization and text classification tasks, as shown in Table 1. For extractive summarization, we use the CNN/DailyMail (Hermann et al., 2015) dataset, training the model with 10/100/1000 labeled examples. Regarding text classification, we evaluate on semi-supervised datasets: Agnews (Zhang et al., 2015) for News Topic classification, Yahoo!Answers (Chang et al., 2008) for Q&A topic classification, and DBpedia (Mendes et al., 2012) for WikiPedia topic classification. The models are trained with 10/30/200 labeled data per class and 5000 unlabeled data per class. Further details on the evaluation methodology are in Appendix A.3.\nImplementation Details. The main experimental results presented in this paper come from the best model view and data view we found among multiple combinations of view encoding strategies. Taking dual-students DisCo as an example, we present the results of SAK and SBK , as the model-view being a combination of SKD (alternate K-layer) and CKD (continuous K-layer). The data view is the SOFT FORM of two different AD initialization. Specifically , DisCo (SA6) uses CKD model-view of BERT layers {1, 2, 3, 4, 5, 6} and SOFT FORM dataview of AD. DisCo (SB6) uses SKD model-view of BERT layers {2, 4, 6, 8, 10, 12} and SOFT FORM data-view of AD. DisCo (SA4 and SB4) use similar combinations to the DisCo (SA6 and SB6). DisCo (SA2) uses CKD with {1, 2} BERT layers and DisCo (SB2) uses CKD with {11, 12} BERT layers. The details of DisCo\u2019s hyperparameter are presented in\nAppendix A.2. We run each experiment with three random seeds and report the mean performance on test data and the experiments are conducted on a single NVIDIA Tesla V100 32GB GPU.\nCompeting Baselines. For text classification tasks, we compare DisCo with: (i) supervised baselines, BERTBASE and default TinyBERT (Jiao et al., 2020), (ii) semi-supervised UDA (Xie et al., 2020) and FLiText (Liu et al., 2021). We also compare with other prominent SSL text classification methods and report their results on the Unified SSL Benchmark (USB) (Wang et al., 2022a). Most of these SSL methods work well on computer vision (CV) tasks, and Wang et al. (2022a) generalize them to NLP tasks by integrating a 12-layer BERT. More detailed introductions are given in Appendix A.4. For extractive summarization tasks, we compare: (i) supervised basline, BERTSUM (Liu and Lapata, 2019), (ii) two SOTA semi-supervised extractive summarization methods, UDASUM and CPSUM (Wang et al., 2022b), (iii) three unsupervised techniques, LEAD-3, TextRank (Mihalcea and Tarau, 2004) and LexRank (Erkan and Radev, 2004). We use the open-source releases of the competing baselines."
+        },
+        {
+            "heading": "4 Experimental Results",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Evaluation on Text Classification",
+            "text": "As shown in Table 2, the two students produced by DisCo with a 6-layer distilled BERT (SA6 and SB6) consistently outperform TinyBERT and UDATinyBERT in all text classification tasks. Moreover, one student of our dual-student 6-layer DisCo\noutperforms the 12-layer supervised BERTBASE by a 0.55% average improvement in accuracy. These results suggest that DisCo provides a simple but effective way to improve the generalization ability of small networks by training collaboratively with a cohort of other networks.\nCompared with the FLiText, DisCo improves the average classification accuracy by 1.9% while using a student model with 0.7M fewer parameters than FLiText. FLiText relies heavily on backtranslation models for generating augmented data, similar to UDA. Unfortunately, this strategy fails to eliminate error propagation introduced by the back-translation model and requires additional data pre-processing. Besides, FLiText consists of two training stages and needs supervised optimization in both stages, increasing training costs and external supervised settings.\nTable 3 shows results when comparing DisCo to other prominent SSL methods which are integrated with a 12-layer BERT. We take the results from the source publication or Unified SSL Benchmark (USB) (Wang et al., 2022a) for these baselines. However, most of them perform worse than DisCo\u2019s students only with a 6-layer BERT using same labeled data. In the case of Yahoo!Answer text classification, our 6-layer BERT-\nbased DisCo achieves better performance than all 12-layer BERT-based SSL benchmarks. These results demonstrate that our model has superiority in certain scenarios of the lightweight model architecture and limited manual annotation."
+        },
+        {
+            "heading": "4.2 Evaluation on Extractive Summarization",
+            "text": "For the semi-supervised extractive summarization tasks, our dual-student DisCo outperforms all baselines in Table 4. Despite using a smaller-sized, 4-layer model, DisCo performs better than the 12- layer BERTSUM, UDA, and CPSUM. The results show that our methods can reduce the cost of supervision in extractive summarization tasks. Other ROUGE results with 10 or 1000 labeled examples are presented in Appendix A.5."
+        },
+        {
+            "heading": "4.3 Model Efficiency",
+            "text": "As shown in Table 5, compared with the teacher BERTBASE, all 4-layer student models give faster inference time by speeding up the inference by 4.80\u00d7-7.52\u00d7 for the two tasks. FLiText is slightly faster than the smaller model generated DisCo. This is because FLiText uses a convolutional network while our student models use BERT with multi-head self-attention. The lower computational complexity of convolutional networks5. However, despite the FLiText having more parameters, it gives worse performance (about 3.04% accuracy defects on average), as shown in Table 2."
+        },
+        {
+            "heading": "4.4 Ablation Studies",
+            "text": ""
+        },
+        {
+            "heading": "4.4.1 Effect of using Multi-student Peers",
+            "text": "Having examined the dual-student DisCo in prior experiments, our next focus is to explore the scalability of DisCo by introducing more students in the cohort. As the results are shown in Table 6, we can see that the performance of every single student improves with an extension to four students in the DisCo cohort, which demonstrates that the generalization ability of students is enhanced when they learn together with increasing numbers of peers.\nBesides, the results in Table 6 have validated the necessity of co-training with multiple students. It is evident that a greater number of student peers\n5The 1D-CNN requires O(k \u00d7 n \u00d7 d) operations used by FLiText. In contrast, the multi-head self-attention mechanism of BERT requires O(n2 \u00d7 d + n \u00d7 d2) operations, where n is the sequence length, d is the representation dimension, k is the kernel size of convolutions.\n(multi-students) in the co-training process yields a considerable performance enhancement compared to a less populous student group (dual-students)."
+        },
+        {
+            "heading": "4.4.2 Effect of using Multi-View Strategy",
+            "text": "As shown in Table 8, DisCo composed of the student networks distilled from the teacher is obviously superior to DisCo composed of two randomly initialized student networks, which verifies the advantage of our model view settings. In DisCo, the data view of SOFT FORM and HARD FORM brings the best effect, namely combinations of DO and AD encoded data view. Other data views with combinations of TS and CO yielded sub-optimal effects, which are presented in Appendix A.5. Under the same model view, DisCo integrating with the SOFT FORM data view is slightly better than the one using HARD FORM data view. The observations indicate adversarial perturbations are more useful for dualstudent DisCo. Modelling the invariance of the internal noise in the sentences can thus improve the model\u2019s robustness.\nFurther, we plot the training loss contour of DisCo and its ablation model in Figure 2. Both models have a fair benign landscape dominated by a region with convex contours in the centre and no dramatic non-convexity. We observe that the optima obtained by training with the model view and the data view are flatter than those obtained only with a model view. A flat landscape implies that the small perturbations of the model parameters cannot hurt the final performance seriously, while a chaotic landscape is more sensitive to subtle changes (Li et al., 2018)."
+        },
+        {
+            "heading": "Models Aug Ld Agnews Yahoo!Answer DBpeida",
+            "text": ""
+        },
+        {
+            "heading": "4.5 Discussion",
+            "text": ""
+        },
+        {
+            "heading": "4.5.1 Single Student with AD Augmentation",
+            "text": "To demonstrate the necessity of multi-student cotraining, we compare the single-student model without co-training with AD data augmentations. Naturally, the single model exclusively uses supervised data, missing out on leveraging unsupervised data. A noteworthy performance decline is observed in Table 7 and most differently sized models in DBpedia suffer noticeable performance drops. These results validate the DisCo framework\u2019s efficacy under co-training optimization.\n4.5.2 UDA/FLiText with AD Augmentation In the preceding analysis detailed in Table 2, UDA/FLiText utilized back translation as their data\naugmentation strategy, a technique distinctly different from the token embedding level data augmentation employed in our DisCo framework. To ensure a balanced comparison, we substituted the back translation approach with our AD augmentation method for UDA/FLiText. The outcomes of this modification are portrayed in Table 9.\nThese results underscore that regardless of the data augmentation strategy implemented, the performance of both UDA and FLiText falls short compared to our DisCo framework. This substantiates our claim that our co-training framework is superior in distilling knowledge encapsulated in unsupervised data. Furthermore, the performance across most tasks experiences a decline after the augmentation technique alteration. As stipulated in (Xie et al., 2020), the UDA/FLiText framework necessitates that augmented data maintain \u2018similar semantic meanings\u2019 thereby making back-translation a more suitable for UDA/FLiText, compared to the AD augmentation we incorporated."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "In this paper, we present DisCo, a framework of co-training distilled students with limited labelled data, which is used for targeting the lightweight\nmodels for semi-supervised text mining. DisCo leverages model views and data views to improve the model\u2019s effectiveness. We evaluate DisCo by applying it to text classification and extractive summarization tasks and comparing it with a diverse set of baselines. Experimental results show that DisCo substantially achieves better performance across scenarios using lightweight SSL models."
+        },
+        {
+            "heading": "6 Limitations",
+            "text": "Naturally, there is room for further work and improvement, and we discuss a few points here. In this paper, we apply DisCo to BERT-based student models created from the BERT-based teacher model. It would be useful to evaluate if our approach can generalize to other model architectures like TextCNN (Kim, 2014) and MLP-Mixer (Tolstikhin et al., 2021). It would also be interesting to extend our work to utilize the inherent knowledge of other language models (e.g., RoBERTa (Liu et al., 2019), GPT (Radford et al., 2018; Radford et al.; Brown et al., 2020), T5 (Raffel et al., 2020)).\nAnother limitation of our framework settings is the uniform number of BERT layers in all distilled student models. To address this, students in DisCo can be enhanced by introducing architectural diversity, such as varying the number of layers. Previous studies (Mirzadeh et al., 2020; Son et al., 2021) have demonstrated that a larger-size student, acting as an assistant network, can effectively simulate the teacher and narrow the gap between the student and the teacher. We acknowledge these limitations and plan to address them in future work."
+        },
+        {
+            "heading": "7 Ethical Statement",
+            "text": "The authors declare that we have no conflicts of interest. Informed consent is obtained from all individual participants involved in the study. This article does not contain any studies involving human participants performed by any authors."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work is supported in part by the National Natural Science Foundation of China (No.U20B2053)."
+        },
+        {
+            "heading": "A Appendix",
+            "text": ""
+        },
+        {
+            "heading": "A.1 Background and Related Work",
+            "text": "Knowledge Distillation (KD). The KD (Hinton et al., 2015) is one of the promising ways to transfer from a powerful large network or ensemble to a small network to meet the low-memory or fast execution requirements. BANs (Furlanello et al., 2018) sequentially distill the teacher model into multiple generations of student models with identical architecture to achieve better performance. BERT-PKD (Sun et al., 2019) distills patiently from multiple intermediate layers of the teacher model at the fine-tuning stage. DistilBERT (Sanh et al., 2019) and MiniLM (Wang et al., 2020) leverage knowledge distillation during the pre-training stage. TinyBERT (Jiao et al., 2020) sets a twostage knowledge distillation procedure that contains general-domain and tasks-specific distillation in Transformer (Vaswani et al., 2017). Despite their success, they may encounter difficulties affecting the sub-optimal performance in language understanding tasks due to the trade-off between model compression and performance loss.\nSemi-supervised Learning (SSL). The majority of SSL algorithms are primarily concentrated in the field of computer vision, including Pseudo Labeling (Lee et al., 2013), Mean Teacher (Tarvainen and Valpola, 2017), VAT (Miyato et al., 2019), MixMatch (Berthelot et al., 2019), FixMatch (Sohn et al., 2020), CRMatch (Fan et al., 2023), FlexMatch (Zhang et al., 2021), AdaMatch (Berthelot et al., 2022), and SimMatch (Zheng et al., 2022), all of which exploit unlabeled data by encouraging invariant predictions to input perturbations (Sajjadi et al., 2016). The success of semi-supervised learning methods in the visual area motivates research in the NLP community. Typical techniques include VAMPIRE (Gururangan et al., 2019), MixText (Chen et al., 2020) and UDA (Xie et al., 2020). Under the low-density separation assumption, these SSL methods perform better than their fully-supervised counterparts while using only a fraction of labelled samples.\nCo-Training. It is a classic award-winning method for semi-supervised learning paradigm, training two (or more) deep neural networks on complementary views (i.e., data view from different sources that describe the same instances) (Blum and Mitchell, 1998). By minimizing the error on limited labelled examples and maximizing the\nagreement on sufficient unlabeled examples, the co-training framework finally achieves two accurate classifiers on each view in a semi-supervised manner (Qiao et al., 2018)."
+        },
+        {
+            "heading": "A.2 Hyperparameters",
+            "text": "The BERTBASE, as the teacher model, has a total of 109M parameters (the number of layers N=12, the hidden size d=768, the forward size d \u2032 =3072 and the head number h=12). We used the BERT tokenizer6 to tokenize the text. The source text\u2019s max sentence length is 512 for extractive summarization and 256 for text classification. For extractive summarization, we select the top 3 sentences according to the average length of the Oracle human-written summaries. We use the default dropout settings in our distilled BERT architecture. The ratio of token cutoff is set to 0.2, as suggested in (Yan et al., 2021; Shen et al., 2020). The ratio of dropout is set to 0.1. Adam optimizer with \u03b21 = 0.9, \u03b22 = 0.999 is used for fine-tuning. We set the learning rate 1e-4 for extractive summarization and 5e-3 for text classification, in which the learning rate warm-up is 20% of the total steps. The \u03bb for balancing supervised and unsupervised learning is set to 1 in all our experiments. The supervised batch size is set to 4, and the unsupervised batch size is 32 for the summarization task (16 for the classification task) in our experiments."
+        },
+        {
+            "heading": "A.3 Evaluation Methodology",
+            "text": "Extractive summarization quality is evaluated with ROUGE (Lin and Hovy, 2003). We report the full-length F1-based ROUGE-1, ROUGE-2, and ROUGE-L (R-1, R-2, and R-L), and these ROUGE scores are computed using ROUGE-1.5.5.pl script7. We report the accuracy (denoted as Acc) results in the text classification tasks."
+        },
+        {
+            "heading": "A.4 Baselines Details",
+            "text": "For the text classification task, TinyBERT (Jiao et al., 2020) is a compressed model implemented by 6-layer or 4-layer BERTBASE. For semi-supervised methods, we use the released code to train the UDA, which includes ready-made 12-layer BERTBASE, 6- layer, or 4-layer TinyBERT. FLiText (Liu et al., 2021) is a lightweight and fast semi-supervised learning framework for the text classification task. FLiText consists of two training stages. It first\n6https://github.com/google-research/bert 7https://github.com/andersjo/pyrouge\ntrains a large inspirer model (BERT) and then optimizes a target network (TextCNN).\nOther SSL algorithms integrated with BERT are implemented in a unified semi-supervised learning benchmark (USB) (Wang et al., 2022a) for classification, including Mean Teacher (Tarvainen and Valpola, 2017), VAT (Miyato et al., 2019), FixMatch (Sohn et al., 2020), CRMatch (Fan et al., 2023), AdaMatch (Berthelot et al., 2022), and SimMatch (Zheng et al., 2022), all utilizing unlabeled data for invariant predictions. We report their text classification results in the USB benchmark testing. PCM (Xu et al., 2022) is a complex multi-submodule combination SSL model with three components, a K-way classifier, the class semantic representation, and a class-sentence matching classifier. MixText (Chen et al., 2020) is a regularization-based SSL model with an interpolation-based augmentation technique. Both PCM and MixText use a 12-layer BERT as the backbone model.\nFor extractive summarization, we extend TinyBERT and UDA for classifying every sentence, termed as UDASUM and TinyBERTSUM. Specifically, multiple [CLS] symbols are inserted in\nfront of every sentence to represent each sentence and use their last hidden states to classify whether the sentence belongs to the summary. The SOTA semi-supervised extractive summarization model, CPSUM (Wang et al., 2022b), combines the noise-injected consistency training and the entropyconstrained pseudo labelling with the BERTBASE encoder. We also integrate the encoder of CPSUM with a slighter TinyBERT. It should be noted that the ORACLE system is an upper bound of the extractive summarization."
+        },
+        {
+            "heading": "A.5 Performance under Few-labels Settings",
+            "text": "The form using differently labelled data in Table 2 indicates that there is a large performance gap between the 12-layer models and 4-layer models with only 10 labelled data due to the dramatic reduction in model size.\nHowever, as shown in Table 11, in the extractive summarization tasks, DisCo works particularly well than the 12-layer models in the scenario of 100 labelled examples. The extractive summarization task is to classify every single sentence within a document, and the two views effectively encourage invariant prediction for unlabeled points\u2019 perturbations. DisCo achieves superior performance, as shown in Table 11, whether it uses only 10 or 1000 labelled data in extractive summarization. The superiority of DisCo with 4-layer BERT is more evident when processing 10 labelled extractive summarization, compared to CPSUM and UDASUM with 12-layer BERT. The results also indicate that our method can be suitable for extreme cases that suffer from severe data scarcity problems."
+        },
+        {
+            "heading": "A.6 More Different Model-view Analysis",
+            "text": "We further investigate the performance of different model view combinations in dual-students DisCo. As described in section 2.2.1, the model view encoding has two forms: Separated-layer KD (SKD) and Connected-layer KD (CKD). Results of DisCo equipped with different model-view variants on the\ntext classification tasks are summarized in Table 10. Although all three combinations of model views achieve improvement (compared to results in Table 2), the combinations of CKD and SKD for two students perform slightly better than other combinations. According to Sun et al. (2019), distilling across alternate k layers in knowledge distillation captures more diverse representations, while distilling along connected k layers tends to capture relatively homogeneous representations. By combining these two distinct strategies of model view encoding, DisCo acquires additional inductive bias for each student in the cohort, resulting in improved performance on downstream tasks."
+        },
+        {
+            "heading": "A.7 More Different Data-view Analysis",
+            "text": "In Figure 3, we visualize the effect of DisCo (4- layer) integrating different data views encoding methods in the summarization task. We find that: DisCo integrating with the adversarial attack (AD) obtains superior performances, especially when data view is the adversarial attack in a SOFT FORM (ADA, ADB). DisCo with HARD FORM data views like (ADA, DOB) or (DOA, ADB) get sub-optimal effectiveness. This suggests that more advanced data augmentation methods pave the way for a more refined data view."
+        },
+        {
+            "heading": "A.8 Model Ensembling for Multiple Students",
+            "text": "Model ensembling is an effective strategy, often yielding superior performance compared to individual models. As shown in Table 12, using simple model averaging for the 4-layer student model from Table 2 resulted in enhanced performance.\nHowever, the core focus of our research is to ascertain the potential of a single model within our framework. Training requires two or more student models, but only one is essential for inference. Having multiple students during training ensures performance comparable to the teacher model, while selecting one student for inference upholds computational efficiency. Diving deeper into ensemble techniques to further amplify performance wasn\u2019t our primary objective."
+        },
+        {
+            "heading": "A.9 Selection of MSE or KL Loss",
+            "text": "In our framework, we use the MSE loss to align the logits of the students. However, besides using MSE loss, employing Kullback-Leibler (KL) divergence to maintain consistency between the student predictions is also a widely chosen approach. We prefer the MSE loss in our framework because the student can learn better without suffering from the information loss that occurs when passing through logits to probability space (Ba and Caruana, 2014).\nAs shown in Table 13, the 4-layer DisCo with MSE loss performs better in the majority of cases. However, when labeled data is extremely limited\n(e.g., 10 per class), KL divergence may surpass MSE in performance. This can be attributed to the noisy predictions produced by the student model, as its performance is not optimal because of the limited labeled data. KL divergence enforces label matching, thereby reducing issues resulting from corrupted knowledge transferred from another student model (Kim et al., 2021)."
+        },
+        {
+            "heading": "A.10 Details in Loss Landscape Visualization",
+            "text": "Our loss visualization approach adheres to the \u2018filter normalization\u2019 method (Li et al., 2018). For each setting, we select the top-performing student checkpoint based on its validation set results. Subsequently, we generate two random vectors and normalize them using parameters specific to each model. Ultimately, using the same training data and augmentation techniques, we plot the training loss landscape following the two normalized directions."
+        }
+    ],
+    "title": "DisCo: Distilled Student Models Co-training for Semi-supervised Text Mining",
+    "year": 2023
+}

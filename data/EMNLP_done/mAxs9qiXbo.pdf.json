@@ -1,0 +1,783 @@
+{
+    "abstractText": "Most existing debiasing methods for multimodal models, including causal intervention and inference methods, utilize approximate heuristics to represent the biases, such as shallow features from early stages of training or unimodal features for multimodal tasks like VQA, etc., which may not be accurate. In this paper, we study bias arising from confounders in a causal graph for multimodal data, and examine a novel approach that leverages causallymotivated information minimization to learn the confounder representations. Robust predictive features contain diverse information that helps a model generalize to out-of-distribution data. Hence, minimizing the information content of features obtained from a pretrained biased model helps learn the simplest predictive features that capture the underlying data distribution. We treat these features as confounder representations and use them via methods motivated by causal theory to remove bias from models. We find that the learned confounder representations indeed capture dataset biases and the proposed debiasing methods improve out-of-distribution (OOD) performance on multiple multimodal datasets without sacrificing in-distribution performance. Additionally, we introduce a novel metric to quantify the sufficiency of spurious features in models\u2019 predictions that further demonstrates the effectiveness of our proposed methods.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Vaidehi Patil"
+        },
+        {
+            "affiliations": [],
+            "name": "Adyasha Maharana"
+        },
+        {
+            "affiliations": [],
+            "name": "Mohit Bansal"
+        }
+    ],
+    "id": "SP:53f017f0d038fbc9e77332ee462302b365499c5d",
+    "references": [
+        {
+            "authors": [
+                "Vedika Agarwal",
+                "Rakshith Shetty",
+                "Mario Fritz."
+            ],
+            "title": "Towards causal vqa: Revealing and reducing spurious correlations by invariant and covariant semantic editing",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aishwarya Agrawal",
+                "Dhruv Batra",
+                "Devi Parikh"
+            ],
+            "title": "Analyzing the behavior of visual question",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Aishwarya Agrawal",
+                "Dhruv Batra",
+                "Devi Parikh",
+                "Aniruddha Kembhavi."
+            ],
+            "title": "Don\u2019t just assume; look and answer: Overcoming priors for visual question answering",
+            "venue": "IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Aishwarya Agrawal",
+                "Dhruv Batra",
+                "Devi Parikh",
+                "Aniruddha Kembhavi."
+            ],
+            "title": "Don\u2019t just assume; look and answer: Overcoming priors for visual question answering",
+            "venue": "Proceedings of the IEEE conference on computer vision and pattern recognition,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Stanislaw Antol",
+                "Aishwarya Agrawal",
+                "Jiasen Lu",
+                "Margaret Mitchell",
+                "Dhruv Batra",
+                "C. Lawrence Zitnick",
+                "Devi Parikh."
+            ],
+            "title": "VQA: Visual Question Answering",
+            "venue": "International Conference on Computer Vision (ICCV).",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Mohammad Taha Bahadori",
+                "David Heckerman."
+            ],
+            "title": "Debiasing concept-based explanations with causal analysis",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Remi Cadene",
+                "Corentin Dancette",
+                "Matthieu Cord",
+                "Devi Parikh"
+            ],
+            "title": "Rubi: Reducing unimodal biases for visual question answering",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Long Chen",
+                "Xin Yan",
+                "Jun Xiao",
+                "Hanwang Zhang",
+                "Shiliang Pu",
+                "Yueting Zhuang."
+            ],
+            "title": "Counterfactual samples synthesizing for robust visual question answering",
+            "venue": "CVPR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Long Chen",
+                "Yuhang Zheng",
+                "Jun Xiao."
+            ],
+            "title": "Rethinking data augmentation for robust visual question answering",
+            "venue": "Computer Vision - ECCV 2022 - 17th European Conference, Tel Aviv, Israel, October 2327, 2022, Proceedings, Part XXXVI, volume 13696",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jae Won Cho",
+                "Dong-Jin Kim",
+                "Hyeonggon Ryu",
+                "In So Kweon."
+            ],
+            "title": "Generative bias for robust visual question answering",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Somnath Basu Roy Chowdhury",
+                "Snigdha Chaturvedi."
+            ],
+            "title": "Learning fair representations via rate-distortion maximization",
+            "venue": "arXiv preprint arXiv:2202.00035.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Christopher Clark",
+                "Mark Yatskar",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Don\u2019t take the easy way out: Ensemble based methods for avoiding known dataset biases",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th In-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Sabri Eyuboglu",
+                "Maya Varma",
+                "Khaled Kamal Saab",
+                "Jean-Benoit Delbrouck",
+                "Christopher Lee-Messer",
+                "Jared Dunnmon",
+                "James Zou",
+                "Christopher Re."
+            ],
+            "title": "Domino: Discovering systematic errors with cross-modal embeddings",
+            "venue": "International Confer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhe Gan",
+                "Yen-Chun Chen",
+                "Linjie Li",
+                "Chen Zhu",
+                "Yu Cheng",
+                "Jingjing Liu."
+            ],
+            "title": "Large-scale adversarial training for vision-and-language representation learning",
+            "venue": "Advances in Neural Information Processing Systems, 33:6616\u20136628.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Robert Geirhos",
+                "J\u00f6rn-Henrik Jacobsen",
+                "Claudio Michaelis",
+                "Richard Zemel",
+                "Wieland Brendel",
+                "Matthias Bethge",
+                "Felix A Wichmann."
+            ],
+            "title": "Shortcut learning in deep neural networks",
+            "venue": "Nature Machine Intelligence, 2(11):665\u2013673.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Madelyn Glymour",
+                "Judea Pearl",
+                "Nicholas P Jewell."
+            ],
+            "title": "Causal inference in statistics: A primer",
+            "venue": "John Wiley & Sons.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Tejas Gokhale",
+                "Pratyay Banerjee",
+                "Chitta Baral",
+                "Yezhou Yang."
+            ],
+            "title": "MUTANT: A training paradigm for out-of-distribution generalization in visual question answering",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Y. Goyal",
+                "T. Khot",
+                "D. Summers-Stay",
+                "D. Batra",
+                "D. Parikh."
+            ],
+            "title": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering",
+            "venue": "2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jianqiang Huang",
+                "Yu Qin",
+                "Jiaxin Qi",
+                "Qianru Sun",
+                "Hanwang Zhang."
+            ],
+            "title": "Deconfounded visual grounding",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, volume 36, pages 998\u2013 1006.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Drew A Hudson",
+                "Christopher D Manning."
+            ],
+            "title": "Gqa: A new dataset for real-world visual reasoning and compositional question answering",
+            "venue": "Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 6700\u20136709.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Allan Jabri",
+                "Armand Joulin",
+                "Laurens van der Maaten."
+            ],
+            "title": "Revisiting visual question answering baselines",
+            "venue": "Computer Vision \u2013 ECCV 2016, pages 727\u2013739, Cham. Springer International Publishing.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Jingjing Jiang",
+                "Ziyi Liu",
+                "Yifan Liu",
+                "Zhixiong Nan",
+                "Nanning Zheng."
+            ],
+            "title": "X-ggm: Graph generative modeling for out-of-distribution generalization in visual question answering",
+            "venue": "Proceedings of the 29th ACM International Conference on Multimedia, pages",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nitish Joshi",
+                "Xiang Pan",
+                "He He."
+            ],
+            "title": "Are all spurious features in natural language alike? an analysis through a causal lens",
+            "venue": "arXiv preprint arXiv:2210.14011.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nathan Kallus",
+                "Xiaojie Mao",
+                "Madeleine Udell."
+            ],
+            "title": "Causal inference with noisy and missing covariates via matrix factorization",
+            "venue": "Advances in neural information processing systems, 31.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Corentin Kervadec",
+                "Grigory Antipov",
+                "Moez Baccouche",
+                "Christian Wolf"
+            ],
+            "title": "Roses are red, violets are blue... but should vqa expect them to",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Polina Kirichenko",
+                "Pavel Izmailov",
+                "Andrew Gordon Wilson."
+            ],
+            "title": "Last layer re-training is sufficient for robustness to spurious correlations",
+            "venue": "arXiv preprint arXiv:2204.02937.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Camila Kolling",
+                "Martin More",
+                "Nathan Gavenski",
+                "Eduardo Pooch",
+                "Ot\u00e1vio Parraga",
+                "Rodrigo C. Barros."
+            ],
+            "title": "Efficient counterfactual debiasing for visual question answering",
+            "venue": "Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vi-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Camila Kolling",
+                "Martin More",
+                "Nathan Gavenski",
+                "Eduardo Pooch",
+                "Ot\u00e1vio Parraga",
+                "Rodrigo C Barros."
+            ],
+            "title": "Efficient counterfactual debiasing for visual question answering",
+            "venue": "Proceedings of the IEEE/CVF winter conference on applications of computer vision,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Camila Kolling",
+                "Martin More",
+                "Nathan Gavenski",
+                "Eduardo Pooch",
+                "Ot\u00e1vio Parraga",
+                "Rodrigo C. Barros."
+            ],
+            "title": "Efficient counterfactual debiasing for visual question answering",
+            "venue": "2022 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Linjie Li",
+                "Zhe Gan",
+                "Jingjing Liu."
+            ],
+            "title": "A closer look at the robustness of vision-and-language pretrained models",
+            "venue": "CoRR, abs/2012.08673.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiangru Lin",
+                "Ziyi Wu",
+                "Guanqi Chen",
+                "Guanbin Li",
+                "Yizhou Yu."
+            ],
+            "title": "A causal debiasing framework for unsupervised salient object detection",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, volume 36, pages 1610\u20131619.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ruyang Liu",
+                "Hao Liu",
+                "Ge Li",
+                "Haodi Hou",
+                "TingHao Yu",
+                "Tao Yang."
+            ],
+            "title": "Contextual debiasing for visual recognition with causal mechanisms",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 12755\u201312765.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Agnieszka Miko\u0142ajczyk-Bare\u0142a"
+            ],
+            "title": "Data augmentation and explainability for bias discovery and mitigation in deep learning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yulei Niu",
+                "Kaihua Tang",
+                "Hanwang Zhang",
+                "Zhiwu Lu",
+                "Xian-Sheng Hua",
+                "Ji-Rong Wen."
+            ],
+            "title": "Counterfactual vqa: A cause-effect look at language bias",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 12700\u2013",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Eric W Noreen."
+            ],
+            "title": "Computer-intensive methods for testing hypotheses",
+            "venue": "Wiley New York.",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "Yonghua Pan",
+                "Zechao Li",
+                "Liyan Zhang",
+                "Jinhui Tang."
+            ],
+            "title": "Causal inference with knowledge distilling and curriculum learning for unbiased vqa",
+            "venue": "ACM Transactions on Multimedia Computing, Communications, and Applications (TOMM), 18(3):1\u201323.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Judea Pearl."
+            ],
+            "title": "Direct and indirect effects",
+            "venue": "Probabilistic and Causal Inference: The Works of Judea Pearl, pages 373\u2013392.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Judea Pearl"
+            ],
+            "title": "Models, reasoning and inference",
+            "venue": "Cambridge, UK: CambridgeUniversityPress, 19(2).",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Maxime Peyrard",
+                "Sarvjeet Ghotra",
+                "Martin Josifoski",
+                "Vidhan Agarwal",
+                "Barun Patra",
+                "Dean Carignan",
+                "Emre Kiciman",
+                "Saurabh Tiwary",
+                "Robert West."
+            ],
+            "title": "Invariant language modeling",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aahlad Manas Puli",
+                "Nitish Joshi",
+                "He He",
+                "Rajesh Ranganath"
+            ],
+            "title": "Nuisances via negativa: Adjusting for spurious correlations via data augmentation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sainandan Ramakrishnan",
+                "Aishwarya Agrawal",
+                "Stefan Lee."
+            ],
+            "title": "Overcoming language priors in visual question answering with adversarial regularization",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Axel Sauer",
+                "Andreas Geiger"
+            ],
+            "title": "Counterfactual generative networks",
+            "venue": "In International Conference on Learning Representations",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ramprasaath R Selvaraju",
+                "Stefan Lee",
+                "Yilin Shen",
+                "Hongxia Jin",
+                "Shalini Ghosh",
+                "Larry Heck",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Taking a hint: Leveraging explanations to make vision and language models more grounded",
+            "venue": "Proceedings of the IEEE/CVF",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Rajat Sen",
+                "Karthikeyan Shanmugam",
+                "Murat Kocaoglu",
+                "Alex Dimakis",
+                "Sanjay Shakkottai."
+            ],
+            "title": "Contextual bandits with latent confounders: An nmf approach",
+            "venue": "Artificial Intelligence and Statistics, pages 518\u2013527. PMLR.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Claude Elwood Shannon."
+            ],
+            "title": "A mathematical theory of communication",
+            "venue": "The Bell system technical journal, 27(3):379\u2013423.",
+            "year": 1948
+        },
+        {
+            "authors": [
+                "Ravid Shwartz-Ziv",
+                "Naftali Tishby."
+            ],
+            "title": "Opening the black box of deep neural networks via information",
+            "venue": "Information Flow in Deep Neural Networks, page 24.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alane Suhr",
+                "Stephanie Zhou",
+                "Ally Zhang",
+                "Iris Zhang",
+                "Huajun Bai",
+                "Yoav Artzi."
+            ],
+            "title": "A corpus for reasoning about natural language grounded in photographs",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hao Tan",
+                "Mohit Bansal."
+            ],
+            "title": "LXMERT: Learning cross-modality encoder representations from transformers",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natu-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kaihua Tang",
+                "Yulei Niu",
+                "Jianqiang Huang",
+                "Jiaxin Shi",
+                "Hanwang Zhang."
+            ],
+            "title": "Unbiased scene graph generation from biased training",
+            "venue": "Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 3716\u20133725.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhiqiang Tang",
+                "Yunhe Gao",
+                "Leonid Karlinsky",
+                "Prasanna Sattigeri",
+                "Rogerio Feris",
+                "Dimitris Metaxas."
+            ],
+            "title": "Onlineaugment: Online data augmentation with less domain knowledge",
+            "venue": "Computer Vision\u2013 ECCV 2020: 16th European Conference, Glasgow,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Robert J Tibshirani",
+                "Bradley Efron."
+            ],
+            "title": "An introduction to the bootstrap",
+            "venue": "Monographs on statistics and applied probability, 57:1\u2013436.",
+            "year": 1993
+        },
+        {
+            "authors": [
+                "Tyler VanderWeele."
+            ],
+            "title": "Explanation in causal inference: methods for mediation and interaction",
+            "venue": "Oxford University Press.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Victor Veitch",
+                "Alexander D\u2019Amour",
+                "Steve Yadlowsky",
+                "Jacob Eisenstein"
+            ],
+            "title": "Counterfactual invariance to spurious correlations in text classification",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhiquan Wen",
+                "Guanghui Xu",
+                "Mingkui Tan",
+                "Qingyao Wu",
+                "Qi Wu."
+            ],
+            "title": "Debiased visual question answering from feature and sample perspectives",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jialin Wu",
+                "Raymond Mooney."
+            ],
+            "title": "Self-critical reasoning for robust visual question answering",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Wanqian Yang",
+                "Polina Kirichenko",
+                "Micah Goldblum",
+                "Andrew G Wilson"
+            ],
+            "title": "Chroma-vae: Mitigating shortcut learning with generative classifiers",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuofan Ying",
+                "Peter Hase",
+                "Mohit Bansal."
+            ],
+            "title": "Visfis: Visual feature importance supervision with right-for-the-right-reason objectives",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peng Zhang",
+                "Yash Goyal",
+                "Douglas Summers-Stay",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Yin and yang: Balancing and answering binary visual questions",
+            "venue": "2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 5014\u20135022.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Peng Zhang",
+                "Yash Goyal",
+                "Douglas Summers-Stay",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Yin and yang: Balancing and answering binary visual questions",
+            "venue": "2016 IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2016, Las Vegas, NV, USA,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Wenkai Zhang",
+                "Hongyu Lin",
+                "Xianpei Han",
+                "Le Sun."
+            ],
+            "title": "De-biasing distantly supervised named entity recognition via causal intervention",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Huang"
+            ],
+            "title": "A|E\u0109\u2208D\u0109 [f(M, \u0109)",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "CP"
+            ],
+            "title": "NLVR2 (Suhr et al., 2019): It helps the generalization to multimodal tasks other than question answering. It helps evaluate reasoning abilities about sets of objects, comparisons",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "The success of multimodal models in various tasks has been attributed to their ability to rely on spurious correlations (or biases) present in the training data (Jabri et al., 2016; Agrawal et al., 2016; Zhang et al., 2016a; Goyal et al., 2017). An example of image bias in VQA is when the model tends to look at prominent objects in the image rather than focusing on the object about which the question\n1Our code is available at: https://github.com/ Vaidehi99/CausalInfoMin\nis asked (Wen et al., 2021) (see Fig. 1). These models leverage such biases to perform well on in-distribution (ID) evaluation data (Agrawal et al., 2018a). However, their poor performance on outof-distribution data reveals that they merely rely on superficial features rather than capturing the true causal relationships between inputs and targets.\nExisting methods attempt to diminish a model\u2019s reliance on these shortcuts by taking one or both of two primary strategies: (a) by balancing the sample groups with and without spurious correlation, e.g. via data augmentation (Gokhale et al., 2020) or sample synthesis (Chen et al., 2020, 2022; Kolling et al., 2022a), and (b) by explicitly eliminating the impact of spurious correlations during model training or inference (Huang et al., 2022; Lin et al., 2022; Pan et al., 2022). In the former approach, the identification of the unique set of spurious correlations in each sample becomes essential to curate augmented samples for achieving balance. Consequently, approaches that alleviate biases in features or predictions, independent of the availability of non-spurious data, are more desirable. Such meth-\nods also offer the additional advantage of being agnostic to the specific dataset and task at hand.\nRecent research on debiasing models has emphasized the significance of causal theory (Zhang et al., 2021; Liu et al., 2022; Bahadori and Heckerman, 2020) i.e., many spurious correlations originate from confounding variables that induce noncausal dependencies between inputs and labels (Pearl et al., 2000). However, effectively identifying and representing biases that undermine prediction accuracy remains a challenging task. Previous studies on multimodal models have utilized image features from early training stages as contextual biases for multi-label image classification (Liu et al., 2022), or introduced unimodal training branches to mitigate spurious correlations in Visual Question Answering (VQA) (Niu et al., 2021). Moreover, these approaches overlook biases stemming from multimodal interactions within their causal graphs. Hence, in this work, we represent the bias as confounder variables that have a direct causal effect on multimodal features and the corresponding predictions (see Fig. 2(a)). Spurious correlations represent the simplest predictive features that explain biased datasets (Geirhos et al., 2020), thereby making them easily learnable by machine learning models under limited representation capacity (Yang et al., 2022). We capitalize on this notion to study a novel framework that combines information theory and causal graphs to learn confounder representations capable of capturing spurious features. We examine two approaches to learn the confounder representations by imposing information loss on biased multimodal features i.e., (a) latent variable modeling using a generative model and (b) rate-distortion minimization (Shannon, 1948). Subsequently, we utilize these confounders in our proposed debiasing methods, namely ATE-D and TE-D, leveraging the concepts of average treatment effect (Glymour et al., 2016) and total effect (Pearl, 2022) causal mechanisms, respectively.\nIn ATE-D, we employ an autoencoder to reconstruct the biased features. The autoencoder projects these features into a lower-dimensional latent space, capturing latent features that act as substitutes for unobserved confounders (Huang et al., 2022). By clustering the learned confounder representations across the dataset, we construct a dictionary of confounders. We subsequently perform backdoor adjustment based on the average treatment effect, utilizing feature reweighting (Kirichenko et al.,\n2022). In TE-D, we leverage the rate-distortion function which controls the number of bits required to encode a set of vector representations (Chowdhury and Chaturvedi, 2022). We minimize the ratedistortion function for a non-linear projection of the features extracted from a biased pretrained model, while simultaneously minimizing the cross-entropy loss of predicting from these projected features. This results in the loss of diverse information from the features and the retention of simple features that are also maximally predictive of the biased dataset. We treat these features as the confounder representations that stem from spurious correlations in the dataset and compute the (unbiased) total effect of the input by taking the difference between the biased feature and its respective confounder.\nWe evaluate the proposed methods on several multimodal tasks and along multiple dimensions i.e., in-distribution and out-of-distribution performance, efficiency, and robustness. Results show that these methods not only outperform baseline models with lower training overhead but also yield additional gains on top of unimodal debiasing methods. In this work, we demonstrate the presence of multimodal biases and the need for multimodal debiasing along with the potential of confounder modeling via information loss in causal multimodal debiasing. Our contributions are as follows:\n\u2022 We present two methods, TE-D and ATE-D, that leverage causally-motivated information loss to learn confounder representations from biased features and utilize them to debias models.\n\u2022 Our methods remove multimodal biases and yield up to 2.2% and 2.5% gains over LXMERT (Tan and Bansal, 2019), on VQA-CP and GQA-OOD (Kervadec et al., 2021) datasets respectively, and 0.7% gains on top of unimodal debiasing (Wen et al., 2021). Importantly, our methods exhibit superior parameter efficiency and reduced training time compared to existing debiasing methods.\n\u2022 We propose a sufficiency score (\u03bb) for quantifying the reliance of models on spurious features. Results show that our methods improve robustness to spurious correlations in the dataset.\n\u2022 We analyze the confounders learnt in ATE-D, TE-D and show that they encode dataset biases."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Data Augmentation. Balancing data (Zhang et al., 2016b) can involve training a generative\nmodel for sample synthesis (Agarwal et al., 2020; Sauer and Geiger, 2020), designing suitable data selection heuristics (Chen et al., 2020), or curating balanced/counterfactual samples (Goyal et al., 2017; Gokhale et al., 2020; Kolling et al., 2022c). Human explanations can be used as additional training signals to promote reasoning (Ying et al., 2022; Wu and Mooney, 2019; Selvaraju et al., 2019). We debias models using existing biased data.\nInductive Bias in Model Architecture. Agrawal et al. (2018a) explicitly design inductive biases to prevent the model from relying on training priors. Clark et al. (2019); Cadene et al. (2019); Ramakrishnan et al. (2018) rely on a separate QA branch to weaken the language prior in VQA models via adversarial or multi-task learning. Wen et al. (2021) use contrastive loss to remove unimodal biases for VQA. Peyrard et al. (2022) discover invariant correlations in data across different training distributions to enable generalization.\nInductive Bias for Modeling Confounders. Kallus et al. (2018) recover latent confounders via low-rank matrix factorization and Sen et al. (2017) utilize low-dimensional variables for encoding confounders. We use low-dimensional features to limit representational capacity for encoding confounders in multimodal data.\nCausal Perspective. Lin et al. (2022) use causal intervention through backdoor adjustment (Glymour et al., 2016) to disentangle the biases for unsupervised salient object detection. Huang et al. (2022) use ATE to debias referring expression models. Niu et al. (2021) compute the Total Indirect Effect (TIE) of the multimodal branch to omit the influence of unimodal branches. Veitch et al. (2021) formalize counterfactual invariance and its relation to OOD performance. Liu et al. (2022) use features from early training as confounders and compute the Total Direct Effect (TDE) for multi-label image classification. We combine information theory and causal theory to learn confounders from biased representations and use them via ATE and TE causal mechanisms to debias a model."
+        },
+        {
+            "heading": "3 Causal Theory Preliminaries",
+            "text": "In this section, we discuss our proposed causal graph for multimodal tasks and the two causal mechanisms relevant to our debiasing methods.\nCausal Graph. Causal graphs are directed acyclic graphs G = {V, E} where the edges E\nare used to represent causal relationships between random variables V . When the variable Q has an indirect effect on A through a variable M i.e. Q \u2192 M \u2192 A, the variable M is said to be a mediator in the causal graph (see Fig. 2(a)). If a variable C has a direct causal effect on both M and A, it is said to be a confounder.\nCausal Perspective for Multimodal Tasks. Multimodal models for tasks combining vision (V ) and language (Q) often face the challenge of confounding variables, which introduce spurious features. Current approaches rooted in causal theory aim to mitigate direct unimodal effects. However, a VQA example (Fig. 1) highlights a limitation: models trained predominantly on centrally located objects struggle with queries about obscured object colors. Existing causal graphs for multimodal tasks fail to account for spurious correlations arising from such interactions. To address this, we propose a confounder C that influences both the mediator M and the answer A (Fig.2(a)). By modeling biases encoded in multimodal features as confounder C, we can eliminate biases using causal intervention.\nIn order to debias VQA models, we adopt two causal mechanisms i.e., the Average Treatment Effect (ATE) and Total Effect (TE), which essentially refer to the same quantity but differ in how they deal with the confounder (VanderWeele, 2015; Tang et al., 2020a). In ATE, C is treated as a distribution, and c is sampled by assuming implicit causal association with the treatment M = m. In TE, c has an explicit causal association with the treatment M = m in each sample. We explore both in our work and discuss their theories below.\nAverage Treatment Effect. The aim of causal inference is to estimate the independent effect of an intervention on a treatment variable M on\nan outcome of interest A i.e. to estimate the conditional probability distribution P (A|do(M)) where the do-operation implies the causal effect of M \u2192 A. However, standard models are optimized to infer the observational conditional probability P (A|M). In the presence of confounders i.e. variables c \u2208 C that affect both A and M , P (A|M) \u0338= P (A|do(M)). P (A|do(M)) can be estimated using backdoor adjustment by controlling for all values of the confounders c \u2208 C as:\nP (A|do(M)) = Ec\u223cC [P (A|M, c)] (1)\nThis translates to an empirical sum over all possible values of the confounder in practice, also known as the average treatment effect (ATE) (see Fig. 2(b)). When the confounders are known and observed, the confounder values are selected using suitable heuristics (Pearl et al., 2000). However, observing all confounders is not always possible. Hence, we model the variables that can be used as substitutes for the confounders via latent representations in autoencoders (Sen et al., 2017; Kallus et al., 2018). Huang et al. (2022) use average treatment effectbased debiasing for the task of visual grounding by modeling confounders.\nTotal Effect. We need to isolate the causal effect of M = m on A, free from the influence of the confounders C. According to causal theory, the total effect (TE) of treatment M = m on A is,\nTE = Am,Cm \u2212Am\u2217,Cm (2)\nwhere M = m, M = m\u2217 represent \u2018treatment\u2019 and \u2018no treatment\u2019 conditions respectively; Cm is the confounder under treatment and Am,Cm is the answer in the presence of treatment as well as con-\nfounder. The direct effect of Cm on M is eliminated by retaining the confounder on both sides of the difference (see Fig. 2(c)). In practice, we take the difference between feature representations of Am,Cm , Am\u2217,Cm i.e. Zm,c, Zm\u2217,c respectively, to eliminate the effect of Cm (see Sec. 4.2)."
+        },
+        {
+            "heading": "4 Debiasing Methods: ATE-D and TE-D",
+            "text": "Kirichenko et al. (2022) show that machinelearning models learn spurious as well as nonspurious features when trained on a biased dataset, but over-rely on the former for making predictions. In Sec. 1, we discussed how confounder variables contribute to these spurious predictions. Further, Yang et al. (2022) show empirically that deep models preferentially encode dataset shortcuts under limited representation capacity. Indeed, neural nets are expected to trade-off between maximal compression of the learnt representations and maximal fitting to the labels (Information-Bottleneck) (Shwartz-Ziv and Tishby, 2022). Hence, we propose information minimization, by limiting representation capacity via low-dimensional vectors, to learn the bias/confounder features. Similar approaches exist i.e. Kallus et al. (2018) recover latent confounders by performing low-rank matrix factorization on high-dimensional data, and Sen et al. (2017) use low-dimensional variable to encode confounder. We propose two methods to learn and use confounder features for debiasing: (a) latent variable modeling in ATE-D and (b) rate-distortion minimization in TE-D. In both approaches, the biased features are projected into low-dimensional vectors through various mechanisms, limiting their representation capacity and promoting information minimization. Subsequent\nsections further elaborate these methods."
+        },
+        {
+            "heading": "4.1 ATE-D: Deconfounding Using Average Treatment Effect",
+            "text": "We follow a 2-step framework where we start with a pre-trained biased model, then (1) obtain the substitute confounders from the latent variables of autoencoder (Huang et al., 2022) and (2) use these confounders to debias the pretrained model using feature reweighing (Kirichenko et al., 2022).\nStep 1: We collect the biased features r \u2208 R from a biased model for all samples in the training data and train an autoencoder composed of dense layers (Fenc, Fdec) to encode them into a lower dimension (see top, Fig. 3). The latent dimensions of the generative model capture the most common biases in the dataset and serve as a substitute for the confounders. We use a small-capacity network in order to capture the biases stemming from spurious correlations in the latent dimensions and avoid encoding the correct predictive features. Fenc, Fdec are trained using the reconstruction loss Lrecon = d(R,R), where d(, ) is the Euclidean distance function. We model the substitute confounders c\u0302 \u2208 C\u0302 for R (\u0302. represents approximation) and cluster them to get a dictionary Dc\u0302, which represents the main elements of C\u0302 for efficient backdoor adjustment (Eqn. 1).\nStep 2: Kirichenko et al. (2022) show that nonspurious features can be emphasized in biased features by reweighing them using a balanced dataset. However, creating balanced data is nontrivial for complex tasks like VQA. To overcome this challenge, we instead create an instantiation of backdoor adjustment that reweighs biased features based on their similarity with the substitute confounders (see bottom, Fig. 3). We hypothesize that this leads to lower weights for the simple spuri-\nous features and higher weights for more complex predictive features, alleviating the over-reliance on spurious features for prediction. For a sequence of biased features r = [r1, r2, ..., rk], we recalibrate each ri according to their similarity with the confounders in Dc i.e., the weight wi for ri is,\nwi = 1\u2212 1\nlen(Dg\u0302) \u2211 gj\u2208Dg\u0302 s(Fenc(ri), gj) (3)\nwhere s(.) is the cosine-similarity function (see ATE-based recalibration in Fig. 3 and see Appendix for explanation of recalibration as an instantiation of back-door adjustment).\nr\u2032i = wi \u2217 ri;R\u2032 = [r\u20321, r\u20322, ..., r\u2032k] (4)\nThe resulting debiased features R\u2032 are then used to replace R as shown in Fig. 3."
+        },
+        {
+            "heading": "4.2 TE-D: Debiasing Using Rate-Distortion & Total Effect",
+            "text": "The rate-distortion function R(Z, \u03f5) measures the minimum number of bits per vector required to encode the sequence Z = {z1, z2, ...zn} \u2208 Rn\u00d7d such that the decoded vectors {z\u0302}ni=1 can be recovered up to a precision \u03f52 i.e.,\nR(Z, \u03f5) = 1\n2 log2det(I +\nd\nn\u03f52 ZZT ) (5)\nwhere 1nZZ T is the estimate of covariance matrix for the Gaussian distribution (Chowdhury and Chaturvedi, 2022) and assuming that the vectors are i.i.d. samples from N (0, 1). Rate-distortion values are higher for distribution with high variance (diverse features). Hence, we minimize the rate-distortion to learn confounder representations in TE-D. Our implementation is illustrated in Fig. 4. Given a biased model with parameters \u03b8, we first obtain the biased feature z\u03b8. Then, we encode the\nz\u03b8 into a lower dimension to promote information loss, along with a classification head (Lconfce ) to encourage retaining predictiveness of the information present in the encodings, which we treat as the confounder representation zc. Finally, we enforce rate-distortion minimization (R(zc, \u03f5)) on zc for promoting the loss of complex feature information. We enforce a stop gradient (see in Fig. 4) prior to the encoder in order to prevent the training signals for learning confounder representations from seeping into the parameters of the biased model.\nIn order to isolate the causal effect of M , we need to cut off the link C \u2192 M (see Fig. 2(c)). This can be achieved by computing the total effect (see Sec. 3) i.e., Am,c \u2212 Am\u2217,c, where m and m\u2217 represent the treatment and no-treatment conditions respectively, while c represents the confounder resulting from M = m. We implement this at the feature level by representing Am,c with the biased features z\u03b8 and Am\u2217,c with the confounder features zc. Next, we take the difference of those features to secure zte\u03b8 which represents the direct effect of M . i.e. zte\u03b8 = z\u03b8\u2212zc. We further aid the debiasing process by enforcing a contrastive loss between the three sets of features z\u03b8, zc, zte\u03b8 as:\nLcon = log es(z\nte \u03b8 ,z\u03b8)\nes(z te \u03b8 ,z\u03b8) + es(z te \u03b8 ,zc)\n(6)\nwhere s(.) is the cosine similarity function. The contrastive loss penalizes the model when the confounder is correlated with the biased feature z\u03b8 and hence, promotes debiasing of the multimodal backbone itself. In summary, we jointly optimize the model for learning confounder representations via Lconfce , R(Zc, \u03f5) and debiasing with the help of the learned confounders via Lcon,Lce i.e., \u03b8deconf = argmin\u03b8Lcon+Lce+Lconfce +\u03b1R(Zc, \u03f5), where \u03b1 is the weight factor for rate-distortion loss."
+        },
+        {
+            "heading": "4.3 Causal Debiasing vs. Data Augmentation",
+            "text": "Data augmentation is an effective and popular method for enhancing model robustness (Puli et al., 2023; Gokhale et al., 2020; Chen et al., 2020), however, it presents certain constraints, particularly when employed in the context of debiasing within VQA models, such as:\nDependency on prior knowledge. Data augmentation typically hinges on pre-existing knowledge of potential biases within the dataset. For instance, Miko\u0142ajczyk-Bare\u0142a (2023) use knowledge of biases i.e. the presence of shape and texture bias\nin data to augment data based on style transfer, Gokhale et al. (2020) identify unimodal biases to augment multimodal datasets. However, such awareness may not be comprehensive or entirely precise. Consequently, the efficacy of data augmentation is contingent on the accuracy and completeness of the a priori understanding of the biases underpinning the augmentation strategy. Conversely, methods that manipulate representation vectors directly to remove biases, such as our proposed debiasing techniques, extract spurious correlations from the data without requiring predefined assumptions about specific biases.\nScalability and cost implications. The creation of augmented datasets is often time-intensive as well as cost-intensive (Sauer and Geiger, 2020). The process demands domain expertise to adeptly identify and apply augmentations (Tang et al., 2020b). This resource-intensive nature of data augmentation can curtail its applicability, especially when used for models that must adapt to a multitude of diverse, evolving sources of bias.\nAutomated discovery of spurious correlations, as performed in our proposed methods ATE-D and TE-D, is advantageous over data augmentation when dataset biases are inadequately defined or in a state of perpetual flux. For instance, in numerous real-world applications, the dataset may harbor concealed or subtle biases that evade detection through manual inspection or domain expertise. Similarly, in dynamic environments, dataset biases can undergo periodic shifts. As a result, pre-established augmentation strategies become unviable for such scenarios. The techniques proposed in this work can adapt to the changing characteristics of data within a black box, making them more useful.\nAnother research thread aims to uncover coherent data subsets on which machine learning models exhibit subpar performance, such as the approach introduced in Domino (Eyuboglu et al., 2021). When these underperforming slices are accurately identified and labeled, it offers an opportunity to enhance model robustness by either updating the training dataset or employing optimization techniques designed to handle systematic performance issues in these slices. While this method aligns with our objective of improving the identification of systematic biases, slice discovery approaches achieve\nit from a data perspective and require ground truth labels, whereas we take a distinct feature-based approach that does not rely on the ground truth."
+        },
+        {
+            "heading": "5 Measuring Sufficiency & Necessity of Spurious Features in Multimodal Tasks",
+            "text": "OOD generalization accuracies indicate the model\u2019s ability to learn causal relationships between inputs and labels (Veitch et al., 2021). Another approach to assess causal learning is by examining the models\u2019 invariance to spurious features in the dataset. Joshi et al. (2022) categorize spurious features into (a) Type 1 Features that are neither necessary nor sufficient for predicting the label e.g., \u2018person\u2019 (visual feature) when the VQA question is \u201cHow many trees are in the picture?\u201d (see left, Fig. 5) (b) Type 2 Features that are necessary but not sufficient to make predictions e.g., the feature \u201cIs the man\u201d (see right, Fig. 5). When a model consistently answers \"yes\" to all \"Is the man...\" questions regardless of the image, it is considered to exhibit spurious behavior. We employ this framework to analyze debiasing methods in our experiments.\nNecessity. To assess the robustness of models to Type 1 features, we compare their performance on samples with and without a specific Type 1 feature. In an unbiased model, the absence of this feature should have no impact on performance. However, a biased model tends to rely on it due to spurious correlations that confound the features and labels. An effective debiasing method should render the model invariant to such features. Type 1 features predominantly arise from the image in multimodal tasks, as depicted in Fig. 5. Therefore, we evaluate the necessity of these features using counterfactual images (Agarwal et al., 2020) (refer to Sec.6).\nSufficiency. To assess the robustness of models to Type 2 features, we propose a new metric for measuring the sufficiency of a feature in relation\nto a prediction. The certainty of predictions is determined by the Kullback-Leibler (KL) divergence between the predicted output distribution and a uniform distribution across all samples in the group (Ying et al., 2022). We define the sufficiency score (\u03bb) as the percentage of the model\u2019s certainty that can be attributed to the spurious component of the input in making a prediction. For a data sample (x, y), where the input x consists of the spurious feature xs and the remaining context xc, i.e., x = [xs;xc], we compute the sufficiency \u03bb as:\n\u03bb = \u2211G i=1 KL(f(yi|xsi )||U)\u2211G i=1 KL(f(yi|xi)||U)\n(7)\nHere, U(.) represents the uniform distribution, f(.) denotes the trained model, and G is a group of samples. A reliable debiasing technique should reduce the sufficiency of spurious features. In the case of the multimodal Visual Question Answering (VQA) task, where xi = (qi, vi), we evaluate sufficiency of Type 2 features that arise in the textual modality qi. To compute f(yi|qsi , vi), we mask qci in the query before feeding it as input to f(.)."
+        },
+        {
+            "heading": "6 Experiment Setup",
+            "text": "Datasets. We evaluate the performance of our methods in both in-distribution (ID) and out-ofdistribution (OOD) settings on multiple multimodal tasks, including VQA-CP (Agrawal et al., 2018b), GQA (Hudson and Manning, 2019), GQA-OOD (Kervadec et al., 2021), and NLVR2 (Suhr et al., 2019) datasets. To further assess robustness in the presence of language and vision biases, we create the IVQA-CP test set by replacing the original images in the VQA-CP test set with counterfactual images from IV-VQA (Agarwal et al., 2020). These IV-VQA images have been edited to remove irrelevant objects while preserving the original ground truth label (details in Appendix).\nArchitectures. We use the LXMERT (Tan and Bansal, 2019) model as our baseline and implement our methods TE-D and ATE-D on top of LXMERT for all datasets. Since VQA-CP is a reorganization of the VQA v2 dataset and LXMERT is pretrained on VQA v2, initializing pretrained LXMERT model for finetuning on VQA-CP leads to data leakage and an unreasonable increase in accuracy. Hence, we train LXMERT-based models, baselines from scratch in our experiments and are not comparable to numbers in Wen et al. (2021); Gokhale et al. (2020) affected by data leakage."
+        },
+        {
+            "heading": "7 Results & Discussion",
+            "text": "In this section, we discuss the results from the evaluation of our methods for generalization, robustness, effectiveness, and efficiency, and analysis of the learned confounder representations."
+        },
+        {
+            "heading": "7.1 Does causal debiasing help improve out-of-distribution generalization?",
+            "text": "We evaluate the effect of causal debiasing on improving generalization by evaluating our methods on three multimodal datasets. First, we observe that our methods, ATE-D and TE-D, demonstrate 1% and 2.2% gains over LXMERT on the VQACP test set (see Tab. 1). TE-D improves the accuracy of Yes/No category by 4.2% which has higher bias presence as seen in Fig. 7 and outperforms D-VQAf , a state-of-art unimodal debiasing method for VQA (feature perspective only), by 0.8% (p=0.04) 2 in the Yes/No category, while the latter achieves better overall accuracy on VQACP. However, our methods can be used to debias features in any backbone and task, in contrast to DVQAf that has been designed for VQA. Moreover, D-VQAf trains a debiased model from scratch while TE-D debiases a biased model with a few epochs of fine-tuning (see efficiency in Sec. 7.4).\n2Statistical significance is computed with 100K samples using bootstrap (Noreen, 1989; Tibshirani and Efron, 1993). All other gains are statistically significant.\nGenB (Cho et al., 2023) achieves state-of-the-art results on top of LXMERT by using ensembles of distilled models but compromises on efficiency. We see 1.8% and 2.3% gains in GQA-OOD accuracy with ATE-D and TE-D over the LXMERT baseline (see Tab. 2). The GQA-OOD dataset is further divided into OOD-Head and OOD-Tail splits which represent the samples containing answers from the head and tail of the answer distributions respectively; our methods achieve improvements in both groups. These gains are obtained along with gains in in-distribution (ID) accuracy on GQA (see Tab. 2). Additionally, we see 0.4%, 0.5% gains with ATE-D, TE-D respectively on NLVR2, an ID evaluation setting for visual entailment task (see Tab. 3). This shows that our methods do not hurt in-distribution performance and are task-agnostic."
+        },
+        {
+            "heading": "7.2 What kind of biases are captured by confounder representations?",
+            "text": "ATE-D. First, we find that up-weighting features similar to the confounders learned in ATE-D, as opposed to down-weighting (see Sec. 4.1), significantly hurts OOD accuracy implying that the confounder representations indeed encode spurious correlations. Next, we train a non-linear probe on the confounder representations for the VQA task. The accuracy of this probe is 25% and the distribu-\ntion of predicted answers of this probe has lower entropy than that of the predicted answer distribution from unbiased features. Lower entropy suggests higher bias in the semantic concepts encoded in the confounders.\nTE-D. The bias representations in TE-D capture the most prominent input-output biases in the VQACP train set, accounting for answers in 0.34% of the answer vocabulary but covering approximately 67% of the train questions. The classifier head connected to these bias representations achieves 28% accuracy on the VQA-CP test set, while the overall causal model accuracy is 44%. The most frequent answers predicted by this classifier head on the VQA-CP test set align with those in the VQA-CP train set, showing that the captured confounders effectively represent dataset biases (see Fig. 7)."
+        },
+        {
+            "heading": "7.3 Does causal debiasing improve robustness to spurious features?",
+            "text": "Type 1 Spurious Features. In Sec. 5, we discuss Type 1 spurious features that are irrelevant to the target output. Our IVQA-CP test set (Sec. 6) shares question annotations with VQA-CP but has images edited to remove irrelevant objects (Agarwal et al., 2020). Models trained on VQA-CP are evaluated on this dataset, allowing assessment of their robustness to spurious features. The LXMERT baseline shows a significant drop from 41.2% to 35.0% on IVQA-CP (Tab. 1), indicating the evaluation\u2019s challenging nature. Our methods, ATE-D and TE-D, achieve 0.8% and 1.7% improvements respectively over LXMERT on the IVQA-CP test set, enhancing robustness to Type 1 features. D-VQAf performs explicit visual debiasing and hence, exhibits the highest robustness to Type 1 features in IVQA-CP.\nType 2 Spurious Features. A prominent source of Type 2 spurious features in VQA is the first few words of a question, as seen in Fig. 5. We introduce the sufficiency score (\u03bb, see Eqn. 7) to understand whether debiasing methods truly improve the robustness of models to such spurious features. We select two question types i.e. questions starting with \u201cAre these\u201d and \u201cIs this person\u201d, which are strongly biased in the training set of VQA-CP, and compute the sufficiency of the phrases for model predictions by masking the remaining question (see Sec 5). As shown in Fig. 6, we find that causal debiasing methods lower the sufficiency score of the spurious feature for both of these question types, suggesting that they indeed alleviate the reliance\nof these models on spurious features for making predictions. TE-D and D-VQAf achieve similar sufficiency scores, suggesting that they are equally effective at improving robustness by giving more importance to the context. TE-D achieves lower \u03bb than ATE-D which aligns with its larger accuracy gains (see Tab. 1)."
+        },
+        {
+            "heading": "7.4 Is cross-modal debiasing more effective and efficient than unimodal debiasing?",
+            "text": "D-VQAf outperforms cross-modal debiasing in Table 1, but when D-VQAf is treated as the biased model in TE-D, additional improvements of 0.7% (p=0.03) are achieved, indicating that crossmodal interactions contribute to bias not addressed by unimodal debiasing. Cross-modal feature-based confounders effectively mitigate biases involving multiple modalities. Our causal debiasing methods demonstrate higher efficiency compared to D-VQA, with ATE-D adding 0.7 MFLOPS and TE-D adding 3% additional parameters and 8.8 MFLOPS to LXMERT. In contrast, D-VQA adds 5% additional parameters and 18.9 MFLOPS during training, requiring more time as it is trained from scratch. Efficiency results for GQA and NLVR are the same as those reported for VQA."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "We propose ATE-D and TE-D to mitigate biases in models by imposing causally-driven information loss on biased features to learn confounders. Experimental results across various multimodal tasks, datasets, and backbones demonstrate that the learned confounders capture biases successfully, and our methods effectively eliminate biases from both unimodal and multimodal interactions."
+        },
+        {
+            "heading": "9 Limitations",
+            "text": "While we evaluate robustness to spurious features, we do so on specific question types for Type 2 features and specific Type 1 features (irrelevant objects in the image). Getting an all-inclusive robustness metric for evaluating debiasing methods would be insightful. Approaches that debias using data augmentation or sample balancing, although cumbersome, are more effective than feature-based debiasing approaches, including those proposed in our paper. More analysis is required to understand how the merits of sample-perspective and featureperspective methods can be merged efficiently."
+        },
+        {
+            "heading": "10 Broader Impact",
+            "text": "In this work, the biases that we try to mitigate stem from the spurious correlations present in the dataset that lead to a drop in performance in OOD settings. This helps models learn causal associations between inputs and targets and thus brings them closer to real-world deployment as it helps mitigate unethical use of these models. However, vision-language models may encode other societal stereotypes and biases present in the data they are trained on and also introduce new ones. VL models explored in this paper are not immune to these issues. We are hopeful that our focus on modeling biases and alleviating them is a step towards more inclusive models."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "We thank Peter Hase, Zhuofan Ying, and Jaemin Cho for their useful insights about this work, and the reviewers of this paper for their helpful feedback. This work was supported by ARO W911NF2110220, DARPA MCS N66001-19-24031, ONR N00014-23-1-2356, DARPA ECOLE Program No. HR00112390060. The views, opinions, and/or findings contained in this article are those of the authors and not of the funding agency."
+        },
+        {
+            "heading": "A Causal Theory Preliminaries",
+            "text": "In this section, we discuss our proposed causal graph for multimodal tasks and the two causal mechanisms relevant to our debiasing methods.\nCausal Graph. Causal graphs are directed acyclic graphs G = {V, E} where the edges E are used to represent causal relationships between random variables V . An example is shown in Fig. 2(a), where M has a direct effect on A.When the variable Q has an indirect effect on A through a variable M i.e. Q \u2192 M \u2192 A, the variable M is said to be a mediator in the causal graph. If a variable C has a direct causal effect on both M and A, it is said to be a confounder.\nCausal Perspective for Multimodal Tasks. Models developed for multimodal tasks are designed to use the combined data stream of vision (V ) and language (Q) for solving the task. However, the unimodal data variables may act as confounders and give rise to spurious features in the model e.g. via Q \u2192 M,Q \u2192 A. Existing approaches that leverage causal theory for debiasing multimodal models aim to eliminate the direct unimodal effects. However, consider the VQA example in Fig. 1. A potential spurious correlation that may lead to incorrect predictions from models on similar examples is that in most training instances where the question asks the color of an object, the object is present in the center of the image. Spurious correlations arising from such multimodal interactions are ignored in existing causal graphs for multimodal tasks. Hence, we propose to model the spurious correlation as a confounder C that affects the mediator M and the answer A (see Fig. 2(a)). This allows us to model the biases encoded in the multimodal features as confounder C and eliminate the bias using causal intervention.\nIn order to debias VQA models, we adopt two causal mechanisms i.e., the Average Treatment Effect (ATE) and Total Effect (TE), which essentially refer to the same effect but differ in how they deal with the confounder (VanderWeele, 2015; Tang et al., 2020a). In ATE, C is treated as a distribution, and c is sampled without assuming a causal association with the treatment M = m. In TE, c is causally associated with the treatment M = m in each sample. We explore both mechanisms in our experiments and discuss their theories below.\nAverage Treatment Effect. The aim of causal inference is to estimate the independent effect of an intervention on a treatment variable M on an outcome of interest A i.e. to estimate the conditional probability distribution P (A|do(M)). However, standard models are optimized to infer the observational conditional probability P (A|M) and in the presence of confounders i.e. variables c \u2208 C that affect both A and M\nP (A|M) \u0338= P (A|do(M)) (8)\nwhere the do-operation implies the causal effect of M \u2192 A. P (A|do(M)) can be estimated using backdoor adjustment by controlling for all values of the confounders c \u2208 C, i.e.,\nP (A|do(M)) = Ec\u223cC [P (A|M, c)] (9)\nThis translates to an empirical sum over all possible values of the confounder in practice, also known as average treatment effect (ATE) (see Fig. 2(b)). When the confounders are known and observed, the confounder values are selected using suitable rules and heuristics (Pearl et al., 2000).\nTotal Effect. We need to isolate the causal effect of M = m on A, free from the influence of the confounders C. According to causal theory, the total effect (TE) of treatment M = m on A can be computed as,\nTE = Am,Cm \u2212Am\u2217,Cm (10)\nwhere M = m\u2217 represents the \"no treatment\" condition and Cm represents the confounder under the treatment condition i.e M = m. By retaining the confounder in both sides of the difference, we eliminate the direct effect of Cm on M (see Fig. 2(c)).\nA.1 ATE-D Step-2 of ATE-D:\nInspired by feature reweighing (Kirichenko et al., 2022), we instantiate backdoor adjustment by recalibrating ri based on confounder similarity i.e., Ec\u0302\u2208Dc\u0302 [f(R, c\u0302)] (see Fig. 2(b)) as,\nP (A|do(Q), do(V )) = P (A|do(M)) (11)\nEC [P (A|M,C)] = Ec\u0302\u2208Dc\u0302 [P (A|M, c\u0302)] (12)\n\u2248 P (A|Ec\u0302\u2208Dc\u0302 [f(M, c\u0302)]) (13)\nSee appendix of Huang et al. (2022) for complete proof. In our analysis, we instantiate f(.) as the cosine similarity function in s(.), as discussed in Sec 4.1."
+        },
+        {
+            "heading": "B Analysis",
+            "text": "While OOD generalization accuracies are indicative of the model learning causal relationships between the inputs and labels, another way to probe causal learning is to investigate if the models are robust to spurious features present in the dataset. In order to evaluate this, in this section, we discuss an analysis framework for probing the behavior of models toward spurious features and propose a new metric for evaluation. Joshi et al. (2022) define the probability of necessity (PN) of a feature Xi for predicting the label Y as the probability that the ground truth label Y changes when the feature Xi is changed. Similarly, they define the probability of sufficiency (PS) of a feature Xi for predicting the label Y as the probability that setting Xi = xi in a sample where Xi \u0338= xi is absent changes its ground truth label Y . Based on this framework, spurious features are categorized into (a) low PN, low PS features: These features are irrelevant to the ground truth label e.g., person in the image when the VQA question is \u201cHow many trees are in the picture?\u201d (see Fig. 5) (b) High PN, low PS features: These features are necessary but not sufficient to make predictions i.e. the model should rely on other features in their presence. For instance, when a model always answers \u201cyes\u201d to all questions starting with \u201cIs the man..\u201d irrespective of the image, the model is biased towards the feature \u201cIs the man..\u201d (see Fig. 5). Henceforth, we refer to the low PS, low PS, and high PN, low PS features as Type 1 and Type 2 features respectively. We use this framework to analyze the various debiasing methods in our experiments.\nSufficiency. In order to evaluate the robustness to sufficiency of type 2 features, we propose a novel metric for quantifying the sufficiency of a feature towards a prediction. We define the certainty of predictions as the KL divergence between the predicted output distribution and uniform distribution across all samples in the group (Ying et al., 2022). We define the sufficiency score (\u03bb) as the certainty of a model\u2019s prediction when only the non-spurious features are the input to the model. Further, in order to make this metric comparable across models, we normalize this with the certainty of the model\u2019s predictions when the complete sample i.e., spurious as well as non-spurious features, is the input to the model. This results in a metric that represents the percentage of certainty of the model that can be attributed to the non-spurious component of the input. For a data sample (x, y), let the input x be comprised of the spurious feature xs and the remaining context xc i.e. x = [xs;xc]. The sufficiency \u03bb is computed as follows:\n\u03bb = \u2211G i=1 KL(f(yi|xsi )||U)\u2211G i=1 KL(f(yi|xi)||U)\n(14)\nwhere U(.) represents the uniform distribution, f(.) is the trained model, and G is a group of samples. A good debiasing technique should increase the sufficiency of non-spurious features. For the multimodal VQA task where xi = (qi, vi), we focus on the type 2 features emerging in the text modality qi. To compute f(yi|qci , vi), we mask qsi in the query before sending it as input to f(.)."
+        },
+        {
+            "heading": "C Experiment Setup",
+            "text": "C.1 Datasets \u2022 VQA-CP (Agrawal et al., 2018a): It is a re-\norganization of the VQAv2 (Antol et al., 2015) such that the distribution of question typeanswer correlation is different between the train and test splits. This evaluation helps demonstrate the method\u2019s ability to debias in a setting where language bias is dominant.\n\u2022 VQA-CP + IV-VQA: We evaluate it on a new version of the VQA-CP test set where we replace the image in each sample with their invariant counterparts from the IV-VQA dataset from (Agarwal et al., 2020). IV-VQA dataset has images replaced with their edited version obtained after removing irrelevant objects in a way that the predicted answer does not change.\nThis adds another layer of hardness to the benchmark along the image dimension. This evaluation helps demonstrate the method\u2019s ability to debias in a setting where both language and vision biases are dominant.\n\u2022 GQA(Hudson and Manning, 2019), GQAOOD(Kervadec et al., 2021): GQA evaluation helps measure visual reasoning as well as compositional questionanswering abilities. GQA-OOD is a reorganization of the GQA dataset that introduces distribution shift in validation and test sets based on question type similar to VQACP.\n\u2022 NLVR2 (Suhr et al., 2019): It helps the generalization to multimodal tasks other than question answering. It helps evaluate reasoning abilities about sets of objects, comparisons, and spatial relations.\nAll our experiments are run with a single seed value.\nBaselines. We use D-VQAf (feature perspective only) (Wen et al., 2021) based on LXMERT as the baseline for experiments with VQA-CP and train from scratch due to the aforementioned reasons. We also present results from D-VQA (both feature & sample perspective) for comparison, however, note that methods using data balancing are not comparable to causal debiasing methods (see Sec. 1)."
+        },
+        {
+            "heading": "D Results",
+            "text": "D.1 Analysis of confounder features\nWe compare the most frequent answer in the VQACP training and test sets with those from the predictions of the bias classifier head in TE-D in Fig. 7. As discussed in Sec.5, the predictions from bias classifier head closely track the distribution of answers in VQA-CP training set, even though the VQA-CP test set distribution is significantly different from VQA-CP train. This shows that the confounder representations indeed capture the strong priors present in training set.\nExplanation and proof for biases stemming from multimodal interactions Multimodal models have been known to be brittle to linguistic biases [1] and visual biases [2]. In this work, we demonstrate the presence of multimodal biases and the need for removing those biases from multimodal features. (Proof) Many existing debiasing methods focus on removing each unimodal bias (e.g., linguistic) from multimodal features independently of the other unimodal biases (e.g., visual). However, [3] suggest that the biases can stem from multimodal interactions as well; they perform semantic edits on images in VQA (I-VQA dataset) that should not affect the ground truth, and show that the answers from multimodal models change in response to these invariant edits. (Existing Methods) Indeed, methods like D-VQA [2] leave large room for improvement in terms of performance on the IVQA-CP dataset [see Lines] that are designed to test for multimodal biases, as we show in Table 1. (Our Approach) We formalize this phenomenon through the causal graph proposed in our paper in Fig. 2, where we explicitly model the confounders\nthat affect the variable connecting multimodal representation (M) and the outcome (A). The unimodal biases are implicitly modeled via the multimodal variable (Q->M->A, V->M->A). (Example) We demonstrate an example of this phenomenon in Fig. 1, where D-VQA fails to answer a question from the IVQA-CP test set correctly, and our proposed method, TE-D, is able to answer correctly because of multimodal debiasing. (Empirical Results) Additionally, we show improvements on top of unimodal debiasing methods like DVQA(f) with our multimodal debiasing approach (see rows 6,7 in Table 1). Our goal in this work is to demonstrate the presence of multimodal biases and the need for multimodal debiasing along with the potential of confounder modeling via information loss in causal multimodal debiasing and our results support this claim."
+        }
+    ],
+    "title": "Debiasing Multimodal Models via Causal Information Minimization",
+    "year": 2023
+}

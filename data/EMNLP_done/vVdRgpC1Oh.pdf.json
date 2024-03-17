@@ -1,0 +1,736 @@
+{
+    "abstractText": "Model merging (e.g., via interpolation or task arithmetic) fuses multiple models trained on different tasks to generate a multi-task solution. The technique has been proven successful in previous studies, where the models are trained on similar tasks and with the same initialization. In this paper, we expand on this concept to a multimodal setup by merging transformers trained on different modalities. Furthermore, we conduct our study for a novel goal where we can merge vision, language, and cross-modal transformers of a modality-specific architecture to create a parameter-efficient modalityagnostic architecture. Through comprehensive experiments, we systematically investigate the key factors impacting model performance after merging, including initialization, merging mechanisms, and model architectures. We also propose two metrics that assess the distance between weights to be merged and can serve as an indicator of the merging outcomes. Our analysis leads to an effective training recipe for matching the performance of the modalityagnostic baseline (i.e., pre-trained from scratch) via model merging. Our method also outperforms naive merging significantly on various tasks, with improvements of 3% on VQA, 7% on COCO retrieval, 25% on NLVR, 14% on Flickr30k and 3% on ADE20k.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yi-Lin Sung"
+        },
+        {
+            "affiliations": [],
+            "name": "Linjie Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Kevin Lin"
+        },
+        {
+            "affiliations": [],
+            "name": "Zhe Gan"
+        },
+        {
+            "affiliations": [],
+            "name": "Mohit Bansal"
+        },
+        {
+            "affiliations": [],
+            "name": "Lijuan Wang"
+        }
+    ],
+    "id": "SP:8e9397ebad053ccf2594e4a3378c260ef1cdb7c7",
+    "references": [
+        {
+            "authors": [
+                "Armen Aghajanyan",
+                "Po-Yao (Bernie) Huang",
+                "Candace Ross",
+                "Vladimir Karpukhin",
+                "Hu Xu",
+                "Naman Goyal",
+                "Dmytro Okhonko",
+                "Mandar Joshi",
+                "Gargi Ghosh",
+                "Mike Lewis",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Cm3: A causal masked multimodal model of the internet. ArXiv",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Samuel K. Ainsworth",
+                "Jonathan Hayase",
+                "Siddhartha S. Srinivasa."
+            ],
+            "title": "Git re-basin: Merging models modulo permutation symmetries",
+            "venue": "ArXiv, abs/2209.04836.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hassan Akbari",
+                "Linagzhe Yuan",
+                "Rui Qian",
+                "Wei-Hong Chuang",
+                "Shih-Fu Chang",
+                "Yin Cui",
+                "Boqing Gong."
+            ],
+            "title": "Vatt: Transformers for multimodal selfsupervised learning from raw video, audio and text",
+            "venue": "NeurIPS.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hangbo Bao",
+                "Li Dong",
+                "Songhao Piao",
+                "Furu Wei."
+            ],
+            "title": "BEit: BERT pre-training of image transformers",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yen-Chun Chen",
+                "Linjie Li",
+                "Licheng Yu",
+                "Ahmed El Kholy",
+                "Faisal Ahmed",
+                "Zhe Gan",
+                "Yu Cheng",
+                "Jingjing Liu."
+            ],
+            "title": "Uniter: Learning universal imagetext representations",
+            "venue": "ECCV.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jaemin Cho",
+                "Jie Lei",
+                "Hao Tan",
+                "Mohit Bansal."
+            ],
+            "title": "Unifying vision-and-language tasks via text generation",
+            "venue": "ICML, abs/2102.02779.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ekin Dogus Cubuk",
+                "Barret Zoph",
+                "Jon Shlens",
+                "Quoc Le."
+            ],
+            "title": "Randaugment: Practical automated data augmentation with a reduced search space",
+            "venue": "Advances in Neural Information Processing Systems, volume 33, pages 18613\u201318624. Curran Associates,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jia Deng",
+                "Wei Dong",
+                "Richard Socher",
+                "Li-Jia Li",
+                "K. Li",
+                "Li Fei-Fei."
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "2009 IEEE Conference on Computer Vision and Pattern Recognition, pages 248\u2013255.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "NAACL-HLT.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Shachar Don-Yehiya",
+                "Elad Venezian",
+                "Colin Raffel",
+                "Noam Slonim",
+                "Yoav Katz",
+                "Leshem Choshen."
+            ],
+            "title": "Cold fusion: Collaborative descent for distributed multitask finetuning",
+            "venue": "ArXiv, abs/2212.01378.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zi-Yi Dou",
+                "Yichong Xu",
+                "Zhe Gan",
+                "Jianfeng Wang",
+                "Shuohang Wang",
+                "Lijuan Wang",
+                "Chenguang Zhu",
+                "Nanyun Peng",
+                "Zicheng Liu",
+                "Michael Zeng."
+            ],
+            "title": "An empirical study of training end-to-end vision-andlanguage transformers",
+            "venue": "CVPR, pages 18145\u201318155.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Vanhoucke",
+                "Karol Hausman",
+                "Marc Toussaint",
+                "Klaus Greff",
+                "Andy Zeng",
+                "Igor Mordatch",
+                "Peter R. Florence."
+            ],
+            "title": "Palm-e: An embodied multimodal language model",
+            "venue": "ArXiv, abs/2303.03378.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rahim Entezari",
+                "Hanie Sedghi",
+                "Olga Saukh",
+                "Behnam Neyshabur."
+            ],
+            "title": "The role of permutation invariance in linear mode connectivity of neural networks",
+            "venue": "ArXiv, abs/2110.06296.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "David Freedman",
+                "Robert Pisani",
+                "Roger Purves."
+            ],
+            "title": "Statistics (international student edition)",
+            "venue": "Pisani, R. Purves, 4th edn. WW Norton & Company, New York.",
+            "year": 2007
+        },
+        {
+            "authors": [
+                "Zhe Gan",
+                "Linjie Li",
+                "Chunyuan Li",
+                "Lijuan Wang",
+                "Zicheng Liu",
+                "Jianfeng Gao"
+            ],
+            "title": "Vision-Language Pre-training: Basics, Recent Advances, and Future",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yash Goyal",
+                "Tejas Khot",
+                "Douglas Summers-Stay",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering",
+            "venue": "IJCV, 127:398\u2013414.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Gabriel Ilharco",
+                "Marco Tulio Ribeiro",
+                "Mitchell Wortsman",
+                "Suchin Gururangan",
+                "Ludwig Schmidt",
+                "Hannaneh Hajishirzi",
+                "Ali Farhadi."
+            ],
+            "title": "Editing models with task arithmetic",
+            "venue": "ArXiv, abs/2212.04089.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xisen Jin",
+                "Xiang Ren",
+                "Daniel Preotiuc-Pietro",
+                "Pengxiang Cheng."
+            ],
+            "title": "Dataless knowledge fusion by merging weights of language models",
+            "venue": "ArXiv, abs/2212.09849.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xisen Jin",
+                "Xiang Ren",
+                "Daniel Preotiuc-Pietro",
+                "Pengxiang Cheng."
+            ],
+            "title": "Dataless knowledge fusion by merging weights of language models",
+            "venue": "ICLR.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Keller Jordan",
+                "Hanie Sedghi",
+                "Olga Saukh",
+                "Rahim Entezari",
+                "Behnam Neyshabur."
+            ],
+            "title": "Repair: Renormalizing permuted activations for interpolation repair",
+            "venue": "ArXiv, abs/2211.08403.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Andrej Karpathy",
+                "Li Fei-Fei."
+            ],
+            "title": "Deep visualsemantic alignments for generating image descriptions",
+            "venue": "PAMI, 39:664\u2013676.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Wonjae Kim",
+                "Bokyung Son",
+                "Ildoo Kim."
+            ],
+            "title": "Vilt: Vision-and-language transformer without convolution or region supervision",
+            "venue": "ICML.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi."
+            ],
+            "title": "Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models",
+            "venue": "ArXiv, abs/2301.12597.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Ramprasaath R. Selvaraju",
+                "Akhilesh Deepak Gotmare",
+                "Shafiq Joty",
+                "Caiming Xiong",
+                "Steven Hoi."
+            ],
+            "title": "Align before fuse: Vision and language representation learning with momentum distillation",
+            "venue": "NeurIPS.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Liunian Harold Li",
+                "Mark Yatskar",
+                "Da Yin",
+                "Cho-Jui Hsieh",
+                "Kai-Wei Chang."
+            ],
+            "title": "Visualbert: A simple and performant baseline for vision and language",
+            "venue": "ArXiv, abs/1908.03557.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Margaret Li",
+                "Suchin Gururangan",
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Tim Althoff",
+                "Noah A. Smith",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Branch-train-merge: Embarrassingly parallel training of expert language models",
+            "venue": "ArXiv, abs/2208.03306.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Michael Maire",
+                "Serge J. Belongie",
+                "James Hays",
+                "Pietro Perona",
+                "Deva Ramanan",
+                "Piotr Doll\u00e1r",
+                "C. Lawrence Zitnick."
+            ],
+            "title": "Microsoft coco: Common objects in context",
+            "venue": "ECCV.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Shengchao Liu",
+                "Yingyu Liang",
+                "Anthony Gitter."
+            ],
+            "title": "Loss-balanced task weighting to reduce negative transfer in multi-task learning",
+            "venue": "AAAI.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jiasen Lu",
+                "Dhruv Batra",
+                "Devi Parikh",
+                "Stefan Lee."
+            ],
+            "title": "Vilbert: Pretraining task-agnostic visiolinguistic representations for vision-and-language tasks",
+            "venue": "NeurIPS.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jiasen Lu",
+                "Christopher Clark",
+                "Rowan Zellers",
+                "Roozbeh Mottaghi",
+                "Aniruddha Kembhavi."
+            ],
+            "title": "Unifiedio: A unified model for vision, language, and multimodal tasks",
+            "venue": "ArXiv, abs/2206.08916.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Michael Matena",
+                "Colin Raffel."
+            ],
+            "title": "Merging models with fisher-weighted averaging",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "OpenAI."
+            ],
+            "title": "Gpt-4 technical report",
+            "venue": "ArXiv, abs/2303.08774.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vicente Ordonez",
+                "Girish Kulkarni",
+                "Tamara L. Berg."
+            ],
+            "title": "Im2text: Describing images using 1 million captioned photographs",
+            "venue": "NIPS.",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Bryan A. Plummer",
+                "Liwei Wang",
+                "Christopher M. Cervantes",
+                "Juan C. Caicedo",
+                "J. Hockenmaier",
+                "Svetlana Lazebnik."
+            ],
+            "title": "Flickr30k entities: Collecting region-to-phrase correspondences for richer imageto-sentence models",
+            "venue": "International Journal of Com-",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark",
+                "Gretchen Krueger",
+                "Ilya Sutskever"
+            ],
+            "title": "Learning transferable visual models from natural language",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Piyush Sharma",
+                "Nan Ding",
+                "Sebastian Goodman",
+                "Radu Soricut."
+            ],
+            "title": "Conceptual captions: A cleaned, hypernymed, image alt-text dataset for automatic image captioning",
+            "venue": "Proceedings of the 56th Annual Meeting of the Association for Computational Lin-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Sidak Pal Singh",
+                "Martin Jaggi."
+            ],
+            "title": "Model fusion via optimal transport",
+            "venue": "NeurIPS.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Weijie Su",
+                "Xizhou Zhu",
+                "Yue Cao",
+                "Bin Li",
+                "Lewei Lu",
+                "Furu Wei",
+                "Jifeng Dai."
+            ],
+            "title": "Vl-bert: Pre-training of generic visual-linguistic representations",
+            "venue": "ArXiv, abs/1908.08530.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alane Suhr",
+                "Stephanie Zhou",
+                "Iris Zhang",
+                "Huajun Bai",
+                "Yoav Artzi."
+            ],
+            "title": "A corpus for reasoning about natural language grounded in photographs",
+            "venue": "Annual Meeting of the Association for Computational Linguistics (ACL), abs/1811.00491.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yi-Lin Sung",
+                "Jaemin Cho",
+                "Mohit Bansal."
+            ],
+            "title": "Lst: Ladder side-tuning for parameter and memory efficient transfer learning",
+            "venue": "Neural Information Processing Systems (NeurIPS).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yi-Lin Sung",
+                "Jaemin Cho",
+                "Mohit Bansal."
+            ],
+            "title": "Vl-adapter: Parameter-efficient transfer learning for vision-and-language tasks",
+            "venue": "CVPR, pages 5217\u20135227.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hao Tan",
+                "Mohit Bansal."
+            ],
+            "title": "Lxmert: Learning cross-modality encoder representations from transformers",
+            "venue": "EMNLP.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jianfeng Wang",
+                "Xiaowei Hu",
+                "Zhe Gan",
+                "Zhengyuan Yang",
+                "Xiyang Dai",
+                "Zicheng Liu",
+                "Yumao Lu",
+                "Lijuan Wang."
+            ],
+            "title": "Ufo: A unified transformer for vision-language representation learning",
+            "venue": "ArXiv, abs/2111.10023.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Peng Wang",
+                "Shijie Wang",
+                "Junyang Lin",
+                "Shuai Bai",
+                "Xiaohuan Zhou",
+                "Jingren Zhou",
+                "Xinggang Wang",
+                "Chang Zhou."
+            ],
+            "title": "One-peace: Exploring one general representation model toward unlimited modalities",
+            "venue": "ArXiv, abs/2305.11172.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Hangbo Bao",
+                "Li Dong",
+                "Furu Wei."
+            ],
+            "title": "Vlmo: Unified vision-language pre-training with mixture-of-modality-experts",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zirui Wang",
+                "Jiahui Yu",
+                "Adams Wei Yu",
+                "Zihang Dai",
+                "Yulia Tsvetkov",
+                "Yuan Cao."
+            ],
+            "title": "Simvlm: Simple visual language model pretraining with weak supervision",
+            "venue": "International Conference on Learning Representations (ICLR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mitchell Wortsman",
+                "Gabriel Ilharco",
+                "Samir Yitzhak Gadre",
+                "Rebecca Roelofs",
+                "Raphael Gontijo-Lopes",
+                "Ari S. Morcos",
+                "Hongseok Namkoong",
+                "Ali Farhadi",
+                "Yair Carmon",
+                "Simon Kornblith",
+                "Ludwig Schmidt"
+            ],
+            "title": "2022a. Model soups: averaging weights of multiple",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mitchell Wortsman",
+                "Gabriel Ilharco",
+                "Mike Li",
+                "Jong Wook Kim",
+                "Hannaneh Hajishirzi",
+                "Ali Farhadi",
+                "Hongseok Namkoong",
+                "Ludwig Schmidt."
+            ],
+            "title": "Robust fine-tuning of zero-shot models",
+            "venue": "CVPR, pages 7949\u20137961.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Prateek Yadav",
+                "Derek Tam",
+                "Leshem Choshen",
+                "Colin Raffel",
+                "Mohit Bansal."
+            ],
+            "title": "Resolving interference when merging models",
+            "venue": "ArXiv, abs/2306.01708.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiahui Yu",
+                "Zirui Wang",
+                "Vijay Vasudevan",
+                "Legg Yeung",
+                "Mojtaba Seyedhosseini",
+                "Yonghui Wu."
+            ],
+            "title": "Coca: Contrastive captioners are image-text foundation models",
+            "venue": "Transactions on Machine Learning Research, 2022.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bolei Zhou",
+                "Hang Zhao",
+                "Xavier Puig",
+                "Sanja Fidler",
+                "Adela Barriuso",
+                "Antonio Torralba."
+            ],
+            "title": "Semantic understanding of scenes through the ade20k dataset",
+            "venue": "International Journal of Computer Vision, 127:302 \u2013 321.",
+            "year": 2016
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Model merging (Singh and Jaggi, 2020; Matena and Raffel, 2022; Ainsworth et al., 2022; Jordan et al., 2022), investigates the technique of merging (e.g., via linear interpolation, task arithmetic (Ilharco et al., 2022), RegMean (Jin et al., 2023)) two models trained on different tasks while preserving their original capabilities or even outperforming multi-task training (Li et al., 2022). This technique\n\u2217Work done at Microsoft 1Our code is available at https://github.com/ylsung/\nvl-merging\nenables us to generate the multi-task solution without synchronous training and is especially useful when the models for merging are already trained and available online. However, current literature has only applied model merging to models trained on similar tasks or even the same dataset, which inspires us to explore whether model merging will also work when the models are trained on different modalities such as language versus vision.\nWe study this challenging problem with a novel goal of obtaining an effective and parameterefficient modality-agnostic model by merging the different modality transformers of a modalityspecific model. In vision-language (VL) domains (Driess et al., 2023; OpenAI, 2023), many modality-specific models (Tan and Bansal, 2019; Chen et al., 2020; Radford et al., 2021; Li et al., 2021; Dou et al., 2022) employ dedicated transformer encoders to encode vision/language inputs independently, and on top of which additional transformer layers are used for multimodal fusion. On the other hand, the convergence of using transformer-based architectures for various singlemodality tasks has prompted researchers to adopt a single modality-agnostic transformer (Akbari et al., 2021; Wang et al., 2021; Kim et al., 2021; Lu et al., 2022; Jaegle et al., 2022) to encode different modality inputs and learn cross-modal interactions simultaneously. While modality-specific architectures usually perform better, modality-agnostic ones are simpler and more parameter-efficient. Both architecture designs offer their unique benefits and have distinct use cases. However, obtaining the benefits of both these setups can be costly as it requires independent training. Therefore, in this paper, we explore how to leverage a well-trained modality-specific model and develop a modalityagnostic model from it via model merging, with a goal of achieving similar performance to the modality-agnostic baseline which is pre-trained\nfrom scratch.2 This approach eliminates the need for training the latter architecture.\nTo this end, we conduct a systematic study of model merging on VL models, analyzing the key factors impacting the merging results, including initialization, merging mechanisms, and model architectures. Through comprehensive experiments, we find that initialization is crucial for model merging, and using pre-trained weights on VL data is helpful. We benchmark three merging methods: interpolation, modality arithmetic, and RegMean, and we find that interpolation performs competitively while being simple and efficient among compared merging methods. Lastly, we examine the merging of different modality-specific architecture variants, including shared-weight architectures with custom attention layers, feed-forward networks (FFN), or layer normalization layers. We find that the architecture without sharing performs the best before merging and attains on-par performance to the modality-agnostic baseline after merging.\nMoreover, we investigate the correlation between the distance of two weights to be merged and the merging results, and propose two distance measures that can potentially indicate the merging results before training. Overall, our findings serve as a training recipe which can significantly improve the simple merging of the modality-specific model (by around 3% on VQA, 7% on COCO image-text retrieval, 25% on NLVR2, 14% on Flickr30k and\n2When using model merging, we sometimes refer to the modality-specific model as the model before merging, and the modality-agnostic one as the model after merging.\n3% on ADE20k), to match the performance of the modality-agnostic model obtained by independent training, demonstrating a novel way to construct a universal architecture that can process different modalities simultaneously. We also demonstrate the merged weight maintains the performance on unimodal tasks (we focus on vision tasks), and the proposed approach generalizes broadly to another backbone model (ViT-Tiny/16)."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Different Types of VL Architectures. VL models aim to generate outputs based on reasoning over both text and visual inputs. Because the model takes two sources of inputs, there are different design choices to fuse the information, and hence yielding several mainstream designs in VL modeling: (1) modality-specific transformer (Tan and Bansal, 2019; Li et al., 2023; Driess et al., 2023), (2) modality-agnostic transformer (Akbari et al., 2021; Wang et al., 2021; Kim et al., 2021; Aghajanyan et al., 2022), and (3) dual transformer (Radford et al., 2021). Modality-specific transformers use a language transformer and a visual encoder to extract modality-specific representations and feed them into a cross-modal transformer to learn imagetext fusion information. Some modern architectures (Driess et al., 2023; Sung et al., 2022b; Cho et al., 2021; Yu et al., 2022; Wang et al., 2022b; Sung et al., 2022a) use the language transformer for both language and cross-modal modeling. The dual transformer is a special case of modality-specific architecture, where the cross-modal fusion is realized\nvia simple dot product, hence more efficient for fast retrieval. Modality-agnostic transformers use one single transformer to process multi-modal data. These methods can be viewed as early fusion models, and the transformer learns modality-specific and cross-modal information simultaneously. The design of modality-agnostic architectures is relatively simple, and they are more memory-efficient because they only have one backbone.\nModel Merging. The de facto approach in recent model development centers around the \u201cpre-trainthen-fine-tune\u201d paradigm. Due to the substantial resources required to train robust pre-trained models, the available repertoire is relatively limited, and many subsequent models are fine-tuned from this finite selection. Recent research has discovered that models derived from the same pre-trained weights can be successfully merged into a single model. This merge can either improve single-task performance when the models are designed for the same task (Wortsman et al., 2022a) or create a multi-task solution when they target different tasks (Ilharco et al., 2022; Wortsman et al., 2022b; Don-Yehiya et al., 2022). Various strategies for merging models have been proposed, including linear interpolation, task arithmetic (Ilharco et al., 2022), and RegMean (Jin et al., 2023). However, if models do not share the same pre-trained weights, weight permutation might be required before merging (Entezari et al., 2021; Ainsworth et al., 2022; Jordan et al., 2022). Our work leverages model merging towards the innovative goal of generating an efficient modality-agnostic model from modality-specific models, thus eliminating the need for re-training."
+        },
+        {
+            "heading": "3 VL Transformers",
+            "text": "A VL model takes an image-text pair as input and is designed to tackle various VL tasks with minimal architecture changes. The input image is first divided into patches, flattened into a sequence, and then fed into the vision embedding layer to obtain visual features. The input text is processed by the language embedding layer to obtain a sequence of textual features. The features are then jointly processed by the VL model, for which we explore different architectures detailed below. Modality-specific transformer contains two N - layer (N=12 in this paper) transformers, specialized for encoding image and text inputs, respectively, and an additional M (=2 in this paper) transformer layers for multimodal fusion (Akbari et al.,\n2021; Lu et al., 2019; Li et al., 2019; Su et al., 2020). We denote their weights for layer i as W vi , W li (i = 1, 2, ..., 12) and W vl i (i = 11, 12). Please refer to Figure 2(a) for illustration. This design is inspired by VLMo (Wang et al., 2022a, 2023), which has different routes for different tasks in forwarding. For visual question answering and other classification tasks, we use the first (N \u2212M) layers of vision and language transformers to extract the image and text features and feed the concatenation of them to the M multimodal fusion layers to get the final representation. We demonstrate this architecture/mechanism in the upper part of Figure 1 and the right part of Figure 2(b). For image-text retrieval, we directly use the whole N layers of vision and language transformers to extract image and text representations for matching (left part of Figure 2(b)). Only using unimodal encoders to extract features allows us to compute the dot product between features efficiently because it eliminates the need to forward the input pairs to cross-modal layers. Please refer to VLMo for more details. For easier merging, we initialize all the transformers from the same initialization3, regardless of the modalities they are used for, and we use W 0i to denote the initial weight for the i\nth layer. Modality-agnostic transformer adopts one set of parameters to jointly learn vision, language, and cross-modal information, that is, W vi = W l i for i = 1, 2, ..., 12 and W vi = W l i = W vl i for i = 11 and 12. The forward mechanism of this model is the same as the modality-specific architecture. Shared-weight modality-specific transformer is in-between the two aforementioned extreme types of architecture, i.e., with partial modality-agnostic and modality-specific modules. Specifically, we explore three variants of the shared-weight architectures with: (1) custom attention layers, (2) custom FFN, and (3) custom layer normalization layers. The illustration of them is shown in Figure 1."
+        },
+        {
+            "heading": "4 Model Merging for VL Architectures",
+            "text": "Our objective is to combine various transformers within the modality-specific architectures into a single modality-agnostic transformer. We do not merge the embedding layers and keep them modality-specific as they have different architec-\n3We have explored merging the model that uses BERT to initialize the language transformer and BEiT for the other transformers, but the average of IR and TR is only 49.9 on COCO even if we permute the weights (80.6 before merging).\ntures and dimensions. For shared-weight architectures, we only merge the weights of custom layers since the other parts are already modality-agnostic. In a modality-specific VL model, the transformers receive inputs from different modalities and work together to accomplish the target task. We merge such transformers to allow a single transformer that can handle different modalities concurrently. This situation deviates from previous studies on model merging (Li et al., 2022; Matena and Raffel, 2022; Ainsworth et al., 2022), where the transformers (in these previous works) to be merged take input from the same modality. In the following, we describe our process for merging the VL architectures."
+        },
+        {
+            "heading": "4.1 Merging Methods",
+            "text": "We explain the details of the three merging methods, and their illustrations are shown in Figure 1. Interpolation. For simple interpolation, the vision, language, and cross-modal transformer layers are element-wise weighted-averaged with given ratios. We control the ratio \u03b1 between the vision and language transformer and set the ratio of the cross-modal transformer at a constant value (13 for the layers that have three modalities). The merged weights are \u03b1W vi +(1\u2212\u03b1)W li for the first (N\u2212M ) layers while they are 23(\u03b1W v i +(1\u2212\u03b1)W li )+13W vli ) for the top M layers. Modality Arithmetic. The second method is inspired by the concept of task vectors (Ilharco et al., 2022), which indicate the directions to improve the tasks\u2019 performance from the initial weight. For a given task, the task vector is ob-\ntained by subtracting the initial weight from the tuned weight (illustrated in Figure 1). Then, the merged weight containing multi-task information is computed by adding all task vectors to the initial weight. In this paper, we extend this idea to learning such vectors for different modalities, dubbed as modality vectors. We define the modality vectors as the difference between the weight for a specific modality and the initial weight, for example, \u03c4vi = W v i \u2212 W 0i , and the merged weight is\nW 0i + \u03bb \u2211 m\u2208{v,l} \u03c4 m i for the first (N \u2212 M) lay-\ners and is W 0i + \u03bb \u2211 m\u2208{v,l,vl} \u03c4 m i for the top M layers, and \u03bb is the scaling parameter. RegMean. Different from the previous two methods, RegMean (Jin et al., 2023) finds closedform solutions for the weights of linear layers and evenly interpolates other weights (layer normalization, bias terms). Assume Xmi is the input for the ith layer in the transformer for m modality, RegMean finds the merged weight Wi that minimizes the distance of features before and after merging, that is, \u2211 m\u2208{v,l,vl}\u2225W\u22a4i Xmi \u2212 Wm\u22a4i X m i \u222522. The closed-form solution of\nWi is ( \u2211 m\u2208{v,l,vl}G m i ) \u22121\u2211 m\u2208{v,l,vl}(G m i W m i ), where Gmi = X m\u22a4 i X m i . Moreover, Jin et al. (2023) pointed out that introducing a scalar \u03b3 to decrease the non-diagonal elements of Gmi (G\u0303 m i = \u03b3Gmi + (1\u2212 \u03b3)diag(Gmi )) and replace Gmi by G\u0303mi in the above solution form leading to stabler results."
+        },
+        {
+            "heading": "4.2 Evaluation Pipeline",
+            "text": "Unlike previous model merging literature that merges models fine-tuned on downstream tasks,4 we merge the transformer weights for different modalities after VL pre-training (Gan et al., 2022) to explore a more effective modality-agnostic pretrained model for fine-tuning. We follow the same pipeline to evaluate different merging methods as shown in the upper part (gray-filled boxes) of Figure 1. First, we pre-train the modalityspecific models for KV L steps on VL corpra in an end-to-end manner. Next, we merge the weights of modality-specific transformers to construct a modality-agnostic model via the methods described in Section 4.1. Lastly, we fine-tune the merged model on downstream tasks. Note that when reporting the performance of modality-specific architectures, weight merging is not needed. Hence, we\n4We find that directly merging a fine-tuned modalityspecific model performs poorly: the average of IR and TR is 50.5 on COCO (80.5 without merging).\ndirectly finetune the models after pre-training. We pre-train our models on the standard 10M image-text corpus from COCO (Lin et al., 2014), Visual Genome (Jin et al., 2022), SBU (Ordonez et al., 2011), and Conceptual Captions (Sharma et al., 2018) with three popular objectives: imagetext contrastive (ITC) learning (Radford et al., 2021), image-text matching (ITM) (Li et al., 2021), and masked language modeling (MLM) (Devlin et al., 2019). During finetuning, we evaluate several VL and vision downstream tasks. The details of the experimental setup are shown in Section 5."
+        },
+        {
+            "heading": "4.3 Seed Pre-training",
+            "text": "For our first pilot investigation, we follow the above evaluation pipeline to pre-train a modality-specific model initialized from BEiT (Bao et al., 2022) for 200k iterations, then perform merging with interpolation (\u03b1 = 0.5), and lastly fine-tune on downstream tasks. We name this simple method as the merging baseline. Table 1 shows that the performance drop from merging is quite significant, and the merged model lags behind our goal of matching the modality-agnostic baseline, which is pre-trained from scratch. We hypothesize that the model weights of language and cross-modal transformers after VL pre-training are not located in the same basin (Entezari et al., 2021) as the vision transformer, because the initial BEiT weight only contains visual information.\nHence, in order to ensure that different transformers remain situated within a common basin and avoid significant deviation from one another after VL pre-training, we next turn to use a single pre-trained weight containing vision, language, and cross-modal information for initialization, by pre-training a single modality-agnostic transformer (initialized from BEiT) on VL corpora for Kseed steps. This approach is also used by Li et al. (2022)\nand referred as the seed phase. We then use this weight to initialize different modality transformers of the modality-specific model before the VL pretraining step and evaluate the model performance as described in Section 4.2. For a fair comparison, we ensure that all compared methods go through the same number of total pre-training iterations on the same VL corpora, i.e., Kseed +KV L = 200k.\nNote that VL pre-training can be conducted on different model architectures, including both modality-specific models and modality-agnostic models. Also, seed pre-training for a modalityspecific model is essentially equivalent to VL pretraining on a modality-agnostic model. We use different terms for seed pre-training and VL pretraining to distantiate the different training stages for training the modality-specific model."
+        },
+        {
+            "heading": "5 Experimental Details",
+            "text": "We describe the experimental setup for our models and training in this section and more details about hyper-parameters for fine-tuning, computational usage, and the number of parameters of our models are included in Appendix A.\nArchitectures. We use ViT-B/16 (Dosovitskiy et al., 2021) (which has a similar architecture as BERT (Devlin et al., 2019)) throughout our experiments. The model has 12 transformer layers, and the dimension of the model is 768.\nVL Pre-training. As described in Section 4.2, we adopt the standard 10M image-text corpus (4M images) and utilize ITC, ITM, and MLM for VL pre-training. The overall pre-training objective is the weighted combination of the three aforementioned loss functions. ITC maximizes the pair-wise positive matching and minimizes the matching between any negative pairs within the training batch. Similar to ITC, ITM predicts whether the imagetext pair is positive or negative, by modeling it as binary classification. For MLM, we mask out 15% of text tokens, and the model is required to reconstruct the missing tokens with multimodal context. The overall pre-training objective is the weighted combination of the three aforementioned loss functions, and we find that using a smaller weight (0.25) for MLM empirically leads to better results. The forward mechanism of ITC is the same as the retrieval task, and of ITM and MLM is the same as VQA (Figure 2(b)).\nThe image input size is set as 224\u00d7 224 and the\ntext input length is 40. The text input is encoded by bert-base-uncased (Devlin et al., 2019) tokenizer, which has 30522 vocabularies. During training, we apply RandAugment (Cubuk et al., 2020) on image inputs. For all pre-training experiments, we set the batch size as 1024, the total number of iterations as 200k (if no seed pre-training), with 2500 for warmup. Adam optimizer with the peak learning 2e-4 is adopted for training.\nFine-tuning. We use VQA (Goyal et al., 2016), COCO image-text retrieval (Lin et al., 2014), NLVR2 (visual reasoning) (Suhr et al., 2019), Flickr30k (image retrieval) (Plummer et al., 2015), ImageNet-1k (image classification) (Deng et al., 2009) and ADE20k (semantic segmentation) (Zhou et al., 2016) as downstream tasks. In evaluation, we report the accuracy for VQA and NLVR2, top-1 accuracy for ImageNet, and mIOU for ADE20k. We use the average of top-1, top-5, and top-10 text recall (TR), and image recall (IR) for retrieval tasks. We report the results for each method with a single run. Appendix A shows other details of experiments."
+        },
+        {
+            "heading": "6 Experimental Results",
+            "text": "In this section, we investigate the key factors impacting the merging performance on VQA and COCO. Recall that our goal is to improve the merging baseline in Table 1 to match the performance of the modality-agnostic model and keep the performance of the modality-specific model (before merging) to remain similar."
+        },
+        {
+            "heading": "6.1 Effect of Seed Pre-training",
+            "text": "We first validate the effectiveness of seed pretraining by varying Kseed in Figures 3a and 3b.5 Training more steps in the seed phase naturally leads to worse performance for modality-specific models as fewer training steps are dedicated to the learning of modality-specific information in custom modules. However, the merging performance is stronger for longer seed pre-training, as the initial weight may absorb more language and cross-modal information, making the weights more likely to locate in the same basin before merg-\n5Note that the models with Kseed = 0 is the same as what have been reported in Table 1.\ning. Moreover, the optimality for merging happens when Kseed = KV L = 100k, which also leads to a competitive modality-specific model that performs comparably to the one without seed pre-training. Therefore, we adopt this as the default recipe for all remaining experiments."
+        },
+        {
+            "heading": "6.2 Comparison between Merging Methods",
+            "text": "We compare different merging methods and ablate their hyper-parameters in Table 2. Table 2c shows that RegMean performs strongly in both tasks (especially VQA) and is robust to \u03b3. Table 2b shows that reducing the length of the modality arithmetic leads to better downstream performance. In Table 2a, we observe that vision weight is more important for our downstream tasks, as only using vision weight (\u03b1 = 1) achieves much better results compared to only using language weight (\u03b1 = 0). Comparing different merging methods, interpolation (with the ratio 0.75) performs as competitively as RegMean without additional computation and storage for the gram matrices Gmi , and is more effective than modality arithmetic. Intuitively, the best performance with an interpolation ratio of 0.75 is somewhat similar to using different weights for tasks to mitigate the negative transfer in multi-task learning (Liu et al., 2019)."
+        },
+        {
+            "heading": "6.3 Ablation on Shared-weight Architectures",
+            "text": "Lastly, we explore applying model merging on different architectures described in Section 3, including shared-weight architectures with custom attention layers, FFN, or layer normalization layers. Results are shown in Figures 4a and 4b. The model with custom layer normalization layers can\nlargely retain the performance after merging, however its performance before merging is not as competitive, only comparable to the modality-agnostic baseline (whereas ideally, we want the performance of the modality-specific model before merging to be higher than the modality-agnostic model). Sharing attention layers or FFN has mixed results on VQA and COCO retrieval, as it improves on one task while hurts the other. Notably, the modalityspecific architecture with entirely independent modules performs the best without merging and attains on-par performance with the modalityagnostic baseline after interpolation."
+        },
+        {
+            "heading": "6.4 Final Recipe",
+            "text": "Overall, as an initial study on merging modalityspecific models, our empirical results reveal a recommended takeaway recipe: (1) select a pretrained weight that has been trained on all modalities, (2) use interpolation with a ratio around 0.75 (or 0.5) as an effective initial approach, or employ RegMean if additional computational resources are deemed acceptable, and (3) employing modalityspecific architectures with entirely independent modules can attain satisfactory merging outcomes."
+        },
+        {
+            "heading": "6.5 Generalization to Diverse Tasks and Architectures",
+            "text": "In this section, we further apply our merged model to a diverse spectrum of tasks and architectures and compare our approach with the modality-Specific Architecture (MSA), Modality-Agnostic Architecture (MAA), and the Merging Baseline (MB) (mentioned in Table 1 and Section 4.3). More Tasks. We include additional evaluation on\nNLVR2 and Flickr30k as well as ImageNet-1k and ADE20k to cover more VL and vision tasks. To make a direct comparison, we do not apply the intermediate fine-tuning (used in VLMo) for Flickr30k, ImageNet-1k, and ADE20k. For modality-specific architectures, we only fine-tune the vision encoder to the vision tasks. The results of our experiments are presented in Table 3. Notably, our approach, which involves seed pre-training and interpolation with a ratio of 0.75, exhibits significant improvements over the naive merging approach in both NLVR2 and Flickr30k tasks. However, we have observed that the performance gap between our approach and the modality-agnostic architecture is somewhat larger for NLVR2 and Flickr30k compared to the VQA and COCO tasks, where our results closely align with the baseline performance (Figures 4a and 4b). We hypothesize that the merging outcomes could be better if the domain shift between pre-trained and downstream tasks were reduced, considering that images of VQA and COCO are used for VL pre-training. In the results of ImageNet and ADE20k, our merging approach not only matches but also surpasses the baselines. These results affirm that the merging process does not compromise the representational capacity of the individual modalities. More Architectures. We also conduct experiments on another backbone model, ViT-Tiny/16 (Dosovitskiy et al., 2021). Note that it is not trained by the BEiT unsupervised objective but is trained by the supervised classification objective. In this experiment, we pre-train the model for 100k steps instead of 200k steps, and for our merging approach, we use 50k steps for both seed pre-training and VL pretraining. We compare our approach to baselines on four VL datasets and display the results in Table 4.\nOur findings demonstrate that our technique significantly outperforms the merging baseline. Furthermore, we observe a larger performance gap between our approach and the modality-agnostic baseline when employing the ViT-Tiny/16 backbone, and this phenomenon is aligned with past research (Ainsworth et al., 2022), which shows larger (wider) models exhibit greater resilience to performance drop when merging."
+        },
+        {
+            "heading": "7 Analysis",
+            "text": "In the preceding experiments, we highlight three factors that influence the outcomes of merging. This sparked a curiosity regarding the existence of potential metrics capable of predicting or explaining the quality of these merging results. One intuitive hypothesis is that the distance between the weights to be merged (vision and language weights in our case) might play an important role, as the performance drop caused by merging should be 0 if the distance between them is 0, and vice versa, the drop should be considerable if the distance is large (the weights are not in the same basin). To test the hypothesis, we apply various distance measures on the vision and language weights of modalityspecific models and compute the correlation between the distance and the performance drop after merging to assess the influence on merging results.\nMetrics Definition. Four metrics are chosen to measure the distance between vision and language weights of modality-specific models, including the L2 distance, cosine dissimilarity (equivalent to one minus cosine similarity), soft sign dissimilarity (SSD), and truncated soft sign dissimilarity (TSSD), where the last two are inspired by Yadav et al. (2023). To compute the distance, we first flatten all the weight matrices from vision and language transformers and concatenate them respectively to form vision and language weight vectors\nwv and wl. Note that we do not include weights that are not mergeable, such as embedding layers. For L2 and cosine dissimilarity, we follow the standard\nways to compute them, namely, \u221a\u2211\ni(wvi \u2212 wli)2\nand 1\u2212 wv \u00b7wl\u2225wv\u2225\u2225wl\u2225 . Yadav et al. (2023) show that model merging might result in information loss due to interference from redundant parameter values and disagreement on the sign of given parameter\u2019s values across weights to be merged. Motivated by this, we design two metrics to reflect the disagreement between signs and the interference of redundant parameters. Unlike the method used by Yadav et al. (2023), soft sign dissimilarity (SSD) considers the two requirements in a soft manner, and the mathematical definition is as follows,\nSSD(x, y) = 1\u2212 1 L \u2211 i |xi + yi| |xi|+ |yi| , (1)\nwhere L (= \u2225x\u2225 = \u2225y\u2225) is the size of x and y. Equation (1) represents one minus the soft sign similarity. The similarity will be one if xi and yi have the same sign, which can quantify the agreement of the signs. In the case when the values have different signs, the similarity will be the cancel-out value divided by the magnitude: (1) if they have exact opposite values, the similarity will be zero (the numerator is zero); (2) when yi is a redundant value, denoting it has the opposite sign of x but the magnitude is small. The output of the similarity measure will be close to 1, making our approach softly quantifying redundancies.\nTruncated soft sign dissimilarity (TSSD), is designed to incorporate the original implementation (Yadav et al., 2023) of the \u2018redundancy removing\u2019 stage. To compute this, we zero-out the parameters of x and y if their original values are among the top-k smallest in x and y respectively, then apply SSD to the new inputs. After truncation, the redundant values might be set to zero and will make its similarity with the other value to be one. Therefore, this approach can be viewed as a hard approach to quantify redundancy. Note that the truncation introduces many zeros to both x and y, and we simply do not include the similarity of two zero values in computation because merging two zeros does not affect the merging results and thus should not affect the similarity either. In practice, we set k to 50% of the total parameters of vision weights, thus zeroing half of the parameters.\nResults. We apply the aforementioned metrics to modality-specific models using different seed and VL pre-training iterations and show the results along with the performance drop after merging on COCO in Table 5. We observe that the distance indeed relates to the performance drop as their trends are aligned. To investigate what metric best reflects the merging outcomes, we calculate the Pearson correlation (Freedman et al., 2007) between the performance drop and each distance metric. The results in Table 5 reveal that the L2 distance is the least correlated to the performance drop, in comparison to other measures, implying that magnitude may not be a crucial factor for merging. On the other hand, TSSD shows the highest correlation among all metrics, suggesting a better metric to predict whether two models are mergeable."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "We explore applying the model merging technique to transform modality-specific models into modality-agnostic models. With comprehensive experiments, we analyze the key factors impacting the merging results, including initialization, merging mechanisms, and model architectures. With seed pre-training and merging methods as simple as interpolation, we improve the merging results of the modality-specific model significantly (+3% on VQA, +7% on COCO image-text retrieval, +25% on NLVR2, +14% on Flickr30k and +3% on ADE20k). Moreover, we demonstrate the merged weight maintains the performance on unimodal tasks, and the proposed approach generalizes to another backbone model. We also discuss an initial recommended recipe for multimodal merging."
+        },
+        {
+            "heading": "9 Broader Impact and Limitations",
+            "text": "This paper demonstrates the potential to merge a modality-specific VL model to obtain a universal architecture that can handle multiple modalities simultaneously. The findings in this paper address several questions that might be beneficial for future research. Firstly, what representation do the vision and language transformers learn so that the merging performance is better? This helps to understand the fundamental problem of when we can learn a universal model. Secondly, can we merge two transformers that are initialized from unimodal pre-trained weights? This is useful as initializing the models from a related domain would have performance gain. Lastly, can we apply the merging on the models fine-tuned on downstream VL tasks, so as to construct a multi-task modality-agnostic model? We hope our study can inspire future work in this direction.\nThough we show seed pre-training is crucial for merging, it shares similar cost issues with other pre-training experiments, leading to high carbon emission and electricity usage that may cause a certain degree of environmental damage and energy cost."
+        },
+        {
+            "heading": "A Additonal Experimental Details",
+            "text": "Datasets split. In training, we use the Karpathy-train split (Karpathy and FeiFei, 2017) for VQA and COCO datasets and use the train set for other datasets. For evaluation, we use test-dev split for VQA, test-P split for NLVR2, the validation set for ImageNet and ADE20k, Karpathy-val split for COCO and test set for Flickr30k.\nFine-tuning of ImageNet-1k and ADE20k. We use the source codes of BEIT (https://github. com/microsoft/unilm/tree/master/beit) with our trained checkpoints for fine-tuning.\nHyper-parameter for fine-tuning. We show the hyper-parameters used in fine-tuning in Table 6.\nComputational Usage. We use 48xV100 GPUs for seed pre-training and VL pre-training and it takes around 3.5 days for 200k iterations. We use 32xV100 GPUs for VQA and COCO fine-tuning and they take around 7 hours to finish, while we use 16xV100 GPUs for NLVR2 and Flickr30k and they take around 4 hours to finish.\nNumber of Parameters. We display the number of parameters for BEiTbase architectures used in this work in Table 7."
+        },
+        {
+            "heading": "B Licenses",
+            "text": "\u2022 Conceptual Captions: Other\n\u2022 COCO: Creative Commons Attribution 4.0 License\n\u2022 Visual Genome: Creative Commons Attribution 4.0 License\n\u2022 VQAv2: Creative Commons Attribution 4.0 License\n\u2022 annotations of NLVR2: CC-BY-4.0 (There are no licenses for images as the original authors also do not hold the copyright.)\n\u2022 Flickr30k: Other\n\u2022 ADE20k: Creative Commons BSD-3 License Agreement"
+        }
+    ],
+    "title": "An Empirical Study of Multimodal Model Merging",
+    "year": 2023
+}

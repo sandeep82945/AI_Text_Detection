@@ -1,0 +1,605 @@
+{
+    "abstractText": "Existing sentence ordering approaches generally employ encoder-decoder frameworks with the pointer net to recover the coherence by recurrently predicting each sentence step-by-step. Such an autoregressive manner only leverages unilateral dependencies during decoding and cannot fully explore the semantic dependency between sentences for ordering. To overcome these limitations, in this paper, we propose a novel Non-Autoregressive Ordering Network, dubbed NAON, which explores bilateral dependencies between sentences and predicts the sentence for each position in parallel. We claim that the non-autoregressive manner is not just applicable but also particularly suitable to the sentence ordering task because of two peculiar characteristics of the task: 1) each generation target is in deterministic length, and 2) the sentences and positions should match exclusively. Furthermore, to address the repetition issue of the naive non-autoregressive Transformer, we introduce an exclusive loss to constrain the exclusiveness between positions and sentences. To verify the effectiveness of the proposed model, we conduct extensive experiments on several common-used datasets and the experimental results show that our method outperforms all the autoregressive approaches and yields competitive performance compared with the state-of-the-arts. The codes are available at: https://github.com/steven640pixel/ nonautoregressive-sentence-ordering.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yi Bin"
+        },
+        {
+            "affiliations": [],
+            "name": "Wenhao Shi"
+        },
+        {
+            "affiliations": [],
+            "name": "Bin Ji"
+        },
+        {
+            "affiliations": [],
+            "name": "Jipeng Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yujuan Ding"
+        },
+        {
+            "affiliations": [],
+            "name": "Yang Yang"
+        }
+    ],
+    "id": "SP:92a6becaca7f4050675e7326de0958474db79c5f",
+    "references": [
+        {
+            "authors": [
+                "Regina Barzilay",
+                "Mirella Lapata."
+            ],
+            "title": "Modeling local coherence: An entity-based approach",
+            "venue": "Computational Linguistics, 34(1):1\u201334.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Regina Barzilay",
+                "Lillian Lee."
+            ],
+            "title": "Catching the drift: Probabilistic content models, with applications to generation and summarization",
+            "venue": "HLT-NAACL, pages 113\u2013120.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Somnath Basu Roy Chowdhury",
+                "Faeze Brahman",
+                "Snigdha Chaturvedi."
+            ],
+            "title": "Is everything in order? a simple way to order sentences",
+            "venue": "EMNLP, pages 10769\u201310779.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Samy Bengio",
+                "Oriol Vinyals",
+                "Navdeep Jaitly",
+                "Noam Shazeer."
+            ],
+            "title": "Scheduled sampling for sequence prediction with recurrent neural networks",
+            "venue": "NeurIPS, 28:1171\u20131179.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Yi Bin",
+                "Mengqun Han",
+                "Wenhao Shi",
+                "Lei Wang",
+                "Yang Yang",
+                "See-Kiong Ng",
+                "Heng Tao Shen."
+            ],
+            "title": "Nonautoregressive math word problem solver with unified tree structure",
+            "venue": "EMNLP.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yi Bin",
+                "Wenhao Shi",
+                "Jipeng Zhang",
+                "Yujuan Ding",
+                "Yang Yang",
+                "Heng Tao Shen."
+            ],
+            "title": "Non-autoregressive cross-modal coherence modelling",
+            "venue": "ACM MM, pages 3253\u20133261.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "William Chan",
+                "Nikita Kitaev",
+                "Kelvin Guu",
+                "Mitchell Stern",
+                "Jakob Uszkoreit."
+            ],
+            "title": "KERMIT: generative insertion-based modeling for sequences",
+            "venue": "CoRR, abs/1906.01604.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Xinchi Chen",
+                "Xipeng Qiu",
+                "Xuanjing Huang."
+            ],
+            "title": "Neural sentence ordering",
+            "venue": "arXiv preprint arXiv:1607.06952.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Baiyun Cui",
+                "Yingming Li",
+                "Ming Chen",
+                "Zhongfei Zhang."
+            ],
+            "title": "Deep attentive sentence ordering network",
+            "venue": "EMNLP, pages 4340\u20134349.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Baiyun Cui",
+                "Yingming Li",
+                "Zhongfei Zhang."
+            ],
+            "title": "Bert-enhanced relational sentence ordering network",
+            "venue": "EMNLP, pages 6310\u20136320.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "NAACL, pages 4171\u20134186.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Cunxiao Du",
+                "Zhaopeng Tu",
+                "Jing Jiang."
+            ],
+            "title": "Order-agnostic cross entropy for non-autoregressive machine translation",
+            "venue": "ICML, pages 2849\u20132859. PMLR.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Marjan Ghazvininejad",
+                "Omer Levy",
+                "Yinhan Liu",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Mask-predict: Parallel decoding of conditional masked language models",
+            "venue": "EMNLP-IJCNLP, pages 6111\u20136120.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jingjing Gong",
+                "Xinchi Chen",
+                "Xipeng Qiu",
+                "Xuanjing Huang."
+            ],
+            "title": "End-to-end neural sentence ordering using pointer network",
+            "venue": "arXiv preprint arXiv:1611.04953.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Jiatao Gu",
+                "James Bradbury",
+                "Caiming Xiong",
+                "Victor O.K. Li",
+                "Richard Socher."
+            ],
+            "title": "Non-autoregressive neural machine translation",
+            "venue": "ICLR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jiatao Gu",
+                "Changhan Wang",
+                "Junbo Zhao."
+            ],
+            "title": "Levenshtein transformer",
+            "venue": "NeurIPS, pages 11179\u2013 11189.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Junliang Guo",
+                "Xu Tan",
+                "Di He",
+                "Tao Qin",
+                "Linli Xu",
+                "Tie-Yan Liu."
+            ],
+            "title": "Non-autoregressive neural machine translation with enhanced decoder input",
+            "venue": "AAAI, pages 3723\u20133730.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Junliang Guo",
+                "Xu Tan",
+                "Linli Xu",
+                "Tao Qin",
+                "Enhong Chen",
+                "Tie-Yan Liu."
+            ],
+            "title": "Fine-tuning by curriculum learning for non-autoregressive neural machine translation",
+            "venue": "AAAI, pages 7839\u20137846.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "ICLR.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Pawan Kumar",
+                "Dhanajit Brahma",
+                "Harish Karnick",
+                "Piyush Rai."
+            ],
+            "title": "Deep attentive ranking networks for learning to order sentences",
+            "venue": "AAAI, pages 8115\u2013 8122.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mirella Lapata."
+            ],
+            "title": "Probabilistic text structuring: Experiments with sentence ordering",
+            "venue": "ACL, pages 545\u2013552.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Hung Le",
+                "Richard Socher",
+                "Steven C.H. Hoi."
+            ],
+            "title": "Non-autoregressive dialog state tracking",
+            "venue": "ICLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jason Lee",
+                "Elman Mansimov",
+                "Kyunghyun Cho."
+            ],
+            "title": "Deterministic non-autoregressive neural sequence modeling by iterative refinement",
+            "venue": "EMNLP, pages 1173\u20131182.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yingming Li",
+                "Baiyun Cui",
+                "Zhongfei Zhang."
+            ],
+            "title": "Efficient relational sentence ordering network",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence, 44(10):6169\u20136183.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuohan Li",
+                "Zi Lin",
+                "Di He",
+                "Fei Tian",
+                "Tao Qin",
+                "Liwei Wang",
+                "Tie-Yan Liu."
+            ],
+            "title": "Hint-based training for non-autoregressive machine translation",
+            "venue": "EMNLP-IJCNLP, pages 5707\u20135712.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Lajanugen Logeswaran",
+                "Honglak Lee",
+                "Dragomir Radev."
+            ],
+            "title": "Sentence ordering and coherence modeling using recurrent neural networks",
+            "venue": "AAAI, volume 32.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Nasrin Mostafazadeh",
+                "Nathanael Chambers",
+                "Xiaodong He",
+                "Devi Parikh",
+                "Dhruv Batra",
+                "Lucy Vanderwende",
+                "Pushmeet Kohli",
+                "James Allen."
+            ],
+            "title": "A corpus and cloze evaluation for deeper understanding of commonsense stories",
+            "venue": "NAACL-HLT, pages 839\u2013",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Byungkook Oh",
+                "Seungmin Seo",
+                "Cheolheon Shin",
+                "Eunju Jo",
+                "Kyong-Ho Lee."
+            ],
+            "title": "Topic-guided coherence modeling for sentence ordering by preserving global and local information",
+            "venue": "EMNLP-IJCNLP, pages 2273\u20132283.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Divesh Pandey",
+                "C Ravindranath Chowdary."
+            ],
+            "title": "Modeling coherence by ordering paragraphs using pointer networks",
+            "venue": "Neural Networks, 126:36\u201341.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shrimai Prabhumoye",
+                "Ruslan Salakhutdinov",
+                "Alan W Black."
+            ],
+            "title": "Topological sort for sentence ordering",
+            "venue": "ACL, pages 2783\u20132792.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Weizhen Qi",
+                "Yeyun Gong",
+                "Jian Jiao",
+                "Yu Yan",
+                "Dayiheng Liu",
+                "Weizhu Chen",
+                "Kewen Tang",
+                "Houqiang Li",
+                "Jiusheng Chen",
+                "Ruofei Zhang",
+                "Ming Zhou",
+                "Nan Duan"
+            ],
+            "title": "BANG: bridging autoregressive and non-autoregressive generation with large scale",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qiu Ran",
+                "Yankai Lin",
+                "Peng Li",
+                "Jie Zhou."
+            ],
+            "title": "Guiding non-autoregressive neural machine translation decoding with reordering information",
+            "venue": "AAAI, volume 35, pages 13727\u201313735.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Ren",
+                "Yangjun Ruan",
+                "Xu Tan",
+                "Tao Qin",
+                "Sheng Zhao",
+                "Zhou Zhao",
+                "Tie-Yan Liu."
+            ],
+            "title": "Fastspeech: Fast, robust and controllable text to speech",
+            "venue": "NeurIPS, pages 3165\u20133174.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Mitchell Stern",
+                "William Chan",
+                "Jamie Kiros",
+                "Jakob Uszkoreit."
+            ],
+            "title": "Insertion transformer: Flexible sequence generation via insertion operations",
+            "venue": "ICML, pages 5976\u20135985.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "NeurIPS, pages 5998\u20136008.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Oriol Vinyals",
+                "Meire Fortunato",
+                "Navdeep Jaitly."
+            ],
+            "title": "Pointer networks",
+            "venue": "NeurIPS, 28:2692\u20132700.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Qingyun Wang",
+                "Zhihao Zhou",
+                "Lifu Huang",
+                "Spencer Whitehead",
+                "Boliang Zhang",
+                "Heng Ji",
+                "Kevin Knight."
+            ],
+            "title": "Paper abstract writing through editing mechanism",
+            "venue": "ACL, pages 260\u2013265.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tianming Wang",
+                "Xiaojun Wan."
+            ],
+            "title": "Hierarchical attention networks for sentence ordering",
+            "venue": "AAAI, volume 33, pages 7184\u20137191.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yiren Wang",
+                "Fei Tian",
+                "Di He",
+                "Tao Qin",
+                "ChengXiang Zhai",
+                "Tie-Yan Liu."
+            ],
+            "title": "Non-autoregressive machine translation with auxiliary regularization",
+            "venue": "AAAI, pages 5377\u20135384.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Bang Yang",
+                "Yuexian Zou",
+                "Fenglin Liu",
+                "Can Zhang."
+            ],
+            "title": "Non-autoregressive coarse-to-fine video captioning",
+            "venue": "AAAI, volume 35, pages 3119\u20133127.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yongjing Yin",
+                "Fandong Meng",
+                "Jinsong Su",
+                "Yubin Ge",
+                "Linfeng Song",
+                "Jie Zhou",
+                "Jiebo Luo."
+            ],
+            "title": "Enhancing pointer network for sentence ordering with pairwise ordering predictions",
+            "venue": "AAAI, pages 9482\u2013 9489.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yongjing Yin",
+                "Linfeng Song",
+                "Jinsong Su",
+                "Jiali Zeng",
+                "Chulun Zhou",
+                "Jiebo Luo."
+            ],
+            "title": "Graph-based neural sentence ordering",
+            "venue": "IJCAI, pages 5387\u2013 5393. AAAI Press.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "\u2022 AAN (Wang"
+            ],
+            "title": "2018): the abstracts of papers published on ACL Anthology Network until 2016",
+            "venue": "We use the data provided by (Logeswaran et al.,",
+            "year": 2018
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Sentence ordering is one of the fundamental and common tasks to model document coherence, which targets at re-organizing a set of sentences into a coherent paragraph (as shown in Figure 1). Most early works of sentence ordering (Lapata, 2003; Barzilay and Lee, 2004; Barzilay and Lapata, 2008) apply probabilistic transition model and rule-based model, e.g., HMM, entity, and content model, based on hand-crafted features. While such\nsophisticated designs are costly in labor and time, expertise-required, and even cannot be well generalized to other scenarios. In the past couple of years, inspired by the great success of deep learning, dozens of deep neural methods for sentence ordering have been proposed and achieved great success (Cui et al., 2018; Kumar et al., 2020; Wang and Wan, 2019; Prabhumoye et al., 2020; Basu Roy Chowdhury et al., 2021).\nThere exist two paradigms of neural sentence ordering: 1) ranking model via the scores of relative positions between paired sentences, and 2) generation model based on an encoder-decoder framework to predict the sentence order with sequence generation. The former one, ranking model (Prabhumoye et al., 2020; Chen et al., 2016), starts from calculating a score for each sentence pair to indicate their relative position in a coherent paragraph, then employs ranking or searching strategies to derive out the gold order. Since the score between paired sentences only measures the one-to-one relative position, which may fail to capture the one-to-many interactions on the global context level. Besides, the naive ranking process is somehow brute-force and time-consuming, and highly depends on the quality of sentence representation.\nThe latter one, generation model regards sentence ordering as a sequence prediction problem to explore the relations between sentences and positions, which takes a set of sentences and generates\nthe coherent sentence sequence. At the early stage, several encoder-decoder based approaches (Gong et al., 2016; Logeswaran et al., 2018) treat the unordered input sentences as a permutation sequence and encode them sequentially. Such sequential modeling encodes incorrect sentence order and semantic logic between sentences, which may mislead the decoder to predict an incoherent paragraph. Specifically, with sequential modeling, different permutations of the same paragraph may derive different paragraph representations and result in different output sentence order, which is not reasonable and inconsistent with the intuition of humans. To address this issue, Cui et al. (2018) first propose a deep attentive sentence ordering network equipped with self-attention to learn a reliable and consistent paragraph representation. Their model implements order-independent encoding with a non-positional variant of Transformer (Vaswani et al., 2017), but still predicts sentences via a pointer network as most previous works do. Nevertheless, the RNNbased pointer networks predict the sentence order step-by-step, which only explores the unilateral dependencies with past predictions and fails to leverage the comprehensive bilateral interactions between sentences for ordering.\nTo overcome the above limitations, in this paper, we propose a novel Non-Autoregressive Ordering Network, dubbed NAON, which explores the bilateral dependencies between sentences and predicts the sentence for each position in parallel. Specifically, our NAON consists of a basic sentence encoder, an order-independent contextual sentence encoder and a non-autoregressive Transformer (NAT) (Gu et al., 2018) decoder. We first employ a sequence encoder, e.g., BERT in this work, to map discrete words in each sentence to a compact representation. The obtained sentence representations are injected to a Transformer (Vaswani et al., 2017) encoder to exploit the interaction and relation between sentences, and export contextual sentence representations. Note that we remove the positional embedding in the Transformer to achieve the order-invariant encoding for the sentences. In contrast to obtaining the paragraph representation via pooling to initialize the memory of auto-regressive decoder (Cui et al., 2018), we make full use of contextual sentence representations through multi-head attention in non-autoregressive decoder. We design a non-autoregressive decoder (NAD) that takes positions as input and predicts\nthe sentence for each position utilizing a pointer network (Vinyals et al., 2015). In particular, we first employ multi-head attention to explore the relations between positions. Then the output distribution over the original sentence representation set for each position will be modelled by a pointer network. As mentioned in (Gu et al., 2018), naive non-autoregressive decoding suffers from severe problem of output repetition due to the complete conditional independence. To address this issue, we elaborate an exclusive loss constraining the exclusiveness between each sentence and position pair during training, and a greedy selective and removing strategy for inference. In summary, our main contributions are as follows:\n\u2022 We propose a novel approach, non-autoregressive ordering network (NAON), for sentence ordering, which implements self-attention to explore the bilateral interactions between sentences, going beyond the unilateral dependencies of RNNbased step-by-step decoding. To the best of our knowledge, our approach is one of the first attempts using non-autoregressive decoders for the sentence ordering problem.\n\u2022 To alleviate the repetition problem of vanilla nonautoregressive models, we design an exclusive loss under the implication of exclusive constraint between positions and sentences during training. For inference, we simply design a greedy selective and removing strategy to match each sentence-position pair.\n\u2022 Extensive experiments are conducted on several common-used datasets, and the results demonstrate the effectiveness of the proposed approach."
+        },
+        {
+            "heading": "2 The Proposed Approach",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Preliminary",
+            "text": "Sentence ordering aims to capture the coherence and recover the gold order of a set of unordered sentences. Specifically, given a sentence set S = {s1, s2, ..., sN} with N sentences, and each sentence si = [wi1, wi2, ..., wiLi ] contains a sequence of Li words. The goal of sentence ordering is to find an order O\u2217 = [o\u22171, o \u2217 2, ..., o \u2217 N ] conveying the coherent semantics, which can be modelled by:\nP (O\u2217|S) \u2265 P (O|S), \u2200O \u2208 \u2126, (1)\nwhere P (O|S) is the probability of order O given S, and \u2126 denotes the exhaustive set of all potential\norder with the size of ANN . Existing autoregressive approaches (Cui et al., 2018; Wang and Wan, 2019) generate the coherent paragraph sentenceby-sentence to recover the gold order, and optimize the model by maximizing:\nN\u2211 j=1 logP (sj |s1, s2, ..., sj\u22121, S). (2)\nWhile our non-autoregressive ordering network implements the optimization in parallel by maximizing the logarithmic probabilities for all sentences:\nN\u2211 j=1 logP (sj |S). (3)"
+        },
+        {
+            "heading": "2.2 Basic Sentence Representation",
+            "text": "To map discrete words of a sentence into compact representations, as shown on the left of Figure 2, a sequential encoder is first employed, e.g., an LSTM or BERT. Inspired by the success in language modeling of BERT (Devlin et al., 2019), we adopt a pre-trained BERT-base model for basic sentence representation. In particular, following previous work (Kumar et al., 2020), we concatenate the [CLS] token and word sequence as BERT encoder input and average the outputs of all the tokens to denote the entire sentence representation. To make the representation more compatible with sentence ordering task, we also fine-tune it in an end-to-end fashion on each dataset."
+        },
+        {
+            "heading": "2.3 Contextual Sentence Representation",
+            "text": "Most existing autoregressive approaches (Cui et al., 2018; Wang and Wan, 2019; Logeswaran et al.,\n2018) provide a \u201cparagraph representation\u201d to initialize the hidden state and memory cell of the decoder. A straightforward way is assuming that the given order is a \u201cpseudo order\u201d of the unordered sentences, and implementing an RNN-based encoder (Wang and Wan, 2019), e.g., LSTM or GRU, to map sentence representations to a dense feature vector for the paragraph. While such pseudo order assumption introduces incorrect sentence order, which may induce semantic incoherence and mislead the decoder in recovering the ground-truth order. To address this issue, Cui et al. (2018) proposed a deep attentive ordering network integrating a self-attention mechanism to derive the order invariant sentence representations, and adopted mean pooling across sentences to obtain the paragraph representation. Different from existing autoregressive approaches which need to initialize the decoder memory, our non-autoregressive decoder does not require such \u201cparagraph representation\u201d. We design a contextual sentence encoder to interact each sentence with all the sentences in the set and injects all the contextual sentence representations into the decoder to find the correct order.\nObviously, it is important to exploit semantic relations between sentences for recovering coherence. Towards this end, we design a contextual sentence encoder, shown in the middle of Figure 2, to interact each sentence with other sentences. Specifically, after obtaining the basic sentence representations Eb = {eb1, eb2, ..., ebN}, we employ a Transformerbased architecture similar to (Cui et al., 2018), equipped with multi-head self-attention mechanism without the positional embedding, to exploit the\ncontextual information as follows:\nAttention(Q,K, V ) = softmax( QKT\u221a\ndk )V, (4)\nMH(Q,K, V ) = [H1, H2, ...,Hh]W, (5)\nHi = Attention(QW Q i ,KW K i , V W V i ). (6)\nTo explore deep contextual interaction, we duplicate the multi-head self-attention block multiple times, e.g., 4 for NSF and arXiv datasets in this work. Finally, the contextual sentence representations Ec = {ec1, ec2, ..., ecN} can be derived from the output of the last layer."
+        },
+        {
+            "heading": "2.4 Non-Autoregressive Prediction",
+            "text": "Almost all the previous generation approaches (Logeswaran et al., 2018; Cui et al., 2018; Basu Roy Chowdhury et al., 2021) adopt a recurrentbased architecture composing with a pointer network (Vinyals et al., 2015) to predict the ordered sentence step-by-step, which only leverages the unilateral dependencies with the past prediction, and cannot capture the coherent dependencies between all the sentences. Besides, as argued in (Bengio et al., 2015), the discrepancy between training and inference of RNN-based generation strategy may decrease the inference performance. Inspired by the potentials of the non-autoregressive transformer in neural machine translation, we devise a non-autoregressive decoder (NAD) for recovering the correct order of sentences, with the exploration of bilateral dependencies. Our NAD is designed based on a Non-Autoregressive Transformer (NAT) decoder in machine translation, which removes the autoregressive connections between steps and generates all the target words in parallel, rather than step-by-step (i.e., word-by-word). Beyond the aforementioned superiority of NAT in translation, NAD is especially suitable for sentence ordering from two aspects: (1) the length of the decoder is determined by the input set of sentences, and (2) the sentences and positions match exclusively.\nAs suggested in (Gu et al., 2018), different inputs of non-autoregressive decoder may lead to quite different outputs resulting in a remarkable performance gap. Thus it is crucial to choose a proper information source for the input of NAD. Towards this end, we meticulously adopt positional information as the input of our non-autoregressive decoder. Because the sentence ordering problem could be interpreted as matching the unordered sentences to the right positions, and it is straightforward to\ntake the position information as input and predict the correct sentence for each position in parallel. Specifically, we follow previous work (Vaswani et al., 2017) to project each discrete position into a compact representation P via:\npi,2j = sin(i/10000 2j/dk), (7)\npi,2j+1 = cos(i/10000 2j/dk), (8)\nwhere i denotes the position and j is the j-th dimension in pi. We then exploit the interaction and relative information between positions implementing a multi-head self-attention as:\nP = MHAtt(PWQ, PWK , PW V ), (9)\nwhere MHAtt denotes multi-head self-attention block comprised of Equation 4-6. To connect the positions and the elements in the unordered context set, we further implement multi-head interattention between positions and sentences to exploit the correlations between them. Specifically, we query the contextual sentence representation set using P , to obtain the attentive representations of sentences as:\nEp = softmax( P (Ec)T\u221a\ndk )Ec, (10)\nwhere Ec is the contextual sentence representation derived from the contextual encoder. With such an operation, the obtained Ep now is position sensitive representation, and could be used to select the most relevant sentence for each position. Specifically, the probability of the sentence j to be in the position i can be obtained by:\n\u03c9ij = u T tanh(Wpe p i +Wbe b j), (11)\nPtri = softmax(\u03c9i), (12)\nwhere W\u2217 are learned parameters, and u is a column weight vector. ebj and e p j are the basic and positional sensitive representations of sentence j. Ptri is the probabilistic distribution across all the sentences for i-th position."
+        },
+        {
+            "heading": "2.5 Training and Inference",
+            "text": "Training: Following previous ordering works (Cui et al., 2018; Chen et al., 2016), the entire model could be trained to maximize the coherence probability by minimizing the cross entropy loss as:\nLc = \u2212 1\nN N\u2211 i=1 logP (oi|pi; \u0398), (13)\nwhere oi is the ground-truth sentence for given i-th position pi, and \u0398 denotes all the learnable parameters in the model. As each sentence in the ordering problem is allowed to be selected only once, to avoid repeat selection, the RNN-based autoregressive model adopts a mask to remove selected sentences (Yin et al., 2020). However, the non-autoregressive model suffers from the repetition problem for its parallel decoding fashion (Gu et al., 2018). We have observed that the traditional pointer loss only penalizes the repetition for sentence choosing. Considering the characteristic of the ordering task, as depicted in Figure 3, every position should also choose one and only one sentence. Towards this end, we introduce an elegant exclusive loss to constrain the mutual exclusiveness of optimal matching between positions and elements. Specifically, we simultaneously calculate two pointers for sentence choosing and position choosing when we obtain the pointer map by Equation 11. Given the pointer map \u03c9, we implement softmax across column and row similar to Equation 12, where the column one interprets choosing sentence for each position and the row one assigns a position for each sentence. Then we optimize the entire model by minimizing the combined exclusive loss as follows:\nLex = \u2212 1\nN N\u2211 i=1 (logP (oi|pi) + logP (pi|oi)).\n(14) Through such an exclusive constraint, the repetition problem could be distinctly alleviated. Inference: Obviously, the proposed exclusive loss\ncannot completely avoid repetition problem during decoding. Similar with the masking strategy used in recurrent pointer networks, we introduce a simple yet effective greedy selective and removing strategy to ensure the exclusive matching for inference. Given the probability distribution array, as described in Algorithm 1, the proposed strategy greedily selects the largest probability and returns its index indicating the matching position and sentence. It then removes all the probability values of the corresponding column and row by setting them to zero. The process is repeated until all the values of the array are set to zero, which means that the matching process between positions and sentences is completely finished.\nAlgorithm 1 Pseudo-code of greedy selective and removing in a PyTorch-like style.\n# Ptr: N\u00d7N output probability distribution array of NAD INPUT Ptr output = [] while sum(Ptr)>0:\nrow_idx, col_idx = max_index(Ptr) # max_index( ): get the index of the maximum value output.append((row_idx, col_idx)) Ptr[row_idx, :] = 0 Ptr[:, col_idx] = 0\nRETURN output"
+        },
+        {
+            "heading": "3 Experiments",
+            "text": "To verify the effectiveness of our NAON, we conduct extensive experiments on six datasets, and evaluate the performance with Acc, PMR, and \u03c4 . More detailed experimental settings are described in the Appendix B."
+        },
+        {
+            "heading": "3.1 Comparing with Baselines",
+            "text": "As aforementioned, existing works lie in two categories: ranking-based and generation-based methods. To assess the proposed NAON, we compare it with the recent state-of-the-art methods, including Pairwise model via pairwise ranking (Chen et al., 2016), RankTxNet via deep attentive ranking (Kumar et al., 2020), and B-TSort searching correct order with topological sort (Prabhumoye et al., 2020) of ranking model, and the first architecture using pointer network LSTM-Ptr (Gong et al., 2016), SetLSTM designing an LSTM based attention to process the set encoding (Logeswaran et al., 2018), AON with a deep attentive order invariant paragraph encoder (Cui et al., 2018), HAN equipped with hierarchical attention (Wang and Wan, 2019), TGCM modeling topic-guide coherence (Oh et al.,\n2019), SE-Graph encoding paragraph with sentence entities (Yin et al., 2019), and En-Ptr enhancing pointer network for sentence ordering with pairwise information (Yin et al., 2020) of generation based strategy. The performance comparisons of different compared methods are illustrated in Table 1. We compare our method with the baselines from several perspectives to analyze its performance comprehensively.\nGeneral Comparison: Standard performances of different methods, including our NAON, are shown in Black in the table. First, comparing with generation-based methods (e.g., AON, En-Ptr, and TGCM), our method is clearly better as it greatly outperforms them on four datasets and is almost competitive on the NSF dataset. In particular, our NAON achieves best \u03c4 across all datasets, which suggests that it performs more like humans than other methods as the metric \u03c4 shows consistency of models with human judgments (Kumar et al., 2020). Second, compared with ranking-based methods, NAON outperforms most of them except B-TSort. However, B-TSort achieves slightly better performance than NAON mainly because of the relative order it takes advantage of, which also greatly increases computational costs.\nRelative Order Exploration: Previous research has suggested that explicitly modeling the relative position of sentence pairs can bring considerably improve the sentence ordering models (Cui et al., 2020). Therefore, we further test our model with the boost of relative order (RO) modeling fol-\nlowing (Cui et al., 2020), dubbed as NAON-RO. Furthermore, we report the performance of the existing method BERSON, which also applies RO modeling. First, it is clear that NAON-RO and BERSON gain significant improvement, showing the effectiveness of RO modeling. Second, our NAON-RO performs better than BERSON extensively in terms of all the datasets and metrics. It demonstrates that with the enhancement of RO modeling, the non-autoregressive nature of our method is still superior to the autoregressive for the sentence ordering task.\nDespite of the superb of the RO-enhanced model in terms of the ordering accuracy, we take the plain model as the standard NAON considering the computational or memorial cost. The time and space complexity both turn into O(N2) with the RO modeling. For example, it costs 12GB or more memory to process a paragraph with more than 18 sentences and takes several days to train, and both costs will grow quadratically. Nevertheless, it still needs to mention that RO modeling is one of the potential directions to boost the sentence ordering models by exploring relative dependency. We hope in the future more computation-friendly algorithms would be developed to this end.\nSuitable Pre-training Task and Model: Enhancing representations with effective pre-training process is nowadays a general way to improve the performance of models for higher-level tasks. REBART (Basu Roy Chowdhury et al., 2021) applies the BART as the pre-training model for sentence\nordering, which already includes the sentence permutation task in the pre-training stage, and achieves excellent performance. Therefore, we also equip our non-autoregressive ordering strategy with the pre-trained BART model, namely NAON-BART, and examine its effectiveness. As the results shown in the last two blue rows in Table 1, empowering our NAON with BART pre-trained weights, it gains marvelous improvement and sets a new SOTA. This observation implies that: 1) our NAON could be applicable to various generation-based ordering models and boost their performance, and 2) exploring appropriate proxy tasks during pre-training might be beneficial for sentence ordering. Besides, these results also imply that our NAON is applicable to various generation-based models and can boost their performances by exploring the bilateral dependency of sentences."
+        },
+        {
+            "heading": "3.2 Predicting Head and Tail",
+            "text": "As mentioned in (Gong et al., 2016; Chen et al., 2016; Cui et al., 2018), the first and the last sentences play an important role in sentence ordering due to their special positions. Following previous works, we conduct the experiments on arXiv and SIND datasets and illustrate the comparison in Table 2. We can observe that our NAON outperforms all the baselines demonstrating superiority. Besides, the autoregressive fashion takes the previous output as current input, the first sentence prediction is much more crucial than others. While our non-autoregressive decoder is not subject to this limitation, the accuracy of the first sentence predic-\ntion is still better than the last one. This implies that there may exist distinct signals in the first sentence, which indicates the important potential of exploiting such signals underlying sentences. Besides, the experiments of integrating NAON with BERSON and BART achieve similar and consistent results, further verifying the effectiveness of our NAON."
+        },
+        {
+            "heading": "3.3 Diving into Exclusive Loss",
+            "text": "As illustrated in the fifth and sixth lines from the bottom of Table 1, the proposed exclusive loss improves the sentence ordering performance significantly. Nevertheless, it is hard to investigate how it alleviates the repetition problem exactly. Towards this end, we produce the inference results before the selective and removing procedure, in which repetition exist. We conduct two levels of repetition evaluation. Specifically, the Paragraph Repetition Ratio (PRR) evaluates the paragraph-level repetition which equals 1 when a repetitive sentence exists in the paragraph otherwise 0. We also calculate the mean of the Sentence Repetition Ratio (mSRR) to evaluate from the sentence level by dividing the number of repetitive sentences by the total number of sentences in the paragraph.\nWe investigate the repetitive predictions from the NAON model with and without exclusive loss on AAN and ROCStory datasets. From the results exhibited in Figure 4, we can see that without exclusive loss, NAON is highly likely to generate paragraphs with repetitive sentences (PRR is 99.46% for AAN and 99.97% for ROCStory)1. While con-\n1Note that our full model equipped with greedy selective and removing strategy will not generate repetition order. Here we remove this strategy to deeply probe and investigate the effectiveness of the exclusive loss for alleviating repetition issue from the training side.\nstrained by our novel exclusive loss during training, the model remarkably decreases the repetition ratio to 62.18% and 35.58%, which means that the exclusive constraint between sentences and positions makes great contributions in alleviating the repetition issue. At sentence level, the repetitive ratios for two datasets also drop dramatically with the introduction of exclusive loss, even achieving 6.36 indicating that there only exist a very small proportion of sentences repeated in the prediction. Based on the above observations, we can conclude that our exclusive loss can effectively alleviate the repetition problem of NAD, and thereby improve its performance for sentence ordering."
+        },
+        {
+            "heading": "4 Accelerating Sentence Ordering",
+            "text": "Non-autoregressive strategy implementing parallel decoding is with low latency and is more efficient than the autoregressive one (Gu et al., 2018). In this part, we investigate the time efficiency of our NAON empirically. We compare the inference time of NAON and AON, which share the same encoder and employ different decoders, i.e., nonautoregressive and autoregressive decoders. Table 3 exhibits the inference time (measured by second) comparison between NAON and AON on each dataset, as well as the ratio comparing with NAON. We also include the comparison with B-TSort, the SotA ranking-based method, which shows huge time costs because it computes the relative orders of all the sentence pairs. From the above results, we observe that the proposed NAON gains significant speed-up on all datasets. Besides, since the average number of sentences per paragraph in NIPS, AAN, and NSF are larger than SIND and ROCStory, they benefit more from the parallel decoding of the non-autoregressive strategy. Such results are also consistent with our intuition that paragraph with more sentences takes more time with autoregressive methods."
+        },
+        {
+            "heading": "5 Related Works",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Sentence Ordering",
+            "text": "Early works on sentence ordering attempt to utilize probabilistic transition method based on linguistic features (Lapata, 2003), content model (Barzilay and Lee, 2004) and entity-based approaches (Barzilay and Lapata, 2008; Prabhumoye et al., 2020). Recent neural models for the sentence ordering task are built on generation or ranking structure (Chen et al., 2016; Gong et al., 2016; Pandey\nand Chowdary, 2020; Logeswaran et al., 2018; Yin et al., 2020). For ranking-based strategy, Chen et al. (2016) introduced a pairwise model which ranks relative order for sentence pairs. Kumar et al. (2020) employed BERT-improved feedforward neural networks to generate scores for each sentence and optimized the scores with several ranking losses, e.g., pairwise ranking loss. Prabhumoye et al. (2020) proposed to constrain the relative order between paired sentences and introduced the classic topological sort algorithm to find the gold order, which achieves considerable improvement.\nFor generation-based strategy, Gong et al. (2016) firstly utilized an RNN to encode sentences and Logeswaran et al. (2018) explored LSTM-based attention encoder, both works employed a similar recurrent pointer net to generate the coherent paragraph sentence-by-sentence. However, since the input of sentence ordering is a set of unordered sentences, it is inappropriate to model the unordered sentences in an autoregressive manner. To address this issue, Cui et al. (2018) proposed to use Transformer but without positional embedding to encode the unordered sentences. Most of the follow-up methods also applied the order invariant Transformer as paragraph encoder (Yin et al., 2019, 2020; Kumar et al., 2020; Cui et al., 2020). Besides, other attempts also have been explored for order invariant encoding. Yin et al. (2019) devised a graph structure to encode the input order-free sentence set. Wang and Wan (2019) proposed a hierarchical attention network composed of a word encoder and a sentence encoder-decoder. Cui et al. (2020) and Li et al. (2022) further took advantage of BERT to explore the deep semantic connection and relative order between sentences. Basu Roy Chowdhury et al. (2021) employed the BART as backbone, which benefited from the sentence permutation task during pre-training and set a strong SotA."
+        },
+        {
+            "heading": "5.2 Non-Autoregressive Transformer",
+            "text": "Non-autoregressive transformer (NAT) (Gu et al., 2018) has been proposed as an effective nonautoregressive decoding method in machine translation. NAT predicts the output sequence based on source sequence and latent representation via parallel fashion. In order to narrow the performance gap between NAT and autoregressive transformer (AT), various approaches have been proposed in many research areas (Guo et al., 2020; Yang et al., 2021; Bin et al., 2023). Several methods (Lee et al., 2018; Guo et al., 2019; Wang et al., 2019; Li et al., 2019; Guo et al., 2020) proposed to modify the latent presentation by making use of extra refinement process, designing auxiliary modules and latent forms. Another line of research (Ghazvininejad et al., 2019; Stern et al., 2019; Gu et al., 2019) tended to achieve a trade-off between performance and inference efficiency by using semi-NAT architecture. Besides, many researchers had made attempts to introduce NAT into different sequence generation tasks like speech recognition (Ren et al., 2019) and dialog state tracking (Le et al., 2020). Moreover, it is worth noting that many NAT related pre-trained generation models (Chan et al., 2019; Qi et al., 2020) had been proposed to improve the generation results of pre-trained models. Our work makes the first attempt to accomplish sentence ordering task by a NAT style model.\nIn order to perform parallel decoding, sequence length should be determined firstly in NAT. The pioneer work in NAT (Gu et al., 2018) designed fertility predictor to predict the copy times of each token in the source sequence. By summarizing the copy times of all the tokens, model can obtain the target length of output sequence. Later, (Lee et al., 2018) proposed to use a separate length predictor to obtain the target length for the inference process. Some semi-NAT models (Stern et al., 2019; Gu et al., 2019) even proposed to implement insertion or deletion-based methods to control the length of generated sequences. Ran et al. (2021) introduced an intermediate pseudo-translation to align the order between source and target languages, which could help model the conditional dependencies of the target words and encourage the decoder to choose right words. Du et al. (2021) claimed the penalty for word order errors should not be included, because the semantic alignment between source and target words could be order-agnostic. In the ordering problem (Bin et al., 2022), as the num-\nber of sentences is fixed in the input, our NAON model does not need to consider this issue and can fully explore the potential of NAT in this task.\nNAT models usually suffer from repetitive generation issue due to conditional independence between output representations. For machine translation, Gu et al. (2018) proposed to use fertility i.e., copy times of each source token, to bridge the encoding and decoding processes, copying input tokens for several times as inputs of the decoder. Due to the conditional independence between output tokens, NAT model tends to generate repeated tokens in the output sequence. To alleviate this issue, Wang et al. (2019) and Li et al. (2019) introduced auxiliary loss functions to deal with the problem of repetition. Recently, semi-NAT style models (Stern et al., 2019; Gu et al., 2019) proposed new generation approaches to alleviate repetition issue. In our NAON model, we introduce an exclusive loss to tackle this problem."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "We presented a novel non-autoregressive ordering network for sentence ordering, which consists of a basic sentence encoder, a contextual sentence encoder, and a non-autoregressive decoder. Different from existing autoregressive methods, the proposed NAON predicted sentence for each position in parallel, which also leveraged bilateral dependencies among sentences, and demonstrated competitive performance. To alleviate the repetition problem of the proposed NAON, we devised an exclusive loss to constrain the exclusiveness matching between sentences and positions. The experimental results on several common-used datasets demonstrated the effectiveness of the proposed approach. The analyses of exclusive loss also indicate that alleviating repetition issue could improve the generation performance of the non-autoregressive decoder."
+        },
+        {
+            "heading": "7 Acknowledgement",
+            "text": "This research is partially supported by the National Natural Science Foundation of China under grant 62102070, 62220106008, and U20B2063, and partially supported by Sichuan Science and Technology Program under grant 2023NSFSC1392. This research is supported by A*STAR, CISCO Systems (USA) Pte. Ltd and National University of Singapore under its Cisco-NUS Accelerated Digital Economy Corporate Laboratory (Award I21001E0002)."
+        },
+        {
+            "heading": "8 Limitations",
+            "text": "In this work, we propose to employ nonautoregressive Transformer (NAT) as the decoder for sentence ordering, which could leverage bilateral dependencies between sentences, different with previous autoregressive decoders (e.g., RNN and LSTM) which explore only unilateral dependencies. However, to clearly analyze the particular priority of the NAT structure for sentence ordering, we adopt the vanilla NAT and simple repetition mitigation strategy for our NAON, ignoring further improvements or advances on NAT. Therefore, only use the vanilla NAT could be a limitation of our work. Despite that previous work or experimental results have suggested techniques such as exploring relative order exploration or applying the BART model could further improve the performance of sentence ordering, we do not want these detailed techniques to overshadow the main deployment of non-autoregressive decoding. We hope our work could bring some insights to the research of ordering problem and encourage more attempts at integrating advanced techniques with NAT."
+        },
+        {
+            "heading": "A Sentence Ordering with ChatGPT",
+            "text": "With the blooming of Large Language Models (LLMs), especially the great success of GPT series, e.g., ChatGPT2 and GPT-43, many NLP tasks have been proposed to integrate with LLMs based on suitable prompts and demonstrated marvelous results and performance. We therefore take an attempt to recover the coherence of sentences with ChatGPT API. We test ChatGPT on NIPS and SIND datasets only, due to the expensive costs of ChatGPT API calling, and the results are shown in Table 4. Before the test, we expected ChatGPT could achieve marvelous ordering performance, e.g., more than 95% in Acc, but the results show that it seemed to be not skilled in sentence ordering problems, and shocked us with dramatically low\n2https://openai.com/blog/chatgpt 3https://openai.com/gpt-4\nperformance. We analyze the results and assume the reasons may come from two points. The first one is that, our prompts are not very well to instruct the ChatGPT to effectively recover the coherence and reorder the sentences. Because we have also tried to revise our prompts several times to make the prompt more clear and more instructive (in Figure 6), the performance could be significantly improved with better prompts. Therefore, if we can find more suitable and instructive prompts to encourage the ChatGPT to understand the semantics better, it should work well for recovering the coherence of a set of unordered sentences. We will keep taking further attempts at this point. The second one might come from the model side of ChatGPT. As we know, GPT series are decoder-only and designed for generative pre-training and exhibit extraordinary abilities of generation, e.g., creative writing, and story completion, etc. While sentence ordering is a semantic coherence understanding task, where the output is strictly constrained by the input. We therefore suppose that the strict output may limit the ability of GPT model for sentence ordering.\nAnalyses of Input Styles: For the unordered sentences, we have tried two ways to feed them to ChatGPT: List and Dict, detailed in Figure 5. The performance comparisons are in Table 4, from which we can observe that ChatGPT works better with the \u201cDict\u201d format than \u201cList\u201d. We also have further investigated the reasons, and found Chat-\nGPT may fail to count the number of sentences with \u201cList\u201d input. For example, it might output four or six indices to indicate the new order of five sentences (A true output case is shown in Figure 7). The failure cases are about 5% and 6.8% for NIPS and SIND datasets. While the \u201cDict\u201d input provides explicit labels, e.g., s1 and s2, for each sentence, and significantly avoids such outputs (decreased to 0.8% and 0.5% for NIPS and SIND). Analyses of Prompts: As we know, the quality of prompts could introduce significant impacts and result in violent fluctuations of performance. During our experiments, we have tried to make our prompts clearer and more suitable for sentence ordering, shown in Figure 6. We note that only request ChatGPT to output the order without the coherent paragraph (e.g., Prompt-0 and Prompt-1), it works extremely badly (P0 and P1 in Table 4). When we instruct it first to output the coherent paragraph and give the new order in subsequent (Prompt-2), it gains significant improvement. This is also consistent with that LLMs are somehow heuristic and could be guided with step-by-step reasoning (Wei et al.). We observe it might predict the number of indices or sentence signs inconsistent with the true number of sentences for both List and Dict inputs. We further explicitly indicate the number of sentences in the prompt (Prompt-3), the inconsistent number of sentences could be effectively avoided, resulting in 1/367 (0.27%) and 3/5055 (0.06%) for NIPS and SIND datasets. Though the clearer prompts significantly boost the sentence ordering of ChatGPT, it is still far from our expectation, even compared to the relatively small pretrained models, e.g., BERT and BART. Therefore, we will keep designing more instructive prompts for sentence ordering in future works.\nFor this part of work, we would like to thank Andrew Ng and Isa Fulford for providing the prompt instructions in an open-source course4. We also thank all the people sharing tricks online for prompt engineering."
+        },
+        {
+            "heading": "B Details of Experiments",
+            "text": "B.1 Datasets As aforementioned, to evaluate the effectiveness of the proposed NAON, we conduct experiments on several commonly used datasets for comprehensive analyses, including four datasets collecting the\n4https://www.deeplearning.ai/short-courses/chatgptprompt-engineering-for-developers/\nabstract of academic papers and two story understanding corpora.\n\u2022 AAN (Wang et al., 2018): the abstracts of papers published on ACL Anthology Network until 2016. We use the data provided by (Logeswaran et al., 2018), as well as the data split.\n\u2022 NIPS: the paper abstracts of NIPS conference in years 2005-2013/2014/2015 for training/validation/testing, provided by (Logeswaran et al., 2018).\n\u2022 NSF: the abstracts of NSF Research Award, also provided by (Logeswaran et al., 2018).\n\u2022 arXiv (Chen et al., 2016): contains abstracts of seven disciplines, including physics, computer science and etc, on arXiv website.\n\u2022 SIND (Huang et al., 2016): stories for images in sequence, collected for visual storytelling. Each story consists of 5 sentences.\n\u2022 ROCStory (Mostafazadeh et al., 2016): originally collected for commonsense story understanding, which provides 5 sentences in each story.\nB.2 Evaluation Metrics In this work, we employed three metrics, including Acc, PMR, and \u03c4 , to evaluate the performance and compare it with the baselines. The details of the metrics are as follows:\n\u2022 Perfect Match Ratio (PMR) calculates the exact matching on paragraph level, which is the most rigid one of existing metrics.\n\u2022 Accuracy (Acc) takes a more relaxed measure strategy by calculating the accuracy of absolute position prediction on sentence level. Obviously, it may fail to evaluate the coherence of relative order, e.g., scoring 0 for [2, 3, 4, 1] with the ground-truth [1, 2, 3, 4].\n\u2022 Kendall\u2019s tau (\u03c4 ) measures the relative order between all sentence pairs in a predicted paragraph, which is defined as:\n\u03c4 = 1\u2212 2 \u2217 I/ ( N\n2\n) ,\nwhere I is the number of inversion between two sentences comparing with gold order, and\nN is the total number of sentences in the paragraph.\nAll the metrics indicate the better performance by higher score.\nB.3 Experimental Settings We implement our model using PyTorch, and employ the Adam algorithm (Kingma and Ba, 2015) to optimize all the models. The initial learning rate is set as lri = 1e\u22124 for the contextual encoder and non-autoregressive decoder, and lrb = 5e\u22125 for fine-tuning BERT-BASE with 12 Transformer blocks. The training process is terminated if the performance of validation worse than the best one for 5 times. To prevent over-fitting, we adopt weight decay and dropout operation during training, the parameters of which are \u03bb = 1e\u22125 and p = 0.1. The hidden size of transformer blocks are 1024 and 2 multi-head inter-attention blocks in decoder. The number of Transformer blocks in encoder are specific to different datasets, in particular, 2 for SIND, ROCStory and NIPS, 4 for NSF and arXiv, 6 for AAN. All the experiments are conducted on a workstation with 8 NVIDIA Titan V GPUs."
+        }
+    ],
+    "title": "Non-Autoregressive Sentence Ordering",
+    "year": 2023
+}

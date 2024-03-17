@@ -1,0 +1,240 @@
+{
+    "abstractText": "Fine-tuning all the layers of a pre-trained neural language encoder (either using all the parameters or using parameter-efficient methods) is often the de-facto way of adapting it to a new task. We show evidence that for different downstream language tasks, fine-tuning only a subset of layers is sufficient to obtain performance that is close to and often better than fine-tuning all the layers in the language encoder. We propose an efficient metric based on the diagonal of the Fisher information matrix (FIM score), to select the candidate layers for selective fine-tuning. We show, empirically on GLUE and SuperGLUE tasks and across distinct language encoders, that this metric can effectively select layers leading to a strong downstream performance. Our work highlights that task-specific information corresponding to a given downstream task is often localized within a few layers, and tuning only those is sufficient for strong performance1. Additionally, we demonstrate the robustness of the FIM score to rank layers in a manner that remains constant during the optimization process.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Abhilasha Lodha"
+        },
+        {
+            "affiliations": [],
+            "name": "Gayatri Belapurkar"
+        },
+        {
+            "affiliations": [],
+            "name": "Saloni Chalkapurkar"
+        },
+        {
+            "affiliations": [],
+            "name": "Yuanming Tao"
+        },
+        {
+            "affiliations": [],
+            "name": "Reshmi Ghosh"
+        },
+        {
+            "affiliations": [],
+            "name": "Samyadeep Basu"
+        },
+        {
+            "affiliations": [],
+            "name": "Dmitrii Petrov"
+        },
+        {
+            "affiliations": [],
+            "name": "Soundararajan Srinivasan"
+        }
+    ],
+    "id": "SP:1632c37b3310843539baa8274bca79db07497174",
+    "references": [
+        {
+            "authors": [
+                "Wenjuan Han",
+                "Bo Pang",
+                "Ying Nian Wu."
+            ],
+            "title": "Robust transfer learning with pretrained language models through adapters",
+            "venue": "CoRR, abs/2108.02340.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shwai He",
+                "Liang Ding",
+                "Daize Dong",
+                "Jeremy Zhang",
+                "Dacheng Tao."
+            ],
+            "title": "SparseAdapter: An easy approach for improving the parameter-efficiency of adapters",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2022, pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jack Hessel",
+                "Alexandra Schofield."
+            ],
+            "title": "How effective is BERT without word ordering? implications for language understanding and data privacy",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Edward J. Hu",
+                "Yelong Shen",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Weizhu Chen."
+            ],
+            "title": "Lora: Low-rank adaptation of large language models",
+            "venue": "CoRR, abs/2106.09685.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yoonho Lee",
+                "Annie S Chen",
+                "Fahim Tajwar",
+                "Ananya Kumar",
+                "Huaxiu Yao",
+                "Percy Liang",
+                "Chelsea Finn."
+            ],
+            "title": "Surgical fine-tuning improves adaptation to distribution shifts",
+            "venue": "The Eleventh International Conference on Learning Representations.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vladislav Lialin",
+                "Vijeta Deshpande",
+                "Anna Rumshisky"
+            ],
+            "title": "Scaling down to scale up: A guide to parameter-efficient fine-tuning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haokun Liu",
+                "Derek Tam",
+                "Muqeeth Mohammed",
+                "Jay Mohta",
+                "Tenghao Huang",
+                "Mohit Bansal",
+                "Colin Raffel."
+            ],
+            "title": "Few-shot parameter-efficient finetuning is better and cheaper than in-context learning",
+            "venue": "Advances in Neural Information Processing",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Amil Merchant",
+                "Elahe Rahimtoroghi",
+                "Ellie Pavlick",
+                "Ian Tenney"
+            ],
+            "title": "What happens to BERT embeddings during fine-tuning? CoRR, abs/2004.14448",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Koustuv Sinha",
+                "Robin Jia",
+                "Dieuwke Hupkes",
+                "Joelle Pineau",
+                "Adina Williams",
+                "Douwe Kiela."
+            ],
+            "title": "Masked language modeling and the distributional hypothesis: Order word matters pre-training for little",
+            "venue": "Proceedings of the 2021 Conference on",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi-Lin Sung",
+                "Jaemin Cho",
+                "Mohit Bansal"
+            ],
+            "title": "Lst: Ladder side-tuning for parameter and memory efficient transfer learning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yi-Lin Sung",
+                "Varun Nair",
+                "Colin Raffel"
+            ],
+            "title": "Training neural networks with fixed sparse masks",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "wen Xu",
+                "Teven Le Scao",
+                "Sylvain Gugger",
+                "Mariama Drame",
+                "Quentin Lhoest",
+                "Alexander M. Rush"
+            ],
+            "title": "Huggingface\u2019s transformers: State-of-the-art natural language processing",
+            "venue": "arXiv preprint arXiv: Arxiv-1910.03771",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Fine-tuning of language encoders is a crucial step towards applying natural language processing solutions to real-world challenges. It allows adaptation of knowledge on target distribution after generally training on source data, but requires curation of adequately sized labelled dataset to gain \u2018new\u2019 knowledge while retaining information obtained during the pre-training phase.\nAlthough preserving knowledge of target distribution by tuning the entire model can yield impressive results, it can be expensive and may increase data volume requirements. Additionally,\n\u2217*Equal Contribution: order determined by the alphabetical arrangement of first names.\n1Our code is publicly available at: Github\nfine-tuning all layers arbitrarily might risk overfitting or adversely affecting the generalization ability of the model during the transfer learning process. While, recently, the focus has shifted to development of parameter efficient approaches of finetuning large-language and language models (Liu et al. (2022), Lialin et al. (2023), Han et al. (2021)), these techniques still require development of an \u2018adapter\u2019 architecture relative to a target dataset. We therefore focus on developing a data-driven criteria to automatically identify and tune a smaller sub-set of layers using only \u2248 100 target data samples.\nIn this paper, we propose a simple strategy to select layers for fine-tuning for real-world NLP tasks, leveraging the Fisher Information Matrix (FIM) score, which quantifies the impact of parameter changes on a model\u2019s prediction. We further demonstrate the effectiveness of FIM score on language encoder model(s) on practical NLP tasks from GLUE and SuperGLUE benchmark, by identifying a subset of layers that are most informative to adapt to the target data distribution. We find that fine-tuning parameters in identified subset of layers by FIM score, outperforms full model fine-tuning in some, and results in comparable performance to full fine-tuning in almost all the GLUE and SuperGLUE tasks. In niche scenarios, where FIM scores leads to selection of layers that contribute to suboptimal performance in comparison with full model fine-tuning, we investigate the nuanced characteristics of the GLUE and SuperGLUE tasks through the lens of linguistic features learned during transfer learning process, and potential categories of target data distribution shifts that could influence the performance while we surgically fine-tune.\nInterestingly, we find that GLUE and SuperGLUE tasks that are dependent on a simpler understanding of linguistic features such as syntax and semantics as well as discourse understanding, can be surgically fine-tuned using our proposed\nFIM score criteria. However, we find that for tasks that rely on learning more complex knowledge of both high and low level linguistic features such as textual entailment, common sense and world knowledge FIM score criteria unperformed to select the relevant layers. On investigating categories of target distribution shifts that could surface in various GLUE/SuperGLUE tasks, we also find that FIM score signals at efficient tuning of parameters for the group of tasks that align closely with concepts of domain, environmental, and demographic shifts, but fails to perform optimally on tasks that require learning of temporal drifts in language."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Surgical fine-tuning has been widely explored in various computer vision applications to identify definitive distribution shifts in target datasets. Lee et al. (2023) explains why surgical fine-tuning could match or outperform full fine-tuning on distribution shifts and proposes methods to efficiently select layers for fine-tuning. However, in natural language applications, it is challenging to define such delineations due to the rapid changes in language based on context, domain, and individuals.\nSeveral attempts have been made to conduct Parameter Efficient Fine Tuning (PEFT) in natural language. Lialin et al. (2023) and Han et al. (2021) explores the landscape of utilizing adapter layers and soft prompts, including additive methods, selective methods, and reparameterization-based techniques, whereas He et al. (2022) applies network pruning to develop a pruned adapter (sparse dapter). In another body of work, Sung et al. (2021) constructed a FISH (Fisher-Induced Sparse uncHanging) mask to choose parameters with the largest Fisher information. Additionally, Hu et al. (2021) attempted to efficiently fine-tune by proposing a Low Rank Adapter that reduces trainable parameters by freezing the weights of the pre-trained model and injecting trainable rank decomposition matrices into each layer of the architecture.\nSome fine tuning techniques involve fine-tuning a small subset of the model parameters. Sung et al. (2022) propose a way of reducing memory requirement by introducing Ladder Side Tuning (LST). A small \u2019ladder side\u2019 network connected to each of the layers of the pre-trained model is trained to make predictions by taking intermediate activations as input from the layers via shortcut connections called ladders. Liu et al. (2022) demonstrated\nthe advantages of few-shot parameter-efficient finetuning over in-context learning in terms of effectiveness and cost-efficiency. Additionally, techniques like prompt tuning are also considered as parameter-efficient fine-tuning methods.\nA handful of studies have investigated the knowledge gain in fine-tuning process for Language Encoders, particularly BERT. Merchant et al. (2020), Hessel and Schofield (2021) investigated the impact of shuffling the order of input tokens on the performance of the BERT model for several language understanding tasks. Sinha et al. (2021) further investigates the effectiveness of masked language modeling (MLM) pre-training and suggests that MLMs achieve high accuracy on downstream tasks primarily due to their ability to model distributional information.\nHowever, our approach of efficient fine-tuning using the proposed FIM score criteria (that is able to capture signals from \u2248 100 target data samples), differs from all existing methods, as it focuses on helping NLP practitioners with small size target datasets to efficiently rank and select important layers for optimizing the fine-tuning process."
+        },
+        {
+            "heading": "3 Proposed Method",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Fisher Information Matrix score",
+            "text": "The significance of a parameter can be assessed by examining how modifications to the parameter affect the model\u2019s output. We denote the output distribution over y generated by a model with a parameter vector \u03b8 \u2208 R|\u03b8| given input x as p\u03b8(y|x). To quantify the impact of parameter changes on a model\u2019s prediction, one approach is to compute the Fisher Information Matrix (FIM), which is represented by equation 1:\nF\u03b8 = Ex \u223c p(x) [ Ey \u223c p\u03b8(y | x)\u2207\u03b8 log p\u03b8(y | x)\u2207\u03b8 log p\u03b8(y | x)T ] (1) where, F\u03b8 is the FIM for the model with parameter vector \u03b8, quantifying the impact of parameter changes on the model\u2019s prediction, Ex \u223c p(x) is expectation operator over x drawn from the distribution p(x), Ey \u223c p\u03b8(y | x) is the expectation operator over y drawn from the output distribution p\u03b8(y | x), \u2207\u03b8 is gradient operator with respect to the parameter vector \u03b8, log p\u03b8(y | x)is the logarithm of the conditional probability of y given x under the model with parameter vector \u03b8, and \u2207\u03b8 log p\u03b8(y | x)\u2207\u03b8 log p\u03b8(y | x)T is the outer product of the gradients, which is used to compute the FIM.\nTo analyze the impact of individual layers, we aggregate the diagonal elements of the FIM using the Frobenius norm. In our experimental setup, we randomly select a small sample (100 samples) from the validation set for each task. For fine-tuning, we specifically choose the top 52 layers with the highest FIM scores. The FIM score measures the amount of information provided by an observable random variable about an unknown parameter in its distribution. It reflects the sensitivity of the likelihood function to changes in parameter values. A higher Fisher information score indicates that more information can be gleaned from the data regarding the parameter, leading to a more precise estimation of the parameter. In essence, a higher score suggests that the likelihood function is more responsive to changes in parameter values, improving the precision of parameter estimation."
+        },
+        {
+            "heading": "4 Layer-wise Fisher Information Score Does Not Change During Fine-tuning",
+            "text": "In Fig. (2), we compute the rank of distinct layers leveraging the Fisher Information Score across the fine-tuning process of BERT at different epochs. Across tasks including WSC and WIC, we find that the rank of the different layers remain more or less consistent across the entire optimization trajectory during fine-tuning. This shows that the layers which are important for a given task, can indeed be selected even before the start of fine-tuning and after pre-training is done. Using this observation, in the next section, we show the effectiveness of fine-tuning only the layers selected using Fisher Score at the start of the fine-tuning step."
+        },
+        {
+            "heading": "5 Experiments and Results",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Experimental Setup",
+            "text": "We applied FIM score criteria to identify the \u2018layer importance rankings\u2019 for BERT3 across real-world NLP tasks from GLUE and SuperGLUE (more details on experimental setup and hyperparameters in Appendix A.1). Based on these identified layer rankings, we performed surgical fine-tuning and\n2We select 5 layers from ranked importance of all layers in a language encoder, such as BERT-base as we find the surgical fine-tuning on at-most 5 layers across all GLUE & SuperGLUE tasks results, result in comparable performance when compared against full model fine-tuning\n3We also validated the effectiveness of FIM with RoBERTa for some tasks to understand effectiveness of FIM scores across language encoder, results in Table ?? and Table ??\niteratively tuned parameters of top 1 to 5 most important layers, in the identified ranked layer order determined by FIM score, to compare and constrast the performance against full model fine-tuning.\nFurthermore, to comprehensively understand scenarios where FIM scores leads to sub-optimal identification of layer ranks, we investigate the sensitivity of GLUE/SuperGLUE tasks (representing sentiment analysis, paraphrase detection datasets, NLI, question answering, linguistic acceptability, commonsense reasoning, etc.) with respect to four possible data distribution shift categories, namely:\nDomain shift: Comparable shift from source data in target data distribution due to differences in fields or areas of knowledge.\nEnvironmental shift: Changes from source data in target data distribution due to differences in contexts.\nTemporal drift: Changes in use of certain language entities over time.\nDemographic shift: Changes in data distribution across different demographic groups.\nAdditionally, we also qualitatively investigate influence of six primary linguistic features that are possibly influenced during the fine-tuning process depending on the task, namely Semantic Understanding, Discourse Understanding, Syntactic Understanding, Co-reference Resolution and Pronoun Disambiguation, Commonsense and World Knowledge, and Textual Entailment and Contradiction (for more details, refer to Appendix A.2)."
+        },
+        {
+            "heading": "5.2 Does surgical fine-tuning work across NLP tasks?",
+            "text": "Our objective was to empirically analyze the performance of surgical fine-tuning approach leveraging FIM on real-world NLP tasks against full model fine-tuning. Results in Figure 1 (synthesized from Table 4 and Table 5) show that for GLUE and SuperGLUE tasks, surgical fine-tuning of identified most important layers results in comparable performance and sometimes outperforms tuning all parameters in all layers of BERT-base-cased model on target data distribution. Furthermore, we find that by selectively fine-tuning most relevant layer(s), as identified by FIM, the resulting performance on (almost all) GLUE and SuperGLUE tasks are in the ball park range of \u00b15% of the full fine-tuning performance.\nWe also discover that the identified layer impor-\ntance rank through FIM is different across settings, depending on the nature of task from GLUE and SuperGLUE benchmark."
+        },
+        {
+            "heading": "5.3 Sensitivity of localized knowledge gain",
+            "text": "For some tasks (RTE, STSB, CB, and COPA) FIM score based selected layers under-performed in surgical fine-tuning approach. Thus, we attempt to investigate through the lens of differences in learned linguistic features and possible distributional shifts in target data, the overall effectiveness of FIM for real-world NLP tasks."
+        },
+        {
+            "heading": "5.3.1 Effect of linguistic features",
+            "text": "Across the GLUE and SuperGLUE benchmarks, we observed that tasks requiring localized linguistic knowledge, such as discourse understanding (MNLI, MRPC, WNLI, WSC, and MultiRC), syntactic understanding (CoLA), semantic understanding, and commonsense/world knowledge (SST-2, QNLI), can be effectively fine-tuned with fewer localized parameters identified through ranked layer importance from the FIM scores.\nHowever, for tasks that involve textual entailment (RTE) and require a strong grasp of common sense/world knowledge (COPA), as well as tasks focusing on understanding propositions (CB), surgically fine-tuning the model using FIM rankings resulted in sub-optimal performance. These tasks rely heavily on semantic understanding, logical rea-\nsoning, and the ability to integrate contextual information. Fine-tuning only a subset of layers based on FIM rankings may not adequately capture the necessary information and intricate relationships between linguistic elements, leading to decreased performance on these complex tasks.\nWe hypothesize that complex tasks such as RTE, COPA and CB, require a holistic understanding of language and reasoning abilities that span across multiple layers in the model. Consequently, selectively fine-tuning based solely on localized knowledge gain identified by FIM scores may not be sufficient to achieve optimal performance."
+        },
+        {
+            "heading": "5.3.2 Effect of target data distributional shifts",
+            "text": "We also investigate the effectiveness of FIM in suggesting the appropriate layer importance ranks that maximize the localization of knowledge while adapting to proposed categories of distributional shifts in target GLUE/SuperGLUE tasks.\nWhen categorizing tasks based on their sensitivity to distribution shifts, it becomes evident that MNLI and MRPC tasks primarily revolve around the comprehension of semantic relationships within sentence pairs. These tasks exhibit a high sensitivity to shifts in the domain of discourse, as opposed to temporal or environmental variations. Conversely, tasks such as SST-2, CoLA, and QNLI heavily rely on contextual information to ascertain sentiment analysis accuracy, linguistic acceptability, and question answering, respectively. Consequently, these tasks are inclined towards being influenced by environmental shifts relative to the training data (for BERT-base) originating from Wikipedia and BookCorpus. Furthermore, STSB and RTE tasks demonstrate a notable level of change in the target data distribution with time as the language reference can change.\nWhen comparing surgical fine-tuning with full fine-tuning in Figure 1, we observe that BoolQ and MRPC outperform the full model fine-tuning, while tasks such as QNLI, CoLA, MNLI, WSC, WiC, and MultiRC yield comparable performance. In contrast, RTE and STSB underperform in the surgical fine-tuning process. This indicates that our proposed approach of utilizing FIM to identify layer importance ranks works well in cases of domain and environmental shifts but fails to adapt to temporal drifts."
+        },
+        {
+            "heading": "5.4 Ranking layers using FIM score vs. optimization trajectory",
+            "text": "Upon investigating the efficacy of our proposed approach even further, we observed that the ranking of layers for surgical fine-tuning determined through FIM scores for SuperGLUE (Figure 2) and GLUE (Figure 3) tasks remains constant across various checkpoints of the optimization trajectory.\nIn particular, we investigate the rankings at epochs 0, 2, 5, 8, and 10 and observe that for SuperGLUE and GLUE tasks, the deviation in rankings is almost negligible (deviation plots in Appendix section A.3), and in some tasks like CB, WNLI, and RTE, the trajectory is identical. Thus, the arrangement of layers selected by the FIM score remains unchanged for the task at hand as the fine-tuning process progresses."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "This paper contributes to the growing body of work that demonstrate that selective fine-tuning of language models is not only efficient but also effective in many downstream tasks. Summarizing our contributions, we strongly prove that selecting layers for finetuning based on ranking according to the FIM scores gives optimal results on a majority of GLUE and SuperGLUE tasks and could thus help NLP practitioners with small datasets to efficiently select a sub-set of relevant layers for optimized fine-\ntuning for many real-world natural language tasks. In future work, we plan to investigate the linguistic correlates of different layers in large-language models (LLMs) and the value of FIM in surfacing them.\nLimitations and Future Work\nThe FIM score criteria proposed in this paper shows promising results on several GLUE and SuperGLUE tasks with language encoders. However, additional experiments are needed on some of the recent very large parameter models that perform well in zero-shot settings.\nIn addition, we plan to extend our evaluations and compare our method with existing solutions, such as Low-Rank Adaption (LoRA), to quantify the benefits of our approach."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work was supported by GPU resources from the University of Massachusetts, Amherst, and Microsoft Corporation, New England Research and Development Center."
+        },
+        {
+            "heading": "A Appendix",
+            "text": "A.1 Experiment Setup and Hyperparameters We used our set of hyperparameters (mentioned in Table 1) to achieve close to State of the Art performance on almost all the GLUE and SuperGLUE tasks on fine-tuning the entire model. We then used this fully fine-tuned model as our baseline for comparing the performance after fine-tuning selected layers using FIM.\nWe are using standard GLUE and SuperGLUE datasets and BERT (Devlin et al., 2019) as the transformer based language model for our experiments with FIM. For the datasets, we leveraged the HuggingFace Transformer library (Wolf et al., 2019) and used the full validation sets corresponding to the task to train the model and evaluate its performance (mentioned in Table 2 and 3). Code implementation is done using PyTorch and Python on Unity clusters (M40 and TitanX instances) and Google Colab.\nA.2 Task Specific Observations in BERT with Fisher metrics\nWe conducted various fine-tuning experiments on various GLUE and SuperGLUE tasks using BERT base cased model. The accuracy values obtained in these experiments are mentioned in Table 4 and 5.\n1. Selective Layer Fine-tuning:\nCB COPA MultiRC WiC WSC BoolQ 56 100 4,848 638 104 3,270\nA.3 FIM scores during optimization Figures 4 and 5 are complementary extensions to Figure 2 and Figure 3, respectively, where we present evidence of minimal layer rank deviations (y-axis) for all SuperGLUE and GLUE tasks. For CB, WSC, COPA, WNLI, and RTE, the ranking of layers is identical for epochs 0, 2, 5. 8, and 10 of the training process.\nA.4 Results from BERT-base"
+        }
+    ],
+    "title": "On Surgical Fine-tuning for Language Encoders",
+    "year": 2023
+}

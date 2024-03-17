@@ -1,0 +1,765 @@
+{
+    "abstractText": "We present symbol tuning\u2014finetuning language models on in-context input\u2013label pairs where natural language labels (e.g., \u201cpositive/negative sentiment\u201d) are replaced with arbitrary symbols (e.g., \u201cfoo/bar\u201d). Symbol tuning leverages the intuition that when a model cannot use instructions or natural language labels to figure out a task, it must instead do so by learning the input\u2013label mappings. We experiment with symbol tuning across PaLM models up to 540B parameters and observe benefits across various settings. First, symbol tuning boosts performance on unseen in-context learning tasks and is much more robust to underspecified prompts, such as those without instructions or without natural language labels. Second, symbol-tuned models are much stronger at algorithmic reasoning tasks, with up to 18.2% better performance on the List Functions benchmark and up to 15.3% better performance on the Simple Turing Concepts benchmark. Finally, symbol-tuned models show large improvements in following flipped-labels presented in-context, meaning that they are more capable of using in-context information to override prior knowledge.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Jerry Wei"
+        },
+        {
+            "affiliations": [],
+            "name": "Le Hou"
+        },
+        {
+            "affiliations": [],
+            "name": "Andrew Lampinen"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiangning Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Da Huang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yi Tay"
+        },
+        {
+            "affiliations": [],
+            "name": "Xinyun Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Yifeng Lu"
+        },
+        {
+            "affiliations": [],
+            "name": "Denny Zhou"
+        },
+        {
+            "affiliations": [],
+            "name": "Tengyu Ma"
+        },
+        {
+            "affiliations": [],
+            "name": "Quoc V. Le"
+        }
+    ],
+    "id": "SP:bf06552070acc0efbdd438229f369fa667ca7938",
+    "references": [
+        {
+            "authors": [
+                "Ekin Aky\u00fcrek",
+                "Dale Schuurmans",
+                "Jacob Andreas",
+                "Tengyu Ma",
+                "Denny Zhou."
+            ],
+            "title": "What learning algorithm is in-context learning? Investigations with linear models",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Neel Alex",
+                "Eli Lifland",
+                "Lewis Tunstall",
+                "Abhishek Thakur",
+                "Pegah Maham",
+                "C. Jess Riedel",
+                "Emmie Hine",
+                "Carolyn Ashurst",
+                "Paul Sedille",
+                "Alexis Carlier",
+                "Michael Noetel",
+                "Andreas Stuhlm\u00fcller"
+            ],
+            "title": "RAFT: A real-world few-shot text classification",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Valerio Basile",
+                "Cristina Bosco",
+                "Elisabetta Fersini",
+                "Debora Nozza",
+                "Viviana Patti",
+                "Francisco Manuel Rangel Pardo",
+                "Paolo Rosso",
+                "Manuela Sanguinetti"
+            ],
+            "title": "SemEval-2019 Task 5: Multilingual detection of hate speech against immigrants and women",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yonatan Bisk",
+                "Rowan Zellers",
+                "Ronan Le Bras",
+                "Jianfeng Gao",
+                "Yejin Choi."
+            ],
+            "title": "PIQA: Reasoning about physical commonsense in natural language",
+            "venue": "Conference of the Association for the Advancement of Artificial Intelligence.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Samuel R. Bowman",
+                "Gabor Angeli",
+                "Christopher Potts",
+                "Christopher D. Manning."
+            ],
+            "title": "A large annotated corpus for learning natural language inference",
+            "venue": "Conference on Empirical Methods in Natural Language Processing.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D. Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "In Conference on Neural Information Pro-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann",
+                "Parker Schuh"
+            ],
+            "title": "PaLM: Scaling language modeling with Pathways",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Douwe Kiela."
+            ],
+            "title": "SentEval: An evaluation toolkit for universal sentence representations",
+            "venue": "Conference on Language Resources and Evaluation.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Damai Dai",
+                "Yutao Sun",
+                "Li Dong",
+                "Yaru Hao",
+                "Zhifang Sui",
+                "Furu Wei."
+            ],
+            "title": "Why can GPT learn in-context? Language models secretly perform gradient descent as meta-optimizers",
+            "venue": "Workshop on Understanding",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shivam Garg",
+                "Dimitris Tsipras",
+                "Percy Liang",
+                "Gregory Valiant."
+            ],
+            "title": "What can transformers learn in-context? A case study of simple function classes",
+            "venue": "Conference on Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Collin Burns",
+                "Steven Basart",
+                "Andy Zou",
+                "Mantas Mazeika",
+                "Dawn Song",
+                "Jacob Steinhardt."
+            ],
+            "title": "Measuring massive multitask language understanding",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sakaguchi Keisuke",
+                "Le Bras Ronan",
+                "Bhagavatula Chandra",
+                "Choi Yejin."
+            ],
+            "title": "WinoGrande: An adversarial winograd schema challenge at scale",
+            "venue": "Communications of the Association for Computing Machinery.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hector Levesque",
+                "Ernest Davis",
+                "Leora Morgenstern."
+            ],
+            "title": "The winograd schema challenge",
+            "venue": "International Conference on the Principles of Knowledge Representation and Reasoning.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Lagunas",
+                "Alexander Rush",
+                "Thomas Wolf."
+            ],
+            "title": "Datasets: A community library for natural language processing",
+            "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xin Li",
+                "Dan Roth."
+            ],
+            "title": "Learning question classifiers",
+            "venue": "Conference on Computational Linguistics.",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Aman Madaan",
+                "Amir Yazdanbakhsh"
+            ],
+            "title": "Text and patterns: For effective chain of thought, it takes two to tango",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "MetaICL: Learning to learn in context",
+            "venue": "Conference of the North American Chapter of the Association for Computational Linguistics.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Xinxi Lyu",
+                "Ari Holtzman",
+                "Mikel Artetxe",
+                "Mike Lewis",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Rethinking the role of demonstrations",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Swaroop Mishra",
+                "Daniel Khashabi",
+                "Chitta Baral",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Cross-task generalization via natural language crowdsourcing instructions",
+            "venue": "Proceedings of the Association for Computational Linguistics.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Saif Mohammad",
+                "Svetlana Kiritchenko",
+                "Parinaz Sobhani",
+                "Xiaodan Zhu",
+                "Colin Cherry."
+            ],
+            "title": "SemEval-2016 Task 6: Detecting stance in tweets",
+            "venue": "International Workshop on Semantic Evaluation.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Allen Newell."
+            ],
+            "title": "Physical symbol systems",
+            "venue": "Cognitive Science.",
+            "year": 1980
+        },
+        {
+            "authors": [
+                "Allen Newell",
+                "Herbert A. Simon."
+            ],
+            "title": "Computer science as empirical inquiry: Symbols and search",
+            "venue": "Communications of the Association for Computing Machinery.",
+            "year": 1976
+        },
+        {
+            "authors": [
+                "Paul Christiano",
+                "Jan Leike",
+                "Ryan Lowe."
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "Conference on Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bo Pang",
+                "Lillian Lee."
+            ],
+            "title": "Seeing stars: Exploiting class relationships for sentiment categorization with respect to rating scales",
+            "venue": "Proceedings of the Association for Computational Linguistics.",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aniruddh Raghu",
+                "Maithra Raghu",
+                "Samy Bengio",
+                "Oriol Vinyals."
+            ],
+            "title": "Rapid learning or feature reuse? towards understanding the effectiveness of MAML",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Janarthanan Rajendran",
+                "Alexander Irpan",
+                "Eric Jang."
+            ],
+            "title": "Meta-learning requires meta-augmentation",
+            "venue": "Conference on Neural Information Processing Systems.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Pranav Rajpurkar",
+                "Jian Zhang",
+                "Konstantin Lopyrev",
+                "Percy Liang."
+            ],
+            "title": "SQuAD: 100,000+ questions for machine comprehension of text",
+            "venue": "Conference on Empirical Methods in Natural Language Processing.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Laria Reynolds",
+                "Kyle McDonell."
+            ],
+            "title": "Prompt programming for large language models: Beyond the few-shot paradigm",
+            "venue": "Extended Abstracts of the Conference on Human Factors in Computing Systems.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Sara Rosenthal",
+                "Noura Farra",
+                "Preslav Nakov."
+            ],
+            "title": "SemEval-2017 Task 4: Sentiment analysis in twitter",
+            "venue": "International Workshop on Semantic Evaluation.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Joshua S. Rule",
+                "Joshua B. Tenenbaum",
+                "Steven T. Piantadosi."
+            ],
+            "title": "The child as hacker",
+            "venue": "Trends in Cognitive Sciences.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Joshua Stewart Rule."
+            ],
+            "title": "The child as hacker: building more human-like models of learning",
+            "venue": "Ph.D. thesis, Massachusetts Institute of Technology.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Andrea Santilli",
+                "Thibault Fevry",
+                "Jason Alan Fries",
+                "Ryan Teehan",
+                "Tali Bers",
+                "Stella Biderman",
+                "Leo Gao",
+                "Thomas Wolf",
+                "Alexander M. Rush."
+            ],
+            "title": "Multitask prompted training enables zero-shot task generalization",
+            "venue": "International Conference on Learning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Adam Santoro",
+                "Andrew K. Lampinen",
+                "Kory W. Mathewson",
+                "Timothy P. Lillicrap",
+                "David Raposo"
+            ],
+            "title": "Symbolic behaviour in artificial intelligence",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Noam Shazeer",
+                "Mitchell Stern."
+            ],
+            "title": "Adafactor: Adaptive learning rates with sublinear memory cost",
+            "venue": "International Conference on Machine Learning.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Richard Socher",
+                "Alex Perelygin",
+                "Jean Wu",
+                "Jason Chuang",
+                "Christopher D. Manning",
+                "Andrew Ng",
+                "Christopher Potts."
+            ],
+            "title": "Recursive deep models for semantic compositionality over a sentiment treebank",
+            "venue": "Conference on Empirical Methods in Natural Lan-",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Aarohi Srivastava",
+                "Abhinav Rastogi",
+                "Abhishek Rao",
+                "Abu Awal Md Shoeb",
+                "Abubakar Abid",
+                "Adam Fisch",
+                "Adam R Brown",
+                "Adam Santoro",
+                "Aditya Gupta",
+                "Adri\u00e0 Garriga-Alonso"
+            ],
+            "title": "Beyond the imitation game: Quantifying and extrapolating the capabilities",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mirac Suzgun",
+                "Nathan Scales",
+                "Nathanael Sch\u00e4rli",
+                "Sebastian Gehrmann",
+                "Yi Tay",
+                "Hyung Won Chung",
+                "Aakanksha Chowdhery",
+                "Quoc V. Le",
+                "Ed H. Chi",
+                "Denny Zhou",
+                "Jason Wei"
+            ],
+            "title": "Challenging BIG-Bench tasks and whether chain-of-thought",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jan Arne Telle",
+                "Jos\u00e9 Hern\u00e1ndez-Orallo",
+                "C\u00e8sar Ferri."
+            ],
+            "title": "The teaching size: computable teachers and learners for universal languages",
+            "venue": "Machine Learning.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Cynthia Van Hee",
+                "Els Lefever",
+                "V\u00e9ronique Hoste."
+            ],
+            "title": "SemEval-2018 Task 3: Irony detection in english tweets",
+            "venue": "International Workshop on Semantic Evaluation.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Johannes von Oswald",
+                "Eyvind Niklasson",
+                "Ettore Randazzo",
+                "Jo\u00e3o Sacramento",
+                "Alexander Mordvintsev",
+                "Andrey Zhmoginov",
+                "Max Vladymyrov"
+            ],
+            "title": "2022. Transformers learn in-context by gradient descent",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Yada Pruksachatkun",
+                "Nikita Nangia",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel Bowman."
+            ],
+            "title": "SuperGLUE: A stickier benchmark for general-purpose language understanding systems",
+            "venue": "Conference on Neural Information",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel R. Bowman."
+            ],
+            "title": "GLUE: A multi-task benchmark and analysis platform for natural language understanding",
+            "venue": "BlackboxNLP Workshop at the Conference on Empirical",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Boshi Wang",
+                "Sewon Min",
+                "Xiang Deng",
+                "Jiaming Shen",
+                "You Wu",
+                "Luke Zettlemoyer",
+                "Huan Sun"
+            ],
+            "title": "Towards understanding chain-of-thought prompting: An empirical study of what matters",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Albert Webson",
+                "Ellie Pavlick"
+            ],
+            "title": "Do promptbased models really understand the meaning of their prompts? In Conference of the North American Chapter of the Association for Computational Linguistics",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Maarten Bosma",
+                "Vincent Y. Zhao",
+                "Kelvin Guu",
+                "Adams Wei Yu",
+                "Brian Lester",
+                "Nan Du",
+                "Andrew M. Dai",
+                "Quoc V. Le."
+            ],
+            "title": "Finetuned language models are zero-shot learners",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Brian Ichter",
+                "Fei Xia",
+                "Ed H. Chi",
+                "Quoc V Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "Conference on Neural Information Processing Sys-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jerry Wei",
+                "Jason Wei",
+                "Yi Tay",
+                "Dustin Tran",
+                "Albert Webson",
+                "Yifeng Lu",
+                "Xinyun Chen",
+                "Hanxiao Liu",
+                "Da Huang",
+                "Denny Zhou",
+                "Tengyu Ma"
+            ],
+            "title": "Larger language models do in-context learning differently",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qinyuan Ye",
+                "Bill Yuchen Lin",
+                "Xiang Ren."
+            ],
+            "title": "CrossFit: A few-shot learning challenge for crosstask generalization in NLP",
+            "venue": "Conference on Empirical Methods in Natural Language Processing.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mingzhang Yin",
+                "George Tucker",
+                "Mingyuan Zhou",
+                "Sergey Levine",
+                "Chelsea Finn."
+            ],
+            "title": "Metalearning without memorization",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Marcos Zampieri",
+                "Shervin Malmasi",
+                "Preslav Nakov",
+                "Sara Rosenthal",
+                "Noura Farra",
+                "Ritesh Kumar."
+            ],
+            "title": "SemEval-2019 Task 6: Identifying and categorizing offensive language in social media (offenseval)",
+            "venue": "International Workshop on Semantic Evaluation.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Xiang Zhang",
+                "Junbo Jake Zhao",
+                "Yann LeCun."
+            ],
+            "title": "Character-level convolutional networks for text classification",
+            "venue": "Conference on Neural Information Processing Systems.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Yuan Zhang",
+                "Jason Baldridge",
+                "Luheng He."
+            ],
+            "title": "PAWS: Paraphrase Adversaries from Word Scrambling",
+            "venue": "Proceedings of the North American Chapter of the Association for Computational Linguistics.",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "text": "We experiment with symbol tuning across PaLM models up to 540B parameters and observe benefits across various settings. First, symbol tuning boosts performance on unseen in-context learning tasks and is much more robust to underspecified prompts, such as those without instructions or without natural language labels. Second, symbol-tuned models are much stronger at algorithmic reasoning tasks, with up to 18.2% better performance on the List Functions benchmark and up to 15.3% better performance on the Simple Turing Concepts benchmark. Finally, symbol-tuned models show large improvements in following flipped-labels presented in-context, meaning that they are more capable of using in-context information to override prior knowledge."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "A key feature of human intelligence is that humans can learn to perform new tasks by reasoning using only a few examples. Scaling up language models has unlocked a range of new applications and paradigms in machine learning, including the ability to perform challenging reasoning tasks via few-shot examples given in-context (Brown et al., 2020; Chowdhery et al., 2022; OpenAI, 2023, inter alia). Language models, however, are still sensitive to the way that prompts are given, indicating that they are not reasoning in a robust manner. For instance, language models often require heavy\n\u2217Work done as a Student Researcher at Google. \u2020Work done as a Visiting Researcher at Google.\nprompt engineering (Brown et al., 2020; Reynolds and McDonell, 2021) or phrasing tasks as instructions (Wei et al., 2022a; Ouyang et al., 2022; Sanh et al., 2022, inter alia), and they exhibit unexpected behaviors such as performance on tasks being unaffected even when shown exemplars with random labels (Min et al., 2022b) or flipped labels (Wei et al., 2023).\nIn this paper, we propose a simple finetuning procedure that we call symbol tuning, which significantly improves the ability of language models to reason with and learn from input\u2013label mappings presented in-context. In the symbol-tuning procedure, we finetune language models on input\u2013label pairs presented in-context where natural language labels are remapped to arbitrary symbols.1 The intuition is that when models cannot rely on instructions or relevant natural language labels to figure out a given task, they must instead do so by reasoning with input\u2013label mappings presented in-context in order to learn the mappings that reveal the task. We perform symbol tuning using a mixture of 22 NLP datasets with various arbitrary symbols as labels and experiment using instruction-tuned PaLM models (Flan-PaLM) with several sizes (8B, 62B, 62B-cont, 540B).\nFirst, symbol tuning improves performance of baseline models on unseen in-context learning tasks across various settings (with/without instructions, with/without relevant labels), with larger performance gains when instructions or natural language labels are not given in the prompt. For example, when prompts do not contain instructions or relevant labels, symbol tuning yields a +11.1% average performance improvement across eleven evaluation tasks for Flan-PaLM-62B-cont.\n1We call our method symbol tuning because arbitrary designation is a key property of symbols (Newell and Simon, 1976) and using symbols is a crucial part of intelligence (Newell, 1980; Santoro et al., 2021).\nSecond, symbol-tuned models are better at algorithmic reasoning tasks, a striking result since symbol tuning only includes natural language data and did not have any numerical or algorithmic data. On a set of reasoning evaluation suites for list functions (e.g., remove the last element in a list), symboltuned models experience performance improvements of +18.2% for Flan-PaLM-8B, +11.1% for Flan-PaLM-62B, and +3.6% for Flan-PaLM-540B. On a set of turing concept tasks (e.g., swapping 0s and 1s in a string), symbol-tuned models also improve by +15.3% for Flan-PaLM-8B and FlanPaLM-62B and +4.7% for Flan-PaLM-540B.\nFinally, we experiment on an in-context learning setting where inputs have flipped labels, which forces the model to override its prior knowledge when presented with contradictory information incontext. Pretrained language models have the ability to somewhat follow flipped labels\u2014this ability is lost during instruction tuning but can be restored via symbol tuning. Overall, we hope that the strong empirical results from symbol tuning encourage further work in allowing language models to reason over arbitrary symbols given in-context."
+        },
+        {
+            "heading": "2 Symbol tuning",
+            "text": "Despite their ability to perform some reasoning tasks after being shown in-context exemplars (Chowdhery et al., 2022; OpenAI, 2023), language models are still sensitive to the way in which these tasks are presented in prompts (Brown et al., 2020;\nReynolds and McDonell, 2021; Wei et al., 2022a), suggesting that they are not reasoning in a robust way. Instruction tuning has been shown to improve performance and allow models to better follow incontext exemplars (Mishra et al., 2022; Min et al., 2022a; Wei et al., 2022a; Ye et al., 2021; Chung et al., 2022). One shortcoming, however, is that models are not forced to learn to use the exemplars because the task is redundantly defined in the evaluation example via instructions and natural language labels. For example, in the left-hand side of Figure 1, although the exemplars can help the model understand the task, they are not strictly necessary since the model could ignore the exemplars and just read the instruction.\nTo make the model better at in-context learning, we propose symbol tuning, in which the model is finetuned on exemplars where the instructions are removed and natural language labels are replaced with semantically-unrelated labels (e.g., \u201cFoo,\u201d \u201cBar,\u201d etc.). In this setup, the task is unclear without looking at the in-context exemplars. For example, if the prompt from the previous paragraph was changed to \u201c<sentence>. Answer: {Foo, Bar}\u201d (as shown in the right-hand side of Figure 1), multiple in-context exemplars would be needed in order to figure out the task. Because symbol tuning teaches the model to reason over in-context exemplars, symbol-tuned models should have better performance on unseen tasks that require reasoning between in-context exemplars and their labels."
+        },
+        {
+            "heading": "3 Experimental setup",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Tuning tasks & prompt formatting",
+            "text": "Figure 2 shows the 22 publicly-available NLP datasets from HuggingFace (Lhoest et al., 2021) (see Appendix D.1 for dataset details) that we use for our symbol-tuning procedure (we ablate the number of datasets used for symbol tuning in Appendix B.4). We selected NLP tasks that have been widely used in the literature (Wang et al., 2018, 2019). Each dataset is categorized into one of seven task types\u2014we only selected classificationtype tasks because symbol tuning requires discrete labels. For each dataset, we use examples from the training split to compose prompts that we use for tuning. Each prompt uses a randomlyselected input\u2013label format (formats are shown in Appendix E.2) and contains a randomly-selected number between 2 and 10 of in-context exemplars per class. We remap labels to a randomlyselected label from a set of \u223c30k labels from three label types as shown in Figure 3 (we ablate the number of labels in Appendix B.5 and the label types in Appendix B.6). Examples of generated tuning prompts for each task are shown in Appendix G.1. Code for generating arbitrary symbols can be found at https://github.com/ JerryWeiAI/symbol-tuning."
+        },
+        {
+            "heading": "3.2 Evaluation tasks",
+            "text": "We want to evaluate a model\u2019s ability to perform on unseen tasks, so we cannot evaluate on tasks\nused in symbol tuning (22 datasets) or used during instruction tuning (1.8k tasks). Hence, we choose 11 NLP datasets from HuggingFace (Lhoest et al., 2021) that were not used in either stage of finetuning (details are shown in Appendix D.2): (Conneau and Kiela, 2018, SUBJ); (Basile et al., 2019, TEH); (Mohammad et al., 2016, TEAB); (Mohammad et al., 2016, TEAT); (Mohammad et al., 2016, TEFE); (Mohammad et al., 2016, TEHI); (Alex et al., 2021, ADEC); (Alex et al., 2021, OR); (Alex et al., 2021, SOT); (Alex et al., 2021, TOS); and (Alex et al., 2021, TC). We use the validation split of each dataset to generate evaluation prompts. For each dataset, we randomly select a maximum of 100 examples to use during evaluation. Each evaluation prompt uses a randomly-selected input\u2013label format following Section 3.1, though we fix the number of in-context exemplars per class at k = 4 (we ablate this parameter in Appendix C.4).\nWe generate prompts for the four different incontext learning (ICL) settings described in Figure 4; each setting either contains or does not contain instructions describing the task (see Appendix D.2 for the instructions we use for each task) and does or does not contain relevant natural language labels. For settings that do not use relevant natural language labels, we remap original labels to a randomly-selected label from a set of \u223c270k semantically-unrelated labels as shown in Figure 3 (we removed labels that were seen during symbol tuning). Examples of generated evaluation prompts for each task are shown in Appendix G.2."
+        },
+        {
+            "heading": "3.3 Models & finetuning procedure",
+            "text": "For our experiments, we tune Flan-PaLM, the instruction-tuned variants of PaLM. We use the instruction-tuned variants in order to reduce the number of steps needed for tuning, since symbol tuning an instruction-tuned model does not require relearning the information learned during the original round of instruction tuning. We use three different sizes of Flan-PaLM models: Flan-PaLM-8B, Flan-PaLM-62B, and Flan-PaLM-540B. We also tested Flan-PaLM-62B-cont (PaLM-62B at 1.3T tokens instead of 780B tokens); we abbreviate this model size as 62B-c.\nOur symbol-tuning pipeline mixes all datasets and randomly samples from each dataset. To ensure that the dataset sizes are balanced (i.e., no dataset gets completely overshadowed), we limit the number of training examples per dataset to a maximum of 25k randomly-selected examples. Training examples are combined into a single sequence using packing (Raffel et al., 2020), and inputs are separated from labels using an end-of-sequence (EOS) token. We tune all models using a batch size of 32 and the Adafactor optimizer (Shazeer and Stern, 2018). For 8B and 62B models, we tune with a learning rate of 3\u00d7 10\u22123, and we tune Flan-PaLM540B with a learning rate of 1 \u00d7 10\u22123. We use 2048 and 512, respectively, as the input and target sequence lengths during tuning.\nFor 8B and 62B model evaluations, we report results from the checkpoint after tuning for 4k steps,\nand for 540B model evaluations, we report results from the checkpoint after tuning for 1k steps (we ablate the number of tuning steps in Appendix B.2). See Appendix E.3 for the number of finetuning steps, learning rate, batch size, and dropout used for each model. As a baseline, we compare symboltuned models against Flan-PaLM models, and we also compare symbol tuning against continued instruction tuning in Appendix B.1."
+        },
+        {
+            "heading": "4 Symbol-tuned models are better in-context learners",
+            "text": "During symbol tuning, models must learn to reason with in-context exemplars in order to successfully perform tasks because prompts are modified to ensure that tasks cannot be learned from natural language labels or instructions. Symbol-tuned models should thus perform better in settings where tasks are unclear and require reasoning between incontext exemplars and their labels. Additionally, since symbol tuning is meant to improve the ability to follow in-context exemplars, it should not modify prior knowledge and should thus retain the same performance in settings where exemplars are not as necessary to complete the task.\nTo explore these settings, we define four ICL settings that vary the amount of reasoning required between inputs and labels in order to learn the task (based on the availability of instructions/relevant labels), as shown in Figure 4. The easiest of these settings uses prompts where both instructions and\nrelevant labels are available (as in-context exemplars are not necessary to learn the task), while the hardest setting uses prompts where instructions and relevant labels are both unavailable.\nIn Table 1, we evaluate model performance before and after symbol tuning in each of these settings. We find that symbol tuning improves performance across all ICL settings for models 62B and larger, with small improvements in settings with relevant natural language labels (+0.8% to +4.2%) and substantial improvements in settings without relevant natural language labels (+5.5% to +15.5%). Strikingly, when relevant labels are unavailable, symbol-tuned Flan-PaLM-8B outperforms Flan-PaLM-62B, and symbol-tuned FlanPaLM-62B outperforms Flan-PaLM-540B. This performance difference suggests that symbol tuning can allow much smaller models to perform as well as large models on learning input-label mapping from exemplars (effectively saving \u223c10x inference compute).\nSymbol-tuned models also perform somewhatcomparably in settings with only relevant labels or only instructions, unlike baseline models whose performance in settings with only relevant labels is always better than in settings with only instructions. Performance in settings with relevant labels actually decreases for Flan-PaLM-8B after symboltuning, however, which may suggest that symbol tuning a small model can override its prior knowl-\nedge due to overfitting. Overall, the improvements demonstrate the strong potential of symbol tuning to improve model performance, especially when tasks require learning from in-context exemplars."
+        },
+        {
+            "heading": "5 Symbol tuning improves algorithmic reasoning",
+            "text": "Symbol tuning is designed to force the model to learn from input\u2013label mappings in the in-context exemplars because the symbols are unrelated to the task and no instructions are provided (and thus the model cannot rely on any other guidance to determine the task). For this reason, we posit that symbol tuning should not only improve the model\u2019s ability to map natural language inputs to arbitrary symbols, but also its ability to learn other forms of input\u2013label mappings such as algorithms.\nTo test this, we experiment on algorithmic reasoning tasks from BIG-Bench (Srivastava et al., 2022). We first experiment on a set of list function tasks (Rule et al., 2020; Srivastava et al., 2022) where the model needs to identify a transformation function (e.g., remove the last element in a list) between input and output lists containing nonnegative integers. These tasks were evaluated in a four-shot setting, following our evaluation setup in Section 3.2. Additionally, we test models on a set of simple turing concepts (Telle et al., 2019; Srivastava et al., 2022) where models need to reason\nwith binary strings to learn the concept that maps an input to an output (e.g., swapping 0s and 1s in a string). These tasks have predetermined shots for each evaluation example. We selected these algorithmic tasks because they test the model\u2019s ability to generalize to different task types (the symbol-tuning tasks were classification problems with discrete labels, while these tasks are more open-ended generation problems2) and do not require world knowledge (symbol tuning does not increase a model\u2019s prior knowledge).\nIn Figure 5, we show model performance on the twenty list function tasks with the highest human accuracy baselines3 (Rule, 2020) separated into five categories (category details are described in Appendix F.1) and the turing concepts containing 3 or fewer instructions in the AS II subset of the simple turing concepts task. On the list function tasks, symbol tuning results in an average performance\n2Although chain-of-thought (Wei et al., 2022b, CoT) can be viewed as an open-ended generation problem, in Appendix C.2, we found that symbol-tuning did not significantly affect a model\u2019s CoT reasoning abilities, possibly because our symbol-tuning data did not incorporate any CoT prompts.\n3We do not directly compare with the human baselines because our evaluation format was different.\nimprovement across all tasks of 18.2% for FlanPaLM-8B, 11.1% for Flan-PaLM-62B, 15.5% for Flan-PaLM-62B-cont, and 3.6% for Flan-PaLM540B. On the turing concept tasks, symbol tuning results in a performance improvement of 15.3% for Flan-PaLM-8B and Flan-PaLM-62B, 14.1% for Flan-PaLM-62B-cont, and 4.7% for Flan-PaLM540B. Flan-PaLM-62B-cont with symbol tuning outperforms Flan-PaLM-540B on the list function tasks (in terms of average accuracy across tasks), which is equal to a \u223c10x reduction in inference compute. These improvements on an unseen task type suggest that symbol tuning indeed strengthens the model\u2019s ability to learn in-context, as the symbol-tuning procedure did not have algorithmic data and only used natural language data."
+        },
+        {
+            "heading": "6 Symbol-tuned models can override priors via flipped labels",
+            "text": "Wei et al. (2023) showed that while pretrained language models (without instruction tuning) could, to some extent, follow flipped labels presented incontext, instruction tuning degraded this ability. Symbol tuning, on the other hand, forces models to\nconsider the label presented in-context as an arbitrary symbol, which should reduce the model\u2019s usage of prior knowledge that contradicts the flipped labels. For this reason, we expect that symbol tuning would be able to improve and restore the ability to follow flipped labels in-context.\nTo test this, we flip the labels of both in-context exemplars and the evaluation example for the tasks described in Section 3.2 (we remove tasks with more than two labels from this experiment since it is unclear how to best \u201cflip\u201d more than two labels). For example, for the SST2 dataset, all exemplars that are labeled as having \u201cpositive\u201d sentiment will now be labeled as having \u201cnegative\u201d sentiment. A perfect model that can follow these flipped labels should achieve 100% accuracy on these tasks if its accuracy in the standard ICL setting is also 100%.\nAs shown in Figure 6, symbol tuning restores the ability to follow flipped labels that was lost during instruction tuning. We see that there is a similar trend across all model sizes\u2014instructiontuned models are generally unable to follow flipped labels (as demonstrated by their performance being far below random guessing), but symbol-tuned models are much more capable of doing so. We found that after symbol tuning, Flan-PaLM-8B sees an average improvement across all datasets of 26.5%, Flan-PaLM-62B sees an improvement of 33.7%, and Flan-PaLM-540B sees an improve-\nment of 34.0%. For some datasets (e.g., OR, SUBJ, TC), symbol-tuned models can now override priors and follow flipped labels (i.e., achieve much better performance than random guessing), despite instruction-tuned models not being able to do so for any datasets. Additionally, symbol-tuned models match or beat pretraining-only models in terms of average performance, indicating that symbol tuning has, to some extent, restored the model\u2019s original ability to follow flipped labels.\nThese results further indicate another type of generalized in-context learning capability, as we did not include any flipped labels during symbol tuning. Although the performance improvement from symbol tuning is large, we note that more work should be done in this area since performance on the flipped-labels settings is, on average, not significantly better than random guessing."
+        },
+        {
+            "heading": "7 Related work",
+            "text": ""
+        },
+        {
+            "heading": "7.1 In-context learning via semantic prior knowledge",
+            "text": "Recent studies on in-context learning suggest that prior knowledge plays a significant role in how models learn in-context. For example, Wei et al. (2023) showed that some small models and instruction-tuned models cannot follow flipped labels presented in-context, suggesting that these models primarily utilize prior knowledge for in-\ncontext learning. Min et al. (2022b) found a similar result that using random ground-truth labels in in-context exemplars does not significantly affect performance, meaning that performance may be driven by other factors such as the label space.\nReynolds and McDonell (2021) also showed that cleverly-constructed prompts in a zero-shot setting could outperform prompts in a few-shot setting, implying that, for some tasks, models can achieve better performance by leveraging their existing knowledge than from attempting to learn the task from in-context exemplars. Additionally, in chain-of-thought prompting (Wei et al., 2022b), Madaan and Yazdanbakhsh (2022) and Wang et al. (2022) showed that performance on multi-step reasoning tasks does not decrease when models are provided with logically-incorrect prompts. Raghu et al. (2020) also demonstrated that systems such as MAML can effectively \u201cmemorize\u201d labels when trained in a way where all labels can be memorized, which further illustrates that, when possible, models may attempt to use prior knowledge rather than adapt to each new task.\nOur findings do not dispute the idea that semantic prior knowledge can provide significant benefits to in-context learning. Indeed, we showed that instruction-tuned models cannot follow flipped labels in-context, which is consistent with the findings from Wei et al. (2023). We instead aim to demonstrate that through symbol tuning, language models can retain the benefits of utilizing prior knowledge while also improving their ability to learn from input\u2013label pairs shown in-context."
+        },
+        {
+            "heading": "7.2 In-context learning via in-context exemplars",
+            "text": "At the same time, however, other recent work has suggested that language models can, in fact, learn in-context using the given exemplars. This ability may be more useful than the ability to use semantic prior knowledge because it would allow models to perform tasks that are not seen in or contradict pretraining data. Garg et al. (2022), for instance, showed that transformers trained from scratch can perform in-context learning on linearregression tasks at a similar performance level as the least-squares estimator. This capability was shown to result from transformers implementing standard learning algorithms such as gradient descent (Aky\u00fcrek et al., 2023; von Oswald et al.,\n2022; Dai et al., 2023). Furthermore, Webson and Pavlick (2022) demonstrated that, in a natural language setting, language models can learn at the same rate during finetuning even when given irrelevant or misleading prompts. On a broader level, Rajendran et al. (2020) and Yin et al. (2020) found that adding noise to, shuffling, or regularizing the label space can make systems better at learning and adapting to new tasks.\nIn this paper, we attempt to improve the degree to which language models are able to learn tasks via input\u2013label mappings. Our symbol-tuning method can be seen as a form of label augmentation and is thus similar to the proposed methods from Rajendran et al. (2020) and Yin et al. (2020), though it differs crucially in that we apply them to tune large language models. Additionally, We found that symbol-tuned models saw significant improvements in their ability to learn in-context (e.g., on algorithmic tasks or settings with underspecified prompts), which supports the idea that langauge models have the ability to learn in-context using the given exemplars."
+        },
+        {
+            "heading": "7.3 Tuning language models",
+            "text": "Our work presented symbol tuning, a form of finetuning on input\u2013label pairs where labels are remapped to arbitrary symbols. Symbol tuning relates to a broader body of work showing that finetuning language models can significantly alter their behavior and performance in different settings. For example, Wei et al. (2022a) first presented instruction tuning (finetuning on tasks phrased as instructions) and showed that this finetuning procedure substantially improves model performance in zero-shot settings. Chung et al. (2022) further scaled this procedure by adding more tasks, increasing model sizes, and adding chain-of-thought data, demonstrating that, with these changes, tuned models are significantly better at chain-of-thought reasoning, open-ended generation, and several evaluation benchmarks.\nOur experimental findings match these results in terms of showing that finetuning can significantly alter model performance. Our work differs, however, by not only focusing on settings with in-context exemplars and underspecified prompts, but also by modifying the finetuning procedure to make tasks harder to learn and require additional reasoning with in-context exemplars."
+        },
+        {
+            "heading": "8 Limitations",
+            "text": "While our study presents a simple yet effective method of improving in-context learning for language models, there are several limitations to our work. An open question is how to apply symbol tuning in a generative setting\u2014we symbol tuned models on a range of classification tasks with discrete labels so that we can remap labels to arbitrary symbols, but we did not tune on generation tasks since it is unclear how to remap outputs to symbols in those settings. Future work could thus explore whether symbol tuning can be applied in a generative setting.\nAdditionally, our symbol-tuning procedure used 22 NLP datasets\u2014while we ablated the number of datasets in Appendix B.4 and saw that increasing the number of datasets used for symbol tuning generally improves performance, we did not experiment with adding more tasks. Prior work, however, has demonstrated that scaling up finetuning methods can improve their impact on language models (Chung et al., 2022), so a natural extension would be to examine whether further scaling up the symbol-tuning method would have a similar result.\nFurthermore, we applied symbol tuning to a family of instruction-tuned language models. It is unknown, however, whether the effects of symbol tuning that we showed may be affected by changes to the pretraining objective, model architecture, or training process. Similarly, symbol tuning may have different effects on language models that are not instruction tuned, as we did not specifically experiment on this factor. For this reason, future work may investigate how these factors impact the effectiveness of symbol tuning for improving in-context learning abilities in language models.\nBecause we only experimented with one family of language models, it is still unclear whether symbol tuning is effective for other models. Applying symbol tuning to other language models would likely require adjustments to the finetuning procedure to be successful (e.g., number of finetuning steps, mixing with previous data, number datasets), but a definitive conclusion about these factors cannot be drawn without further experimentation. We thus note that a crucial direction for future work is to explore how well symbol tuning translates to other language models."
+        },
+        {
+            "heading": "9 Conclusions",
+            "text": "In this paper, we presented symbol tuning, a new method of tuning models on tasks where natural language labels are remapped to arbitrary symbols. Symbol tuning is based off of the intuition that when models cannot use instructions or relevant labels to determine a presented task, it must do so by instead learning from in-context exemplars. We tuned four language models (Flan-PaLM-8B, Flan-PaLM-62B, Flan-PaLM-62B-cont, and FlanPaLM-540B) using our symbol-tuning procedure, utilizing a tuning mixture of 22 datasets and approximately 30k arbitrary symbols as labels.\nExperimentally, we showed that symbol tuning can significantly improve a model\u2019s ability to learn from in-context exemplars in not only natural language settings, but also on algorithmic tasks. First, we showed that symbol tuning improves performance on unseen in-context learning tasks, especially when prompts do not contain instructions or relevant labels. We also found that symbol-tuned models were much better at algorithmic reasoning tasks, despite the lack of numerical or algorithmic data in the symbol-tuning procedure. Finally, in an in-context learning setting where inputs have flipped labels, symbol tuning (for some datasets) reunlocks the ability to follow flipped labels that was lost during instruction tuning.\nThrough symbol tuning, we aim to have increased the degree to which models can examine and learn from input\u2013label mappings during in-context learning. We hope that our results encourage further work towards improving language models\u2019 ability to reason over symbols presented in-context."
+        }
+    ],
+    "title": "Symbol tuning improves in-context learning in language models"
+}

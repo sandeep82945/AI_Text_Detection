@@ -1,0 +1,739 @@
+{
+    "abstractText": "Compressing large language models (LLMs), often consisting of billions of parameters, provides faster inference, smaller memory footprints, and enables local deployment. Two standard compression techniques are pruning and quantization, with the former eliminating redundant connections in model layers and the latter representing model parameters with fewer bits. The key tradeoff is between the degree of compression and the impact on the quality of the compressed model. Existing research on LLM compression primarily focuses on performance in terms of general metrics like perplexity or downstream task accuracy. More fine-grained metrics, such as those measuring parametric knowledge, remain significantly underexplored. To help bridge this gap, we present a comprehensive analysis across multiple model families (ENCODER, ENCODER-DECODER, and DECODER) using the LAMA and LM-HARNESS benchmarks in order to systematically quantify the effect of commonly employed compression techniques on model performance. A particular focus is on tradeoffs involving parametric knowledge, with the goal of providing practitioners with practical insights to help make informed decisions on compression. We release our codebase1 to enable further research.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Satya Sai"
+        },
+        {
+            "affiliations": [],
+            "name": "Srinath Namburi"
+        },
+        {
+            "affiliations": [],
+            "name": "Makesh Sreedhar"
+        },
+        {
+            "affiliations": [],
+            "name": "Srinath Srinivasan"
+        },
+        {
+            "affiliations": [],
+            "name": "Frederic Sala"
+        }
+    ],
+    "id": "SP:fff556027a27c5b06cacf09a3a303c1787bceb50",
+    "references": [
+        {
+            "authors": [
+                "Haoli Bai",
+                "Wei Zhang",
+                "Lu Hou",
+                "Lifeng Shang",
+                "Jing Jin",
+                "Xin Jiang",
+                "Qun Liu",
+                "Michael Lyu",
+                "Irwin King."
+            ],
+            "title": "Binarybert: Pushing the limit of bert quantization",
+            "venue": "arXiv preprint arXiv:2012.15701.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yonatan Bisk",
+                "Rowan Zellers",
+                "Jianfeng Gao",
+                "Yejin Choi"
+            ],
+            "title": "Piqa: Reasoning about physical commonsense in natural language",
+            "venue": "In Proceedings of the AAAI conference on artificial intelligence,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aydin Buluc",
+                "John R Gilbert."
+            ],
+            "title": "Challenges and advances in parallel sparse matrix-matrix multiplication",
+            "venue": "2008 37th International Conference on Parallel Processing, pages 503\u2013510. IEEE.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Toutanova."
+            ],
+            "title": "Boolq: Exploring the surprising difficulty of natural yes/no questions",
+            "venue": "arXiv preprint arXiv:1905.10044.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Llm",
+            "venue": "int8 (): 8-bit matrix multiplication for transformers at scale. arXiv preprint arXiv:2208.07339.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Ruslan Svirschevski",
+                "Vage Egiazarian",
+                "Denis Kuznedelev",
+                "Elias Frantar",
+                "Saleh Ashkboos",
+                "Alexander Borzunov",
+                "Torsten Hoefler",
+                "Dan Alistarh."
+            ],
+            "title": "Spqr: A sparse-quantized representation for near-lossless llm weight compression",
+            "venue": "arXiv",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova"
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Mengnan Du",
+                "Subhabrata Mukherjee",
+                "Yu Cheng",
+                "Milad Shokouhi",
+                "Xia Hu",
+                "Ahmed Hassan Awadallah."
+            ],
+            "title": "What do compressed large language models forget? robustness challenges in model compression",
+            "venue": "arXiv e-prints, pages arXiv\u20132110.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Allyson Ettinger",
+                "Ahmed Elgohary",
+                "Colin Phillips",
+                "Philip Resnik."
+            ],
+            "title": "Assessing composition in sentence vector representations",
+            "venue": "Proceedings of the 27th International Conference on Computational Linguistics, pages 1790\u20131801, Santa Fe, New Mex-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Elias Frantar",
+                "Dan Alistarh."
+            ],
+            "title": "Massive language models can be accurately pruned in one-shot",
+            "venue": "arXiv preprint arXiv:2301.00774.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Elias Frantar",
+                "Saleh Ashkboos",
+                "Torsten Hoefler",
+                "Dan Alistarh."
+            ],
+            "title": "Gptq: Accurate post-training quantization for generative pre-trained transformers",
+            "venue": "arXiv preprint arXiv:2210.17323.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Trevor Gale",
+                "Erich Elsen",
+                "Sara Hooker."
+            ],
+            "title": "The state of sparsity in deep neural networks",
+            "venue": "arXiv preprint arXiv:1902.09574.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Amir Gholami",
+                "Sehoon Kim",
+                "Zhen Dong",
+                "Zhewei Yao",
+                "Michael W. Mahoney",
+                "Kurt Keutzer"
+            ],
+            "title": "A survey of quantization methods for efficient neural network inference",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yoav Goldberg."
+            ],
+            "title": "Assessing bert\u2019s syntactic abilities",
+            "venue": "arXiv preprint arXiv:1901.05287.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Mitchell A Gordon",
+                "Kevin Duh",
+                "Nicholas Andrews."
+            ],
+            "title": "Compressing bert: Studying the effects of weight pruning on transfer learning",
+            "venue": "arXiv preprint arXiv:2002.08307.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Arnav Gudibande",
+                "Eric Wallace",
+                "Charlie Snell",
+                "Xinyang Geng",
+                "Hao Liu",
+                "Pieter Abbeel",
+                "Sergey Levine",
+                "Dawn Song"
+            ],
+            "title": "The false promise of imitating proprietary llms",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Song Han",
+                "Huizi Mao",
+                "William J Dally."
+            ],
+            "title": "Deep compression: Compressing deep neural networks with pruning, trained quantization and huffman coding",
+            "venue": "arXiv preprint arXiv:1510.00149.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "Yelong Shen",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen."
+            ],
+            "title": "Lora: Low-rank adaptation of large language models",
+            "venue": "arXiv preprint arXiv:2106.09685.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ganesh Jawahar",
+                "Beno\u00eet Sagot",
+                "Djam\u00e9 Seddah."
+            ],
+            "title": "What does BERT learn about the structure of language? In Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 3651\u20133657, Florence, Italy",
+            "venue": "Associa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nora Kassner",
+                "Hinrich Sch\u00fctze."
+            ],
+            "title": "Negated and misprimed probes for pretrained language models: Birds can talk, but cannot fly",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 7811\u20137818, Online. As-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhenzhong Lan",
+                "Mingda Chen",
+                "Sebastian Goodman",
+                "Kevin Gimpel",
+                "Piyush Sharma",
+                "Radu Soricut."
+            ],
+            "title": "Albert: A lite bert for self-supervised learning of language representations",
+            "venue": "arXiv preprint arXiv:1909.11942.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Brian Lester",
+                "Rami Al-Rfou",
+                "Noah Constant."
+            ],
+            "title": "The power of scale for parameter-efficient prompt tuning",
+            "venue": "arXiv preprint arXiv:2104.08691.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiang Lisa Li",
+                "Percy Liang."
+            ],
+            "title": "Prefix-tuning: Optimizing continuous prompts for generation",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Lan-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chen Liang",
+                "Simiao Zuo",
+                "Minshuo Chen",
+                "Haoming Jiang",
+                "Xiaodong Liu",
+                "Pengcheng He",
+                "Tuo Zhao",
+                "Weizhu Chen."
+            ],
+            "title": "Super tickets in pretrained language models: From model compression to improving generalization",
+            "venue": "arXiv preprint",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiao Liu",
+                "Yanan Zheng",
+                "Zhengxiao Du",
+                "Ming Ding",
+                "Yujie Qian",
+                "Zhilin Yang",
+                "Jie Tang."
+            ],
+            "title": "Gpt understands, too",
+            "venue": "arXiv preprint arXiv:2103.10385.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov"
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kevin Meng",
+                "David Bau",
+                "Alex Andonian",
+                "Yonatan Belinkov."
+            ],
+            "title": "Locating and editing factual knowledge in gpt",
+            "venue": "arXiv preprint arXiv:2202.05262.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Paul Michel",
+                "Omer Levy",
+                "Graham Neubig"
+            ],
+            "title": "Are sixteen heads really better than one? Advances in neural information processing",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Eric Mitchell",
+                "Charles Lin",
+                "Antoine Bosselut",
+                "Chelsea Finn",
+                "Christopher D Manning."
+            ],
+            "title": "Fast model editing at scale",
+            "venue": "arXiv preprint arXiv:2110.11309.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Eric Mitchell",
+                "Charles Lin",
+                "Antoine Bosselut",
+                "Christopher D Manning",
+                "Chelsea Finn."
+            ],
+            "title": "Memorybased model editing at scale",
+            "venue": "International Conference on Machine Learning, pages 15817\u201315831. PMLR.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Markus Nagel",
+                "Marios Fournarakis",
+                "Rana Ali Amjad",
+                "Yelysei Bondarenko",
+                "Mart van Baalen",
+                "Tijmen Blankevoort"
+            ],
+            "title": "A white paper on neural network quantization",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Fabio Petroni",
+                "Tim Rockt\u00e4schel",
+                "Patrick Lewis",
+                "Anton Bakhtin",
+                "Yuxiang Wu",
+                "Alexander H. Miller",
+                "Sebastian Riedel"
+            ],
+            "title": "Language models as knowledge bases",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Gabriele Prato",
+                "Ella Charlaix",
+                "Mehdi Rezagholizadeh."
+            ],
+            "title": "Fully quantized transformer for machine translation",
+            "venue": "arXiv preprint arXiv:1910.10485.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Keisuke Sakaguchi",
+                "Ronan Le Bras",
+                "Chandra Bhagavatula",
+                "Yejin Choi."
+            ],
+            "title": "Winogrande: An adversarial winograd schema challenge at scale",
+            "venue": "Communications of the ACM, 64(9):99\u2013106.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Victor Sanh",
+                "Lysandre Debut",
+                "Julien Chaumond",
+                "Thomas Wolf"
+            ],
+            "title": "Distilbert, a distilled version of bert: smaller, faster, cheaper and lighter",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Roy Schwartz",
+                "Jesse Dodge",
+                "Noah A Smith",
+                "Oren Etzioni."
+            ],
+            "title": "Green ai",
+            "venue": "Communications of the ACM, 63(12):54\u201363.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Abigail See",
+                "Minh-Thang Luong",
+                "Christopher D Manning."
+            ],
+            "title": "Compression of neural machine translation models via pruning",
+            "venue": "arXiv preprint arXiv:1606.09274.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Emma Strubell",
+                "Ananya Ganesh",
+                "Andrew McCallum."
+            ],
+            "title": "Energy and policy considerations for deep learning in NLP",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 3645\u20133650, Florence, Italy.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alon Talmor",
+                "Yanai Elazar",
+                "Yoav Goldberg",
+                "Jonathan Berant"
+            ],
+            "title": "olmpics \u2013 on what language model pre-training captures",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chaofan Tao",
+                "Lu Hou",
+                "Wei Zhang",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Qun Liu",
+                "Ping Luo",
+                "Ngai Wong."
+            ],
+            "title": "Compression of generative pre-trained language models via quantization",
+            "venue": "arXiv preprint arXiv:2203.10705.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Elena Voita",
+                "David Talbot",
+                "Fedor Moiseev",
+                "Rico Sennrich",
+                "Ivan Titov."
+            ],
+            "title": "Analyzing multi-head self-attention: Specialized heads do the heavy lifting, the rest can be pruned",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Com-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jonas Wallat",
+                "Jaspreet Singh",
+                "Avishek Anand"
+            ],
+            "title": "Bertnesia: Investigating the capture and forgetting of knowledge in bert",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel R Bowman."
+            ],
+            "title": "Glue: A multi-task benchmark and analysis platform for natural language understanding",
+            "venue": "arXiv preprint arXiv:1804.07461.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Nathaniel Weir",
+                "Adam Poliak",
+                "Benjamin Van Durme."
+            ],
+            "title": "Probing neural language models for human tacit assumptions",
+            "venue": "arXiv preprint arXiv:2004.04877.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Minghao Wu",
+                "Abdul Waheed",
+                "Chiyu Zhang",
+                "Muhammad Abdul-Mageed",
+                "Alham Fikri Aji."
+            ],
+            "title": "Lamini-lm: A diverse herd of distilled models from large-scale instructions",
+            "venue": "arXiv preprint arXiv:2304.14402.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Can Xu",
+                "Qingfeng Sun",
+                "Kai Zheng",
+                "Xiubo Geng",
+                "Pu Zhao",
+                "Jiazhan Feng",
+                "Chongyang Tao",
+                "Daxin Jiang."
+            ],
+            "title": "Wizardlm: Empowering large language models to follow complex instructions",
+            "venue": "arXiv preprint arXiv:2304.12244.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhuliang Yao",
+                "Shijie Cao",
+                "Wencong Xiao",
+                "Chen Zhang",
+                "Lanshun Nie."
+            ],
+            "title": "Balanced sparsity for efficient dnn inference on gpu",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, volume 33, pages 5676\u20135683.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ali Hadi Zadeh",
+                "Isak Edo",
+                "Omar Mohamed Awad",
+                "Andreas Moshovos."
+            ],
+            "title": "Gobo: Quantizing attention-based nlp models for low latency and energy efficient inference",
+            "venue": "2020 53rd Annual IEEE/ACM International Symposium on Microarchi-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ofir Zafrir",
+                "Guy Boudoukh",
+                "Peter Izsak",
+                "Moshe Wasserblat."
+            ],
+            "title": "Q8bert: Quantized 8bit bert",
+            "venue": "2019 Fifth Workshop on Energy Efficient Machine Learning and Cognitive Computing-NeurIPS Edition (EMC2-NIPS), pages 36\u201339. IEEE.",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large language models (LLMs) have demonstrated exceptional performance across diverse tasks. However, their deployment in real-world applications is hindered by their substantial size and the associated costs, even for inference (Schwartz et al., 2020; Strubell et al., 2019). For instance, the LLama-65B model (Touvron et al., 2023), a pioneering open-sourced LLM, uses approximately 130GB of RAM for 16-bit inference. To address this challenge, recent research has\n1https://github.com/NamburiSrinath/LLMCompression\nfocused on developing novel compression techniques that enable efficient local deployment and inference. Notable examples of such techniques include SparseGPT (Frantar and Alistarh, 2023) and LLM.int8() (Dettmers et al., 2022).\nThe tradeoff between model compression and quality is typically studied either through general metrics like perplexity (See et al., 2016; Michel et al., 2019) or standardized benchmark task accuracy (Liang et al., 2021; Du et al., 2021) on, e.g., GLUE (Wang et al., 2018). Furthermore, much of the literature studies such tradeoffs for one model or a particular class of models. Unfortunately, as a result, practitioners do not have access to reliable insights or rules-of-thumb to ensure they can make an informed decision for compression in their own models. This is because\n\u2022 Metrics like perplexity are too general, while benchmark prediction metrics are too easy to fool. For example, recent findings suggest that distilled versions of foundational LLMs, known as imitation models, may exhibit stylistic similarities but potentially lack knowledge when compared to the models they seek to imitate (Gudibande et al., 2023). \u2022 Most recent research on compression techniques has primarily focused on DECODER models. The applicability and effectiveness of such techniques for large ENCODER and ENCODER-DECODER models (Chung et al., 2022) has yet to be extensively studied.\nThese difficulties suggest that there is a need for a more fine-grained understanding of the effects of compression schemes, comparing a variety of model families, compression techniques, and specialized measurements.\nWe address these challenges, specifically focusing on the preservation of parametric knowledge, i.e., knowledge acquired during pretraining, that is stored in model weights. This is particularly\ncrucial for tasks involving reasoning and for specialized applications. Concretely, we examine the impact of different compression schemes on parametric knowledge across multiple model families (ENCODER, ENCODER-DECODER and DECODER) where we apply pruning and quantization approaches and analyze the performance of such techniques on downstream reasoning tasks. To the best of our knowledge, this work represents one of the first large-scale investigations in this direction. Among the crucial observations resulting from this study include:\n\u2022 Pruning all modules together has the most significant impact on parametric knowledge, compared to pruning specific modules, \u2022 At pruning levels of >50%, the parametric knowledge of all the models declines rapidly, \u2022 Quantizing attention modules has less impact on performance compared to quantizing feedforward networks for all the models, \u2022 Across all models, structured pruning at the final layer has detrimental effects compared to unstructured pruning."
+        },
+        {
+            "heading": "2 Background",
+            "text": "In this section, we briefly discuss the various compression techniques we use in our study."
+        },
+        {
+            "heading": "2.1 Pruning",
+            "text": "Pruning involves reducing the model size by eliminating unnecessary or redundant connections between neurons or entire neurons altogether. Broadly speaking, pruning approaches can be classified into two types (Fig. 1):\nUnstructured Pruning: Each connection is treated as an individual entity, and sparsity is attained by eliminating connections with lower saliency. Although this approach enables the removal of less important connections without compromising performance, it leads to sparse matrix operations, which may not be optimal for certain hardware accelerators2 (Buluc and Gilbert, 2008; Gale et al., 2019).\nStructured Pruning: This involves removing a group of connections, such as channels or entire neurons, instead of individual connections. Unlike unstructured pruning, this approach avoids introducing sparse matrix operations. However, aggres-\n2The current landscape is evolving as advanced accelerators are emerging that provide support for sparse multiplications.\nsive structured pruning may disproportionately impact the model\u2019s performance (Yao et al., 2019).\nChoosing Saliency of Weights: When choosing the criterion to determine saliency, various factors can be taken into account, such as weight magnitude, importance to the overall network functionality, or contribution to specific tasks. Typically, the saliency of weights is determined based on their magnitudes when selecting which ones to remove during pruning. A sparsity of k% means that the least salient k% connections are removed.\nThe most commonly used pruning types are:\n1. L1-Unstructured: Connections between neurons are eliminated individually, and their saliency is determined by their L1-norm, i.e., the smallest weights are removed. 2. Lp-Structured: Connections are eliminated in a structured way, i.e., an entire layer/channel is removed, and saliency is determined by their Lp-norm where p is a hyperparameter."
+        },
+        {
+            "heading": "2.2 Quantization",
+            "text": "Model parameters can be categorized into weights and activations, which are typically represented using 32 bits. Quantization aims to reduce the number of bits used for representing these parameters. A popular choice for this mapping is3:\nQ(r) = Int(r/S)\u2212 Z,\nwhere Q is the quantization operator, r is a realvalued input (weight or activation), S is a realvalued scaling factor, and Z is an integer zeropoint. An important factor in mapping r to an integer is the scaling factor S. This is usually given by\nS = \u03b2 \u2212 \u03b1 2b \u2212 1 . (1)\n3Uniform quantization maps real values to equally spaced integers\nHere [\u03b1, \u03b2] denotes the clipping range and b is the quantization bandwidth. The process of determining the clipping range is known as calibration. Extensive research has been conducted to determine the optimal range to reduce the bit representation while balancing accuracy, computational efficiency, and inference speed (Gholami et al., 2021). In most cases, statistics for weights are precomputed as they remain constant during inference. Often, it may be necessary to fine-tune the quantized model parameters to enhance performance on task-specific datasets. Taking these factors into account, various methods have been proposed (Nagel et al., 2021):\nPost Training Static Quantization (PTSQ): The clipping range for activations is pre-calculated using a representative dataset, which is a small subset derived from the task-specific dataset. Using this clipping range, the activations are quantized in advance and thus remain static during inference.\nPost Training Dynamic Quantization (PTDQ): The clipping range is dynamically calculated for each activation during inference. Although this introduces additional computational overhead during inference, it yields improved performance compared to Post Training Static Quantization (PTSQ) as the signal range is exactly calculated for each input.\nQuantization Aware Training (QAT): The model undergoes a process known as fakequantization, i.e., during training all the calculations involving forward and backward passes are performed in full-precision. Subsequently, after updating the weight parameters through gradient descent, the weights are quantized to a lower bit. While this approach achieves the highest performance, it requires finetuning the model.\nWe note that while a huge diversity of often sophisticated and specialized compression methods have been proposed, we focus on a subset of standard approaches. This enables us to seek more general insights on compression tradeoffs."
+        },
+        {
+            "heading": "3 Experimental Setup",
+            "text": "In this section, we present a comprehensive overview of our experimental setup, including the rationale behind our design choices, along with the selection of models and datasets."
+        },
+        {
+            "heading": "3.1 Settings Under Consideration",
+            "text": "The general transformer block consists of an attention module followed by a feed-forward network. As a result, we consider three choices for compression: compress the attention module alone \u00a73.2, compress the feed-forward network alone \u00a73.3, or compress both together \u00a73.4. Figure 2 contains a visual representation of these modules.\nOur chosen compression techniques include pruning, quantization, and a combination of pruning and quantization. Following the methodology proposed in Han et al. (2015), we adhere to the sequential order of pruning the selected group of modules first and then applying quantization. In addition, we also investigate the impact on distilled models and explore the effects of employing various combined compression techniques."
+        },
+        {
+            "heading": "3.2 Attention-only Global Compression",
+            "text": "We include all the linear layers within all the attention modules of the model. For encoderdecoder models, we also consider the crossattention blocks.\nAttention-only Global Pruning, (AttGP ): We apply pruning to all the linear layers within the attention modules.\nAttention-only Global Quantization, (AttGQ): We quantize all the linear layers within the attention modules.\nAttention-only Global Pruning + Quantization, (AttGPQ): We prune the linear layers in\nthe attention modules and subsequently quantize them."
+        },
+        {
+            "heading": "3.3 Feed-forward-only Global Compression",
+            "text": "We include all the linear layers within all the feedforward networks of the model.\nFeed-forward-only Global Pruning, (FFGP ): We employ pruning to all the linear layers within the feed-forward networks.\nFeed-forward-only Global Quantization, (FFGQ): We quantize all the linear layers within the feed-forward networks.\nFeed-forward-only Global Pruning + Quantization, (FFGPQ): We prune all the linear layers from feed-forward networks and subsequently quantize them."
+        },
+        {
+            "heading": "3.4 Overall Global Compression",
+            "text": "We specifically target the linear layers within the attention and feed-forward network. Under this compression, the different setups are:\nOverall Global Pruning, (OverallGP ) : We employ pruning to all the linear layers (except the final dense layer).\nOverall Global Quantization,(OverallGQ) + : We apply quantization to all the linear layers (including the final dense layer). Overall Global Pruning + Quantization (OverallGPQ) + : We first apply pruning to all the linear layers (except the final dense layer), and subsequently, we quantize all the linear layers.\n3.5 Final Dense Layer Pruning, (FLP )\nRecent studies (Mitchell et al., 2021, 2022; Meng et al., 2022) provide evidence suggesting that the final layers of a language model play a significant role in storing information. Given its importance, we focus on understanding how knowledge is encoded in the final layer. Therefore, we treat the final layer as an individual module in our experimental setup and prune it. We consider L1-structured and L1-unstructured pruning as outlined in \u00a72.1.\nWe note that the number of parameters compressed differs for different settings. We record all of the values required for normalizing measurements. However, our focus is predominantly aimed at understanding the effects of compressing modules and their combinations rather than presenting normalized results, and our insights reflect this framing. We provide full parameter counts\nthat permit normalized quantities that can be used by practitioners who seek to directly apply our work and refer the readers to Sec. A.2 for more details."
+        },
+        {
+            "heading": "3.6 Design Choices",
+            "text": "\u2022 In our global pruning experiments (OverallGP , AttGP , FFGP ), we use L1-Unstructured and apply pruning percentages ranging from 10% to 90% with increments of 10%. \u2022 For quantization experiments, as we seek to investigate the zero-shot capabilities of LLMs, we select post-training dynamic quantization \u00a72.2, eliminating the need for finetuning (unlike quantization-aware training; QAT \u00a72.2) or calibration of the model to a representative dataset (unlike post-training static quantization; PTSQ \u00a72.2) and quantize to 8 bits (int8). \u2022 Since the quantization of activations occurs during inference, which is dynamic in nature, the order of inputs within a batch has a minor impact on the final accuracy (< 1%). Therefore, we seed the experiments to ensure consistent and reproducible results (\u00a7A.1). \u2022 Previous studies (Gordon et al., 2020; Michel et al., 2019) suggest that pruning levels of 30%-40% do not affect the model on downstream tasks. Such rules-of-thumb may or may not hold for parametric knowledge. In our experimental settings (GPQ, FLP ), we select 20% and 40% as the levels to understand when a similar result holds."
+        },
+        {
+            "heading": "3.7 Model Zoo",
+            "text": "We consider the following models for our study. Where available, we choose both the base and large versions of the model to understand if larger models exhibit different behavior."
+        },
+        {
+            "heading": "3.7.1 Encoder-only:",
+            "text": "\u2022 BERT (Devlin et al., 2019): Pretrained on\nmasked language modeling (MLM) and next sentence prediction (NSP) objective. \u2022 RoBERTa (Liu et al., 2019): Similar to BERT with different training choices (larger training dataset and removed NSP). \u2022 DistilBERT (Sanh et al., 2020): Distilled version of BERT whose training objective includes MLM, a distillation loss, and a cosine embedding loss.\n\u2022 ALBERT (Lan et al., 2019): Parameterreduced version of BERT using cross-layer parameter sharing and factorized embedding parameterization."
+        },
+        {
+            "heading": "3.7.2 Encoder-Decoder:",
+            "text": "\u2022 Flan-T5 (Chung et al., 2022): Instruction-\nfinetuned encoder-decoder model with masked span corruption objective. \u2022 Lamini-Flan-T5 (Wu et al., 2023): FlanT5 model finetuned on LaMini instruction dataset4 which is generated and distilled using ChatGPT output."
+        },
+        {
+            "heading": "3.7.3 Decoder only:",
+            "text": "\u2022 Vicuna-7B (Chiang et al., 2023): An\ninstruction-based LLama derived model finetuned on user-shared conversations collected from ShareGPT. \u2022 WizardLM-7B (Xu et al., 2023): An instruction-based LLama derived model with instructions generated by LLMs (rather than humans) using the Evol-Instruct mechanism."
+        },
+        {
+            "heading": "3.8 Datasets",
+            "text": "We use the following datasets for our empirical analysis:\nLAMA: To examine the effects of compression on encoder-only models, we use the LAMA (LAnguage Model Analysis) benchmark (Petroni et al., 2019). LAMA assesses the factual and commonsense knowledge of language models. Each example in LAMA is formulated as a cloze-style question, where either the subject or object is masked. By predicting the masked word, we can evaluate the model\u2019s ability to recover real-world facts. Specifically, we probe the encoder-only models with LAMA to investigate the impact of compression on various knowledge tasks. This benchmark consists of four datasets, namely TRex, Google-RE, ConceptNet, and SQUAD, each designed to assess specific types of relational knowledge. These datasets provide valuable insights into the model\u2019s performance and its understanding of different types of information.\nLanguage model evaluation harness: To examine the effects of compression on encoderdecoder and decoder-only models, we use a subset of evaluation harness tasks (Gao et al., 2021): the BoolQ dataset (Clark et al., 2019), the PIQA\n4https://huggingface.co/datasets/MBZUAI/LaMiniinstruction\ndataset (Bisk et al., 2020), and the Winogrande dataset (Sakaguchi et al., 2021). These datasets provide a range of challenging prompts for each model type. We refer the reader to Table 2 for examples of samples from each dataset."
+        },
+        {
+            "heading": "4 Experimental Results and Insights",
+            "text": "To facilitate our discussion, we categorize pruning levels as follows:\n\u2022 plow: Sparsity levels of 10-30% \u2022 pmedium: Sparsity levels of 30-50% \u2022 phigh: Sparsity levels of >50%\nFor encoder-only models, we report the % drop in top-1 accuracy, averaged across all the probes in LAMA. For the decoder-only and encoderdecoder models, we report the % drop in accuracy, averaged across BoolQ, PIQA and Winogrande. In the decoder-only and encoder-decoder plots, the majority-baseline indicates the accuracy when all the predictions are assigned to the majority class."
+        },
+        {
+            "heading": "4.1 Global Pruning",
+            "text": "We observe that for encoder-only models (Fig. 3, 19), there is a minimal decline in performance at plow. At pmedium, the drop in performance is more significant for pruning feed-forward networks (FFGP ) as compared to attention modules (AttGP ).\nFinding: At pmedium, for encoderonly models, pruning attention modules (AttGP ) has a smaller impact compared to pruning feed-forward networks (FFGP ).\nWe observe that for encoder-decoder (Fig. 5, 13) and decoder-only models (Fig. 4), there is a minimal decline in performance at plow. However, at pmedium, the drop in performance is more significant for pruning attention modules (AttGP ) compared to feed-forward networks (FFGP ).\nFinding: At pmedium, for encoderdecoder and decoder-only models, pruning the attention module (AttGP ) has more impact on performance compared to pruning feed-forward networks (FFGP ).\nWe note that the number of parameters in the feed-forward networks is significantly higher than the number of parameters in the attention modules for all these models (Table 3). This observation provides a likely explanation for the pattern observed in encoder-only models, where pruning more parameters results in a higher loss of parametric knowledge. However, this finding is counterintuitive for encoder-decoder and decoder-only models, as we would expect that pruning the larger feed-forward networks would have a more significant impact on the parametric knowledge. We suspect that the feed-forward networks are overparameterized and thus they can be pruned without a significant drop in performance.\nFinding: For all the models, pruning all the modules together (OverallGP ) has the most significant impact on performance.\nAmong all the models analyzed, pruning all modules together (OverallGP ) has the most significant negative impact on performance. This finding suggests that when compressing models, pruning all modules simultaneously leads to a greater loss of parametric knowledge compared to pruning specific modules or components individually. Therefore, it is crucial to carefully consider\nthe implications of employing global pruning techniques. We additionally note that at phigh, the performance goes to zero as expected.\nAdditional results for global pruning on individual datasets for encoder-only models are shown in Fig 20, 21, 22; for decoder-only models at Fig 23; for encoder-decoder models at Fig 13, 25."
+        },
+        {
+            "heading": "4.2 Global Quantization",
+            "text": "We observe that across all the models (Fig. 6, 15, 16), the performance drop is less significant when quantizing attention modules (AttGQ) compared to quantizing feed-forward networks alone (FFGQ). This contrasts with the results from global pruning (\u00a74.1), where pruning attentiononly modules had a more detrimental effect on encoder-decoder and decoder-only models.\nFinding: For all the models, quantizing attention modules (AttGQ) has lesser impact compared to quantizing feed-forward networks (FFGQ).\nWe hypothesize that in the case of quantization where all connections are preserved, the parametric knowledge in cross-attention modules may remain relatively intact. However, in pruning, as connections are eliminated, there may have\nBERTbase BERTlarge DistilB ERT-b ase\n\u2212100\n\u221280\n\u221260\n\u221240\n\u221220\n0\n% d ro p in a cc\nRoBER Ta-bas e RoBER Ta-larg e\nALBE RT-bas e ALBE RT-larg e\nOverallGPQ FFGPQ AttGPQ 20% 40%\nFigure 7: Averaged drop in Top-1 accuracy for encoderonly models for global pruning+quantization.\na greater impact on the parametric knowledge in cross-attention modules, thereby affecting the overall capabilities of the model. It is also interesting to observe that the performance drop during quantization is almost similar to that of pmedium.\nFinding: For all the models, quantizing all the modules together (OverallGQ) hurts the most.\nIt is intuitive that quantizing all the modules together (OverallGQ) has the most significant negative impact. Additional results are shown in Tables. 4, 5, 6."
+        },
+        {
+            "heading": "4.3 Global Pruning + Quantization",
+            "text": "For all the models (Fig. 7, 17, 18), at 20% sparsity, compressing attention modules (AttGPQ) results in a smaller performance drop compared to compressing feed-forward networks (FFGPQ). At 40% sparsity, the same trend is observed for encoder-only and decoder-only models. However, we notice the reverse for ENCODER-DECODER models i.e., that compressing feed-forward networks affects performance less than compressing the attention modules at 40% sparsity.\nFinding: For all the models, at 20% sparsity level, AttGPQ hurts less compared to FFGPQ.\nWe hypothesize that the sequential effects of\npruning and quantization on the cross-attention modules could be responsible for this change in the order of impact. To test this hypothesis, we selectively prune and quantize the self-attention and cross-attention modules separately and found out that it is indeed the case (Fig. 8) and aligns with the claim made in Michel et al. (2019). Additional results for compressing attention-only modules are shown in Fig 12, 24. For fine-grained analysis on individual datasets, we refer the interested reader to Table 4, 5, 6."
+        },
+        {
+            "heading": "4.4 Final Dense layer Pruning",
+            "text": "For encoder-only models (Fig. 9), L1unstructured pruning has a smaller impact compared to L1-structured pruning. We hypothesize that the final layer of the encoder-only models might encode knowledge in a structured or modular manner, and any form of structured compression would disrupt this encoding, resulting in a larger performance drop. Such a result would be consistent with existing approaches that enable editing knowledge in language models and rely on structure (Mitchell et al., 2021).\nFinding: For encoder-only models, L1unstructured leads to a smaller decrease in performance than L1-structured.\nFor decoder-only (Fig. 10) and encoder-decoder (Fig. 14) models, even at a sparsity level of 20%, the predicted accuracy is very close to the majority baseline. This finding aligns with the claims made in Mitchell et al. (2022) that final layers encode significant amount of information. The drastic performance drop observed suggests that the final layers play a crucial role in encoding knowledge. Additional results for pruning the final layer are shown in Fig. 26, 27, 28."
+        },
+        {
+            "heading": "5 Related Work",
+            "text": "Early works seeking to understand large language model behavior focused on contextual representations and how such models gain linguistic capabilities (Goldberg, 2019; Ettinger et al., 2018; Jawahar et al., 2019). More recently, some lines of work have steered towards understanding how these models acquire factual and commonsense knowledge. Techniques such as probing evolved as a way to understand the knowledge capabilities of these models (Petroni et al., 2019; Kassner and Sch\u00fctze, 2020; Talmor et al., 2020; Weir et al., 2020; Wallat et al., 2021).\nPrevious works including Gordon et al. (2020); Michel et al. (2019) pruned BERT and showed that it is resilient to a medium level of pruning. For example, Michel et al. (2019) showed that after finetuning for a particular downstream task, it is possible to prune about 40% of the attention weights without any loss in performance. A particular fo-\ncus has been to understand the importance of the attention mechanism (Voita et al., 2019; Michel et al., 2019) by pruning the heads. In a similar fashion, works such as Zafrir et al. (2019); Bai et al. (2020); Zadeh et al. (2020); Tao et al. (2022); Prato et al. (2019); Frantar et al. (2022); Dettmers et al. (2023) pushed the limits of quantization on language models. Most of these works have focused on one model class or a particular metric.\nIn another line of work, a variety of approaches (Li and Liang, 2021; Hu et al., 2021; Liu et al., 2021; Lester et al., 2021) focus on alternatives to traditional finetuning of the model due to its scale. In contrast to these works, our paper primarily focuses on the in-built parametric knowledge present in the model. This means we do not finetune and instead seek to understand whether some of the previously described phenomenona are applicable to other models as well.\nAlso connected to this work are techniques that edit factual knowledge in models. The goal for such works is to avoid retraining or even finetuning models, instead seeking to directly change parameters connected to certain facts (Mitchell et al., 2021, 2022; Meng et al., 2022). However, given our focus on compression, the main theme of our work differs. Nevertheless, it would be interesting to understand the impact of relying on compressed models when using such editing techniques."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "Compression is crucial in deploying and using large language models. Despite its importance, existing empirical studies predominantly rely on generic measurements such as perplexity or standardized benchmark metrics when investigating the effects of compression. These coarse measurements are challenging to interpret. As a result, it is difficult to use them to develop meaningful heuristics for practitioners.\nTo address these limitations, we provided a large-scale study that focused on fine-grained effects on quantities like parametric knowledge. We studied a variety of compression choices across multiple model families, providing usable insights into what types of compression schemes have the least and most significant impact on models. We hope this work serves as a useful step towards developing users\u2019 intuition for rules-of-thumb when selecting appropriate compression techniques in large language models. For future work, we hope\nto add additional, more specialized techniques for large language model compression."
+        },
+        {
+            "heading": "7 Limitations",
+            "text": "Our research has tackled a diverse combination of models, compression schemes, and compression targets within the vast large language model research area. We note that sophisticated and specialized compression techniques tailored to specific objectives for a particular class of models may exhibit distinct behavior compared to the findings presented in this study. Hence, our work does not aim to present an exhaustive set of findings that universally characterize the impact on parametric knowledge across all conceivable models and compression approaches. We believe that our study serves as a valuable starting point, offering a nuanced examination of prevalent methodologies.\nWe note, additionally, that we do not directly address the tradeoff between wall-clock inference time versus compression. While this is also an important tradeoff, the impact of compression on inference time contains many intricacies that are best treated with a separate large-scale study."
+        },
+        {
+            "heading": "A Appendix",
+            "text": "The appendix contains all of the results we could not include in the body of the paper. We first discuss the statistical approach of the experiments and the performance drop against compression ratio. Then, we show individual plots for a set of experiments that track decrease in accuracy for several types of compression and models. Next, we provide a table that contains information on the datasets used in our experiments. Afterwards, we provide tables with model details, including parameter counts, and explicit results for compression results across model families. Afterwards, we present a large-scale comparison across datasets for encoder-decoder models under various attention module compression approaches. We provide LAMA probe results and finally, change-inaccuracy plots for a variety of datasets for different model classes.\nA.1 Experimental Approach Our experiments fall into two categories: deterministic and stochastic. Our experiments on pruning are deterministic as we used L1-unstructured pruning. On the other hand, our quantization experiments have an element of randomness. This is due to our use of PTDQ, which computes a dynamic clipping range. We deliberately struck a balance between the number of trials per setting and the overall number of settings studied. Consequently, we ran experiments with multiple seeds and recorded confidence intervals, as demonstrated in Table 1.\nA.2 Performance drop against compression ratio\nNormalizing the x-axis to account for the parameter ratio results in the same plots, but with a skewed x-axis (Fig. 11). Given a specific performance drop percentage, it is highly likely that we can achieve greater parameter compression by targeting feedforward modules rather than attention modules. It is worth noting that across all the models studied, feedforward modules have more parameters than attention module\nModel Dataset Baseline OverallGQ AttGQ FFGQ OverallGPQ AttGPQ FFGPQ20% 40% 20% 40% 20% 40%\nFlanT5-Base Boolq 0.7887 0.618 0.7841 0.6352 0.5049 0.482 0.7609 0.5058 0.6275 0.6125\nPiqa 0.6621 0.6251 0.6665 0.6415 0.5724 0.5419 0.6605 0.5631 0.6393 0.6077 Winogrande 0.5422 0.4862 0.5359 0.5138 0.5051 0.4949 0.5272 0.5241 0.5075 0.498\nFlanT5-Large Boolq 0.8645 0.8034 0.8615 0.8165 0.6498 0.5618 0.856 0.4107 0.819 0.7969\nPiqa 0.7138 0.6638 0.716 0.6942 0.6181 0.5555 0.7214 0.6616 0.6953 0.6921 Winogrande 0.5991 0.5375 0.5896 0.573 0.5185 0.5067 0.5864 0.4957 0.5596 0.5572\nLamini-Flan-T5-248M Boolq 0.7982 0.7297 0.8015 0.7346 0.667 0.4349 0.7569 0.6266 0.7315 0.7263\nPiqa 0.6676 0.6393 0.6594 0.6507 0.6208 0.5462 0.6627 0.6208 0.6534 0.6338 Winogrande 0.5304 0.5257 0.5083 0.513 0.543 0.5051 0.5099 0.5004 0.4964 0.5028\nLamini-Flan-T5-783M Boolq 0.8306 0.7982 0.8294 0.7979 0.7716 0.6211 0.8226 0.6783 0.7994 0.7982\nPiqa 0.7073 0.673 0.7051 0.6899 0.6855 0.6192 0.7008 0.6937 0.6882 0.6866 Winogrande 0.5549 0.5241 0.5454 0.5517 0.5193 0.4878 0.5478 0.5114 0.5288 0.5201\nFlanT5-base \u221240\n\u221235\n\u221230\n\u221225\n\u221220\n\u221215\n\u221210\n\u22125\n0\n% lo\nFlanT5-large LaMini-Flan-T5-248M LaMini-Flan-T5-783M Ln-Structured L1-Unstructured 20% Pruning 40% Pruning Majority Baseline\nFigure 14: Averaged drop in accuracy for encoderdecoder models for various local pruning (\u00a74.4)\nVicuna-7B\n\u221225\n\u221220\n\u221215\n\u221210\n\u22125\n0\n% d ro p in a cc\nWizardLM-7B\nOverallGQ FFGQ AttGQ Majority Baseline\nFigure 15: Averaged drop in accuracy for global quantization for decoder-only models (\u00a74.2)\n0 20 40 60 80 100 % pruned\n\u2212100\n\u221280\n\u221260\n\u221240\n\u221220\n0\nBERT-base\n0 20 40 60 80 100 % pruned\nBERT-large\n0 20 40 60 80 100 % pruned\nDistilBERT-base\n% lo\nss\nOverallGP AttGP FFGP\n0 20 40 60 80 100 % pruned\n\u2212100\n\u221280\n\u221260\n\u221240\n\u221220\n0\nBERT-base\n0 20 40 60 80 100 % pruned\nBERT-large\n0 20 40 60 80 100 % pruned\nDistilBERT-base\n% lo\nss\nOverallGP AttGP FFGP\n0 20 40 60 80 100 % pruned\n\u2212100\n\u221280\n\u221260\n\u221240\n\u221220\n0\n20 BERT-base\n0 20 40 60 80 100 % pruned\nBERT-large\n0 20 40 60 80 100 % pruned\nDistilBERT-base\n% lo\nss\nOverallGP AttGP FFGP\n0 20 40 60 80 100 % pruned\n\u2212100\n\u221280\n\u221260\n\u221240\n\u221220\n0\nBERT-base\n0 20 40 60 80 100 % pruned\nBERT-large\n0 20 40 60 80 100 % pruned\nDistilBERT-base\n% lo\nss\nOverallGP AttGP FFGP\nFigure 20: Drop in Top-1 accuracy for respective LAMA probes. Left-to-Right, Top-to-bottom: TREx, GoogleRE, SQUAD, Conceptnet (\u00a74.1)."
+        }
+    ],
+    "title": "The Cost of Compression: Investigating the Impact of Compression on Parametric Knowledge in Language Models",
+    "year": 2023
+}

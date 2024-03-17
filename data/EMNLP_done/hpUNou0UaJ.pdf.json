@@ -1,0 +1,705 @@
+{
+    "abstractText": "Prompt-based usage of Large Language Models (LLMs) is an increasingly popular way to tackle many well-known natural language problems. This trend is due, in part, to the appeal of the In-Context Learning (ICL) prompt set-up, in which a few selected training examples are provided along with the inference request. ICL, a type of few-shot learning, is especially attractive for natural language processing (NLP) tasks defined for specialised domains, such as entity extraction from scientific documents, where the annotation is very costly due to expertise requirements for the annotators. In this paper, we present a comprehensive analysis of in-context sample selection methods for entity extraction from scientific documents using GPT-3.5 and compare these results against a fully supervised transformer-based baseline. Our results indicate that the effectiveness of the in-context sample selection methods is heavily domain-dependent, but the improvements are more notable for problems with a larger number of entity types. More in-depth analysis shows that ICL is more effective for low-resource setups of scientific information extraction.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Necva B\u00f6l\u00fcc\u00fc"
+        },
+        {
+            "affiliations": [],
+            "name": "Maciej Rybinski"
+        },
+        {
+            "affiliations": [],
+            "name": "Stephen Wan"
+        }
+    ],
+    "id": "SP:caeff29d4595bbd59d043621aa57e89757bf534e",
+    "references": [
+        {
+            "authors": [
+                "Sweta Agrawal",
+                "Chunting Zhou",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Marjan Ghazvininejad."
+            ],
+            "title": "Incontext Examples Selection for Machine Translation",
+            "venue": "arXiv preprint arXiv:2212.02437.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shengnan An",
+                "Bo Zhou",
+                "Zeqi Lin",
+                "Qiang Fu",
+                "Bei Chen",
+                "Nanning Zheng",
+                "Weizhu Chen",
+                "Jian-Guang Lou."
+            ],
+            "title": "Skill-Based Few-Shot Selection for In-Context Learning",
+            "venue": "arXiv preprint arXiv:2305.14210.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Isabelle Augenstein",
+                "Mrinal Das",
+                "Sebastian Riedel",
+                "Lakshmi Vikraman",
+                "Andrew McCallum."
+            ],
+            "title": "Semeval 2017 task 10: Scienceie-extracting keyphrases and relations from scientific publications",
+            "venue": "arXiv preprint arXiv:1704.02853.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Davide Buscaldi",
+                "Anne-Kathrin Schumann",
+                "Behrang Qasemizadeh",
+                "Ha\u00effa Zargayouna",
+                "Thierry Charnois."
+            ],
+            "title": "Semeval-2018 task 7: Semantic relation extraction and classification in scientific papers",
+            "venue": "International Workshop on Semantic Evaluation",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Samprit Chatterjee",
+                "Ali S Hadi."
+            ],
+            "title": "Influential observations, high leverage points, and outliers in linear regression",
+            "venue": "Statistical science, pages 379\u2013393.",
+            "year": 1986
+        },
+        {
+            "authors": [
+                "Jiawei Chen",
+                "Qing Liu",
+                "Hongyu Lin",
+                "Xianpei Han",
+                "Le Sun."
+            ],
+            "title": "Few-shot named entity recognition with self-describing networks",
+            "venue": "arXiv preprint arXiv:2203.12252.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nancy Chinchor."
+            ],
+            "title": "The statistical significance of the muc-4 results",
+            "venue": "Proceedings of the 4th Conference on Message Understanding, MUC 1992, pages 30\u201350.",
+            "year": 1992
+        },
+        {
+            "authors": [
+                "R Dennis Cook",
+                "Sanford Weisberg."
+            ],
+            "title": "Criticism and influence analysis in regression",
+            "venue": "Sociological methodology, 13:313\u2013361.",
+            "year": 1982
+        },
+        {
+            "authors": [
+                "Xiang Dai",
+                "Sarvnaz Karimi",
+                "Ben Hachey",
+                "Cecile Paris."
+            ],
+            "title": "Using similarity measures to select pretraining data for NER",
+            "venue": "arXiv preprint arXiv:1904.00585.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Qingxiu Dong",
+                "Lei Li",
+                "Damai Dai",
+                "Ce Zheng",
+                "Zhiyong Wu",
+                "Baobao Chang",
+                "Xu Sun",
+                "Jingjing Xu",
+                "Zhifang Sui."
+            ],
+            "title": "A Survey for In-context Learning",
+            "venue": "arXiv preprint arXiv:2301.00234.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jennifer D\u2019Souza",
+                "Anett Hoppe",
+                "Arthur Brack",
+                "Mohamad Yaser Jaradeh",
+                "S\u00f6ren Auer",
+                "Ralph Ewerth"
+            ],
+            "title": "The STEM-ECR dataset: grounding scientific entity references in STEM scholarly content to authoritative encyclopedic and lexicographic sources",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alexander Dunn",
+                "John Dagdelen",
+                "Nicholas Walker",
+                "Sanghoon Lee",
+                "Andrew S Rosen",
+                "Gerbrand Ceder",
+                "Kristin Persson",
+                "Anubhav Jain."
+            ],
+            "title": "Structured information extraction from complex scientific text with fine-tuned large language models",
+            "venue": "arXiv",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hila Gonen",
+                "Srini Iyer",
+                "Terra Blevins",
+                "Noah A Smith",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Demystifying prompts in language models via perplexity estimation",
+            "venue": "arXiv preprint arXiv:2212.04037.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Harsha Gurulingappa",
+                "Abdul Mateen Rajput",
+                "Angus Roberts",
+                "Juliane Fluck",
+                "Martin Hofmann-Apitius",
+                "Luca Toldo"
+            ],
+            "title": "Development of a benchmark corpus to support the automatic extraction of drugrelated adverse effects from medical case reports",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Bernal Jim\u00e9nez Guti\u00e9rrez",
+                "Nikolas McNeal",
+                "Clay Washington",
+                "You Chen",
+                "Lang Li",
+                "Huan Sun",
+                "Yu Su."
+            ],
+            "title": "Thinking about gpt-3 in-context learning for biomedical ie? think again",
+            "venue": "arXiv preprint arXiv:2203.08410.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Frank R Hampel",
+                "Elvezio M Ronchetti",
+                "Peter Rousseeuw",
+                "Werner A Stahel."
+            ],
+            "title": "Robust statistics: the approach based on influence functions",
+            "venue": "Wiley-Interscience; New York.",
+            "year": 1986
+        },
+        {
+            "authors": [
+                "Corey Harper",
+                "Jessica Cox",
+                "Curt Kohler",
+                "Antony Scerri",
+                "Ron Daniel Jr",
+                "Paul Groth."
+            ],
+            "title": "Semeval-2021 task 8: Measeval\u2013extracting counts and measurements and their related contexts",
+            "venue": "Proceedings of the 15th International Workshop on Semantic Evalu-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Stefan Hegselmann",
+                "Alejandro Buendia",
+                "Hunter Lang",
+                "Monica Agrawal",
+                "Xiaoyi Jiang",
+                "David Sontag"
+            ],
+            "title": "Tabllm: Few-shot classification",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhi Hong",
+                "Logan Ward",
+                "Kyle Chard",
+                "Ben Blaiszik",
+                "Ian Foster."
+            ],
+            "title": "Challenges and advances in information extraction from scientific literature: a review",
+            "venue": "JOM, 73(11):3383\u20133400.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zixian Huang",
+                "Jiaying Zhou",
+                "Gengyang Xiao",
+                "Gong Cheng."
+            ],
+            "title": "Enhancing In-Context Learning with Answer Feedback for Multi-Span Question Answering",
+            "venue": "arXiv preprint arXiv:2306.04508.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sarthak Jain",
+                "Varun Manjunatha",
+                "Byron C Wallace",
+                "Ani Nenkova."
+            ],
+            "title": "Influence Functions for Sequence Tagging Models",
+            "venue": "arXiv preprint arXiv:2210.14177.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hyuhng Joon Kim",
+                "Hyunsoo Cho",
+                "Junyeob Kim",
+                "Taeuk Kim",
+                "Kang Min Yoo",
+                "Sang-goo Lee."
+            ],
+            "title": "SelfGenerated In-Context Learning: Leveraging Autoregressive Language Models as a Demonstration Generator",
+            "venue": "arXiv preprint arXiv:2206.08082.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pang Wei Koh",
+                "Percy Liang."
+            ],
+            "title": "Understanding black-box predictions via influence functions",
+            "venue": "International conference on machine learning, pages 1885\u20131894. PMLR.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Chaitanya Kulkarni",
+                "Wei Xu",
+                "Alan Ritter",
+                "Raghu Machiraju."
+            ],
+            "title": "An annotated corpus for machine reading of instructions in wet lab protocols",
+            "venue": "arXiv preprint arXiv:1805.00195.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jiachang Liu",
+                "Dinghan Shen",
+                "Yizhe Zhang",
+                "Bill Dolan",
+                "Lawrence Carin",
+                "Weizhu Chen"
+            ],
+            "title": "What Makes Good In-Context Examples for GPT-3? arXiv preprint arXiv:2101.06804",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+            "venue": "arXiv preprint arXiv:1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp."
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming few-shot prompt order sensitivity",
+            "venue": "arXiv preprint arXiv:2104.08786.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yi Luan",
+                "Luheng He",
+                "Mari Ostendorf",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Multi-task identification of entities, relations, and coreference for scientific knowledge graph construction",
+            "venue": "arXiv preprint arXiv:1808.09602.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yubo Ma",
+                "Yixin Cao",
+                "YongChing Hong",
+                "Aixin Sun"
+            ],
+            "title": "Large language model is not a good few-shot information extractor, but a good reranker for hard samples! arXiv preprint arXiv:2303.08559",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zara Nasar",
+                "Syed Waqar Jaffry",
+                "Muhammad Kamran Malik."
+            ],
+            "title": "Information extraction from scientific articles: a survey",
+            "venue": "Scientometrics, 117:1931\u20131990.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yixin Ou",
+                "Ningyu Zhang",
+                "Shengyu Mao",
+                "Runnan Fang",
+                "Yinuo Jiang",
+                "Ziwen Xu",
+                "Xiaolong Weng",
+                "Lei Li",
+                "Shuofei Qiao",
+                "Huajun Chen."
+            ],
+            "title": "EasyInstruct: An Easy-to-use Framework to Instruct Large Language Models",
+            "venue": "https://github.com/zjunlp/",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Stephen Robertson",
+                "Hugo Zaragoza"
+            ],
+            "title": "The probabilistic relevance framework: BM25 and beyond",
+            "venue": "Foundations and Trends\u00ae in Information Retrieval,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Ohad Rubin",
+                "Jonathan Herzig",
+                "Jonathan Berant."
+            ],
+            "title": "Learning to retrieve prompts for in-context learning",
+            "venue": "arXiv preprint arXiv:2112.08633.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Julian Salazar",
+                "Davis Liang",
+                "Toan Q Nguyen",
+                "Katrin Kirchhoff."
+            ],
+            "title": "Masked language model scoring",
+            "venue": "arXiv preprint arXiv:1910.14659.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hinrich Schutze",
+                "Christopher D Manning",
+                "Prabhakar Raghavan."
+            ],
+            "title": "Introduction to information retrieval",
+            "venue": "Cambridge University Press.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Fobo Shi",
+                "Peijun Qing",
+                "Dong Yang",
+                "Nan Wang",
+                "Youbo Lei",
+                "Haonan Lu",
+                "Xiaodong Lin."
+            ],
+            "title": "Prompt Space Optimizing Few-shot Reasoning Success with Large Language Models",
+            "venue": "arXiv preprint arXiv:2306.03799.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vera Sorin",
+                "Yiftach Barash",
+                "Eli Konen",
+                "Eyal Klang."
+            ],
+            "title": "Large language models for oncological applications",
+            "venue": "Journal of Cancer Research and Clinical Oncology, pages 1\u20134.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jean-Philippe Vert"
+            ],
+            "title": "How will generative AI disrupt data science in drug discovery",
+            "venue": "Nature Biotechnology,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhen Wan",
+                "Fei Cheng",
+                "Zhuoyuan Mao",
+                "Qianying Liu",
+                "Haiyue Song",
+                "Jiwei Li",
+                "Sadao Kurohashi."
+            ],
+            "title": "Gpt-re: In-context learning for relation extraction using large language models",
+            "venue": "arXiv preprint arXiv:2305.02105.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chengwen Wang",
+                "Qingxiu Dong",
+                "Xiaochen Wang",
+                "Haitao Wang",
+                "Zhifang Sui."
+            ],
+            "title": "Statistical Dataset Evaluation: Reliability, Difficulty, and Validity",
+            "venue": "arXiv preprint arXiv:2212.09272.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shuohang Wang",
+                "Yichong Xu",
+                "Yuwei Fang",
+                "Yang Liu",
+                "Siqi Sun",
+                "Ruochen Xu",
+                "Chenguang Zhu",
+                "Michael Zeng."
+            ],
+            "title": "Training data is more valuable than you think: A simple and effective method by retrieving from training data",
+            "venue": "arXiv preprint arXiv:2203.08773.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "arXiv preprint arXiv:2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Leigh Weston",
+                "Vahe Tshitoyan",
+                "John Dagdelen",
+                "Olga Kononova",
+                "Amalie Trewartha",
+                "Kristin A Persson",
+                "Gerbrand Ceder",
+                "Anubhav Jain"
+            ],
+            "title": "Named entity recognition and normalization applied to largescale information extraction from the materials",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Thomas Wolf",
+                "Lysandre Debut",
+                "Victor Sanh",
+                "Julien Chaumond",
+                "Clement Delangue",
+                "Anthony Moi",
+                "Pierric Cistac",
+                "Tim Rault",
+                "R\u00e9mi Louf",
+                "Morgan Funtowicz"
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yichong Xu",
+                "Chenguang Zhu",
+                "Shuohang Wang",
+                "Siqi Sun",
+                "Hao Cheng",
+                "Xiaodong Liu",
+                "Jianfeng Gao",
+                "Pengcheng He",
+                "Michael Zeng",
+                "Xuedong Huang."
+            ],
+            "title": "Human parity on commonsenseqa: Augmenting self-attention with external attention",
+            "venue": "arXiv",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zihao Zhao",
+                "Eric Wallace",
+                "Shi Feng",
+                "Dan Klein",
+                "Sameer Singh."
+            ],
+            "title": "Calibrate before use: Improving few-shot performance of language models",
+            "venue": "International Conference on Machine Learning, pages 12697\u201312706. PMLR.",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Extracting relevant information from scientific documents plays a crucial role in improving methods for organising, indexing, and querying the vast amount of existing literature (Nasar et al., 2018; Weston et al., 2019; Hong et al., 2021). However, annotating datasets for scientific information extraction (IE) is a laborious and costly process that requires the expertise of human experts and the development of annotation guidelines.\nIn recent years, large language models (LLMs) have demonstrated remarkable performance on various natural language processing (NLP) tasks (Wei et al., 2022; Hegselmann et al., 2023; Ma et al.,\n1The code is publicly available at https://github.com/ adalin16/ICL_EE.\n2023), including entity extraction from scientific documents (Dunn et al., 2022), and also for leveraging reported scientific knowledge in downstream data science applications (Sorin et al., 2023; Vert, 2023). These models, such as GPT-3 (Brown et al., 2020) and LLAMA (Touvron et al., 2023), with billions of parameters and pre-trained on vast amounts of data, have showcased impressive capabilities to tackle tasks in a zero- or few-shot learning by leveraging in-context learning (ICL) (Radford et al., 2019; Brown et al., 2020).\nIn ICL, models are provided with a natural language prompt consisting of three components: a format, a set of training samples (input-label pairs\u2014 demonstrations), and a test sentence. LLM outputs the predictions for a given test input without updating its parameters. The main advantage of ICL is its ability to use the pre-existing knowledge of the language model and generalise from a small number of context-specific samples. However, ICL has been shown to be sensitive to the provided samples and randomly selected samples have been shown to introduce significant instability and uncertainty to the predictions (Lu et al., 2021; Chen et al., 2022; Agrawal et al., 2022). This issue can be alleviated by optimising the selection of the in-context samples (Liu et al., 2021; Sorensen et al., 2022; Gonen et al., 2022).\nICL sample selection methods can be divided into 2 categories: (1) the methods for choosing samples from the train set (e.g., the KATE method (Liu et al., 2021)), and (2) finding the best prompts by generating samples (e.g., the Perplexity method (Gonen et al., 2022), SG-ICL (Kim et al., 2022)). These methods can significantly reduce the need for extensive human annotation and allow LLMs to adapt to various domains and tasks.\nWe rely on the survey of ICL (Dong et al., 2022) and delimit the methods for sample selection, from the inference stage of ICL. Our aim is to provide a comprehensive analysis of these methods for se-\nlecting samples from the train set as part of ICL for Entity Extraction from scientific documents. Most of the methods have been applied with prompt generation (i.e., to select the best generated sample). Here, we use the methods only for sample selection from the training set of the dataset for entity extraction from scientific documents and compare their effectiveness for this problem. We also propose the use of the Influence method (Koh and Liang, 2017) in an oracle setting, to provide a best-case scenario to compare against. We investigate the in-context sample selection methods (see \u00a73) and evaluate the methods adapted for entity extraction problem on 5 entity extraction datasets: ADE, MeasEval, SciERC, STEM-ECR, and WLPC, each covering a different scientific subdomain or text modality (see \u00a74.1 for dataset overview).\nOur experiments show that while fully supervised finetuned PLMs are still the gold standard when training data can be sourced, choosing the right samples for ICL can go a long way in improving the effectiveness of ICL for scientific entity extraction (see \u00a75.1). Our experiments demonstrate an improvement potential of 7.56% on average across all experiments, when comparing the oracle method (the Influence method) to the random sample selection baseline, and 5.26% when using the best-performing method in a test setting (KATE). Moreover, our evaluations show that our main conclusions hold in a simulated low-resource setting (see \u00a75.2). Finally, our extensive experiments allow us to synthesise some prescriptive advice for other NLP researchers and practitioners tackling scientific entity extraction (see \u00a7 5.5)."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "By increasing the size of both the model and the corpus, LLMs have demonstrated the capability of ICL, which uses pre-trained language models for new tasks without relying on gradient-based training (Brown et al., 2020). In various tasks, such as inference (ibid), machine translation (Agrawal et al., 2022), question answering (Huang et al., 2023; Shi et al., 2023), table-to-text generation (Liu et al., 2021) and semantic parsing (An et al., 2023), the ICL use of LLMs mentioned by Brown et al. (2020) has been shown to be on par with supervised baselines in terms of effectiveness.\nOther studies have found, however, that ICL does not always lead to better results than finetuning. Previous studies investigating ICL for IE\nare very limited (Guti\u00e9rrez et al., 2022; Wan et al., 2023). Guti\u00e9rrez et al. (2022) evaluate the performance of ICL on biomedical IE tasks, Named Entity Recognition (NER) and Relation Extraction (RE). In addition, Wan et al. (2023) apply an entityaware demonstration using the kNN sample selection method (Liu et al., 2021) for RE.\nTo the best of our knowledge, our work is one of the first attempts for IE from scientific documents that present a comprehensive analysis of in-context sample selection methods for the problem with detailed analysis."
+        },
+        {
+            "heading": "3 Methods",
+            "text": "In this section, we describe the ICL sample selection methods for entity extraction from scientific documents. First, we describe the ICL approach in Section 3.1 and then introduce the sample selection methods in Section 3.2."
+        },
+        {
+            "heading": "3.1 In-context Learning",
+            "text": "Given an LLM, ICL can be used to solve the entity extraction problem for D = (X,Y ), where X are the sentences (s = w1, \u00b7 \u00b7 \u00b7 , wn) and Y are the entities for each sentence. The prompt P consists of k, the number of samples for the few-shot learning, samples (T ) (selected from the train set or generated; in this work, we focus only on the former) with gold entities (T (strainl , e train l ) is the l th sample) with a format (I) and a test sentence (si) (P = I + T + stesti ) (see Appendix B). Prediction is done by selecting the entities with the highest probability for each sentence in the test set."
+        },
+        {
+            "heading": "3.2 Sample Selection Methods",
+            "text": "We follow the survey in-context learning (Dong et al., 2022) and choose the following methods to use for sample selection for ICL entity extraction from scientific documents.\nKATE (Knn-Augmented in-conText Example selection) is a kNN-based method to select k samples which are close to test sample based on sentence embeddings and distance metrics (Euclidean or Cosine Similarity). We follow KATE to select samples from the train set of datasets for each sentence in the test set.\nPerplexity is a metric to evaluate the performance of language models by calculating the probability distribution of the next token given the content provided by the preceding tokens. The metric\nprovides insights into the unexpectedness of a sentence in the context of a given language model. Gonen et al. (2022) use perplexity scores of prompts to select the best prompt, rather than selecting examples from the dataset, and synthetically generated prompts through paraphrasing with GPT-3 and back-translation. Unlike Gonen et al. (2022), in the experiments we focus on selecting in-context samples from the training set instead of selecting the better prompt. As the sample selection method, we calculate the perplexity of each train sentence using a language model (LM) and take the k samples from the train set with the lowest perplexity, which means the sentence is more likely and consistent with the patterns it has learned from the training data of LM. Unlike the other in-context sample selection methods (Random, KATE, etc.), the selection of the k samples is independent of the test sentences (i.e., the same samples from the train set are characterised by lower perplexity, independently from the test sample presented alongside).\nBM25 is a bag-of-words retrieval model that ranks relevant samples (sentences) appearing in each train set by relevance to a given test sample (Schutze et al., 2008; Robertson et al., 2009). Similar to retrieval-based methods for augmentation of the input with similar samples from the train set (Xu et al., 2021; Wang et al., 2022b), we select k most relevant samples from the train set (so, those with higher BM25 scores) for each test sentence in the experiments.\nInfluence functions (Koh and Liang, 2017) were originally used in statistics for the context of linear\nmodel analysis (Cook and Weisberg, 1982; Chatterjee and Hadi, 1986; Hampel et al., 1986). Koh and Liang (2017) adapt the functions for machine learning (ML) to understand model behaviour, debug models, detect dataset errors, and create adversarial training samples. The aim of the functions is to calculate the influence of a training sample strain on a test sample stest, formulated as the change in loss on stest, if the training sample strain were removed from training. This yields the influence of strain to solve the task for stest.\nThe influence method is used in the literature to detect errors in the dataset and to create adversarial training samples (Koh and Liang, 2017). We adapted Influence as a method to study potential performance gains for ICL sample selection because it scores the contribution of a sample to the training process. Similar to in-context sample selection methods, we select k samples from the train set that have a higher influence on sentences from the test set by using the baseline finetuned RoBERTa model (see Section 4.2) as the model to calculate the loss in the experiments. Since the Influence method\u2019s practical applicability is limited (it uses test labels to select the ICL samples via the loss), we use it as a best-case (or oracle) baseline, where the sample ranking is based on training utility, rather than a vocabulary similarity signal."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Datasets",
+            "text": "We evaluate the sample selection methods in ICL for entity extraction from scientific documents. We use 5 datasets from the different subdomains:\n\u2022 ADE (Gurulingappa et al., 2012): a subset of MEDLINE case reports describing adverse effects arising from drug use.\n\u2022 MeasEval2 (Harper et al., 2021): a dataset collected from scientific documents from 10 different subjects and annotated for 4 entity types (Quantity, Measured Property, Measured Entity, Qualifier). Since the other entities are dependent (e.g., triggered or nested) on quantity entities, we use only Quantity entity type in our experiments.\n\u2022 SciERC3 (Luan et al., 2018): an extension of SemEval 2017 Task 10 (SemEval 17) (Augenstein et al., 2017) and SemEval 2018 Task 7 (SemEval 18) (Buscaldi et al., 2017) datasets. The dataset contains 500 abstracts of Artificial Intelligence (AI) papers with 6 scientific entity types4.\n\u2022 STEM-ECR5 (D\u2019Souza et al., 2020): a dataset containing abstracts from the same subjects of MeasEval dataset for scientific entity extraction, classification, and resolution. Although there are 7 entity types, we follow the baseline study (D\u2019Souza et al., 2020) and use 4 of them: Data, Material, Method, and Process.6\n\u2022 WLPC (Kulkarni et al., 2018): a dataset collected from wet lab protocols for biology and chemistry experiments providing entity, relation, and event annotations for wet lab protocols.\nStatistical details of datasets are given in Table 1."
+        },
+        {
+            "heading": "4.2 Baseline Methods",
+            "text": "In our experiments, we compare ICL sample selection methods with a finetuned pre-trained language model, RoBERTa, zero-shot learning in which no samples are used for the GPT-3.5 prompt, and random sampling in which samples are randomly selected for the prompt.\n2https://github.com/harperco/MeasEval 3http://nlp.cs.washington.edu/sciIE/ 4We use Other as the shortened form of\nOtherScientificTerm in the rest of the paper 5https://data.uni-hannover.de/dataset/ stem-ecr-v1-0 6We thus leave out Task, Object, and Results entity types, since these are almost always nested within the other scientific entity types.\nFinetuned RoBERTa baseline To compare the sample selection methods in ICL against a sensible baseline, we trained an entity extraction model on the datasets using RoBERTa (Liu et al., 2019) PLM (RoBERTa-base). We formulate the fully tuned task as token-level labelling using the BIO tags.\nZero-Shot For zero-shot setup, we formulate prompts using only format (I; see Appendix B) and test sentences from the test sets for each dataset.\nRandom Sampling In this approach, we randomly select k in-context samples from the train set for every test sentence."
+        },
+        {
+            "heading": "4.3 Experimental Setup",
+            "text": "Baseline RoBERTA PLM is finetuned utilising Hugging Face7 (Wolf et al., 2020) library. The hyperparameters used in the finetuning PLM are the batch size of 32, max length of 128, the learning rate of 1e-5, and 15 epoch of training, and experiments are done on a single NVIDIA Quadro RTX 5000 GPU. We train the model five times with different random seeds and report the mean and standard deviation of the results to account for the training variance of the model.\nFor the baseline, zero-shot and random sampling, and ICL sample selection experiments, we build the system using the EasyInstruct8 (Ou et al., 2023) framework to instruct LLMs for entity extraction from scientific documents with defined entity extraction prompts and entities of the datasets. In the experiments for ICL sample selection, we use a maximum of 20 in-context samples due to the GPT-3 (gpt-3.5-turbo-0301) token limit and 100 sentences from each test set because of the cost of GPT-3.5 usage. The experiment is repeated five times on the test set to calculate the average score and corresponding standard deviation for random sampling (see detailed results in Appendix D).\nFor the KATE, we use [CLS] token embeddings of the RoBERTa PLM and OpenAI embedding API (text-embedding-ada-002) to obtain sentence embeddings. We treat the embedding generation method (RoBERTa vs. GPT) as another hyperparameter (much like the number of samples k). We calculate the distance between embeddings using the Euclidean and cosine similarity metrics for each test sentence and select similar k sentences based on the distance scores in KATE. We calculate the\n7https://huggingface.co/ 8https://github.com/zjunlp/EasyInstruct\nperplexity of the samples from the train set by using the RoBERTa PLM (using the method outlined in (Salazar et al., 2019)) and select k samples with the lowest perplexity for all test sets of the datasets in the Perplexity method. For BM25, we utilise rank-bm259 library with default parameters (term frequency saturation - k1 of 1.5, document length normalisation - b of 0.75, and constant for negative IDF of a sentence in the data - \u03f5 of 0.25). We use the finetuned RoBERTa to select k samples, as defined in the study of Jain et al. (2022), for each test sentence in the Influence method.\nAs the evaluation metric, we use entity-level Macro F1 score.\n9https://pypi.org/project/rank-bm25/\nStatistical significance The statistical significance of differences in macro F1 score is evaluated with an approximate randomisation test (Chinchor, 1992) with 99, 999 iterations and significance level \u03b1 = 0.05 for sample selection methods (KATE, Perplexity, BM25, and Influence) and supervised RoBERTa baseline model and the random sampling (e.g., influence \u2192 RoBERTa and influence \u2192 random sampling). For significance testing, we used the results yielding the median entity-level Macro F1 score for the supervised RoBERTa baseline model and the random sampling (so, a run close to the mean value reported in the tables)."
+        },
+        {
+            "heading": "5 Results and Discussion",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Main Findings for Selecting In-context Samples",
+            "text": "Our main experimental results are given in Table 2 for randomly selected 100 sentences from each of the test sets of the datasets (see Section 4.1) for entity extraction. Detailed experiments with various k samples in ICL can be found in Appendix D.\nBefore drilling down into the in-context sample selection methods, we note that the baseline model, RoBERTa, outperforms the ICL for entity extraction from scientific documents across all datasets except WLPC, similar to the study of Guti\u00e9rrez et al. (2022) conducted on Biomedical IE. We get the highest entity-level Macro F1 score among sample-selection methods for all datasets using the Influence method. Additionally, the performance of sample selection methods is low for the Measeval, SciERC, and STEM-ECR datasets, and the gap between the results of finetuned RoBERTa baseline and the Influence method is very large for these datasets. This difference in performance may be due to the difficulty of the datasets (SciERC, STEM-ECR) and the differences between train and test sets of the datasets (Measeval) (see Appendix A for a detailed analysis).\nThe Influence method performs comparably with the RoBERTa model for the ADE dataset. Moreover, despite the complexity of the WLPC dataset with 18 entity types, it is surprising that the effectiveness of zero-shot and ICL is better than that of the finetuned RoBERTa model. We hypothesise that this might be due to the method selecting samples from the correct minority classes. Interestingly, the textual similarity signal is almost as good, as the results of both BM25 and KATE are almost as good."
+        },
+        {
+            "heading": "5.2 Low-Resource Scenario",
+            "text": "To understand how important the size of the training set is for fully supervised finetuning of the baseline PLM model, RoBERTa, and sample selection methods for ICL, we run the experiments with 1% of the train set to simulate a low-resource scenario. The results can be found in Table 3. Although there is a decrease in the results of ICL for all datasets, it is much less drastic than for the supervised models, which is not surprising. It is well known that a sufficient amount of annotated data is needed to finetune PLM. Therefore, the robustness of ICL methods is a valuable finding that can be applied\nto low-resource problems without annotated data (zero-shot) or with very small train sets (few-shot using selected samples)."
+        },
+        {
+            "heading": "5.3 Test Set",
+            "text": "To understand the impact of the test set in the experiments, we used 3 different randomly sampled test sets. We present the results for the ADE and WLPC datasets (see Appendix C for statistical details of test sets), where ICL methods perform competitively with the fully supervised baseline. The results can be found in Table 4 and 5 for ADE and WLPC, respectively. It can be seen that the first test set of the WLPC dataset is challenging for the baseline model, finetuned RoBERTa. However, in-context sample selection methods, with the exception of Perplexity, appear to be less affected by the test set composition and yield similar results across different test sets."
+        },
+        {
+            "heading": "5.4 Error Analysis",
+            "text": "In Table 6, we give the entity-type-wise entitylevel Macro F1 score for the datasets for each ICL method and baseline models. The detailed error analysis of the Influence method \u2013 our oracle\nmethod \u2013 shows that there are 2 types of errors in the predictions: (1) correct entity type \u2013 wrong entity span, where the model predicts an entity with correct entity type that is not annotated in the dataset, (2) wrong entity type \u2013 wrong entity span, where the model predicts an entity with a wrong entity type. The visualisation of the sample 15 sentences for error analysis can be found in Appendix E.\nFor the ADE dataset, all models perform better for the Drug entity type. The reason may be the shorter entity length (Adverse-Effect: 18.85, Drug: 10.27) and small vocabulary (Adverse-Effect: 2,786, Drug: 1,290), although the frequency of Adverse-Effect is higher than Drug in the train set and also in the selected samples in each in-context sample selection method. Unlike other datasets, we also encounter predictions with entity types that are not present in the ADE dataset (e.g., Disease, Number, Route).\nFor the MeasEval dataset, the most common error is the mislabeling of spans corresponding to other entity types (Measured Property, Measured Entity, and Qualifier, which are left out in\nthis study) as Quantity entities, e.g., Qualifier as Quantity (a more specific example: \u2018total counts per gram\u2019 predicted as Quantity, instead of the correct entity type \u2013 Qualifier). Another conclusion from the error analysis for the Measeval dataset is that GPT-3.5 tends to predict entity spans that are longer than the gold ones (e.g., gold: \u201811%\u2019 - predicted: \u2018axis 2 =11%\u2018).\nResults from the SciERC dataset show that ICL with sample selection methods struggles in the prediction of less frequent entity types (Generic, Material, Metric, Task) compared to entity types with higher frequency. In particular, Other is the most frequent entity type in the dataset and GPT-3.5 often extracts a correct span and mislabels it as Other entity type. In addition, the average sentence length of SciERC is higher than the other datasets. However, the number of entities is less than the other datasets, and the Influence method tends to retrieve samples with more entities than the whole dataset. This results in extracting entities that are not actually entities in the dataset.\nFor the STEM-ECR dataset, the Influence method is able to extract the correct spans. How-\never, it has difficulty in accurately labelling the spans because the dataset is imbalanced. The frequency of the Material and Process entity types is higher, which leads the Influence method to select samples with these entities and consequently label the extracted entities with these entity types.\nFinally, the WLPC dataset is very dense in terms of entities in the sentences, despite the sentence length. Since the dataset is imbalanced (the entity types Action, Reagent, Amount, and Location occur more frequently than others), the Influence method retrieves samples covering these entities and, as a result, extracts mainly these entities. Moreover, the dataset is composed of instructional text and the Action entity is mostly a verb in the sentence, which is easy to extract and correctly label."
+        },
+        {
+            "heading": "5.5 Discussion",
+            "text": "In practical applications, one may not have enough annotated data to finetune PLM for a task. In such cases, it might be required to use ICL for the problem. Therefore, we explore the performance of the sample-selection methods which can be more effective in this case. First, we note that the random sampling method given in baseline methods is also competitive, especially in the low-resource scenario (see Section 5.2).\nAmong the sample selection methods, we obtain the best results for ADE and WLPC with sentences coming from the [CLS] token of finetuned RoBERTa (finetuned using the train set of datasets), for the SciERC, STEM-ECR, and MeasEval datasets, we obtain the best results with OpenAI embeddings for the KATE method. This may be due to the insufficient training set for these tasks since we use the embeddings from finetuned RoBERTa (which is also used as the baseline model in the study). On the other hand, using OpenAI embeddings in sample selection, despite being costly, avoids the pitfall of needing enough annotated training data to train a supervised model in order to be able to select samples for ICL (although, admittedly, even very under-trained PLM appear to be effective for sample selection; see further in this section).\nWe calculated the perplexity of sentences using pre-trained and finetuned RoBERTa language models for the Perplexity method, and we obtained better results using the finetuned RoBERTa, which highlights the benefits of domain-adaptation of a\nlanguage model for the entity extraction problem (but, again, points to the issue of needing a decent amount of training data to eventually train a fewshot model). The BM25 method, however, is very simple and effective for each of the datasets, without relying on any finetuned model (or any training, for that matter) for ICL sample selection.\nUsing these methods in selecting samples from a very limited training set (see Section 5.2) and testing on different test sets (see Section 5.3) shows that the methods are more robust compared to the baseline model, finetuned RoBERTa. In particular, our experiments in a simulated low-resource setting show that RoBERTa tuned with just 1% of the train set can be used effectively to improve ICL sample selection (e.g., via the KATE method), while performing very poorly on the actual prediction task. It is very valuable learning applicable to subdomains without annotated data or with very limited annotated datasets.\nWhen we analyse the main results (see Table 2) and the results of the low-resource scenario (see Table 3), we find that KATE performs better in a data-poor set-up where the number of samples is severely limited. This shows that KATE has a remarkable ability to order a suboptimal subset of incontext samples. This suggests that KATE derives meaningful insights from limited data, making it a valuable method when data scarcity is a challenge. Also, BM25 offers an effective and efficient mechanism for sample selection that can be utilised in a true few-shot setup.\nAnother observation is that the Influence method, a classic technique from statistics, proves highly effective in selecting samples from a larger pool of samples. The method evaluates the impact of a training sample by assessing its effect on loss, typically the loss of test samples. While it is an oracle method, its high effectiveness highlights a performance gap between a loss-based signal and sample-similarity-based signal. We believe that bridging this gap is a challenge worth exploring in future research into ICL sample selection methods. However, it should be noted, that the effectiveness of Influence decreases in extreme few-shot setup, possibly due to a high training variance caused by a very small number of instances. This, in turn, highlights the robustness of KATE and BM25. BM25, as a keyword-matching method, does not require training (we used default hyperparameters in all experiments). KATE can fall back on a PLM\u2019s\nability to create text embeddings to overcome the training data scarcity, instead of relying on the loss signal produced with the under-trained layers of the model (i.e., the classification head)."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this paper, we explore the in-context sample selection methods for ICL entity extraction from scientific documents. Since entity extraction is a crucial step in IE from scientific documents, we analyse the methods in detail using several datasets from different subdomains, and with different entity types. The experimental results show that the baseline model, finetuned RoBERTa, still achieves the best results for this problem on 4 of 5 datasets. However, the in-context sample selection methods appear to be more robust to the train set data availability and achieve similar results to using a full train set when only a small annotated training set is used for the problem, yielding significantly better results than the baseline model in this low-resource setup.\nOur work aims to extract entity spans using LLM with ICL. We focus on simple in-context sample selection methods based on similarity, perplexity, relevancy, and influence, and use GPT-3.5 as LLM in ICL. However, there are several alternative LLMs pre-trained on different domains, that could be more aligned with the task of scientific entity extraction. As future work, we hope to add a comparative dimension to our work by using these LLMs, since the ICL behaviour of LLMs can change depending on their scale and pretraining. We also plan to explore the performance of the in-context sample ordering methods (Lu et al., 2021), which are shown to impact the ICL effectiveness as well.\nLimitations\nWe investigate the impact of the ICL selection methods for entity extraction from scientific domains. Although we tested several methods on various datasets from different subdomains, due to the high cost of LLM models, we limited our experiments to a small subset of test sets and used only GPT3.5. Moreover, the methods, KATE, Perplexity, and Influence (an oracle method), require finetuned models for better performance in selecting samples from the annotated dataset. In addition, we did not investigate which instruction is most appropriate. We also did not directly investigate the ordering of the selected samples, also shown to have impact of\neffectiveness for related NLP problems (Lu et al., 2021; Rubin et al., 2021). Moreover, k is a hyperparameter in few-shot learning that depends on the sample selection method and the dataset. We tested directly on the test set without using a validation set. Finally, we did not apply contextual calibration (Zhao et al., 2021) for entity extraction, which has been shown to improve the performance of contextual learning for NLP tasks, and kept this as future work.\nEthics Statement\nThe datasets used in our experiments are publicly available. Both these datasets are focused on processing (publicly available) scientific literature, thus constituting a low-risk setting."
+        },
+        {
+            "heading": "A Dataset Details",
+            "text": "To understand the performance of the methods on the datasets, we calculated the difficulty of the datasets and the similarity between the train and test sets of datasets. As difficulty metrics, we use 2 metrics: Entity Ambugity Degree (EAD), and Text Complexity (TC) (Wang et al., 2022a). We also use Target Vocabulary Covered (TVC) as similarity metric (Dai et al., 2019). The details are given in Table 7.\nEAD captures observable variation in the information complexity of datasets and our findings show that the SciERC and STEM-ECR datasets have the highest degree of ambiguity, implying that it is more difficult for models to predict correct\nentity types for ICL methods. It can also be seen that the TC values of the SciERC and STEM-ECR datasets are higher than those of the other datasets. In addition to the difficulty metrics, the TVC similarity metric calculates the similarity of the tokens in the training and test datasets and shows that the MeasEval test set is less similar to the train set compared to the other datasets."
+        },
+        {
+            "heading": "B Prompt Template",
+            "text": "For the experiments, we use the prompt format (I) of the EasyInstruct framework defined for the Named Entity Extraction (NER) task. The prompt used in zero-shot and few-shot learning is given in Figure 1 with the illustration of ICL for entity extraction."
+        },
+        {
+            "heading": "C Test Set Details",
+            "text": "Test set details used in Section 5.3 are given in Table 8.\nD In-Context Learning Experiments\nThe experimental results with various k samples in ICL conducted for 100 sentences can be found in Table 9.\nE Visualization of Entities\nThe visualization of errors made by the Influence method with gold entities for 15 sentences are given in Table 10, 11, 12, 13 and 14 for ADE, MeasEval, SciERC, STEM-ECR, and WLPC datasets, respectively. We use different colours except green to highlight the entity types and we highlight the wrong entity type even if the extracted entity is correct, and the wrong extracted or wrong labeled entity with green, in the prediction of Influence method.\nS1 -G\nol d\nG em\nci ta\nbi ne\nD r u g\n-i nd\nuc ed\npu lm\non ar\ny to\nxi ci\nty A\nE is\nus ua\nlly a\ndr am\nat ic\nco nd\niti on\n.\nS1 -I\nnfl ue\nnc e\nG em\nci ta\nbi ne\nD r u g\n-i nd\nuc ed\npu lm\non ar\ny to\nxi ci\nty A\nE is\nus ua\nlly a\ndr am\nat ic\nco nd\niti on\n.\nS2 -G\nol d\nPe ri\nph er\nal ne\nur op\nat hy\nA E\nas so\nci at\ned w\nith ca\npe ci\nta bi\nne D\nr u g\n.\nS2 -I\nnfl ue\nnc e\nPe ri\nph er\nal ne\nur op\nat hy\nA E\nas so\nci at\ned w\nith ca\npe ci\nta bi\nne D\nr u g\n.\nS3 -G\nol d\nTw o\nca se\ns of\nm eq\nui ta\nzi ne\nD r u g\n-i nd\nuc ed\nph ot\nos en\nsi tiv\nity re\nac tio\nns A\nE .\nS3 -I\nnfl ue\nnc e\nTw o\nca se\ns of\nm eq\nui ta\nzi ne\nD r u g\n-i nd\nuc ed\nph ot\nos en\nsi tiv\nity re\nac tio\nns A\nE .\nS4 -G\nol d\nC ap\nto pr\nil D r u g\n-i nd\nuc ed\nbo ne\nm ar\nro w\nsu pp\nre ss\nio n A\nE bo\nne m\nar ro\nw su\npp re\nss io\nn in\ntw o\nca rd\nia c\npa tie\nnt s\nw ith\ntr is\nom y\n21 .\nS4 -I\nnfl ue\nnc e\nC ap\nto pr\nil D r u g\n-i nd\nuc ed\nbo ne\nm ar\nro w\nsu pp\nre ss\nio n A\nE in\ntw o\nca rd\nia c\npa tie\nnt s\nw ith\ntr is\nom y\n21 .\nS5 -G\nol d\nW e\nco nc\nlu de\nth at\n(a )\ncy cl\nop ho\nsp ha\nm id\ne D r u g\nis a\nhu m\nan te\nra to\nge n A\nE ,(\nb )a\ndi st\nin ct\nph en\not yp\ne ex\nis ts\n,a nd\n(c )t\nhe sa\nfe ty\nof C\nP in\npr eg\nna nc\ny is\nin ...\nS5 -I\nnfl ue\nnc e\nW e\nco nc\nlu de\nth at\n(a )\ncy cl\nop ho\nsp ha\nm id\ne D r u g\nis a\nhu m\nan te\nra to\nge n A\nE ,(\nb )a\ndi st\nin ct\nph en\not yp\ne ex\nis ts\n,a nd\n(c )t\nhe sa\nfe ty\nA E\nof C\nP in\npr eg\nna nc\ny A E\nis in\n...\nS6 -G\nol d\nL et\nha la\nnu ri\na A E\nco m\npl ic\nat in\ng hi\ngh do\nse if\nos fa\nm id\ne D r u g\nch em\not he\nra py\nin a\nbr ea\nst ca\nnc er\npa tie\nnt w\nith an\nim pa\nir ed\nre na\nlf un\nct io\nn .\nS6 -I\nnfl ue\nnc e\nL et\nha la\nnu ri\na A E\nco m\npl ic\nat in\ng hi\ngh do\nse if\nos fa\nm id\ne D r u g\nch em\not he\nra py\nin a\nbr ea\nst ca\nnc er\nD i s e a s e\npa tie\nnt w\nith an\nim pa\nir ed\nre na\nl A E\nfu nc\ntio n\n.\nS7 -G\nol d\n... de\nve lo\npe d\na co\nns te\nlla tio\nn of\nde rm\nat iti\ns A E\n, fe\nve r A\nE ,\nly m\nph ad\nen op\nat hy\nA E\nan d\nhe pa\ntit is A\nE ,b\neg in\nni ng\non th\ne 17\nth da\ny of\na co\nur se\nof or\nal su\nlp ha\nsa la\nzi ne\nD r u g\n...\nS7 -I\nnfl ue\nnc e\n... de\nve lo\npe d\na co\nns te\nlla tio\nn of\nde rm\nat iti\ns A E\n, fe\nve r A\nE ,\nly m\nph ad\nen op\nat hy\nA E\nan d\nhe pa\ntit is A\nE ,b\neg in\nni ng\non th\ne 17\nth da\ny of\na co\nur se\nof or\nal su\nlp ha\nsa la\nzi ne\nD r u g\n...\nS8 -G\nol d\n... of\nag ra\nnu lo\ncy to\nsi s A\nE an\nd ne\nut ro\npe ni\nc se\nps is A\nE se\nco nd\nar y\nto ca\nrb im\naz ol\ne D r u g\nw ith\nre co\nm bi\nna nt\nhu m\nan gr\nan ul\noc yt\ne co\nlo ny\nst im\nul at\nin g\nfa ct\nor (G\n-C SF\n).\nS8 -I\nnfl ue\nnc e\n... of\nag ra\nnu lo\ncy to\nsi s A\nE an\nd ne\nut ro\npe ni\nc se\nps is A\nE se\nco nd\nar y\nto ca\nrb im\naz ol\ne D r u g\nw ith\nre co\nm bi\nna nt\nhu m\nan gr\nan ul\noc yt\ne co\nlo ny\nst im\nul at\nin g\nfa ct\nor D\nr u g\n...\nS9 -G\nol d\nA cc\nor di\nng to\nth e\nlit er\nat ur\ne ,\nch lo\nra m\nbu ci\nl D r u g\nce nt\nra ln\ner vo\nus to\nxi ci\nty A\nE is\nfo un\nd al\nm os\nte xc\nlu si\nve ly\nin ch\nild ho\nod ne\nph ro\ntic sy\nnd ro\nm e\n.\nS9 -I\nnfl ue\nnc e\nA cc\nor di\nng to\nth e\nlit er\nat ur\ne ,\nch lo\nra m\nbu ci\nl D r u g\nce nt\nra ln\ner vo\nus to\nxi ci\nty A\nE is\nfo un\nd al\nm os\nte xc\nlu si\nve ly\nin ch\nild ho\nod ne\nph ro\ntic sy\nnd ro\nm e D\ni s e a s e\n.\nS1 0\n-G ol\nd Tw\no pa\ntie nt\ns w\nith rh\neu m\nat oi\nd ar\nth ri\ntis de\nve lo\npe d\nev id\nen ce\nof he\npa to\nto xi\nci ty\nA E\nw hi\nle re\nce iv\nin g\nD -p\nen ic\nill am\nin e D\nr u g\n.\nS1 0\n-I nfl\nue nc\ne Tw\no N u m\nb e r\npa tie\nnt s\nw ith\nrh eu\nm at\noi d\nar th\nri tis\nD i s e a s e\nde ve\nlo pe\nd ev\nid en\nce of\nhe pa\nto to\nxi ci\nty A\nE w\nhi le\nre ce\niv in\ng D\n-p en\nic ill\nam in\ne D r u g\n.\nS1 1\n-G ol\nd Fu\nlm in\nan t\nm et\noc lo\npr am\nid e D\nr u g\nin du\nce d\nne ur\nol ep\ntic m\nal ig\nna nt\nsy nd\nro m\ne A E\nra pi\ndl y\nre sp\non si\nve to\nin tr\nav en\nou s\nda nt\nro le\nne .\nS1 1\n-I nfl\nue nc\ne Fu\nlm in\nan t\nm et\noc lo\npr am\nid e D\nr u g\nin du\nce d\nne ur\nol ep\ntic m\nal ig\nna nt\nsy nd\nro m\ne A E\nra pi\ndl y\nre sp\non si\nve to\nin tr\nav en\nou s R\no u t e\nda nt\nro le\nne D\nr u g\n.\nS1 2\n-G ol\nd ...\nw er\ne pe\nrf or\nm ed\nin a\npa tie\nnt w\nith de\nfin ite\nse ro\nne ga\ntiv e\nrh eu\nm at\noi d\nar th\nri tis\nw ho\nde ve\nlo pe\nd hy\npo ga\nm m\nag lo\nbu lin\nem ia\nA E\nin th\ne co\nur se\nof ...\nS1 2\n-I nfl\nue nc\ne ...\nw er\ne pe\nrf or\nm ed\nin a\npa tie\nnt w\nith de\nfin ite\nse ro\nne ga\ntiv e\nrh eu\nm at\noi d\nar th\nri tis\nD i s e a s e\nw ho\nde ve\nlo pe\nd hy\npo ga\nm m\nag lo\nbu lin\nem ia\nA E\nin th\ne co\nur se\nof ...\nS1 3\n-G ol\nd M\nas si\nve su\nbf as\nci al\nhe m\nat om\na A E\naf te\nr al\nte pl\nas e D\nr u g\nth er\nap y\nfo ra\ncu te\nm yo\nca rd\nia li\nnf ar\nct io\nn .\nS1 3\n-I nfl\nue nc\ne M\nas si\nve su\nbf as\nci al\nhe m\nat om\na A E\naf te\nr al\nte pl\nas e D\nr u g\nth er\nap y\nfo r\nac ut\ne m\nyo ca\nrd ia\nli nf\nar ct\nio n D\nr u g\n.\nS1 4\n-G ol\nd B\nro nc\nhi ol\niti s\nob lit\ner an\ns w\nith or\nga ni\nzi ng\npn eu\nm on\nia A\nE af\nte r\nri tu\nxi m\nab D\nr u g\nth er\nap y\nfo rn\non -H\nod gk\nin \u2019s\nly m\nph om\na .\nS1 4\n-I nfl\nue nc\ne B\nro nc\nhi ol\niti s\nob lit\ner an\ns w\nith or\nga ni\nzi ng\npn eu\nm on\nia A\nE af\nte r\nri tu\nxi m\nab D\nr u g\nth er\nap y\nfo r\nno n\n-H od\ngk in\n\u2019s ly\nm ph\nom a D\ni s e a s e\n.\nS1 5\n-G ol\nd Tr\nan si\nen t\ntr az\nod on\ne D r u g\n-i nd\nuc ed\nhy po\nm an\nic sy\nm pt\nom s A\nE oc\ncu rr\ned in\nth re\ne de\npr es\nse d\npa tie\nnt s\n.\nS1 5\n-I nfl\nue nc\ne Tr\nan si\nen tt\nra zo\ndo ne\n-i nd\nuc ed\nhy po\nm an\nic sy\nm pt\nom s A\nE oc\ncu rr\ned in\nth re\ne de\npr es\nse d D\ni s e a s e\npa tie\nnt s\n.\nTa bl\ne 10\n:S el\nec te\nd se\nnt en\nce s\nfr om\nth e\nte st\nse tw\nith go\nld an\nd pr\ned ic\nte d\nen tit\nie s\nfo rt\nhe A\nD E\nda ta\nse t.\nA E\nis th\ne ab\nbr ev\nia tio\nn of\nAd ve rs eEf fe ct\nen tit\ny ty\npe .\nS1 -G\nol d\nT hi\ns sc\nen ar\nio m\nay al\nso ex\npl ai\nn th\ne ot\nhe rp\nea ks\nin A\npe ct\nod in\niu m\nat 26\n19 .6\nan d\n26 14\n.7 m\nQ u a n t i t y\n(a lth\nou gh\nse e\nSe ct\nio n\n4. 1)\n.\nS1 -I\nnfl ue\nnc e\nT hi\ns sc\nen ar\nio m\nay al\nso ex\npl ai\nn th\ne ot\nhe rp\nea ks\nin A\npe ct\nod in\niu m\nat 26\n19 .6\nQ u a n t i t y\nan d\n26 14\n.7 m\nQ u a n t i t y\nS2 -G\nol d\nIn al\nl 30\nQ u a n t i t y\npr og\nra m\ns, th\ne L\now se\ntti ng\nyi el\nds la\nrg er\nsl ic\nes co\nm pa\nre d\nto th\ne H\nig h\nse tti\nng .\nS2 -I\nnfl ue\nnc e\nIn al\nl 30\npr og\nra m\ns Q u a n t i t y\n,t he\nL ow\nse tti\nng yi\nel ds\nla rg\ner sl\nic es\nco m\npa re\nd to\nth e\nH ig\nh se\ntti ng\n.\nS3 -G\nol d\nFi g.\n5 sh\now s\nth e\nav er\nag e\nsl ic\ne si\nze de\nvi at\nio n\nw he\nn us\nin g\nth e\nlo w\ner tw\no Q u a n t i t y\nse tti\nng s\nco m\npa re\nd to\nth e\nhi gh\nes t.\nS3 -I\nnfl ue\nnc e\nFi g.\n5 sh\now s\nth e\nav er\nag e\nsl ic\ne si\nze de\nvi at\nio n\nw he\nn us\nin g\nth e\nlo w\ner tw\no se\ntti ng\ns co\nm pa\nre d\nto th\ne hi\ngh es\nt.\nS4 -G\nol d\nW e\nal so\nfo un\nd ev\nid en\nce of\nsu pe\nrla\nrg e\ncl us\nte rs\n: 40\n% Q\nu a n t i t y\nof th\ne pr\nog ra\nm s\nha d\na de\npe nd\nen ce\ncl us\nte rt\nha tc\non su\nm ed\nov er\nha lf\n% Q\nu a n t i t y\nof th\ne pr\nog ra\nm .\nS4 -I\nnfl ue\nnc e\nW e\nal so\nfo un\nd ev\nid en\nce of\nsu pe\nrla\nrg e\ncl us\nte rs\n: 40\n% Q\nu a n t i t y\nof th\ne pr\nog ra\nm s\nha d\na de\npe nd\nen ce\ncl us\nte rt\nha tc\non su\nm ed\nov er\nha lf\n% Q\nu a n t i t y\nof th\ne pr\nog ra\nm .\nS5 -G\nol d\nT he\nav er\nag e\nsi ze\nof th\ne pr\nog ra\nm s\nst ud\nie d\nw as\n20 K\nL oC\n% Q\nu a n t i t y\n,s o\nth es\ne cl\nus te\nrs of\nm or\ne th\nan 10\n% Q\nu a n t i t y\nde no\nte d\nsi gn\nifi ca\nnt po\nrt io\nns of\nco de\n.\nS5 -I\nnfl ue\nnc e\nT he\nav er\nag e\nsi ze\nof th\ne pr\nog ra\nm s\nst ud\nie d\nw as\n20 K\nL oC\n% Q\nu a n t i t y\n,s o\nth es\ne cl\nus te\nrs of\nm or\ne th\nan 10\n% Q\nu a n t i t y\nde no\nte d\nsi gn\nifi ca\nnt po\nrt io\nns of\nco de\n.\nS6 -G\nol d\n... bu\ntt he\nco m\npe tit\nio n\nbe tw\nee n\nth es\ne ef\nfe ct\ns re\nsu lts\nin th\ne fr\nac tu\nre en\ner gy\nbe in\ng in\nde pe\nnd en\nto ft\nhe te\nst te\nm pe\nra tu\nre be\ntw ee\nn -5\n5 \u00b0C\nan d\n-1 09\n\u00b0C Q\nu a n t i t y\n.\nS6 -I\nnfl ue\nnc e\n... bu\ntt he\nco m\npe tit\nio n\nbe tw\nee n\nth es\ne ef\nfe ct\ns re\nsu lts\nin th\ne fr\nac tu\nre en\ner gy\nbe in\ng in\nde pe\nnd en\nto ft\nhe te\nst te\nm pe\nra tu\nre be\ntw ee\nn -5\n5 \u00b0C\nan d\n-1 09\n\u00b0C .\nS7 -G\nol d\nW e\nw ill\nill us\ntr at\ne ou\nrt es\nts of\nL io\nuv ill\ne\u2019 s\nth eo\nre m\nus in\ng da\nta fo\nre le\nct ro\nns w\nith an\nen er\ngy E\n\u2248 90\nke V\nQ u a n t i t y\nan d\na pi\ntc h\nan gl\ne \u03b1\n\u2248 17\n0\u00b0 Q\nu a n t i t y\nbe fo\nre th\ney en\nco un\nte rR\nhe a.\nS7 -I\nnfl ue\nnc e\nW e\nw ill\nill us\ntr at\ne ou\nrt es\nts of\nL io\nuv ill\ne\u2019 s\nth eo\nre m\nus in\ng da\nta fo\nre le\nct ro\nns w\nith an\nen er\ngy E \u2248\n90 ke\nV Q\nu a n t i t y\nan d\na pi\ntc h\nan gl\ne \u03b1\n\u2248 17\n0 \u00b0 Q\nu a n t i t y\nbe fo\nre th\ney en\nco un\nte rR\nhe a.\nS8 -G\nol d\n... (\n10 -5\nm ba\nr Q u a n t i t y\n)a nd\nla tit\nud e\n78 \u00b0 Q\nu a n t i t y\nfr om\nsi m\nul at\nio ns\nR 1\u2013\nR 18\n(T ab\nle 1)\nar e\nsh ow\nn in\nth e\nup pe\nrp an\nel of\nFi g.\n12 as\na fu\nnc tio\nn of\n10 ke\nV Q\nu a n t i t y\nel ec\ntr on\n...\nS8 -I\nnfl ue\nnc e\n... (\n10 -5\nm ba\nr Q u a n t i t y\n)a nd\nla tit\nud e\n78 \u00b0 Q\nu a n t i t y\nfr om\nsi m\nul at\nio ns\nR 1\u2013\nR 18\n(T ab\nle 1)\nar e\nsh ow\nn in\nth e\nup pe\nrp an\nel of\nFi g.\n12 as\na fu\nnc tio\nn of\n10 ke\nV Q\nu a n t i t y\nel ec\ntr on\n...\nS9 -G\nol d\nW hi\nle th\ne va\nlu es\nar e\nba se\nd on\neq ui\nno x\nsi m\nul at\nio ns\n,w e\nfo un\nd se\nas on\nal di\nff er\nen ce\ns to\nbe in\nsi gn\nifi ca\nnt ,g\nen er\nat in\ng te\nm pe\nra tu\nre ch\nan ge\ns of\n\u2264 10\nK Q\nu a n t i t y\n.\nS9 -I\nnfl ue\nnc e\nW hi\nle th\ne va\nlu es\nar e\nba se\nd on\neq ui\nno x\nsi m\nul at\nio ns\n,w e\nfo un\nd se\nas on\nal di\nff er\nen ce\ns to\nbe in\nsi gn\nifi ca\nnt ,g\nen er\nat in\ng te\nm pe\nra tu\nre ch\nan ge\ns of\n\u2264 10\nK .\nS1 0\n-G ol\nd ...\nve lo\nci ty\nof th\ne IS\nM w\nith re\nsp ec\ntt o\nE ar\nth is\n-6 .6\nkm s-\n1 Q u a n t i t y\nan d\nth e\nef fe\nct iv\ne th\ner m\nal ve\nlo ci\nty al\non g\nth e\nL O\nS to\nth e\nst ar\nis 12\n.3 km\ns1 Q\nu a n t i t y\n(W oo\nd et\nal .,\n20 05\n).\nS1 0\n-I nfl\nue nc\ne ...\nve lo\nci ty\nof th\ne IS\nM w\nith re\nsp ec\ntt o\nE ar\nth is\n-6 .6\nQ u a n t i t y\nkm s-\n1 an\nd th\ne ef\nfe ct\niv e\nth er\nm al\nve lo\nci ty\nal on\ng th\ne L\nO S\nto th\ne st\nar is\n12 .3\nQ u a n t i t y\nkm s-\n1 (W\noo d\net al\n., 20\n05 ).\nS1 1\n-G ol\nd T\nhe m\nod el\npr ofi\nle s\nw er\ne co\nnv ol\nve d\nto a\nsp ec\ntr al\nre so\nlu tio\nn of\nR =\n17 ,5\n00 Q\nu a n t i t y\n.\nS1 1\n-I nfl\nue nc\ne T\nhe m\nod el\npr ofi\nle s\nw er\ne co\nnv ol\nve d\nto a\nsp ec\ntr al\nre so\nlu tio\nn of\nR =\n17 ,5\n00 .\nS1 2\n-G ol\nd ...\nov er\na la\nrg e\nco rp\nus of\nC co\nde w\nas th\nat 89\n% Q\nu a n t i t y\nof th\ne pr\nog ra\nm s\nst ud\nie d\nco nt\nai ne\nd at\nle as\nt on\ne% Q\nu a n t i t y\nde pe\nnd en\nce cl\nus te\nrc om\npo se\nd of\n10 %\nQ u a n t i t y\n...\nS1 2\n-I nfl\nue nc\ne ...\nov er\na la\nrg e\nco rp\nus of\nC co\nde w\nas th\nat 89\n% Q\nu a n t i t y\nof th\ne pr\nog ra\nm s\nst ud\nie d\nco nt\nai ne\nd at\nle as\nto ne\nde pe\nnd en\nce cl\nus te\nrc om\npo se\nd of\n10 %\nQ u a n t i t y\n...\nS1 3\n-G ol\nd ...\nof 0.\n18 g\nC O\n2 m\n-2 h-\n1c on\ntr ib\nut ed\nQ u a n t i t y\nth e\nla rg\ner fr\nac tio\nn of\nR S,\n56 %\nQ u a n t i t y\n,w hi\nle th\ne he\nte ro\ntr op\nhi c\nco m\npo ne\nnt flu\nx of\n0. 15\ng C\nO 2\nm -2\nh1a\ncc ou\nnt ed\nQ u a n t i t y\n...\nS1 3\n-I nfl\nue nc\ne ...\nof 0.\n18 Q\nu a n t i t y\ng C\nO 2\nm -2\nh1c\non tr\nib ut\ned th\ne la\nrg er\nfr ac\ntio n\nof R\nS, 56\nQ u a n t i t y\n% ,w\nhi le\nth e\nhe te\nro tr\nop hi\nc co\nm po\nne nt\nflu x\nof 0.\n15 Q\nu a n t i t y\ng C\nO 2\nm -2\nh1a\ncc ou\nnt ed\n...\nS1 4\n-G ol\nd A\nft er\nfr ac\ntu re\nat 20\n\u00b0C Q\nu a n t i t y\n,t he\npl as\ntic zo\nne at\nth e\ntip of\nth e\nsu b-\ncr iti\nca lly\nlo ad\ned cr\nac k\nw as\nse ct\nio ne\nd an\nd ob\nse rv\ned us\nin g\ntr an\nsm is\nsi on\nop tic\nal m\nic ro\nsc op\ny.\nS1 4\n-I nfl\nue nc\ne A\nft er\nfr ac\ntu re\nat 20\n\u00b0C ,t\nhe pl\nas tic\nzo ne\nat th\ne tip\nof th\ne su\nbcr\niti ca\nlly lo\nad ed\ncr ac\nk w\nas se\nct io\nne d\nan d\nob se\nrv ed\nus in\ng tr\nan sm\nis si\non op\ntic al\nm ic\nro sc\nop y.\nS1 5\n-G ol\nd H\ner e\nth e\nru bb\ner or\nth er\nm op\nla st\nic pa\nrt ic\nle s\nar e\nty pi\nca lly\nab ou\nt0 .1\n\u20135 \u00b5 m\nQ u a n t i t y\nin di\nam et\ner w\nith a\nvo lu\nm e\nfr ac\ntio n\nof ab\nou t5\n\u20132 0%\nQ u a n t i t y\n.\nS1 5\n-I nfl\nue nc\ne H\ner e\nth e\nru bb\ner or\nth er\nm op\nla st\nic pa\nrt ic\nle s\nar e\nty pi\nca lly\n0. 1\u2013\n5 \u00b5 m\nQ u a n t i t y\nin di\nam et\ner w\nith a\nvo lu\nm e\nfr ac\ntio n\nof ab\nou t\n5\u2013 20\n% Q\nu a n t i t y\n% .\nTa bl\ne 11\n:S el\nec te\nd se\nnt en\nce s\nfr om\nth e\nte st\nse tw\nith go\nld an\nd pr\ned ic\nte d\nen tit\nie s\nfo rt\nhe M\nea sE\nva ld\nat as\net .\nS1 -G\nol d\nT he\nan al\nyz er\nG e n e r i c\nis ca\nlle d\n\u201c A\nm or\nph \u201d M\ne t h o d\nS1 -I\nnfl ue\nnc e\nT he\nan al\nyz er\nO is\nca lle\nd \u201c\nA m\nor ph\n\u201d O\nS2 -G\nol d\nA m\nor ph\nM e t h o d\nre co\ngn iz\nes N\nE ite\nm s O\nin tw\no st\nag es\n: di\nct io\nna ry\nlo ok\nup M\ne t h o d\nan d\nru le\nap pl\nic at\nio n M\ne t h o d\n.\nS2 -I\nnfl ue\nnc e\nA m\nor ph\nM e t h o d\nre co\ngn iz\nes N\nE ite\nm s G\ne n e r i c\nin tw\no st\nag es\nG e n e r i c\n: di\nct io\nna ry\nlo ok\nup G\ne n e r i c\nan d\nru le\nap pl\nic at\nio n G\ne n e r i c\n.\nS3 -G\nol d\nFi rs\nt, it G\ne n e r i c\nus es\nse ve\nra lk\nin ds\nof di\nct io\nna ri\nes O\nto se\ngm en\nta nd\nta g\nJa pa\nne se\nch ar\nac te\nrs tr\nin gs\nO .\nS3 -I\nnfl ue\nnc e\nFi rs\nt, it\nus es\nM e t h o d\nse ve\nra lk\nin ds\nof di\nct io\nna ri\nes O\nto se\ngm en\nt T a s k\nan d\nta g T\na s k\nJa pa\nne se\nch ar\nac te\nrs tr\nin gs\nO .\nS4 -G\nol d\nW he\nn a\nse gm\nen ti\ns fo\nun d\nto be\nan N\nE ite\nm s O\n,t hi\ns in\nfo rm\nat io\nn is\nad de\nd to\nth e\nse gm\nen ta\nnd it\nis us\ned to\nge ne\nra te\nth e\nfin al\nou tp\nut .\nS4 -I\nnfl ue\nnc e\nW he\nn a\nse gm\nen t O\nis fo\nun d\nto be\nan N\nE ite\nm s O\n,t hi\ns in\nfo rm\nat io\nn is\nad de\nd to\nth e\nse gm\nen ta\nnd it\nis us\ned to\nge ne\nra te\nM e t h o d\nth e\nfin al\nou tp\nut G\ne n e r i c\n.\nS5 -G\nol d\nR eq\nue st\nor s\nca n\nal so\nin st\nru ct\nth e\nsy st\nem G\ne n e r i c\nto no\ntif y\nth em\nw he\nn th\ne st\nat us\nof a\nre qu\nes tc\nha ng\nes or\nw he\nn a\nre qu\nes ti\ns co\nm pl\net e\n.\nS5 -I\nnfl ue\nnc e\nR eq\nue st\nor s\nca n\nal so\nin st\nru ct\nth e\nsy st\nem G\ne n e r i c\nto no\ntif y T\na s k\nth em\nw he\nn th\ne st\nat us\nO of\na re\nqu es\nt O ch\nan ge\ns or\nw he\nn a\nre qu\nes t O\nis co\nm pl\net e T\na s k\n.\nS6 -G\nol d\nT hi\ns w\nor k\npr op\nos es\na ne\nw re\nse ar\nch di\nre ct\nio n\nto ad\ndr es\ns th\ne la\nck of\nst ru\nct ur\nes O\nin tr\nad iti\non al\nngr\nam m\nod el\ns M e t h o d\n.\nS6 -I\nnfl ue\nnc e\nT hi\ns w\nor k G\ne n e r i c\npr op\nos es\na ne\nw re\nse ar\nch di\nre ct\nio n M\ne t h o d\nto ad\ndr es\ns th\ne la\nck of\nst ru\nct ur\nes T\na s k\nin tr\nad iti\non al\nngr\nam m\nod el\ns M e t h o d\n.\nS7 -G\nol d\nO ur\nap pr\noa ch\nG e n e r i c\nis ba\nse d\non th\ne ite\nra tiv\ne de\nfo rm\nat io\nn of\na 3\n\u2013 D\nsu rf\nac e\nm es\nh M e t h o d\nto m\nin im\niz e\nan ob\nje ct\niv e\nfu nc\ntio n O\n.\nS6 -I\nnfl ue\nnc e\nO ur\nap pr\noa ch\nG e n e r i c\nis ba\nse d\non th\ne ite\nra tiv\ne de\nfo rm\nat io\nn M e t h o d\nof a\n3 \u2013\nD M\ne t r i c\nsu rf\nac e\nm es\nh O to\nm in\nim iz\ne an\nob je\nct iv\ne fu\nnc tio\nn O .\nS8 -G\nol d\nT he\ny G e n e r i c\nim pr\nov e\nth e\nre co\nns tr\nuc tio\nn T a s k\nre su\nlts an\nd en\nfo rc\ne th\nei rc\non si\nst en\ncy w\nith a\npr io\nri kn\now le\ndg e O\nab ou\nt ob\nje ct\nsh ap\ne O .\nS6 -I\nnfl ue\nnc e\nT he\ny G e n e r i c\nim pr\nov e\nth e T\na s k\nre co\nns tr\nuc tio\nn T a s k\nre su\nlts an\nd en\nfo rc\ne th\nei rc\non si\nst en\ncy w\nith a O\npr io\nri kn\now le\ndg e O\nab ou\nt ob\nje ct\nsh ap\ne O .\nS9 -G\nol d\nIt is\nba se\nd on\na w\nea kl\ny su\npe rv\nis ed\nde pe\nnd en\ncy pa\nrs er\nT a s k\nth at\nca n\nm od\nel sp\nee ch\nsy nt\nax O\nw ith\nou tr\nel yi\nng on\nan y\nan no\nta te\nd tr\nai ni\nng co\nrp us\nM a t e r i a l\n.\nS9 -I\nnfl ue\nnc e\nIt G\ne n e r i c\nis ba\nse d\non a\nw ea\nkl y\nsu pe\nrv is\ned de\npe nd\nen cy\npa rs\ner M\ne t h o d\nth at\nca n\nm od\nel sp\nee ch\nsy nt\nax O\nw ith\nou tr\nel yi\nng on\nan y\nan no\nta te\nd tr\nai ni\nng co\nrp us\nM e t r i c\n.\nS1 0\n-G ol\nd L\nab el\ned da\nta O\nis re\npl ac\ned by\na fe\nw ha\nnd -c\nra ft\ned ru\nle s O\nth at\nen co\nde ba\nsi c\nsy nt\nac tic\nkn ow\nle dg\ne O .\nS1 0\n-G ol\nd L\nab el\ned da\nta is\nre pl\nac ed\nby a\nfe w\nha nd\n-c ra\nft ed\nru le\ns M e t h o d\nth at\nen co\nde ba\nsi c\nsy nt\nac tic\nkn ow\nle dg\ne O .\nS1 1\n-G ol\nd T\nhe re\nqu es\nti s\npa ss\ned to\na m\nob ile\n,i nt\nel lig\nen ta\nge nt\nM e t h o d\nfo re\nxe cu\ntio n\nat th\ne ap\npr op\nri at\ne da\nta ba\nse .\nS1 1\n-I nfl\nue nc\ne T\nhe re\nqu es\nt T a s k\nis pa\nss ed\nto a\nm ob\nile G\ne n e r i c\n,f or\nex ec\nut io\nn T a s k\nat th\ne ap\npr op\nri at\ne da\nta ba\nse G\ne n e r i c\n.\nS1 2\n-G ol\nd E\nac h\npa rt\nis a\nco lle\nct io\nn of\nsa lie\nnt im\nag e\nfe at\nur es\nO .\nS1 2\n-I nfl\nue nc\ne E\nac h\npa rt\nis a\nco lle\nct io\nn of\nsa lie\nnt im\nag e\nfe at\nur es\n.\nS1 3\n-G ol\nd W\ne ha\nve co\nnd uc\nte d\nnu m\ner ou\ns si\nm ul\nat io\nns to\nve ri\nfy th\ne pr\nac tic\nal fe\nas ib\nili ty\nof ou\nr al\ngo ri\nth m\nG e n e r i c\n.\nS1 3\n-I nfl\nue nc\ne W\ne ha\nve co\nnd uc\nte d\nnu m\ner ou\ns si\nm ul\nat io\nns G\ne n e r i c\nto ve\nri fy\nth e\npr ac\ntic al\nfe as\nib ili\nty of\nou r\nal go\nri th\nm G\ne n e r i c\n.\nS1 4\n-G ol\nd In\nth is\npa pe\nr, w\ne ex\npl or\ne w\nha tc\nan be\nsa id\nab ou\nt tr\nan sp\nar en\nto bj\nec ts O\nby a\nm ov\nin g\nob se\nrv er\n.\nS1 4\n-I nfl\nue nc\ne In\nth is\npa pe\nr, w\ne ex\npl or\ne w\nha tc\nan be\nsa id\nab ou\nt tr\nan sp\nar en\nto bj\nec ts T\na s k\nby a\nm ov\nin g\nob se\nrv er\nO .\nS1 5\n-G ol\nd T\nhe re\nsu lt\nth eo\nre tic\nal ly\nju st\nifi es\nth e\nef fe\nct iv\nen es\ns of\nfe at\nur es\nO in\nro bu\nst PC\nA M\ne t h o d\n.\nS1 5\n-I nfl\nue nc\ne T\nhe re\nsu lt\nth eo\nre tic\nal ly\nju st\nifi es\nth e\nef fe\nct iv\nen es\ns of\nfe at\nur es\nO in\nro bu\nst PC\nA O\n.\nTa bl\ne 12\n:S el\nec te\nd se\nnt en\nce s\nfr om\nth e\nte st\nse tw\nith go\nld an\nd pr\ned ic\nte d\nen tit\nie s\nfo rt\nhe Sc\niE R\nC da\nta se\nt. O\nis th\ne ab\nbr ev\nia tio\nn of\nO th\ner .\nS1 -G\nol d\nFA P-\nsp ec\nifi c\niP S\nce lls\nM a t e r i a l\nha ve\npo te\nnt ia\nlt o\ndi ff\ner en\ntia te\nP r o c e s s\nin to\nhe pa\nto cy\nte -l\nik e\nce lls\nM a t e r i a l\n.\nS1 -I\nnfl ue\nnc e\nFA P-\nsp ec\nifi c\niP S\nce lls\nM a t e r i a l\nha ve\npo te\nnt ia\nlt o\ndi ff\ner en\ntia te\nP r o c e s s\nin to\nhe pa\nto cy\nte -l\nik e\nce lls\nM a t e r i a l\n.\nS2 -G\nol d\nD is\ntr ib\nut ed\nso ur\nce lo\nca liz\nat io\nn P r o c e s s\npr ov\nid ed\nw ho\nle -b\nra in\nm ea\nsu re\ns D a t a\nfr om\n30 to\n13 0m\ns D a t a\n.\nS2 -I\nnfl ue\nnc e\nD is\ntr ib\nut ed\nso ur\nce lo\nca liz\nat io\nn M e t h o d\npr ov\nid ed\nw ho\nle -b\nra in\nm ea\nsu re\ns D a t a\nfr om\n30 to\n13 0m\ns D a t a\n.\nS3 -G\nol d\nA nn\nea lin\ng P r o c e s s\nen ha\nnc es\nP r o c e s s\nef fic\nie nc\ny D a t a\nov er\na w\nid e\nra ng\ne D a t a\nof D\n:A bl\nen d\nco m\npo si\ntio ns\nM a t e r i a l\n(1 :4\n-4 :1\n) D a t a\n.\nS3 -I\nnfl ue\nnc e\nA nn\nea lin\ng P r o c e s s\nen ha\nnc es\nef fic\nie nc\ny P r o c e s s\nov er\na w\nid e\nra ng\ne D a t a\nof D\n:A bl\nen d\nco m\npo si\ntio ns\nM a t e r i a l\n(1 :4\n-4 :1\n) D a t a\n.\nS4 -G\nol d\nT he\npr es\nen te\nd co\nnt ra\nva ri\nan tf\nor m\nul at\nio n D\na t a\nis fr\nee of\nC hr\nis to\nff el\nsy m\nbo ls D\na t a\n.\nS4 -I\nnfl ue\nnc e\nT he\npr es\nen te\nd co\nnt ra\nva ri\nan tf\nor m\nul at\nio n P\nr o c e s s\nis fr\nee of\nC hr\nis to\nff el\nsy m\nbo ls M\na t e r i a l\n.\nS5 -G\nol d\nH en\nce w\ne re\nco m\nm en\nd cl\nos e\nm on\nito ri\nng P\nr o c e s s\nof th\ne re\nsu lta\nnt tr\nan sg\nen ic\nge no\nty pe\ns M a t e r i a l\nin m\nul ti-\nye ar\n,m ul\ntilo\nca tio\nn fie\nld tr\nia ls P\nr o c e s s\n.\nS5 -I\nnfl ue\nnc e\nH en\nce w\ne re\nco m\nm en\nd cl\nos e\nm on\nito ri\nng P\nr o c e s s\nof th\ne re\nsu lta\nnt tr\nan sg\nen ic\nge no\nty pe\ns M a t e r i a l\nin m\nul ti-\nye ar\n,m ul\ntilo\nca tio\nn fie\nld tr\nia ls D\na t a\n.\nS6 -G\nol d\nH er\nei n,\nw e\nre po\nrt th\nat co\nba lt-\nsu bs\ntit ut\ned N\naF eO\n2 M a t e r i a l\nde m\non st\nra te\ns ex\nce lle\nnt el\nec tr\nod e\npe rf\nor m\nan ce\nD a t a\nin a\nno n-\naq ue\nou s\nN a\nce ll\nat ro\nom te\nm pe\nra tu\nre D\na t a\n.\nS6 -I\nnfl ue\nnc e\nH er\nei n,\nw e\nre po\nrt th\nat co\nba lt-\nsu bs\ntit ut\ned N\naF eO\n2 M a t e r i a l\nde m\non st\nra te\ns ex\nce lle\nnt el\nec tr\nod e\npe rf\nor m\nan ce\nP r o c e s s\nin a\nno n-\naq ue\nou s\nN a\nce ll\nat ro\nom te\nm pe\nra tu\nre D\na t a\n.\nS7 -G\nol d\nT he\ndu al\n-l ay\ner ca\nrb on\nfil m\nM a t e r i a l\nis pr\nep ar\ned us\nin g\nC D\nC pr\noc es\ns P r o c e s s\nw ith\nsu bs\neq ue\nnt C\nV D\nm et\nho d M\ne t h o d\n.\nS7 -I\nnfl ue\nnc e\nT he\ndu al\n-l ay\ner ca\nrb on\nfil m\nM a t e r i a l\nis pr\nep ar\ned P\nr o c e s s\nus in\ng C\nD C\npr oc\nes s M\ne t h o d\nw ith\nsu bs\neq ue\nnt C\nV D\nm et\nho d M\ne t h o d\n.\nS8 -G\nol d\nW e\nop tim\niz ed\nP r o c e s s\na si\nng le\n-c el\nlc ry\nop re\nse rv\nat io\nn P r o c e s s\nfo r\nhi PS\nC s\nin su\nsp en\nsi on\nM a t e r i a l\n.\nS8 -I\nnfl ue\nnc e\nW e\nop tim\niz ed\na si\nng le\n-c el\nlc ry\nop re\nse rv\nat io\nn M e t h o d\nfo r\nhi PS\nC s M\na t e r i a l\nin su\nsp en\nsi on\nP r o c e s s\n.\nS9 -G\nol d\nH ow\nev er\n,n o\nsi gn\nifi ca\nnt ef\nfe ct\ns P r o c e s s\nof pa\nrt ic\nle si\nze D\na t a\nw er\ne fo\nun d\non th\ne m\nea su\nre d\nva lu\ne of\nto ug\nhn es\ns D a t a\n.\nS9 -I\nnfl ue\nnc e\nH ow\nev er\n,n o\nsi gn\nifi ca\nnt ef\nfe ct\ns P r o c e s s\nof pa\nrt ic\nle si\nze D\na t a\nw er\ne fo\nun d\non th\ne m\nea su\nre d P\nr o c e s s\nva lu\ne of\nto ug\nhn es\ns D a t a\n.\nS1 0\n-G ol\nd T\nhe m\net al\nco m\npl ex\nes M\na t e r i a l\nex hi\nbi ts\ndi ff\ner en\nt ge\nom et\nri ca\nla rr\nan ge\nm en\nts D\na t a\nsu ch\nas oc\nta he\ndr al\nan d\nsq ua\nre py\nra m\nid al\nco or\ndi na\ntio n P\nr o c e s s\n.\nS1 0\n-I nfl\nue nc\ne T\nhe m\net al\nco m\npl ex\nes M\na t e r i a l\nex hi\nbi ts P\nr o c e s s\ndi ff\ner en\nt D a t a\nge om\net ri\nca la\nrr an\nge m\nen ts D\na t a\nsu ch\nas oc\nta he\ndr al\nan d\nsq ua\nre py\nra m\nid al\nco or\ndi na\ntio n D\na t a\n.\nS1 1\n-G ol\nd ...\nth is\nio n\nflo w\nP r o c e s s\nco nt\nri bu\nte s\nto m\nai nt\nai ni\nng P\nr o c e s s\nth e\nni gh\nts id\ne io\nno sp\nhe re\nM a t e r i a l\nne ar\nth e\nte rm\nin at\nor re\ngi on\nM a t e r i a l\nat so\nla rm\nin im\num D\na t a\n.\nS1 1\n-I nfl\nue nc\ne ...\nth is\nio n\nflo w\nM a t e r i a l\nco nt\nri bu\nte s\nto m\nai nt\nai ni\nng th\ne ni\ngh ts\nid e\nio no\nsp he\nre P\nr o c e s s\nne ar\nth e\nte rm\nin at\nor re\ngi on\nM a t e r i a l\nat so\nla rm\nin im\num D\na t a\n.\nS1 2\n-G ol\nd ...\nex te\nns iv\ne ex\npe ri\nm en\nts M\ne t h o d\nar e\nca rr\nie d\nou to\nn se\nve ra\nld at\na se\nts M\na t e r i a l\nto ve\nri fy\nP r o c e s s\nth e\npe rf\nor m\nan ce\nD a t a\nof th\ne pr\nop os\ned al\ngo ri\nth m\ns M e t h o d\n.\nS1 2\n-I nfl\nue nc\ne ...\nex te\nns iv\ne ex\npe ri\nm en\nts P\nr o c e s s\nar e\nca rr\nie d\nou to\nn se\nve ra\nld at\na se\nts D\na t a\nto ve\nri fy\nth e\npe rf\nor m\nan ce\nP r o c e s s\nof th\ne pr\nop os\ned al\ngo ri\nth m\ns P r o c e s s\n.\nS1 3\n-G ol\nd Fu\nrt he\nrm or\ne, ne\nar -h\nom og\nen ou\ns po\npu la\ntio ns\nof hF\nSC s M\na t e r i a l\nca n\nbe ob\nta in\ned fr\nom hP\nSC lin\nes M\na t e r i a l\nw hi\nch ar\ne no\nrm al\nly ...\nS1 3\n-I nfl\nue nc\ne Fu\nrt he\nrm or\ne, ne\nar -h\nom og\nen ou\ns po\npu la\ntio ns\nP r o c e s s\nof hF\nSC s M\na t e r i a l\nca n\nbe ob\nta in\ned P\nr o c e s s\nfr om\nhP SC\nlin es\nM a t e r i a l\nw hi\nch ar\ne no\nrm al\nly ...\nS1 4\n-G ol\nd N\nod es\n\u2019r ol\nesh\nif t P\nr o c e s s\npr ev\nai le\nd w\nhe n\na he\nal th\ny ne\ntw or\nk M a t e r i a l\nch an\nge d\nto di\nse as\ned on\ne M a t e r i a l\n.\nS1 4\n-I nfl\nue nc\ne N\nod es\n\u2019r ol\nesh\nif tp\nre va\nile d P\nr o c e s s\nw he\nn a\nhe al\nth y\nne tw\nor k M\na t e r i a l\nch an\nge d P\nr o c e s s\nto di\nse as\ned on\ne M a t e r i a l\n.\nS1 5\n-G ol\nd D\niff er\nen ce\ns D a t a\nin th\ne le\nve l D\na t a\nof w\nav e\nac tiv\nity P\nr o c e s s\nac ro\nss Sa\ntu rn\n\u2019s m\nag ne\nto pa\nus e M\na t e r i a l\nha s\nbe en\npr ed\nic te\nd P r o c e s s\n.\nS1 5\n-I nfl\nue nc\ne D\niff er\nen ce\ns in\nth e\nle ve\nlo fw\nav e\nac tiv\nity D\na t a\nac ro\nss Sa\ntu rn\n\u2019s m\nag ne\nto pa\nus e M\na t e r i a l\nha s\nbe en\npr ed\nic te\nd P r o c e s s\n.\nTa bl\ne 13\n:S el\nec te\nd se\nnt en\nce s\nfr om\nth e\nte st\nse tw\nith go\nld an\nd pr\ned ic\nte d\nen tit\nie s\nfo rS\nT E\nM -E\nC R\nda ta\nse t.\nS1 -G\nol d\nPo ur\nou t A\nc t i o n\nan d\nco lle\nct A\nc t i o n\nth e\nliq ui\nd R e a g e n t\n.\nS1 -I\nnfl ue\nnc e\nPo ur\nou t A\nc t i o n\nan d\nco lle\nct A\nc t i o n\nth e\nliq ui\nd G e n e r i c \u2212\nM e a s u r e\nS2 -G\nol d\nT he\nse ar\ne th\ne ce\nlls of\nin te\nre st\n; D\nO N\nO T\nD IS\nC A\nR D\nA c t i o n\n.\nS2 -I\nnfl ue\nnc e\nT he\nse ar\ne th\ne ce\nlls of\nin te\nre st M\ne n t i o n\n;D O\nN O\nT D\nIS C\nA R\nD\nS3 -G\nol d\nO m\nni Pr\nep \u2122\nFo rH\nig h\nQ ua\nlit y\nG en\nom ic\nD N\nA E\nxt ra\nct io\nn Fr\nom G\nra m\n-P os\niti ve\nB ac\nte ri a S3 -I nfl ue nc e O m ni Pr ep D e v i c e \u2122 Fo rH ig h Q ua lit y G en om ic D N A E xt ra ct io n Fr om G ra m -P os iti\nve B\nac te\nri a\nS4 -G\nol d\nD is\nca rd\nA c t i o n\nth e\nsu pe\nrn at\nan t A\nc t i o n\n.\nS4 -I\nnfl ue\nnc e\nD is\nca rd\nA c t i o n\nth e\nsu pe\nrn at\nan t A\nc t i o n\n.\nS5 -G\nol d\nA dd\nA c t i o n\n45 0\u00b5\nls te\nri le\nw at\ner R\ne a g e n t\nan d\n50 \u00b5l\nE D\nTA R\ne a g e n t\nto th\ne pe\nlle ta\nnd ge\nnt ly\nM o d i f i e r\nvo rt\nex A\nc t i o n\nto re\nsu sp\nen d A\nc t i o n\n.\nS5 -I\nnfl ue\nnc e\nA dd\nA c t i o n\n45 0\u00b5\nl A m\no u n t\nst er\nile M\no d i f i e r\nw at\ner R\ne a g e n t\nan d\n50 \u00b5l\nA m\no u n t\nE D\nTA to\nth e\npe lle\nta nd\nge nt\nly M\no d i f i e r\nvo rt\nex A\nc t i o n\nto re\nsu sp\nen d A\nc t i o n\n.\nS6 -G\nol d\nIn cu\nba te\nA c t i o n\nth e\nsa m\npl e R\ne a g e n t\nat 55\n-6 0\u00b0\nC T\ne m\np e r a t u r e\nfo r\n15 m\nin ut\nes T\ni m\ne .\nS6 -I\nnfl ue\nnc e\nIn cu\nba te\nA c t i o n\nth e\nsa m\npl e\nat 55\n-6 0\u00b0\nC T\ne m\np e r a t u r e\nfo r\n15 m\nin ut\nes T\ni m\ne .\nS7 -G\nol d\nD o\nno th\nea th\nig he\nrt ha\nn 60\n\u00b0C .\nS7 -I\nnfl ue\nnc e\nD o\nno th\nea t A\nc t i o n\nhi gh\ner th\nan 60\n\u00b0C .\nS8 -G\nol d\nIn cu\nba te\nA c t i o n\nth e\nsa m\npl e R\ne a g e n t\nfo r\n5- 10\nm in\nut es\nT i m\ne at\n60 \u00b0C\nT e m\np e r a t u r e\n.\nS8 -I\nnfl ue\nnc e\nIn cu\nba te\nA c t i o n\nth e\nsa m\npl e R\ne a g e n t\nfo r\n5- 10\nm in\nut es\nT i m\ne at\n60 \u00b0C\nT e m\np e r a t u r e\n.\nS9 -G\nol d\nA dd\nA c t i o n\n10 0\u00b5\nlP re\nci pi\nta tio\nn So\nlu tio\nn R e a g e n t\nan d\nm ix\nA c t i o n\nby in\nve rt\nin g A\nc t i o n\nth e\ntu be\nD e v i c e\nse ve\nra l N\nu m\ne r i c a l\ntim es\n.\nS9 -I\nnfl ue\nnc e\nA dd\nA c t i o n\n10 0\u00b5\nl A m\no u n t\nPr ec\nip ita\ntio n\nSo lu\ntio n R\ne a g e n t\nan d\nm ix\nA c t i o n\nby in\nve rt\nin g A\nc t i o n\nth e\ntu be\nD e v i c e\nse ve\nra lt\nim es\nM o d i f i e r\n.\nS1 0\n-G ol\nd C\nen tr\nif ug\ne A c t i o n\nth e\nsa m\npl e R\ne a g e n t\nat 14\n,0 00\nxg S p e e d\nfo r\n5 m\nin ut\nes T\ni m\ne .\nS1 0\n-I nfl\nue nc\ne C\nen tr\nif ug\ne A c t i o n\nth e\nsa m\npl e R\ne a g e n t\nat 14\n,0 00\nxg S p e e d\nfo r\n5 m\nin ut\nes T\ni m\ne .\nS1 1\n-G ol\nd In\nve rt A\nc t i o n\nth e\ntu be\nD e v i c e\npe ri\nod ic\nal ly\nM o d i f i e r\nea ch\nho ur\nT i m\ne .\nS1 1\n-I nfl\nue nc\ne In\nve rt A\nc t i o n\ntu be\npe ri\nod ic\nal ly\nea ch\nho ur\nT i m\ne .\nS1 2\n-G ol\nd In\nve rt A\nc t i o n\nth e\ntu be\ns D e v i c e\n10 N\nu m\ne r i c a l\ntim es\nto pr\nec ip\nita te\nA c t i o n\nth e\nD N\nA R\ne a g e n t\n.\nS1 2\n-I nfl\nue nc\ne In\nve rt A\nc t i o n\nth e\nlim e\n10 N\nu m\ne r i c a l\ntim es\nto to\npr ec\nip ita\nte M\ne t h o d\nth e\nD N\nA R\ne a g e n t\n.\nS1 3\n-G ol\nd Fo\nri nc\nre as\ned D\nN A\nre co\nve ry\n,a dd\n2\u00b5 lM\nus se\nlG ly\nco ge\nn as\na D\nN A\nca rr\nie r.\nS1 3\n-I nfl\nue nc\ne Fo\nr in\ncr ea\nse d M\no d i f i e r\nD N\nA re\nco ve\nry M\ne n t i o n\n, ad\nd A c t i o n\n2\u00b5 l A\nm o u n t\nM us\nse lG\nly co\nge n R\ne a g e n t\nas a A\nm o u n t\nD N\nA ca\nrr ie\nr M e n t i o n\n.\nS1 4\n-G ol\nd fo\nr1 m\nin co\nlo rb\nox m\nag en\nta Sp\nin A\nc t i o n\nat 10\n00 0g\nS p e e d\nfo r\n2 m\nin ut\nes T\ni m\ne\nS1 4\n-I nfl\nue nc\ne fo\nr 1\nm in\nT i m\ne co\nlo rb\nox m\nag en\nta Sp\nin A\nc t i o n\nat 10\n00 0g\nS p e e d\nfo r\n2 m\nin ut\nes T\ni m\ne\nS1 5\n-G ol\nd E\nle ct\nro n\nm ic\nro sc\nop y\nfo rv\nir us\nid en\ntifi ca\ntio n\nan d\nvi ru\ns as\nse m\nbl ag\ne ch\nar ac\nte ri\nza tio n S1 5 -I nfl ue nc e E le ct ro n m ic ro sc op y M e t h o d fo r vi ru s id en tifi ca tio n M e n t i o n an d vi ru s as\nse m\nbl ag\ne ch\nar ac\nte ri\nza tio\nn M e n t i o n\nTa bl\ne 14\n:S el\nec te\nd se\nnt en\nce s\nfr om\nth e\nte st\nse tw\nith go\nld an\nd pr\ned ic\nte d\nen tit\nie s\nfo rt\nhe W\nL PC\nda ta\nse t."
+        }
+    ],
+    "title": "Impact of Sample Selection on In-Context Learning for Entity Extraction from Scientific Writing",
+    "year": 2023
+}

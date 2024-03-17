@@ -1,0 +1,886 @@
+{
+    "abstractText": "Large language models (LLMs) have emerged as a widely-used tool for information seeking, but their generated outputs are prone to hallucination. In this work, our aim is to allow LLMs to generate text with citations, improving their factual correctness and verifiability. Existing work mainly relies on commercial search engines and human evaluation, making it challenging to reproduce and compare different modeling approaches. We propose ALCE, the first benchmark for Automatic LLMs\u2019 Citation Evaluation. ALCE collects a diverse set of questions and retrieval corpora and requires building end-to-end systems to retrieve supporting evidence and generate answers with citations. We develop automatic metrics along three dimensions\u2014fluency, correctness, and citation quality\u2014and demonstrate their strong correlation with human judgements. Our experiments with state-of-the-art LLMs and novel prompting strategies show that current systems have considerable room for improvement\u2014For example, on the ELI5 dataset, even the best models lack complete citation support 50% of the time. Our analyses further highlight promising future directions, including developing better retrievers, advancing long-context LLMs, and improving the ability to synthesize information from multiple sources.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Tianyu Gao"
+        },
+        {
+            "affiliations": [],
+            "name": "Howard Yen"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiatong Yu"
+        },
+        {
+            "affiliations": [],
+            "name": "Danqi Chen"
+        }
+    ],
+    "id": "SP:0c7b81b4bd3ef3426948da2370145ef780b149c2",
+    "references": [
+        {
+            "authors": [
+                "Simon Osindero",
+                "Karen Simonyan",
+                "Jack Rae",
+                "Erich Elsen",
+                "Laurent Sifre."
+            ],
+            "title": "Improving language models by retrieving from trillions of tokens",
+            "venue": "International Conference on Machine Learning (ICML), volume 162, pages 2206\u20132240.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Samuel Bowman",
+                "Gabor Angeli",
+                "Christopher Potts",
+                "Christopher D Manning."
+            ],
+            "title": "A large annotated corpus for learning natural language inference",
+            "venue": "Empirical Methods in Natural Language Processing (EMNLP).",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Tom B Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Angela Fan",
+                "Yacine Jernite",
+                "Ethan Perez",
+                "David Grangier",
+                "Jason Weston",
+                "Michael Auli."
+            ],
+            "title": "ELI5: Long form question answering",
+            "venue": "Association for Computational Linguistics (ACL), pages 3558\u20133567.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Martin Funkquist",
+                "Ilia Kuznetsov",
+                "Yufang Hou",
+                "Iryna Gurevych."
+            ],
+            "title": "CiteBench: A benchmark for Scientific Citation Text Generation",
+            "venue": "arXiv preprint arXiv:2212.09577.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Zhuyun Dai",
+                "Panupong Pasupat",
+                "Anthony Chen",
+                "Arun Tejasvi Chaganty",
+                "Yicheng Fan",
+                "Vincent Y Zhao",
+                "Ni Lao",
+                "Hongrae Lee",
+                "Da-Cheng Juan"
+            ],
+            "title": "RARR: Researching and revising what language models say, using language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Ming-Wei Chang."
+            ],
+            "title": "REALM: Retrievalaugmented language model pre-training",
+            "venue": "International Conference on Machine Learning (ICML).",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hangfeng He",
+                "Hongming Zhang",
+                "Dan Roth."
+            ],
+            "title": "Rethinking with retrieval: Faithful large language model inference",
+            "venue": "arXiv preprint arXiv:2301.00303.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ari Holtzman",
+                "Jan Buys",
+                "Li Du",
+                "Maxwell Forbes",
+                "Yejin Choi."
+            ],
+            "title": "The curious case of neural text degeneration",
+            "venue": "International Conference on Learning Representations (ICLR).",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Or Honovich",
+                "Roee Aharoni",
+                "Jonathan Herzig",
+                "Hagai Taitelbaum",
+                "Doron Kukliansy",
+                "Vered Cohen",
+                "Thomas Scialom",
+                "Idan Szpektor",
+                "Avinatan Hassidim",
+                "Yossi Matias"
+            ],
+            "title": "TRUE: Re-evaluating factual",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Patrick Lewis",
+                "Maria Lomeli",
+                "Lucas Hosseini",
+                "Fabio Petroni",
+                "Timo Schick",
+                "Jane DwivediYu",
+                "Armand Joulin",
+                "Sebastian Riedel",
+                "Edouard Grave."
+            ],
+            "title": "Atlas: Few-shot learning with retrieval augmented language models",
+            "venue": "arXiv preprint",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ziwei Ji",
+                "Nayeon Lee",
+                "Rita Frieske",
+                "Tiezheng Yu",
+                "Dan Su",
+                "Yan Xu",
+                "Etsuko Ishii",
+                "Ye Jin Bang",
+                "Andrea Madotto",
+                "Pascale Fung."
+            ],
+            "title": "Survey of hallucination in natural language generation",
+            "venue": "ACM Computing Surveys, 55(12):1\u201338.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhengbao Jiang",
+                "Frank F Xu",
+                "Luyu Gao",
+                "Zhiqing Sun",
+                "Qian Liu",
+                "Jane Dwivedi-Yu",
+                "Yiming Yang",
+                "Jamie Callan",
+                "Graham Neubig."
+            ],
+            "title": "Active retrieval augmented generation",
+            "venue": "arXiv preprint arXiv:2305.06983.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ryo Kamoi",
+                "Tanya Goyal",
+                "Juan Diego Rodriguez",
+                "Greg Durrett."
+            ],
+            "title": "WiCE: Real-World Entailment for Claims in Wikipedia",
+            "venue": "arXiv preprint arXiv:2303.01432.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas Oguz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen-tau Yih."
+            ],
+            "title": "Dense passage retrieval for opendomain question answering",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Urvashi Khandelwal",
+                "Omer Levy",
+                "Dan Jurafsky",
+                "Luke Zettlemoyer",
+                "Mike Lewis."
+            ],
+            "title": "Generalization through memorization: Nearest neighbor language models",
+            "venue": "International Conference on Learning Representations (ICLR).",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Peter Clark."
+            ],
+            "title": "Scitail: A textual entailment dataset from science question answering",
+            "venue": "Conference on Artificial Intelligence (AAAI), volume 32.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Kalpesh Krishna",
+                "Aurko Roy",
+                "Mohit Iyyer."
+            ],
+            "title": "Hurdles to progress in long-form question answering",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Christoph Schuhmann",
+                "Huu Nguyen",
+                "Alexander Mattick."
+            ],
+            "title": "Openassistant conversations \u2013 democratizing large language model alignment",
+            "venue": "arXiv preprint arXiv:2304.07327.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kenton Lee",
+                "Ming-Wei Chang",
+                "Kristina Toutanova."
+            ],
+            "title": "Latent retrieval for weakly supervised open domain question answering",
+            "venue": "Association for Computational Linguistics (ACL), pages 6086\u20136096.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nelson F Liu",
+                "Tianyi Zhang",
+                "Percy Liang."
+            ],
+            "title": "Evaluating verifiability in generative search engines",
+            "venue": "arXiv preprint arXiv:2304.09848.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jacob Menick",
+                "Maja Trebacz",
+                "Vladimir Mikulik",
+                "John Aslanides",
+                "Francis Song",
+                "Martin Chadwick",
+                "Mia Glaese",
+                "Susannah Young",
+                "Lucy CampbellGillingham",
+                "Geoffrey Irving"
+            ],
+            "title": "Teaching language models to support answers with verified",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Julian Michael",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer."
+            ],
+            "title": "AmbigQA: Answering ambiguous open-domain questions",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 5783\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Reiichiro Nakano",
+                "Jacob Hilton",
+                "Suchir Balaji",
+                "Jeff Wu",
+                "Long Ouyang",
+                "Christina Kim",
+                "Christopher Hesse",
+                "Shantanu Jain",
+                "Vineet Kosaraju",
+                "William Saunders"
+            ],
+            "title": "WebGPT: Browser-assisted questionanswering with human feedback",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jianmo Ni",
+                "Chen Qu",
+                "Jing Lu",
+                "Zhuyun Dai",
+                "Gustavo Hernandez Abrego",
+                "Ji Ma",
+                "Vincent Zhao",
+                "Yi Luan",
+                "Keith Hall",
+                "Ming-Wei Chang",
+                "Yinfei Yang."
+            ],
+            "title": "Large dual encoders are generalizable retrievers",
+            "venue": "Empirical Methods in Natural Language Processing",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aaron Parisi",
+                "Yao Zhao",
+                "Noah Fiedel."
+            ],
+            "title": "TALM: Tool augmented language models",
+            "venue": "arXiv preprint arXiv:2205.12255.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Riedel."
+            ],
+            "title": "KILT: a benchmark for knowledge intensive language tasks",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, pages 2523\u20132544, Online.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Dmytro Okhonko",
+                "Samuel Broscheit",
+                "Gautier Izacard",
+                "Patrick Lewis",
+                "Barlas O\u011fuz",
+                "Edouard Grave",
+                "Wen-tau Yih"
+            ],
+            "title": "The Web Is Your Oyster\u2013 Knowledge-Intensive NLP against a Very Large Web",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Krishna Pillutla",
+                "Swabha Swayamdipta",
+                "Rowan Zellers",
+                "John Thickstun",
+                "Sean Welleck",
+                "Yejin Choi",
+                "Zaid Harchaoui."
+            ],
+            "title": "MAUVE: Measuring the gap between neural text and human text using divergence frontiers",
+            "venue": "Advances in Neural Information Pro-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ofir Press",
+                "Muru Zhang",
+                "Sewon Min",
+                "Ludwig Schmidt",
+                "Noah A Smith",
+                "Mike Lewis."
+            ],
+            "title": "Measuring and narrowing the compositionality gap in language models",
+            "venue": "arXiv preprint arXiv:2210.03350.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text Transformer",
+            "venue": "The Journal of Machine Learning Research",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Pranav Rajpurkar",
+                "Jian Zhang",
+                "Konstantin Lopyrev",
+                "Percy Liang."
+            ],
+            "title": "SQuAD: 100,000+ questions for machine comprehension of text",
+            "venue": "Empirical Methods in Natural Language Processing (EMNLP), pages 2383\u20132392.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Hannah Rashkin",
+                "Vitaly Nikolaev",
+                "Matthew Lamm",
+                "Lora Aroyo",
+                "Michael Collins",
+                "Dipanjan Das",
+                "Slav Petrov",
+                "Gaurav Singh Tomar",
+                "Iulia Turc",
+                "David Reitter."
+            ],
+            "title": "Measuring Attribution in Natural Language Generation Models",
+            "venue": "Computational Linguis-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Samuel Joseph Amouyal Ohad Rubin",
+                "Ori Yoran",
+                "Tomer Wolfson",
+                "Jonathan Herzig",
+                "Jonathan Berant."
+            ],
+            "title": "QAMPARI: An Open-domain Question Answering Benchmark for Questions with Many Answers from Multiple Paragraphs",
+            "venue": "arXiv preprint",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Timo Schick",
+                "Jane Dwivedi-Yu",
+                "Roberto Dess\u00ec",
+                "Roberta Raileanu",
+                "Maria Lomeli",
+                "Luke Zettlemoyer",
+                "Nicola Cancedda",
+                "Thomas Scialom."
+            ],
+            "title": "Toolformer: Language models can teach themselves to use tools",
+            "venue": "arXiv preprint arXiv:2302.04761.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tal Schuster",
+                "Adam Fisch",
+                "Regina Barzilay."
+            ],
+            "title": "Get your vitamin C! robust fact verification with contrastive evidence",
+            "venue": "North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT), pages 624\u2013",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Freda Shi",
+                "Xinyun Chen",
+                "Kanishka Misra",
+                "Nathan Scales",
+                "David Dohan",
+                "Ed Chi",
+                "Nathanael Sch\u00e4rli",
+                "Denny Zhou."
+            ],
+            "title": "Large language models can be easily distracted by irrelevant context",
+            "venue": "International Conference on Machine Learning (ICML).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kurt Shuster",
+                "Mojtaba Komeili",
+                "Leonard Adolphs",
+                "Stephen Roller",
+                "Arthur Szlam",
+                "Jason Weston."
+            ],
+            "title": "Language models that seek for knowledge: Modular search & generation for dialogue and prompt completion",
+            "venue": "Findings of the Association",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ivan Stelmakh",
+                "Yi Luan",
+                "Bhuwan Dhingra",
+                "MingWei Chang."
+            ],
+            "title": "ASQA: Factoid questions meet long-form answers",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 8273\u20138288, Abu Dhabi, United",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto"
+            ],
+            "title": "Stanford Alpaca: An Instruction-following LLaMA model",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "James Thorne",
+                "Andreas Vlachos",
+                "Christos Christodoulopoulos",
+                "Arpit Mittal."
+            ],
+            "title": "FEVER: a large-scale dataset for fact extraction and VERification",
+            "venue": "North American Chapter of the Association for Computational Linguistics:",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "2023a. LLaMA: Open and Efficient Foundation Language Models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "driguez",
+                "Robert Stojnic",
+                "Sergey Edunov",
+                "Thomas Scialom"
+            ],
+            "title": "2023b. Llama 2: Open foundation and fine-tuned chat models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Kyunghyun Cho",
+                "Mike Lewis."
+            ],
+            "title": "Asking and answering questions to evaluate the factual consistency of summaries",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 5008\u20135020, Online. Asso-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Adina Williams",
+                "Nikita Nangia",
+                "Samuel Bowman."
+            ],
+            "title": "A broad-coverage challenge corpus for sentence understanding through inference",
+            "venue": "North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Shunyu Yao",
+                "Jeffrey Zhao",
+                "Dian Yu",
+                "Nan Du",
+                "Izhak Shafran",
+                "Karthik R Narasimhan",
+                "Yuan Cao."
+            ],
+            "title": "React: Synergizing reasoning and acting in language models",
+            "venue": "International Conference on Learning Representations (ICLR).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xiang Yue",
+                "Boshi Wang",
+                "Kai Zhang",
+                "Ziru Chen",
+                "Yu Su",
+                "Huan Sun."
+            ],
+            "title": "Automatic evaluation of attribution by large language models",
+            "venue": "arXiv preprint arXiv:2305.06311.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shiyue Zhang",
+                "Mohit Bansal."
+            ],
+            "title": "Finding a balanced degree of automation for summary evaluation",
+            "venue": "Empirical Methods in Natural Language Processing (EMNLP), pages 6617\u20136632.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yuan Zhang",
+                "Jason Baldridge",
+                "Luheng He."
+            ],
+            "title": "PAWS: Paraphrase adversaries from word scrambling",
+            "venue": "North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT), pages 1298\u20131308.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zexuan Zhong",
+                "Tao Lei",
+                "Danqi Chen."
+            ],
+            "title": "Training language models with memory augmentation",
+            "venue": "Empirical Methods in Natural Language Processing (EMNLP), pages 5657\u20135673.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Liu"
+            ],
+            "title": "2023) conduct human evaluation on citation precision in a different way: For each citation, they ask annotators to judge whether the citation",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large language models (LLMs; Brown et al., 2020; OpenAI, 2023) have gained increasing popularity as a tool for information seeking. While they generate engaging and coherent responses, their outputs are prone to hallucination and often contain factually incorrect information (Ji et al., 2023). This makes it harder for users to trust and verify LLMgenerated outputs without any supporting evidence.\nIn this work, we study a new generation paradigm for LLMs, in which we require LLMs\n1Our code and data are available at https://github. com/princeton-nlp/ALCE.\nto provide citations to one or a few text passages for any statement they generate (Figure 1). Incorporating citations brings several benefits: (1) users can easily verify LLMs\u2019 claims with the provided citations; (2) LLMs can generate text that faithfully follows cited passages, which has the promise to improve correctness and alleviate hallucination.\nMultiple commercial systems have adopted this paradigm: Bing Chat2 and perplexity.ai3 respond to user questions in natural language with references to Web pages. Nakano et al. (2021); Menick et al. (2022) share a similar motivation, but they mainly experiment with commercial search engines and closed-source models, making their results difficult to evaluate. Retrieval-augmented LMs (Borgeaud et al., 2022; Izacard et al., 2022) incorporate retrieved passages during both training and inference, but do not guarantee faithfulness to retrieved passages or explicitly provide citations. Additionally, previous studies mostly rely on human evaluation (Nakano et al., 2021; Menick et al., 2022; Liu et al., 2023), which is expensive and difficult to reproduce. We argue that the absence of automated evaluation hinders the advances of such systems.\n2https://www.bing.com/new 3https://www.perplexity.ai\nWe present ALCE, the first reproducible benchmark for automatically evaluating LLMs\u2019 generations with citations. ALCE assumes a naturallanguage question and a retrieval corpus, and requires building end-to-end systems to retrieve relevant passages from the corpus, generate a response to the question, and cite corresponding supporting passages. We compile three datasets that cover different types of questions and corpora\u2014 ASQA (Stelmakh et al., 2022), QAMPARI (Rubin et al., 2022), and ELI5 (Fan et al., 2019)\u2014as shown in Table 1. Different from previous benchmarks (Lee et al., 2019; Bohnet et al., 2022), ALCE evaluates long-text generation, focusing on automatically evaluating citation quality, and allows citing multiple passages for individual statements.\nWe design automatic evaluation methods in three dimensions: fluency, correctness, and citation quality. Specifically, we use MAUVE (Pillutla et al., 2021) to measure fluency, propose tailored correctness metrics for each dataset, and adopt a natural language inference (NLI) model (Honovich et al., 2022) to measure citation quality. We showcase how the three dimensions together contribute to a robust evaluation, preventing systems from exploiting shortcuts. Additionally, we conduct human evaluation and demonstrate a strong correlation with our automatic metrics.\nWe experiment on multiple systems with stateof-the-art LLMs and retrievers and also propose novel prompting strategies to synthesize retrieved text into text generation. Although all systems are capable of providing fluent and coherent responses, there remains substantial room for improvement in terms of correctness and citation quality: For example, on the ELI5 dataset, around 50% generations of our ChatGPT and GPT-4 baselines are not fully supported by the cited passages. Additionally, we find that (1) a closed-book model (generating answers without accessing any retrieved documents)\nwith post-hoc citing achieves good correctness but much worse citation quality; (2) although interactive retrieval approaches (Yao et al., 2023; Schick et al., 2023) offer more flexibility in when/what to retrieve, they do not improve the performance on this challenging benchmark; (3) summarizing the retrieved passages in a shorter text improves correctness but not citation quality; (4) reranking multiple generations boosts citation quality measured by human evaluation; (5) incorporating more retrieved passages in context does not help ChatGPT but improves GPT-4 performance.\nOur extensive analyses highlight three major challenges of building LLMs to generate text with citations: (1) the retrieval quality is crucial to the final performance and has substantial room for improvement; (2) LLMs\u2019 limited context window restricts the number of passages they can incorporate; (3) current LLMs struggle to synthesize multiple documents in context without being distracted by irrelevant ones, although better instruction tuning brings significant improvement. These challenges pose promising research directions for developing better systems integrating retrieval and LLMs."
+        },
+        {
+            "heading": "2 Task Setup and Datasets",
+            "text": "Our task is formalized as follows: Given a query q and a corpus of text passages D, the system is required to return an output S, which consists of n statements s1, ..., sn, and each statement si cites a list of passages Ci = {ci,1, ci,2, . . .}4, where ci,j \u2208 D. In this work, we segment LLMs\u2019 output into statements by sentence boundaries.5 While LLMs may include sentences that do not require a citation, such as \u201cI\u2019m happy to help\u201d, we observe that almost all sentences that LLMs output provide\n4In practice, we allow at most 3 citations for each statement as more citations usually do not help.\n5QAMPARI requires a list as the answer, and we choose each entity in the generated list as a statement.\nvaluable information and require citations, similar to findings in Liu et al. (2023). In this work, citations are enclosed by box brackets such as [1][2].\nWe divide the corpus D into 100-word passages following previous works on open-domain question answering (Karpukhin et al., 2020; Petroni et al., 2021; Piktus et al., 2021), in contrast to commercial systems like Bing Chat, which cite entire Web pages. We take 100-word passages because it is easier for humans to verify, and allows for more retrieved passages to fit in LLMs\u2019 limited context.\nWe choose QA datasets so that (1) they contain factual questions, in which references are important; (2) questions require long-text answers that cover multiple aspects; (3) answering the questions requires synthesizing multiple sources. We select three datasets (Table 1) and introduce them below. See \u00a7B for additional statistics.\nASQA (Stelmakh et al., 2022) is a long-form factoid dataset. As shown in Figure 1, each question is an ambiguous question from AmbigQA (Min et al., 2020) that requires multiple short answers to cover different aspects, and the dataset provides a longform answer that covers all short answers. Since most questions can be answered by Wikipedia, we use the 2018-12-20 Wikipedia snapshot as D.\nQAMPARI (Rubin et al., 2022) is a factoid QA dataset constructed from Wikipedia, where the answer is a list of entities that are drawn from different passages. Same as ASQA, we use the 2018-12- 20 Wikipedia as the corpus.\nELI5 (Fan et al., 2019) is a long-form QA dataset built on the Reddit forum \u201cExplain Like I\u2019m Five\u201d.6 Most ELI5 questions are how/why/what questions that require long answers and multiple passages as evidence. Due to the diverse topics discussed in the questions, we use Sphere (Piktus et al., 2021)\u2014a filtered version of Common Crawl7\u2014as the corpus. The ELI5 dataset is widely used in related work due to its challenging nature (Nakano et al., 2021; Menick et al., 2022; Liu et al., 2023).\nWe randomly select 1,000 examples from the development set of each dataset for ALCE. Our benchmark primarily assesses the citation capabilities of existing LLMs and does not provide training data, as there are no available examples that provide supervision for citations in these datasets.\n6https://www.reddit.com/r/explainlikeimfive/ 7https://commoncrawl.org. We also filter out any Web\npages from Reddit."
+        },
+        {
+            "heading": "3 Automatic Evaluation",
+            "text": "Our benchmark measures the following three dimensions of system responses: \u2022 Fluency: whether the model\u2019s generated text is\nfluent and coherent.\n\u2022 Correctness: whether the answer is accurate and covers all aspects of interest.\n\u2022 Citation quality: whether the answer is well supported by the cited passages and no irrelevant passages are cited.\nIn the following, we present automatic metrics for each dimension and discuss why the combination of the three metrics provides a robust evaluation."
+        },
+        {
+            "heading": "3.1 Fluency",
+            "text": "We use MAUVE (Pillutla et al., 2021) to evaluate the fluency of the output (\u00a7C). We deploy MAUVE for ASQA and ELI5 and omit it for QAMPARI, as QAMPARI only requires a list of short answers as the response and LLMs consistently adhere to the format in our experiments. As MAUVE is sensitive to output length and text style, and most LLMs are capable of producing fluent text, we mainly employ it as a sanity check as long as the MAUVE scores are high enough."
+        },
+        {
+            "heading": "3.2 Correctness",
+            "text": "Our objective is to measure the informativeness and utility of the generation to the question. Liu et al. (2023) propose to directly evaluate perceived utility by humans, a process difficult to automate. Therefore, we use correctness\u2014whether the response is accurate compared to a ground truth answer\u2014as a proxy. Evaluating the correctness of long-form generation is a challenging task (Krishna et al., 2021), and we describe our strategy for each dataset below. Figure 2 illustrates the metrics and we include additional implementation details in \u00a7C.\nFor ASQA, we follow Stelmakh et al. (2022) and calculate the recall of correct short answers by checking whether the short answers (provided by the dataset) are exact substrings of the generation (exact match recall; EM recall).\nFor QAMPARI, we follow Rubin et al. (2022) and calculate the precision and recall of the model prediction, by checking the exact match to the gold answer list. We add one additional adjustment: considering that users often want to know only a few example answers of the question, our evaluation considers recall to be 100% if the prediction includes at least 5 correct answers (recall-5)."
+        },
+        {
+            "heading": "ASQA Exact Match Recall",
+            "text": ""
+        },
+        {
+            "heading": "QAMPARI Precision, Recall",
+            "text": "Unlike ASQA and QAMPARI, the ELI5 dataset does not provide short entity answers. Fan et al. (2019) use ROUGE for evaluation, which does not reflect the correctness well (Krishna et al., 2021; \u00a7A). Inspired by works in summarization evaluation (Zhang and Bansal, 2021; Kamoi et al., 2023; Wang et al., 2020), we use InstructGPT (text-davinci-003; Ouyang et al., 2022) to generate three \u201csub-claims\u201d. Then we use TRUE8 (Honovich et al., 2022), a T5-11B (Raffel et al., 2020) model fine-tuned on a collection of natural language inference (NLI) datasets, to check whether the model output entails the sub-claims (claim recall). TRUE targets factual correctness and has been used by previous works in similar context (Bohnet et al., 2022; Gao et al., 2023). We demonstrate that claim recall provides a more accurate measure of correctness than existing metrics (more details in \u00a7A)."
+        },
+        {
+            "heading": "3.3 Citation Quality",
+            "text": "We evaluate citation qualities using two metrics: (1) citation recall, which determines if the output is entirely supported by cited passages, and (2) citation precision, which identifies any irrelevant citations. Although we prioritize citation recall as it entails a well-supported and truthful answer, enhancing precision is crucial for better user satisfaction, reducing the need for human review of extraneous\n8https://huggingface.co/google/t5_xxl_true_ nli_mixture. Details in \u00a7C.\n{statement 1} [1][2]. {statement 2} [3].{statement 3} [2][4][5]. Model output\nCitation Recall\nWhen did the US break away from England? Question\nRecall = 1 if the concatenation of all cited passages fully supports the segment. We use an NLI model to determine \u201cfully support\u201d.\npassages. Figure 3 provides an illustrated example. We use the NLI model TRUE (Honovich et al., 2022) again to automatically examine whether the cited passages entail the model generation. We conduct human evaluation (\u00a76) to demonstrate strong human correlation of our metric.\nCitation recall. We calculate the citation recall of each statement (0 or 1) and average over all statements in the model response. For each statement si, its citation recall is 1 if and only if there is at least one citation (Ci \u0338= \u2205) and \u03d5(concat(Ci), si) = 1, where \u03d5(premise, hypothesis) is the NLI model that outputs 1 if the premise entails the hypothesis, and 0 otherwise; concat(Ci) concatenates all passages in Ci together (details in \u00a7C). The NLI evaluation is in accordance with the attributable to identified sources (AIS) framework (Rashkin et al., 2023): \u03d5(concat(Ci), si) = 1 implies that si is true based solely on concat(Ci).\nCitation precision. Our citation precision evaluation detects citations that are irrelevant, but it does not require citing a minimal set. We follow this design because human writing often cites redundant sources to enhance credibility; human readers may also appreciate multiple citations, especially when it pertains to critical claims such as medical advice.\nWe calculate the citation precision for each citation (0 or 1) and average over all citations in the\nresponse. We first define if a citation is \u201cirrelevant\u201d. Intuitively, a citation ci,j is \u201cirrelevant\u201d if (a) ci,j itself cannot support si and (b) removing ci,j does not affect the rest of the citations to support si. Formally, ci,j is \u201cirrelevant\u201d if and only if\n(a) \u03d5(ci,j , si) = 0, AND\n(b) \u03d5(concat(Ci \\ {ci,j}), si) = 1.\nci,j has a precision of 1 if si has recall=1 and ci,j is not irrelevant. For example (Figure 3), when s3 cites three references [2][4][5] and recall=1, [2] is \u201cirrelevant\u201d if \u03d5([2], s3) = 0 and \u03d5([4][5], s3) = 1. For condition (b) to work, we set recall=1 as a prerequisite for precision= 1. Note that this algorithm overlooks the scenario when one citation partially supports the statement. We discuss the details in \u00a7E."
+        },
+        {
+            "heading": "3.4 ALCE is Robust to Shortcut Cases",
+            "text": "We showcase how the ALCE evaluation is robust to two possible shortcuts in \u00a7D: (1) using the top-1 retrieved passage as the response and citing itself, and (2) using the first two sentences of the top-1 passage. Both cases have almost-perfect citation scores, but (1) has low fluency due to its unnaturally long length compared to human answers, and (2) has low correctness due to low coverage."
+        },
+        {
+            "heading": "4 Modeling",
+            "text": "In this section, we discuss three major modeling components for an ALCE system\u2014retrieval, synthesis, and post-editing."
+        },
+        {
+            "heading": "4.1 Retrieval",
+            "text": "We explore simple, off-the-shelf retrievers. We use dense retrievers for Wikipedia, including GTR (Ni\net al., 2022) and DPR (Karpukhin et al., 2020); we use BM25 for Sphere. For each question, we retrieve the top-100 passages."
+        },
+        {
+            "heading": "4.2 Synthesis",
+            "text": "We focus on how to prompt an LLM to interact with the retriever, and synthesize and cite the evidence (without fine-tuning internal parameters). One noteworthy challenge is that existing LLMs all have limited context window and thus can only fit a handful of passages.\nVANILLA. We simply provide the model with the top-k9 passages and instruct the model to cite accordingly (Table 2). We also use in-context learning (Brown et al., 2020) and prepend two demonstrations. The complete instruction is in Table 23.\nSUMM/SNIPPET. With a 4K context window, we can at most safely fit k = 5 passages. As shown in Figure 4, top-5 retrieved passages can only cover 56.8% percent of the answers in ASQA.\nTo tackle this limitation, we propose to provide summaries or snippets of passages instead of the full text (summaries are abstractive but snippets are spans from passages). We acquire summaries and snippets by prompting ChatGPT with instructions (prompts in Table 25 and 26).10 Then we replace all passages with summaries/snippets. Summaries or snippets significantly reduce the passage length, allowing for more passages to fit in: for ASQA, they reduce passage length by 6\u00d7 on average.\nThough SUMM/SNIPPET allows for more retrieved passages, they are lossy compressions. To alleviate this problem, we propose INTERACT, an interactive prompting scheme to allow the model to check the full text of certain passages. At each step, the model can execute one of three actions: (1) \u201cCheck: Document [1][2]\u201d to check the full text of the corresponding documents; (2) \u201cOutput:\u201d to output a statement of the answer; (3) \u201cEnd.\u201d to end the generation. \u00a7C provides more details.\nINLINESEARCH. The above methods all display retrieval results at the beginning. In INLINESEARCH, we allow LLMs to call \u201csearch\u201d during the generation process (Yao et al., 2023; Press et al., 2022; Jiang et al., 2023). At each step, the model can execute one of three actions: \u201cSearch:\n9We can fit at most k = 3 for models with 2K window and at most k = 5 for models with 4K context window.\n10We also query ChatGPT whether the passage is relevant to the question, and filter out passages that are \u201cirrelevant\u201d.\n{query}\u201d to search among the top-100 passages11 by using GTR; the \u201cOutput\u201d and \u201cEnd\u201d actions are the same as INTERACT. For each \u201cSearch\u201d action, we display the best retrieved passage in the context. The passage is removed after one action to save context space. Table 3 shows an example.\nCLOSEDBOOK. We also add a simple closedbook baseline, where the model is only prompted with the instruction and the question, without any retrieved passages provided. Consequently, this variant does not cite any evidences."
+        },
+        {
+            "heading": "4.3 Post-editing",
+            "text": "In this section we discuss two strategies for refining the output to further improve its quality.\nRERANK. We randomly sample nsample = 4 responses for each question, and select the best response using the automatic citation recall score. we expect RERANK to improve the citation quality.\nPOSTCITE. For each statement, we find the best matching passage among the top-100 retrieved passages using GTR and cite it. We combine this with CLOSEDBOOK in our experiments."
+        },
+        {
+            "heading": "5 Experiments",
+            "text": "We describe experiment details in \u00a7C. We use ChatGPT (gpt-3.5-turbo-0301) with a 4K context window for most main experiments and ablations. We also report results with ChatGPT-16K (gpt3.5-turbo-16k-0613) and GPT-4 (gpt-4-0613; 8K context window). For open-source models, we test LLaMA (Touvron et al., 2023a) and its instruction-tuned versions, including Alpaca (Taori et al., 2023), Vicuna (Chiang et al., 2023), and\n11We do not search over the entire corpus because {query} may leave out certain context in the question and searching among the already-retrieved passages gives better results."
+        },
+        {
+            "heading": "ChatGPT",
+            "text": "Oasst (K\u00f6pf et al., 2023). They all have a 2K context window. We use short instructions for LLaMA (Table 24) to save context budget. Additionally, we test LLaMA-2-Chat, which were also trained to follow instructions (Touvron et al., 2023b). These models have a context window of 4K tokens, which allows for 5 passages per question."
+        },
+        {
+            "heading": "5.1 Main Results",
+            "text": "We present the main results on three datasets in Table 4, 5, and 6 respectively (full results in \u00a7G.6). We first note that all models achieve good fluency scores (except some models on ELI5 mainly due to their longer generations). We summarize the main takeaways from the experiments below.\nVANILLA achieves strong performance. Despite its simplicity, VANILLA (putting retrieved passages in context) achieves close-to-the-best performance among all prompting strategies.\nUsing summaries or snippets improves correctness. We see a universal trend that SUMM or SNIPPET improves correctness, though on ASQA and ELI5, such an improvement comes at a cost of citation quality due to the lossy compression. Combining INTERACT with SUMM/SNIPPET does not bring improvement, and we hypothesize that checking the full passages offers limited benefit and current LLMs are not proficient in an interactive usage.\nRetrieving text on the fly does not improve performance. All datasets show that VANILLA outperforms INLINESEARCH on citation quality (and"
+        },
+        {
+            "heading": "ChatGPT",
+            "text": "on correctness for ASQA and ELI5). By manually examining the examples, we find that it is challenging to ask detailed questions without seeing any passages. To improve INLINESEARCH, one may need to provide more context about the questions in advance or encourage the model to call retrievers with more detailed and diverse queries.\nRERANK boosts citation quality. We observe that RERANK leads to consistent improvement in citation quality (on ASQA and ELI5). As the automatic scores may be biased in RERANK, we also conduct human evaluation (\u00a76) and verify its effectiveness.\nCLOSEDBOOK+POSTCITE delivers strong correctness but poor citation quality. CLOSEDBOOK outperforms VANILLA in correctness on ELI5 and QAMPARI, and has only a 2% gap on ASQA. However, CLOSEDBOOK cannot provide any citation; when combined with POSTCITE, the citation quality remains inadequate. For instance, citation recall of CLOSEDBOOK+POSTCITE is lower than VANILLA by 47% on ASQA.\nTo understand why CLOSEDBOOK achieves better correctness and why POSTCITE cannot deliver satisfying citation quality, we manually examine model outputs and find that: (1) open-book models are easily distracted by irrelevant passages and generate responses with lower correctness, a phenomenon also observed by Shi et al. (2023); (2) CLOSEDBOOK often generates texts that are correct but not similar to any retrieved passages, making it difficult to match a citation post-hoc."
+        },
+        {
+            "heading": "ChatGPT",
+            "text": "GPT-4 brings limited improvement but is better at using long context. We evaluate GPT-4 with VANILLA and different numbers of passages (more results in \u00a7G.6). GPT-4 brings consistent (but limited) improvement on correctness, but often at a cost of citation quality. GPT-4 can also incorporate more passages due to its longer context window, which boosts both correctness and citation quality. On the contrary, including more passages with ChatGPT-16K does not improve the results (Table 7), suggesting that processing more passages is non-trivial and GPT-4 is better at synthesizing information from its long context than ChatGPT."
+        },
+        {
+            "heading": "5.2 Comparison of Different LLMs",
+            "text": "Table 7 compares different LLMs on ASQA using VANILLA (more results in \u00a7G.6). Notably, instruction-tuned models (Vicuna-13B and LLaMA-2-Chat) outperform the original LLaMA models in correctness and considerably enhance the citation quality. We observe that while the original LLaMA models are able to copy facts from the context, they struggle with accurately citing the sources or simply do not cite. Notably, the best open-source model, LLaMA-2-70B-Chat, achieves comparable correctness score as the OpenAI models, but still lags behind in citation quality."
+        },
+        {
+            "heading": "5.3 Retrieval Analysis",
+            "text": "The retrieval results play a crucial role to the correctness and the citation quality. Figure 4 presents the retrieval recall@k with different datasets and\nretrievers. As the number of passages increases, retrieval recall steadily improves. Additionally, Figure 4 shows the correctness performance of two models: (1) ChatGPT VANILLA with top-5 passages (our primary baseline); (2) an oracle version of the same model employing 5 gold passages (\u00a7G.1; the 5 gold passages match the retrieval recall@100). Notably, both models\u2019 correctness lags behind the corresponding retrieval recall (except for ELI5 top-5). The discrepancy suggests that despite the presence of accurate answers in context, LLMs struggle to utilize them in their outputs.\nWe compare the impact of different retrievers and different numbers of passages to LLMs. Figure 4 (right) shows that GTR outperforms DPR in both correctness and citation quality, emphasizing the importance of deploying better retrievers. Contrary to the retrieval recall trend in Figure 4, more passages in context do not yield substantial\nimprovement for ChatGPT. Specifically, correctness plateaus at top-1 passage and citation quality plateaus at top-3. GPT-4 (Table 7) exhibits an increasing trend with more passages, but the improvement is not proportional to the retrieval performance. This indicates the limited ability of LLMs in utilizing multiple passages within context."
+        },
+        {
+            "heading": "5.4 Other Ablations",
+            "text": "We provide additional ablations in \u00a7G. In summary, we find that (1) using comprehensive instructions enhances the citation quality of instruction-tuned models (\u00a7G.2); (2) including at least one demonstration improves the performance (\u00a7G.3); (3) finetuned models (FiD; Izacard and Grave, 2021) with POSTCITE lag behind LLMs in both correctness and citation quality and fail to generalize (\u00a7G.4)."
+        },
+        {
+            "heading": "6 Human Evaluation",
+            "text": "To verify that our automatic evaluation correlates with human judgement, we conduct human evaluation on selected models and request workers to judge model generations on three dimensions similar to Liu et al. (2023)\u2014(1) utility: a 1-to-5 score indicating whether the generation helps answer the question; (2) citation recall: the annotator is given a sentence and all passages that the sentence cited, and is asked to judge whether the passages fully support the sentence; (3) citation precision: given a sentence and one of its citations, the annotator is asked to judge whether the citation \u201cfully supports\u201d, \u201cpartially supports\u201d, or \u201cdoes not support\u201d the sentence. Each citation gets a precision score 1 if the output sentence has a citation recall of 1 and this citation at least \u201cpartially supports\u201d it. See Appendix F for more details.\nModel outputs score high utility. The utility scores do not differ significantly between models, ranging 3.7-3.9 for ASQA and 3.5-3.6 for ELI5. Upon inspection, all tested models are mostly able\nto output fluent answers that are related to the question, despite differences in factual correctness.\nOur automatic evaluation of citation quality strongly correlates with human judgements. As shown in Table 8 (ASQA) and Table 9 (ELI5), the relative rankings induced by human and our automatic metrics are consistent. The absolute citation scores from human and ALCE are very close except for RERANK (which uses the automated citation recall for reranking). This suggests that an improvement on ALCE citation metrics translates to improvement on human preferences. Furthermore, the Cohen\u2019s kappa coefficient between human and ALCE suggests substantial agreement for citation recall (0.698) and moderate agreement for citation precision (0.525). We also show in \u00a7G.5 that our automatic evaluation achieves high accuracy when treating human annotations as gold labels (85.1% for citation recall and 77.6% for citation precision)."
+        },
+        {
+            "heading": "7 Related Work",
+            "text": "Evaluating citations. Generating text with citations is closely related to attribution. Rashkin et al. (2023) define the \u201cattributable to identified sources\u201d (AIS) score to measure how faithful a generated text is to its sources. Bohnet et al. (2022) apply AIS scores on a single-document short-answer QA dataset. Honovich et al. (2022); Yue et al. (2023) study automatic evaluations for the AIS score. A concurrent work (Liu et al., 2023) conduct human evaluation on commercial generative search engines to examine their citation qualities.\nScientific citation text generation (Funkquist et al., 2022) is a related task to ALCE where the\nmodel is provided the papers-to-cite and context and is required to recover the citing text. It is different from ALCE as all citations are provided and the model only needs to perform the summarization.\nRetrieval-augmented LMs. Many studies have explored augmenting LMs with externally retrieved information. Guu et al. (2020); Borgeaud et al. (2022); Izacard et al. (2022) pre-train language models with retrieved passages, while Khandelwal et al. (2020); Zhong et al. (2022) augment LLMs\u2019 output by interpolating it with a kNN module; though none of them explicitly provide citations to the retrieved sources. Other works prompt or fine-tune LLMs to \u201cretrieve on-the-fly\u201d (Parisi et al., 2022; Schick et al., 2023; Shuster et al., 2022; Jiang et al., 2023; Yao et al., 2023; Press et al., 2022), which offers flexibility of when and what to search. Gao et al. (2023); He et al. (2022) propose to first generate text without accessing external documents and then retrieve relevant documents and revise the generation to be consistent.\nAmong previous explorations, Nakano et al. (2021); Menick et al. (2022) are the closest to our setting, where LLMs are trained to answer questions while providing citations. However, they do not explore retrieval strategies and simply use commercial search engines, which are not reproducible, and their models and training data are closedsource. To the best of our knowledge, we are the first to implement end-to-end systems that retrieve, synthesize, and cite documents with LLMs."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "We propose ALCE, the first automatic benchmark for evaluating LLM generations with citations. We deploy automatic metrics to measure fluency, correctness, and citation quality, and verify their efficacy via human evaluation. We explore a variety of strategies for incorporating citations in LLMs and demonstrate that current systems have considerable room for improvement on ALCE.\nOur experiments highlight a number of promising research directions, including (1) enhancing retrieval and refining retrieval integrations in LLMs, (2) developing long-context LLMs, and (3) advancing LLMs\u2019 ability to synthesize multiple sources. What\u2019s even more intriguing is that these research proposals extend beyond the ALCE setup (for example, long-context LLMs have numerous exciting applications), and ALCE can serve as a valuable testbed for their development."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Our evaluation still has room for improvement: (1) MAUVE is found to be sensitive to output length and may provide unstable results; (2) for the ELI5\u2019s correctness evaluation, the automatically generated claims may not cover all possible answers due to the open-ended nature of the questions; (3) our citation quality evaluation is limited by the accuracy of the NLI model; for citation precision, the NLI model cannot detect the case of \u201cpartially support\u201d and thus leads to a lower citation precision score than the human evaluation.\nAlthough we believe our curated datasets closely resemble the distribution of real-world user questions, we acknowledge that they do not cover more challenging scenarios, such as multi-hop reasoning, math reasoning, and code completion.\nIn our experiments, we focus on prompting LLMs without updating their model weights. Training a model directly to incorporate citations remains challenging due to the lack of supervised data. However, we observe that certain humaninstruction datasets contain examples similar to our task setup. We leave the exploration of training LLMs to generate citations for future work."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "We appreciate the helpful feedback from the members of the Princeton NLP group. We thank Alexander Wettig, Nelson Liu, Tianyi Zhang, Yu Meng, Sadhika Malladi, Yangsibo Huang, Zhiyuan Zeng, and Dan Friedman for the valuable discussion. We thank Surge AI (especially Anna Folinsky and Edwin Chen) for their support with the human evaluation. Tianyu Gao is supported by an IBM PhD Fellowship. This research is supported by an NSF CAREER award (IIS-2239290), a Sloan Research Fellowship, and Microsoft Azure credits through the \u201cAccelerate Foundation Models Academic Research\u201d Initiative."
+        },
+        {
+            "heading": "A Generating Claims for ELI5",
+            "text": "We elect not to use ROUGE-L as our main correctness metrics since it does not account for the different ways of expressing the same answer and it can be easily gamed (Krishna et al., 2021). We further illustrate this issue in Table 10. A system can easily achieve high ROUGE-L score by retrieving and returning the top passage from a BM25 index. However, the claims evaluation metric does not reward this approach since the output often lacks different aspects of the answers.\nInstead, we leverage the original answers to generate sub-claims and use them to serve as an estimate of the different aspects of the answers that we expect the model to cover. This approach is inspired by works in summarization evaluation and claim verification (Zhang and Bansal, 2021; Kamoi et al., 2023; Wang et al., 2020).\nSpecifically, we use text-davinci-003 to generate the sub-claims. We first manually annotate three question and answer pairs from the original ELI5 training set with 3 sub-claims each. Then, we prompt text-davinci-003 with these pairs as demonstrations. The full prompt with an example is shown in Table 22.\nInstructGPT generates coherent and faithful sub-claims. To ensure that the generated subclaims are of good quality, we manually inspect a random sample of 40 answers and their generated sub-claims (totaling to 120 sub-claims). For each sub-claim, we assign a score of 1 if it is relevant to the question and faithful to the facts presented in the ground truth, and 0 otherwise. We found that 112 out of the 120 (93.33%) sub-claims received a score of 1, meaning that our generated sub-claims are of high quality and faithful to the ground truth. Furthermore, the average number of words in the generated sub-claims is 14 words, and they are typically just one sentence long. This is aligned with the intent behind the metric\u2014to capture short factual claims made by the original answer.\nNLI model accurately predicts the entailment of sub-claims. We further analyze our sub-claim evaluation metrics by checking the error rate of the final prediction of the NLI model. To this end, we first manually annotate the entailment scores between 40 outputs and their sub-claims (in total of 120 pairs; these are the same questions from the previous analysis). We then use the NLI model to obtain the entailment scores for the output and sub-claims. Using the human annotations as the ground truth label, we found that the NLI model achieved an accuracy of 80.0%."
+        },
+        {
+            "heading": "B Dataset Statistics",
+            "text": "For ASQA, human answers have an average length of 65 words. For QAMPARI, each question has on average 13 answers. For ELI5, human answers have an average length of 131 words.\nC Implementation Details\nNLI model. We use the version of TRUE model from https://huggingface.co/google/ t5_xxl_true_nli_mixture, which is trained on SNLI (Bowman et al., 2015), MNLI (Williams et al., 2018), Fever (Thorne et al., 2018), Scitail (Khot et al., 2018), PAWS (Zhang et al., 2019), and VitaminC (Schuster et al., 2021). This model uses the following prompt: \u201cpremise: {PREMISE} hypothesis: {}\u201d and outputs \u201c1\u201d if the premise entails the hypothesis. We format each passage (when used as premise) by the format of \u201cTitle: {TITLE}\\n{TEXT}\u201d and concatenate all passages with \u201c\\n\u201d as a separator.\nMAUVE. When running MAUVE, we concatenate the question and the model output (or human answer) by space. We truncate both the references and the model generations to 100 words, as we found MAUVE results are unstable beyond this length for ELI5 (this is due to that ELI5 has a lot of extremely long human answers).\nExact match for ASQA and QAMPARI. Both ASQA and QAMPARI provide aliases for their short answers. We normalize the response and the short answers similarly to Rajpurkar et al. (2016) and report the score with the best-matching aliases. For ASQA, Stelmakh et al. (2022) also propose a QA-based evaluation which we found to be not as stable, and thus we do not report it in our paper.\nOutput truncation. Before evaluation, we trun-\ncate model output by new lines, as non-instructiontuned models may generate more content after new lines that are irrelevant.\nINTERACT. Empirically, we found that models tend to execute too many consecutive \u201ccheck\u201d actions, so we force the model to always \u201coutput\u201d after each \u201ccheck\u201d. We limit the maximum number of passages to check as 3 to avoid exceeding the length limit. The full passages are removed from the context after one action to save context space. Table 27 provides an example for INTERACT.\nMain experiments. For all experiments except ChatGPT RERANK, we run each model three times with different seeds and each time we sample two demonstrations from a pool of four. We report the averaged scores for all experiments in the main paper and we report the standard deviations in Appendix G.6.\nDecoding methods. Based on preliminary experiments we choose the following decoding methods: For ChatGPT and GPT-4, we use sampling with temperature 0.5; for all open-source models, we use Nucleus sampling (Holtzman et al., 2020) and set top_p = 0.95."
+        },
+        {
+            "heading": "D ALCE Catches Shortcut Cases",
+            "text": "Table 11 demonstrates the experiments to show that ALCE is robust to shortcut cases. Using the top-1 passages or first two sentences of the top-1 passages induces almost perfect citation quality, but fluency and correctness are dramatically lower."
+        },
+        {
+            "heading": "E Citation Recall Discussion",
+            "text": "Our citation precision evaluation cannot detect a citation that partially supports the statement and hence will falsely penalize it. Consider a statement s3 and its citations [2][4][5]: if [2] entails partial information of s3 that [4][5] also entails,\n[2] will be counted as \u201cirrelevant\u201d while it should not be penalized. Liu et al. (2023) conduct human evaluation on citation precision in a different way: For each citation, they ask annotators to judge whether the citation (1) fully support, (2) partially support, or (3) does not support si. One citation ci,j is precise if (a) ci,j fully supports si or (b) Ci fully supports si, ci,j partially supports si, and no c \u2208 Ci alone fully supports si. This evaluation solved the corner case we mentioned in the main paper (one citation partially supports the claim but is identified as \u201cirrelevant\u201d). However, it is challenging to conduct such evaluation automatically, as there is no existing model that can judge whether a citation \u201cpartially\u201d supports a claim. We also explore prompting ChatGPT to conduct such a task, which yields poor results. We defer it to future work to collect supervised data to train a better \u03d5 that can detect \u201cpartial support\u201d."
+        },
+        {
+            "heading": "F Human Evaluation",
+            "text": "We employ Surge AI (https://www.surgehq. ai/) for our human evaluation. The average pay to workers is 20 USD per hour. We randomly sample 100 examples from ASQA and ELI5 and annotate outputs of selected models: ChatGPT VANILLA, ChatGPT RERANK, and Vicuna-13B VANILLA."
+        },
+        {
+            "heading": "F.1 Utility",
+            "text": "To check if the model output is useful to downstream users, we measure the utility of the response S. We first show the query q and model response S to the worker and ask them to rate their agreement with the statement \"The response is a helpful and informative answer to the query\" on a Likert scale of 1-5, corresponding to Strongly Disagree, Disagree, Neutral, Agree, and Strongly Agree."
+        },
+        {
+            "heading": "F.2 Citation Recall",
+            "text": "The annotators are shown the question q, the statement si, and all of its citations Ci, and they rate if the joint set of citations fully support the statement (recall=1) or if they do not support all the claims (recall=0). We calculate the overall recall score for the generation by taking an average of all the statements\u2019 recall scores."
+        },
+        {
+            "heading": "F.3 Citation Precision",
+            "text": "We show the question q and a pair of a statement si and one of its citation ci,j \u2208 Ci to the annotator. We ask the annotator if the citation fully supports,\npartially supports, or does not support the factual claims in si. Citation ci,j has a citation precision of 1 if si has a recall of 1, and ci,j fully or partially supports si. Finally, we take an average of precision scores of all citations in the statement S to obtain the citation precision score."
+        },
+        {
+            "heading": "G More Experiments",
+            "text": ""
+        },
+        {
+            "heading": "G.1 Retrieval Analysis",
+            "text": "Oracle. Since the original datasets do not contain gold passages at the same granularity level as our setting (100-word passages), we approximate gold passages by running the following algorithm on the top-100 retrieved passages. We first calculate the recall score for each passage. Then, we sort the passages using their recall score and take the top 5 passages as our initial oracle set. Finally, we iterate through all passages that were not initially in the oracle set and try to replace the passages in the oracle set in a greedy fashion: we calculate the change in the recall score of the oracle set for every possible replacement and proceed with the replacement that results in the largest recall improvement. The set of 5 oracle passages were able to match the recall scores of the top-100 retrieved passages.\nDetailed retrieval results. We show detailed retrieval results in Tables 12, 13, and 14."
+        },
+        {
+            "heading": "G.2 Effect of Instructions",
+            "text": "Table 15 shows results of using a full instruction (Table 23) and a short version of the instruction (Table 24). We see that the full version induces stronger correctness and citation recall, while the two instructions lead to similar citation precision."
+        },
+        {
+            "heading": "G.3 Effect of Demonstrations",
+            "text": "Table 16 shows results on effect of different numbers of demonstrations. We see that numbers of demonstrations do not affect ChatGPT\u2019s correctness but using at least one demonstration ensures high citation recall. For the original LLaMA model, Table 16 shows the trend that more demonstrations lead to better performance."
+        },
+        {
+            "heading": "G.4 Fine-tuned Models",
+            "text": "To better understand the differences between finetuned models and prompted large language models, we train state-of-the-art question answering model, Fusion-in-Decoder (FiD; Izacard and Grave (2021)), and evaluate it in conjunction with POSTCITE. Due to the lack of training data with citation annotation, we first train a T5-base FiD model for 5 epochs on the ASQA training set with a batch size of 64 and a learning rate of 1e-4. During evaluation, we use POSTCITE to add citations to the output. We also use k = 5 passages during both training and evaluation of the FiD model.\nThen, we evaluate this model on both ASQA (in-domain) and ELI5 (out-of-domain), and the results can be found in Tables 17 and 18. Note that this is not a direct comparison, as ALCE assumes only evaluation data available and uses only fewshot data for prompting. As the results show, the FiD baseline still significantly lags behind prompting ChatGPT in both correctness and citation quality (even though it is trained on 4000+ examples). When tested on another dataset (ELI5), FiD performs even worse, showing that it is challenging to solve the problem by fine-tuning a small pretrained model."
+        },
+        {
+            "heading": "G.5 More Human Evaluation",
+            "text": "We evaluate the accuracy of our automatic metrics by treating the human annotations as gold labels. For citation recall, ALCE achieves an accuracy of 85.1%; for citation precision, ALCE has an accuracy of 77.6%. Regarding detecting insufficient citations, ALCE has a recall of 82.3% and a precision of 84.2%; regarding detecting \u201cirrelevant\u201d citations, ALCE has a recall of 75.6% and a precision of 66.1%\u2014ALCE is effective in detecting \u201cirrelevant\u201d citations, but due to the limitation of the NLI model (cannot detect \u201cpartial support\u201d), it has a relatively high false positive rate."
+        },
+        {
+            "heading": "G.6 Main Results",
+            "text": "We show full results of our experiments along with the standard deviation in Tables 19, 20, and 21. We repeat all experiments with three different random seeds. However, for ChatGPT RERANK, we use only one seeded run since each run repeats the generation step four times, and more experiments would incur significant costs."
+        },
+        {
+            "heading": "H Prompts",
+            "text": "We show detailed prompts used in our paper in Tables 23, 24, 25, 26, 27, 28, and 29."
+        },
+        {
+            "heading": "I Examples",
+            "text": "In Tables 30 and 31 we show some examples of questions and model generated outputs.\nFluency Correct. Citation\n(MAUVE) (EM Rec.) Rec. Prec. ROUGE-L Length\nChatGPT VANILLA (5-psg) 66.8 (2.0) 40.4 (0.6) 73.6 (1.1) 72.5 (1.8) 37.0 (0.4) 40.0 (3.1) w/ RERANK 77.0 (0.0) 40.2 (0.0) 84.8 (0.0) 81.6 (0.0) 36.9 (0.0) 40.8 (0.0) SUMM (10-psg) 70.0 (1.2) 43.3 (0.8) 68.8 (0.6) 61.8 (1.1) 36.9 (0.2) 49.8 (4.3) w/ INTERACT 69.0 (2.7) 39.1 (0.5) 73.4 (0.2) 66.5 (4.9) 35.7 (0.2) 34.0 (0.9) SNIPPET (10-psg) 69.8 (2.5) 41.4 (0.6) 65.3 (0.6) 57.4 (0.9) 36.4 (0.4) 43.0 (3.5) INLINESEARCH 58.7 (1.3) 32.4 (0.6) 58.3 (1.3) 58.3 (1.3) 58.2 (1.1) 23.7 (1.1) CLOSEDBOOK 52.7 (4.9) 38.2 (0.1) 26.7 (1.1) 26.7 (1.1) 37.1 (0.3) 61.1 (4.5) ORACLE(5-psg) 64.4 (0.6) 48.9 (1.2) 74.5 (0.6) 72.7 (1.0) 38.2 (1.0) 37.4 (3.0) ChatGPT-16K VANILLA (5-psg) 60.3 (\u2212) 36.1 (\u2212) 76.2 (\u2212) 76.5 (\u2212) 36.2 (\u2212) 24.7 (\u2212) VANILLA (10-psg) 56.3 (\u2212) 36.7 (\u2212) 75.3 (\u2212) 75.0 (\u2212) 35.6 (\u2212) 23.5 (\u2212) VANILLA (20-psg) 56.7 (\u2212) 36.1 (\u2212) 73.7 (\u2212) 73.5 (\u2212) 35.5 (\u2212) 23.1 (\u2212) GPT-4 VANILLA (5-psg) 67.1 (\u2212) 41.3 (\u2212) 68.5 (\u2212) 75.6 (\u2212) 39.2 (\u2212) 31.8 (\u2212) VANILLA (10-psg) 71.5 (\u2212) 43.1 (\u2212) 72.0 (\u2212) 75.5 (\u2212) 39.7 (\u2212) 33.8 (\u2212) VANILLA (20-psg) 64.9 (\u2212) 44.4 (\u2212) 73.0 (\u2212) 76.5 (\u2212) 40.1 (\u2212) 34.3 (\u2212) Open-source LLaMA-7B VANILLA (3-psg) 69.8 (2.0) 22.6 (0.9) 6.2 (2.7) 9.2 (2.9) 29.1 (0.2) 61.3 (14.3) Alpaca-7B VANILLA (3-psg) 84.2 (2.7) 32.1 (1.7) 12.3 (7.2) 14.1 (7.0) 33.1 (0.8) 51.7 (12.8) Vicuna-7B VANILLA (3-psg) 82.9 (5.0) 34.6 (0.7) 40.3 (0.5) 42.6 (1.0) 35.9 (0.7) 48.9 (6.6)\nLLaMA-13B VANILLA (3-psg) 68.4 (6.4) 26.9 (0.4) 10.6 (4.7) 15.4 (5.2) 29.8 (0.5) 67.1 (19.1) w/ RERANK 60.9 (14.5) 25.2 (2.5) 28.1 (9.3) 37.0 (7.2) 27.9 (2.4) 50.5 (14.3) LLaMA-13B SUMM (10-psg) 76.8 (4.7) 33.3 (0.7) 19.6 (3.9) 23.7 (4.7) 32.1 (0.3) 54.4 (1.5) LLaMA-13B SNIPPET (10-psg) 72.0 (0.8) 31.3 (1.1) 18.2 (3.1) 21.1 (3.6) 30.8 (0.4) 50.5 (4.5) LLaMA-13B ORACLE (3-psg) 69.5 (11.4) 34.3 (0.9) 10.8 (4.9) 15.8 (5.9) 30.6 (0.1) 67.3 (17.9)\nVicuna-13B VANILLA (3-psg) 82.6 (9.4) 31.9 (3.9) 51.1 (1.4) 50.1 (2.5) 34.9 (1.3) 39.1 (6.6) w/ RERANK 73.5 (2.1) 32.9 (1.3) 71.9 (1.9) 65.4 (1.5) 34.6 (0.3) 35.7 (4.2) Vicuna-13B SUMM (10-psg) 67.7 (0.3) 43.2 (0.1) 52.7 (2.6) 50.0 (2.1) 36.7 (0.2) 66.0 (1.2) Vicuna-13B SNIPPET (10-psg) 81.4 (3.0) 42.1 (1.2) 53.4 (1.9) 48.7 (1.6) 36.9 (0.4) 61.2 (7.4) Vicuna-13B ORACLE (3-psg) 72.9 (3.5) 42.5 (1.6) 52.2 (0.8) 50.7 (1.6) 36.5 (0.9) 38.7 (3.5)\nLLaMA-33B VANILLA (3-psg) 83.7 (5.4) 31.0 (0.8) 19.5 (5.3) 23.0 (5.3) 32.3 (0.6) 44.1 (9.3) w/ RERANK 82.1 (3.0) 31.3 (1.1) 41.3 (6.4) 44.7 (5.5) 32.5 (0.9) 39.4 (8.0) LLaMA-33B SUMM (10-psg) 72.0 (3.0) 33.1 (1.9) 34.7 (5.8) 35.2 (6.0) 31.1 (0.8) 43.7 (5.0) LLaMA-33B SNIPPET (10-psg) 70.8 (3.1) 30.9 (1.4) 31.4 (4.2) 31.5 (5.3) 30.1 (0.7) 42.8 (3.6) LLaMA-33B ORACLE (3-psg) 82.6 (7.1) 39.3 (2.9) 20.2 (6.2) 23.9 (6.3) 33.1 (0.9) 42.0 (9.3)\nOasst-33B VANILLA (3-psg) 82.9 (2.7) 34.8 (1.5) 36.2 (1.7) 38.3 (2.7) 35.5 (0.7) 45.2 (6.3) w/ RERANK 83.2 (2.4) 35.1 (1.4) 66.7 (0.2) 64.3 (1.0) 35.0 (0.6) 41.8 (6.0) Oasst-33B SUMM (10-psg) 74.3 (4.6) 40.9 (1.1) 45.5 (1.9) 44.0 (2.9) 35.8 (0.6) 54.3 (4.8) Oasst-33B SNIPPET (10-psg) 79.3 (1.0) 40.1 (0.9) 45.0 (1.3) 43.3 (2.2) 35.8 (0.2) 50.9 (4.1) Oasst-33B ORACLE (3-psg) 85.1 (2.8) 44.3 (2.4) 37.0 (1.0) 39.6 (1.5) 36.5 (1.1) 44.2 (5.8)\nLLaMA-2-7B-Chat VANILLA (5-psg) 80.1 (6.5) 33.9 (2.1) 50.9 (4.5) 47.5 (3.7) 35.1 (0.9) 42.3 (10.1) LLaMA-2-13B-Chat VANILLA (5-psg) 72.4 (6.3) 35.2 (1.2) 38.4 (5.9) 39.4 (4.8) 35.8 (0.9) 38.0 (6.4) LLaMA-2-70B-Chat VANILLA (5-psg) 88.3 (4.1) 41.5 (0.8) 62.9 (1.4) 61.3 (2.1) 37.1 (0.4) 52.9 (9.5)\nTable 19: ASQA full results.\nInstruction: Write an accurate, engaging, and concise answer for the given question using only the provided search results and cite them properly. Use an unbiased and journalistic tone. Always cite for any factual claim. You are provided summaries/snippets of the search results. You can use \"Check: Document [1][2]\" to check the corresponding full documents (you should only check relevant documents and you can at most check 3 documents at a time) and use \"Output:\" to output a sentence in the answer. In the answer, cite properly by using [1][2][3]. Cite at least one document and at most three documents in each sentence. If multiple documents support the sentence, only cite a minimum sufficient subset of the documents. Use \"End\" to end the generation.\nInstruction: Write an accurate, engaging, and concise answer for the given question using only the provided search results and cite them properly. Use an unbiased and journalistic tone. Always cite for any factual claim. You can use \"Search: key words\" to check the most relevant document\u2019s full text and use \"Output:\" to output a sentence in the answer. In the answer, cite properly by using [1][2][3]. Cite at least one document and at most three documents in each sentence. If multiple documents support the sentence, only cite a minimum sufficient subset of the documents. Use \"End\" to end the generation.\nTable 28: Instruction for INLINESEARCH.\nInstruction: Write an accurate, engaging, and concise answer for the given question. Use an unbiased and journalistic tone.\nTable 29: Instruction for CLOSEDBOOK.\nInstruction: Write an accurate, engaging, and concise answer for ...\nDocument [1](Title: How to Treat and Prevent Food Poisoning - MsPrepper) just a typical gastro upset. Salmonella is most commonly caused by eating undercooked or raw foods like eggs or meat. You know how your mom always warned you not to eat raw cookie dough? This is why. Most people do eat cookie dough and they are fine, but salmonella is a risk. If you do contract salmonella, you could start to feel bad within in a couple of hours after eating contaminated food, and sometimes it could take a day or two. Common symptoms are nausea and vomiting, loose stools (sometimes bloody), flu like symptoms, and stomach cramps. To treat Document [2](Title: FDA Issues Warning About Eating Raw Cookie Dough, But Not For Salmonella Risks) FDA Issues Warning About Eating Raw Cookie Dough, But Not For Salmonella Risks Used to licking the spoon or placating yourself with full-on chunks of raw cookie dough? The Food and Drug Administration issued a warning on Tuesday that strongly advises against continuing the habit. The agency asserted that consuming raw batter of any kind, whether for bread, cookies or pizza, could make a person sick. While you may have been warned in the past against eating raw dough due to the risk of contracting salmonella from raw eggs, the FDA is citing raw flour as the culprit for a Document [3](Title: It\u2019s Probably OK to Eat Raw Cookie Dough \u2014 As Long As You\u2019re Smart About It - The Crux - Very Top Secret Information) First, when most people think about health risks and cookie dough, they think about raw egg. Eggs can be contaminated with salmonella bacteria, and food safety recommendations encourage people to cook eggs until the white and yolk are firm in order to kill any bacteria. However, anyone making cookies can do things to reduce this risk by using pasteurized egg products. When my kids and I make cookie dough, we never use regular eggs. Instead, we use shell eggs that have been pasteurized to kill any harmful bacteria without actually cooking the egg itself. (A great public health innovation, if Document [4](Title: How Dangerous Is It to Eat Raw Cookie Dough? | Men\u2019s Health) Can Eating Raw Cookie Dough Really Make You Sick? Scientists reveal the truth about this supposedly dangerous delicacy By Katherine Dempsey There are few things more tempting in life than eyeing a bowl of cookie dough and deciding whether or not to stick your finger in for a scoop. It\u2019s a bit like playing Russian roulette. You could get lucky and enjoy the delicious dough without conseqence, but there\u2019s always the risk of getting serously sick with a food-borne illness. That\u2019s because multiple ingredients within the dough could be contaminated by pathogens such as Salmonella and E. coli, says Soohyoun Document [5](Title: How Dangerous Is It to Eat Raw Cookie Dough? | Men\u2019s Health) is usually pasteurized, so it\u2019s not likely that the egg would make you sick. However, other ingredients in the dough could potentially harbor pathogens. Experts say that a prime suspect in a 2009 E. coli outbreak linked to prepackaged cookie dough was actually the flour. Nuts and chocolate have also been linked to Salmonella outbreaks. Bottom line: You\u2019re better off skipping raw cookie dough. At least you\u2019ll have killer cookies as a consolation. The article How Bad Is It To Eat Raw Cookie Dough? originally ran on Prevention.com The 9 Foods Most Likely to Make You Sick Mmm, Just Don\u2019t ..."
+        }
+    ],
+    "title": "Enabling Large Language Models to Generate Text with Citations",
+    "year": 2023
+}

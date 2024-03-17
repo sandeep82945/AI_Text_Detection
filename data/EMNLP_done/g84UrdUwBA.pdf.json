@@ -1,0 +1,589 @@
+{
+    "abstractText": "Large language models (LLMs) such as GPT-3 have demonstrated a strong capability to generate coherent and contextually relevant text. However, amidst their successes, a crucial issue persists: their generated outputs still lack commonsense at times. Yet fine-tuning the entire LLM towards more commonsensical outputs is computationally expensive if not infeasible. In this paper, we present a computation-efficient framework that steers a frozen Pre-Trained Language Model (PTLM) towards more commonsensical generation (i.e., producing a meaningful and plausible output that incorporates a list of concepts). Specifically, we first construct a reference-free evaluator that assigns a sentence with a commonsensical score by grounding the sentence to a dynamic commonsense knowledge base from four different relational aspects. We then use the scorer as the oracle for commonsense knowledge, and extend the controllable generation method called NADO to train an auxiliary head that guides a fixed PTLM to better satisfy the oracle. We test our framework on a series of GPT-2-, FLAN-T5and Alpaca-based language models (LMs) on two constrained concept-tosentence benchmarks. Human evaluation results demonstrate that our method consistently leads to the most commonsensical outputs.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yufei Tian"
+        },
+        {
+            "affiliations": [],
+            "name": "Felix Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Nanyun Peng"
+        }
+    ],
+    "id": "SP:e3a0eb71ac9f410dd1e0284a2dd6effc89f6005e",
+    "references": [
+        {
+            "authors": [
+                "Satanjeev Banerjee",
+                "Alon Lavie."
+            ],
+            "title": "METEOR: An automatic metric for MT evaluation with improved correlation with human judgments",
+            "venue": "Proceedings of the ACL Workshop on Intrinsic and Extrinsic Evaluation Measures for Machine Transla-",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Ji",
+                "Tiezheng Yu",
+                "Willy Chung"
+            ],
+            "title": "A multitask, multilingual, multimodal evaluation of chatgpt on reasoning, hallucination, and interactivity. arXiv preprint arXiv:2302.04023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Antoine Bosselut",
+                "Hannah Rashkin",
+                "Maarten Sap",
+                "Chaitanya Malaviya",
+                "Asli Celikyilmaz",
+                "Yejin Choi."
+            ],
+            "title": "COMET: Commonsense transformers for automatic knowledge graph construction",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Chunkit Chan",
+                "Jiayang Cheng",
+                "Weiqi Wang",
+                "Yuxin Jiang",
+                "Tianqing Fang",
+                "Xin Liu",
+                "Yangqiu Song."
+            ],
+            "title": "Chatgpt evaluation on sentence level relations: A focus on temporal, causal, and discourse relations",
+            "venue": "arXiv preprint arXiv:2304.14827.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiangjie Chen",
+                "Wei Shi",
+                "Ziquan Fu",
+                "Sijie Cheng",
+                "Lei Li",
+                "Yanghua Xiao."
+            ],
+            "title": "Say what you mean! large language models speak too positively about negative commonsense knowledge",
+            "venue": "ACL 2023.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Li Dong",
+                "Mirella Lapata."
+            ],
+            "title": "Language to logical form with neural attention",
+            "venue": "Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 33\u201343, Berlin, Germany. Association for Computa-",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Alexander Dunn",
+                "John Dagdelen",
+                "Nicholas Walker",
+                "Sanghoon Lee",
+                "Andrew S. Rosen",
+                "Gerbrand Ceder",
+                "Kristin Persson",
+                "Anubhav Jain"
+            ],
+            "title": "Structured information extraction from complex scientific text with fine-tuned large language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yoav Goldberg"
+            ],
+            "title": "Measuring and improving consistency in pretrained language models. Transactions of the Association for Computational Linguistics, 9:1012\u20131031",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jinglong Gao",
+                "Xiao Ding",
+                "Bing Qin",
+                "Ting Liu."
+            ],
+            "title": "Is chatgpt a good causal reasoner? a comprehensive evaluation",
+            "venue": "arXiv preprint arXiv:2305.07375.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sarik Ghazarian",
+                "Yijia Shao",
+                "Rujun Han",
+                "Aram Galstyan",
+                "Nanyun Peng."
+            ],
+            "title": "Accent: An automatic event commonsense evaluation metric for open-domain dialogue systems",
+            "venue": "Proceedings of the 2023 Association for Computational Linguistics.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xingwei He",
+                "Yeyun Gong",
+                "A-Long Jin",
+                "Weizhen Qi",
+                "Hang Zhang",
+                "Jian Jiao",
+                "Bartuer Zhou",
+                "Biao Cheng",
+                "Sm Yiu",
+                "Nan Duan"
+            ],
+            "title": "Metric-guided distillation: Distilling knowledge from the metric to ranker and retriever for generative commonsense reasoning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "Lora: Low-rank adaptation of large language models",
+            "venue": "In International Conference on Learning Representations",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jena D. Hwang",
+                "Chandra Bhagavatula",
+                "Ronan Le Bras",
+                "Jeff Da",
+                "Keisuke Sakaguchi",
+                "Antoine Bosselut",
+                "Yejin Choi."
+            ],
+            "title": "Comet-atomic 2020: On symbolic and neural commonsense knowledge graphs",
+            "venue": "AAAI Conference on Artificial Intelligence.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ben Krause",
+                "Akhilesh Deepak Gotmare",
+                "Bryan McCann",
+                "Nitish Shirish Keskar",
+                "Shafiq Joty",
+                "Richard Socher",
+                "Nazneen Fatema Rajani."
+            ],
+            "title": "Gedi: Generative discriminator guided sequence generation",
+            "venue": "Findings of the Association for Computational Lin-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mike Lewis",
+                "Yinhan Liu",
+                "Naman Goyal",
+                "Marjan Ghazvininejad",
+                "Abdelrahman Mohamed",
+                "Omer Levy",
+                "Veselin Stoyanov",
+                "Luke Zettlemoyer"
+            ],
+            "title": "BART: Denoising sequence-to-sequence pre-training for natural language",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Bill Yuchen Lin",
+                "Wangchunshu Zhou",
+                "Ming Shen",
+                "Pei Zhou",
+                "Chandra Bhagavatula",
+                "Yejin Choi",
+                "Xiang Ren."
+            ],
+            "title": "CommonGen: A constrained text generation challenge for generative commonsense reasoning",
+            "venue": "Findings of the Association for Computa-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jiacheng Liu",
+                "Wenya Wang",
+                "Dianzhuo Wang",
+                "Noah A. Smith",
+                "Yejin Choi",
+                "Hanna Hajishirzi."
+            ],
+            "title": "Vera: A general-purpose plausibility estimation model for commonsense statements",
+            "venue": "ArXiv, abs/2305.03695.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ximing Lu",
+                "Sean Welleck",
+                "Peter West",
+                "Liwei Jiang",
+                "Jungo Kasai",
+                "Daniel Khashabi",
+                "Ronan Le Bras",
+                "Lianhui Qin",
+                "Youngjae Yu",
+                "Rowan Zellers",
+                "Noah A. Smith",
+                "Yejin Choi"
+            ],
+            "title": "NeuroLogic a*esque decoding: Constrained text generation with lookahead heuris",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ximing Lu",
+                "Peter West",
+                "Rowan Zellers",
+                "Ronan Le Bras",
+                "Chandra Bhagavatula",
+                "Yejin Choi."
+            ],
+            "title": "NeuroLogic decoding: (un)supervised neural text generation with predicate logic constraints",
+            "venue": "Proceedings of the 2021 Conference of the North American Chap-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kyle Mahowald",
+                "Anna A. Ivanova",
+                "Idan A. Blank",
+                "Nancy Kanwisher",
+                "Joshua B. Tenenbaum",
+                "Evelina Fedorenko"
+            ],
+            "title": "Dissociating language and thought in large language models: a cognitive perspective",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Gary Marcus."
+            ],
+            "title": "The next decade in AI: four steps towards robust artificial intelligence",
+            "venue": "CoRR, abs/2002.06177.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tao Meng",
+                "Sidi Lu",
+                "Nanyun Peng",
+                "Kai-Wei Chang."
+            ],
+            "title": "Controllable text generation with neurallydecomposed oracle",
+            "venue": "Advances in Neural Information Processing Systems.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Paul Christiano",
+                "Jan Leike",
+                "Ryan Lowe"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lianhui Qin",
+                "Sean Welleck",
+                "Daniel Khashabi",
+                "Yejin Choi."
+            ],
+            "title": "Cold decoding: Energy-based constrained text generation with langevin dynamics",
+            "venue": "NeurIPS 2022.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeff Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "Sentence-bert: Sentence embeddings using siamese bert-networks",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing. Association for Computational Linguistics.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Emily Sheng",
+                "Kai-Wei Chang",
+                "Premkumar Natarajan",
+                "Nanyun Peng."
+            ],
+            "title": "The woman worked as a babysitter: On biases in language generation",
+            "venue": "arXiv preprint arXiv:1909.01326.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Robyn Speer",
+                "Joshua Chin",
+                "Catherine Havasi"
+            ],
+            "title": "Conceptnet 5.5: An open multilingual graph of general knowledge",
+            "venue": "In Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto."
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https:// github.com/tatsu-lab/stanford_alpaca.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Eric Wallace",
+                "Shi Feng",
+                "Nikhil Kandpal",
+                "Matt Gardner",
+                "Sameer Singh."
+            ],
+            "title": "Universal adversarial triggers for attacking and analyzing nlp",
+            "venue": "arXiv preprint arXiv:1908.07125.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kevin Yang",
+                "Dan Klein."
+            ],
+            "title": "Fudge: Controlled text generation with future discriminators",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, pages",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chenhan Yuan",
+                "Qianqian Xie",
+                "Sophia Ananiadou."
+            ],
+            "title": "Zero-shot temporal relation extraction with chatgpt",
+            "venue": "arXiv preprint arXiv:2304.05454.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Honghua Zhang",
+                "Meihua Dang",
+                "Nanyun Peng",
+                "Guy Van den Broeck."
+            ],
+            "title": "Tractable control for autoregressive language generation",
+            "venue": "The Fortieth International Conference on Machine Learning.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q. Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with bert",
+            "venue": "ArXiv, abs/1904.09675.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Pei Zhou",
+                "Karthik Gopalakrishnan",
+                "Behnam Hedayatnia",
+                "Seokhwan Kim",
+                "Jay Pujara",
+                "Xiang Ren",
+                "Yang Liu",
+                "Dilek Hakkani-T\u00fcr."
+            ],
+            "title": "Think before you speak: Explicitly generating implicit commonsense knowledge for response generation",
+            "venue": "ACL 2022.",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "text": "Specifically, we first construct a reference-free evaluator that assigns a sentence with a commonsensical score by grounding the sentence to a dynamic commonsense knowledge base from four different relational aspects. We then use the scorer as the oracle for commonsense knowledge, and extend the controllable generation method called NADO to train an auxiliary head that guides a fixed PTLM to better satisfy the oracle. We test our framework on a series of GPT-2-, FLAN-T5- and Alpaca-based language models (LMs) on two constrained concept-tosentence benchmarks. Human evaluation results demonstrate that our method consistently leads to the most commonsensical outputs.1"
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "Recent years have witnessed remarkable progress in massively Pre-Trained Language Models such as GPT-3 (Brown et al., 2020), Llama (Touvron et al., 2023) and instruction following models such as Flan-T5 (Chung et al., 2022), ChatGPT (OpenAI, 2022), and Alpaca (Taori et al., 2023). However, one significant drawback is the lack of commonsense knowledge in their generated texts. There have been criticisms around their commonsense\n1Source code will be available at https://github.com/ PlusLabNLP/BOOST_EMNLP23\nimpotence (Marcus, 2020; Elazar et al., 2021; Mahowald et al., 2023), and a discrepancy in what LLMs generate in the wild versus in question answering (Chen et al., 2023).\nIn this paper, we explore the task of generative commonsense reasoning: a constrained text generation task aiming to generate a plausible sentence given a list of concepts as input. As depicted in Figure 1, language models should generate a sentence that incorporates \u2018open, hand, oyster, glove\u2019 in a meaningful way that aligns with our commonsense. We unveil that LLMs are\nunreliable and fail to generate commonsensical outputs when the input concepts get complicated. In another case depicted in Figure 1(c), when we swap the position of two input concepts \u2018customer\u2019 and \u2018employee\u2019, LLMs such as Davinci-003 are vulnerable to the change and generate \u2018employee watched a customer prepare food\u2019 despite being instructed to not consider the concept appearance order, which is far from plausible.\nVarious knowledge-augmented systems have been previously proposed to incorporate external knowledge into the model (Liu et al., 2021; He et al., 2022) for more plausible generation outputs. However, they all require updating model weights at the scale of hundreds millions of parameters such as BART (Lewis et al., 2020). As PTLMs continue to evolve and scale up to hundreds of billions of parameters in size, finetuning the entire LM becomes computationally prohibited for many parties in academia and the industry.\nIn this work, we propose BOOST, a framework to boost the commonsense of PLTMs\u2019 generation in a plug-and-play manner (Figure 2), which is inspired by the recent development of controllable generation to use a small auxiliary model to control a PTLM by training on its self-generated samples (Meng et al., 2022). Specifically, to better integrate commonsense knowledge, we first build a scorer that evaluates how commonsensical a sentence is. The commonsense scorer, called O-Scorer, extracts tuples of commonsense-related concepts (e.g., <customers, prepare their food>) from a sentence, and scores the extracted tuples by grounding the tuples to a dynamic commonsense knowledge base (CSKB) (Bosselut et al., 2019; Ghazarian et al., 2023). Next, we use the signal from the O-Scorer to train an auxiliary model that steers the PTLM toward more commonsensical outputs.\nNote that our training process is generalizable and only requires access to the output probability of the PTLMs, which is also efficient due to the smaller size of the auxiliary model.\nWe test our method on gpt-2, Alpaca, and Flan-T5 on two datasets: 1) CommonGen (Lin et al., 2020) that focuses on daily concepts (e.g., <open, hand, oyster, glove>) and 2) CSK-PN (Chen et al., 2023) that contains concepts linked with negated commonsense relations (e.g. <wear sunglasses, at night>).\nOur contributions are two-fold. First, we propose a reference-free evaluator to assess how commonsensical a sentence is, which achieves on-par performance with referenced-based metrics such as BERTScore (Zhang et al., 2019) in terms of correlation with human judgment. Second, we extend a controllable generation approach to improve commonsense for black-box PTLM. Experimental results show that our method consistently results in the most commonsensical outputs."
+        },
+        {
+            "heading": "2 Methodology",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Overview",
+            "text": "Figure 2 provides an overview of our approach, BOOST. During training, BOOST first generate numerous samples (y1, ...,yN ) from the PTLM conditioned on the input constraint x (e.g., \u2018lasso horse cow\u2019). We then construct an oracle to give commonsense scores on all of these self-sampled generations. Next, for each yi of length Ti, we train the auxiliary model called NADO which essentially learns to predict the expected cs score of the complete sequence yi given x and an incomplete sequence yi<t (t \u2208 [1, 2, ..., Ti]). The flow at inference time is illustrated in dashed lines: both the PTLM and NADO take x and the generated sequence (prefix) y<L as input, from which we\nobtain the final output distribution q(y|x). The rest of this section is organized as follows. In \u00a72.2, we first introduce details to construct the commonsense scorer. Then, in \u00a72.3, we provide the theory and practices to train the auxiliary model on PTLM\u2019s self-generated data towards the oracle."
+        },
+        {
+            "heading": "2.2 Constructing Commonsense Scorer",
+            "text": "We use commonsense relation tuples as the intermediate representation of a sentence. Specifically, we get rid of human annotation and leverage on the results of few-shot LLMs. We then check whether these extracted tuples are sensible. To this end, we assign each parsed tuple with a compatibility score based on its maximum similarity with the numerous valid accepted answers generated by COMET, a dynamic commonsense knowledge base (CSKB). Scores for all tuples in a target sentence are then aggregated to obtain the sentence-level commonsense score. Figure 3 provides an illustration of our oracle scorer."
+        },
+        {
+            "heading": "2.2.1 Commonsense-Relation Extraction",
+            "text": "Tuple Format We leverage the format of ConceptNet (Speer et al., 2017), a widely used knowledge graph connecting concepts or events with commonsense relations to represent general world knowledge. Specifically, each tuple T contains a head concept/event h (e.g., driller) and a tail concept/event t (e.g., drill a hole), which are connected through a commonsensical relation r (e.g., is Used For). We consider four crucial relation types that dominantly exist: is UsedFor, is Capable Of, is At Location, and is Part Of.\nTuple Extraction We present a labor and cost efficient way to extract all tuples from a target sentence, including both commonsensical and nonsensical tuples. LLMs such as GPT-3 and ChatGPT (Brown et al., 2020; Ouyang et al., 2022) have demonstrated remarkable ability of few-shot incontext learning for semantic parsing tasks (Dong and Lapata, 2016; Dunn et al., 2022). Motivated by such progress, instead of asking human workers to annotate a training set of sentences, we leverage OpenAI\u2019s GPT3.5-Turbo model to parse the relevant tuples. We hand-crafted 9 examples for our few-shot prompt such that the LLM can accurately extract both sensical tuples (e.g., a girl is Capable Of blowing candles) and nonsensical tuples (e.g., horse is Capable Of riding bikes) from the input sentence. The complete instruction and prompt can be found in Appendix A.\nHowever, in practice, using GPT-3.5-Turbo to parse all sentences needed to train our auxiliary model is costly and unreliable when dependent on the unpredictable traffic of OpenAI\u2019s API. To obtain an extractor that can parse \u223c a million sentences at a reasonable cost, we finetune a T5 large model (Raffel et al., 2020) on 6,000 GPT-3.5 annotated sentences for the same task. We show the performance of both tuple extractors in \u00a73.2."
+        },
+        {
+            "heading": "2.2.2 Generative Commonsense Scoring",
+            "text": "After extracting relation tuples from a sentence, we need to assess how commonsensical they are. To this end, we follow the compatibility test proposed by Ghazarian et al. (2023) and leverage COMET (Bosselut et al., 2019), a pre-trained generative commonsense transformer that can predict sensible tails given the heads and relations as input. Compared to other fixed and predefined knowledge bases, COMET is dynamic and much more flexible when dealing with original and unseen inputs.\nFormally, given a tuple Ti = (hi, ri, ti) and a dynamic CSKB denoted by Cdy, we query Cdy with the head h and relation r to obtain a diverse list of conditionally generated tails with beam decoding: {t\u2217j}kj=1 = Cdy(hi, ri, beam = k). The commonsense score for T is computed by\nCOMPAT(Ti|Cdy) = max 1\u2264i\u2264k cos(emb(ti), emb(t\u2217j )), (1) where emb(\u00b7) is the vector representation from a sentence embedding model (Reimers and Gurevych, 2019). Finally, we need to aggregate the compatibility scores computed from different\ntriplets extracted from a single sentence. The sentence-level commonsense score is denoted as the O-score. One rationale is that a single nonsensical tuple can result in a nonsensical sentence, while the other is that one mistake will be mitigated by other reasonable tuples. We hence take the 1) minimum and 2) average compatibility scores, and study their correlation with human judgement in \u00a73.3 and Table 2."
+        },
+        {
+            "heading": "2.3 Commonsense-Guided Generation",
+            "text": "In this subsection, we describe how we use our derived commonsense oracle to steer the PTL) toward more commonsensical outputs through a neurally-decomposed head (NADO). In \u00a72.3.1, we summarize the theoretical solution of Meng et al. (2022) to decompose the sequence-level oracle into token-level guidance with a frozen PTLM, such that when generating the i-th token, the auxiliary neural network modifies the original output logits predicted by the PTLM. Then, in \u00a72.3.2, we leverage this method to generate more commonsensical outputs. Note that our model only trains the additional NADO head which has much smaller size than the PTLM and does not require access to the parameters inside the PTLM."
+        },
+        {
+            "heading": "2.3.1 Token-Level Guidance with NADO",
+            "text": "Notation Suppose we have a sub-optimal PTLM p(yt=T \u2032 |x,yt<T \u2032), our goal is to obtain an optimal auto-regressive model q from p such that q generates outputs better satisfying the oracle scorer O (for example, q\u2019s generated outputs achieve higher O-scores than p). We now define a predictive function RO(x,yt<T \u2032) that predicts the expected O-scores of the complete sequence y given input x and the currently generated tokens yt<T \u2032 .\nRO (x,yt<T \u2032) = Expy\u223cp(y|x) [O(x,y) | y<T \u2032 ]\n(2) = \u2211 y\u2208Y p (y | x,yt<T \u2032)O(x,y)\n(3)\nSolution The unique closed formed solution of the optimal q is (namely, generates most commonsensically according to O):\nq\u2217 (y=T \u2032 | x,y<T \u2032) = RO (x,y\u2264T \u2032)\nRO (x,y\u2264T \u2032\u22121) p (y=T \u2032 | x,y<T \u2032)\n(4)\nPlease refer to Meng et al. (2022) for details of the proof. From Eq.4 we see that when both x and yt<T \u2032 are fixed, the optimal auto-regressive model is factorized into RO and p at step T \u2032:\nq\u2217 (yT \u2032 | x,y<T \u2032) \u221d RO (x,y\u2264T \u2032)\u00b7p (yT \u2032 | x,y<T \u2032) (5)\nApproximation As we cannot enumerate Y that contains infinite number of sequences, the welldefined RO is intractable. A neural model called NADO is hence introduced to approximate RO, by training on numerous samples Y generated by p."
+        },
+        {
+            "heading": "2.3.2 NADO-Guided Generation",
+            "text": "Given a pre-trained language model p such as the GPT-2 and Alpaca model, we first ask p to generate numerous samples to obtain an approximation of Y with various inputs concepts x \u2208 X . We then use the oracle O to assign each sample a score, which is used to train the NADO model.\nTraining During training, the NADO model takes x,y as input, and learns to predict from RO(x,yt=0) till RO(x,yt\u2264T ). Here, T is the complete sequence length and the sentence-level value O(x,y) is used as the labels for all steps, from t = 0 till t = T . We emphasize that in order for O to learn RO successfully, all (x, y) pairs must be self-sampled by the base model p instead of come from the CommonGen training data.\nWe use cross entropy loss as the objective function. Given a particular input x, the cross entropy loss is\nLCE(x) = \u2211 y\u2208Y p(y | x)LCE ( x,y, RO ) =\nT\u2211 i=0 CE ( RO (x,y\u2264i) ,O(x,y\u2264i ) )\n(6) In practice, we also add a regularization term to the loss. In order to satisfy the definition that \u2211 yi RO (x,y\u2264i) p (yi | x,y<i) = RO (x,y\u2264i\u22121), our regularization loss is measured by the KL divergence of the following: Lreg(x) = KL( \u2211 yi RO (x,y\u2264i) \u00b7 p (yi | x,y<i) ,\n(7)\nRO (x,y\u2264i\u22121)) (8)\nThen, the final training loss is LCE(x)+\u03bbLreg(x), where \u03bb is a hyper-parameter to balance these two\nterms. In practice, we use grid search and choose the best \u03bb from [0.1, 0.5, 1.0].\nInference At inference time, there are two forward passes as shown in Eq.5 and Figure 2. The decoding efficiency roughly remains unchanged because the NADO head has much smaller size than the base PTLM."
+        },
+        {
+            "heading": "3 Experimental Results for the Oracle",
+            "text": "In this section, we show the results of the commonsense scorer described in \u00a72.2. The experiments and results of commonsense-guided generation (\u00a72.3) can be found in \u00a74 and \u00a75."
+        },
+        {
+            "heading": "3.1 Tuple Extraction Data",
+            "text": "We use the GPT-3.5-Turbo model provided by OpenAI to extract the tuples of 6,000 sentences (with a total cost of $12.4), based on which we train the T5-large based tuple extractor. Since our goal is to parse all possible commonsense tuples whether they are sensical or not, we need both sensical and less reasonable sentences. To this end, we randomly select 3,000 sentences from the CommonGen (Lin et al., 2020) train split (we consider them as more sensical) and another 3,000 sampled from a basic gpt-2 model (we consider them as less coherent and sensical)."
+        },
+        {
+            "heading": "3.2 Tuple Extractor Results",
+            "text": "Following the rationale in \u00a73.1, we study the benefit brought by augmenting the training data with tuples extracted from less coherent and sensical sentences. Specifically, we compare the following three settings: 1) base: trained on the 3,000 sensical sentences; 2) aug: trained on 1,500 sensical sentences and 1,500 less sensical sentences; 3) all: trained on all 6,000 sentences. We test the model performance on a held-out set of 350 sentences that is mix of both types. To obtain the gold labels on the test set, we start with the few-shot GPT-3.5\u2019s annotation. After that, two human annotators iteratively checked and fixed any error they see.\nFor each relation type, we report the average f1score in Table 1. Here, if the lemmatized tokens in a generated triplet has over 50% overlap with those in the ground-truth triplet, we consider it as correct. Otherwise, we consider it as wrong. Comparing T5-Large aug with T5-Large base in Table 1, we see improvements across all four relation types. Besides, increasing the train data size also boosts the extractor\u2019s performance. We also notice that\nour extractors perform worse on UsedFor and CapableOf than on AtLocation and PartOf, which is partially due to the errors of the training signal (i.e., labels are inaccurately annotated by GPT-3.5)."
+        },
+        {
+            "heading": "3.3 Oracle Commonsense Scorer Results",
+            "text": "To compute the machine-generated compatibility score in Eq.1, we set beam size k = 128. Meanwhile, we instruct human annotators to evaluate the target sentences on how commonsensical they are. Each sentence is annotated by 3 workers with a scale of 1 (least) to 4 (best). We also ask every annotator to specify which part of the target sentence is nonsensical. We find out that explicitly asking the workers to pay detailed attention and point out the erroneous parts helps to increase the inter annotator agreement (IAA, measured by Spearman\u2019s correlation) from 0.56 to 0.67. The final sentencelevel commonsense score annotated by humans is the average of 3 individual ratings.\nTable 2 shows the correlations between human ratings and automatic scores. For our proposed O-Score, we report the correlations of taking the minimum (min) and average (mean) of all tuplelevel compatibility scores. Taking the average consistently result in higher correlation, reflecting that one mistake of a nonsensical tuple can be mitigated by other sensical ones. Therefore, we use the mean score to train the auxiliary model. We also compare with reference-based metrics such as METEOR (Banerjee and Lavie, 2005) and BERTScore(Zhang et al., 2019). Since there are, on average, 4 references per candidate in the Com-\nmonGen dataset, we select the first reference to compute BERTScore-one, and all available references to compute BERTScore-all. We show that our reference-free scorer performs on par with the best reference-based metric, BERTScore-all, and outperforms the same when use gold tuples extracted by human."
+        },
+        {
+            "heading": "4 Experiments about Guided Generation",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Data",
+            "text": "Training Data As is illustrated in Figure 2, we train our auxiliary model on the PTLM\u2019s selfsampled data. For each set of input concept, we use top-p sampling (p=0.95) with temperature T=0.7 to generate N samples. In theory, the larger the N , the more accurate approximation RO can learn. In practice, due to limitations in computational resources, we set N to 48 when the base model p is gpt-2, and 10 for Alpaca. In total, we have 1.5M training instances self-sampled by gpt-2 and 0.3M training instances self-sampled by Alpaca.\nTest Data We test on two different datasets. The first is the CommonGen dev split (Lin et al., 2020) which contains 993 lists of keywords focusing on daily concepts (e.g., <open, hand, oyster, glove>). Each list of keywords is paired with more than one human written references. Our second test data is distilled from CSK-PN (Chen et al., 2023), which sources challenging triples from ConceptNet (Speer et al., 2017) and tags them with positive/negative relation labels. We randomly select 993 triples with negative relations from CSK-PN (e.g. <wear sunglasses, at night>). There is no human reference for the second set. To reduce the effect of data leakage in GPT-3 and Alpaca, we randomly shuffled the keywords within each entry.2"
+        },
+        {
+            "heading": "4.2 Experimental Setup",
+            "text": "Choice of Base Models. Although our framework does not require fine-tune PTLMs, it does require access to the PTLM\u2019s output distribution. Hence, we cannot apply our method to some popular but close-sourced LLMs such as ChatGPT. We choose Alpaca, Flan-T5, and gpt2 instead. In addition, because the pre-trained gpt2 has no instruction following abilities, we have to train it to learn the task of \u2018generating a commonsensical sentence given these input concepts\u2019. Specifically, we finetune\n2We know that GPT-3 text-davinci-003 is trained on recent dataset up to 2021 which likely contains the ConceptNet (Speer et al., 2017) and CommonGen (Lin et al., 2020) data.\nit on the CommonGen training data for 1 epoch, well before the finetuning converges. We call this process warm up, as the goal is mainly to get the smaller base model onboard with our task format. For instruction-following models such as Alpaca, we still add this warm up process for a fair comparison. In total, we apply our commonsense-guided generation method to 5 different base models: gpt-2-large with warm up, zero-shot Alpaca-7b, few-shot Alpaca-7b, Alpaca-7b with warm up, and zero-shot Flan-T5-large. Auxiliary Models. The auxiliary RO models are 4-layer transformer decoders with the same dimension and number of heads as the base models. 3 They are 1/9, 1/8, and 1/12 the size of gpt-2-large, Alpaca-7b, and Flan-T5-large. We train the auxiliary models for 10 epochs with a learning rate of 1e\u2212 5 on a single NVIDIA A100 80GB GPU. In comparison, it is not possible to finetune Alpaca-7b using only one 80GB GPU without any memory-saving technique such as LoRA (Hu et al., 2021)."
+        },
+        {
+            "heading": "4.3 Compared Systems",
+            "text": "A*esque Decoding (Lu et al., 2022) A Neurologic decoding algorithm that injects constraints into a neurologic process with a look ahead heuristic, which results in more plausible outputs. Gelato (Zhang et al., 2023) A tractable probabilistic model (TPM) to impose constraints in language models such as gpt2-large. It achieves state-ofthe-art (SOTA) performance on constraint satisfaction. Because it is non-trivial to train new TPMs on Alpaca-based models, we use the authors\u2019 original TPM which is trained on the gpt2-large model that is finetuned on CommonGen. Lex (Meng et al., 2022) The vanilla NADO method trained only with lexical constraints as the sequence-level Boolean oracle. Namely, the scorer returns 1 if all lexical constraints are satisfied, and 0 otherwise. BOOST (Ours) Our method that uses the commonsense oracle to steer the auxiliary NADO model. We compare two variations: 1) BOOST CS: using only the commonsense oracle introduced in \u00a72.2, 2) BOOST Joint: multiplying the lexical checking Boolean function (the same used in Lex) with the commonsense oracle score.\n3For Flan-T5, the encoder-decoder model, the auxiliary head is a 4-layer T5 decoder that takes in the input constraints as hidden steps from a fixed, pretrained encoder.\nGPT3/ChatGPT We instruct OpenAI\u2019s 3.5-turbo and text-davinci-003 to generate a plausible sentence given the constraints, stating that the keywords do not necessarily have to remain in the same order. Note that these models are likely to be trained on our test data already.\nFor all compared systems, we decode with top_k (k = 30) sampling with a temperature T = 0.7."
+        },
+        {
+            "heading": "4.4 Evaluation Setup",
+            "text": "Evaluation Metrics We use the keyword coverage ratio (after lemmatization) and the O score as automatic metrics to assess the quality of generated texts. For the CommonGen benchmark which contains human written sentences, we also report the n-gram overlap (BLEU-4). Considering that our systems are trained towards higher O score, we also conduct human annotation for unbiased evaluation. Specifically, we instruct the MTurkers to evaluate 1) how commonsensical each sentence is from a 1-4 Likert scale, and 2) how much they\nlike the sentence overall (e.g., being interesting and informative). An example questionnaire with the full instructions can be found in Appendix C. We pay the MTurkers $18 per hour, and the annotation process is the same as mentioned in \u00a73.3.\nInter-Group and Intra-Group Comparison. Our human evaluation is relative, meaning that the human evaluators are asked to compare the quality of different machine-generated outputs given the same input constraint. Since we have five base models and each entails a group of systems to compare with, we first conduct human evaluation within each group. Then, we select representative systems for inter-group comparison."
+        },
+        {
+            "heading": "5 Result and Analysis",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Intra-Group Results",
+            "text": "We compile the results on the CommonGen and CSK-PN benchmark in Table 3. We find out that,\nBLEU-4 has a high correlation with the keyword coverage ratio (r = 0.914 measured by Pearson Correlation), but has close to zero correlation with human judgment on commonsense (r = \u22120.08) and overall preference (r = 0.04). We therefore hypothesize that BLEU-4, coverage ratio, and other metrics measuring the superficial lexical overlap with ground truth, cannot identify meaningful and commonsensical outputs at least in our setting.\nMoreover, in all eight groups of human evaluation, BOOST successfully improves the commonsense level and overall preference. Comparing Flan-T5 with gpt2, we see that our approach is more effective on instruction-tuned models than similarly-sized decoder only models. In addition, although BOOST Joint achieves slightly lower commonsense ratings than BOOST CS, the later is a lot worse in the keyword coverage, indicating that BOOST CS has a higher risk to generate reasonable sentences without satisfying the input constraints. Hence, in the constrained generation setting, we still consider BOOST Joint as the best model."
+        },
+        {
+            "heading": "5.2 Inter-Group Results",
+            "text": "The inter-group evaluation results are shown in Table 4. Our model BOOST outperforms all baselines, including Davinci-003. We leave the comparison with ChatGPT in \u00a76 as a separate discussion.\nSurprisingly, although human written references are still the most commonsensical, they are less preferred by our annotators compared with Alpaca/BOOST generations. Upon further inspection, we find out that the gold references in CommonGen are relatively short and flat (e.g., \u201cThe car drove through the snow.\u201d), which may also explain why Alpaca warmed up on CommonGen are\nConstraint table, dog, game, walk, fireplace (from CommonGen) Gelato A dog is playing a game on a table next to a fireplace. A* Decoding A group of people are walking and playing video games at their dining room with fireplaces, tables, and dogs. Davinci-003 The dog walked around the table playing agame by the fireplace. BOOST Joint The dog walked around the table while weplayed a game by the fireplace. Reference The dog plays the game of walking from thetable to the fireplace.\nConstraint statue, liberty, alive (from CSK-PN) A* Decoding There are still some people who want to see\nstatues of liberty as living creatures.\nAlpaca The Statue of Liberty became alive on a brightand sunny day. Lex The statue of Liberty is alive and standsproudly in New York City. Davinci-003 The Statue of Liberty stands alive and proud. BOOST Joint The Statue of Liberty is a symbol of freedom and justice that is alive and well in the hearts of all Americans.\nless preferred than the few-shot setting where highquality in-context examples are carefully selected."
+        },
+        {
+            "heading": "5.3 Case Study",
+            "text": "We show three example generations by our systems and the baselines in Table 5 to further understand the advantage of BOOST. In the first example, the baselines connect different constraints logically, but in a less plausible way (e.g., all concepts are bonded to the same object). Our system on the other hand describes a scene where people play games while dogs walk around. In the second and third example, we all know that the Statue of Liberty is not alive and a telephone is inedible. Instead of directly adding negations, we observe BOOST tends to provide more contexts to make its output reasonable. In contrast, other baselines wrongly acknowledge that the Statue of Liberty can be alive or the ant can eat a telephone."
+        },
+        {
+            "heading": "6 Has ChatGPT solved this task?",
+            "text": "Pair-wise comparison with BOOST. According to Table 4, our BOOST model may not surpass\nChatGPT in terms of commonsense, but it excels in overall preference. On the CSK-PN eval set where the gap between our model and ChatGPT is larger, we randomly select 100 pairs of outputs and conduct pairwise comparison on both commonsense and overall preference. Results can be found in Table 6. Specifically, each pair is first randomly shuffled and then annotated by at least two annotators. If the two annotators disagree, a third annotator is introduced for the final judge. They can also provide an optionally justification for their choice, which can earn them a small bonus.\nAnalysis of human\u2019s feedback reveal that ChatGPT tends to generate a sentence with highly common scenarios (e.g., \u201cIt is not advisable to wear sunglasses at night as it can impede your vision and increase the risk of accidents.\u201d), making the raters less interested. On the other hand, our model tends to provide more creative context (e.g., \u201cSomeone wears sunglasses at night to avoid the bright lights of the approaching car.\u201d), earning human annotators\u2019 overall preference without sacrificing the commonsense too much. As one annotator commented, \u201cI am fed up with those sentence with the so-called better commonsense because they are unimpressive\u201d. Such tendency of ChatGPT results in a higher commonsense rating yet noticeably lower overall preference. In short, we highlight that ChatGPT has not entirely solved the task.\nThe (so far) impossible fair comparison. Last, we would like to list two points regarding why evaluating ChatGPT and our model may not be a fair comparison: (1) Test Data Contamination: ChatGPT, which is trained on data up to 2021, likely have been trained on both datasets we tested on, including the test set. (2) Size and Trick Differences: Different from BOOST, ChatGPT is more than a plain language model and benefits largely from RLHF and many engineering tricks unknown to the public. It is also much larger than our largest PTLM, which is alpaca-7b. Nonetheless, our approach is technically complementary with Chat-\nGPT\u2019s language model, too. Unfortunately, due to API limitations, direct verification remains infeasible as we do not have access to its output logits.\n7 Related Works Controllable Generation with Frozen PTLMs There are two major lines: modifying the decoding algorithm and guiding PTLMs with auxiliary models. Recently, Lu et al. (2021, 2022) propose neurologic decoding with a look ahead heuristic, and (Qin et al., 2022) propose energy-based constrained decoding. One drawback of this line that the inference is slow due to the large search space. In the other line, Dathathri et al.; Krause et al. (2021); Yang and Klein (2021) guide the generation process with an auxiliary model in a plug-and-play fashion by leveraging statistical principles such as the Bayesian rule. Meng et al. (2022) propose to solve the distributional discrepancy of training data and PTLM\u2019s generated tokens by training with data directly sampled from the base model. However, mistakes in commonsense are neglected when previous works formulate the whole task as a lexical constrained generation game.\nCommonsense Metrics Zhou et al. (2022) measures the commonsense of dialogue turns by hard and soft matching the relations across each turn to ConceptNet. ACCENT (Ghazarian et al., 2023) propose an unsupervised metric to measure the event commonsense of dialogue responses via the ATOMIC knowledge graph (Hwang et al., 2020). Our commonsense oracle is inspired by ACCENT but we primarily focused on factoid commonsense in a constrained generation setting. A concurrent work of ours is Vera (Liu et al., 2023), a supervised model that learns to estimate the plausibility of statements. On the other hand, our metric is unsupervised and neuro-symbolic, thus more interpretable."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "We present BOOST, a framework to boost the commonsense in PLTMs\u2019 generation by training an auxiliary model with a commonsense scorer as the oracle. Our O-Scorer is task-agnostic and referencefree, meaning that it is generalizable to many downstream tasks such as dialogue and open-ended text generation. For such application, one may need to replace the vanilla PTLMs with task-specific models and then train the NADO head. The O-Scorer can also be combined with task-specific guidance."
+        },
+        {
+            "heading": "Acknowledgement",
+            "text": "We thank PlusLab members from UCLA and the anonymous EMNLP reviewers for their constructive feedback and suggestions that helped to improve the paper.\nLimitations\nWe discuss the limitations of our work. First, our tuple extractor covers only four relation types and can miss many other important relation types such as causal, temporal order, etc. These later relation types are more sophisticated such that LLMs are strong as gpt-3.5-turbo will fail at (Gao et al., 2023; Yuan et al., 2023; Chan et al., 2023; Bang et al., 2023). Second, we find out that the cosine similarities of sentence embeddings used in Eq. 1 to compute the compatibility scores sometimes do not align with human judgement. The errors incurred during the generative scoring process is then propagated into the training process of NADO, which negatively affect the output\u2019s quality. Last, although the auxiliary models have much smaller size than the PTLMs, the number of samples needed to train RO is still large in order to guarantee a good approximation of the closed form solution derived in Eq. 4.\nEthics Statement\nIt is known that the generated results by PTLMs could capture the bias reflected in the training data (Sheng et al., 2019; Wallace et al., 2019). Our model BOOST is build upon PTLMs including T5 (Raffel et al., 2020), GPT-2 (Radford et al., 2019), and Alpaca (Taori et al., 2023), which may potentially generate offensive content for certain groups or individuals. We suggest to carefully examine the potential biases before deploying the models to real-world applications."
+        },
+        {
+            "heading": "A Few-Shot GPT-3.5 Tuple Extractor Prompt",
+            "text": "The prompt we used to query gpt-3.5-turbo is displayed in Figure 4. Recall that we need the LLM to accurately extract both sensical tuples (e.g., a girl is Capable Of blowing candles) and nonsensical tuples (e.g., horse is Capable Of riding bikes) from the input sentence. Hence, not all sentences in the prompt are reasonable."
+        },
+        {
+            "heading": "B Full Results of Case Study",
+            "text": "The full results of the case study with outputs of all compared systems can be found in Table 7."
+        },
+        {
+            "heading": "C Human Evaluation Questionnaire",
+            "text": "Figure 5 and Figure 6 are screenshots of the questionnaire we used in the human evaluation.\nConstraint table, dog, game, walk, fireplace (from CommonGen) Gelato A dog is playing a game on a table next to a fireplace. A* Decoding A group of people are walking and playing video games at their dining room with fireplaces, tables, and dogs. Davinci-003 The dog walked around the table playing agame by the fireplace. Lex A dog is walking around the fireplace and playing a game on the table. Alpaca The dog walks around the table while playing a game by the fireplace. BOOST CS Two dogs are playing a game of Frisbee by\nthe fireplace next to the table.\nBOOST Joint The dog walked around the table while weplayed a game by the fireplace. ChatGPT A dog played near the table by the fireplace\nafter a walk.\nReference The dog plays the game of walking from thetable to the fireplace."
+        }
+    ],
+    "title": "BOOST: Harnessing Black-Box Control to Boost Commonsense in LMs\u2019 Generation",
+    "year": 2023
+}

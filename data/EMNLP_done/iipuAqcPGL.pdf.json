@@ -1,0 +1,776 @@
+{
+    "abstractText": "Large language models (LLMs) have shown impressive achievements in solving a broad range of tasks. Augmented by instruction fine-tuning, LLMs have also been shown to generalize in zero-shot settings as well. However, whether LLMs closely align with the human disagreement distribution has not been well-studied, especially within the scope of natural language inference (NLI). In this paper, we evaluate the performance and alignment of LLM distribution with humans using two different techniques to estimate the multinomial distribution: Monte Carlo Estimation (MCE) and Log Probability Estimation (LPE). As a result, we show LLMs exhibit limited ability in solving NLI tasks and simultaneously fail to capture human disagreement distribution. The inference and human alignment performances plunge even further on data samples with high human disagreement levels, raising concerns about their natural language understanding (NLU) ability and their representativeness to a larger human population.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Noah Lee"
+        },
+        {
+            "affiliations": [],
+            "name": "Na Min An"
+        },
+        {
+            "affiliations": [],
+            "name": "James Thorne"
+        }
+    ],
+    "id": "SP:b5f95bd6fef068d4870496b6076ec22e5d859a70",
+    "references": [
+        {
+            "authors": [
+                "David H Ackley",
+                "Geoffrey E Hinton",
+                "Terrence J Sejnowski."
+            ],
+            "title": "A learning algorithm for boltzmann machines",
+            "venue": "Cognitive science, 9(1):147\u2013169.",
+            "year": 1985
+        },
+        {
+            "authors": [
+                "Joris Baan",
+                "Wilker Aziz",
+                "Barbara Plank",
+                "Raquel Fernandez."
+            ],
+            "title": "Stop measuring calibration when humans disagree",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 1892\u20131915, Abu Dhabi, United",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Samuel R. Bowman",
+                "Gabor Angeli",
+                "Christopher Potts",
+                "Christopher D. Manning."
+            ],
+            "title": "A large annotated corpus for learning natural language inference",
+            "venue": "Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, pages",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing systems, 33:1877\u20131901",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models. arXiv preprint arXiv:2210.11416",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Karl Cobbe",
+                "Vineet Kosaraju",
+                "Mohammad Bavarian",
+                "Mark Chen",
+                "Heewoo Jun",
+                "Lukasz Kaiser",
+                "Matthias Plappert",
+                "Jerry Tworek",
+                "Jacob Hilton",
+                "Reiichiro Nakano"
+            ],
+            "title": "Training verifiers to solve math word problems",
+            "venue": "arXiv preprint arXiv:2110.14168",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ido Dagan",
+                "Oren Glickman",
+                "Bernardo Magnini."
+            ],
+            "title": "The pascal recognising textual entailment challenge",
+            "venue": "Machine Learning Challenges. Evaluating Predictive Uncertainty, Visual Object Classification, and Recognising Tectual Entailment: First",
+            "year": 2006
+        },
+        {
+            "authors": [
+                "Marie-Catherine De Marneffe",
+                "Mandy Simons",
+                "Judith Tonhauser."
+            ],
+            "title": "The commitmentbank: Investigating projection in naturally occurring discourse",
+            "venue": "proceedings of Sinn und Bedeutung, volume 23, pages 107\u2013124.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Dominik Maria Endres",
+                "Johannes E Schindelin."
+            ],
+            "title": "A new metric for probability distributions",
+            "venue": "IEEE Transactions on Information theory, 49(7):1858\u20131860.",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Tommaso Fornaciari",
+                "Alexandra Uma",
+                "Silviu Paun",
+                "Barbara Plank",
+                "Dirk Hovy",
+                "Massimo Poesio."
+            ],
+            "title": "Beyond black & white: Leveraging annotator disagreement via soft-label multi-task learning",
+            "venue": "Proceedings of the 2021 Conference of the North Amer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tommaso Fornaciari",
+                "Alexandra Uma",
+                "Silviu Paun",
+                "Barbara Plank",
+                "Dirk Hovy",
+                "Massimo Poesio"
+            ],
+            "title": "Beyond black & white: Leveraging annotator disagreement via soft-label multi-task learning",
+            "venue": "In Proceedings of the 2021 Conference of the North Amer-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Craig R Fox",
+                "G\u00fclden \u00dclk\u00fcmen."
+            ],
+            "title": "Distinguishing two dimensions of uncertainty",
+            "venue": "Fox, Craig R. and G\u00fclden \u00dclk\u00fcmen (2011),\u201cDistinguishing Two Dimensions of Uncertainty,\u201d in Essays in Judgment and Decision Making, Brun, W., Kirkeb\u00f8en, G. and",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Max Glockner",
+                "Ieva Stali\u016bnait\u0117",
+                "James Thorne",
+                "Gisela Vallejo",
+                "Andreas Vlachos",
+                "Iryna Gurevych."
+            ],
+            "title": "Ambifc: Fact-checking ambiguous claims with evidence",
+            "venue": "arXiv e-prints, pages arXiv\u20132104.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mitchell L Gordon",
+                "Kaitlyn Zhou",
+                "Kayur Patel",
+                "Tatsunori Hashimoto",
+                "Michael S Bernstein."
+            ],
+            "title": "The disagreement deconvolution: Bringing machine learning performance metrics in line with reality",
+            "venue": "Proceedings of the 2021 CHI Conference on Human",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Arnav Gudibande",
+                "Eric Wallace",
+                "Charlie Snell",
+                "Xinyang Geng",
+                "Hao Liu",
+                "Pieter Abbeel",
+                "Sergey Levine",
+                "Dawn Song."
+            ],
+            "title": "The false promise of imitating proprietary llms",
+            "venue": "arXiv preprint arXiv:2305.15717.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chuan Guo",
+                "Geoff Pleiss",
+                "Yu Sun",
+                "Kilian Q Weinberger."
+            ],
+            "title": "On calibration of modern neural networks",
+            "venue": "International conference on machine learning, pages 1321\u20131330. PMLR.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Collin Burns",
+                "Steven Basart",
+                "Andy Zou",
+                "Mantas Mazeika",
+                "Dawn Song",
+                "Jacob Steinhardt."
+            ],
+            "title": "Measuring massive multitask language understanding",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Felix Hill",
+                "Antoine Bordes",
+                "Sumit Chopra",
+                "Jason Weston."
+            ],
+            "title": "The goldilocks principle: Reading children\u2019s books with explicit memory representations",
+            "venue": "4th International Conference on Learning Representations, ICLR 2016.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Mengting Hu",
+                "Zhen Zhang",
+                "Shiwan Zhao",
+                "Minlie Huang",
+                "Bingzhe Wu."
+            ],
+            "title": "Uncertainty in natural language processing: Sources, quantification, and applications",
+            "venue": "arXiv preprint arXiv:2306.04459.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Srinivasan Iyer",
+                "Xi Victoria Lin",
+                "Ramakanth Pasunuru",
+                "Todor Mihaylov",
+                "D\u00e1niel Simig",
+                "Ping Yu",
+                "Kurt Shuster",
+                "Tianlu Wang",
+                "Qing Liu",
+                "Punit Singh Koura"
+            ],
+            "title": "Opt-iml: Scaling language model instruction meta learning through the lens of generalization",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nan-Jiang Jiang",
+                "Marie-Catherine de Marneffe."
+            ],
+            "title": "Investigating reasons for disagreement in natural language inference",
+            "venue": "Transactions of the Association for Computational Linguistics, 10:1357\u20131374.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Saurav Kadavath",
+                "Tom Conerly",
+                "Amanda Askell",
+                "Tom Henighan",
+                "Dawn Drain",
+                "Ethan Perez",
+                "Nicholas Schiefer",
+                "Zac Hatfield Dodds",
+                "Nova DasSarma",
+                "Eli Tran-Johnson"
+            ],
+            "title": "Language models (mostly) know what they know",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lorenz Kuhn",
+                "Yarin Gal",
+                "Sebastian Farquhar."
+            ],
+            "title": "Semantic uncertainty: Linguistic invariances for uncertainty estimation in natural language generation",
+            "venue": "The Eleventh International Conference on Learning Representations.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Solomon Kullback",
+                "Richard A Leibler."
+            ],
+            "title": "On information and sufficiency",
+            "venue": "The annals of mathematical statistics, 22(1):79\u201386.",
+            "year": 1951
+        },
+        {
+            "authors": [
+                "Percy Liang",
+                "Rishi Bommasani",
+                "Tony Lee",
+                "Dimitris Tsipras",
+                "Dilara Soylu",
+                "Michihiro Yasunaga",
+                "Yian Zhang",
+                "Deepak Narayanan",
+                "Yuhuai Wu",
+                "Ananya Kumar"
+            ],
+            "title": "Holistic evaluation of language models. arXiv preprint arXiv:2211.09110",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Stephanie Lin",
+                "Jacob Hilton",
+                "Owain Evans."
+            ],
+            "title": "Teaching models to express their uncertainty in words",
+            "venue": "arXiv preprint arXiv:2205.14334.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alisa Liu",
+                "Zhaofeng Wu",
+                "Julian Michael",
+                "Alane Suhr",
+                "Peter West",
+                "Alexander Koller",
+                "Swabha Swayamdipta",
+                "Noah A Smith",
+                "Yejin Choi."
+            ],
+            "title": "We\u2019re afraid language models aren\u2019t modeling ambiguity",
+            "venue": "arXiv preprint arXiv:2304.14399.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "venue": "arXiv preprint arXiv:1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhu Liu",
+                "Ying Liu."
+            ],
+            "title": "Ambiguity meets uncertainty: Investigating uncertainty estimation for word sense disambiguation",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2023, pages 3963\u20133977, Toronto, Canada. Association for Com-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shayne Longpre",
+                "Le Hou",
+                "Tu Vu",
+                "Albert Webson",
+                "Hyung Won Chung",
+                "Yi Tay",
+                "Denny Zhou",
+                "Quoc V Le",
+                "Barret Zoph",
+                "Jason Wei"
+            ],
+            "title": "The flan collection: Designing data and methods for effective instruction tuning",
+            "venue": "arXiv preprint arXiv:2301.13688",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Johannes Mario Meissner",
+                "Napat Thumwanit",
+                "Saku Sugawara",
+                "Akiko Aizawa."
+            ],
+            "title": "Embracing ambiguity: Shifting the training target of NLI models",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nicholas Metropolis",
+                "Stanislaw Ulam."
+            ],
+            "title": "The monte carlo method",
+            "venue": "Journal of the American statistical association, 44(247):335\u2013341.",
+            "year": 1949
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Julian Michael",
+                "Hannaneh Hajishirzi",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Ambigqa: Answering ambiguous open-domain questions",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 5783\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Swaroop Mishra",
+                "Daniel Khashabi",
+                "Chitta Baral",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Cross-task generalization via natural language crowdsourcing instructions",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nasrin Mostafazadeh",
+                "Nathanael Chambers",
+                "Xiaodong He",
+                "Devi Parikh",
+                "Dhruv Batra",
+                "Lucy Vanderwende",
+                "Pushmeet Kohli",
+                "James Allen."
+            ],
+            "title": "A corpus and cloze evaluation for deeper understanding of commonsense stories",
+            "venue": "Proceedings of the 2016",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Mahdi Pakdaman Naeini",
+                "Gregory Cooper",
+                "Milos Hauskrecht."
+            ],
+            "title": "Obtaining well calibrated probabilities using bayesian binning",
+            "venue": "Proceedings of the AAAI conference on artificial intelligence, volume 29.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Yixin Nie",
+                "Adina Williams",
+                "Emily Dinan",
+                "Mohit Bansal",
+                "Jason Weston",
+                "Douwe Kiela."
+            ],
+            "title": "Adversarial nli: A new benchmark for natural language understanding",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yixin Nie",
+                "Xiang Zhou",
+                "Mohit Bansal"
+            ],
+            "title": "What can we learn from collective human opinions on natural language inference data",
+            "venue": "In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ellie Pavlick",
+                "Tom Kwiatkowski."
+            ],
+            "title": "Inherent disagreements in human textual inferences",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:677\u2013694.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Barbara Plank."
+            ],
+            "title": "The \u201cproblem\u201d of human label variation: On ground truth in data, modeling and evaluation",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 10671\u201310682, Abu Dhabi, United Arab",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pranav Rajpurkar",
+                "Jian Zhang",
+                "Konstantin Lopyrev",
+                "Percy Liang."
+            ],
+            "title": "Squad: 100,000+ questions for machine comprehension of text",
+            "venue": "Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing, pages 2383\u20132392.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Marta Sandri",
+                "Elisa Leonardelli",
+                "Sara Tonelli",
+                "Elisabetta Je\u017eek."
+            ],
+            "title": "Why don\u2019t you do it right? analysing annotators\u2019 disagreement in subjective tasks",
+            "venue": "Proceedings of the 17th Conference of the European Chapter of the Association for Computa-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shibani Santurkar",
+                "Esin Durmus",
+                "Faisal Ladhak",
+                "Cinoo Lee",
+                "Percy Liang",
+                "Tatsunori Hashimoto"
+            ],
+            "title": "Whose opinions do language models reflect? arXiv preprint arXiv:2303.17548",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Anna Schmidt",
+                "Michael Wiegand."
+            ],
+            "title": "A survey on hate speech detection using natural language processing",
+            "venue": "Proceedings of the fifth international workshop on natural language processing for social media, pages 1\u201310.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jiuding Sun",
+                "Chantal Shaib",
+                "Byron C Wallace."
+            ],
+            "title": "Evaluating the zero-shot robustness of instruction-tuned language models",
+            "venue": "arXiv preprint arXiv:2306.11270.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alex Tamkin",
+                "Kunal Handa",
+                "Avash Shrestha",
+                "Noah Goodman."
+            ],
+            "title": "Task ambiguity in humans and language models",
+            "venue": "arXiv preprint arXiv:2212.10711.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yi Tay",
+                "Mostafa Dehghani",
+                "Vinh Q Tran",
+                "Xavier Garcia",
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Hyung Won Chung",
+                "Dara Bahri",
+                "Tal Schuster",
+                "Steven Zheng"
+            ],
+            "title": "Ul2: Unifying language learning paradigms",
+            "venue": "In The Eleventh International Conference on Learning Rep-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "James Thorne",
+                "Andreas Vlachos",
+                "Christos Christodoulopoulos",
+                "Arpit Mittal."
+            ],
+            "title": "FEVER: a large-scale dataset for fact extraction and VERification",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alexandra N Uma",
+                "Tommaso Fornaciari",
+                "Dirk Hovy",
+                "Silviu Paun",
+                "Barbara Plank",
+                "Massimo Poesio."
+            ],
+            "title": "Learning from disagreement: A survey",
+            "venue": "Journal of Artificial Intelligence Research, 72:1385\u20131470.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Amanpreet Singh",
+                "Julian Michael",
+                "Felix Hill",
+                "Omer Levy",
+                "Samuel R Bowman."
+            ],
+            "title": "Glue: A multi-task benchmark and analysis platform for natural language understanding",
+            "venue": "EMNLP 2018, page 353.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yuxia Wang",
+                "Minghan Wang",
+                "Yimeng Chen",
+                "Shimin Tao",
+                "Jiaxin Guo",
+                "Chang Su",
+                "Min Zhang",
+                "Hao Yang."
+            ],
+            "title": "Capture human disagreement distributions by calibrated networks for natural language inference",
+            "venue": "Findings of the Association for Compu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "de Marneffe"
+            ],
+            "title": "Identifying inherent disagree",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Natural language inference (NLI) has long served as a fundamental testbed to evaluate the ability of a model to recognize entailment and capture plausible inference relations between pairs of sentences (Dagan et al., 2006; Bowman et al., 2015; Williams et al., 2018). When constructing datasets, conventional processes result in a single label per instance even if multiple annotators contribute, which limits the full representation of diverse opinions that might arise in a larger human population. Thus, recent datasets have become more attentive to incorporating multiple interpretations (Pavlick and Kwiatkowski, 2019; Nie et al., 2020b; Glockner et al., 2023) to capture dissenting human opinions.\n\u2217Equal contribution 1The source code for the experiments is available at\nhttps://github.com/xfactlab/emnlp2023-LLM-Disagreement.\nMeanwhile, instruction fine-tuning large language models (LLMs) has elicited remarkable generalizability to diverse unseen tasks (Zhao et al., 2023). Not only can they generate free-form texts, but they can also select one answer from multiple options given in the input prompt. However, while many works study user interaction and conversational usage (Liang et al., 2022), limited works evaluate these instruction-following LLMs on a foundational NLI task. Therefore, we aim to answer the following questions: Can LLMs capture dissenting voices that naturally arise in the dataset? Are LLMs representative of the voices of the annotators in inference tasks?\nWith this in mind, we jointly assess on a number of instruction-following LLMs, Flan-T5 (Chung et al., 2022), Flan-UL2 (Tay et al., 2022), OPTIML-Max (Iyer et al., 2022), and GPT-3 (Ouyang et al., 2022), on their performance on human opinion distribution datasets - ChaosNLI (Nie et al., 2020b) and PK2019 (Pavlick and Kwiatkowski, 2019). For the process of using the model output distribution as an estimate of human disagreement distribution, we offer novel estimation methods: Monte Carlo Estimation (MCE) and Log Probability Estimation (LPE) (Figure 1).\nWe find that the state-of-the-art GPT-3 model does not outperform smaller models such as finetuned BERT (Devlin et al., 2019) and partially finetuned Flan-T5-XXL in solving inference problems. Furthermore, it yields higher Jensen-Shannon Distance (JSD) (Endres and Schindelin, 2003) and Distribution Calibration Error (DCE) (Baan et al., 2022) than BERT for the ChaosNLI datasets. Each model is optimized using different estimation methods and prompt types, where GPT/Flan-T5-XXL attains the best performances in NLI capability and human alignment when using LPE/MCE. Our paper\u2019s contributions are as follows:\n\u2022 To the best of our knowledge, we are the first to test generative LLMs jointly on the performance and human disagreement on NLI.\n\u2022 We suggest two probability distribution estimation techniques for LLMs to represent disagreement and perform empirical evaluations to with respect to the human disagreement distribution.\n\u2022 We study the model sensitivity to estimation methods and prompt types to demonstrate how these contribute to the ability of models to represent human-level disagreement for NLI."
+        },
+        {
+            "heading": "2 Related Works",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Disagreement in NLI",
+            "text": "Considering only a single label in NLI datasets is bound to fail in capturing the diverse range of user opinions and could lead to misrepresentations of language models. To measure inherent human disagreements in NLI, Nie et al., 2020b and Pavlick and Kwiatkowski, 2019 collected large number of human annotations (e.g., 100 and 50 annotations for ChaosNLI and PK2019) per instance for common NLI datasets such as SNLI (Bowman et al., 2015) and MultiNLI (Williams et al., 2018). When taking\nthe majority vote from these additional annotations, 22% of the instances exhibited a change in label compared to the original dataset (Nie et al., 2020b).\nTo characterize and reproduce the extent of human disagreement in NLI tasks, previous works directly fine-tuned language models (Nie et al., 2020b) and implemented distribution estimation methods (Zhou et al., 2022) using the labeled data. Other studies have constructed losses to better calibrate the ambiguity (Meissner et al., 2021) and proposed an ensemble of models to detect disagreeing samples (Zhang and de Marneffe, 2021).\nFor measuring the distance between two distributions, Kullback\u2013Leibler (KL) Divergence (Kullback and Leibler, 1951) or its symmetric version, Jensen-Shannon Distance (JSD) (Endres and Schindelin, 2003) are widely used. Baan et al., 2022 argued that Expected Calibration Error (ECE), the difference between the average accuracy and confidence (Naeini et al., 2015; Guo et al., 2017), cannot capture inherent human disagreement. Therefore, for models to better calibrate to human disagreement, accuracy-agnostic metrics such as DCE have been introduced (Baan et al., 2022)."
+        },
+        {
+            "heading": "2.2 Alignment of Instruction-tuned LLMs",
+            "text": "LLMs have demonstrated the ability to follow examples provided in-context (Brown et al., 2020) and have further been developed to follow natural language instructions (Mishra et al., 2022; Ouyang et al., 2022; Chung et al., 2022). Instructionfollowing LLMs are fine-tuned with various tasks and are expected to generalize well to tasks the model was not trained on (Zhao et al., 2023). For example, GPT-3 is fine-tuned using reinforcement learning with human feedback to produce responses that align with human values (Ouyang et al., 2022). Despite such efforts, Santurkar et al., 2023 identified that LLMs capture only a single perspective, exhibiting left-leaning tendencies and excluded demographic groups. Here, we study whether LLMs appropriately reflect a diversity of viewpoints in the NLI task setting."
+        },
+        {
+            "heading": "3 Methods",
+            "text": "We estimate and quantify dissenting human voices using the multinomial soft-label distribution of LLMs with two proposed methods:"
+        },
+        {
+            "heading": "3.1 Log Probability Estimation (LPE)",
+            "text": "We use a single instance returning log probabilities of top-k2 token candidates to estimate the categorical distribution of the labels. This method sums over all valid options3 (vj) to estimate the model probability for class j, a method often adopted in a multiple-choice style evaluation of generative language models (Hendrycks et al., 2021; Santurkar et al., 2023). Although the LPE method requires a single generation for each instance, it cannot be applied to all types of models4. Additionally, the method is limited in cases where more than one token is generated as it requires exhaustive mapping of the determining token probability. Furthermore, as models only return probabilities for top-k tokens, there is an unknown non-constant probability mass. We estimate this as follows, where C is the total number of classes of the task:\np(y\u0302j|x) \u2248 \u2211k\ni=1 exp lpi \u00b7 1i\u2208vj\u2211C j=1 \u2211k i=1 exp lpi \u00b7 1i\u2208vj (1)"
+        },
+        {
+            "heading": "3.2 Monte Carlo Estimation (MCE)",
+            "text": "Decoding strategies such as beam search or greedy search do not exploit the full distribution of the possible generation options. Furthermore, API-based language model services limit the number of returned token-level probabilities. Alternatively, to reconstruct the distribution of outputs from generative LLMs, we introduce an intuitive way that samples a large number5 of generated outputs considering the valid options6 (vj) for class j. This method is based on a Monte Carlo method (Metropolis and Ulam, 1949) to estimate the probability distribution. Even though the MCE method can be computationally expensive, it can be applied to any model and prompt type to capture the multinomial distribution of a classification setting. MCE is defined as follows:\np(y\u0302j|x) \u2248 1\nn n\u2211 i=1 1i\u2208vj (2)\n2k is set to 5 for all the models to match the maximum logprobs size of OpenAI Completion API.\n3See Appendix C for examples. 4GPT-3.5-Turbo does not support logprobs. 5Sample size of 100 is heuristically chosen to match the\nsize of human annotation for ChaosNLI. 6See Appendix C for examples."
+        },
+        {
+            "heading": "4 Experimental Design",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Data",
+            "text": "First, we test the inference ability of LLMs in challenging datasets, ANLI (Adversarial NLI) (Nie et al., 2020a) and QNLI (Wang et al., 2018). We opt for the round 3 version of ANLI (n = 1,200), which contains more contexts from diverse domains such as Wikipedia, Common Crawl, StoryCloze (Mostafazadeh et al., 2016), and CBT (Hill et al., 2016). QNLI (Wang et al., 2018) (n = 5,463) is converted from the Stanford Question Answering Dataset (SQuAD) (Rajpurkar et al., 2016) to an NLI dataset, and the task is to decide whether the sentence contains the answer to the question.\nSecond, we jointly evaluate LLMs on ChaosNLI (Nie et al., 2020b), and PK2019 (Pavlick and Kwiatkowski, 2019) to examine both the accuracy and how the model distribution aligns with the human disagreement distribution. These datasets consist of two task settings: ChaosNLI-\u03b1 (n = 1,532), where models must select one of the two hypotheses, and ChaosNLI-S (n = 1,514), M (n = 1,599), and a subset7 of PK2019 (n = 299) where models must assign the relationship (e.g., entailment, contradiction, or neutral) for a pair of premise and hypothesis. We also pick out a challenging subset of the ChaosNLI datasets, which we denote as HighChaosNLI, consisting of the top 100 samples having the greatest human disagreement level.\nLastly, to trace possible causes of the disagreement occurring in LLMs, we use the round 1 version of the DisagreementNLI dataset (n = 318), where the samples from ChaosNLI are annotated with one of the 10 categories (e.g., probabilistic) of potential sources of disagreement (Jiang and Marneffe, 2022). While the primary focus is slanted towards identifying why humans disagree, we utilize and link the disagreement taxonomy to uncover whether the disagreement in LLMs aligns with those of humans."
+        },
+        {
+            "heading": "4.2 Models",
+            "text": "We categorize numerous LLMs with varying levels of supervision on the NLI task8: Full Exposure (FE), Partial Exposure (PE), Minimum/Unknown Exposure (MUE), and No Exposure (NE). For FE models, we follow the baseline setup of Nie et al., 2020b by fine-tuning BERT (340M) (Devlin et al.,\n7JOCI & DNC datasets of PK2019 are discarded as the annotation setting greatly varies from ChaosNLI.\n8See Appendix B for more details.\n2019) and RoBERTa (355M) (Liu et al., 2019). Since instruction-following LLMs do not have full supervision of NLI, we assign these LLMs to one of the PE, MUE, and NE models.\nFirst, the PE models include Flan-T5 (780M, 3B, 11B) (Chung et al., 2022), Flan-UL2 (20B) (Tay et al., 2022), and OPT-IML-Max (1.3B and 30B)9 (Iyer et al., 2022). We label GPT-3-D2 (text-davinci-002) and GPT-3-D3 (text-davinci-003) (175B) (Ouyang et al., 2022) as MUE models because, although the models are variants from Ouyang et al., 2022, it is unknown to which extent the model is exposed to NLI tasks. Finally, the sole NE model that we test is Stable Vicuna (13B) (Chiang et al., 2023)10 because it has no exposure to NLI tasks. All the hyperparameters we use to generate the outputs of these models are listed in Appendix A.\n9These models will be referred as OPT-IML-M-S and OPTIML-M-L for convenience.\n10Results of poor-performing models such as Stanford Alpaca (7B) and Dolly-v2 (12B) are not reported."
+        },
+        {
+            "heading": "4.3 Prompt Types",
+            "text": "We adopt mostly the same prompt template11 across different types of models within each subdataset. Within a dataset and a model, we test two types of prompts: (1) Option Selection (OS), in which the model has to predict the name of the class label for the entailment relation, and (2) Number Selection12 (NS), in which the model has to select the number assigned to the relationship class (Figure 2). Additionally, as LLMs are known to be sensitive to minor input modifications (Liang et al., 2022; Sun et al., 2023), we test the effect of prompt variations over a single prompt.\nNS requires the model to predict a single token of a target number and can be used with both MCE and LPE. OS, on the other hand, is not considered in the LPE formulation to encourage a scalable, comprehensive generation strategy to estimate human disagreement distribution since if we allow LPE-OS, the token-specific probability of a model output which may vary by instance/dataset/task has to be mapped per class. We implement random ordering of the options in the prompt, as also mentioned in Santurkar et al., 2023, to mitigate the sensitivity due to the order of the options, which we call shuffled OS and NS throughout the paper."
+        },
+        {
+            "heading": "4.4 Metrics",
+            "text": "We investigate the distribution differences between humans and LLMs at the sample level with JSD, which is a symmetric version of KL divergence\n11Refer to Appendix F for specific prompt examples. 12A multiple-choice format similar to the prompt suggested\nin the MMLU Benchmark (Hendrycks et al., 2021)\n(Endres and Schindelin, 2003). In addition, we evaluate human uncertainty with DCE (Baan et al., 2022) to examine how the tendencies of these two measures compare.\nJSD(p||q) = \u221a\nKL(p||m) +KL(q||m) 2\nDCE(p,q) = 1\n2 ||p\u2212 q||1\nwhere KL(p||q) = \u2211\ni pilog( pi qi ), m = p+q2"
+        },
+        {
+            "heading": "5 Results",
+            "text": "LLMs are sensitive to different estimation methods and prompt types. To select the optimal estimation methods and prompt types for each model, we examine three cases13 - (1) LPE (NS), (2) MCE (NS), and (3) MCE (OS) for 100 randomly selected examples in ChaosNLI subsets (Table 1). All the PE models perform the best using MCE (OS) or MCE (NS). Meanwhile, GPT-3-D3 performs better using LPE (NS) than either MCE method, hinting that larger models (>100B) may not need costly methods to estimate the model distribution. Similarly, for GPT-3-D2 and Stable Vicuna, a drastic\n13We exclude LPE (OS) due to the reason outlined in Section 4.3.\nnegative effect of using MCE methods is exhibited, especially when using OS. Hence, we choose MCE (OS) for the PE models and LPE (NS) for the MUE and NE models.\nThe NLI capability of LLMs does not only increase due to model size. In Table 2, even though GPT-3-D3 has the largest parameters (175 billion) and surpasses GPT-3-D2 and Stable Vicuna, its accuracy is significantly outperformed by the PE models across ANLI-R3, QNLI, ChaosNLI, and PK2019 datasets. For ChaosNLI-S especially, GPT-3-D3 shows comparably lower performances than any FE and PE models. The leading PE models are Flan-UL2 and Flan-T5-XXL across most of the tested datasets (Table 2). The best PE model achieves 9 to 15% higher accuracy in ANLI-R3/ChaosNLI-M than the best FE model (i.e., RoBERTa-L). However, Flan-T5-UL2 is marginally higher than RoBERTa-L by 1 to 3 % in ChaosNLI-\u03b1/S, and Flan-T5-XXL even achieves 9.1% higher than RoBERTa-L for ChaosNLI-M. Within the Flan-T5 family, scaling the model leads to enhanced inference performances. However, the largest model across all the tested models - GPT-3D3 does not always attain the best accuracy, suggesting that model size alone is not a critical factor for performance on NLI.\nDoes multiple annotation help? For most of the models making inferences on the re-annotated datasets of ChaosNLI, improvements in NLI accuracy are observed, with the exception of OPTIML-M-S. (Refer to the values inside parentheses in Table 2). This supports the necessity of having increased multiple annotations for tasks that humans are expected to disagree with. Also, it is noticeable how all these models, even if they were exposed to a sample of the train set with the original label, show better performances in the newly annotated ChaosNLI. However, we detect an accuracy decrease between the old and new labels in the PK2019 dataset for most of the models except for Flan-T5-L and Stable Vicuna. We hypothesize this is due to the way in which the final label was selected in Pavlick and Kwiatkowski, 2019: annotators were asked to select an interval score which was later manually discretized.\nAlignment with human disagreement is not always better for larger models. To examine how closely the estimated distribution of LLMs aligns with the human disagreement distribution, we compare sample-level measures of JSD and DCE between humans and LLMs (Figure 3). Similar to the accuracy results (Table 2), GPT-3-D3 fails to align with the human label distribution compared to some well-performing PE models, such as Flan-T5XXL and Flan-T5-UL2. Also, each model displays a similar tendency between JSD and DCE, suggesting that either one of the metrics might be enough to measure human alignment.\nAs can be observed in Figure 3, none of the LLMs show less JSD/DCE values than RoBERTa-\nL in ChaosNLI-\u03b1/S. Within LLMs, there is no one leading model that performs well across all datasets. For example, while Flan-UL2 scores the lowest JSD/DCE value in the ChaosNLI-\u03b1 dataset, OPTIML-M-L shows the lowest distance from human distribution in the ChaosNLI-M dataset. It is important to note that GPT-3-D3 shows worse JSD/DCE than RoBERTa-L for all ChaosNLI datasets, and it even performs worse than Stable Vicuna in ChaosNLI-M. Intriguingly, the Flan-T5 family benefits from scaling model size in ChaosNLI datasets, but Flan-T5-large does not show the highest JSD/DCE in PK2019 datasets.\nEffect of Human Entropy on LLM Disagreement We filter out a challenging subset, HighChaosNLI, which is the top 100 selected samples with the highest human disagreement levels based on the entropy of each instance. We observe a plunge in accuracy as well as a rise in JSD/DCE for every model (Table 3) compared to the human alignment performances for full datasets in Table 2. Still, the leading model concerning inference ability (i.e., Flan-T5-XXL) is unchanged, obtaining the highest accuracy of 52% in HighChaosNLI. On the other hand, it is notable how Stable Vicuna displays the lowest JSD/DCE compared to the other models (Table 3). Nevertheless, with the hint of the worst accuracy out of all the models for full ChaosNLI datasets (Figure 3) and high entropy levels (Figure 4), we conclude that it is a mere coincidence that Stable Vicuna exhibits the best performance in terms of human alignment performances in HighChaosNLI dataset (Table 3).\nWe further attempt to investigate the possible\ncauses of this phenomenon by spanning out the entropy distribution. On the consistent finding that GPT-3-D3 performs worse than Flan-T5-XXL in solving NLI tasks (Table 2) and capturing human disagreement levels (Figure 3), even in the HighChaosNLI dataset (Table 3), as can be observed in Figure 4, GPT tends to be more overconfident, showing a entropy of less than 0.1 in most samples. In contrast, the human entropy is mostly evenly distributed in the range of 0.4 to 0.6 for ChaosNLI\u03b1 and 0.8 to 1.0 for ChaosNLI-S/M. On the other hand, Flan-T5-XXL exhibits lower confidence than GPT-3-D3 but higher confidence than humans, and Stable Vicuna is uncertain in most instances.\nEffect of Varying Prompts To observe the effect of prompt sensitivity on varying prompt templates, we craft variations of the pre-selected prompt. For SNLI and MNLI, we sample out five prompt vari-\nants from the Flan repository14 and make sensible variants for ChaosNLI-\u03b1 as it is not part of the Flan mixture. From Table 4, it is shown that the prompt variation generally benefits Flan models in the ChaosNLI-S/M datasets as they were exposed to the prompt templates. However, the pre-selected single prompt is beneficial in performance for the ChaosNLI-\u03b1 dataset for Flan models and all datasets in GPT-3-D3 and Stable Vicuna. The performance drop using prompt variation is even more severe for GPT-3-D3, suggesting the preferred usage of a carefully crafted single prompt over using unseen input templates. However, this does not mean that the single prompt should always be preferred since variations of prompts may display fairer performance trends of diverse models within the ground of robustness.\nWhat causes LLMs to disagree? Sources of human disagreement have been well studied, but there is a lack of study of the disagreement sources for LLMs. We try to find the causes of LLM disagreements by drawing a relationship between LLM entropy level and human disagreement sources (discussed in Jiang and Marneffe, 2022) for each sample (Figure 5). However, no visible correlation of LLM entropy on human entropy is displayed across identified sources of human disagreement. This suggests that the cause of LLM disagreements may be due to factors other than human entropy and disagreement sources. Thus, Under the naive assumption that LLMs will attend to similar cues to humans, we are not fully uncovering the lens of why LLMs truly disagree.\n14https://github.com/google-research/FLAN/"
+        },
+        {
+            "heading": "6 Discussion",
+            "text": "LLMs do not perform well in NLI. Despite minimal, unknown, or absence of exposure to the NLI task, we anticipated that state-of-the-art LLMs such as GPT-3 and Stable Vicuna could reason with this relatively basic inference problem. The models are trained with billions of parameters and are known to be effective in helping real-world users solve diverse, complex tasks (Ouyang et al., 2022). However, the unforeseen poor performance of these models casts doubt as to whether they possess true general language understanding abilities.\nThe problem is exacerbated for distilled models (e.g. Stable Vicuna) that are fine-tuned using proprietary LLMs, a performance discrepancy issue similarly raised by Gudibande et al., 2023. Since smaller LLMs fully or partially trained with NLI tasks could perform much better than the MUE and NE models, this hints at a task-specific latent factor in NLI tasks where supervised training is beneficial and required for a wider definition of natural language understanding. In fact, as these LLMs can simply be fine-tuned to perform better for NLI tasks, a stricter evaluation criterion is needed to assess the genuine understanding capability of LLMs.\nCharacterizing Disagreement with respect to Ambiguity and Uncertainty Previous studies relate multiple annotations not only to disagreement (Uma et al., 2021; Gordon et al., 2021), but also to ambiguity (Min et al., 2020; Tamkin et al., 2022; Liu and Liu, 2023), and mostly to uncertainty (Fox and \u00dclk\u00fcmen, 2011; Xiao and Wang, 2021; Kuhn et al., 2022; Zhan et al., 2023; Hu et al., 2023). The\ndefinitions of ambiguity, uncertainty, and disagreement have the potential to be conflated and disambiguated. In our paper, we use the multinomial soft label estimate of a model as a representation of \u201cdisagreement\u201d. When estimating this distribution with MCE, our modeling assumption treats each query to the model is analogous to asking an individual annotator to provide a label. In contrast, LPE is analogous to asking an individual to assign the scores to each option. Whereas most works exploit disagreement or uncertainty to improve various NLP task performances (Zhang et al., 2021; Fornaciari et al., 2021b; Yu et al., 2022; Zhou et al., 2023) our study focuses on evaluating the models. We find that using both methods for estimating the multinomial label distribution by querying the language model are not calibrated well with the human annotations.\nOther domain tasks are transferable to NLI. Our work can be expanded to test LLMs on other NLP applications (Plank, 2022) such as Question Answering (De Marneffe et al., 2019), Fact Verification (Thorne et al., 2018), and Toxic Language Detection (Schmidt and Wiegand, 2017; Sandri et al., 2023). Further, our method can be applied for tasks that contain disagreements since they are easily transferable to NLI tasks (Dagan et al., 2006) like the QNLI dataset from Table 2, for example, instead of directly asking controversial questions (e.g., abortion) to the model (Santurkar et al., 2023), the question format can be modified into a declarative statement in the premise and place a possible answer in the hypothesis with a binary True/False\nlabel (Dagan et al., 2006). Thus, if these complicated tasks can be formulated in a way where the LLM can estimate a multinomial distribution over a set of classes, our methods are applicable.\nHowever, we should consider the target tasks when tracing \u201chuman disagreement\u201d only when it is a significant signal that needs to be captured. For example, since it is important to include diverse opinions, we can easily apply our methods to detect disagreements in hate speech (Schmidt and Wiegand, 2017). In contrast, spotting disagreement in the arithmetic reasoning task (Cobbe et al., 2021) might be less important since it often requires a logical step-by-step reasoning procedure to obtain an accurate answer.\nHow can we better align LLMs to represent dissenting voices? We point out the current limitation of utilizing LLMs to represent a larger human population, especially when disagreements are present. The causes of this phenomenon are indiscernible due to the entanglement of miscalibration of out-of-distribution (OOD) inference, additional noise due to disagreement and ambiguity, prompt sensitivity, and more aspects that are yet to be identified. Even though simple remedies of temperature scaling (Ackley et al., 1985; Wang et al., 2022), incorporating logit bias, constrained decoding (Ziems et al., 2023), or direct supervision to multiple annotations (Zhang et al., 2021; Fornaciari et al., 2021a) might mitigate the misalignment, these methods are unrealistic and not scalable due to the exhaustive hyperparameter tuning and additional data collection required to represent the population of interest.\nHowever, as LLM applications are becoming more ubiquitous, it is important for them to faith-\nfully represent a larger population, preferably including the voices of minorities. Thus, we suggest that future LLMs could be improved to reflect human disagreements in diverse means, for example, by fine-tuning with ambiguous instances (Liu et al., 2023). As LLMs are shown to be aware of their ignorance (Kadavath et al., 2022) and have the ability to express their level of confidence (Lin et al., 2022; Zhou et al., 2023), we expect future works to address similar approaches in the aspect of alignment towards the human disagreement distribution. In this way, the reconstructed model distribution with MCE and LPE may better capture different interpretations from human individuals, aiding accountability."
+        },
+        {
+            "heading": "7 Conclusions",
+            "text": "In this paper, we compare the performance of instruction-following generative LLMs with other fully fine-tuned smaller models on the fundamental NLI task. First, by experimenting on four different NLI datasets, we show LLMs are not performing well in the NLI task, considering their touted language comprehension capabilities. Further, in agreement with the need for multiple annotations for disagreeable NLP tasks, LLMs also fail to align with human disagreements in the ChaosNLI and PK2019 datasets. Additional development is needed to capture representative human distributions, as well as to discover key factors to disagreement sources that can influence the LLM\u2019s answer distribution.\nLimitations\nThis work shows the limited ability of billion-scale LLMs in inference and disagreement tasks. Al-\nthough we test with the dataset annotated with numerous human subjects per sample, 100 people may not be enough to represent the human disagreement distribution well. After more releases of human label variation datasets, our study can be extended by covering a wider range of model types and creating evaluation benchmarks to measure the degree of disagreement. If we have robust LLMs in inference and disagreement, we could then try to find the latent factors that might not be humaninterpretable but lead to disagreement in LLMs and compare them with those of humans.\nEthics Statement\nAs our work directly employs trained large language models without any extra process of finetuning, the risks and potential biases incurred by the model checkpoints (e.g., dataset selection, training configurations) remain the same as the original works."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "This work was supported by Institute of Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea government (MSIT) (No.2019-0-00075, Artificial Intelligence Graduate School Program (KAIST)) and Artificial intelligence industrial convergence cluster development project funded by the Ministry of Science and ICT (MSIT, Korea) & Gwangju Metropolitan City."
+        },
+        {
+            "heading": "A Hyperparameters",
+            "text": "Generally, we try to set similar hyperparameters to all the models with some exceptions due to model performance and/or cost issues.\nTemperature To scale the confidence of the generated output in a post-hoc manner, we unify the temperature to be 1 (i.e., no scaling). There exist other precedents that use a smaller temperature for a more deterministic output (Santurkar et al., 2023) or compare outputs of models with varying temperatures (Ouyang et al., 2022). However, as we jointly assess LLMs on the accuracy of NLI and human disagreement alignment, we argue that having a fixed, un-scaled temperature to generate model outputs better aligns with our research goal of estimating model outputs to capture human disagreement distribution.\nGeneration Length Easily adjustable by all APIs, including OpenAPI and Huggingface, we have varying generation lengths per prompt design. As discussed in Section 4.3, NS is a cost-efficient alternative method for OS, solely needing a single output token of numbers. Thus in LPE, a method for single token probability output, we only use the OS prompt for effective token probability calculation. We set a maximum token output length of 10 for MCE and 1 for LPE.\nFloating Point We load models of size greater than 10 billion parameters (except for GPT-3) with half the precision (bfloat16; BF16). We observe Flan-T5-XXL shows a negligible increase in performance when using the original precision (singleprecision floating-point; FP32) (Table 5)."
+        },
+        {
+            "heading": "B Levels of NLI Exposure",
+            "text": "We outline the level of exposure to the NLI task for each model since it is an influential factor that affects the accuracy and human-alignment performances of the models.\nB.1 Full Exposure (FE) Models\nThe models below are fine-tuned with the training set of an NLI task as outlined in Nie et al., 2020b.\n\u2022 Models: BERT and RoBERTa\nB.2 Partial Exposure (PE) Models\nThese models are partially exposed to the NLI task in the fine-tuning stage. However, the extent of exposure is different by the adopted fine-tuning strategy, thus listed in decreasing order.\nFlan Collection\n\u2022 Models: Flan-T5 models and Flan-UL2\n\u2022 The Flan Collection (Longpre et al., 2023) is a collection of datasets in the format of instructions to enable generalization to diverse unseen tasks. It employs a fine-tuning strategy of a maximum of 1836 NLP tasks with some NLI tasks taken into account (e.g., ANLI, RTE, MNLI, QNLI, SNLI, etc.).15\nInstruction Meta-Learning (IML) Bench\n\u2022 Models: OPT-IML-M models\n\u2022 Instruction Meta Learning (IML) Bench (Iyer et al., 2022) is a more common benchmark that uses 1500+ NLP tasks in the fine-tuning stage. Flan is a major portion of this benchmark, with other major portions in other large datasets. We expect some NLI exposure but not as strong as the models fine-tuned by the Flan dataset.\nB.3 Minimal/Unknown Exposure (MUE) Models\nThe models below are unknown to the extent of exposure to a specific NLI task.\n\u2022 Models: GPT-3-D2, GPT-3-D3\nThe InstructGPT paper (Ouyang et al., 2022) does elaborate that the models utilizes a reward model in the process of RLHF (Reinforcement Learning from Human Feedback), and it is finetuned by a variety of NLP datasets, including MNLI. However, the serviced models are not directly mapped to the models of the paper, leaving the exposure to NLI largely unknown16.\n15https://github.com/google-research/FLAN/tree/main 16Refer to the OpenAI Documentation\nB.4 No Exposure (NE) Models The below model does not have any exposure to a specific NLI task.\n\u2022 Model: Stable Vicuna"
+        },
+        {
+            "heading": "C Postprocessing",
+            "text": "Unlike conventional approaches of fine-tuning models directly on the downstream NLI dataset, one of the challenges in assessing an NLI task is the variability of generated outputs. To transform and choose valid options from the generated outputs, we conduct postprocessing through a manually crafted dictionary for each option (See Valid option examples on the last page.)."
+        },
+        {
+            "heading": "D Distribution Alignment Among LLMs",
+            "text": "We illustrate the averaged sample-level JSD entropy for each model pair (Figure 6) to visualize the trend of alignment among LLMs. Throughout all four JSD distribution plots, the scale and range of the JSD values differ for each data. Still, the general trend is maintained, where ChaosNLI-\u03b1 shows low JSD values overall, likely attributed to lower task difficulty witnessed by the performance gap among datasets in Table 2. The best-performing models, Flan-T5-XXL and Flan-UL2, present the lowest disagreement in entropy for all plots.\nAlthough the size and type of model are influencing factors, the most consistent factor is the type of instruction fine-tuning introduced for each model. Throughout all plots, the alignment is well shown for the group of models fine-tuned by the Flan dataset and the IML Bench. As we expect more research in the scope of human alignment in NLP, the evaluation of the human alignment among the models with the same fine-tuning process can also be studied and reported.\nHowever, a strong distinction needs to be made in which an overall lower number of JSD values in this plot does not mean that a model has always had a good performance in human disagreement alignment. This figure merely delineates the alignment trends among models."
+        },
+        {
+            "heading": "E Effect of Few-Shot Examples",
+            "text": "We observe no consistent benefit nor harm in experimenting with few-shot settings that resemble the human annotation process more than zero-shot settings (Table 6). In fact, zero-shot evaluation generally seems to show better performances across\ndatasets and models compared to the few-shot evaluations. In the case of Stable Vicuna, the performance increases in the 1-shot setting for \u03b1-NLI and the 3-shot setting for SNLI. However, we notice a plunge in 5-shot performance, especially for the MNLI dataset."
+        },
+        {
+            "heading": "F Prompt Examples",
+            "text": "We present examples of prompts we used during the generation process in Figure 1 (See two prompt examples on the last page.). We incorporate a sug-\ngested general prompt template pre-specified for a specific model. For example, we implement a human and assistant-style prompt template for Stable Vicuna. Otherwise, we leave the template format the same for the rest of the models.\nValid option examples for ChaosNLI-\u03b1/S/M and two prompt types - OS and NS\ndict_alphanli_OS = {'1' : ['1','Hypothesis 1',...] '2' : ['2','Hypothesis 2',...]}\ndict_alphanli_NS = {'1' : '1' '2' : '2'}\ndict_s&mnli_OS = {'e' : ['entail','infer','yes', ...] 'c' : ['contradict','oppose','no', ...] 'n' : ['neutral','unanswerable',...]}\ndict_s&mnli_NS = {'e' : '1' 'c' : '2' 'n' : '3'}\nPrompt example for ChaosNLI-\u03b1 using OS\nINPUT\nRead the following and determine if the hypothesis can be inferred from the premise. Observation Start: My roommates put up their Christmas tree this year. Observation End: This is what it\u2019s like living with a cat. Hypothesis 1: The roommates soon had to take the tree down. Hypothesis 2: The cat enjoyed the ornaments and garland and slept under the tree. Options: Hypothesis 1, Hypothesis 2\nOUTPUT\nAnswer: <Generated Output>\nPrompt example for ChaosNLI-S/M using NS\nINPUT\nRead the following and determine if the hypothesis can be inferred from the premise. Premise: This town, which flourished between 6500 and 5500 b.c. ... appear on Anatolian kilims. Hypothesis: This town is over 8000 years old. Options: 1: entailment, 2: contradiction, 3: neutral\nOUTPUT\nAnswer: <Generated Output>"
+        }
+    ],
+    "title": "Can Large Language Models Capture Dissenting Human Voices?",
+    "year": 2023
+}

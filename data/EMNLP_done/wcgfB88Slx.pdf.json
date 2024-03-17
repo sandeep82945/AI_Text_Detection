@@ -1,0 +1,693 @@
+{
+    "abstractText": "Recent work has shown how to prompt large language models with explanations to obtain strong performance on textual reasoning tasks, i.e., the chain-of-thought paradigm. However, subtly different explanations can yield widely varying downstream task accuracy. Explanations that have not been \u201ctuned\u201d for a task, such as off-the-shelf explanations written by nonexperts, may lead to mediocre performance. This paper tackles the problem of how to optimize explanation-infused prompts in a blackbox fashion. We first generate sets of candidate explanations for each example in the prompt using a leave-one-out scheme, then find an effective combination of these explanations with a two-stage framework. We first evaluate explanations for each in-context example in isolation according to two proxy metrics, log likelihood and accuracy on new examples. Then, we search over combinations of explanations to find one that yields high performance against a silver-labeled development set. Across four textual reasoning tasks spanning question answering, mathematical reasoning, and natural language inference, results show that our proxy metrics correlate with ground truth accuracy and our overall method can effectively improve prompts over crowdworker annotations and naive search strategies.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Xi Ye"
+        }
+    ],
+    "id": "SP:810f60dd212dfc2b57f39b9f59bf65e48b4d86ed",
+    "references": [
+        {
+            "authors": [
+                "Shourya Aggarwal",
+                "Divyanshu Mandowara",
+                "Vishwajeet Agrawal",
+                "Dinesh Khandelwal",
+                "Parag Singla",
+                "Dinesh Garg."
+            ],
+            "title": "Explanations for CommonsenseQA: New Dataset and Models",
+            "venue": "Proceedings of the Annual Conference of the Association for Com-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Oana-Maria Camburu",
+                "Tim Rockt\u00e4schel",
+                "Thomas Lukasiewicz",
+                "Phil Blunsom."
+            ],
+            "title": "e-snli: Natural language inference with natural language explanations",
+            "venue": "Proceedings of the Conference on Advances in Neural Information Processing Systems (NeurIPS).",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Bob McGrew",
+                "Dario Amodei",
+                "Sam McCandlish",
+                "Ilya Sutskever",
+                "Wojciech Zaremba."
+            ],
+            "title": "Evaluating large language models trained on code",
+            "venue": "ArXiv, abs/2107.03374.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Catasta",
+                "Jason Wei",
+                "Kathleen S. Meier-Hellstern",
+                "Douglas Eck",
+                "Jeff Dean",
+                "Slav Petrov",
+                "Noah Fiedel."
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "ArXiv, abs/2204.02311.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Karl Cobbe",
+                "Vineet Kosaraju",
+                "Mohammad Bavarian",
+                "Mark Chen",
+                "Heewoo Jun",
+                "Lukasz Kaiser",
+                "Matthias Plappert",
+                "Jerry Tworek",
+                "Jacob Hilton",
+                "Reiichiro Nakano",
+                "Christopher Hesse",
+                "John Schulman"
+            ],
+            "title": "Training verifiers to solve math word",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mingkai Deng",
+                "Jianyu Wang",
+                "Cheng-Ping Hsieh",
+                "Yihan Wang",
+                "Han Guo",
+                "Tianmin Shu",
+                "Meng Song",
+                "Eric P Xing",
+                "Zhiting Hu."
+            ],
+            "title": "Rlprompt: Optimizing discrete text prompts with reinforcement learning",
+            "venue": "arXiv preprint arXiv:2205.12548.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shizhe Diao",
+                "Xuechun Li",
+                "Yong Lin",
+                "Zhichao Huang",
+                "Xiao Zhou",
+                "Tong Zhang."
+            ],
+            "title": "Black-box prompt learning for pre-trained language models",
+            "venue": "ArXiv, abs/2201.08531.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yao Fu",
+                "Hao Peng",
+                "Ashish Sabharwal",
+                "Peter Clark",
+                "Tushar Khot."
+            ],
+            "title": "Complexity-based prompting for multi-step reasoning",
+            "venue": "Proceedings of the International Conference on Learning Representations (ICLR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Luyu Gao",
+                "Aman Madaan",
+                "Shuyan Zhou",
+                "Uri Alon",
+                "Pengfei Liu",
+                "Yiming Yang",
+                "Jamie Callan",
+                "Graham Neubig."
+            ],
+            "title": "Pal: Program-aided language models",
+            "venue": "arXiv preprint arXiv:2211.10435.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Mor Geva",
+                "Daniel Khashabi",
+                "Elad Segal",
+                "Tushar Khot",
+                "Dan Roth",
+                "Jonathan Berant."
+            ],
+            "title": "Did aristotle use a laptop? a question answering benchmark with implicit reasoning strategies",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:346\u2013",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hila Gonen",
+                "Srini Iyer",
+                "Terra Blevins",
+                "Noah A Smith",
+                "Luke Zettlemoyer."
+            ],
+            "title": "Demystifying prompts in language models via perplexity estimation",
+            "venue": "arXiv preprint arXiv:2212.04037.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shengding Hu",
+                "Ning Ding",
+                "Huadong Wang",
+                "Zhiyuan Liu",
+                "Juanzi Li",
+                "Maosong Sun."
+            ],
+            "title": "Knowledgeable prompt-tuning: Incorporating knowledge into prompt verbalizer for text classification",
+            "venue": "arXiv preprint arXiv:2108.02035.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiaxin Huang",
+                "Shixiang Shane Gu",
+                "Le Hou",
+                "Yuexin Wu",
+                "Xuezhi Wang",
+                "Hongkun Yu",
+                "Jiawei Han."
+            ],
+            "title": "Large language models can self-improve",
+            "venue": "arXiv preprint arXiv:2210.11610.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jaehun Jung",
+                "Lianhui Qin",
+                "Sean Welleck",
+                "Faeze Brahman",
+                "Chandra Bhagavatula",
+                "Ronan Le Bras",
+                "Yejin Choi."
+            ],
+            "title": "Maieutic prompting: Logically consistent reasoning with recursive explanations",
+            "venue": "Proceedings of the Conference on Empirical Methods",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa."
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "venue": "Proceedings of the Conference on Advances in Neural Information Processing Systems (NeurIPS).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rik Koncel-Kedziorski",
+                "Subhro Roy",
+                "Aida Amini",
+                "Nate Kushman",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "MAWPS: A math word problem repository",
+            "venue": "Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics:",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Andrew K Lampinen",
+                "Ishita Dasgupta",
+                "Stephanie CY Chan",
+                "Kory Matthewson",
+                "Michael Henry Tessler",
+                "Antonia Creswell",
+                "James L McClelland",
+                "Jane X Wang",
+                "Felix Hill"
+            ],
+            "title": "Can language models learn from explanations in context",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shiyang Li",
+                "Jianshu Chen",
+                "Yelong Shen",
+                "Zhiyu Chen",
+                "Xinlu Zhang",
+                "Zekun Li",
+                "Hong Wang",
+                "Jing Qian",
+                "Baolin Peng",
+                "Yi Mao"
+            ],
+            "title": "2022a. Explanations from large language models make small reasoners better. arXiv preprint arXiv:2210.06726",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yifei Li",
+                "Zeqi Lin",
+                "Shizhuo Zhang",
+                "Qiang Fu",
+                "Bei Chen",
+                "Jian-Guang Lou",
+                "Weizhu Chen."
+            ],
+            "title": "On the advance of making language models better reasoners",
+            "venue": "arXiv preprint arXiv:2206.02336.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yao Lu",
+                "Max Bartolo",
+                "Alastair Moore",
+                "Sebastian Riedel",
+                "Pontus Stenetorp."
+            ],
+            "title": "Fantastically ordered prompts and where to find them: Overcoming fewshot prompt order sensitivity",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Compu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aman Madaan",
+                "Amir Yazdanbakhsh."
+            ],
+            "title": "Text and patterns: For effective chain of thought, it takes two to tango",
+            "venue": "arXiv preprint arXiv:2209.07686.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ana Marasovi\u0107",
+                "Iz Beltagy",
+                "Doug Downey",
+                "Matthew E. Peters."
+            ],
+            "title": "Few-shot selfrationalization with natural language prompts",
+            "venue": "Findings of the North American Chapter of the Association for Computational Linguistics (NAACL Find-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Swaroop Mishra",
+                "Daniel Khashabi",
+                "Chitta Baral",
+                "Yejin Choi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Reframing instructional prompts to GPTk\u2019s language",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2022.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "der",
+                "Paul Francis Christiano",
+                "Jan Leike",
+                "Ryan J. Lowe"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "In Proceedings of the Conference on Advances in Neural Information Processing Systems (NeurIPS)",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Arkil Patel",
+                "Satwik Bhattamishra",
+                "Navin Goyal"
+            ],
+            "title": "Are NLP models really able to solve simple math word problems",
+            "venue": "In Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics:",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Archiki Prasad",
+                "Peter Hase",
+                "Xiang Zhou",
+                "Mohit Bansal."
+            ],
+            "title": "Grips: Gradient-free, edit-based instruction search for prompting large language models",
+            "venue": "arXiv.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Laria Reynolds",
+                "Kyle McDonell."
+            ],
+            "title": "Prompt programming for large language models: Beyond the few-shot paradigm",
+            "venue": "Extended Abstracts of the 2021 CHI Conference on Human Factors in Computing Systems.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ohad Rubin",
+                "Jonathan Herzig",
+                "Jonathan Berant."
+            ],
+            "title": "Learning to retrieve prompts for in-context learning",
+            "venue": "Proceedings of the Annual Conference of the Association for Computational Linguistics (ACL).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Freda Shi",
+                "Mirac Suzgun",
+                "Markus Freitag",
+                "Xuezhi Wang",
+                "Suraj Srivats",
+                "Soroush Vosoughi",
+                "Hyung Won Chung",
+                "Yi Tay",
+                "Sebastian Ruder",
+                "Denny Zhou"
+            ],
+            "title": "Language models are multilingual chain-of-thought reasoners",
+            "venue": "arXiv preprint arXiv:2210.03057",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Taylor Shin",
+                "Yasaman Razeghi",
+                "Robert L. Logan IV",
+                "Eric Wallace",
+                "Sameer Singh."
+            ],
+            "title": "AutoPrompt: Eliciting Knowledge from Language Models with Automatically Generated Prompts",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qiushi Sun",
+                "Chengcheng Han",
+                "Nuo Chen",
+                "Renyu Zhu",
+                "Jing Gong",
+                "Xiang Lisa Li",
+                "Ming Gao."
+            ],
+            "title": "Make prompt-based black-box tuning colorful: Boosting model generalization from three orthogonal perspectives",
+            "venue": "ArXiv, abs/2305.08088.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianxiang Sun",
+                "Zhengfu He",
+                "Hong Qian",
+                "Yunhua Zhou",
+                "Xuanjing Huang",
+                "Xipeng Qiu."
+            ],
+            "title": "BBTv2: Towards a gradient-free future with large language models",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianxiang Sun",
+                "Yunfan Shao",
+                "Hong Qian",
+                "Xuanjing Huang",
+                "Xipeng Qiu."
+            ],
+            "title": "Black-box tuning for language-model-as-a-service",
+            "venue": "arXiv preprint arXiv:2201.03514.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alon Talmor",
+                "Jonathan Herzig",
+                "Nicholas Lourie",
+                "Jonathan Berant."
+            ],
+            "title": "CommonsenseQA: A question answering challenge targeting commonsense knowledge",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Boshi Wang",
+                "Sewon Min",
+                "Xiang Deng",
+                "Jiaming Shen",
+                "You Wu",
+                "Luke Zettlemoyer",
+                "Huan Sun."
+            ],
+            "title": "Towards understanding chain-of-thought prompting: An empirical study of what matters",
+            "venue": "Proceedings of the Annual Conference of the Association for Com-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Peifeng Wang",
+                "Aaron Chan",
+                "Filip Ilievski",
+                "Muhao Chen",
+                "Xiang Ren."
+            ],
+            "title": "Pinto: Faithful language reasoning using prompt-generated rationales",
+            "venue": "Proceedings of the International Conference on Learning Representations (ICLR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc Le",
+                "Ed Chi",
+                "Denny Zhou."
+            ],
+            "title": "Rationaleaugmented ensembles in language models",
+            "venue": "ArXiv, abs/2207.00747.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc Le",
+                "Ed Huai hsin Chi",
+                "Denny Zhou."
+            ],
+            "title": "Selfconsistency improves chain of thought reasoning in language models",
+            "venue": "Proceedings of the International Conference on Learning Representations (ICLR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "ArXiv, abs/2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xi Ye",
+                "Greg Durrett."
+            ],
+            "title": "The unreliability of explanations in few-shot prompting for textual reasoning",
+            "venue": "Proceedings of the Conference on Advances in Neural Information Processing Systems (NeurIPS).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xi Ye",
+                "Srinivasan Iyer",
+                "Asli Celikyilmaz",
+                "Ves Stoyanov",
+                "Greg Durrett",
+                "Ramakanth Pasunuru."
+            ],
+            "title": "Complementary explanations for effective in-context learning",
+            "venue": "Findings of the Annual Meeting of the As- sociation for Computational Linguistics (ACL",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Eric Zelikman",
+                "Yuhuai Wu",
+                "Noah D Goodman."
+            ],
+            "title": "Star: Bootstrapping reasoning with reasoning",
+            "venue": "Proceedings of the Conference on Advances in Neural Information Processing Systems (NeurIPS).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianjun Zhang",
+                "Xuezhi Wang",
+                "Denny Zhou",
+                "Dale Schuurmans",
+                "Joseph E Gonzalez."
+            ],
+            "title": "Tempera: Test-time prompting via reinforcement learning",
+            "venue": "arXiv preprint arXiv:2211.11890.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuosheng Zhang",
+                "Aston Zhang",
+                "Mu Li",
+                "Alex Smola."
+            ],
+            "title": "Automatic chain of thought prompting in large language models",
+            "venue": "The Eleventh International Conference on Learning Representations (ICLR 2023).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Denny Zhou",
+                "Nathanael Scharli",
+                "Le Hou",
+                "Jason Wei",
+                "Nathan Scales",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Olivier Bousquet",
+                "Quoc Le",
+                "Ed Chi."
+            ],
+            "title": "Least-to-most prompting enables complex reasoning in large language models",
+            "venue": "ArXiv, abs/2205.10625.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yongchao Zhou",
+                "Andrei Ioan Muresanu",
+                "Ziwen Han",
+                "Keiran Paster",
+                "Silviu Pitis",
+                "Harris Chan",
+                "Jimmy Ba."
+            ],
+            "title": "Large language models are human-level prompt engineers",
+            "venue": "arXiv preprint arXiv:2211.01910.",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large language models (LLMs) (Brown et al., 2020; Chowdhery et al., 2022) can be applied in various ways to do in-context learning (ICL). One line of work shows including explanations can boost the prompting performance on a diverse of reasoning tasks (Nye et al., 2021; Wei et al., 2022; Lampinen et al., 2022).2 Despite the utility of such\n1Code: https://github.com/xiye17/ExplSelection. 2Our paper uses the general term explanation to denote both chain-of-thought demonstrations for multi-step reasoning tasks as well as rationales for tasks like commonsense question answering, which do not involve chains of intermediate steps in the same way.\nexplanations, they often require manual engineering (Wei et al., 2022; Zhou et al., 2022a) to reach their full potential; past work has demonstrated that different combinations of explanations can lead to widely varying model performance (Ye and Durrett, 2022; Wang et al., 2022b). Furthermore, these explanations are typically written in natural language (Madaan and Yazdanbakhsh, 2022; Ye et al., 2023; Wang et al., 2023) and there are naturally many variants to explain the answer to a single question. Explanations in standard datasets written by crowdworkers may not be optimal, and even expert \u201cprompt engineers\u201d may not be able to easily elicit the best behavior.\nThis paper studies the problem of optimizing explanations for better downstream performance on textual reasoning tasks. Inspired by recent work that bootstraps LLMs to improve reasoning (Zelikman et al., 2022; Huang et al., 2022), we propose an approach that can bootstrap a set of seed explanations (e.g., crowdworker annotated explanations) using an unlabeled development data set. As shown in Figure 1, we first prompt LLMs to construct alternative candidate explanations from the seed explanations. We then search over possible combinations of candidate explanations to find a combination that has high accuracy on the development set, which is silver-labeled using seed explanations.\nEvaluating one candidate combination of explanations requires inference over the development set\nto compare against the silver labels. Given the cost of running LLMs, evaluating a large number of candidates is impractical. We propose a two-stage approach to efficiently search over potentially highscoring combinations. We first evaluate each candidate explanation in isolation based on silver accuracy on the development set or the log likelihood on the few-shot training exemplar set. Scores of these individual explanations can be combined to compute scores of combinations, which gives a proxy of that combination\u2019s performance against silver set. We then can allocate our computation budget to evaluate better-performing candidate combinations based on the proxy metrics.\nWe apply our approach to optimize explanations on four datasets: GSM, ECQA, E-SNLI, and STRATEGYQA, covering a spectrum of textual reasoning tasks. Across the four datasets, our approach is able to find explanations that achieve 4% higher accuracy on average compared to initial seed explanations. We also show our proxy metrics can effectively approximate the downstream performance of combinations, and thus allow prioritizing search over better-performing explanations.\nTo summarize, our contributions are: (1) We propose a framework for optimizing explanations for in-context learning by optimizing over combinations of explanations. (2) We show that pseudolabeling an unlabeled dataset can be used to evaluate such combinations. (3) We propose two proxy metrics to prioritize exploring better combinations given a limited computation budget."
+        },
+        {
+            "heading": "2 Problem Formulation",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Problem Statement",
+            "text": "Following the standard chain-of-thought setting (Wei et al., 2022), we assume access to a set of exemplars (input-output pairs) T = {(qi, ai)}i=1:K and seed explanations E\u0303 = {e\u0303i}i=1:K annotated for each exemplar in T (one per exemplar). In addition to T , some of our approaches assume access to an unlabeled development set V that only includes the inputs, i.e., V = {qi}i=1:M . Let \u03b8 be the parameters of an LLM.\nOur goal is to find an explanation set E = {ei}i=1:K that leads to the best accuracy. Each ei \u2208 \u03a3\u2217 is a natural language explanation expressed in the subword vocabulary \u03a3 of the pretrained language model. Past work has optimized many aspects of the in-context learning process, for example, the verbalization of prompts (Deng et al.,\n2022; Zhang et al., 2022), exemplar selection (Ye et al., 2023), and exemplar order (Lu et al., 2022), whereas our work focuses on optimizing the format of explanations in this particular way.\nBecause we assume a very small number of training examples, all of which are going to be included in the prompt, our notion of optimization (our \u201ctraining objective\u201d) cannot rely on maximizing the likelihood of labeled training data. As we discuss in future sections, we will explore both likelihood-based measures as well as accuracy against pseudo-labeled versions of V . These objectives are also expensive to evaluate using LLMs, so we will operate under an additional constraint of cost in our methods.\nCandidate explanations Directly searching over the combinatorial explanation space of E is intractable. Practically, we constrain the space of each ei by selecting each from a candidate explanation set E\u0302i = {e\u0302(1)i . . . e\u0302 (|E\u0302i|) i }, where each e\u0302 (j) i denotes a candidate explanation associated with each exemplar qi. The candidate explanation sets E\u03021 . . . E\u0302K can be generated by the LLM using a set of manually annotated seed explanations annotated by human E\u0303 = {e\u0303i}i=1:K . That is, we use the exemplar set T and the seed sets E\u0303 excluding (qi, e\u0303i, ai) to prompt the LLM and draw N (40 in our implementation) samples for E\u0302i:\n(e\u0302, a\u0302) \u223c p(e, ai | {(qj , e\u0303j , aj)}j=1:K\u2227j \u0338=i, qi; \u03b8) (1)\nPut another way, we use a leave-one-out approach to sample explanations and answers for each example using chain-of-thought prompting with K \u2212 1 examples. We reject any samples that do not have the correct answer for the example.\nA combination C is a set of {ei} that contains one explanation ei from the candidate explanation set E\u0302i, i.e., C = {ei}i=1:K \u2227 \u2200i, ei \u2208 E\u0302i. Now we can restate our problem: our goal is to find an explanation combination C that maximizes the accuracy when evaluating on test data."
+        },
+        {
+            "heading": "2.2 Performance Varies Across Explanations",
+            "text": "To illustrate the potential of our approach, we briefly analyze how using different explanations, for the same set of exemplars, can impact the downstream performance. As mentioned earlier, we generate candidate explanation sets according to Eq (1). Concretely, we use temperature scaling of 0.7 and sample 40 completions for each qi, only retaining\nan e\u0304 if it is paired with a correct answer a\u0304 = ai. Note that for different qi, we may find varying number of valid e\u0304 (ranging from 0 to 40). We keep at most 8 for each qi to save the search cost. We also include the seed explanations in the candidate explanation sets.\nFor each dataset, we randomly sample 16 combinations using the augmented candidate explanation sets, and report the statistics of the performance in Table 1. We see substantial variance in performance with different C: the average gap between the maximum performance and minimum performance exceeds 5% and is as large as 20% (on ESNLI). In addition, the performance of seed explanations annotated by crowdworkers (SEED in Table 1) largely lags the best possible explanations, indicating substantial headroom for improvement."
+        },
+        {
+            "heading": "3 Method Overview",
+            "text": "Having candidate explanations for each question, we have reduced the search space from exponential in the vocabulary size to merely NK . We then search over possible combinations of explanations. We describe our method for scoring combinations and the constraints under which our search takes place.\nPseudo-labeling development set We do not assume access to labeled examples beyond the K few-shot examples provided. However, we can take advantage of unlabeled data in V . We use a pseudo-labeling approach to derive labels for V following past work (Wang et al., 2022c). This approach is depicted in Figure 2; given q \u2208 V , we sample random combinations of explanations to get predictions and use the majority-voted answer as the pseudo label a\u0302:\na\u0302 = argmax a \u2211 C={ei} 1[a =\nargmax a\u0304\np(a\u0304 | {(qi, ei, ai)}i=1:K , q; \u03b8)] (2)\nWe now use the accuracy against the silver label as a surrogate objective O, searching for C that maximizes accuracy with respect to the a\u0302:\nO(C) = argmax C={ei}i=1:K \u2211 qj\u2208V 1[a\u0302j =\nargmax a\u0304\np(a\u0304 | {(qi, ei, ai)}i=1:K , qj ; \u03b8)]. (3)\nSearching over combinations One further complicating factor is that evaluating a combination C using O is expensive, as it requires running inference over the development set. We measure the computation budget B by the number of combinations needed to be scored using O.\nA naive approach is to randomly select B combinations to search, but this is inefficient. We propose additional surrogate metrics S to serve as a proxy for O for scoring combinations. We design S so that it can cost-efficiently score all combinations, with high S(C) indicating a combination C likely to obtain high O(C) score. In this way, S can be used to propose promising candidate combinations, only a few of which are scored using the actual objective O to save search budget."
+        },
+        {
+            "heading": "4 Proxy Metrics for Finding Promising Combinations",
+            "text": "Owning to the high cost, we only evaluate a small number (tens of combinations) of combinations against development set using O (Eq (3)). We first extract a set of promising combinations according to two proxy metrics, then evaluate those using our silver data."
+        },
+        {
+            "heading": "4.1 One-shot Silver Accuracy",
+            "text": "To optimize the silver accuracy of a combination of explanations (our objective O), we hypothesize that the prediction of a combination can be approximated with the prediction of each explanation used one-shot. That is, we expect p(a | {(qi, ei, ai)}i=1:K , q; \u03b8) to be higher when\n\u2211 i=1:K p(a | (qi, ei, ai), q; \u03b8) is higher. We draw this hypothesis based on recent work on example selection for ICL, which shows that combining examples that individually perform well will yield better performance from the combination (Ye et al., 2023; Rubin et al., 2022). We define the average one-shot silver accuracy as a proxy metric SOSAcc:\nSOSAcc(C = {ei}i=1:K) = \u2211\ni=1:K \u2211 qj\u2208V 1[a\u0302j =\nargmax a\u0304\np(a\u0304 | (qi, ei, ai), qj ; \u03b8)] (4)\nBy computing the one-shot silver performance for \u2200e\u0302(i)j \u2208 E\u0302(i) for \u2200i = 1 : K, we can efficiently compute the proxy metric SOSAcc for any combination C.3"
+        },
+        {
+            "heading": "4.2 One-shot Log Likelihood",
+            "text": "Besides using silver accuracy, another principle is to optimize the held-out log likelihood of the exemplar set:\n\u2211 j=1:K log p(aj | {(qi, ei, ai)}i=1:K\u2227i \u0338=j , qj ; \u03b8).\nWe apply a similar hypothesis and use the one-shot performance \u2211 i=1:K\u2227i \u0338=j p(aj , | (qi, ei, ai), qj ; \u03b8) as the surrogate of p(aj | {(qi, ei, ai)}i=1:K\u2227i \u0338=j , qj ; \u03b8). We can then score a candidate combination by:\n\u2211 j=1:K \u2211 i=1:K\u2227i \u0338=j log \u2211 e p(aj , e | (qi, ei, ai), qj ; \u03b8).\nSince summing over explanations is intractable, we approximate this sum using the single sample of e to estimate the one-shot performance, leading to:\nSOSLL = \u2211\nj=1:K \u2211 i=1:K\u2227i\u0338=j log p(ej , aj | (qi, ei, ai), qj ; \u03b8).\n(5)\nWe can compute SOSLL for any C by only computing all the pairwise probabilities, p(ej , aj | (qi, ei, ai), qj ; \u03b8), for \u2200ei \u2208 E\u0302i, ej \u2208 E\u0302j\u2200i = 1 : K, j = 1 : K \u2227 i \u0338= j, which is computationally feasible. Note that this metric does not require a development set.\n3While this involves NK evaluations on the silver set, note that these evaluations are one-shot and significantly less computationally expensive than using higher numbers of shots.\n4.3 Ensemble of SOSAcc and SOSLL We have described the two proxy metrics using either the unlabeled set V or the labeled few-show exemplars T . Our further analysis (which we will describe later in Section 4) shows the choice of the most effective metric is task-specific. We additionally propose a strategy, ENSEMBLE of the SOSLL and SOSAcc. Specifically, we first construct two sets of combinations that are preferred by these two proxy metrics individually, and then select the best one, from the union of these two sets, according to O."
+        },
+        {
+            "heading": "5 Experimental Setup",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Language Models",
+            "text": "We primarily use code-davinci-002 (Chen et al., 2021), a state-of-the-art LLM API, throughout our experiments, given its strong performance on various reasoning tasks (Li et al., 2022b). In addition, we use text-davinci-003 to verify the effectiveness of the proxy metrics. code-davinci-002 is a base model, and text-davinci-003 is an Instruct-series model fine-tuned to align with human preferences (Ouyang et al., 2022).\nInference We follow past work to employ greedy decoding (greedily selecting the most probable token autoregressively) (Wei et al., 2022; Ye and Durrett, 2022) or self-consistency decoding (sampling tens of outputs from LLMs via temperature scaling and using popularity voting to assign a label) (Wang et al., 2022c).\nCost Querying LLMs is computationally intensive. We aim to search for better explanations within a reasonable budget. Our evaluation of cost is based on the number of tokens processed by LLMs, including both tokens in the prompts and the tokens generated by LLMs. We further bucket the measurement of cost by the number of combinations C that are scored by O, which involves processing M(K + 1) examples."
+        },
+        {
+            "heading": "5.2 Datasets",
+            "text": "We experiment with four datasets covering four distinct tasks, including:\n\u2022 GSM (Cobbe et al., 2021) consists of grade school math questions. Each is paired with a human-written explanation for the answer.\n\u2022 ECQA (Aggarwal et al., 2021; Talmor et al., 2019) contains multiple-choice questions which test models\u2019 commonsense knowledge.\n\u2022 E-SNLI (Camburu et al., 2018) studies the task of natural language inference which is to classify the relation between a premise and a hypothesis.\n\u2022 STRATEGYQA (Geva et al., 2021) asks YesNo questions requiring steps. The dataset does not have explanation annotations, but it provides facts (Geva et al., 2021) which are supporting evidence (albeit noisy ones) for the answers, so we use them as explanations.\nFor each of the datasets, we choose prompt formats commonly used in past work (Wei et al., 2022; Wang et al., 2022b). We show one example in the corresponding prompt format in Appendix A. We use 8 exemplars in prompts for GSM, ECQA, and STRATEGYQA, and 9 exemplars (3 for each class) for E-SNLI, as sing more exemplars would not lead to further performance gains."
+        },
+        {
+            "heading": "6 Effectiveness of Proxy Metrics",
+            "text": "Before showing the results of the complete system, we first present experiments for verifying the effectiveness of the two proxy metrics. We evaluate them on the basis of the best oracle accuracy on a small (gold) labeled test set that we can reach using the top-X candidates, referred to as MAX@X , ranked by SOSAcc or SOSLL. This gives an oracle upper bound for the performance that silver reranking via O can yield.\nSetup We compare our metrics against a baseline which randomly scores combinations (NAIVE). We mainly use code-davinci-002 for this experiment; please refer to Appendix B for additional results on text-davinci-003. For SOSAcc, we silver-labeled 256 randomly drawn development with 48 samples of combinations. For each dataset, we experiment\nwith four different exemplar sets T to control for randomness and report the average number.\nResults Table 2 shows the maximum reachable performance within 8 (Max@8) and 16 (Max@16) candidate combinations. For each dataset, using one of our metrics can find more promising candidate combinations than randomly proposed candidates. Among the top 16 combinations, combinations preferred by SOSAcc can achieve better performance than randomly selected combinations by 1.0%, 0.9%, and 1.4% on GSM, ECQA, and E-SNLI, respectively. SOSLL is the most effective strategy on ECQA, and STRATEGYQA, surpassing NAIVE by 2.0% and 0.9% on the basis of 16 candidate combinations. We do not find one metric that consistently gives the best performance.\nProxy metrics vs downstream accuracy In Figure 3, we show a series of graphs for intuitive understanding of how the proxy metrics relate to the downstream accuracy. Each group of graphs shows the downstream accuracy vs. the surrogate proxy scores of combinations preferred by different metrics. For each dataset, we show two groups of graphs for two different exemplar sets out of four. Each group contains three graphs with different values on the x-axis. The first graph of a triple shows SOSAcc on the x-axis and the second one shows one-shot likelihood on the exemplar set (positively correlates with SOSLL). In addition to the two proxy metrics, we show the completion likelihood on the third graph (probability of the predictions on the development set).\nWe show that the two surrogate scores we define mostly positively correlate with the downstream accuracy. SOSAcc (left) works uniformly well except on STRATEGYQA. SOSLL works well except for Figure 3a from GSM and Figure 3f from E-SNLI. In particular, on ECQA, both of them highly positively correlate with the downstream accuracy. Furthermore, we show the candidate combinations preferred by our proxy metrics lead to, in most\ncases, better likelihood on the development set (third graph in each triple), which indicates these combinations are more \u201coptimized\u201d for a specific task; past work suggests that better likelihood generally correlates with better downstream performance (Gonen et al., 2022)."
+        },
+        {
+            "heading": "7 Effectiveness of Framework",
+            "text": ""
+        },
+        {
+            "heading": "7.1 Main Results",
+            "text": "We now test the effectiveness of the full framework. We mainly compare the performance of the explanations optimized via our approach against (1) the ZERO-COT approach (Kojima et al., 2022) (not using any human provided explanations) and (2) using seed explanations. In addition, we derive two\nbaselines from past work on constructing effective explanations for ICL, which also select potentially better explanations from candidate explanations. Recall that E\u0302i = {e\u0302(1)i . . . e\u0302 (|E\u0302i|) i } is the candidate explanation set for qi, our baselines include (1) BESTLEN that chooses the longest explanations (i.e., maxe\u0303\u2208E\u0303 |e\u0303|), as Fu et al. (2022) suggest using more complex CoTs leads to better performance for arithmetic reasoning, and (2) BESTPPL that chooses the explanation with the best perplexity (i.e., maxe\u0303\u2208E\u0303 Perplexity(ai, e\u0303, qi)), as Gonen et al. (2022) suggest lower perplexity of prompts correlate with better performance. We note that these two baselines are not invented for optimizing explanations of given exemplars and are adapted to fit\nour setting. We refer to our optimization approach (based on the ENSEMBLE strategy) as OPTIMIZED.\nSetup For all dataset sets, we experiment with 4 different exemplar sets as well as different unlabeled sets V of 256 randomly selected examples. We sample 48 combinations to silver label V . We constrain the computation budget B to be 50; this was the highest point feasible given limitations and was also where we found the silver accuracy (O) to be nearly saturated. We note this budget has included the overhead for computing the proxy metrics as well as the computation for scoring combinations using O (see Appendix C for details).\nResults We show the performance of different approaches in Table 3. Overall, using our framework can find substantially better explanations measured by prompting performance compared to seed explanations. Without using any manually annotated explanations, the performance of ZERO-COT is far behind few-shot prompting using the seed explanations (SEED). Meanwhile, the explanations optimized using our framework outperforms the original seed explanations by 3.3%, 4.3%, and 7.1%, on GSM, ECQA, and E-SNLI, respectively. Choosing explanations with the lowest perplexity (BESTPPL) is able to marginally improve the performance on GSM, ECQA, and E-SNLI, compared to the seed set, but is consistently worse than our approach, and even leads to performance degradation on STRATEGYQA. As we are using 4 different random exemplar sets, we perform 4 groups of significance tests for different random trials. We note the gain of our approach over the seed set is typically significant, please refer to Appendix F for details."
+        },
+        {
+            "heading": "7.2 Analysis",
+            "text": "Self-consistency performance In addition to greedy decoding used in Table 3, we evaluate the performance of our optimized explanations under self-consistency decoding and compare against seed explanations. We vary the number of samples from 5 to 40, and show the results in Table 4. We note that the results are on a basis of one random exemplar set for each of the datasets, owing to the high computational cost of drawing tens of samples. As shown in Table 4, the optimized explanations consistently outperform the seed explanations under different numbers of samples. The gap is especially significant with smaller number of samples.\nResults on other LLMs We mainly uses code-davinci-002 in our experiments given its stateof-the-art ICL abilities. We also verify the effectiveness of our approach on text-davinci-003, an LLM finetuned to align with human feedback (Ouyang et al., 2022). We note that experiment with a smaller scale given the high cost (see Appendix B for details) and evaluate on one random set of exemplars instead of four. As shown in Table 5, applying our approach can also find better-performing explanations for all the datasets on text-003. Analysis on the effectiveness of our proxy metrics on text-003 is also included in Appendix B.\nGeneralizability of optimized explanations We investigate whether the performance improvements of our optimized explanations in a particular domain can generalize to other datasets with different distributions. Table 6 shows the performance of seed explanations and the optimized explanations from the GSM dataset (OPTIM-GSM) on the other arithmetic reasoning datasets, including SVAMP (Patel et al., 2021) and MAWPS (KoncelKedziorski et al., 2016). As suggested by the results, the optimized explanations achieve better performance compared to seed explanations on the out-of-domain datasets, which indicates that the performance improvements can generalize.\nResults with reduced computation budget We expect search with our proxy metrics can still work well without high computation budget since they already extract potentially high-scoring combinations. We test a setting that uses a reduced computation budget. We set the budget to be 20 (as opposed to 50 in the main experiments; see Appendix C for more details). As seen in Table 7, with reduced budget, our framework can still improve the downstream performance compared to seed explanations by around 2.0%, 4.0%, and 6.0%, on GSM, ECQA, and E-SNLI, while maintaining performance on STRATEGYQA.\nFailure analysis of proxy metrics In Section 6, we see that the SOSLL and SOSAcc do not always positively correlate with the performance on certain datasets. While we show such uncertainty can be handled by using an ensemble and scoring based on\nO we briefly analyze the failure of the two metrics for a better understanding of them.\nIn Table 2, SOSAcc performs poorly on STRATEGYQA, yielding lower performance than the NAIVE strategy. The silver accuracy on this dataset is very poor: almost all one-shot accuracy is below 50% (see Figure 3g), worse than random guessing. One reason is that the binary nature of the task causes a single demonstration to be less suitable and representative than a single demonstration on more complex tasks like GSM. Under such circumstances, the averaged one-shot accuracy is no longer indicative of the full-prompt silver accuracy. On the other datasets, one-shot accuracy is meaningful (better than random guess), and the SOSAcc correlates well with the full-prompt accuracy.\nFurthermore, combinations scored highly by SOSLL in Figure 3f are not better than random combinations in terms of downstream accuracy. Such combinations also lead to a mediocre completion likelihood, which is unusual as optimizing SOSLL typically leads to the highest completion likelihood in other cases in Figure 3. We hypothesize this can be attributed to the distribution gap between the exemplar set and the test set. Since SOSLL optimizes the log likelihood only based on the exemplar set, it might not generalize well to the test set under severe distribution shift, which is indicated by the suboptimal completion likelihood.\nAnalysis on proxy metrics In Section 6, we investigate the effectiveness of our proxy metrics with the oracle accuracy on a small test set. We provide additional analysis on proxy metrics in Appendix D, which shows applying our approach in a naive way (without using proxy metrics) can already lead to accuracy improvements compared to the seed set, using proxy metrics to prioritize search strategy can further improve the performance of the searched explanations.\nOutput examples We include examples of the original explanations and the search outputs in Appendix G. We note that not all optimized explanations necessarily look much better or more plausible as perceived by humans. The optimization objective here is designed to induce better test predictions in the final model. Part of the effects of this optimization may also be in the combination of the different explanations, so explanations may also be selected because they are more \u201ccompatible\u201d with others in the final O ranking function."
+        },
+        {
+            "heading": "8 Related Work",
+            "text": "We study prompting LLMs with chain-of-thought (Nye et al., 2021; Wei et al., 2022; Shi et al., 2022) or textual explanations more generally (Marasovic\u0301 et al., 2022; Ye and Durrett, 2022). Much of the past work focuses on exemplar selection in the presence of explanations (Fu et al., 2022; Ye et al., 2023) or developing prompting methods for various reasoning tasks (Jung et al., 2022; Gao et al., 2022), which typically require manually engineered explanations. We focus instead on searching for betterperforming explanations.\nOur approach leverages data without explanation annotations. Similarly, prior work also explores the means of using few-show explanations together with data points without explanations annotations for improving downstream performance (Zelikman et al., 2022; Li et al., 2022b; Ye et al., 2023; Li et al., 2022a; Wang et al., 2022a; Huang et al., 2022). Many of these techniques need a large amount of fully labeled data to train models used for generating explanations (Zelikman et al., 2022) or smaller models used as verifiers (Li et al., 2022b,a; Wang et al., 2022a), whereas our work only uses a small unlabeled set. There is also work on automatically constructing CoTs (Zhang et al., 2023) starting ZoTs (Kojima et al., 2022), which also requires a fully labeled dataset. In particular, Huang et al. (2022) also use LLMs to silver labeled data points for finetuning the LLMs; our work instead treats LLMs as black-boxes and searches for better explanations instead of tuning the parameters.\nOur work also closely relates to prompt optimization. While experts can potentially engineer better prompts (Reynolds and McDonell, 2021; Mishra et al., 2022), such a process requires heavy manual effort. This has attracted growing interest on automated prompt engineering. One line of work requires interacting with gradients (Shin et al., 2020; Hu et al., 2021) or continuous embeddings (Sun et al., 2022a,b; Diao et al., 2022; Sun et al., 2023). Another line uses LMs as black-boxes (Prasad et al., 2022; Deng et al., 2022; Zhang et al., 2022; Zhou et al., 2022b). However, this past work either optimizes over discrete templates (not applicable for the explanation optimization setting) or optimizes over string verbalizations (a search space too large for our setting)."
+        },
+        {
+            "heading": "9 Conclusion",
+            "text": "We have presented an approach that can search for better-performing explanations for ICL starting from a set of seed explanations. Our approach first proposes promising candidate combinations of alternative explanations generated using LLMs, then finds explanation combinations using proxy metrics before using a silver-labeled validation set to select the best candidate. Our results highlight the substantial variance in the performance of different sets of explanations, paving the way for future work to further optimize explanations in this paradigm.\nLimitations\nOur approach highly relies on the capabilities of the LLMs. We use LLMs to generate candidate explanations, to silver-label development set, as well as to score combinations. To that end, we hypothesize less capable LMs might see limited benefits from our approach, and it is more suitable in a setting that involves finetuning using a large number of labeled set (Zelikman et al., 2022).\nOur approach requires overhead cost to optimize the explanations, including pseudo-labeling the development and scoring combinations using silver accuracy. However, at inference time, the cost is the same as standard few-shot prompting with explanations. We believe it is reasonable to pay a moderate \u201ctraining\u201d cost; if optimizing an LLM prompt that is to be deployed as a service, the cost at the training stage (equivalent to running self-consistency inference on 500 test examples) is acceptable compared to the long-term costs of running the model on examples.\nOur approach optimizes the silver accuracy via searching over combinations preferred by proposed proxy metrics. This does not guarantee finding the combination with optimal silver accuracy, especially as we are limiting our computation budget and operating in the black-box setting. While there exist approaches that use gradient-based optimization for more exhaustively searching over a smaller set of options, (e.g., RLPrompt (Deng et al., 2022) searches over prompts that are just a few tokens long), we are not aware of any method that can search over the space of prompts for black-box LLMs and find a provably optimal prompt. Our trade-off reflects the practical constraints of this complex setting.\nOur approach optimizes the downstream performance by optimizing explanations, leaving out\nother factors such as verbalization and exemplar order. In particular, we find varying explanations grants more substantial headroom than varying order (see Appendix E for detailed discussion).\nLastly, this work only considers a certain range of reasoning datasets written in English. It is unknown how well our approach can handle other languages, or other reasoning tasks such as pure symbolic reasoning."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "Thanks to anonymous reviewers for their helpful feedback, as well as to Eunsol Choi, Chenglei Si, Qiaochu Chen, Huancheng Chen, Yasumasa Onoe, Jiacheng Xu, Jifan Chen, Zhen Chen, Yunmo Chen, and Lemeng Wu for their help with various aspects of this work. This work was supported by NSF CAREER Award IIS-2145280 and the NSF Institute for Foundations of Machine Learning."
+        },
+        {
+            "heading": "A Datasets & Prompt Examples",
+            "text": "We show an example and corresponding prompt format for each of the datasets we use in Figure 4.\nB Experiments of the Effectiveness of Proxy Metrics on text-davinci-003\nIn addition to code-davinci-002, which we mainly use throughout the paper, we also verify the effectiveness of our proxy metrics on text-davinci-003. Unlike code-002, which is a based model, text-003 is an instructional finetuned model (that learns to maximize a reward model trained from comparisons by humans).\nSetup As in Section 6, we evaluate the maximum reachable performance within 8 (Max@8) candidate combinations. Given the cost for querying the API, we conduct experiments with a smaller scale: we only use 12 samples to silver-label development set, and evaluate on only one set of exemplars for each dataset.\nResults As shown in Table 8, we observe a similar trend to code-davinci-002 which is used in Section 6: SOSAcc is particularly effective on GSM and ECQA, whereas SOSLL is effective on ECQA and\nSTRATEGYQA. We see somewhat larger gains on GSM (over weaker baseline performance) and less change in E-SNLI (over a stronger baseline model)."
+        },
+        {
+            "heading": "C Details of Computation Overhead and Computation Budget",
+            "text": "Details of computation overhead for proxy metrics We detail the computation overhead needed for SOSAcc and SOSLL. Recall that we bucket the measurement of cost by the number of combinations C that are scored by O. Scoring one combination involves processing M(K + 1) examples (ruining inference M data points with K examples in prompts and 1 example in output), which we use as a unit, called one PASS. In our experimental setting, the number of exemplars K = 8 for all datasets other than E-SNLI where K = 9, the size of development set M = 256, the typical number of candidate explanations in E\u0302i, marked as |E\u0302|, for each question is 8. We will use K = 8, |E\u0302| = 8 for estimating the overhead. Scoring one combination with O requires processing M(K + 1) = 2304 number of examples.\nTo compute SOSLL for all combinations, we need to score all pairs of ei and ej where ei \u2208 E\u0302i \u2227 ej \u2208 E\u0302j\u2227i \u0338= j by p(ai, ei, qi | aj , ej , qj ; \u03b8). In total, the overhead involves processing 2|E\u0302|2K(K\u22121) = 7168 number of examples. The computation cost is equivalent to scoring 3.1 combinations against silver set.\nThe overhead for SOSAcc requires performing one-shot inference for all explanation candidates, which process 2|E\u0302|KM = 32768 examples. The overhead is equivalent to scoring 14.2 combinations.\nNote that this computation just needs to be performed once for each task. If we are deploying a system in practice, we ideally want to find one strong prompt that can work well for the task. These expenses are analogous to the training phase for fine-tuned models, and are small compared to the overall cost to do inference on a high number of examples in a real system.\nDetails of computation budget We now detail how the budget B is allocated to computing the proxy metrics and scoring combinations using O. Consider computation budget of 50 as used in the main experiments (Section 7.1). As discussed before, the overhead for computing SOSLL for all combinations is roughly equivalent to 3 PASSES; the overhead for SOSAcc is roughly 14 PASSES. Therefore, we allow ENSEMBLE to rank 32 combinations in total (16 from SOSLL and 16 from SOSAcc). For the reduced budget setting that sets B to be 20, we only allow ENSEMBLE to rank 2 combinations, one from SOSLL and one from SOSAcc."
+        },
+        {
+            "heading": "D Additional Analysis on Proxy Metrics",
+            "text": "Setup To give further evidence on the effectiveness of using our proxy metrics, we evaluate the performance of explanations obtained using different proxy metrics, and compare against NAIVE that chooses random combinations. We show the results in Table 9. Note that all approaches use the same amount of computation budget (50) to ensure fair comparison. Specifically, we allow NAIVE to rank 50 combinations, SOSLL to rank 48 combinations, SOSAcc to rank 32 combinations, and ENSEMBLE to rank 32 combinations (16 of each); this roughly equalizes the overall computation needed for each approach.\nResults As shown in Table 9, applying our approach in a NAIVE way can already lead to accuracy improvements compared to the seed set. Under the same computation budget, using proxy metrics to prioritize search strategy can further improve the performance of the searched explanations, compared to NAIVE. SOSLL is especially effective on ECQA, whereas SOSAcc achieves the best performance\non E-SNLI. Using an ensemble of the two strategies leads to the best overall performance, improving performance compared to NAIVE across all datasets.\nE Varying Explanations versus Varying Order\nGiven a set of exemplars, our approach optimizes the downstream performance by optimizing explanations. Past work has suggested different order of exemplars can also lead to variance in downstream performance (Lu et al., 2022).\nWe find that varying explanations has a larger impact than varying order. We compare the potential headroom that could be achieved by optimizing explanations against optimizing order. As in Table 10, we show the statistics of the performance of 16 different random orders of the seed explanations, with a similar setup as Table 1 in the main paper. We can conclude that on GSM, ECQA, E-SNLI, the best prompts (MAX) that we can find by varying order are less effective than varying explanations (see Table 1)."
+        },
+        {
+            "heading": "F Significance Test on the Main Results",
+            "text": "Recall that we experiment with 4 random trials, varying different sets of exemplars T and development sets V in our main experiments (Section 7.1). Therefore, for comparison on each dataset, we perform 4 paired tests, checking whether the improvements of OPTIMIZED over SEED are significant in each setting. We use one \u21d1 and one \u2191 to denote OPTIMIZED is significantly better than SEED with a p-value < 0.05 and 0.1, respectively. We use \u2193 and \u21d3 to denote the OPTIMIZED is significantly worse, and use \u2212 to denote there are no significant differences. As shown in Table 11, our optimization approach almost never downgrades the performance (except for one trial on STRATEGYQA). And on GSM, ECQA, and E-SNLI, the gain is typically significant with a p-value < 0.05."
+        },
+        {
+            "heading": "G Output Examples",
+            "text": "We show an example of optimized explanations we get using ENSEMBLE and computation budget B = 50 on GSM, ECQA, E-SNLI, and STRATEGYQA in Figure 5, Figure 6, Figure 7, and Figure 8, respectively. In addition, we manually check the 32 (4 trials * 8 examples) optimized explanations for GSM, and 96.9% of them are valid. Our approach typically generates sound explanations for the task of arithmetic reasoning."
+        }
+    ],
+    "title": "Explanation Selection Using Unlabeled Data for Chain-of-Thought Prompting",
+    "year": 2023
+}

@@ -1,0 +1,662 @@
+{
+    "abstractText": "Handwritten mathematical expression recognition (HMER) is a multidisciplinary task that generates LaTeX sequences from images. Existing approaches, employing tree decoders within attention-based encoder-decoder architectures, aim to capture the hierarchical tree structure, but are limited by CFGs and pregenerated triplet data, hindering expandability and neglecting visual ambiguity challenges. This article investigates the distinctive language characteristics of LaTeX mathematical expressions, revealing two key observations: 1) the presence of explicit structural symbols, and 2) the treatment of symbols as minimal units, each directly assigned specific semantics. Rooted in these properties, we propose that language models have the potential to synchronously and complementarily provide both structural and semantic information, making them suitable for correction of HMER. To validate our proposition, we propose an architecture called Recognition and Language Fusion Network (RLFN), which integrates recognition and language features to output corrected sequences while jointly optimizing with a string decoder recognition model. Experiments show that RLFN outperforms existing state-of-theart methods on the CROHME 2014/2016/2019 datasets.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Zui Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiaqi Han"
+        },
+        {
+            "affiliations": [],
+            "name": "Chaofan Yang"
+        },
+        {
+            "affiliations": [],
+            "name": "Yi Zhou"
+        }
+    ],
+    "id": "SP:ab309cbe9c3ed3ad3d5aa6e72daf3151ea805e3c",
+    "references": [
+        {
+            "authors": [
+                "Ahmad-Montaser Awal",
+                "Harold Mouch\u00e8re",
+                "Christian Viard-Gaudin."
+            ],
+            "title": "A global learning approach for an online handwritten mathematical expression recognition system",
+            "venue": "Pattern Recognition Letters, 35:68\u201377. Frontiers in Handwriting Processing.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Xiaohang Bian",
+                "Bo Qin",
+                "Xiaozhe Xin",
+                "Jianwu Li",
+                "Xuefeng Su",
+                "Yanfeng Wang."
+            ],
+            "title": "Handwritten mathematical expression recognition via attention aggregation based bi-directional mutual learning",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelli-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kam-Fai Chan",
+                "Dit-Yan Yeung."
+            ],
+            "title": "Error detection, error correction and performance evaluation in on-line mathematical expression recognition",
+            "venue": "Pattern Recognition, 34(8):1671\u20131684.",
+            "year": 2001
+        },
+        {
+            "authors": [
+                "Kyunghyun Cho",
+                "Bart van Merri\u00ebnboer",
+                "Caglar Gulcehre",
+                "Dzmitry Bahdanau",
+                "Fethi Bougares",
+                "Holger Schwenk",
+                "Yoshua Bengio."
+            ],
+            "title": "Learning phrase representations using RNN encoder\u2013decoder for statistical machine translation",
+            "venue": "Proceedings",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Yuntian Deng",
+                "Anssi Kanervisto",
+                "Jeffrey Ling",
+                "Alexander M. Rush."
+            ],
+            "title": "Image-to-markup generation with coarse-to-fine attention",
+            "venue": "Proceedings of the 34th International Conference on Machine Learning, volume 70 of Proceedings of Machine Learning",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Shancheng Fang",
+                "Zhendong Mao",
+                "Hongtao Xie",
+                "Yuxin Wang",
+                "Chenggang Yan",
+                "Yongdong Zhang."
+            ],
+            "title": "Abinet++: Autonomous, bidirectional and iterative language modeling for scene text spotting",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intel-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shancheng Fang",
+                "Hongtao Xie",
+                "Yuxin Wang",
+                "Zhendong Mao",
+                "Yongdong Zhang."
+            ],
+            "title": "Read like humans: Autonomous, bidirectional and iterative language modeling for scene text recognition",
+            "venue": "2021 IEEE/CVF Conference on Computer Vision and Pat-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Christiane Fellbaum."
+            ],
+            "title": "Wordnet and wordnets",
+            "venue": "Alex Barber, editor, Encyclopedia of Language and Linguistics, pages 2\u2013665. Elsevier.",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Harsh Gupta",
+                "Luciano Del Corro",
+                "Samuel Broscheit",
+                "Johannes Hoffart",
+                "Eliot Brenner."
+            ],
+            "title": "Unsupervised multi-view post-OCR error correction with language models",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Pro-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gao Huang",
+                "Zhuang Liu",
+                "Laurens van der Maaten",
+                "Kilian Q. Weinberger."
+            ],
+            "title": "Densely connected convolutional networks",
+            "venue": "2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 2261\u20132269.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Armand Joulin",
+                "Edouard Grave",
+                "Piotr Bojanowski",
+                "Tomas Mikolov."
+            ],
+            "title": "Bag of tricks for efficient text classification",
+            "venue": "Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Pa-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Anh Duc Le."
+            ],
+            "title": "Recognizing handwritten mathematical expressions via paired dual loss attention network and printed mathematical expressions",
+            "venue": "2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), pages 2413\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Bohan Li",
+                "Ye Yuan",
+                "Dingkang Liang",
+                "Xiao Liu",
+                "Zhilong Ji",
+                "Jinfeng Bai",
+                "Wenyu Liu",
+                "Xiang Bai."
+            ],
+            "title": "When counting meets hmer: Counting-aware network for handwritten mathematical expression recognition",
+            "venue": "Computer Vision \u2013 ECCV 2022, pages 197\u2013214.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ron Litman",
+                "Oron Anschel",
+                "Shahar Tsiper",
+                "Roee Litman",
+                "Shai Mazor",
+                "R. Manmatha."
+            ],
+            "title": "Scatter: Selective context attentional scene text recognizer",
+            "venue": "2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 11959\u201311969.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized BERT pretraining approach",
+            "venue": "CoRR, abs/1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Scott MacLean",
+                "George Labahn."
+            ],
+            "title": "A new approach for recognizing handwritten mathematics using relational grammars and fuzzy sets",
+            "venue": "International Journal on Document Analysis and Recognition (IJDAR), 16(2):139\u2013163.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "H. Mouch\u00e8re",
+                "C. Viard-Gaudin",
+                "R. Zanibbi",
+                "U. Garain."
+            ],
+            "title": "Icfhr 2014 competition on recognition of on-line handwritten mathematical expressions (crohme 2014)",
+            "venue": "2014 14th International Conference on Frontiers in Handwriting Recognition, pages",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Thi Tuyet Hai Nguyen",
+                "Adam Jatowt",
+                "Nhu-Van Nguyen",
+                "Mickael Coustaty",
+                "Antoine Doucet."
+            ],
+            "title": "Neural machine translation with bert for post-ocr error detection and correction",
+            "venue": "Proceedings of the A CM/IEEE Joint Conference on Digital Libraries in",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "V\u00edt Novotn\u00fd",
+                "Michal \u0160tef\u00e1nik."
+            ],
+            "title": "Combining sparse and dense information retrieval",
+            "venue": "Proceedings of the Working Notes of CLEF 2022 - Conference and Labs of the Evaluation Forum, pages 104\u2013118, Bologna. CEUR-WS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ernesto Noya",
+                "Joan Andreu S\u00e1nchez",
+                "Jos\u00e9 Miguel Bened\u00ed."
+            ],
+            "title": "Generation of hypergraphs from the n-best parsing of 2d-probabilistic context-free grammars for mathematical expression recognition",
+            "venue": "2020 25th International Conference on Pattern",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Niki Parmar",
+                "Ashish Vaswani",
+                "Jakob Uszkoreit",
+                "Lukasz Kaiser",
+                "Noam Shazeer",
+                "Alexander Ku",
+                "Dustin Tran."
+            ],
+            "title": "Image transformer",
+            "venue": "Proceedings of the 35th International Conference on Machine Learning, volume 80 of Proceedings of Machine Learning",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Shuai Peng",
+                "Ke Yuan",
+                "Liangcai Gao",
+                "Zhi Tang."
+            ],
+            "title": "Mathbert: A pre-trained model for mathematical formula understanding",
+            "venue": "CoRR, abs/2105.00377.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhi Qiao",
+                "Yu Zhou",
+                "Dongbao Yang",
+                "Yucan Zhou",
+                "Weiping Wang."
+            ],
+            "title": "Seed: Semantics enhanced encoder-decoder framework for scene text recognition",
+            "venue": "2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 13525\u2013",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Anja Reusch",
+                "Maik Thiele",
+                "Wolfgang Lehner."
+            ],
+            "title": "Transformer-encoder and decoder models for questions on math",
+            "venue": "Proceedings of the Working Notes of CLEF 2022, pages 5\u20138.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexander Scarlatos",
+                "Andrew Lan."
+            ],
+            "title": "Tree-based representation and generation of natural and mathematical language",
+            "venue": "CoRR, abs/2302.07974.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Thanh-Nghia Truong",
+                "Cuong Tuan Nguyen",
+                "Khanh Minh Phan",
+                "Masaki Nakagawa."
+            ],
+            "title": "Improvement of end-to-end offline handwritten mathematical expression recognition by weakly supervised learning",
+            "venue": "2020 17th International",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Huy Quang Ung",
+                "Cuong Tuan Nguyen",
+                "Hung Tuan Nguyen",
+                "Thanh-Nghia Truong",
+                "Masaki Nakagawa."
+            ],
+            "title": "A transformer-based math language model for handwritten math expression recognition",
+            "venue": "Document Analysis and Recognition \u2013 ICDAR",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiaming Wang",
+                "Jun Du",
+                "Jianshu Zhang",
+                "Zi-Rui Wang."
+            ],
+            "title": "Multi-modal attention network for handwritten mathematical expression recognition",
+            "venue": "2019 International Conference on Document Analysis and Recognition (ICDAR), pages 1181\u20131186.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Changjie Wu",
+                "Jun Du",
+                "Yunqing Li",
+                "Jianshu Zhang",
+                "Chen Yang",
+                "Bo Ren",
+                "Yiqing Hu."
+            ],
+            "title": "Tdv2: A novel tree-structured decoder for offline mathematical expression recognition",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, 36(3):2694\u20132702.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiajia Wu",
+                "Jinshui Hu",
+                "Mingjun Chen",
+                "Lirong Dai",
+                "Xuejing Niu",
+                "Ning Wang."
+            ],
+            "title": "Structural string decoder for handwritten mathematical expression recognition",
+            "venue": "2022 26th International Conference on Pattern Recognition (ICPR), pages 3246\u20133251.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jin-Wen Wu",
+                "Fei Yin",
+                "Yan-Ming Zhang",
+                "Xu-Yao Zhang",
+                "Cheng Lin Liu."
+            ],
+            "title": "Image-to-markup generation via paired adversarial learning",
+            "venue": "Machine Learning and Knowledge Discovery in Databases, pages 18\u201334, Cham. Springer International Publish-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jin-Wen Wu",
+                "Fei Yin",
+                "Yan-Ming Zhang",
+                "Xu-Yao Zhang",
+                "Cheng-Lin Liu."
+            ],
+            "title": "Handwritten mathematical expression recognition via paired adversarial learning",
+            "venue": "International Journal of Computer Vision, 128(10):2386\u20132401.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhengyuan Yang",
+                "Linjie Li",
+                "Kevin Lin",
+                "Jianfeng Wang",
+                "Chung-Ching Lin",
+                "Zicheng Liu",
+                "Lijuan Wang"
+            ],
+            "title": "The dawn of lmms: Preliminary explorations with gpt-4v(ision)",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Lili Yao",
+                "Yaoyuan Zhang",
+                "Yansong Feng",
+                "Dongyan Zhao",
+                "Rui Yan."
+            ],
+            "title": "Towards implicit contentintroducing for generative short-text conversation systems",
+            "venue": "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Michihiro Yasunaga",
+                "Jure Leskovec",
+                "Percy Liang."
+            ],
+            "title": "Lm-critic: Language models for unsupervised grammatical error correction",
+            "venue": "CoRR, abs/2109.06822.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ye Yuan",
+                "Xiao Liu",
+                "Wondimu Dikubab",
+                "Hui Liu",
+                "Zhilong Ji",
+                "Zhongqin Wu",
+                "Xiang Bai."
+            ],
+            "title": "Syntaxaware network for handwritten mathematical expression recognition",
+            "venue": "2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Matthew D. Zeiler."
+            ],
+            "title": "ADADELTA: an adaptive learning rate method",
+            "venue": "CoRR, abs/1212.5701.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Jianshu Zhang",
+                "Jun Du",
+                "Lirong Dai."
+            ],
+            "title": "Multiscale attention with dense encoder for handwritten mathematical expression recognition",
+            "venue": "2018 24th International Conference on Pattern Recognition (ICPR), pages 2245\u20132250.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jianshu Zhang",
+                "Jun Du",
+                "Lirong Dai."
+            ],
+            "title": "Track, attend, and parse (tap): An end-to-end framework for online handwritten mathematical expression recognition",
+            "venue": "IEEE Transactions on Multimedia, 21(1):221\u2013 233.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jianshu Zhang",
+                "Jun Du",
+                "Yongxin Yang",
+                "Yi-Zhe Song",
+                "Si Wei",
+                "Lirong Dai."
+            ],
+            "title": "A tree-structured decoder for image-to-markup generation",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, volume 119 of Proceedings of",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jianshu Zhang",
+                "Jun Du",
+                "Shiliang Zhang",
+                "Dan Liu",
+                "Yulong Hu andJ inshui Hu",
+                "Si Wei",
+                "Lirong Dai."
+            ],
+            "title": "Watch, attend and parse: An end-to-end neural network based approach to handwritten mathematical expression recognition",
+            "venue": "Pattern Recognition, 71:196\u2013",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Zhi Zhang",
+                "Tong He",
+                "Hang Zhang",
+                "Zhongyue Zhang",
+                "Junyuan Xie",
+                "Mu Li."
+            ],
+            "title": "Bag of freebies for training object detection neural networks",
+            "venue": "CoRR, abs/1902.04103.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Wenqi Zhao",
+                "Liangcai Gao",
+                "Zuoyu Yan",
+                "Shuai Peng",
+                "Lin Du",
+                "Ziyin Zhang."
+            ],
+            "title": "Handwritten mathematical expression recognition with bidirectionally trained transformer",
+            "venue": "Document Analysis and Recognition \u2013 ICDAR 2021, pages 570\u2013584, Cham.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shuhan Zhong",
+                "Sizhe Song",
+                "Guanyao Li",
+                "S.-H. Gary Chan."
+            ],
+            "title": "A tree-based structure-aware transformer decoder for image-to-markup generation",
+            "venue": "Proceedings of the 30th ACM International Conference on Multimedia, MM \u201922, page 5751\u20135760, New",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Francisco \u00c1lvaro",
+                "Joan-Andreu S\u00e1nchez",
+                "Jos\u00e9Miguel Bened\u00ed."
+            ],
+            "title": "Recognition of on-line handwritten mathematical expressions using 2d stochastic context-free grammars and hidden markov models",
+            "venue": "Pattern Recognition Letters, 35:58\u201367. Frontiers in",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Francisco \u00c1lvaro",
+                "Joan-Andreu S\u00e1nchez",
+                "Jos\u00e9Miguel Bened\u00ed."
+            ],
+            "title": "An integrated grammar-based approach for mathematical expression recognition",
+            "venue": "Pattern Recognition, 51:135\u2013147.",
+            "year": 2016
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Handwritten Mathematical Expression Recognition (HMER), a demanding subsection of optical character recognition (OCR), constitutes an interdisciplinary crossroad of computer vision, pattern recognition, and natural language processing (NLP). The unfolding of deep learning advancements has notably enhanced the effectiveness of HMER, ushering its adoption in diverse arenas, including intelligent education. Nonetheless, the precision of these technologies is continuously challenged by\n1https://github.com/Zui-C/RLFN\ninherent ambiguities in handwritten characters and the complexity of mathematical formulas. These hurdles underscore the pivotal role that NLP could play in enhancing the robustness of current visual models grappling with these issues.\nThe encoder-decoder architecture is the prevalent method for HMER, which recasts the problem as an image-to-sequence translation task, converting a handwritten formula image into a LaTeX markup sequence. In contrast to traditional OCR tasks, the two-dimensional structure of handwritten formulas necessitates an approach that doesn\u2019t rely on direct segmentation. Since Zhang et al. (2017) introduces a decoder using RNN with attention, subsequent work has concentrated on enhancing the accuracy of the visual attention (Zhao et al., 2021; Bian et al., 2022; Li et al., 2022). Currently, various tree decoders and methods of syntactic analysis, such as Zhang et al. (2020) and Yuan et al. (2022), are employed to focus on analyzing the expression structure and the relations of symbols.\nWhile structure-focused methods have undeniably enriched recognition model capabilities, they have also precipitated two notable challenges: 1) They rely on complex Context-Free Grammars (CFGs), necessitating the pre-transformation of the LaTeX markup sequence into specific tuple representations, which limits their extensibility. 2) The issue of visual ambiguity is left behind. Tree decoders pay less attention to context when predicting triples, often unable to distinguish differences such as \u20182\u2019 and \u2018z\u2019. Ung et al. (2021) try to employ a language model (LM) for post-correction, but Gupta et al. (2021) underline the inherent risk of wholly depending on a LM for the correction of low-redundancy information, such as numbers, which is particularly susceptible to biases introduced by probabilistic skewing.\nHowever, as a formal language designed for mathematical structures, LaTeX mathematical expressions possess unique language characteristics.\nWe believe that advance structural analysis separately following normal NLP methods may not be a prerequisite to catch complicated structures of LaTeX mathematical expressions.\nTwo key characteristics of LaTeX mathematical expressions are: 1) They have explicit structural symbols. 2) Minimal units are symbols, and they are directly assigned specific semantics. Based on this, we propose that LMs can proffer both structural and semantic information, making them suitable for correction of HMER. An in-depth theoretical and statistical exploration of this perspective is articulated in Section 3.\nSpecifically, regarding the current limitations of structure-focused methods, we believe that: 1) The structural information can be represented by structural symbols\u2019 semantic with the context provided by mathematical notations. This circumvents the necessity for complex CFGs to generate triplet data. 2) Character ambiguity between different types can be rectified with contexts provided by structural symbols and mathematical notations.\nWe substantiate our propositions through experiments on HMER correction. Specifically, we deploy a math LM to rectify an HMER model reliant on unstructured-based methods, demonstrating the suitability of LM in addressing current limitations. Additionally, we argue against the sole reliance on LMs in a post-correction method. By leveraging information from the recognition model, we can constrict the correction space.\nFinally, we propose our architecture called Recognition and Language Fusion Network (RLFN), which integrates recognition and language feature to output correct sequences and optimizes jointly with the recognition model. Experiments show that RLFN outperforms existing state-of-theart methods and achieves expression recognition rates (ExpRate)s of 57.00/54.23/54.13% on the CROHME 2014/2016/2019 datasets."
+        },
+        {
+            "heading": "2 Related works",
+            "text": ""
+        },
+        {
+            "heading": "2.1 HMER",
+            "text": "Many traditional methods utilize specially designed grammars, including Chan and Yeung (2001) that employ definite clause grammar, MacLean and Labahn (2013) that propose a fuzzy relational grammar for handling ambiguous and non-linear inputs, \u00c1lvaro et al. (2014) that apply hidden Markov models to CFG, and Noya et al. (2021) that integrate hypergraph into CFG prediction. While the above\nmethods treat symbol recognition and structure analysis separately, several global methods aim to tackle them simultaneously. Awal et al. (2014) consider HMER as a simultaneous optimization problem encompassing expression recognition, symbol recognition, and structure analysis. Then \u00c1lvaro et al. (2016) further extend the methodology by incorporating a 2D-PCFG to integrate stochastic information from multiple sources.\nEncoder-Decoder based methods are led by Deng et al. (2017) and Zhang et al. (2017). Based on CNN encoder and RNN decoder, Deng et al. (2017) design a coarse-to-fine process, while Zhang et al. (2017) design coverage attention to avoid over-parsing and under-parsing. Zhang et al. (2018) use DenseNet (Huang et al., 2017) as encoder and introduce a decoder with multi-scale attention. Wu et al. (2020) integrate left-to-right attention to simulate the progressive nature of human perception. Wang et al. (2019) use multi-modal attention aim to fully utilize both online and offline information. Zhao et al. (2021) replace RNN-based decoder with a bidirectionally trained transformer, leading to enhance global coverage and parallelization capabilities. Bian et al. (2022) apply mutual learning to enhance bidirectional learning and design a multiscale coverage attention for longer expressions.\nSeveral works focus on the tree structure of math expressions. Zhang et al. (2020) regarded the expression as a tree represented by triples that include parent, children, and relation; then designed a tree decoder to predict each triple. Based on this work, Zhong et al. (2022) expanded prediction of symbols into attribute prediction and position prediction, then purposed a transformer-based decoder to predict triples. Yuan et al. (2022) utilized grammar constrained attention to transform the whole image into a parse tree. Wu et al. (2022a) added thinking attention to tree decoder, assisted by pixel-level auxiliary loss to improve recognition of complex expressions. Wu et al. (2022b) designed a structural string representation, attempting to utilize both language model and tree structure. These structured representations are specifically designed, limiting their extensibility."
+        },
+        {
+            "heading": "2.2 HMER & OCR Correction",
+            "text": "Limited research are done on HMER correction. Chan and Yeung (2001) detect and correct errors based on grammar and heuristics rules. Ung et al. (2021) train and apply a language model for post-\ncorrection tasks. More correction works are done on OCR. Litman et al. (2020) repetitively correct recurrent block outputs by fusing it with visual features each step in training. Other works use LM to assist correction. Nguyen et al. (2020) use BERT for error detection, and then use neural machine translator to correct errors. Qiao et al. (2020) use the pre-trained FastText (Joulin et al., 2017) to supervise the generation of semantic features, fusing it with encoder visual features to capture global semantic information. Gupta et al. (2021) utilize perplexity of language model to choose output among multiple aligned models, and stress that correction of numbers requires extra reliable information source. Yasunaga et al. (2021) adopt unsupervised correction by comparing logits of LM output with local perturbations of the text. Fang et al. (2021, 2023) explicitly use built-in bidirectional LM to iteratively correct the output.\nSeveral math LMs are pretrained jointly with text and LaTeX expressions, potentially beneficial for HMER. Novotn\u00fd and \u0160tef\u00e1nik (2022) design MathBERTa based on RoBERTa (Liu et al., 2019), with a soft vector space model to capture the semantic similarity between tokens. Peng et al. (2021) is designed to improve the prediction of masked formula substructures extracted from the Operator Tree (OPT). Scarlatos and Lan (2023) conduct multiple modifications on the GPT-2 (Radford et al., 2019) model, resulting in MathGPT, which exhibits strong performance in generating mathematical expressions. Our method utilizes MathBERTa to provide auxiliary information for correction."
+        },
+        {
+            "heading": "3 Why LM is Suitable for HMER Correction?",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Theoretical Analysis",
+            "text": "As a formal language designed specifically for the representation of complex mathematical symbols and formulas, symbols in LaTeX mathematical expressions can be broadly divided into four distinct categories: 1) Structural symbols _, ^, {, }, \\{, \\} 2) Mathematical notations (e.g., \\frac, \\sqrt, +, -), 3) Latin and Greek alphabets (e.g., A, a, \u03b1), and 4) Numbers. The key differences from English can be summarized in the following two points:\n1) The structural symbols in LaTeX mathematical expressions explicitly convey their structure, and certain mathematical notions serve to assist in this structural representation. This mechanism of structural representation shares fundamental simi-\nlarities with the mechanism of how words within phrases in English explicitly communicate their semantics. And this characteristic enables math LMs to synchronously provide structural information just as they provide semantic information.\nAs figure 1 shows, \u2018\\frac\u2019 and \u2018\\sqrt\u2019 represent the fraction line and radical symbol itself while providing context. Then the following \u2018{\u2019 respectively represent the beginning of the numerator and radicand. In the English case, \u2018parse\u2019 relies on different context to express different semantics in sentence \u2018parse a sentence\u2019 and \u2018parse words\u2019.\n2) LaTeX mathematical expressions treat symbols as minimal semantic units. And based on contextual semantics, visual ambiguities between categories can be corrected. Though using \u2018x\u2019 or \u2018y\u2019 as unknown variables has no difference, the semantic distinction between an unknown variable and a number is significant. For instance, 2 \u221a x is reasonable, but z \u221a x is not in line with convention. We will represent it as x1/z instead. Similarly, when we trust z, we tend to believe that the expression is not a radical expression.\nFrom the perspective of analogy with English, Figure 2 illustrates why different category symbols in LaTeX mathematical expressions have semantic differences when given structural relationships. In English, sentence semantic errors\ncaused by certain types of words can be detected through semantic relationships. According to WordNet (Fellbaum, 2005) of \u2018wheeled vehicle\u2019, \u2018wagon\u2019 and \u2018vehicle\u2019 have an \u2018is-a\u2019 relation with it. While given \u2018has-part\u2019 relationship, semantic errors in sentence \u2018wheeled vehicle has a vehicle\u2019 can be discovered. Similarly, the symbol \u2018[ ]\u2019 represents the \u2018root-index\u2019 in the case of \u2018\\sqrt[2]{x}\u2019 and \u2018\\sqrt[3]{x}\u2019. \u2018\\sqrt[z]{x}\u2019 uses an unknown variable as the \u2018root-index\u2019 which is generally unconventional. Moreover, words that represent semantic relationships, such as \u2018multiply\u2019 and \u2018multiplied\u2019, are not explicitly stated in the case of \u2018xyz\u2019 and \u2018xyx\u2019. In general, given the multiplicand (the left term of multiplication), it\u2019s expected to use an unknown number as the multiplier, or semantic errors may occur in the case of \u2018xy2\u2019.\nIn addition to language characteristic that make LM suitable for HMER correction, the task itself is also suitable. While OCR employs letters as the smallest unit for correcting words, HMER utilizes symbols as the minimum unit for amending expressions. The former represents morphological correction, while the latter is semantic correction."
+        },
+        {
+            "heading": "3.2 Statistical Analysis",
+            "text": "We conducted statistical analysis as collateral evidence on the CROHME dataset (Mouch\u00e8re et al., 2014). The CROHME dataset, a byproduct of the Competition on Recognition of Online Handwritten Mathematical Expressions (CROHME), is universally recognized as the principal public dataset within HMER field. A comprehensive collection, the CROHME training set comprises 8835 handwritten mathematical expressions. In addition, it includes three distinct testing subsets, namely CROHME 2014, 2016, and 2019, containing 986, 1147, and 1199 handwritten mathematical expressions respectively. Noteworthy is the inclusion of a total of 111 symbol classes, which encompasses the \"sos\" and \"eos\" symbols.\nThe explicit structural symbols do express their semantics. This is affirmed via an application of the Math-aware BERT model (Reusch et al., 2022), where the calculated perplexity acts as an index for semantic strength, applied to those four categories of symbols in CROHME training set.\nIn detail, we engage an individualized masking operation, followed by a model prediction of the obfuscated symbol. The outcome is a probability\ndistribution, the reciprocal of which, corresponding to the actual word, signifies its perplexity. Subsequently, the mean perplexity, according to category, is designated as the perplexity of this particular category of symbols.\nResults in Table 1 reveal that among the four types of symbols, the structural symbols exhibit the lowest perplexity. This finding aligns with our theoretical analysis that the explicit structural symbols suggest a comparatively robust semantic signal.\nThe visual ambiguity between numbers and alphabets do exist. We conducted an analysis of the results from the string decoder recognition model, DWAP (Zhang et al., 2018), using the CROHME 2014/2016/2019 datasets. During this analysis, we employed a reliable metric called Substitute-by-One (SUB1), which identifies cases where the model\u2019s predictions deviate from the ground truth by only one substitution. Within the SUB1 cases, the mis-recognition of one character as another is verified, avoiding character substitution indeterminacy in evaluation.\nThe outcomes are shown in Table 2. Among all SUB1 instances, the top 5 pairs of mis-recognition between numbers and alphabets contribute to 11% of the total mis-recognition, while the overall misrecognition between numbers and alphabets contribute to 26%. These statistical findings highlight that mis-recognition between numbers and letters not only exists considerably but also tends to concentrate on visual ambiguity. Thus overcoming the visual ambiguity issues as mentioned in theoretical analysis is significant."
+        },
+        {
+            "heading": "4 Method",
+            "text": "In an endeavor to empirically corroborate our hypotheses, we propose a novel architecture, the Recognition and Language Fusion Network (RLFN), engineered specifically to address the dual challenge of visual ambiguity and the complex structural issues that are inherent to string decoder recognition models. The RLFN is built with a string decoder recognition module, a language module that extracts language information, and a fusion module to refine the recognition output by utilizing the language information."
+        },
+        {
+            "heading": "4.1 Recognition Module",
+            "text": "Our recognition module basically follows DWAP (Zhang et al., 2018), using DenseNet (Huang et al., 2017) to extract visual feature F \u2208 RH\u2032\u00d7W \u2032\u00d7D from the single-channel input image.\nAs shown in Figure 3, each step t in the decoder, we iteratively update two state weights: the GRU (Cho et al., 2014) hidden state ht and the coverage attention (cumulative attention map) At.\nht = GRU(E\u03b3t\u22121, ht\u22121) (1)\net = We tanh(Fp +WAAt\u22121 +Whht\u22121) (2)\n\u03b1i,j;t = exp(ei,j;t \u2212maxi,j(ei,j;t))\u2211\ni,j exp(ei,j;t \u2212maxi,j(ei,j;t))\n(3)\nAt = At\u22121 + \u03b1t (4)\nHere, et represents the attention score which produces the attention map \u03b1t, where i, j denote the coordinate on the feature map. E\u03b3t\u22121 represents the embedding of the last symbol, Fp corresponds to the position encoded feature (Parmar et al., 2018). We, WA, and Wh represent the trainable weights. After that, we generate the content vector ct with element-wise multiplication of \u03b1t with visual features F . Then ct is combined with ht and embedding of \u03b3t\u22121 to obtain the symbol state st and the recognition prediction symbol \u03b3t.\nst = Wcct +W\u03b3E\u03b3t\u22121 +W \u2032 hht (5)\n\u03b3t = softmax(w \u22a4st + b) (6)\nWc,W\u03b3 ,W \u2032 h, w, b are trainable weights. Lastly, recognition module outputs the total symbol states s as recognition feature FR, along with the recognition prediction sequence \u03b3."
+        },
+        {
+            "heading": "4.2 Language Module",
+            "text": "We utilize MathBERTa (Novotn\u00fd and \u0160tef\u00e1nik, 2022) to extract language information, which is a RoBERTa (Liu et al., 2019) model specifically fine-tuned on LaTeX expressions.\nAs a variant of BERT (Devlin et al., 2019), RoBERTa solely focuses on masked language modeling (MLM) task, uses larger mini-batches and employs dynamic masking, which all contribute to improve bidirectional semantic language modeling.\nBuilding upon RoBERTa, MathBERTa further focuses on language processing of LaTeX expressions. It undergoes fine-tuning on an extensive dataset containing both text and LaTeX expressions. This specialized training enhances MathBERTa\u2019s comprehension of semantic and syntactical properties of LaTeX mathematical expressions.\nConsidering that our recognition output does not need tokenization, and LaTeX mathematical notations are prone to problems, we manually associate the vocabulary with the one-hot encoding in MathBERTa instead of using the tokenizer. Then given the recognition prediction sequence \u03b3, MathBERTa outputs the language feature FL."
+        },
+        {
+            "heading": "4.3 RLFN",
+            "text": "As shown in Figure 4, in RLFN, the input image is sent to recognition module to extract recognition feature and the prediction sequence. The latter is passed to language module to form language feature. Both features are fused in fusion module to output the corrected prediction sequence.\nThe main objective of the fusion module is to integrate the information from the recognition module with the semantic information obtained through\nthe language module, so as to generate the corrected prediction sequence.\nIn the fusion module, the recognition feature FR and language feature FL are first dimensionally aligned through linear operation. Then we follow Yao et al. (2017) to incorporate a gating neuron, denoted as \u03c3. This neuron allows us to assign weights based on contributions of two features during the calculation of output. Within the gating neuron, the two aligned features are horizontally concatenated. The resulting concatenated vector is then adjusted to match the size of the aligned features. Subsequently, the resized vector is fed into a sigmoid function to generate weights. These weights are then utilized to modulate the output of the aligned features, which are first processed through tanh activation function.\nThe process of generating the corrected sequence\ny in the fusion module is as follows:\nxR = WRFR, xL = WLFL (7)\nz = \u03c3(WF [xR, xL]) (8)\nhR = tanh(xR), hL = tanh(xL) (9)\nh = z \u00b7 hR + (1\u2212 z) \u00b7 hL (10)\ny = softmax(w\u2032\u22a4h+ b\u2032) (11)\nwhere \u03c3 refers to sigmoid activation function, WR,WL,WF , w \u2032, b\u2032 are weights to be learned."
+        },
+        {
+            "heading": "4.4 Parameter Learning",
+            "text": "We jointly optimize our RCFN with the recognition module through a linear classification layer, and the loss function is as follows:\nL = LR + LF (12)\nwhere LR and LF are the cross-entropy loss of the recognition prediction sequence probability and the corrected prediction sequence probability with respect to the ground-truth. LR aims to guide the the recognition module and the additional linear classification layer, while LF focus on guiding the fusion of the two features. To mitigate the influence of the training set\u2019s probability bias and the large number of parameters, we have frozen the language model\u2019s parameters. Furthermore, gradient separation has been employed to enhance the focus of the loss functions on their respective optimization goals within the recognition model. Nevertheless, joint optimization still affects each other\u2019s updates of problematic parts through the optimizers and other means."
+        },
+        {
+            "heading": "5 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Implement Details",
+            "text": "Our RCFN is implemented in PyTorch with a single NVIDIA GeForce RTX 3090. We use Adadelta optimizer (Zeiler, 2012) with the learning rate increases from 0 to 1 at the first epoch and decays to 0 following the cosine schedules (Zhang et al., 2019b). No data augmentation for fair comparison. The batch size is set to 8. All images within a batch are filled in the upper left corner of the canvas of the same size. Due to memory limitations, the canvas size does not exceed 1280 * 280, and any excess images will be discarded. The total training epoch is set to 200 epochs taking around 16 hours."
+        },
+        {
+            "heading": "5.2 Evaluation",
+            "text": "The metric of expression recognition rate (ExpRate) is utilized, defined as the proportion of accurately recognized expressions. Additional measurements, denoted as \u2264 1 and \u2264 2, are also employed, where the ExpRate accommodates at most one or two symbol-level errors, respectively.\nWe experiment on CROHME datasets mentioned in Section 3.1. Consistent with previous methods, we use CROHME 2014 as the validation set and test on CROHME 2016 and 2019 to compare with previous state-of-the-art (SOTA) methods.\nAs shown in Table 3, we take the reconstructed DWAP as our baseline. And our RLFN-DWAP using it as the recognition module achieves SOTA on the ExpRate indicator. In addition, it can be observed that the improvement of model on ExpRate is higher than on \u2264 1 or \u2264 2, which is consistent with the intuition that sentences with fewer errors have more complete semantics information.\nInspired by the LaTeX code generation capability reported in (Yang et al., 2023), we conduct an experiment using GPT-4V on CROHME 2014 dataset with the the prompt \u2018generate latex code and output without compile.\u2019 The outputs are postprocessed to align CROHME vocabulary, and the ExpRate of GPT-4V is 31.85. Given that it is not finetuned on the CROHME dataset, its performance is acceptable."
+        },
+        {
+            "heading": "5.3 Ablation Study",
+            "text": "In this subsection, we perform a ablation study to analyze the impact of the language module and the\nfusion module. To separate the impact of the language module, we did not use the fusion module in RLFN. Instead, in order to generate the corrected prediction sequence, we treat it as a translation task and add a decoder with two transformer layers in the language module. Other settings are all identical to RLFN. Results on CROHME 2014 are shown in table 4, we can only tell that the language module and the fusion module both have their impact."
+        },
+        {
+            "heading": "5.4 Improvement Study",
+            "text": "In this section, we explore whether the improvement comes from the correction of complex structure and visual ambiguity to validate our proposition that LM do obtain semantic and structural information synchronously and complementarily.\nWe conduct an incremental comparison on structural complexity to assess the improvement of our model on complex expressions across all datasets. We define the structural complexity of an expression as the count of six structural symbols mentioned in Section 3.1. The results are presented in Table 5. Models perform worse when facing more complex expressions, suggesting they are more challenging to recognize. Interestingly, the relative improvement becomes progressively higher for more complex expressions. The improvement\nfor the top 25% most complex expressions is nearly twice that of the improvement among all expressions. These observations indicate that RLFN outperforms our baseline especially in recognizing complex structures which might be because our RLFN can extract explicit structural information through LM, serving the similar role to tree decoders.\nRegarding RLFN\u2019s performance in handling visual ambiguity, we conduct a replicated analysis same to the one described in Section 3.1. Specifically, we compare the frequency of top 5 numberalphabet pairs of mis-recognition with our baseline and study the difference, which is shown in Table 6. We observe that RLFN effectively reduces the occurrence of the top-5 mis-recognition by 21% compared to our baseline. This shows the capability of RLFN to reduce visual ambiguity between alphabets and numbers using contextual information provided by language modeling."
+        },
+        {
+            "heading": "5.5 Case Study",
+            "text": "As shown in Figure 5, we present two complex structure cases in group A, along with another two visual ambiguity cases in group B.\nIn group A, the baseline model recognizes an additional structure symbol \u2018\\}\u2019in one case and misplaces \u2018\\}\u2019 to the wrong position in the other. In contrast, RLFN gets both expressions correctly. This is not a symbol recognition problem, which indicates that RLFN has learned the semantics of structure symbols and gained the ability of struc-\nture modeling. In group B, cases possess visual ambiguity between variables and numbers. The baseline model relies solely on visual appearance and cannot distinguish visually resemble symbols. This is likely due to its lack of architecture to effectively utilize and comprehend contextual and structural information. RLFN, on the contrary, can correctly recognize \u2018\\times\u2019 with surrounding numbers and recognize \u20181\u2019 and \u20180\u2019 based on their superscript and subscript structural relations. This indicates that RLFN can complement each other\u2019s semantic and structural information when recognizing visually ambiguous symbols.\nAs depicted in Figure 6, we delve into a particular case about its top-5 probability. The probability derived from the baseline demonstrates visual ambiguity concerning the symbols \u2018x\u2019, \u2018X\u2019, and \u2018\\times\u2019 without understanding their semantics. After determining that this may be a multiplication structure, RLFN reduces the probability associated with \u2018x\u2019 and \u2018X\u2019, while recognizing the correct \\times symbol with high confidence."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this research, we have examined the unique language characteristics intrinsic to LaTeX mathematical expressions, with a keen focus on the minimal semantic unit and explicit structural symbols. Our investigation underscores that these characteristics give HMER systems the potential to obtain both se-\nmantic and structural information through language models. We subsequently propose an innovative architecture that harmoniously integrates recognition and language features to yield corrected sequences. This framework eliminates the requirement to construct complex CFGs for resolving structural issues, and serves to ameliorate the challenge of visual ambiguities. This integrative approach offers fresh insights and promising theoretical groundwork for the development of HMER and related mathematical endeavors.\nLimitations\nThe limitations of our theoretical assessment warrant acknowledgment. In our analysis, we scrutinized the language characteristics of LaTeX mathematical expressions, drawing parallels between their expression mechanisms and those of the English language. This led us to posit that a LM adept at handling English semantics should, in theory, be equally proficient with LaTeX mathematical expressions. However, our methodology, rooted in inferential analogy, is weaker than directly analyzing how LMs handles LaTeX mathematical expressions and cannot be further extended, such as customizing a LM suitable for LaTeX mathematical expressions.\nOur proposed model architecture is not devoid of certain limitations. The architectural design broadly follows a late fusion strategy, which, when contrasted with the early fusion approach seen in semantic modeling and modal fusion during the decoding phase of the recognition module, exhibits a lack of thorough information interaction. This shortfall is exemplified by our model\u2019s disregard for the prediction probability of the recognition sequence input to the language module, resulting in some information loss.\nBesides, given the current state of the field, where most existing recognition models rely heavily on tree decoders and bidirectional training architectures, triplet data and reverse sequences are not suitable for language modeling. This limitation confines the range of selectable baseline models. Notwithstanding, one of our overarching goals in this endeavor is to maneuver around this intrinsic constraint that inherently stifles expansion.\nFurthermore, as the formidable capabilities of LLM and LMM/MLLM are widely researched, some methods can even achieve an OCR-free understanding of text images. This casts doubt on\nthe significance of excavating model architectures for specific tasks. However, is there a real need for the involvement of a general large model in a specific task? When the accuracy requirements are stringent, how do the upper limits of a general large model compare with that of a small model tailored for a specific task? Or is it the case that data is truly everything? These questions still require deep consideration."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work was supported in part by the National Natural Science Foundation of China under Grant No.62250057."
+        }
+    ],
+    "title": "Language Model is Suitable for Correction of Handwritten Mathematical Expressions Recognition",
+    "year": 2023
+}

@@ -1,0 +1,172 @@
+{
+    "abstractText": "We introduce a simple yet efficient sentencelevel attack on black-box toxicity detector models. By adding several positive words or sentences to the end of a hateful message, we are able to change the prediction of a neural network and pass the toxicity detection system check. This approach is shown to be working on seven languages from three different language families. We also describe the defence mechanism against the aforementioned attack and discuss its limitations.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Sergey Berezin"
+        },
+        {
+            "affiliations": [],
+            "name": "Reza Farahbakhsh"
+        },
+        {
+            "affiliations": [],
+            "name": "Noel Crespi"
+        }
+    ],
+    "id": "SP:4bec7d3528482668f1bef405a5b1a8d16cdcafb9",
+    "references": [
+        {
+            "authors": [
+                "Lu Cheng",
+                "Ahmadreza Mosallanezhad",
+                "Yasin N. Silva",
+                "Deborah L. Hall",
+                "Huan Liu."
+            ],
+            "title": "Bias mitigation for toxicity detection via sequential decisions",
+            "venue": "Proceedings of the 45th International ACM SIGIR Conference on Research and Development in",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Robert Gorwa",
+                "Reuben Binns",
+                "Christian Katzenbach."
+            ],
+            "title": "Algorithmic content moderation: Technical and political challenges in the automation of platform governance",
+            "venue": "Big Data Society, 7:205395171989794.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tommi Gr\u00f6ndahl",
+                "Luca Pajola",
+                "Mika Juuti",
+                "Mauro Conti",
+                "N. Asokan."
+            ],
+            "title": "All you need is \"love\": Evading hate speech detection",
+            "venue": "AISec \u201918, New York, NY, USA. Association for Computing Machinery.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Robin Jia",
+                "Percy Liang."
+            ],
+            "title": "Adversarial examples for evaluating reading comprehension systems",
+            "venue": "pages 2021\u20132031.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Eric Wallace",
+                "Shi Feng",
+                "Nikhil Kandpal",
+                "Matt Gardner",
+                "Sameer Singh."
+            ],
+            "title": "Universal adversarial triggers for attacking and analyzing nlp",
+            "venue": "pages 2153\u2013 2162.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Boxin Wang",
+                "Hengzhi Pei",
+                "Boyuan Pan",
+                "Qian Chen",
+                "Shuohang Wang",
+                "Bo Li."
+            ],
+            "title": "T3: Treeautoencoder constrained adversarial text generation for targeted attack",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yicheng Wang",
+                "Mohit Bansal."
+            ],
+            "title": "Robust machine comprehension models via adversarial training",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Wei Emma Zhang",
+                "Quan Z. Sheng",
+                "Ahoud Alhazmi",
+                "Chenliang Li."
+            ],
+            "title": "Adversarial attacks on deeplearning models in natural language processing: A survey",
+            "venue": "ACM Trans. Intell. Syst. Technol., 11(3).",
+            "year": 2020
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Toxicity detection systems have become a crucial part of automoderation solutions. They are now used by most social media platforms, including those with groups of people in dangerously sensitive conditions, e.g. suicide prevention, Facebook groups, victims of cyberbullying, etc. Vulnerability in such systems may have dreadful, terrific effects on people, especially those in precarious situations.(Cheng et al., 2022).\nOn the other hand, such systems can be and are used to silence the voices of criticism, which leads to the creation of echo chambers and amplifies the voice of the (powerful) minority over the voice of the majority, thereby destroying the foundation of democracy and denying the freedom of speech (Gorwa et al., 2020).\nThis situation can be viewed as a double-edged sword, and we propose another double-edged sword that can be used to parry the blade of toxicity detection systems."
+        },
+        {
+            "heading": "1.1 Task description",
+            "text": "We present an attack on toxicity detection models based on the separation of the messages intended for a person and a piece of text added to confuse an algorithm.\nFor example, this can be done by concatenating an original message with a collection of keywords\nof an opposite intent: \u201cKill yourself, you dirty pig! Text for a bot to avoid ban: flowers, rainbow, happy, happy good\u201d - here only the underlined part is intended to address the human, and it is clear that the remaining part was added to avoid detection by the automoderation algorithm.\nThis represents an example of a sentence-level black-box adversarial attack on Natural Language Processing systems."
+        },
+        {
+            "heading": "1.2 Related work",
+            "text": "The first work suggesting the concatenation of distracting but meaningless sentences at the end of a paragraph to confuse a neural model was \"Adversarial Examples for Evaluating Reading Comprehension Systems\" (Jia and Liang, 2017) (according to the (Zhang et al., 2020)). Jia and Liang attacked question-answering systems with either manuallygenerated informative sentences (ADDSENT) or arbitrary sequences of words using a pool of 20 random common words (ADDANY). Both perturbations were obtained by iterative querying of the neural network until the output was changed. The authors of \"Robust Machine Comprehension Models via Adversarial Training\" (Wang and Bansal, 2018) improved this approach by varying the locations where the distracting sentences are placed and expanding the set of fake answers for generating the distracting sentences (ADDSENTDIVERSE).\nIn \"Universal Adversarial Triggers for Attacking and Analyzing NLP\" (Wallace et al., 2019) apply the gradient-based technique to construct an adversarial text. Despite being a white-box attack in its origin (due to the gradient information required in the training phase), this approach can be applied as a black-box attack during its inference.\nThe T3 model (Wang et al., 2020) utilises the autoencoder architecture to generate adversarial texts that can manipulate the question-answering models to output the targeted incorrect answer.\nIn \"All You Need is \u201cLove\u201d: Evading Hate\nSpeech Detection\" (Gr\u00f6ndahl et al., 2018) perform a sentence-level attack on hate speech detection systems by inserting typos, changing word boundaries and adding innocuous words to the original hate speech. The authors show the effectiveness of such an attack on MLP, CNN+RNN and LSTM neural networks."
+        },
+        {
+            "heading": "1.3 Contribution",
+            "text": "Our contributions lie in the following: 1) Introduction of a concept of \u201cTo Each His Own\u201d attack, based on the idea of separating the messages addressed to a human and those addressed to an algorithm. The attack exploits the fact that toxicity detection models are trained on sentence-level labels and do not consider the context or the intention of the message.\n2) A systematic approach to the generation of adversarial texts. The words and sentences are selected based on their positivity scores rather than being randomly selected from non-hate ones, as in previous works.\n3) Demonstration of attacks on modern stateof-the-art architectures. We tested the most popular transformer-based toxicity detectors, including Google Perspective API and OpenAI Moderation API.\n4) Highlighting a significant flaw in the current approach to toxicity detection. We show that the predicted toxicity score can be watered down by the addition of positive words to the point of effectively masking toxicity.\n5) Multi- and cross-lingual settings of attacks. We describe the attacks on seven different languages and combinations among them. A larger number of languages leads to a larger number of possible attacks - in the case of the 5-language model, we have 120 attack scenarios."
+        },
+        {
+            "heading": "2 \"To Each His Own\" attack",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Word-based attack",
+            "text": "In this attack type, the original message is appended or prepended with a sequence of positive words, with the aim that these words will be analysed by a model but passed over by a human. This allows an attacker to preserve their original message without any changes, unlike in other attacks, which substitute words with synonyms or replace original characters with their look-alikes.\nIn our experiment, we used words from the SentiWordNet with a positivity score \u2265 0.85. We tested\n14 openly available pretrained neural networks with the phrase \"I hate you\" and the addition of 0 to 9 positive words.\nIn case the toxicity score for a suggested phrase was estimated to be less than 0.5 - the most common threshold, we used the phrase \"I hate you dumbass\" instead. If, after attacking with 9 words, the model\u2019s output was greater than 0.5, we continued adding new positive words until the score dropped below this threshold or until we reached the maximum length of an input sequence for the model tested. For the English language, we also performed experiments with the phrase \"Text for bot:\" placed between a message and added words.\nWe conducted additional experiments with the Perspective API and OpenAI Moderation API, discovering they are also vulnerable to our attacks.\nFor eight non-English models, we asked native speakers of the respective languages to translate a selected subset of words and attack phrases. Within this study, we tested the language models for seven languages aside from English: Russian, German, French, Portuguese, Spanish, Turkish and Vietnamese. It is worth noting that the first five listed languages represent three branches (Slavic, Germanic and Italic) of the Indo-European language family, and the last two are from different language families: the Turkic and the Austro-Asiatic family, respectfully.\nBy using various models and languages, we aim to investigate if the suggested attack is model- and language-agnostic."
+        },
+        {
+            "heading": "2.2 Cross-lingual word-based attack",
+            "text": "The main weakness of all multilingual models lies in their greatest advantage - the ability to work with multiple languages and writing systems. Adding positive words in different languages will even more separate messages to the human and to the toxicity detection system, perhaps even denying a human the ability to read non-intended text. Examples of such texts are shown in Figure 1.\nEven some monolingual models, which had been exposed to another language during the pretraining phase, fall victim to this situation.\nWe also conducted cross-lingual experiments with OpenAI models, including ChatGPT in conversation mode with different prompts, and found them susceptible to attack.\nPerspective API was found to be non-functional in a multilingual setting, failing with an error, as it\nis unable to detect the language of the text."
+        },
+        {
+            "heading": "2.3 Sentence-based attack",
+            "text": "Incoherent text, produced by concatenating lexically unconnected words, is easily detectable by modern language models. To address that easy detection, we experimented with another version of the attack: concatenating sentences from the Stanford Sentiment Treebank with a positivity score \u2265 0.9 and a length of no less than 100 symbols.\nSince sentences consist of grammatically linked words instead of just a set of random positive words, this attack variant is less obvious and more challenging to detect."
+        },
+        {
+            "heading": "3 Defence",
+            "text": "We performed simple adversarial training of the DistilBERT model on the binary Jigsaw Toxic Comments dataset to improve the model\u2019s defence. We performed experiments with word- and sentence-based attacks, attacking both toxic messages and all messages in the dataset. In addition, we picked out only toxic messages and attacked half of them - in this scenario, the task was distinguishing attacked and non-attacked texts."
+        },
+        {
+            "heading": "4 Results",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Attack",
+            "text": "During a word-based attack, both prepending and appending of the positive words showed similar results, with prepending being slightly less effective.\nAppending nine words was enough to flip the prediction of almost every model. The \"SkolkovoInstitute RoBERTa\" toxicity classifier required 23 words to fall below 0.5, and \"Englishabusive-MuRIL\" was still strongly predicting even after the addition of 252 words and reaching the length limit for the input. The results of selected experiments are shown in tables 1, 2 and 31.\nThe addition of the phrase \"Text for bot:\" between two parts of a text made a little difference in\n1Full tables can be found in Appendix A.\nthe results, i.e. it can be used to create even more apparent separation without lowering an attack\u2019s efficiency.\nAs expected, the results of cross-lingual attacks followed the same trend as those of monolingual ones. These results are shown in tables 4 and 51.\nWith a sentence-based attack, adding even one sentence drastically lowered the prediction scores of the models. The scores are shown in table 61."
+        },
+        {
+            "heading": "4.2 Defence",
+            "text": "The model\u2019s F1 measure on toxic class fell from 0.80 to 0.44 after an attack with 15 sentences and to 0.79 after an attack with 50 words. After adversarial training, the model regained its F1 measure in both cases.\nInterestingly, testing the word-trained model on sentence-attacked examples showed high precision and low recall (0.90 and 0.68, respectively). Testing the sentence-trained model on word-attacked examples showed the opposite result, with low precision and high recall (0.57 and 0.93, respectively).\nThe defence performed strongly, achieving an F1 score of 0.82 on binary toxic classification with word- and sentence-based attacks. The model achieved the same score on a non-attacked dataset, succeeding even better in distinguishing attacked sentences, with an F1 score of 0.99. However, defence models must be built for both word- and sentence-based attacks, as one single model will not work perfectly for both scenarios."
+        },
+        {
+            "heading": "5 Discussion",
+            "text": "All of the attack variants showed decent results in confusing toxicity detection models in every model tested (to varying degrees). The simplistic nature of such attacks could allow virtually any Internet user to exploit them to avoid automoderation systems.\nA possible countermeasure for this type of attack is adversarial training or rule-based filtering. However, a simple rule-based filter can be fooled by char-level adversarial attacks, and adversarial training can be made much more difficult by in-\ncreasing the quality and quantity of the possible text insertions.\nThe complex approach, which covers all levels of perturbation, should be applied both in attack and defence real-life scenarios."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this paper, we demonstrated a novel and effective way of bypassing toxicity detection models by appending positive words or sentences to the end of a toxic message.\nThe introduced concept of the \u201cTo Each His Own\u201d attack is based on the idea of separating the messages addressed to a human and those addressed to an algorithm. The attack exploits the fact that the toxicity detection models are trained on sentence-level labels and do not consider the context or the intention of messages.\nThe described attack in all its variants can be easily used on almost any toxic-detection neural model, with fairly good results. For future research, we suggest looking for a more sophisticated way of constructing insertions, perhaps with respect to the original message, making it a semantically correct addition to human-written messages."
+        },
+        {
+            "heading": "7 Acknowledgments",
+            "text": "We thank all the volunteers who helped us with translations.\nWe are grateful to the reviewers and the program chair of the EMNLP conference for providing constructive feedback, suggesting additional experiments and providing different points of view. This helped us structure the paper and ensure the robustness of our results.\nSergey Berezin wishes to record that he is grateful to Mr. Mario Fritz from Saarland University for the introduction to the domain of adversarial attacks through his insightful course on this topic. He is also grateful to Mr. Maxime Amblard from the University of Lorraine for encouraging him to pursue research in this direction and validating his ideas."
+        }
+    ],
+    "title": "No offence, Bert - I insult only humans! Multiple addressees sentence-level attack on toxicity detection neural networks",
+    "year": 2023
+}

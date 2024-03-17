@@ -1,0 +1,492 @@
+{
+    "abstractText": "Unlike the Open Domain Question Answering (ODQA) setting, the conversational (ODConvQA) domain has received limited attention when it comes to reevaluating baselines for both efficiency and effectiveness. In this paper, we study the State-of-the-Art (SotA) Dense Passage Retrieval (DPR) retriever and Fusion-in-Decoder (FiD) reader pipeline, and show that it significantly underperforms when applied to ODConvQA tasks due to various limitations. We then propose and evaluate strong yet simple and efficient baselines, by introducing a fast reranking component between the retriever and the reader, and by performing targeted finetuning steps. Experiments on two ODConvQA tasks, namely TOPIOCQA and OR-QuAC, show that our method improves the SotA results, while reducing reader\u2019s latency by 60%. Finally, we provide new and valuable insights into the development of challenging baselines that serve as a reference for future, more intricate approaches, including those that leverage Large Language Models (LLMs).",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Andrei C. Coman"
+        },
+        {
+            "affiliations": [],
+            "name": "Gianni Barlacchi"
+        },
+        {
+            "affiliations": [],
+            "name": "Adri\u00e0 de Gispert"
+        }
+    ],
+    "id": "SP:ff0e1ea9e22cc3f6e5de8d0a04e1df50daddf974",
+    "references": [
+        {
+            "authors": [
+                "Vaibhav Adlakha",
+                "Shehzaad Dhuliawala",
+                "Kaheer Suleman",
+                "Harm de Vries",
+                "Siva Reddy."
+            ],
+            "title": "TopiOCQA: Open-domain conversational question answering with topic switching",
+            "venue": "Transactions of the Association for Computational Linguistics, 10:468\u2013",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gianni Barlacchi",
+                "Ivano Lauriola",
+                "Alessandro Moschitti",
+                "Marco Del Tredici",
+                "Xiaoyu Shen",
+                "Thuy Vu",
+                "Bill Byrne",
+                "Adri\u00e0 de Gispert."
+            ],
+            "title": "Focusqa: Opendomain question answering with a context in focus",
+            "venue": "Findings of the Association for Computational",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Danqi Chen",
+                "Adam Fisch",
+                "Jason Weston",
+                "Antoine Bordes."
+            ],
+            "title": "Reading wikipedia to answer opendomain questions",
+            "venue": "ACL.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Eunsol Choi",
+                "He He",
+                "Mohit Iyyer",
+                "Mark Yatskar",
+                "Wentau Yih",
+                "Yejin Choi",
+                "Percy Liang",
+                "Luke Zettlemoyer."
+            ],
+            "title": "QuAC: Question answering in context",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, pages",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Marco Del Tredici",
+                "Gianni Barlacchi",
+                "Xiaoyu Shen",
+                "Weiwei Cheng",
+                "Adri\u00e0 de Gispert."
+            ],
+            "title": "Question rewriting for open-domain conversational qa: Best practices and limitations",
+            "venue": "Proceedings of the 30th ACM International Conference on Information",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Marco Del Tredici",
+                "Xiaoyu Shen",
+                "Gianni Barlacchi",
+                "Bill Byrne",
+                "Adri\u00e0 de Gispert."
+            ],
+            "title": "From rewriting to remembering: Common ground for conversational qa models",
+            "venue": "arXiv preprint arXiv:2204.03930.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ahmed Elgohary",
+                "Denis Peskov",
+                "Jordan BoydGraber."
+            ],
+            "title": "Can you unpack that? learning to rewrite questions-in-context",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Michael Glass",
+                "Gaetano Rossiello",
+                "Md Faisal Mahbub Chowdhury",
+                "Ankita Naik",
+                "Pengshan Cai",
+                "Alfio Gliozzo."
+            ],
+            "title": "Re2G: Retrieve, rerank, generate",
+            "venue": "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computa-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Mingwei Chang."
+            ],
+            "title": "Retrieval augmented language model pre-training",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning, volume 119 of Proceedings of Machine Learning",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Minghao Hu",
+                "Yuxing Peng",
+                "Zhen Huang",
+                "Dongsheng Li."
+            ],
+            "title": "Retrieve, read, rerank: Towards end-to-end multi-document reading comprehension",
+            "venue": "ACL.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Srinivasan Iyer",
+                "Sewon Min",
+                "Yashar Mehdad",
+                "Wentau Yih."
+            ],
+            "title": "RECONSIDER: Improved re-ranking using span-focused cross-attention for open domain question answering",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Distilling knowledge from reader to retriever for question answering",
+            "venue": "International Conference on Learning Representations.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Fabio Petroni",
+                "Lucas Hosseini",
+                "Nicola De Cao",
+                "Sebastian Riedel",
+                "Edouard Grave."
+            ],
+            "title": "A memory efficient baseline for open domain question answering",
+            "venue": "ArXiv, abs/2012.15156.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas Oguz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen-tau Yih."
+            ],
+            "title": "Dense passage retrieval for opendomain question answering",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kenton Lee",
+                "Ming-Wei Chang",
+                "Kristina Toutanova."
+            ],
+            "title": "Latent retrieval for weakly supervised open domain question answering",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, pages 6086\u20136096, Florence, Italy.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Patrick Lewis",
+                "Ethan Perez",
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich K\u00fcttler",
+                "Mike Lewis",
+                "Wen-tau Yih",
+                "Tim Rockt\u00e4schel",
+                "Sebastian Riedel",
+                "Douwe Kiela"
+            ],
+            "title": "Retrieval-augmented generation for knowledge",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Andrew McCallum",
+                "Manzil Zaheer",
+                "Rajarshi Das",
+                "Shehzaad Dhuliawala."
+            ],
+            "title": "Multi-step retrieverreader interaction for scalable open-domain question answering",
+            "venue": "ICLR.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Danqi Chen",
+                "Luke Zettlemoyer",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Knowledge guided text retrieval and reading for open domain question answering",
+            "venue": "ArXiv, abs/1911.03868.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Robert N. Oddy."
+            ],
+            "title": "Information retrieval through man-machine dialogue",
+            "venue": "Journal of Documentation, 33:1\u201314.",
+            "year": 1977
+        },
+        {
+            "authors": [
+                "Chen Qu",
+                "Liu Yang",
+                "Cen-Chieh Chen",
+                "Minghui Qiu",
+                "W. Bruce Croft",
+                "Mohit Iyyer."
+            ],
+            "title": "Openretrieval conversational question answering",
+            "venue": "Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yingqi Qu",
+                "Yuchen Ding",
+                "Jing Liu",
+                "Kai Liu",
+                "Ruiyang Ren",
+                "Wayne Xin Zhao",
+                "Daxiang Dong",
+                "Hua Wu",
+                "Haifeng Wang."
+            ],
+            "title": "RocketQA: An optimized training approach to dense passage retrieval for opendomain question answering",
+            "venue": "Proceedings of the",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiaoyu Shen",
+                "Svitlana Vakulenko",
+                "Marco Del Tredici",
+                "Gianni Barlacchi",
+                "Bill Byrne",
+                "Adri\u00e0 de Gispert."
+            ],
+            "title": "Neural ranking with weak supervision for open-domain question answering: A survey",
+            "venue": "Findings of the Association for Computational Linguistics:",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Svitlana Vakulenko",
+                "Shayne Longpre",
+                "Zhucheng Tu",
+                "Raviteja Anantha."
+            ],
+            "title": "Question rewriting for conversational question answering",
+            "venue": "Proceedings of the 14th ACM international conference on web search and data mining, pages 355\u2013363.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam M. Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "NIPS.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Wei Yang",
+                "Yuqing Xie",
+                "Aileen Lin",
+                "Xingyu Li",
+                "Luchen Tan",
+                "Kun Xiong",
+                "Ming Li",
+                "Jimmy J. Lin."
+            ],
+            "title": "End-to-end open-domain question answering with bertserini",
+            "venue": "NAACL.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Donghan Yu",
+                "Chenguang Zhu",
+                "Yuwei Fang",
+                "Wenhao Yu",
+                "Shuohang Wang",
+                "Yichong Xu",
+                "Xiang Ren",
+                "Yiming Yang",
+                "Michael Zeng."
+            ],
+            "title": "KG-FiD: Infusing knowledge graph in fusion-in-decoder for opendomain question answering",
+            "venue": "Proceedings of the",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "In an automated information-seeking conversation scenario between two parties, the human questioner asks a series of questions and expects to receive a relevant response from the answering system (Oddy, 1977). Current State-of-the-Art (SotA) shapes the answerer via two neural models, the Dense Passage Retrieval (DPR) (Karpukhin et al., 2020) and the Fusion-in-Decoder (FiD) (Izacard and Grave, 2021b), which act as retriever and reader, respectively. Their success stems from the ability to overcome certain limitations of their sparse and extractive counterparts, such as not relying on lexical retrieval heuristics or extracting spans as a response (Chen et al., 2017; Yang et al., 2019; Lee et al., 2019; McCallum et al., 2019; Guu et al., 2020; Lewis et al., 2020; Shen et al., 2023).\n\u2217Work was done during an internship at Amazon Science.\nAmong the most promising approaches are those concerning the improvement of training strategies (Guu et al., 2020; Balachandran et al., 2021; Qu et al., 2021), use of rerankers (Hu et al., 2019; Mao et al., 2021; Barlacchi et al., 2022; Iyer et al., 2021; Glass et al., 2022), question rewriting (Vakulenko et al., 2021; Del Tredici et al., 2021), reader to retriever knowledge distillation (Izacard and Grave, 2021a), memory-efficient pipeline (Izacard et al., 2020; Del Tredici et al., 2022), and leveraging structured information (Min et al., 2019; Yu et al., 2022).\nUnlike the Open Domain Question Answering (ODQA) setting, a reassessment of the baselines in terms of both efficiency and effectiveness appears to be under-explored in the conversational (ODConvQA) domain. In this paper, we focus on the typical DPR retriever and FiD reader (DPR+FiD) pipeline, and show its limitations when applied to the ODConvQA setting. Despite its popularity, we find that this baseline significantly underperforms when finetuned on downstream tasks. We show that simple improvements in the training, architecture, and inference setups of the DPR+FiD pipeline, provide a strong and efficient baseline that exceeds the performance of SotA models on two common ODConvQA datasets: TopiOCQA (Adlakha et al., 2022) and ORConvQA (OR-QuAC) (Qu et al., 2020).\nWe point out several limitations of the pipeline, such as: 1) reader\u2019s susceptibility to noisy input, 2) retriever\u2019s reduced coverage, 3) retriever\u2019s lack of cross semantic encoding between the conversation and the retrieved passages, and 4) reader\u2019s latency is heavily impacted by the number of input passages. To mitigate these, we propose and evaluate a simple and effective approach by including a fast reranking component between the retriever and the reader, and by performing targeted finetuning steps. The proposed Retriever-Reranker-Reader finetuning (R3FINE) strategy leads to baseline models with a better latency/performance trade-off.\nThese baselines, which are simple and easy to replicate, serve as a reference point for comparing new and more complex models, and determining their effectiveness. Our contributions are the following:\n\u2022 We identify and address several limitations of the typical pipeline used in ODConvQA.\n\u2022 We propose the R3FINE strategy, which improves SotA results on two common datasets and reduces pipeline\u2019s latency by 60%.\n\u2022 We provide new and valuable insights for creating simple and efficient baselines, which serve as a reference point for future comparison of new more complex approaches."
+        },
+        {
+            "heading": "2 End-to-End Baselines for ODConvQA",
+            "text": "This section provides a brief introduction to the pipeline on which this work focuses. Figure 1 shows the typical pipeline used within the ODConvQA setting, featuring an additional reranker component. A conversation history is input to the DPR retriever. This module exploits a dualencoder based on the BERT (Devlin et al., 2019) model. First, it encodes the conversation history via the ConversationEncoder component, which takes as input the text of the conversation history c1, c2, . . . , ci, and then it outputs a dense representation hc. Next, this representation is used to perform a dense search to retrieve the most relevant passages, i.e., text blocks that serve as basic retrieval units, from an external knowledge source (e.g., Wikipedia). The latter contains dense representations of the passages that have been encoded via the PassageEncoder component, which takes as input a j-th passage with a given text length N , i.e., pj1 , pj2 , . . . , pjN , and outputs a dense representation hpj . The dense search is performed via the Maximum Inner-Product Search (MIPS) function which outputs the value corresponding to h\u22bac \u00b7 hpj .\nOnce the top-k relevant passages have been retrieved, their text is appended to the conversa-\ntion history and subsequently passed to the FiD reader, which is based on the T5 (Raffel et al., 2020) model. The newly created textual sequences of length S are then encoded in parallel via the Encoder component that outputs a dense representation h\u0304 = {h1, . . . , hS}. As a final step, the dense representations of the entire list of k input passages are concatenated to form a single h\u03041\u2295h\u03042, . . . ,\u2295h\u0304k sequence that forms the input to the Decoder component responsible for generating the answer a."
+        },
+        {
+            "heading": "3 Strong Baseline Models",
+            "text": "This work focuses on two main datasets. TOPIOCQA (Adlakha et al., 2022) is a large-scale open-domain information-seeking conversational dataset that contains a challenging phenomenon in the form of topic switching. OR-QuAC (Qu et al., 2020) leverages CANARD\u2019s (Elgohary et al., 2019) context-independent question rewrites of the QuAC (Choi et al., 2018) dataset, and adapts it to the open-domain setting. Further details regarding the datasets are provided in Appendix A.\nWe outline a number of limitations of the typical DPR+FiD pipeline, along with suggestions on how to mitigate them. While some of those interconnect at different levels the various efforts made in the ODQA domain (Balachandran et al., 2021; Yu et al., 2022), our goal is to offer a perspective on the ODConvQA setting."
+        },
+        {
+            "heading": "3.1 Current Limitations and Bottlenecks",
+            "text": "Reader\u2019s susceptibility to noisy input. Previous findings have shown that the FiD reader performance significantly improves when increasing the number of retrieved passages (Izacard and Grave, 2021b). While confirming this finding, in Table 1 we also present a different perspective to it. We show that when the same reader model is provided with the relevant (i.e., gold) passage in input, the performance decreases as the number of retrieved passages increases. This suggests that there is a balance in presenting input to the reader: if the gold"
+        },
+        {
+            "heading": "TOPIOCQA",
+            "text": "passage is present, i.e., the retriever could retrieve it, a small relevant list is best, but otherwise a larger list is better.\nRetriever\u2019s reduced coverage. Current solutions impose a hard top-k limit on the number of passages returned by the DPR retriever and assume that the relevant ones are present within this limit. Table 1 shows that coverage is key during the retrieval phase for the reader to perform well. To improve it, we suggest introducing a simple and efficient Transformer-based (Vaswani et al., 2017) reranker component after the retriever. This component, shown in Figure 1 and described in the next paragraph, is designed to reconsider a larger pool of passages returned by the DPR and to provide the FiD with a reduced and improved list of passages. Since this module operates at the semantic level, we refer to it as the SemanticReranker. Table 2 shows the potential coverage margins and the retrieval results obtained after the introduction of such a module, when a larger number of passages (50 vs 1000) is considered.\nRetriever\u2019s lack of cross semantic encoding between the conversation and the retrieved passages. The DPR retriever performs independent encoding of the passages via the PassageEncoder function. This means that it is not able to exploit the semantic relationship among them. This can be mitigated via the introduction of the previously mentioned SemanticReranker component. This new module is based on the TransformerEncoder and applies the following function:\nh\u0303c, h\u0303p1 , . . . , h\u0303pk = Reranker(hc, hp1 , . . . , hpk)\nwhere each element of the input attends to both the conversation dense representation hc and passages dense representations hpi . Reranking is performed over the new output sequence h\u0303c, h\u0303p1 , . . . , h\u0303pk via the previously mentioned MIPS function."
+        },
+        {
+            "heading": "1000 91.49 91.49 74.55 74.55",
+            "text": ""
+        },
+        {
+            "heading": "Reader\u2019s latency is heavily impacted by the",
+            "text": "number of input passages. Figure 2 shows that the latency of the reader can be significantly reduced by decreasing the number of input passages. However, a trivial limitation to top-k considerably degrades the performance of the module, thus leading to an inevitable trade-off. The task of the SemanticReranker involves pushing relevant passages into the top-k list, and allowing for a low k value to be set."
+        },
+        {
+            "heading": "3.2 A Strong and Efficient Baseline",
+            "text": "Based on the findings above, we introduce the Retriever-Reranker-Reader finetuning (R3FINE) strategy, which can be used to design strong and efficient baselines for ODConvQA. First, we increase the number of passages returned by the DPR from the initial 50 to 1000. Then, we add the SemanticReranker component, which corresponds to a single TransformerEncoder layer. We train/finetune the SemanticReranker along with the ConversationEncoder while keeping the PassageEncoder frozen. Guided by the intu-"
+        },
+        {
+            "heading": "TOPIOCQA Model EM F1",
+            "text": "ition that less but more relevant passages are beneficial to FiD as reported in Table 1, we finally perform an additional finetuning step by leveraging the new top-10 list of passages returned by the SemanticReranker."
+        },
+        {
+            "heading": "4 Experiments and Results",
+            "text": "This section shows the impact that the introduction of the SemanticReranker module has on the pipeline, as well as the finetuning steps we followed to make the pipeline more efficient without compromising its performance.\nExperimental Setup. As the starting point of our experiments, we used the DPR and FiD models provided with the TOPIOCQA dataset. Currently, only the train and dev splits are made available for this dataset. We followed the same experimental setup and exploited TOPIOCQA\u2019s DPR module for both datasets. Unlike TOPIOCQA, OR-QuAC is of extractive type, and for this reason we trained the FiD module from scratch by following the same training configuration of TOPIOCQA.\nEnd-to-End Results. Table 4 and Table 5 compare our R3FINE strategy with previous baselines."
+        },
+        {
+            "heading": "OR-QuAC Model EM F1",
+            "text": "R3FINE achieves an F1 score of 59 points on TOPIOCQA, and 32.9 on OR-QuAC, which are 3.9 and 3 points higher than the best models proposed in the original papers. It is worth noting that these large improvements are achieved with simple adjustments in the training, architecture, and inference setups of the well-established DPR+FiD baseline, and not via the introduction of new heavier and complex models.\nTo further support our R3FINE strategy, in Table 3 we present an ablation study which quantifies its impact on the DPR+FiD pipeline. We note that introducing the SemanticReranker (w/ SR) always outperforms the DPR+FiD baseline (w/o SR), and at the same time it allows for a 5-fold input size reduction (top-10) while obtaining on-par or better results. In addition, a further finetuning step of the FiD (w/ SR + FT) outperforms the results obtained by the SemanticReranker (w/ SR) by 1.7 and 2.9 F1 points on TOPIOCQA and OR-QuAC, respectively. Further experiments and ablation studies are provided in Appendix A.\nFinally, in Figure 2 it can also be observed that using top-10 instead of top-50 can reduce FiD\u2019s latency by 60% on average across the two datasets. We conducted a latency measurement to evaluate the impact of the SemanticReranker\nand its associated parameters, with detailed information available in Appendix A. Given that the SemanticReranker consists of a single TransformerEncoder layer, its parameters are negligible when compared to both the DPR and FiD. Moreover, the SemanticReranker accounts only for 0.34% of the overall latency of the FiD reader, adding an additional 2.4ms per example on top of the 710ms taken by FiD. It is important to note that this impact is only considered in relation to FiD, as the retrieval phase remains constant regardless of the inclusion of the SemanticReranker."
+        },
+        {
+            "heading": "5 Conclusions",
+            "text": "In this paper, we identified several limitations of the typical Depnse Passage Retrieval (DPR) retriever and Fusion-in-Decoder (FiD) reader pipeline when applied in an ODConvQA setting. We proposed and evaluated an improved approach by including a fast reranking component between these two modules and by performing targeted finetuning steps. The proposed R3FINE strategy lead to a better latency/performance trade-off. The new baseline has proven to be both strong and efficient when compared to previous baselines, thus making it suitable for future comparisons of new approaches."
+        },
+        {
+            "heading": "Limitations",
+            "text": "The study presented in this work aimed to identify and address various limitations of the commonly used ODConvQA pipeline. While our approach may not be technically groundbreaking, the work\u2019s novelty lies in the presented findings to design strong and efficient baselines for ODConvQA. It should be noted that further research is needed to compare the performance of the proposed R3FINE strategy with other rerankers on non-conversational QA datasets, which would provide valuable insights into how effective the R3FINE approach is in different contexts."
+        },
+        {
+            "heading": "A Appendix",
+            "text": "This section provides additional information in support of the work done within the paper.\nA.1 OR-QuAC conversion to TOPIOCQA\u2019s format and models\nTo make the OR-QuAC dataset compatible with TOPIOCQA\u2019s models, we applied the following steps:\n\u2022 all answers of type CANNOTANSWER and NOTRECOVERED have been mapped to UNANSWERABLE\n\u2022 for the DPR\u2019s ConversationEncoder component, we followed the TOPIOCQA\u2019s ALLHISTORY conversation representation\n\u2022 for the DPR\u2019s PassageEncoder component, each passage title has been reduced from \"passage_page_title [SEP] passage_page_subtitle\" to \"passage_page_title\". This is due to the fact that, compared to TOPIOCQA, OR-QuAC does not provide the information about the section where a particular passage is located within the page.\n\u2022 for the FiD component, each passage information has been reduced from \"title: sub-title: context:\" to \"title: context:\". This is done for the same reason mentioned in the previous point.\nEach passage text in OR-QuAC\u2019s Wikipedia knowledge source has been mapped to its corresponding embedding via the TOPIOCQA\u2019s PassageEncoder component. We then performed the same retrieval step as the one done for TOPIOCQA. We exploited TOPIOCQA\u2019s DPR module for both datasets as the retrieval phase is very similar between the two. However, given that, unlike TOPIOCQA, OR-QuAC is of extractive type, we had to train the FiD module from scratch. We followed the same training configuration as the one used for TOPIOCQA.\nA.2 Reranker training and ablation study We tried different configurations of the SemanticReranker to find the most efficient and effective one. In addition to the decision of whether to finetune the DPR\u2019s ConversationEncoder together with the SemanticReranker, we also tried varying the number of layers L of the SemanticReranker from 1 to 4 and changing its input, by choosing a combination from:\n\u2022 hc1 : use of conversation\u2019s history dense representation\n\u2022 hc1 , . . . , hci : use of conversation\u2019s history tokens dense representation\n\u2022 p1, . . . , pk: use of passages dense representation\nTable 6 shows the average top-k results obtained on the TOPIOCQA and OR-QuAC dev split, where k varies between 1, 3, 5, 10, 15, 20, 30, 50, 100, 250, 500, 750, and 1000. For TOPIOCQA, we report the presence of the gold passage within the top-k limit. For OR-QuAC we report the presence of the gold answer within the top-k limit.\nGiven that the MIPS function cannot be applied when p1, . . . , pk representations are used alone, i.e, without the conversation history, we applied a linear projection on top of the SemanticReranker to obtain a score for each passage in input.\nAs far as training the SemanticReranker is concerned, we trained it for 10 epochs when finetuned together with the ConversationEncoder. We instead trained it for 20 epochs when the ConversationEncoder was kept frozen and when p1, . . . , pk representations were used alone. We leveraged the same objective function used for training the initial DPR. We used early stopping to chose the best performing model on the dev set. We also used a linear learning rate decay throughout the training process, and AdamW with a learning rate of 5e-5 and weight decay of 1e-2.\nAmong the different combinations shown in Table 6, we considered the first entry as the best choice, i.e., the model with L = 1, hc1 , p1, . . . , pk, and CrossEncoder finetuning."
+        },
+        {
+            "heading": "A.3 Retriever results",
+            "text": "Table 7 shows the train split retrieval coverage before/after the introduction of the SemanticReranker (w/o SR) when a larger number of passages is considered (50 vs 1000).\nFor both datasets, we report the presence of the gold passage within the top-k limit.\nTable 8 shows the dev split retrieval coverage before/after the introduction of the SemanticReranker (w/o SR) when a larger number of passages is considered (50 vs 1000). For TOPIOCQA, we report the presence of the gold passage within the top-k limit. For OR-QuAC we report the presence of the gold answer within the top-k limit. Table 9 shows the OR-QuAC test split retrieval coverage before/after the introduction of the SemanticReranker (w/o SR) when a larger number of passages is considered (50 vs 1000). We report the presence of the gold answer within the top-k limit."
+        },
+        {
+            "heading": "A.4 Reader results",
+            "text": "Table 10, Table 11, and Table 12 show the impact the introduction of the SemanticReranker has on the FiD reader. The input to the FiD reader are either passages returned by the initial DPR retriever (w/o SR) or passages returned by the SemanticReranker (w/ SR)."
+        },
+        {
+            "heading": "1000 91.49 91.49 74.55 74.55",
+            "text": ""
+        },
+        {
+            "heading": "1000 69.86 69.86",
+            "text": "A.5 Reader is susceptible to noisy input\nTable 13 shows the FiD reader performance on the TOPIOCQA dev split, with/without the gold passage (w/o gold) in the top-k limit. This analysis is limited to the TOPIOCQA dataset as it is the only one to provide information about the gold passage for the dev split."
+        },
+        {
+            "heading": "TOPIOCQA w/o SR w/ SR",
+            "text": ""
+        },
+        {
+            "heading": "TOPIOCQA",
+            "text": ""
+        },
+        {
+            "heading": "A.6 Further reader study",
+            "text": "To better understand the impact that the introduction of the SemanticReranker has on the FiD reader, Table 14, Table 15, and Table 16 show the results obtained after taking a non-finetuned FiD and training it on the top-10 passages returned by the initial DPR retriever and on the top-10 passages returned by the SemanticReranker. On both datasets, we followed the same training configuration as the one used for TOPIOCQA."
+        },
+        {
+            "heading": "TOPIOCQA w/o SR w/ SR",
+            "text": ""
+        },
+        {
+            "heading": "OR-QuAC",
+            "text": ""
+        },
+        {
+            "heading": "OR-QuAC",
+            "text": "Table 17, Table 18, and Table 19 show instead\nthe results obtained after taking an already finetuned FiD reader and further finetuning it on the top-10 passages returned by the initial DPR retriever and on the top-10 passages returned by the SemanticReranker. On both datasets, the amount of finetuning steps is equal to the one used for training the already finetuned FiD reader."
+        },
+        {
+            "heading": "TOPIOCQA w/o SR w/ SR",
+            "text": ""
+        },
+        {
+            "heading": "A.7 Latency measurement",
+            "text": "Latency measurement (see Figure 2) has been performed on the same NVIDIA V100 16GB GPU, by\nfollowing the FiD\u2019s test_reader.py script provided with the TOPIOCQA dataset. We set the per_gpu_batch_size paramenter to 4 in all runs and chose the value of the n_context parameter from 1, 3, 5, 10, 20, 30, and 50, based on the number of input passages. For each value, we report the latency relative to the maximum n_context parameter value, i.e., 50. We used CUDA events synchronization markers to measure the elapsed time for the preprocessing and evaluation of TOPIOCQA\u2019s dev split and OR-QuAC\u2019s test split."
+        }
+    ],
+    "title": "Strong and Efficient Baselines for Open Domain Conversational Question Answering",
+    "year": 2023
+}

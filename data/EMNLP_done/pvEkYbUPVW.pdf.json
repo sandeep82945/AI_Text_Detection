@@ -1,0 +1,708 @@
+{
+    "abstractText": "Metrics for Visual Grounding (VG) in Visual Question Answering (VQA) systems primarily aim to measure a system\u2019s reliance on relevant parts of the image when inferring an answer to the given question. Lack of VG has been a common problem among state-of-the-art VQA systems and can manifest in over-reliance on irrelevant image parts or a disregard for the visual modality entirely. Although inference capabilities of VQA models are often illustrated by a few qualitative illustrations, most systems are not quantitatively assessed for their VG properties. We believe, an easily calculated criterion for meaningfully measuring a system\u2019s VG can help remedy this shortcoming, as well as add another valuable dimension to model evaluations and analysis. To this end, we propose a new VG metric that captures if a model a) identifies question-relevant objects in the scene, and b) actually relies on the information contained in the relevant objects when producing its answer, i.e., if its visual grounding is both \u201cfaithful\u201d and \u201cplausible\u201d. Our metric, called Faithful & Plausible Visual Grounding (FPVG), is straightforward to determine for most VQA model designs. We give a detailed description of FPVG and evaluate several reference systems spanning various VQA architectures. Code to support the metric calculations on the GQA data set is available on GitHub1.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Daniel Reich"
+        },
+        {
+            "affiliations": [],
+            "name": "Felix Putze"
+        },
+        {
+            "affiliations": [],
+            "name": "Tanja Schultz"
+        }
+    ],
+    "id": "SP:d754d151b5c30bc0b99421cad5e211078f058ebd",
+    "references": [
+        {
+            "authors": [
+                "Julius Adebayo",
+                "Justin Gilmer",
+                "Michael Muelly",
+                "Ian Goodfellow",
+                "Moritz Hardt",
+                "Been Kim."
+            ],
+            "title": "Sanity checks for saliency maps",
+            "venue": "Proceedings of the 32nd International Conference on Neural Information Processing Systems, NIPS\u201918, page 9525\u20139536,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Vedika Agarwal",
+                "Rakshith Shetty",
+                "Mario Fritz."
+            ],
+            "title": "Towards causal vqa: Revealing and reducing spurious correlations by invariant and covariant semantic editing",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aishwarya Agrawal",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Analyzing the behavior of visual question answering models",
+            "venue": "Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing, pages 1955\u20131960, Austin, Texas. Associ-",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Aishwarya Agrawal",
+                "Dhruv Batra",
+                "Devi Parikh",
+                "Aniruddha Kembhavi."
+            ],
+            "title": "Don\u2019t just assume; look and answer: Overcoming priors for visual question answering",
+            "venue": "CVPR, pages 4971\u20134980. IEEE Computer Society.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "David Alvarez-Melis",
+                "Tommi Jaakkola."
+            ],
+            "title": "A causal framework for explaining the predictions of black-box sequence-to-sequence models",
+            "venue": "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, pages 412\u2013421,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Saeed Amizadeh",
+                "Hamid Palangi",
+                "Oleksandr Polozov",
+                "Yichen Huang",
+                "Kazuhito Koishida."
+            ],
+            "title": "Neurosymbolic visual reasoning: Disentangling \u201cvisual\u201d from \u201creasoning",
+            "venue": "Proceedings of the 37th International Conference on Machine Learning (ICML-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Peter Anderson",
+                "Xiaodong He",
+                "Chris Buehler",
+                "Damien Teney",
+                "Mark Johnson",
+                "Stephen Gould",
+                "Lei Zhang."
+            ],
+            "title": "Bottom-up and top-down attention for image captioning and visual question answering",
+            "venue": "CVPR, pages 6077\u20136086. IEEE Computer Society.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Dzmitry Bahdanau",
+                "Kyunghyun Cho",
+                "Yoshua Bengio."
+            ],
+            "title": "Neural machine translation by jointly learning to align and translate",
+            "venue": "arXiv preprint arXiv:1409.0473.",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Wenhu Chen",
+                "Zhe Gan",
+                "Linjie Li",
+                "Yu Cheng",
+                "William Wang",
+                "Jingjing Liu."
+            ],
+            "title": "Meta module network for compositional visual reasoning",
+            "venue": "Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision, pages 655\u2013664.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Abhishek Das",
+                "Harsh Agrawal",
+                "C. Lawrence Zitnick",
+                "Devi Parikh",
+                "Dhruv Batra"
+            ],
+            "title": "Human attention in visual question answering: Do humans and deep networks look at the same regions",
+            "venue": "EMNLP",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "J. Deng",
+                "W. Dong",
+                "R. Socher",
+                "L. Li",
+                "Kai Li",
+                "Li FeiFei."
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "2009 IEEE Conference on Computer Vision and Pattern Recognition, pages 248\u2013255.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Jay DeYoung",
+                "Sarthak Jain",
+                "Nazneen Fatema Rajani",
+                "Eric Lehman",
+                "Caiming Xiong",
+                "Richard Socher",
+                "Byron C. Wallace."
+            ],
+            "title": "ERASER: A benchmark to evaluate rationalized NLP models",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shi Feng",
+                "Eric Wallace",
+                "Alvin Grissom II",
+                "Mohit Iyyer",
+                "Pedro Rodriguez",
+                "Jordan Boyd-Graber."
+            ],
+            "title": "Pathologies of neural models make interpretations difficult",
+            "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yash Goyal",
+                "Tejas Khot",
+                "Douglas Summers-Stay",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering",
+            "venue": "Proceedings of the IEEE conference on computer vision and pattern",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Vipul Gupta",
+                "Zhuowan Li",
+                "Adam Kortylewski",
+                "Chenyu Zhang",
+                "Yingwei Li",
+                "Alan Loddon Yuille."
+            ],
+            "title": "Swapmix: Diagnosing and regularizing the overreliance on visual context in visual question answering",
+            "venue": "2022 IEEE/CVF Conference on Computer Vi-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xinzhe Han",
+                "Shuhui Wang",
+                "Chi Su",
+                "Qingming Huang",
+                "Qi Tian."
+            ],
+            "title": "Greedy gradient ensemble for robust visual question answering",
+            "venue": "2021 IEEE/CVF International Conference on Computer Vision (ICCV), pages 1564\u20131573.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "X. Zhang",
+                "Shaoqing Ren",
+                "Jian Sun."
+            ],
+            "title": "Deep residual learning for image recognition",
+            "venue": "2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 770\u2013778.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "D.A. Hudson",
+                "C.D. Manning."
+            ],
+            "title": "GQA: A New Dataset for Real-World Visual Reasoning and Compositional Question Answering",
+            "venue": "2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 6693\u20136702.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Drew A. Hudson",
+                "Christopher D. Manning."
+            ],
+            "title": "Compositional attention networks for machine reasoning",
+            "venue": "Cite arxiv:1803.03067Comment: Published as a conference paper at ICLR 2018.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Sarthak Jain",
+                "Byron C. Wallace."
+            ],
+            "title": "Attention is not Explanation",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Pa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Corentin Kervadec",
+                "Grigory Antipov",
+                "Moez Baccouche",
+                "Christian Wolf"
+            ],
+            "title": "Roses are red, violets are blue... but should vqa expect them to",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Guohao Li",
+                "Xin Wang",
+                "Wenwu Zhu."
+            ],
+            "title": "Perceptual visual reasoning with knowledge propagation",
+            "venue": "ACM Multimedia, pages 530\u2013538. ACM.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jiwei Li",
+                "Will Monroe",
+                "Dan Jurafsky."
+            ],
+            "title": "Understanding neural networks through representation erasure",
+            "venue": "arXiv preprint arXiv:1612.08220.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Xiujun Li",
+                "Xi Yin",
+                "Chunyuan Li",
+                "Xiaowei Hu",
+                "Pengchuan Zhang",
+                "Lei Zhang",
+                "Lijuan Wang",
+                "Houdong Hu",
+                "Li Dong",
+                "Furu Wei",
+                "Yejin Choi",
+                "Jianfeng Gao."
+            ],
+            "title": "Oscar: Object-semantics aligned pre-training for vision-language tasks",
+            "venue": "In",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "P. Doll\u00e1r",
+                "Ross B. Girshick",
+                "Kaiming He",
+                "Bharath Hariharan",
+                "Serge J. Belongie."
+            ],
+            "title": "Feature pyramid networks for object detection",
+            "venue": "2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 936\u2013944.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jiayuan Mao",
+                "Chuang Gan",
+                "Pushmeet Kohli",
+                "Joshua B. Tenenbaum",
+                "Jiajun Wu."
+            ],
+            "title": "The neurosymbolic concept learner: Interpreting scenes, words, and sentences from natural supervision",
+            "venue": "7th International Conference on Learning Representations,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Dong Huk Park",
+                "Lisa Anne Hendricks",
+                "Zeynep Akata",
+                "Anna Rohrbach",
+                "Bernt Schiele",
+                "Trevor Darrell",
+                "Marcus Rohrbach."
+            ],
+            "title": "Multimodal explanations: Justifying decisions and pointing to the evidence",
+            "venue": "2018 IEEE/CVF Conference on Computer Vision and",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Badri N. Patro",
+                "Shivansh Pate",
+                "Vinay P. Namboodiri."
+            ],
+            "title": "Robust explanations for visual question answering",
+            "venue": "2020 IEEE Winter Conference on Applications of Computer Vision (WACV), pages 1566\u20131575.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Arijit Ray",
+                "Karan Sikka",
+                "Ajay Divakaran",
+                "Stefan Lee",
+                "Giedrius Burachas."
+            ],
+            "title": "Sunny and dark outside?! improving answer consistency in vqa through entailed question generation",
+            "venue": "ArXiv, abs/1909.04696.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Daniel Reich",
+                "Felix Putze",
+                "Tanja Schultz."
+            ],
+            "title": "Visually grounded vqa by lattice-based retrieval",
+            "venue": "arXiv preprint arXiv:2211.08086.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shaoqing Ren",
+                "Kaiming He",
+                "Ross B. Girshick",
+                "J. Sun."
+            ],
+            "title": "Faster r-cnn: Towards real-time object detection with region proposal networks",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence, 39:1137\u20131149.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Andrew Slavin Ross",
+                "Michael C. Hughes",
+                "Finale Doshi-Velez."
+            ],
+            "title": "Right for the right reasons: Training differentiable models by constraining their explanations",
+            "venue": "Proceedings of the 26th International Joint Conference on Artificial Intelligence, IJCAI\u201917,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ramprasaath R. Selvaraju",
+                "Michael Cogswell",
+                "Abhishek Das",
+                "Ramakrishna Vedantam",
+                "Devi Parikh",
+                "Dhruv Batra."
+            ],
+            "title": "Grad-cam: Visual explanations from deep networks via gradient-based localization",
+            "venue": "2017 IEEE International Conference on",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ramprasaath R. Selvaraju",
+                "Stefan Lee",
+                "Yilin Shen",
+                "Hongxia Jin",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Taking a hint: Leveraging explanations to make vision and language models more grounded",
+            "venue": "2019 IEEE/CVF International Conference on Computer",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ramprasaath R. Selvaraju",
+                "Purva Tendulkar",
+                "Devi Parikh",
+                "Eric Horvitz",
+                "Marco Tulio Ribeiro",
+                "Besmira Nushi",
+                "Ece Kamar."
+            ],
+            "title": "Squinting at vqa models: Introspecting vqa models with sub-questions",
+            "venue": "2020 IEEE/CVF Conference on Computer Vision and",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Robik Shrestha",
+                "Kushal Kafle",
+                "Christopher Kanan."
+            ],
+            "title": "A negative case analysis of visual grounding methods for VQA",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 8172\u20138181, Online. Association",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hao Tan",
+                "Mohit Bansal."
+            ],
+            "title": "Lxmert: Learning cross-modality encoder representations from transformers",
+            "venue": "EMNLP/IJCNLP (1), pages 5099\u20135110. Association for Computational Linguistics.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Aisha Urooj",
+                "Hilde Kuehne",
+                "Kevin Duarte",
+                "Chuang Gan",
+                "Niels Lobo",
+                "Mubarak Shah."
+            ],
+            "title": "Found a reason for me? weakly-supervised grounded visual question answering using capsules",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141 ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in Neural Information Processing Systems, volume 30. Curran Associates, Inc.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Sarah Wiegreffe",
+                "Yuval Pinter."
+            ],
+            "title": "Attention is not not explanation",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jialin Wu",
+                "Raymond J. Mooney."
+            ],
+            "title": "Self-critical reasoning for robust visual question answering",
+            "venue": "NeurIPS.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yuxin Wu",
+                "Alexander Kirillov",
+                "Francisco Massa",
+                "Wan-Yen Lo",
+                "Ross Girshick."
+            ],
+            "title": "Detectron2",
+            "venue": "https://github.com/facebookresearch/ detectron2.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kexin Yi",
+                "Jiajun Wu",
+                "Chuang Gan",
+                "Antonio Torralba",
+                "Pushmeet Kohli",
+                "Josh Tenenbaum."
+            ],
+            "title": "Neuralsymbolic vqa: Disentangling reasoning from vision and language understanding",
+            "venue": "NeurIPS, pages 1039\u20131050.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Zhuofan Ying",
+                "Peter Hase",
+                "Mohit Bansal."
+            ],
+            "title": "Visfis: Visual feature importance supervision with right-for-the-right-reason objectives",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhou Yu",
+                "Yuhao Cui",
+                "Zhenwei Shao",
+                "Pengbing Gao",
+                "Jun Yu."
+            ],
+            "title": "Openvqa",
+            "venue": "https://github. com/MILVLG/openvqa.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhou Yu",
+                "Jun Yu",
+                "Yuhao Cui",
+                "Dacheng Tao",
+                "Qi Tian."
+            ],
+            "title": "Deep modular co-attention networks for visual question answering",
+            "venue": "2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 6274\u20136283.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yuanyuan Yuan",
+                "Shuai Wang",
+                "Mingyue Jiang",
+                "Tsong Yueh Chen."
+            ],
+            "title": "Perception matters: Detecting perception failures of vqa models using metamorphic testing",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Pengchuan Zhang",
+                "Xiujun Li",
+                "Xiaowei Hu",
+                "Jianwei Yang",
+                "Lei Zhang",
+                "Lijuan Wang",
+                "Yejin Choi",
+                "Jianfeng Gao."
+            ],
+            "title": "Vinvl: Revisiting visual representations in vision-language models",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gupta"
+            ],
+            "title": "Feature importance ranking scores Scores in Table 1 were calculated as follows: A question\u2019s \u201crelevant\u201d score measures how many of N annotated relevant objects in set relN",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ying"
+            ],
+            "title": "2022)) is used for model selection. E.0.1 Visual Features The object detector used in this work is a Faster R-CNN (Ren et al., 2015) model with ResNet101",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "He"
+            ],
+            "title": "2016) backbone and an FPN (Lin et al., 2017) for region proposals. We trained this model using Facebook\u2019s Detectron2 framework (Wu et al., 2019)",
+            "venue": "The ResNet101 backbone model was pretrained on ImageNet (Deng et al.,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "VLR (Reich"
+            ],
+            "title": "2022) is a modular, symbolic method that requires a full scene graph as visual representation. Similar to DFOL and MMN, it makes use of a (trained) program parser",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Reich"
+            ],
+            "title": "Training of the program parser and generation of the scene graph was done according to the description",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "text": "We give a detailed description of FPVG and evaluate several reference systems spanning various VQA architectures. Code to support the metric calculations on the GQA data set is available on GitHub1."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "Visual Question Answering (VQA) is the task of answering natural language questions about image contents. Visual Grounding (VG) in VQA measures a VQA system\u2019s inherent proclivity to base its inference on image regions referenced in the given question and relevant to the answer. A wellgrounded system infers an answer to a given question by relying on image regions relevant to the\n1https://github.com/dreichCSL/FPVG\nquestion and plausible to humans. Hence, visually grounded inference in VQA can be broken down into two aspects: (1) Image contents impact the inference process, and (2) inference is based on relevant image contents. Evidence of problematic behavior that arises from a lack of (1) includes an over-reliance on language priors (Goyal et al., 2017; Agrawal et al., 2018, 2016), while a lack of (2) can cause models to react to changes in irrelevant parts of the image (Gupta et al., 2022). Both characteristics can hurt a model\u2019s capacity to provide consistent and reliable performances.\nMetrics that quantify a model\u2019s VG characteristics aim to capture its internal reasoning process based on methods of model explanation. These explanations generally vary in properties of plausibility and faithfulness. Plausible explanations of a model\u2019s behavior prioritize human interpretability, e.g., by illustrating a clear inference path over relevant objects that lead to the decision, but might not accurately reflect a model\u2019s actual decision-making process. Faithful explanations, on the other hand,\nprioritize a more accurate reflection of a model\u2019s decision-making process, possibly at the expense of human interpretability. Examples of plausible explanation methods are attention mechanisms (Bahdanau et al., 2014) over visual input objects, and multi-task objectives that learn to produce inference paths without conclusive involvement in the main model\u2019s answer decision (Chen et al., 2021). Faithful explanation methods may employ testing schemes with modulated visual inputs followed by comparisons of the model\u2019s output behavior across test runs (DeYoung et al., 2020; Gupta et al., 2022). While the latter types of metrics are particularly suited for the use-case of object-based visual input in VQA, they often a) require large compute budgets to evaluate the required number of input permutations (e.g. SwapMix (Gupta et al., 2022), Leave-One-Out (Li et al., 2016)); b) might evaluate in unnecessary depth, like in the case of softmax-score-based evaluations (DeYoung et al., 2020); and/or c) evaluate individual properties separately and without considering classification contexts, thereby missing the full picture (DeYoung et al., 2020; Ying et al., 2022), see also \u00a73.4).\nIn this work, we propose a VG metric that is both faithful and plausible in its explanations. Faithful & Plausible Visual Grounding (FPVG) quantifies a model\u2019s faithful reliance on plausibly relevant image regions (Fig. 1). FPVG is based on a model\u2019s answering behavior for modulated sets of image input regions, similar to other faithfulness metrics (in particular DeYoung et al. (2020)), while avoiding their above-mentioned shortcomings (details in \u00a73.4). To determine the state-of-the-art for VG in VQA, we use FPVG to measure various representative VQA methods ranging from onestep and multi-hop attention-based methods, over Transformer-based models with and without crossmodality pre-training, to (neuro-)symbolic methods. We conclude this work with investigations into the importance of VG for VQA generalization research (represented by Out-of-Distribution (OOD) testing), thereby further establishing the value of FPVG as an analytical tool. The GQA data set (Hudson and Manning, 2019) for compositional VQA is particularly suited for our tasks, as it provides detailed inference and grounding information for the majority of its questions.\nContributions. Summarized as follows: \u2022 A new metric called \u201cFaithful & Plausible\nVisual Grounding\u201d (FPVG) for quantification\nof plausible & faithful VG in VQA. \u2022 Evaluations and comparisons of VQA models\nof various architectural designs with FPVG. \u2022 New evidence for a connection between VG\nand OOD performance, provided by an empirical analysis using FPVG.\n\u2022 Code to facilitate evaluations with FPVG."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Various metrics have been proposed to measure VG in VQA models. We roughly group these into direct and indirect methods. 1) Direct methods: The most widely used methods measuring the importance of image regions to a given question are based on a model\u2019s attention mechanisms (Bahdanau et al., 2014), or use gradient-based sensitivities (in particular variants of GradCAM (Selvaraju et al., 2017)). VG is then estimated, e.g., by accumulating importance scores over matching and relevant annotated image regions (Hudson and Manning, 2019), or by some form of rank correlation (Shrestha et al., 2020). Aside from being inapplicable to non-attention-based VQA models (e.g., symbolic methods like Yi et al. (2018); Mao et al. (2019)), attention scores have the disadvantage of becoming harder to interpret the more attention layers are employed for various tasks in a model. This gets more problematic in complex Transformerbased models that have a multitude of attention layers over the input image (OSCAR (Li et al., 2020; Zhang et al., 2021), LXMERT (Tan and Bansal, 2019), MCAN (Yu et al., 2019b), MMN (Chen et al., 2021)). Additionally, attention mechanisms have been a topic of debate regarding the faithfulness of their explanation (Jain and Wallace, 2019; Wiegreffe and Pinter, 2019). Gradient-based sensitivity scores can theoretically produce faithful explanations, but require a careful choice of technique and implementation for each model individually to achieve meaningful measurements in practice (Adebayo et al., 2018; Feng et al., 2018). Various works introduce their own VG metric based on attention measurements (e.g., GQA-grounding (Hudson and Manning, 2019), VLR (Reich et al., 2022), MACCaps (Urooj et al., 2021)) or GradCAM-based feature sensitivities (Shrestha et al., 2020; Wu and Mooney, 2019; Selvaraju et al., 2019; Han et al., 2021). 2) Indirect methods: These include methods that measure VG based on a model\u2019s predictions under particular test (and train) conditions, e.g., with perturbations of image features (Yuan et al., 2021;\nGupta et al., 2022; Agarwal et al., 2020; DeYoung et al., 2020; Alvarez-Melis and Jaakkola, 2017), or specially designed Out-of-Distribution test sets that can inform us about a model\u2019s insufficient VG properties (Agrawal et al., 2018; Kervadec et al., 2021; Ying et al., 2022). FPVG is related to DeYoung et al. (2020) in particular and uses perturbations of image features to approximate a direct measurement of VG w.r.t. relevant objects in the input image. Thus, we categorize FPVG as an \u201cindirect\u201d VG evaluation method.\nFinally, we note that VG can be considered a sub-problem of the VQA desiderata gathered under the term \u201cRight for Right Reasons\u201d (RRR) (Ross et al., 2017; Ying et al., 2022). RRR may additionally include investigations of causal behavior in a model that goes beyond (and may not be strictly dependent on) VG and may involve probing the model for its robustness and consistency in explanations, e.g., via additional (follow-up) questions (Patro et al., 2020; Selvaraju et al., 2020; Ray et al., 2019; Park et al., 2018)."
+        },
+        {
+            "heading": "3 Faithful & Plausible Visual Grounding",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Metric Formulation",
+            "text": "We propose a new metric to determine the degree of Faithful & Plausible Visual Grounding (FPVG) in a VQA model MV QA w.r.t. a given VQA data set S. Here, S consists of tuples sj of question, image and answer (q, i, a)j . Each such tuple in S is accompanied by annotations indicating relevant regions in image i that are needed to answer the question q. MV QA is characterized by its two modality inputs (i and q) and a discrete answer output (a). In this paper, we expect image i to be given as an object-based representation (e.g., bag of objects, scene graph) in line with the de-facto standard for VQA models2.\nFPVG requires evaluation of MV QA under three test conditions. Each condition differs in the set of objects representing image i in each sample sj of the test. Three tests are run: 1) with all available objects (iall), 2) with only relevant objects (irel), and 3) with only irrelevant objects (iirrel). Formally, we define one dataset variant for each of these three conditions:\n2In principle, FPVG can be easily adapted to work with any model (VQA or otherwise) that follows a similar input/output scheme as the standard region-based VQA models, i.e., an input consisting of N entities where a subset can be identified as \u201crelevant\u201d (\u201cirrelevant\u201d) for producing a discrete output.\nsjall=(q,iall,a)j , sjall\u2208Sall (1)\nsjrel=(q,irel,a)j , sjrel\u2208Srel (2)\nsjirrel=(q,iirrel,a)j , sjirrel\u2208Sirrel (3)\nThe relevance of an object in i is determined by its degree of overlap with any of the objects referenced in relevance annotations for each individual question (for details, see App. A). FPVG is then calculated on a data point basis (i.e., for each question) as\nFPV Gj=Eq(a\u0302jall ,a\u0302jrel )\u2227\u00acEq(a\u0302jall ,a\u0302jirrel ) , (4)\nwhere a\u0302j is the model\u2019s predicted answer for sample sj and Eq(x, y) is a function that returns True for equal answers. FPVG takes a binary value for each data point. A positive FPVG value for sample sjall is only achieved if MV QA\u2019s output answers are equal between test runs with samples sjall and sjrel , and unequal for samples sjall and sjirrel (reminder, that the three involved samples only differ in their visual input). The percentage of \u201cgood\u201d (i.e., faithful & plausible) and \u201cbad\u201d FPVG is then given as FPV G+ and FPV G\u2212, respectively:\nFPV G+= 1 n \u2211n j FPV Gj (5)\nFPV G\u2212=1\u2212FPV G+ (6)\nWe further sub-categorize FPVG to quantify correctly (\u22a4) and incorrectly (\u22a5) predicted answers a\u0302jall as FPV G \u22a4 {+,\u2212} and FPV G \u22a5 {+,\u2212}, respectively. Hence, samples are assigned one of four categories, following their evaluation behavior (see Fig. 2 for illustration and App. B for the mathematical formulation)."
+        },
+        {
+            "heading": "3.2 Intuition behind FPVG",
+            "text": "The intuition behind the object selections in Srel (relevant objects) and Sirrel (irrelevant objects) is as follows: Testing on relevant objects Srel. In the context of FPVG, the output of a well-grounded system is expected to remain steady for Srel, i.e., the model is expected to retain its original prediction from Sall, if it relies primarily on relevant visual evidence. Hence, a change in output indicates that the model has changed its focus to different visual evidence, presumably away from irrelevant features (which are dropped in Srel) onto relevant features \u2014 a sign of \u201cbad\u201d grounding.\nTesting on irrelevant objects Sirrel. In the context of FPVG, the output of a well-grounded system is expected to waver for Sirrel, i.e., the model is expected to change its original prediction in Sall, as this prediction is primarily based on relevant visual evidence which is unavailable in Sirrel. Summarizing expectations for well-grounded VQA. A VQA model that relies on questionrelevant objects to produce an answer (i.e., a well-grounded model that values visual evidence) should:\n1. Retain its answer as long as the given visual information contains all relevant objects. 2. Change its answer when the visual information is deprived of all relevant objects and consists of irrelevant objects only.\nDuring (1), answer flips should not happen, if the model relied only on relevant objects within the full representation Sall. However, due to tendencies in VQA models to ignore visual evidence, lack of flipping in (1) could also indicate an over-reliance on the language modality (implies indifference to the visual modality). To help rule out those cases, (2) can act as a fail-safe that confirms that a model is not indifferent to visual input3.\nThe underlying mechanism can be described as an indirect measurement of the model\u2019s feature valuation of relevant objects in the regular test run Sall. The two additional experimental setups with Srel and Sirrel help approximate the measurement of relevant feature valuation for Sall.\n3Investigations into an alternative formulation of FPVG which ignores requirement (2) can be found in App. C.\nFPVG and accuracy. FPVG classifies samples sjall \u2208 Sall as \u201cgood\u201d (faithful & plausible) or \u201cbad\u201d grounding by considering whether or not the changed visual input impacts the model\u2019s final decision, independently of answer correctness. Many VQA questions have multiple valid (non-annotated) answer options (e.g., \u201cman\u201d vs. \u201cboy\u201d vs. \u201cperson\u201d), or might be answered incorrectly on account of imperfect visual features. Thus, it is reasonable to expect that questions can be well-grounded, but still produce an incorrect answer, as shown in Fig. 2, (b). Hence, FPVG categorizes samples into two main grounding categories (FPV G+ and FPV G\u2212). For a more fine-grained analysis, answer correctness is considered in two additional sub-categories (FPV G\u22a4, FPV G\u22a5) within each grounding category, as defined in Eq. 9\u201312."
+        },
+        {
+            "heading": "3.3 Validating FPVG\u2019s Faithfulness",
+            "text": "FPVG achieves plausibility by definition. In this section, we validate that FPVG\u2019s sample categorization is also driven by faithfulness by verifying that questions categorized as FPV G+ are more faithfully grounded than questions in FPV G\u2212. To measure the degree of faithful grounding for each question, we first determine an importance ranking among the question\u2019s input objects. Then we estimate how well this ranking matches with the given relevance annotations. Three types of approaches are used in VQA to measure object importance by direct or indirect means: Measurements of a model\u2019s attention mechanism over input objects (direct), gradient-measuring methods like Grad-\nCAM (direct), and methods involving input feature manipulations followed by investigations into the model\u2019s output change (indirect). VQA-model UpDn\u2019s (Anderson et al., 2018) attention and the feature manipulation method LeaveOne-Out (LOO4) (Li et al., 2016) were found to deliver the most faithful measurements of feature importance in experiments with UpDn on GQA in Ying et al. (2022). We use these two methods and also include GradCAM used in Selvaraju et al. (2019); Shrestha et al. (2020) for completeness.\nWe measure UpDn\u2019s behavior on GQA\u2019s balanced validation set (see \u00a74.1). Table 1 lists the ranking match degree between object importance rankings (based on Sall) and relevance annotations, averaged over questions categorized as FPV G+ and FPV G\u2212, respectively. The \u201crelevant\u201d (\u201cirrelevant\u201d) category produces a high score if all relevant (irrelevant) objects are top-ranked by the used method (see App. D.2 for details). Hence, faithfully grounded questions are expected to score highly in the \u201crelevant\u201d category, as relevant objects would be more influential to the model\u2019s decision.\nResults show that object importance rankings over the same set of questions and model vary greatly across methods. Nonetheless, we find that data points in both FPV G+ and FPV G\u2212 achieve on avg favorable scores across all three metrics with mostly considerable gaps between opposing categories (i.e., + and \u2212). This is in line with expectations and confirms that FPVG\u2019s data point categorization is driven by faithfulness.\n3.4 Comparison with \u201csufficiency\u201d and \u201ccomprehensiveness\u201d\nTwo metrics to measure faithfulness in a model, \u201csufficiency\u201d and \u201ccomprehensiveness\u201d, were proposed in DeYoung et al. (2020) and used in the context of VQA in similar form in Ying et al. (2022).\n4LOO evaluates a model N times (N=number of input objects), each time \u201cleaving-out-one object\u201d of the input and observing the original answer\u2019s score changes. A large score drop signifies high importance of the omitted object.\n\u201cSufficiency\u201d and \u201ccomprehensiveness\u201d are similar to FPVG and therefore deserve a more detailed comparison. They are calculated as follows.\nDefinition. Let a model M\u03b8\u2019s answer output layer be represented as softmax-normalized logits. A probability distribution over all possible answers is then given as p(a|q, iall) = m\u03b8(q, iall). The max element in this distribution is M\u03b8\u2019s predicted answer, i.e., a\u0302 = argmax\na p(a|q, iall), where the\nprobability for the predicted answer is given by pa\u0302all = M\u03b8(q, iall)a\u0302.\nSufficiency is defined as the change of output probability of the predicted class given all objects vs. the probability of that same class given only relevant objects:\nsuff=pa\u0302all\u2212pa\u0302rel (7)\nComprehensiveness is defined as the change of output probability of the predicted class given all objects vs. the probability of that same class given only irrelevant objects:\ncomp=pa\u0302all\u2212pa\u0302irrel (8)\nA faithfully grounded model is expected to achieve low values in suff and high values in comp.\nObject relevance and plausibility. The definition of what constitutes relevant or irrelevant objects is crucial to the underlying meaning of these two metrics. FPVG uses annotation-driven object relevance discovery and subsequently determines a model\u2019s faithfulness w.r.t. these objects. Meanwhile, Ying et al. (2022) estimates both metrics using model-based object relevance rankings (e.g., using LOO), hence, measuring the degree of faithfulness a model has towards model-based valuation of objects as determined by an object importance metric. A separate step is then needed to examine these explanations for \u201cplausibility\u201d. In contrast, FPVG already incorporates this step in its formulation, which determines if the model\u2019s inference is similar to that of a human by measuring the degree of faithful reliance on plausibly relevant objects (as defined in annotations).\nAdvantages of FPVG. FPVG overcomes the following shortcomings of suff and comp:\n1. Suff and comp are calculated as an average over the data set independently of each other and therefore do not evaluate the model for presence of both properties in each data point.\n2. Suff and comp only consider prediction probabilities of the maximum class in isolation, which means that even a change in model output as significant as a flip to another class may be declared insignificant by these metrics (e.g., for suff , if the output distribution\u2019s max probability pa\u0302all is similar to pa\u0302rel).\nShortcoming 1. Fig. 3, left, illustrates why isolating the two properties can cause inaccurate readings (1). The analyzed model assigns \u201cgood\u201d suff scores (defined in Ying et al. (2022) as < 1% abs. prob. reduction from pa\u0302all to pa\u0302rel) to a large number of questions (left two quadrants in Fig. 3, left). However, many of these questions also show \u201cbad\u201d comp (< 20% abs. drop from pa\u0302all to pa\u0302irrel) (lower left quadrant in Fig. 3, left), which reflects model behavior that one might observe when visual input is ignored entirely. Thus, the full picture is only revealed when considering both properties in conjunction, which FPVG does. Further evidence of the drawback stemming from (1) is pictured in Fig. 3, right, which shows avg LOO-based ranking match percentages (cf. \u00a73.3) for data points categorized as \u201cbest\u201d suff or comp and FPVG. Data points in FPVG\u2019s categories score more favorably than those in suff and comp, illustrating a more accurate categorization.\nShortcoming 2. Fig. 4, left, illustrates problem (2). A large percentage of questions with best (=low) scores in suff flip their answer class (i.e., fail to reach 0% flipped percentage), even when experiencing only minimal class prob drops (< 1% abs.). Similarly, some percentage of questions with best (=high) comp scores fail to flip their answer (i.e., fail to reach 100% flipped percentage),\neven though the class prob dropped significantly (>= 40% abs. drop). Both described cases show that failure to consider class probs in the context of the full answer class distribution negatively impacts the metric\u2019s quantification of a model\u2019s VG capabilities w.r.t. actual effects on its answer output behavior. FPVG\u2019s categorization avoids this issue by being defined over actual answer changes (Fig. 4, right: flipped prediction percentages per VG category are always at the expected extremes, i.e., 0% or 100%).\nSummary. FPVG avoids shortcoming (1) by taking both suff and comp into account in its joint formulation at the data point level, and (2) by looking at actual answer output changes (Fig. 4, right) and thus implicitly considering class probs over all classes and employing meaningful decision boundaries for categorization. Additionally, relying on answer flips instead of an abstract softmax score makes FPVG more intuitively interpretable."
+        },
+        {
+            "heading": "3.5 Discussion on other existing metrics",
+            "text": "FPVG relies on the method of feature deletions to determine \u201cfaithful\u201d reliance on a \u201cplausible\u201d set of inputs. Other VG metrics exist that instead rely on GradCAM (Shrestha et al., 2020) or a model\u2019s Attention mechanism (Hudson and Manning, 2019) to provide a \u201cfaithful\u201d measurement of input feature importance (see also App. D.1). The two mentioned metrics leverage these measurements to determine if a model relies on \u201cplausibly\u201d relevant objects. For instance, Shrestha et al. (2020) calculates a ranking correlation between the measured GradCAM scores and the rankings based on (plausible) object relevance annotations. The metric in\nHudson and Manning (2019) sums all of a model\u2019s Attention values assigned to visual input objects that have been determined to represent plausible objects.\nWhile \u201cplausibility\u201d is straightforwardly achieved by appropriate selection of plausibly relevant reference objects (which would be the same across these metrics), the property of \u201cfaithfulness\u201d is more difficult to obtain and heavily dependent on the employed feature importance technique. Investigations in Ying et al. (2022) cast doubt on the faithfulness of GradCAM measurements, with feature deletion techniques and Attention mechanism scoring most favorably in faithfulness in the explored setting. However, as discussed in \u00a72, the faithfulness of Attention measurements has not been without scrutiny, and is not straightforward to extract correctly in models that make heavy use of Attention mechanisms (such as Transformers). Based on this evidence, we find the method of feature deletions to be the most sensible and versatile choice to achieve faithfulness of measurements in FPVG across a wide range of model architectures in VQA."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Preliminaries",
+            "text": "The GQA data set Hudson and Manning (2019) provides detailed grounding information in available train & validation sets. Contrary to HAT (Das et al., 2016), which consists of human attention data for a small percentage of questions in the VQA data set (Goyal et al., 2017), GQA contains automatically generated relevance annotations for most questions in the dataset. Our experiments focus on GQA, but FPVG can theoretically be measured with any VQA data set containing the necessary annotations, like HAT. In this work, we rely on GQA\u2019s \u201cbalanced\u201d split (943k samples), but use the full train split (14m samples) for some models if required in their official training instructions. Testing is performed on the balanced val set (132k samples).\nDetails regarding object relevance determination and model training can be found in App. A and E."
+        },
+        {
+            "heading": "4.2 Models",
+            "text": "To provide a broad range of reference evaluations with FPVG, we evaluate a wide variety of model designs from recent years: UpDn (Anderson et al., 2018) is an attention-based model that popularized the contemporary standard of object-based image\nrepresentation. MAC (Hudson and Manning, 2018) is a multi-hop attention model for multi-step inference, well-suited for visual reasoning scenarios like GQA. MCAN (Yu et al., 2019b), MMN (Chen et al., 2021) and OSCAR+ (Zhang et al., 2021) are all Transformer-based (Vaswani et al., 2017) models. MMN employs a modular design that disentangles inference over the image information from the question-based prediction of inference steps as a functional program in a separate process, thereby improving interpretability compared to monolithic systems like MCAN. MMN also makes an effort to learn correct grounding using an auxiliary loss. OSCAR+ uses large-scale pre-training on multiple V+L data sets and is subsequently fine-tuned on GQA\u2019s balanced train set. We use the official release of the pre-trained OSCAR+ base model (which uses proprietary visual features) and finetune it. DFOL (Amizadeh et al., 2020) is a neurosymbolic method that disentangles vision from language processing via a separate question parser similar to MMN and VLR (Reich et al., 2022). The latter is a modular, symbolic method that prioritizes strong VG over accuracy by following a retrievalbased design paradigm instead of the commonly employed classification-based design in VQA.\nIn addition to these main models, we include two methods that focus on grounding improvements and are both applied to UpDn model training: HINT (Selvaraju et al., 2019) aligns GradCAMbased (Selvaraju et al., 2017) feature sensitivities with annotated object relevance scores. VisFIS (Ying et al., 2022) adds an ensemble of various RRR/VG-related objective functions (including some data augmentation) to the training process.\nAll models, except for OSCAR+, were trained using the same 1024-dim visual features generated by a Faster R-CNN object detector trained on images in GQA using Detectron2 (Wu et al., 2019)."
+        },
+        {
+            "heading": "4.3 Evaluations",
+            "text": "Results are listed in Table 2, sorted by FPV G+ (last column). Our first observation is that FPVG and accuracy are not indicative of one another, confirming that our metric for grounding is complementary to accuracy and adds a valuable dimension to VQA model analysis. Secondly, we see that (neuro-)symbolic methods like DFOL, and VLR in particular, stand out among (non-VG-boosted) VQA models in terms of FPVG, even while trailing in accuracy considerably. Thirdly, we find that\nmethods that boost grounding characteristics, like VisFIS, show promise for closing the gap to symbolic methods - if not exceeding them. Lastly, we observe that FPV G+ is generally low in all evaluated models, indicating that there is still ample room for VG improvements in VQA."
+        },
+        {
+            "heading": "4.4 Connection to Out-of-Distribution (OOD)",
+            "text": "We use FPVG to gain insights into the challenge of OOD settings by analyzing VQA models with GQA-101k (Ying et al., 2022), a dataset proposed for OOD testing. GQA-101k consists of a repartitioned train/test set based on balanced GQA and was created following a similar methodology as the OOD split called VQA-CP (Agrawal et al., 2018).\nResults in Table 3 show median values and maximum deviation thereof over five differently seeded training runs per model type (note that VLR uses deterministic inference, so no additional runs were performed for it). Table 4 lists correct-toincorrect (c2i) answer ratios for six model types trained and evaluated on GQA-101k. The c2i ratios are determined for each test set (ID/OOD) and FPV G{+,\u2212}. They are calculated as number of correct answers divided by number of incorrect\n5FPVG sub-categories FPV G\u22a5+ and FPV G\u22a4\u2212 have no intuitively sensible ranking directive under the FPVG motivation.\nanswers, hence, a c2i ratio of > 1 reflects that correct answers dominate the considered subset of test questions. In the following analysis, we leverage the listed c2i ratios to investigate and illustrate the connection between VG and (OOD) accuracy."
+        },
+        {
+            "heading": "4.4.1 Understanding the connection between FPVG and accuracy.",
+            "text": "In Table 2 and 3 we observe a somewhat unpredictable relationship between FPV G+ and accuracy. We analyze the c2i ratios in Table 4 to gain a better understanding of this behavior. Table 4 shows that FPVG-curated c2i ratios can vary substantially across model types (e.g., UpDn vs. MMN). These ratios can be interpreted as indicators of how effectively a model can handle and benefit from correct grounding. Large differences between models\u2019 c2i profiles explain why the impact of VG on accuracy can vary significantly across models. E.g., MMN has a much stronger c2i profile than UpDn, which explains its higher OOD accuracy even with lower FPV G+."
+        },
+        {
+            "heading": "4.4.2 Understanding the connection between FPVG and OOD performance.",
+            "text": "The inter-dependency of VG and OOD performance plays an important role in VQA generalization. FPVG can help us gain a deeper understanding.\nMore OOD errors when VG is bad. Fig. 5, left, depicts relative c2i ratio degradation when comparing ID to OOD settings. All models suffer a much higher c2i drop for questions categorized as FPV G\u2212 than FPV G+. In other words, models make more mistakes in an OOD setting in general, but they tend to do so in particular when questions are not correctly grounded. Note, that VLR is affected to a much lower degree due to its quasiinsensitivity to Q/A priors.\nVG is more important to OOD than ID. Fig. 5, right, shows accuracy sensitivity towards changes in grounding quality, i.e., when comparing FPV G+ to FPV G\u2212. We draw two conclusions: 1) All models suffer from c2i degradation, hence, they all tend to make more mistakes for questions categorized as FPV G\u2212 than FPV G+. 2) This tendency is (considerably) more pronounced in OOD which provides evidence that OOD performance is particularly sensitive to grounding.\nSummary. Our analysis shows that VQA models have a clear tendency to make mistakes in OOD for questions that are not faithfully grounded. This tendency is consistently observed across various model types and model instances. Our findings support the idea that weak visual grounding is detrimental to accuracy in OOD scenarios in particular, where the model is unable to fall back on learned Q/A priors to find the correct answer (as it can do in ID testing). Furthermore, we note that VisFIS, which boasts considerable improvements in FPVG and strong improvements in accuracy over basic UpDn, is unable to overcome these problematic tendencies. This suggests that VG-boosting methods alone might not be enough to overcome a model\u2019s fixation on language-based priors, which is exacerbating the performance gap between ID/OOD."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "We introduced Faithful & Plausible Visual Grounding (FPVG), a metric that facilitates and streamlines the analysis of VG in VQA systems. Using FPVG, we investigated VQA systems of various architectural designs and found that many models struggle to reach the level of faithful & plausible VG that systems based on symbolic inference can provide. Finally, we have shown that FPVG can be a valuable tool in analyzing VQA system behavior, as exemplified by investigations of the VGOOD relationship. Here, we found that VG plays\nan important role in OOD scenarios, where, compared to ID scenarios, bad VG leads to considerably more errors than good VG, thus providing us with a compelling argument for pursuing better-grounded models."
+        },
+        {
+            "heading": "6 Limitations",
+            "text": "Plausibility of explanations in FPVG is assumed to be provided by accurate, unambiguous and complete annotations of relevant objects per evaluated question. Although the GQA data set provides annotations in the shape of relevant object pointers during the inference process for a question, these annotations may be ambiguous or incomplete. For instance, a question about the color of a soccer player\u2019s jersey might list pointers to a single player in an image where multiple players are present. Excluding only this one player from the image input based on the annotated pointer would still include other players (with the same jersey) for the Sirrel test case. In such cases, FPVG\u2019s assumptions would be violated and its result rendered inaccurate. In this context, we also note that FPVG\u2019s behavior has not been explicitly explored for cases with ambiguous relevance annotations.\nSecondly, FPVG creates its visual input modulations by matching annotated objects with objects detected by an object detector. Different object detectors can produce bounding boxes of varying accuracy and quantity depending on their settings. When using a new object detector as a source for visual features, it might be necessary to re-adjust parameters used for identifying relevant/irrelevant objects (see App. A for settings used in this work). When doing so, the integrity of FPVG can only be retained when making sure that there are no overlapping objects among relevant & irrelevant sets.\nThirdly, comparing VQA models with FPVG across visual features produced by different object\ndetectors might be problematic/inaccurate in itself, as 1) different numbers of objects are selected for relevant & irrelevant sets, and 2) different Q/A samples might be evaluated (e.g., due to missing detections of any relevant objects). If possible, when using a new object detector, we recommend including FPVG evaluations for some reference model(s) (e.g., UpDn) as an additional baseline to enable an improved assessment of a model\u2019s FPVG measurements that are trained with a different object detector\u2019s visual features."
+        },
+        {
+            "heading": "A Determining relevant objects.",
+            "text": "FPVG can only be meaningfully evaluated with questions for which the used object detector found both relevant and irrelevant objects. If e.g. no question-relevant objects were detected, the question is excluded. Hence, different subsets of the test (=balanced val set) are evaluated depending on the used object detector. Table 5 lists some statistics related to this for each of the object detectors used in our evaluations. The set of relevant objects is determined by IoU > 0.5 between detected & annotated bbox. The set of irrelevant objects excludes all detected bboxes that cover > 25% of any annotated relevant object to avoid any significant inclusion of relevant image content."
+        },
+        {
+            "heading": "B Metric formulation - addendum",
+            "text": "Mathematical formulation of each of FPVG\u2019s four subcategories is as follows (for a description of the variables used in the formulae, see \u00a73.1):\nFPV G\u22a4+= 1 n \u2211n j (FPV Gj\u2217Eq(a\u0302jall ,aj)) (9)\nFPV G\u22a5+= 1 n \u2211n j (FPV Gj\u2217(1\u2212Eq(a\u0302jall ,aj))) (10)\nFPV G\u22a4\u2212= 1 n \u2211n j ((1\u2212FPV Gj)\u2217Eq(a\u0302jall ,aj)) (11)\nFPV G\u22a5\u2212= 1 n \u2211n j ((1\u2212FPV Gj)\u2217(1\u2212Eq(a\u0302jall ,aj))) (12)\nEq. 9\u201312 sum to 1. See Fig. 2 for illustration, where image-to-equation correspondence is given by (a)-Eq. 9, (b)-Eq. 10, (c)-Eq. 11, (d)-Eq. 12."
+        },
+        {
+            "heading": "C Metric investigations - modified FPVG",
+            "text": "During the paper review of this work, investigations were requested to show the value of FPVG\u2019s third test case (which involves irrelevant objects and is run to acquire Airrel) by exploring FPVG\u2019s behavior when Airrel is omitted. We include our findings here. Note, that this section assumes that the reader has read the main paper.\nTheoretical considerations. One motivation for considering an answer change when testing with irrelevant parts is given in \u00a73.2, namely that it uncovers cases where the model is simply indifferent to visual input entirely. This indifference to visual input is a major (language) bias problem in VQA. Hence, it is important to have a mechanism that can identify these cases.\nEmpirical investigation. We investigate results produced by the modified FPVG version. We modify FPVG to only consider answer changes when testing with relevant objects (i.e., ignoring the third test involving irrelevant objects and therefore removing the condition for Airrel from FPVG\u2019s formulation). Results of this modified FPVG metric (mod_FPV G) for ID/OOD tests over five runs (same tests that were discussed in \u00a74.4) are shown in Table 6.\nDiscussion. Results of mod_FPV G appear to be less reasonable than the original FPVG. E.g., VLR, which achieved by far the best FPV G+ (and OOD accuracy) with the original FPVG, is now ranked behind VisFIS and close to UpDn. MMN, which had the best OOD performance among classification-based models (and was ranked third in FPV G+) is now ranked last by a large margin. Based on the known architectural properties of these models (e.g., using VG-focused mechanisms in MMN and VLR), such rankings would be surprising.\nWe also investigate the c2i ratios for mod_FPV G in the same scenario (see Table 7 and Fig. 6). Here, we observe opposite trends to the ones shown in the main paper for original FPVG. In particular, these new results suggest that well-grounded questions (as per mod_FPV G) are much more prone to producing wrong answers in OOD vs. ID than badly-grounded questions (as illustrated by larger degradations for mod_FPV G+ than mod_FPV G\u2212 in Fig. 6, left). This does not align with any reasonable expectation for a model\u2019s OOD behavior and we think it again points to problems with the modified metric.\nConclusion. These empirical results on top of the mentioned theoretical considerations emphasize the value of including tests with irrelevant objects in FPVG."
+        },
+        {
+            "heading": "D Feature importance",
+            "text": "D.1 Methods for measuring feature importance\nIn 3.3, we consider three methods to measure feature importance, one representative from each of the three categories commonly used in VQA, described in more detail in the following:\n1. Measuring attention (direct): Attention over input objects gives a sense of importance the model assigns to each object (used, e.g., in Li et al. (2019); Urooj et al. (2021); Hudson and Manning (2019)). 2. Measuring gradients (direct): Gradient-based methods like GradCAM are close to the model\u2019s inner workings as they involve estimating a direct link between the importance of the input features and a model\u2019s output decision (used, e.g., in Selvaraju et al. (2019); Wu and Mooney (2019)). 3. Feature manipulation (indirect): Usually by omission of input entities (i.e., vectors representing objects). The manipulated image representation can be zero-padded to maintain the model\u2019s size expectations, as is commonly done for variable length inputs in sequence modeling. Other variants used in VQA\ninclude replacing omitted objects with certain other values (e.g., constants (Ying et al., 2022), objects from other images (Yuan et al., 2021; Gupta et al., 2022)).\nD.2 Feature importance ranking scores Scores in Table 1 were calculated as follows:\nA question\u2019s \u201crelevant\u201d score measures how many of N annotated relevant objects in set relN are among the topN relevant objects (as determined and ranked by the used metric). It is calculated as topN\u2229relNrelN , where a higher value is desirable for FPV G+). A question\u2019s \u201cirrelevant\u201d score measures how many of M annotation-determined irrelevant objects in set irrelM are among the topM metric-determined relevant objects. It is calculated as topM\u2229irrelMirrelM , with a lower value being desirable for FPV G+."
+        },
+        {
+            "heading": "E Model Training",
+            "text": "In this section we include details for training procedures of models used in this work\u2019s evaluations. Generally, we use GQA\u2019s balanced train set to train all models and the balanced val set for evaluations. A small dev set (either a small, randomly excluded partition of the train set (20k questions), or separately provided in case of experiments on GQA-\n101k (Ying et al., 2022)) is used for model selection.\nE.0.1 Visual Features The object detector used in this work is a Faster R-CNN (Ren et al., 2015) model with ResNet101 (He et al., 2016) backbone and an FPN (Lin et al., 2017) for region proposals. We trained this model using Facebook\u2019s Detectron2 framework (Wu et al., 2019). The ResNet101 backbone model was pretrained on ImageNet (Deng et al., 2009).\nThe object detector was trained for GQA\u2019s 1702 object classes using 75k training images (images in GQA\u2019s train partition). Training lasted for 1m iterations with mini-batch of 4 images, using a multi-step learning rate starting at 0.005, reducing it by a factor of 10 at 700k and again at 900k iterations. No other parameters were changed in the official Detectron2 training recipe for this model architecture. Training took about 7 days on an RTX 2080 Ti.\nWe extract 1024-dim object-based visual features from a layer in the object classification head of this model which acts as input to the final fullyconnected softmax-activated output layer. Up to 100 objects per image are selected as follows: per-class NMS is applied at 0.7 IoU for objects that have any softmax object class probability of > 0.05.\nNote that with exception of GQA-101k\u2019s repartitioned test sets (which mix questions from balanced train and val sets), no images used in testing were used in training.\nMost models are trained with Detectron2-based visual features (1024-dim object-based visual features for 100 objects/image max) as input. For OSCAR+, we use the officially released pre-trained base model which uses VinVL visual features (Zhang et al., 2021).\nE.0.2 MMN MMN (Chen et al., 2021) consists of two main modules that are trained separately: A program parser and the actual inference model, which takes the predicted program from the parser as input. We mostly follow the settings in the official code-base but detail some aspects of our customization here.\nFor the inference model, we run up to 5 epochs of bootstrapping (using GQA\u2019s \u201call\u201d train set (14m questions)) with Oracle programs and another up to 12 epochs of fine-tuning with parser-generated programs (from the official release), using GQA\u2019s\nbalanced train set (1m questions). We use early stopping of 1 epoch and select the model by best accuracy on the dev set (using Oracle programs in bootstrapping mode and predicted programs in fine-tuning mode). The program parser was not retrained.\nE.0.3 DFOL DFOL (Amizadeh et al., 2020) uses a vanilla seq2seq program parser, but neither code nor generated output for this is provided in the official code base. Thus, evaluations are run with ground-truth programs from GQA. DFOL is trained on a loss based on answer performance to learn weights in its visual encoding layers that produce an image representation similar to the one used by VLR (Reich et al., 2022), given high-dimensional visual features as input.\nTraining is done based on the official instructions for a complex 5-step curriculum training procedure. We train the first 4 curriculum steps with the entire 14 million questions in GQA\u2019s \u201call\u201d training data partition, as specified in the instructions. As this is extremely resource intensive, we train for one epoch in each step. Finally, we run the 5th step with the \u201cbalanced\u201d train data only ( 1m questions) until training finishes by early stopping of 1 epoch.\nE.0.4 MAC MAC (Hudson and Manning, 2018) is a monolithic VQA model based on a recurrent NN architecture which allows specification of the number of inference steps to take over the knowledge base. We follow the official training procedure guidelines given in the released code base and use 4-step inference. We train the model on GQA\u2019s balanced train set and use early stopping of 1 epoch based on accuracy on a dev set to select the best model.\nE.0.5 UpDn, HINT, VisFIS UpDn (Anderson et al., 2018) is a classic, straightforward attention-based model with a single attention step before merging vision and language modalities. We use the implementation shared by (Ying et al., 2022). Following the scripts there, we train UpDn for 50 epochs and select the best model based on accuracy on a dev set.\nHINT (Selvaraju et al., 2019) and VisFIS (Ying et al., 2022) are two VG-improvement methods. VisFIS is trained according to the released scripts. HINT is trained according to Shrestha et al. (2020) (using the VisFIS codebase), i.e. we continue train-\ning the baseline UpDn model with HINT (using GQA annotations to determine importance scores) for 12 more epochs and select the best resulting model (accuracy on dev set).\nE.0.6 VLR VLR (Reich et al., 2022) is a modular, symbolic method that requires a full scene graph as visual representation. Similar to DFOL and MMN, it makes use of a (trained) program parser. The actual inference module does not require training. Training of the program parser and generation of the scene graph was done according to the description in Reich et al. (2022). The scene graph was generated using the same Detectron2 model that produced the visual features for the other models in this work.\nE.0.7 MCAN MCAN (Yu et al., 2019b) is a Transformer-based model that uses co-attention layers and a form of multi-hop reasoning to hone in on attended vision and language information. We use the model implementation by Yu et al. (2019a) to train the \u201csmall\u201d model (6 layers).\nE.0.8 OSCAR+ OSCAR (Li et al., 2020) is a SOTA Transformerbased model that leverages pre-training on various V+L tasks and data sets. The subsequent release of new and elaborately trained visual features, known as VinVL (Zhang et al., 2021), further elevated its performance. We use this stronger version of OSCAR, called OSCAR+, in our evaluations. For training, we leverage the officially released pretrained model and the VinVL features. Fine-tuning is done on GQA\u2019s balanced val set according to instructions accompanying the official release.\nNote that we included results of UpDn (named \u201cUpDn*\u201d, last line in Table 2) trained with these stronger VinVL features, in accordance with our recommendation in the Limitation section (\u00a76) for new visual features."
+        }
+    ],
+    "title": "Measuring Faithful and Plausible Visual Grounding in VQA",
+    "year": 2023
+}

@@ -1,0 +1,556 @@
+{
+    "abstractText": "In open-domain question-answering (ODQA), most existing questions require single-hop reasoning on commonsense. To further extend this task, we officially introduce open-domain multi-hop reasoning (ODMR) by answering multi-hop questions with explicit reasoning steps in open-domain setting. Recently, large language models (LLMs) have found significant utility in facilitating ODQA without external corpus. Furthermore, chain-of-thought (CoT) prompting boosts the reasoning capability of LLMs to a greater extent with manual or automated paradigms. However, existing automated methods lack of quality assurance, while manual approaches suffer from limited scalability and poor diversity, hindering the capabilities of LLMs. In this paper, we propose Self-prompted Chain-of-Thought (SP-CoT), an automated framework to mass-produce high quality CoTs of LLMs, by LLMs and for LLMs. SP-CoT introduces an automated generation pipeline of high quality ODMR datasets, an adaptive sampler for in-context CoT selection and self-prompted inference via in-context learning. Extensive experiments on four multihop question-answering benchmarks show that our proposed SP-CoT not only significantly surpasses the previous SOTA methods on largescale (175B) LLMs, but also nearly doubles the zero-shot performance of small-scale (13B) LLMs. Further analysis reveals the remarkable capability of SP-CoT to elicit direct and concise intermediate reasoning steps by recalling \u223c50% of intermediate answers on MuSiQueAns dataset.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Jinyuan Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Junlong Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Hai Zhao"
+        }
+    ],
+    "id": "SP:afaa9e175d5b64b06e11f4b23358ab12130bf963",
+    "references": [
+        {
+            "authors": [
+                "Steven Bird",
+                "Edward Loper."
+            ],
+            "title": "NLTK: The natural language toolkit",
+            "venue": "Proceedings of the ACL Interactive Poster and Demonstration Sessions, pages 214\u2013217, Barcelona, Spain. Association for Computational Linguistics.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Wei-Lin Chiang",
+                "Zhuohan Li",
+                "Zi Lin",
+                "Ying Sheng",
+                "Zhanghao Wu",
+                "Hao Zhang",
+                "Lianmin Zheng",
+                "Siyuan Zhuang",
+                "Yonghao Zhuang",
+                "Joseph E. Gonzalez",
+                "Ion Stoica",
+                "Eric P. Xing"
+            ],
+            "title": "Vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Meier-Hellstern",
+                "Douglas Eck",
+                "Jeff Dean",
+                "Slav Petrov",
+                "Noah Fiedel"
+            ],
+            "title": "2022. Palm: Scaling language modeling with pathways",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yu Gu",
+                "Sue Kase",
+                "Michelle Vanni",
+                "Brian Sadler",
+                "Percy Liang",
+                "Xifeng Yan",
+                "Yu Su"
+            ],
+            "title": "Beyond i.i.d.: Three levels of generalization for question answering on knowledge bases",
+            "venue": "In Proceedings of the Web Conference 2021. ACM",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Ming-Wei Chang"
+            ],
+            "title": "Realm: Retrievalaugmented language model pre-training",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xanh Ho",
+                "Anh-Khoa Duong Nguyen",
+                "Saku Sugawara",
+                "Akiko Aizawa."
+            ],
+            "title": "Constructing a multihop QA dataset for comprehensive evaluation of reasoning steps",
+            "venue": "Proceedings of the 28th International Conference on Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yichen Jiang",
+                "Shikha Bordia",
+                "Zheng Zhong",
+                "Charles Dognin",
+                "Maneesh Singh",
+                "Mohit Bansal"
+            ],
+            "title": "Hover: A dataset for many-hop fact extraction and claim verification",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mandar Joshi",
+                "Eunsol Choi",
+                "Daniel Weld",
+                "Luke Zettlemoyer."
+            ],
+            "title": "TriviaQA: A large scale distantly supervised challenge dataset for reading comprehension",
+            "venue": "Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Vol-",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas Oguz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen-tau Yih."
+            ],
+            "title": "Dense passage retrieval for opendomain question answering",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa"
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Uszkoreit",
+                "Quoc Le",
+                "Slav Petrov."
+            ],
+            "title": "Natural questions: A benchmark for question answering research",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:452\u2013466.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Patrick Lewis",
+                "Ethan Perez",
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich K\u00fcttler",
+                "Mike Lewis",
+                "Wen-tau Yih",
+                "Tim Rockt\u00e4schel"
+            ],
+            "title": "Retrieval-augmented generation for knowledge-intensive nlp tasks",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Junlong Li",
+                "Zhuosheng Zhang",
+                "Hai Zhao."
+            ],
+            "title": "Self-prompting large language models for opendomain qa",
+            "venue": "arXiv preprint arXiv:2212.08635.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Vaibhav Mavi",
+                "Anubhav Jangra",
+                "Adam Jatowt"
+            ],
+            "title": "A survey on multi-hop question answering and generation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Paul Christiano",
+                "Jan Leike",
+                "Ryan Lowe"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ofir Press",
+                "Muru Zhang",
+                "Sewon Min",
+                "Ludwig Schmidt",
+                "Noah A. Smith",
+                "Mike Lewis"
+            ],
+            "title": "Measuring and narrowing the compositionality gap in language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "SentenceBERT: Sentence embeddings using Siamese BERTnetworks",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natu-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Adam Roberts",
+                "Colin Raffel",
+                "Noam Shazeer"
+            ],
+            "title": "How much knowledge can you pack into the parameters of a language model",
+            "venue": "In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alon Talmor",
+                "Jonathan Berant"
+            ],
+            "title": "The web as a knowledge-base for answering complex questions",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto."
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https:// github.com/tatsu-lab/stanford_alpaca.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Harsh Trivedi",
+                "Niranjan Balasubramanian",
+                "Tushar Khot",
+                "Ashish Sabharwal."
+            ],
+            "title": "Musique: Multihop questions via single-hop question composition",
+            "venue": "Transactions of the Association for Computational Linguistics, 10:539\u2013554.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Boshi Wang",
+                "Xiang Deng",
+                "Huan Sun"
+            ],
+            "title": "Iteratively prompt pre-trained language models for chain of thought",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc Le",
+                "Ed Chi",
+                "Sharan Narang",
+                "Aakanksha Chowdhery",
+                "Denny Zhou"
+            ],
+            "title": "Self-consistency improves chain of thought reasoning in language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Brian Ichter",
+                "Fei Xia",
+                "Ed Chi",
+                "Quoc Le",
+                "Denny Zhou"
+            ],
+            "title": "Chain-of-thought prompting elicits reasoning in large language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Can Xu",
+                "Qingfeng Sun",
+                "Kai Zheng",
+                "Xiubo Geng",
+                "Pu Zhao",
+                "Jiazhan Feng",
+                "Chongyang Tao",
+                "Daxin Jiang"
+            ],
+            "title": "Wizardlm: Empowering large language models to follow complex instructions",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhilin Yang",
+                "Peng Qi",
+                "Saizheng Zhang",
+                "Yoshua Bengio",
+                "William Cohen",
+                "Ruslan Salakhutdinov",
+                "Christopher D. Manning"
+            ],
+            "title": "HotpotQA: A dataset for diverse, explainable multi-hop question answering",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Wenhao Yu",
+                "Dan Iter",
+                "Shuohang Wang",
+                "Yichong Xu",
+                "Mingxuan Ju",
+                "Soumya Sanyal",
+                "Chenguang Zhu",
+                "Michael Zeng",
+                "Meng Jiang."
+            ],
+            "title": "Generate rather than retrieve: Large language models are strong context generators",
+            "venue": "International Confer-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Eric Zelikman",
+                "Yuhuai Wu",
+                "Jesse Mu",
+                "Noah D. Goodman"
+            ],
+            "title": "2022. Star: Bootstrapping reasoning with reasoning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuosheng Zhang",
+                "Aston Zhang",
+                "Mu Li",
+                "Alex Smola"
+            ],
+            "title": "Automatic chain of thought prompting in large language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Denny Zhou",
+                "Nathanael Sch\u00e4rli",
+                "Le Hou",
+                "Jason Wei",
+                "Nathan Scales",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Claire Cui",
+                "Olivier Bousquet",
+                "Quoc Le",
+                "Ed Chi"
+            ],
+            "title": "Least-to-most prompting enables complex reasoning in large language models",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Open-domain question-answering (ODQA) is a longstanding and challenging task which addresses factoid commonsense questions without specific\n\u2217 Corresponding author. This paper was partially supported by the Joint Research Project of Yangtze River Delta Science and Technology Innovation Community (No. 2022CSJGG1400).\ncontexts provided. While existing works in ODQA primarily focus on resolving questions that mostly require single-hop reasoning, there is a burgeoning interest in multi-hop question-answering (MHQA), which aims to derive the correct answer through multi-step reasoning over a collection of candidate articles (Mavi et al., 2022). Yet, a significant disparity exists between such scenarios and real-world applications, since the latter often lacks an explicit set of candidate articles provided by users. In light of this, we officially introduce open-domain multihop reasoning (ODMR) as a progression task of ODQA, which requires MHQA with explicit rationales in open-domain setting.\nFor ODMR, an emerging approach is to leverage large language models (LLMs) due to the vast knowledge stored within their numerous parameters. In recent years, LLMs have shown powerful reasoning and instruction-following capabilities, such as GPT-3 (Brown et al., 2020), PaLM (Chowdhery et al., 2022) and InstructGPT (Ouyang et al., 2022). After extensive training on vast corpora of textual data, LLMs prove to be zero-shot reasoners on complex reasoning tasks by breaking down multi-step questions into intermediate ones for step-by-step reasoning before producing the final answer (Kojima et al., 2023). Such series of intermediate reasoning steps is known as chain-ofthoughts (CoTs) (Wei et al., 2023). CoTs often serve as in-context demonstrations for in-context learning (ICL) (Brown et al., 2020), which enables LLMs to generate outputs that are formally consistent with a target task via a few reference examples provided as prompt. Manual-CoT (Wei et al., 2023) adopt manually designed CoTs as in-context demonstrations to improve the reasoning performance of LLMs. However, it demands delicate and meticulous design by humans, and the demonstrations are the same for each question, which may be sub-optimal. Zero-shot-CoT (Kojima et al., 2023) was proposed to trigger automated CoTs\nby certain specific prompting techniques, such as \"Let\u2019s think step by step:\". Zhang et al. (2022) proposed Auto-CoT, an automated framework to mass-produce CoTs and build in-context demonstrations. However, previous works have not fully leveraged the strong instruction-following and zero-shot reasoning capabilities of LLMs.\nIn this paper, we propose Self-prompted Chainof-Thought (SP-CoT), an LLM-only framework to mass-produce high-quality CoTs for ODMR. In general, SP-CoT introduces an automated generation pipeline of ODMR datasets, an adaptive sampler for CoT selection and self-prompted inference via ICL. The automated ODMR datasets are MHQA datasets without candidate contexts, yet including multi-hop questions with six types of complex reasoning chains and step-by-step decomposition. Each intermediate QA step is equipped with a short explanation to justify the answer. By leveraging the ICL ability of LLMs, our method is generally effective on LLMs of different scales.\nWe evaluate our method on four MHQA datasets in an open-domain setting: ComplexWebQuestions (CWebQ) (Talmor and Berant, 2018), HotpotQA (Yang et al., 2018), 2WikiMultiHopQA (2Wiki) (Ho et al., 2020) and MuSiQue-Ans (MSQ) (Trivedi et al., 2022). Extensive experiments show that our proposed SP-CoT not only significantly surpasses the previous SOTA methods on largescale (175B) LLMs, but also nearly doubles the zero-shot performance on small-scale (13B) LLMs in ODMR. Further analysis reveals the outstanding capability of SP-CoT to elicit direct and concise intermediate reasoning steps by recalling \u223c50% of intermediate answers on MSQ dataset.\nOur contributions can be summarized as follows:\n1. We introduce an automated pipeline to generate high-quality ODMR datasets by LLMs, which include 2-4 hop questions with six types of complex reasoning chains.\n2. We propose SP-CoT, an automated framework to mass-produce CoTs while ensuring quality and diversity.\n3. We conduct extensive experiments to confirm the effectiveness of SP-CoT on four ODMR benchmarks. In ODMR setting, our approach significantly boosts the performance by eliciting high-quality intermediate reasoning steps.\nOur code and datasets are publicly available at https://github.com/noewangjy/SP-CoT."
+        },
+        {
+            "heading": "2 Related Works",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Multi-Hop Dataset Creation",
+            "text": "Creating an annotated MHQA dataset manually requires significant human resources. Therefore, some researchers are dedicated to automating the generation of MHQA datasets. Jiang et al. (2020) elaborated the creation of a multi-hop fact verification dataset from existing HotpotQA dataset. Trivedi et al. (2022) introduced a bottom-up process to build challenging multi-hop reading comprehension QA dataset through meticulous selection and composition of single-hop questions derived from existing datasets. Press et al. (2023) proposed an automatically generated dataset with compositional 2-hop questions about celebrities. Nevertheless, existing approaches are either only partially automated, still requiring crowdsourcing, or they are limited to less complex 1-2 hop questions. In this work, our proposed SP-CoT is capable of automatically generating 2-4 hop questions with six different types of reasoning chains (Figure 6 in Appendix)."
+        },
+        {
+            "heading": "2.2 Chain-of-Thought Prompting",
+            "text": "Recent works on CoT prompting can be divided into two research lines. The first is prompting LLMs step by step to leverage their comprehension and reasoning abilities to answer questions. Zero-shot-CoT (Kojima et al., 2023) adopts a twostage design, which requires LLMs to first generate intermediate rationale and then produce an answer. Wang et al. (2022) introduced iCAP, which iteratively prompts a fine-tuned small-scale LLM to generate CoTs and then combines the generated rationales to formulate answers. Least-to-Most (Zhou et al., 2023) requires LLMs to first decompose a complex question into sub-questions and then sequentially solve them to arrive at the final answer.\nThe second research line focuses on designing effective CoT as demonstrations for ICL to release more powerful reasoning abilities of LLMs. Manual-CoT (Wei et al., 2023) was introduced to leverage manually designed CoT as in-context demonstrations to solve arithmetic, commonsense, and symbolic problems. A recent work (Zelikman et al., 2022) shed light on the practicality to automate the generation of rationales by LLMs. Subsequently, Self-Ask (Press et al., 2023) was proposed to construct step-by-step demonstrations with explicit decision process and intermediate answers\nas CoT. Zhang et al. (2022) proposed Auto-CoT, which automatically constructs CoTs via LLMs and adopts clustering methods to dynamically build demonstrations for each question.\nHowever, existing methods have two significant limitations: 1) Over-reliance on the reasoning abilities of LLMs. Most methods are reported effective on large-scale LLMs like InstructGPT, while reproducing these methods on small-scale LLMs is quite challenging. 2) Over-confidence on the quality of intermediate results. When prompting LLMs step by step, defects in previous steps may limit the performance of subsequent steps. Similarly, while automatically constructing in-context demonstrations, the effectiveness of ICL might be compromised by the unstable quality of CoTs. Admittedly, manually constructed CoTs can ensure quality, yet they face a trade-off between content diversity and costs. To overcome the above drawbacks, our proposed SP-CoT automates CoT generation with quality ensured by leveraging the strong instruction-following capability of LLMs."
+        },
+        {
+            "heading": "2.3 Model Enhancement via LLM Generation",
+            "text": "With the powerful capabilities of LLMs on content generation and instruction-following, one recent research direction extensively leverages the content generated by LLMs to enhance smaller LLMs. Recent works such as GPTeacher,1 Al-\n1https://github.com/teknium1/GPTeacher\npaca (Taori et al., 2023) and Vicuna (Chiang et al., 2023) collect the content generated by GPT-4 (OpenAI, 2023) and the corresponding prompts to train smaller-scale LLMs to achieve comparable performance. Another research line aims to boost the performance of large-scale LLMs to higher levels by leveraging the self-generated content. Some works use the self-generation as contexts to assist themselves in answering questions, such as eliciting intermediate rationales as CoT (Kojima et al., 2023) or generating background articles for reading comprehension (Yu et al., 2023). While others instruct LLMs to generate demonstrations for ICL during inference (Zhang et al., 2022), such as prompting LLMs to generate reliable QA pairs as self-prompted in-context demonstrations (Li et al., 2022). Our work is dedicated to extending the second research line to ODMR by leveraging the automated self-generated CoT as in-context demonstrations. Compared to previous works (Kojima et al., 2023; Zhang et al., 2022; Li et al., 2022), our work taps into the potential of self-prompting LLMs with more complicated framework design to solve a most challenging task."
+        },
+        {
+            "heading": "3 Methods",
+            "text": "In this section, we elaborate our proposed SP-CoT in three stages (Figure 1):\nIn the first stage, we prompt LLMs to iteratively generate 2-hop commonsense QA quadruplets with\ncontext, question, answer and explanation. In stage 2, we construct multi-hop reasoning chains by connecting 2-hop QA quadruplets and build an ODMR dataset via composition.\nIn the last stage, we adopt clustering-based sampling approach to dynamically select and construct in-context demonstrations for inference."
+        },
+        {
+            "heading": "3.1 2-Hop QAs via Self-Generation",
+            "text": "In the first stage, we prompt LLMs to iteratively generate 2-hop QA quadruplets with context, question, answer and explanation, which is illustrated in Figure 2. Inspired by Li et al. (2022), we design a 2-hop commonsense QA generation pipeline, including the following 4 steps:\nStep 1: First-Hop Passage Generation To guarantee the comprehensive coverage of commonsense knowledge, we manually design 29 diverse topics based on the statistics of TriviaQA (Joshi et al., 2017). For each topic, we require the LLM to name a certain number of keywords. For each collected keyword k1, we ask the LLM to generate a Wiki-style passage p1. Despite some factoid errors (Li et al., 2022), such generated passages contain sufficient factual information to serve as context for QA generation.\nStep 2: First-Hop QA Generation Given that the answers for commonsense questions are likely\nto be named entities, we use Spacy2 and NLTK (Bird and Loper, 2004) libraries to extract the named entities in the passage p1 as candidate answers. For each candidate answer a1, we require the LLM to raise a question q1 to which the answer is a1 based on the passage p1. To ensure the quality of q1, we employ a double-check process, where we demand the LLM to answer the generated question q1 given the context p1 to check if the generated answer a1 \u2032 is accordant with a1. Once the generated QA pair passes the double-check, we prompt the LLM to write a short explanation e1 for it. Note that the candidate answers must exclude the keyword (a1 \u0338= k1) because the answer in the first hop will become the keyword for the second hop (k2 = a1, k2 \u0338= k1). In addition to that, a valid explanation must contain the answer (a1 \u2208 e1).\nStep 3: Second-Hop Passage Generation Before the first-hop answers are used as keywords for second-hop passage generation, we use Spacy to filter out the answers with certain labels (QUANTITY, ORDINAL, CARDINAL, PERCENT, MONEY, DATE, TIME), which are infeasible for Wiki-style passage generation. Given a keyword k2, we repeat the same prompts as described in Step 1 to generate the passage p2.\nStep 4: Second-Hop QA Generation We be-\n2https://spacy.io/\ngin with extracting candidate answers in the generated passage p2 while blocking the keyword k1 and the answer a1 (also known as k2) in the firsthop QA to avoid cyclic graphs. For each candidate answer a2, we require the LLM to generate a question q2 which contains the first-hop answer a1 and can be answered by the candidate answer a2. We examine the quality of q2 with the same doublecheck in Step 2, and ensure the second-hop question q2 contains the first-hop answer a1 (a1 \u2208 q2) for connected reasoning. Then we repeat the same prompts in Step 2 to generate explanation e2.\nSo far, we have instructed the LLM to generate a 2-hop commonsense QA quadruplet pair, which is (p1, q1, a1, e1) \u2192 (p2, q2, a2, e2) with a1 \u2208 q2. Detailed prompt templates are shown in Figure 2 and Appendix B."
+        },
+        {
+            "heading": "3.2 Multi-Hop QAs via Composition",
+            "text": "In stage 2, we construct multi-hop reasoning chains with the connected 2-hop QA quadruplets, which is illustrated in Figure 3. We propose an automated dataset construction pipeline to build ODMR datasets with 2-4 hops, which has the following 4 steps:\nStep 1: Reasoning Chain Composition To connect more questions, we follow the composability criteria (Trivedi et al., 2022), that is, two single-hop QA pairs (q1, a1) and (q2, a2) are composable into\na multi-hop question Q with a2 as a valid answer if a1 is a named entity and it is mentioned in q2. Such criteria are already satisfied when our 2-hop QA pairs are generated, we use this criterion for connecting more questions. We adopt 6 reasoning graphs with 2-4 hops to build 6 types of multi-hop reasoning chains (Figure 6 in Appendix), and we ensure that in each reasoning chain: 1) the answer ai to an intermediate question qi will appear and ONLY appear in its next-hop question qi+1 to avoid shortcuts; 2) the answer to the last question will NOT appear in any intermediate questions.\nStep 2: Duplication Control Built by rulebased composition, our new dataset has considerably similar reasoning chains that have duplicate intermediate questions. To ensure the diversity and simplicity of our dataset, we filter out the reasoning chains by a preset duplication degree which is defined by the number of questions that co-existed in other chains within the same reasoning type.\nStep 3: Binary Question Generation We notice that MHQA datasets also include general interrogative questions which should be answered by \"Yes\" or \"No\", rather than a named entity. Therefore, we leverage the LLM to reform the last QA (qn, an) of some reasoning chains to binary question with 4 manually designed in-context demonstrations. For each reasoning type, we randomly sample 10% reasoning chains for positive question generation and"
+        },
+        {
+            "heading": "Methods MSQ HotpotQA 2Wiki CWebQ AverageEM F1 EM F1 EM F1 EM F1 EM F1",
+            "text": "10% for negative ones. Then we reform a new reasoning chain by the generated binary question together with its previous question hops and add it to the dataset.\nStep 4: Multi-Hop Question Generation Now we need to generate multi-hop questions, to which the previously generated question chains serve as their intermediate reasoning steps. For each question chain, we iteratively replace the answer ai to an intermediate question qi in the next-hop question qi+1 by [qi] until the last question qn is replaced, which indicates a relative clause. Then we leverage the LLM to reform it into a natural multihop question with 4 manually designed in-context demonstrations.\nAfter the pipeline above, we construct a high quality ODMR dataset with 2-4 hops, including the overall multi-hop question, the decomposed reasoning chains with detailed QA quadruplets. With the double-check in generation and the composability criteria, we automatically build a high quality new dataset. Detailed prompt templates are presented in Figure 3 and Appendix B."
+        },
+        {
+            "heading": "3.3 Adaptive In-context Demonstration",
+            "text": "In this stage, we sample multi-hop questions from our generated ODMR dataset as in-context demonstrations.\nClustering-based Retrieval Some previous\nworks (Zhang et al., 2022; Li et al., 2022) have shown that clustering-based methods benefit from the diversity of demonstrations. We adopt a clustering-based retrieval approach to adaptively sample in-context demonstrations for the input question. First, all the questions are projected to a high dimension hidden space by encoding with Sentence-BERT (Reimers and Gurevych, 2019). Suppose we need n in-context demonstrations. Given a test question Q, we use k-means to cluster the question embeddings into n clusters and adaptively retrieve the question with the highest cosine similarity to Q from each cluster.\nBuild Reasoning Chain For each sampled example, we sequentially concatenate the explanation from each hop, prefaced by \"Step {i}:\", to construct a reasoning chain."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": "Our research questions (RQs) are: RQ1: To what extent can SP-CoT boost the LLMs on our four ODMR benchmarks, compared with other LLM-only methods?\nRQ2: Is SP-CoT generally effective on recent popular instruction-following LLMs?\nTo this end, we conduct experiments on four MHQA datasets that require complex multi-step reasoning and compare different methods across"
+        },
+        {
+            "heading": "Model Size Method MSQ HotpotQA 2Wiki CWebQ Mean Boost",
+            "text": "different LLMs."
+        },
+        {
+            "heading": "4.1 Benchmarks and Evaluation Metrics",
+            "text": "We choose the following four MHQA datasets: CWebQ, HotpotQA, 2Wiki and MSQ. We set them as ODMR benchmarks by taking only the question and the answer in each example. Dataset introduction and statistics are detailed in Appendix A.\nWe adopt the exact match (EM) and F1 scores as our evaluation metrics. Based on the evaluation script of Karpukhin et al. (2020), we add a preprocessing step which ignores the content within \"()\" and splits the answer strings by certain delimiters to extract multiple answers."
+        },
+        {
+            "heading": "4.2 Experiment Settings",
+            "text": "For reference, we experiment with fine-tuning methods using an extra corpus, which are finetuned on the training split of NQ (Kwiatkowski et al., 2019) dataset and most of them adopt the Wikipedia dump (Karpukhin et al., 2020) as extra corpus. We also test our implementation of the retrieval-based methods on most recent LLMs for reference. Specifically, we use a fine-tuned DPR (Karpukhin et al., 2020) to retrieve top-5 documents from Wikipedia as context and employ LLM as Reader to answer the question based on the context. Detailed prompt templates and parameter settings are provided in the Appendix B.\nUnless otherwise specified, we use SentenceBERT (all-mpnet-base-v2) for question encoding following previous works. The default number of in-context demonstrations is 8 and the demonstrations are sampled by the maximum cosine similarity of questions in each cluster.\nFor RQ1, we adopt ChatGPT (gpt-3.5-turbo0301) as the LLM to conduct the following experiments. According to OpenAI,3 gpt-3.5-turbo0301 is an improvement on the InstructGPT text-\n3https://platform.openai.com\ndavinci-003 model, which performs at a similar capability level to text-davinci-003 for inference. We use the whole development set of each dataset in our experiments.\nFor RQ2, we not only test InstructGPT (textdavinci-003), but also employ three smaller-scale (13B) LLMs: Alpaca (Taori et al., 2023), Vicuna (Chiang et al., 2023) and WizardLM (Xu et al., 2023), which are LLaMA (Touvron et al., 2023) models fine-tuned on different large-scale instruction-following datasets. To save computational cost, we conduct this experiment on subsets of the four datasets by randomly selecting 1000 samples from the test sets."
+        },
+        {
+            "heading": "4.3 Experiment Results",
+            "text": "The main results of RQ1 are shown in Table 1. Even with extra corpus, the models fine-tuned on NQ (Kwiatkowski et al., 2019) present poor performance due to the inherent challenges of MHQA. With the same Retriever model, the performance of retrieval-based methods depends largely on the LLM Readers. Compared to previous LLM-only works, our SP-CoT significantly outperforms the Auto-CoT by +6.2 EM and +6.4 F1 scores on average and surpasses the previous SOTA method GENREAD (Yu et al., 2023) by +2.3 EM and +2.8 F1 scores on average. On the most challenging benchmark MSQ, SP-CoT empowers ChatGPT to outperform other LLM-only methods by a decent margin.\nWe notice that SP-CoT significantly outperforms GENREAD on MSQ, confirming the effectiveness of providing high quality CoTs as in-context demonstrations for complex multi-hop questions. On the other three datasets, SP-CoT delivers comparable performance with GENREAD. However, GENREAD relies heavily on the generation faithfulness of LLMs, which is challenging for smallscale LLMs. By breaking down demanding instructions into step-by-step simple ones, our method\nTable 3: The performance (EM) of different methods of demonstration selection. The results from random selection represent the mean value and standard deviation obtained from 3 runs, each with a different seed.\nMethod MSQ HotpotQA 2Wiki CWebQ Average Random 12.0\u00b10.8 29.5\u00b10.6 25.6\u00b11.2 34.3\u00b10.9 25.4\u00b10.3 Retrieve 10.5 27.9 24.3 33.5 24.1 ClusterCenter 10.4 26.2 22.8 33.0 23.1 RetrieveInTypeCluster 11.6 28.7 23.5 35.3 24.8 RetrieveInCluster 11.5 30.9 27.8 34.0 26.1\n15\n20\n25\n30\n35\n0 2 4 6 8 10\nAv er\nag e\nSc or\ne (%\n)\nNumber of Demonstrations\nEM F1\nFigure 4: Average EM and F1 scores of different numbers of in-context demonstrations. The experiments are tested on 1k subsets of four ODMR benchmarks with ChatGPT (gpt-3.5-turbo-0301).\nis more applicable to small-scale LLMs, which is validated by Table 2.\nTable 2 presents the results for RQ2. Our proposed SP-CoT proves to be generally effective by significantly boosting the performance of all these four LLMs on all four benchmarks. With SP-CoT, the performance of small-scale (13B) LLMs can be boosted to be on par with directly prompting LLMs that are over 10\u00d7 larger, regardless of the elicited high quality intermediate reasoning steps."
+        },
+        {
+            "heading": "5 Analysis",
+            "text": "In this section, we explore the choices of the sampling methods and the number of demonstrations. Then we examine the quality of the intermediate reasoning steps elicited by SP-CoT and the quality of self-generation data. Unless otherwise specified, we use ChatGPT (gpt-3.5-turbo-0301) to conduct analysis on the same subsets mentioned in RQ2 settings."
+        },
+        {
+            "heading": "5.1 Methods of Demonstration Sampling",
+            "text": "The performance of ICL depends largely on the quality of demonstration sampling. We test the effectiveness of the following five strategies: randomly sampling (Random), sampling globally by maximum cosine similarity (Retrieve), sampling\n0\n20\n40\n60\n80\n100\nClear Concise Comp. Direct IA Recall\nSc or\ne (% ) Criteria\nZero-shot-CoT Auto-CoT SP-CoT\nFigure 5: Evaluation results of the CoT generated by three methods. The first four scores are in terms of clearness, conciseness, comprehensibility (Comp.) and directness given by GPT-4 on 50 examples. The recall accuracy of intermediate answers (IA Recall) is reported on the questions that are correctly answered by all 3 methods.\nthe closest to the centroid in each cluster (ClusterCenter), sampling by the maximum cosine similarity in each cluster (RetrieveInCluster) and sampling the most similar QAs in each cluster in a certain reasoning type (RetrieveInTypeCluster). The reasoning type of the input question is determined by the most frequent reasoning type of its k-nearest neighbors. As indicated in Table 3, RetrieveInCluster (Li et al., 2022) is the best-performing strategy, which is exactly the strategy we adopt in previous experiments."
+        },
+        {
+            "heading": "5.2 Impact of Demonstration Amount",
+            "text": "Providing more in-context demonstrations empirically improves ICL performance; however, it also causes increasing computational cost. To this end, we investigate the trade-offs of number of demonstrations and the resulting performance boost. We report the EM and F1 scores over the four benchmarks for 2, 4, 6, 8, and 10 in-context demonstrations, as well as the scores in a zero-shot setting. As illustrated in Figure 4, the performance of SPCoT increases with the number of demonstrations when the count is between 2 and 8; however, using 10 demonstrations doesn\u2019t yield any further\nperformance boost. In our main experiments, we opted for 8 as the default number of demonstrations, striking a balance between performance and cost."
+        },
+        {
+            "heading": "5.3 Intermediate Reasoning Quality Analysis",
+            "text": "Given the high-quality CoTs constructed by our proposed SP-CoT, we investigate the quality of intermediate reasoning steps generated during inference. For this analysis, we use the development set of MSQ, as it\u2019s the most challenging of the four datasets and offers decomposed step-by-step QAs. We compare the CoTs generated by Zero-shot-CoT, Auto-CoT and SP-CoT during inference. For fairness, we select 50 out of a total of 59 questions that all of the three methods answered correctly. First, we use GPT-4 to evaluate4 the intermediate reasoning steps in terms of clearness, conciseness, comprehensibility and directness separately on a scale of 1 to 10. Additionally, we compute the recall accuracy of intermediate answers co-occurring in the reasoning steps of each method. For fairness, we only report the intermediate answer recall accuracy of correctly answered questions for each method. As depicted in Figure 5, GPT-4 highly favors our SP-CoT, which achieves nearly a 50% recall accuracy for intermediate answers. This suggests that SP-CoT elicits high-quality reasoning steps in terms of clearness, conciseness, comprehensibility, and directness."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this work, we harness the capabilities of LLMs combined with self-prompted CoTs to tackle the intricate MHQA task within the open-domain context, termed as ODMR. Our innovative SP-CoT not only sets a new benchmark by surpassing preceding CoT prompting techniques but also outclasses the erstwhile SOTA LLM-only methodologies in open-domain question-answering. A distinguishing feature of SP-CoT is its proficiency in eliciting high-caliber intermediate reasoning steps, and its universal efficacy across both large and smallscale LLMs. We anticipate our innovative selfgeneration pipeline for ODMR to not just be foundational for SP-CoT, but also to pave the way for future research, catalyzing a shift towards leveraging self-generation in LLMs, by LLMs, and for LLMs.\n4Script from https://github.com/lm-sys/FastChat and modified."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This paper was partially supported by the Joint Research Project of Yangtze River Delta Science and Technology Innovation Community (No. 2022CSJGG1400) and under the technical support of National Key R&D Program of China (No. 2021YFC3340700). Our appreciation also extends to Ms. Yangyang Ding, who has been generous with her time and knowledge, offering constructive criticism and enriching discussions."
+        },
+        {
+            "heading": "Limitations",
+            "text": "Our proposed method (SP-CoT) leverages the strong instruction-following power of LLMs. Such capability is easy to acquire through instruction fine-tuning for small-scale LLMs (even 7B), however, some LLMs proposed in early years may show poor capability in following human instructions due to lack of corresponding training before their release. Therefore, the performance of such LLMs may not be boosted by our proposed SP-CoT. In fact, we did not succeed in boosting the performance of GPT-NeoX by any of Zeroshot-CoT, Auto-CoT and SP-CoT. GPT-NeoX is a 20B LLMs released in early 2022, which shows poor instruction-following capability. Please note that neither GENREAD (Yu et al., 2023) nor Selfprompting (Li et al., 2022) boosts the performance of GPT-NeoX.\nIt is acknowledged that the efficacy of LLM-only approaches is predominantly reliant on the LLMs themselves. With smaller-scale LLMs, specifically those of 13B scale, our SP-CoT together with other CoT methodologies, demonstrate comparable or similar performance enhancement across four ODMR benchmarks as presented in Table 6. The consistent performance of handcrafted CoTs remains ambivalent across different LLMs and benchmarks; our empirical observations indicate that Manual-CoT occasionally outperforms SP-CoT, while at other instances, it does not.\nGiven the potential for LLMs to generate imprecise information, the process by which our SP-CoT produces datasets might also result in the emergence of inaccurate QA pairs as well as erroneous explanations. Despite the incorporation of a doublecheck mechanism to ensure data integrity, certain errors and inaccuracies are inevitably present."
+        },
+        {
+            "heading": "A Datasets",
+            "text": "A.1 Introduction\nHotpotQA (Yang et al., 2018) HotpotQA is a widely used dataset for multi-hop questionanswering (MHQA), which contains 113k multihop questions in natural language. The questions are collected by crowdsourcing based on Wikipedia articles with human annotated supporting evidence and answers.\n2WikiMultiHopQA (Ho et al., 2020) 2WikiMultiHopQA s a recently proposed large-scale MHQA dataset, which contains over 192k samples constructed jointly from Wikipedia and Wikidata.\nMuSiQue-Ans (Trivedi et al., 2022) MuSiQueAns (MSQ) is a recent challenging MHQA dataset created via single-hop question composition. It includes 25k 2-4 hop questions with six different composition structures. Although MSQ is composed from existing datasets, it poses 3\u00d7 the human-machine gap with a substantially lower disconnected reasoning score.\nComplexWebQuestions (Talmor and Berant, 2018) ComplexWebQuestions is a manually generated MHQA dataset of 35k QA pairs. CWebQ is generated by rephrasing questions generated by machine from existing dataset."
+        },
+        {
+            "heading": "A.2 Statistics",
+            "text": "The statistics of four datasets are shown in Table 4."
+        },
+        {
+            "heading": "B Prompt Templates",
+            "text": ""
+        },
+        {
+            "heading": "B.1 First-Hop QA Generation",
+            "text": "We following the notations described in Section 3. The templates are:\n1. Name {Number} {Topic}:\n2. Generate a Wikipedia passage about {k1}.\n3. Passage about {k1}:\\n{p1}\\n\\nGenerate a question to which the answer is the entity {a1}.\n4. Passage about {k1}:\\n{p1}\\n\\nQuestion:\\n {q1}\\n\\nExtract the answer directly from the passage in less words as possible.\n5. Passage about {k1}:\\n{p1}\\n\\n Question:\\n {q1}\\n\\nAnswer:\\n{a1}\\n\\nAccording to an evidence from the passage to support the answer, rewrite it to make its meaning clear without passage."
+        },
+        {
+            "heading": "B.2 Second-Hop QA Generation",
+            "text": "1. Generate a Wikipedia passage about {k2}.\n2. Passage about {k2}:\\n{p2}\\n\\nGenerate a question that meets the following conditions: 1. contains the term \u2019{k2}\u2019 in question, 2. the answer is {a2}, 3. Avoid the following entities in the question: {k2}\n3. Passage about {k2}:\\n{p2}\\n\\nQuestion:\\n {q2}\\n\\nExtract the answer directly from the passage in less words as possible.\n4. Passage about {k2}:\\n{p2}\\n\\n Question:\\n {q1}\\n\\nAnswer:\\n{a2}\\n\\nAccording to an evidence from the passage to support the answer, rewrite it to make its meaning clear without passage."
+        },
+        {
+            "heading": "B.3 Binary Question Generation",
+            "text": "\u2022 Question: {qn}\\nAnswer: {an}\\nReform the question to a general interrogative question that can be answered with yes:\n\u2022 Question: {qn}\\nAnswer: {an}\\nReform the question to a general interrogative question that can be answered with no:"
+        },
+        {
+            "heading": "B.4 Multi-Hop Question Generation",
+            "text": "\u2022 Raw question: {qn}\\nReplace the sentence within [] with a relative clause and make the raw question into a natural question:"
+        },
+        {
+            "heading": "B.5 CoT Construction",
+            "text": "Suppose q\u2217 is the generated multi-hop question, ei denotes the explanation from intermediate hop (qi, ai, ei), a\u2217 is the answer of the last hop (a\u2217 = an). The template is:\n\u2022 Question: {q\u2217}\\nAnswer: Let\u2019s think step by step:\\nStep 1: {e1}\\nStep 2: {e2}\\n ... Therefore, the answer in just one entity is: {a\u2217},\nB.6 Inference"
+        },
+        {
+            "heading": "B.6.1 Zero-shot",
+            "text": "Given a question Q, the inference template is:\n\u2022 Answer the following question with just one entity:\\nQuestion: {Q}\\nAnswer:\nB.6.2 SP-CoT Suppose we have the input question Q and 2 demonstrations (q1, r1, a1), (q2, r2, a2), where qi, ri, ai denote the question, CoT and answer of the ith demonstration. The inference template is:\n\u2022 Question: {q1}\\n{r1}\\n\\nQuestion: {q2}\\n {r2}\\n\\nQuestion: {Q}\\nAnswer: Let\u2019s think step by step:\\n"
+        },
+        {
+            "heading": "C Experiment Settings",
+            "text": ""
+        },
+        {
+            "heading": "C.1 Hyperparameters",
+            "text": "This section is the experiment settings on ChatGPT (gpt-3.5-turbo-0301) only, for more settings of other LLMs used in our experiments, please see our code. Our code and datasets are publicly available at https://github.com/noewangjy/SP-CoT."
+        },
+        {
+            "heading": "C.1.1 System message",
+            "text": "\"You should use your knowledge to answer the question to the best of your ability, not refuse to answer, even though you know your knowledge is sometimes out of date. If some references are uncertain, answer all possible cases rather than requesting further information.\""
+        },
+        {
+            "heading": "C.1.2 Temperature",
+            "text": "In most cases, the default temperature is set to 0 for obtaining a most deterministic response. When we ask ChatGPT to name some terms or to generation a question, the temperature is set to 1.0 for more diversity."
+        },
+        {
+            "heading": "C.2 LLMs",
+            "text": "The 13B LLMs used in our experiments are from Huggingface Hub, use chavinlo/gpt4-x-alpaca for Alpaca-13B, TheBloke/wizard-vicuna-13B-HF for Vicuna13B and TheBloke/wizardLM-13B-1.0-fp16 for WizardLM-13B."
+        },
+        {
+            "heading": "D Additional Experiments",
+            "text": ""
+        },
+        {
+            "heading": "D.1 Comparison of CoT Variants",
+            "text": "To provide a more comprehensive picture of current CoT methods on ODQA, we report hereby (Table 5) the performance of additional CoT variants, including Manual-CoT (Wei et al., 2023) and Auto-CoT (Zhang et al., 2022) on ChatGPT (gpt-3.5-turbo-0301).\nIn our experiment, Manual-CoT (Cherry-Pick) adopts 8 cherry-picked questions and their CoTs manually writen by the authors. The results of Manual-CoT (Random) report the mean EM scores of randomly selected questions and theirs manual CoTs for 2 experiments across the 4 benchmarks. Self-Consistency (Wang et al., 2023) is based on SP-CoT with 5 responses for each question.\nTo the best of our knowledge, Self-Consistency (Wang et al., 2023) is orthogonal to existing CoT methods, including SP-CoT. Although SelfConsistency boosts the performance of SP-CoT to a higher level (10%-30% increase for 5 runs), it\u2019s worth noting that the cost of Self-Consistency is also 5 times higher.\nIn Table 6, we report the performance (EM) of CoT methods with recent popular LLMs on 1k subsets of the test sets. The scores are the average EM scores on 4 ODMR benchmarks. Although ManualCoT (Wei et al., 2023) outperforms Automated methods, it requires high quality human-labeled CoTs, which is not always accessible in real world applications. Since the cherry-picked CoTs take the dataset features in to consideration, we consider their results as the theoretical upper limit of automated approaches. Compared to previously automatic SOTA method (Auto-CoT), our proposed SP-CoT shows a decent performance boost in most cases."
+        },
+        {
+            "heading": "D.2 SP-CoT on GrailQA",
+            "text": "We report our experiment of CoT methods on 1k subset of test set provided by GrailQA (Gu et al., 2021). According to our ODMR setting, no external knowledge is provided to LLMs. From the results below, we notice that our proposed SP-CoT is effective on GrailQA, our results on InstructGPT (text-davinci-003) are presented in Table 8."
+        },
+        {
+            "heading": "E Constructed ODMR Datasets",
+            "text": ""
+        },
+        {
+            "heading": "E.1 Overview and scale",
+            "text": "For better understanding of the constructed ODMR datasets, we offer a well-designed figure (Figure 6) to illustrate the six types of generated questions and their step-by-step decomposition. The scale of the generated ODMR datasets is about 1-4k (Table 7), however, it\u2019s largely dependent by the selfgeneration setting (how many examples to generate?) and the Duplication Control process in Stage 2 Step 2 (How many examples to keep?) To be more specific, the number of topic terms for selfgeneration decides the scale of generated 2-hop question pairs, and the level of duplication (how many existing question hops are allowed when constructing a new reasoning chain) decides the scale of the remaining examples after filtering."
+        },
+        {
+            "heading": "E.2 Topics",
+            "text": "The 29 manually designed topics for generation are: politicians, athletes, sports teams, sports events, countries, cities, historical figures, historical events, wars, religions, singers, songs, actors or actresses, movies or TV series, writers, books, painters, paintings, composers, classical music, tourist attractions, scientists, scientific terms, video\ngames, animals, plants, foods, enterprises, international organizations."
+        },
+        {
+            "heading": "E.3 Quality Control",
+            "text": "To ensure the self-generation quality, two mechanisms are included in our proposed method.\nSelf-validation in self-generation: To ensure the quality of generated QA pairs, we employ a double-check process, where we demand the LLM to answer the generated question given the generated context and double-check If the generated answer is accordant with the target answer.\nComposability criteria in composition: Two single-hop QA pairs (q1, a1) and (q2, a2) are composable into a multi-hop question Q with a2 as a valid answer if a1 is a named entity and it is mentioned in q2. Such criteria are already satisfied when our 2-hop QA pairs are generated, we use it for connecting more questions.\nE.4 Composition rather than Generation Directly generating k-hop questions will produce many highly-duplicated reasoning chains, which is less effective than conposition with 2-hop QAs.\nTake a connected 3-hop QAs as example: (Q1, A1) \u2192 (Q2, A2) \u2192 (Q3, A3), where A1 in Q2, A2 in Q3.\nSuppose there are 2 valid next-hop QAs (Q4, A4) and (Q5, A5) for (Q3, A3). Now we have 2 generated 4-hop reasoning chains: (Q1, A1) \u2192 (Q2, A2) \u2192 (Q3, A3) \u2192 (Q4, A4) and (Q1, A1) \u2192 (Q2, A2) \u2192 (Q3, A3) \u2192 (Q5, A5)\nwhich are highly-duplicated. When directly generating k-hop reasoning chains, the number of highly-duplicated chains will increase exponentially and such chains will be filtered out in the Duplication Control Process (Stage 2, Step 2).\nFurthermore, when there are more that 2 question hops in one reasoning chain, more effort should be made to ensure direct acyclic graphs (DAGs). An example of cyclic reasoning chain is (Q1, A1) \u2192 (Q2, A2) \u2192 (Q1, A1), which should be avoided."
+        }
+    ],
+    "title": "Self-prompted Chain-of-Thought on Large Language Models for Open-domain Multi-hop Reasoning",
+    "year": 2023
+}

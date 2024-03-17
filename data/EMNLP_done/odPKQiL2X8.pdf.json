@@ -1,0 +1,962 @@
+{
+    "abstractText": "Conventional knowledge distillation (KD) approaches are commonly employed to compress neural machine translation (NMT) models. However, they only obtain one lightweight student each time. Consequently, we have to conduct KD multiple times when different students are required at the same time, which could be resource-intensive. Additionally, these students are individually optimized, and thus lack interactions with each other, leading to their potential not being fully exerted. In this work, we propose a novel All-In-One Knowledge Distillation (AIO-KD) framework for NMT, which generates multiple satisfactory students at once. Under AIO-KD, we first randomly extract fewer-layer subnetworks from the teacher as the sample students. Then, we jointly optimize the teacher and these students, where the students simultaneously learn the knowledge from the teacher and interact with other students via mutual learning. When utilized, we re-extract the candidate students, satisfying the specifications of various devices. Particularly, we adopt carefully-designed strategies for AIO-KD: 1) we dynamically detach gradients to prevent poorly-performed students from negatively affecting the teacher during the knowledge transfer, which could subsequently impact other students; 2) we design a twostage mutual learning strategy, which alleviates the negative impacts of poorly-performed students on the early-stage student interactions. Extensive experiments and in-depth analyses on three benchmarks demonstrate the effectiveness and eco-friendliness of AIO-KD. Our source code is available at https://github. com/DeepLearnXMU/AIO-KD.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Zhongjian Miao"
+        },
+        {
+            "affiliations": [],
+            "name": "Wen Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Jinsong Su"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiang Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Jian Luan"
+        },
+        {
+            "affiliations": [],
+            "name": "Yidong Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Bin Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Min Zhang"
+        }
+    ],
+    "id": "SP:6aee2c68b43d54647407e515e83a31edf6f1bca6",
+    "references": [
+        {
+            "authors": [
+                "Tianchi Bi",
+                "Hao Xiong",
+                "Zhongjun He",
+                "Hua Wu",
+                "Haifeng Wang."
+            ],
+            "title": "Multi-agent learning for neural machine translation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Han Cai",
+                "Chuang Gan",
+                "Tianzhe Wang",
+                "Zhekai Zhang",
+                "Song Han."
+            ],
+            "title": "Once-for-all: Train one network and specialize it for efficient deployment",
+            "venue": "Proc. of ICLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Heyan Chai",
+                "Zhe Yin",
+                "Ye Ding",
+                "Li Liu",
+                "Binxing Fang",
+                "Qing Liao."
+            ],
+            "title": "A model-agnostic approach to mitigate gradient interference for multi-task learning",
+            "venue": "IEEE Trans. on Cybern.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tejalal Choudhary",
+                "Vipul Kumar Mishra",
+                "Anurag Goswami",
+                "Jagannathan Sarangapani."
+            ],
+            "title": "A comprehensive survey on model compression and acceleration",
+            "venue": "Artif. Intell. Rev.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mostafa Dehghani",
+                "Stephan Gouws",
+                "Oriol Vinyals",
+                "Jakob Uszkoreit",
+                "Lukasz Kaiser."
+            ],
+            "title": "Universal transformers",
+            "venue": "Proc. of ICLR.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Heejin Do",
+                "Gary Geunbae Lee."
+            ],
+            "title": "Targetoriented knowledge distillation with language-familybased grouping for multilingual nmt",
+            "venue": "ACM Journal of the ACM (JACM).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Maha Elbayad",
+                "Jiatao Gu",
+                "Edouard Grave",
+                "Michael Auli."
+            ],
+            "title": "Depth-adaptive transformer",
+            "venue": "Proc. of ICLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Angela Fan",
+                "Edouard Grave",
+                "Armand Joulin."
+            ],
+            "title": "Reducing transformer depth on demand with structured dropout",
+            "venue": "Proc. of ICLR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tao Ge",
+                "Si-Qing Chen",
+                "Furu Wei."
+            ],
+            "title": "Edgeformer: A parameter-efficient transformer for ondevice seq2seq generation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiatao Gu",
+                "James Bradbury",
+                "Caiming Xiong",
+                "Victor O.K. Li",
+                "Richard Socher."
+            ],
+            "title": "Non-autoregressive neural machine translation",
+            "venue": "Proc. of ICLR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Demi Guo",
+                "Yoon Kim",
+                "Alexander M Rush."
+            ],
+            "title": "Sequence-level mixed sample data augmentation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dengji Guo",
+                "Zhengrui Ma",
+                "Min Zhang",
+                "Yang Feng."
+            ],
+            "title": "Prediction difference regularization against perturbation for neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qiushan Guo",
+                "Xinjiang Wang",
+                "Yichao Wu",
+                "Zhipeng Yu",
+                "Ding Liang",
+                "Xiaolin Hu",
+                "Ping Luo."
+            ],
+            "title": "Online knowledge distillation via collaborative learning",
+            "venue": "Proc. of CVPR.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Song Han",
+                "Huizi Mao",
+                "William J Dally."
+            ],
+            "title": "Deep compression: Compressing deep neural networks with pruning, trained quantization and huffman coding",
+            "venue": "Proc. of ICLR.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Geoffrey Hinton",
+                "Oriol Vinyals",
+                "Jeff Dean"
+            ],
+            "title": "Distilling the knowledge in a neural network. Arxiv",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Lu Hou",
+                "Zhiqi Huang",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Xiao Chen",
+                "Qun Liu."
+            ],
+            "title": "Dynabert: Dynamic BERT with adaptive width and depth",
+            "venue": "Proc. of NeurIPS.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chenyang Huang",
+                "Hao Zhou",
+                "Osmar R Za\u00efane",
+                "Lili Mou",
+                "Lei Li."
+            ],
+            "title": "Non-autoregressive translation with layer-wise prediction and deep supervision",
+            "venue": "Porc. of AAAI.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yichong Huang",
+                "Xiaocheng Feng",
+                "Xinwei Geng",
+                "Baohang Li",
+                "Bing Qin."
+            ],
+            "title": "Towards higher pareto frontier in multilingual machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yichong Huang",
+                "Xiaocheng Feng",
+                "Xinwei Geng",
+                "Bing Qin."
+            ],
+            "title": "Unifying the convergences in multilingual neural machine translation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aref Jafari",
+                "Mehdi Rezagholizadeh",
+                "Pranav Sharma",
+                "Ali Ghodsi."
+            ],
+            "title": "Annealing knowledge distillation",
+            "venue": "Proc. of EACL.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiaoqi Jiao",
+                "Yichun Yin",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Xiao Chen",
+                "Linlin Li",
+                "Fang Wang",
+                "Qun Liu."
+            ],
+            "title": "Tinybert: Distilling BERT for natural language understanding",
+            "venue": "Proc. of EMNLP Findings.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chang Jin",
+                "Shigui Qiu",
+                "Nini Xiao",
+                "Hao Jia."
+            ],
+            "title": "Admix: A mixed sample data augmentation method for neural machine translation",
+            "venue": "Proc. of IJCAI.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nishant Kambhatla",
+                "Logan Born",
+                "Anoop Sarkar."
+            ],
+            "title": "Cipherdaug: Ciphertext based data augmentation for neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jungo Kasai",
+                "Nikolaos Pappas",
+                "Hao Peng",
+                "James Cross",
+                "Noah A. Smith."
+            ],
+            "title": "Deep encoder, shallow decoder: Reevaluating non-autoregressive machine translation",
+            "venue": "Proc. of ICLR.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yoon Kim",
+                "Alexander M. Rush."
+            ],
+            "title": "Sequencelevel knowledge distillation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Diederik P. Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "Proc. of ICLR.",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Philipp Koehn."
+            ],
+            "title": "Statistical significance tests for machine translation evaluation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Xiaobo Liang",
+                "Lijun Wu",
+                "Juntao Li",
+                "Tao Qin",
+                "Min Zhang",
+                "Tie-Yan Liu."
+            ],
+            "title": "Multi-teacher distillation with single model for neural machine translation",
+            "venue": "IEEE/ACM TASLP.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Baohao Liao",
+                "Yingbo Gao",
+                "Hermann Ney."
+            ],
+            "title": "Multi-agent mutual learning at sentence-level and token-level for neural machine translation",
+            "venue": "Proc. of EMNLP Findings.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Bo Liu",
+                "Xingchao Liu",
+                "Xiaojie Jin",
+                "Peter Stone",
+                "Qiang Liu."
+            ],
+            "title": "Conflict-averse gradient descent for multi-task learning",
+            "venue": "Proc. of NeurIPS.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Weijie Liu",
+                "Peng Zhou",
+                "Zhiruo Wang",
+                "Zhe Zhao",
+                "Haotang Deng",
+                "Qi Ju."
+            ],
+            "title": "Fastbert: a selfdistilling BERT with adaptive inference time",
+            "venue": "Proc. of ACL.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xin Liu",
+                "Kai Liu",
+                "Xiang Li",
+                "Jinsong Su",
+                "Yubin Ge",
+                "Bin Wang",
+                "Jiebo Luo."
+            ],
+            "title": "An iterative multisource mutual knowledge transfer framework for machine reading comprehension",
+            "venue": "Proc. of IJCAI.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yijin Liu",
+                "Fandong Meng",
+                "Jie Zhou",
+                "Yufeng Chen",
+                "Jinan Xu."
+            ],
+            "title": "Faster depth-adaptive transformers",
+            "venue": "Proc. of AAAI.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ziyao Lu",
+                "Xiang Li",
+                "Yang Liu",
+                "Chulun Zhou",
+                "Jianwei Cui",
+                "Bin Wang",
+                "Min Zhang",
+                "Jinsong Su."
+            ],
+            "title": "Exploring multi-stage information interactions for multi-source neural machine translation",
+            "venue": "IEEE/ACM TASLP.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhongjian Miao",
+                "Xiang Li",
+                "Liyan Kang",
+                "Wen Zhang",
+                "Chulun Zhou",
+                "Yidong Chen",
+                "Bin Wang",
+                "Min Zhang",
+                "Jinsong Su."
+            ],
+            "title": "Towards robust neural machine translation with iterative scheduled data-switch training",
+            "venue": "Proc. of COLING.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xuan-Phi Nguyen",
+                "Shafiq Joty",
+                "Thanh-Tung Nguyen",
+                "Kui Wu",
+                "Ai Ti Aw."
+            ],
+            "title": "Cross-model backtranslated distillation for unsupervised machine translation",
+            "venue": "Proc. of ICML.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Myle Ott",
+                "Sergey Edunov",
+                "Alexei Baevski",
+                "Angela Fan",
+                "Sam Gross",
+                "Nathan Ng",
+                "David Grangier",
+                "Michael Auli."
+            ],
+            "title": "fairseq: A fast, extensible toolkit for sequence modeling",
+            "venue": "Proc. of NAACL.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Lihua Qian",
+                "Hao Zhou",
+                "Yu Bao",
+                "Mingxuan Wang",
+                "Lin Qiu",
+                "Weinan Zhang",
+                "Yong Yu",
+                "Lei Li."
+            ],
+            "title": "Glancing transformer for non-autoregressive neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ricardo Rei",
+                "Craig Stewart",
+                "Ana C. Farinha",
+                "Alon Lavie."
+            ],
+            "title": "COMET: A neural framework for MT evaluation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mark Sandler",
+                "Andrew Howard",
+                "Menglong Zhu",
+                "Andrey Zhmoginov",
+                "Liang-Chieh Chen."
+            ],
+            "title": "Mobilenetv2: Inverted residuals and linear bottlenecks",
+            "venue": "Proc. of CVPR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Abigail See",
+                "Minh-Thang Luong",
+                "Christopher D Manning."
+            ],
+            "title": "Compression of neural machine translation models via pruning",
+            "venue": "Proc. of CoNLL.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Rico Sennrich",
+                "Barry Haddow",
+                "Alexandra Birch."
+            ],
+            "title": "Neural machine translation of rare words with subword units",
+            "venue": "Proc. of ACL.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Dinghan Shen",
+                "Mingzhi Zheng",
+                "Yelong Shen",
+                "Yanru Qu",
+                "Weizhu Chen."
+            ],
+            "title": "A simple but tough-tobeat data augmentation approach for natural language understanding and generation",
+            "venue": "Arxiv.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Haipeng Sun",
+                "Rui Wang",
+                "Kehai Chen",
+                "Masao Utiyama",
+                "Eiichiro Sumita",
+                "Tiejun Zhao."
+            ],
+            "title": "Knowledge distillation for multilingual unsupervised neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xin Sun",
+                "Tao Ge",
+                "Furu Wei",
+                "Houfeng Wang."
+            ],
+            "title": "Instantaneous grammatical error correction with shallow aggressive decoding",
+            "venue": "Proc. of ACL.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xu Tan",
+                "Yi Ren",
+                "Di He",
+                "Tao Qin",
+                "Zhou Zhao",
+                "TieYan Liu."
+            ],
+            "title": "Multilingual neural machine translation with knowledge distillation",
+            "venue": "Proc. of ICLR.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhixing Tan",
+                "Zeyuan Yang",
+                "Meng Zhang",
+                "Qun Liu",
+                "Maosong Sun",
+                "Yang Liu."
+            ],
+            "title": "Dynamic multibranch layers for on-device neural machine translation",
+            "venue": "IEEE/ACM TASLP.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Proc. of NeurIPS.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Fusheng Wang",
+                "Jianhao Yan",
+                "Fandong Meng",
+                "Jie Zhou."
+            ],
+            "title": "Selective knowledge distillation for neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hanrui Wang",
+                "Zhanghao Wu",
+                "Zhijian Liu",
+                "Han Cai",
+                "Ligeng Zhu",
+                "Chuang Gan",
+                "Song Han."
+            ],
+            "title": "Hat: Hardware-aware transformers for efficient natural language processing",
+            "venue": "Proc. of ACL.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hongyu Wang",
+                "Shuming Ma",
+                "Li Dong",
+                "Shaohan Huang",
+                "Dongdong Zhang",
+                "Furu Wei."
+            ],
+            "title": "Deepnet: Scaling transformers to 1, 000 layers",
+            "venue": "Arxiv.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qiang Wang",
+                "Bei Li",
+                "Tong Xiao",
+                "Jingbo Zhu",
+                "Changliang Li",
+                "Derek F. Wong",
+                "Lidia S. Chao."
+            ],
+            "title": "Learning deep transformer models for machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Furu Wei",
+                "Li Dong",
+                "Hangbo Bao",
+                "Nan Yang",
+                "Ming Zhou."
+            ],
+            "title": "Minilm: Deep selfattention distillation for task-agnostic compression of pre-trained transformers",
+            "venue": "Proc. of NeurIPS.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhihao Wang",
+                "Longyue Wang",
+                "Jinsong Su",
+                "Junfeng Yao",
+                "Zhaopeng Tu."
+            ],
+            "title": "Revisiting nonautoregressive translation at scale",
+            "venue": "Proc. of ACL Findings.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Noreen M Webb."
+            ],
+            "title": "Peer interaction and learning in small groups",
+            "venue": "International journal of Educational research (IJER).",
+            "year": 1989
+        },
+        {
+            "authors": [
+                "Hao-Ran Wei",
+                "Shujian Huang",
+                "Ran Wang",
+                "Xin-Yu Dai",
+                "Jiajun Chen."
+            ],
+            "title": "Online distilling from checkpoints for neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ji Xin",
+                "Raphael Tang",
+                "Jaejun Lee",
+                "Yaoliang Yu",
+                "Jimmy Lin."
+            ],
+            "title": "Deebert: Dynamic early exiting for accelerating BERT inference",
+            "venue": "Proc. of ACL.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Peng Xu",
+                "Dhruv Kumar",
+                "Wei Yang",
+                "Wenjie Zi",
+                "Keyi Tang",
+                "Chenyang Huang",
+                "Jackie Chi Kit Cheung",
+                "Simon J.D. Prince",
+                "Yanshuai Cao."
+            ],
+            "title": "Optimizing deeper transformers on small datasets",
+            "venue": "Proc. of ACL.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhixian Yang",
+                "Renliang Sun",
+                "Xiaojun Wan."
+            ],
+            "title": "Nearest neighbor knowledge distillation for neural machine translation",
+            "venue": "Proc. of NAACL.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiahui Yu",
+                "Linjie Yang",
+                "Ning Xu",
+                "Jianchao Yang",
+                "Thomas S. Huang."
+            ],
+            "title": "Slimmable neural networks",
+            "venue": "Proc. of ICLR.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tianhe Yu",
+                "Saurabh Kumar",
+                "Abhishek Gupta",
+                "Sergey Levine",
+                "Karol Hausman",
+                "Chelsea Finn."
+            ],
+            "title": "Gradient surgery for multi-task learning",
+            "venue": "Proc. of NeurIPS.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhixiong Yue",
+                "Yu Zhang",
+                "Jie Liang."
+            ],
+            "title": "Learning conflict-noticed architecture for multi-task learning",
+            "venue": "Proc. of AAAI.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiali Zeng",
+                "Yang Liu",
+                "Jinsong Su",
+                "Yubing Ge",
+                "Yaojie Lu",
+                "Yongjing Yin",
+                "Jiebo Luo."
+            ],
+            "title": "Iterative dual domain adaptation for neural machine translation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Biao Zhang",
+                "Deyi Xiong",
+                "Jinsong Su",
+                "Jiebo Luo."
+            ],
+            "title": "Future-aware knowledge distillation for neural machine translation",
+            "venue": "IEEE/ACM TASLP.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Liang Zhang",
+                "Jinsong Su",
+                "Zijun Min",
+                "Zhongjian Miao",
+                "Qingguo Hu",
+                "Biao Fu",
+                "X. Shi",
+                "Yidong Chen."
+            ],
+            "title": "Exploring self-distillation based relational reasoning training for document-level relation extraction",
+            "venue": "Proc. of AAAI.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ying Zhang",
+                "Tao Xiang",
+                "Timothy M Hospedales",
+                "Huchuan Lu."
+            ],
+            "title": "Deep mutual learning",
+            "venue": "Proc. of CVPR.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jiawei Zhao",
+                "Wei Luo",
+                "Boxing Chen",
+                "Andrew Gilman."
+            ],
+            "title": "Mutual-learning improves end-to-end speech translation",
+            "venue": "Proc. of EMNLP.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chulun Zhou",
+                "Yunlong Liang",
+                "Fandong Meng",
+                "Jie Zhou",
+                "Jinan Xu",
+                "Hongji Wang",
+                "Min Zhang",
+                "Jinsong Su."
+            ],
+            "title": "A multi-task multi-stage transitional training framework for neural chat translation",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chulun Zhou",
+                "Fandong Meng",
+                "Jie Zhou",
+                "Min Zhang",
+                "Hongji Wang",
+                "Jinsong Su."
+            ],
+            "title": "Confidence based bidirectional global context aware training framework for neural machine translation",
+            "venue": "Proc. of ACL.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wangchunshu Zhou",
+                "Canwen Xu",
+                "Julian J. McAuley."
+            ],
+            "title": "BERT learns to teach: Knowledge distillation with meta learning",
+            "venue": "Proc. of ACL.",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "text": "Conventional knowledge distillation (KD) approaches are commonly employed to compress neural machine translation (NMT) models. However, they only obtain one lightweight student each time. Consequently, we have to conduct KD multiple times when different students are required at the same time, which could be resource-intensive. Additionally, these students are individually optimized, and thus lack interactions with each other, leading to their potential not being fully exerted. In this work, we propose a novel All-In-One Knowledge Distillation (AIO-KD) framework for NMT, which generates multiple satisfactory students at once. Under AIO-KD, we first randomly extract fewer-layer subnetworks from the teacher as the sample students. Then, we jointly optimize the teacher and these students, where the students simultaneously learn the knowledge from the teacher and interact with other students via mutual learning. When utilized, we re-extract the candidate students, satisfying the specifications of various devices. Particularly, we adopt carefully-designed strategies for AIO-KD: 1) we dynamically detach gradients to prevent poorly-performed students from negatively affecting the teacher during the knowledge transfer, which could subsequently impact other students; 2) we design a twostage mutual learning strategy, which alleviates the negative impacts of poorly-performed students on the early-stage student interactions. Extensive experiments and in-depth analyses on three benchmarks demonstrate the effectiveness and eco-friendliness of AIO-KD. Our source code is available at https://github. com/DeepLearnXMU/AIO-KD."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "In recent years, Transformer (Vaswani et al., 2017) has become the dominant architecture in neural machine translation (NMT). To further improve\n\u2217Work was done when interning at Xiaomi AI Lab. \u2020Corresponding Author.\nmodel performance, there have been many efforts in exploring wider or deeper Transformers (Wang et al., 2019; Xu et al., 2021; Wang et al., 2022). However, deploying such models with billions of parameters on edge devices (e.g., mobile phones) remains to be a challenge. To solve this problem, various methods for model compression have been proposed (Choudhary et al., 2020). Among them, knowledge distillation (KD) (Hinton et al., 2015) has been widely adopted due to its effectiveness and simplicity. In this regard, researchers explore many KD approaches for NMT, such as Word-KD (Kim and Rush, 2016) and SelectiveKD (Wang et al., 2021).\nGenerally, in these conventional KD approaches, the knowledge of a large teacher model is transferred to only a compact student model, which usually adopts the same model architecture as the teacher but with fewer parameters (Kim and Rush, 2016; Jafari et al., 2021; Wang et al., 2021; Yang et al., 2022). Nevertheless, due to hardware differences, we are often required to deploy models of varying sizes on different devices (Sandler et al., 2018; Wang et al., 2020a; Tan et al., 2022). In this scenario, conventional KD approaches have two defects: 1) they have to be conducted multiple times for different students, which leads to substantial costs; 2) students are individually optimized, and thus they are unable to interact with each other. Note that in the human learning process, communication between students will benefit their learning (Webb, 1989). In light of this, we believe that these students can be further improved through collaborative interactions.\nIn this paper, we propose a novel All-In-One Knowledge Distillation (AIO-KD) framework for NMT, which constructs students from the teacher and jointly optimizes both the teacher and students from scratch. Employing AIO-KD, we regard the fewer-layer subnetworks extracted from the teacher as the candidate students. During training, we first\nrandomly select from all candidate students to obtain the sample ones at each training step. Then, we jointly optimize the teacher and the sample students. During this process, the students simultaneously learn the knowledge from the teacher and interact with other students via mutual learning. When utilized, we re-extract the candidate students from the teacher, satisfying the specifications of various devices.\nTo better accommodate AIO-KD, we carefully design the following strategies:\n1) Dynamic Gradient Detaching. Under AIOKD, the students are optimized jointly with the teacher, where the teacher and students mutually influence each other through the KD loss. When there exists a significant performance gap between a student and the teacher, the gradients of the KD loss specific to the student will harm the teacher, which further negatively affects other students. To address this issue, we measure the performance gap through the cross-entropy ratio of the student to the teacher. If this ratio exceeds a pre-defined threshold, we will not utilize these gradients to update the teacher\u2019s parameters.\n2) Two-Stage Mutual Learning. As mentioned previously, we introduce mutual learning to facilitate students. To avoid the negative impacts of poorly-performed students on student interactions at the early stage, we adopt a two-stage training strategy. Concretely, we first only utilize the signals from the teacher to guide the training of students, and further introduce mutual learning to strengthen the interactions between students. Such multi-stage training strategy has been verified in previous study (Zhou et al., 2022a).\nEmpirical experiments and in-depth analyses on three translation benchmarks demonstrate that AIOKD is superior to conventional KD approaches in terms of translation quality and training costs. As a bonus, the teacher in AIO-KD is significantly enhanced through knowledge transfer with the students."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Our related works mainly include the following three lines of studies:\nTransformer with Variable Depths. To reduce computation costs, plenty of researchers investigate the variable-depth Transformer architecture (Yu et al., 2019; Dehghani et al., 2019; Hou et al., 2020; Xin et al., 2020; Liu et al., 2020a; Fan et al., 2020; Elbayad et al., 2020; Cai et al., 2020; Liu et al.,\n2021b). However, the majority of these works focus on the Transformer encoder, while paying less attention to the overall Transformer architecture. Our work focuses on the latter, i.e., the overall Transformer with variable depths for NMT.\nKnowledge Distillation in NMT. In recent years, model compression technologies have attracted much attention (Han et al., 2016; See et al., 2016; Choudhary et al., 2020). As a commonly-used technology for model compression, knowledge distillation (KD) (Hinton et al., 2015) has been widely used in many natural language processing tasks (Jiao et al., 2020; Wang et al., 2020b; Liu et al., 2020b; Zhou et al., 2022c; Zhang et al., 2023). In the community of NMT, Kim and Rush (2016) first apply KD to autoregressive NMT. Further, many studies explore more effective KD approaches for NMT (Zeng et al., 2019; Wei et al., 2019; Zhang et al., 2019; Wang et al., 2021; Liang et al., 2022; Miao et al., 2022; Zhou et al., 2022b). Meanwhile, researchers focus on applying KD to various aspects of NMT, including multilingual NMT (Tan et al., 2019; Do and Lee, 2022; Lu et al., 2022; Huang et al., 2022b, 2023), unsupervised NMT (Sun et al., 2020; Nguyen et al., 2021), nonautoregressive NMT (Gu et al., 2018; Qian et al., 2021; Huang et al., 2022a; Wang et al., 2023), and kNN-NMT (Yang et al., 2022).\nMutual Learning in NMT. Mutual learning (Zhang et al., 2018) has been explored in NMT, with various techniques proposed to improve translation quality. For example, Bi et al. (2019) propose multi-agent learning, where diverse students learn from each other, working together to improve translation quality. Liao et al. (2020) explore sentencelevel and token-level mutual learning for NMT. Zhao et al. (2021) show the effectiveness of mutual learning in end-to-end speech translation.\nTo the best of our knowledge, our work is the first attempt to incorporate both knowledge distillation and mutual learning into the variable-depth Transformer. Unlike conventional KD approaches, the candidate students in AIO-KD are the fewerlayer subnetworks derived from the teacher. During training, we randomly select from all candidate students to obtain the sample ones and jointly optimize them with the teacher from scratch, which involves knowledge transfer from teacher to students, as well as interactions between students via mutual learning. Additionally, we develop carefully-\ndesigned strategies for AIO-KD, which have been proven to be effective in subsequent experiments."
+        },
+        {
+            "heading": "3 All-In-One Knowledge Distillation",
+            "text": "In this section, we first give a brief overview of AIO-KD (Section 3.1), and then describe the training objective (Section 3.2). Finally, we detail carefully-designed strategies (Section 3.3)."
+        },
+        {
+            "heading": "3.1 The Overview of AIO-KD",
+            "text": "The left half of Figure 1 provides an overview of AIO-KD. In our work, we adopt the standard Transformer with N encoder/decoder layers as the teacher T . Inspired by recent studies (Wang et al., 2019; Kasai et al., 2021), we extract fewerlayer subnetworks with deep encoder and shallow decoder from the teacher as the candidate students, which achieve satisfactory performance while maintaining efficient inference. Accordingly, all candidate students can be formalized as C={S(le, ld)\n\u2223\u2223 1< ld \u2264 le \u2264 N }1, where S(le, ld) refers to the student with le encoder layers and ld decoder layers. The right half of Figure 1 gives an example of constructing the student S(4, 2), we extract the adjacent encoder and decoder layers of the teacher, starting from the first layer, to construct it, which shares not only architecture but also parameters with the teacher.\nDuring training, we first randomly and uniformly sample from C to obatin K sample students\n1We follow previous studies (Sun et al., 2021; Ge et al., 2022) to exclude the models with 1-layer decoder because they do not consistently perform well.\n{Sk}Kk=1 at each training step.2 Afterward, we jointly train the teacher and these students, where the students simultaneously learn the teacher\u2019s knowledge and interact with other students via mutual learning. Notice that during this process, we carefully develop strategies to accommodate AIOKD, as described in Section 3.3. When utilized, we re-extract |C| students from the teacher, satisfying the specifications of various devices.3"
+        },
+        {
+            "heading": "3.2 Training Objective",
+            "text": "Overall, the training objective of AIO-KD consists of the following three parts:\nL = Lce + \u03b1Lkd + \u03b2Lml, (1) where Lce, Lkd, and Lml denote the cross-entropy loss, the knowledge distillation loss, and the mutual learning loss, \u03b1 and \u03b2 are two coefficients balancing the effects of different losses, respectively.\nCross-Entropy Loss Lce As reported by previous works (Zhang et al., 2018; Guo et al., 2020b), jointly training the teacher and student achieves better knowledge transfer. In this work, the students are optimized jointly with the teacher from scratch. Formally, we decompose Lce into two parts as follows:\nLce = LTce + K\u2211\nk=1\nLSkce , (2)\n2In our early exploration, we attempt to explore intelligent sampling strategies for students. However, they do not perform well for AIO-KD.\n3|C| = 1 + 2 + ...+ (N \u2212 1) = N (N\u22121) 2\nwhere LTce and LSkce represent the cross-entropy losses for the teacher T and the student Sk, respectively.\nKnowledge Distillation Loss Lkd Employing AIO-KD, we aim to transfer the teacher\u2019s knowledge to multiple students by aligning the students\u2019 output probability distributions with those of the teacher, and Lkd is formulated as follows:\nLkd = 1\nK K\u2211 k=1 KL(PT ||PSk), (3)\nwhere KL(\u00b7) is the Kullback\u2013Leibler distance function, PT and PSk denote the output probability distributions of the teacher T and the student Sk, respectively.\nMutual Learning Loss Lml To further promote the students, we incorporate mutual learning to facilitate their interactions, with the loss Lml defined as\nLml = 2 K(K \u2212 1) \u2211\n1\u2264k,k\u2032\u2264K\nML(PSk ,PSk\u2032 ), (4)\nML(PSk ,PSk\u2032 ) = { KL(PSk ||PSk\u2032 ), LSk\u2032ce \u2265 LSkce , KL(PSk\u2032 ||PSk), otherwise. (5) Notice that for any two students, the one with the lower cross-entropy loss acts as the senior student, leading the process of mutual learning. As discussed by Liao et al. (2020), such mutual learning is beneficial for NMT."
+        },
+        {
+            "heading": "3.3 Carefully-Designed Strategies",
+            "text": "Dynamic Gradient Detaching. As mentioned in Section 3.2, the teacher and students mutually influence each other through the KD loss. When the performance of the student Sk is much inferior to that of the teacher T , the gradients g=\u2202KL(P\nT ||PSk ) \u2202 \u03b8T\nof the Sk-related KD loss will harm the teacher and the latter may further negatively impact other students, where \u03b8T represents the teacher\u2019s parameters.\nTo deal with this issue, we calculate the crossentropy ratio LSkce /LTce of the student Sk to the teacher T , which measures their performance gap. If this ratio exceeds a pre-defined threshold \u03b7, we argue that there exists a significant performance gap between Sk and T , and thus we do not utilize the gradients g to update the teacher\u2019s parameters. To this end, we reformulate the gradients g as fol-\nlows:\ng =  \u2202KL(PT ||PSk) \u2202 \u03b8T , LSkce LTce \u2264 \u03b7,\n0, otherwise.\n(6)\nTwo-Stage Mutual Learning. It is worth noting that the students at the early-stage training are often poorly-performed ones, which hinder student interactions. To better leverage the potential of mutual learning, we adopt a two-stage training strategy. At the first training stage, we only utilize the signals from the teacher to guide the training of the students, formulating the training objective as\nL1 = Lce + \u03b1Lkd. (7) Thereafter, we further introduce Lml to optimize the students at the second training stage, as shown below:\nL2 = Lce + \u03b1Lkd + \u03b2Lml. (8)"
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Setup",
+            "text": "Datasets. We conduct experiments on GermanEnglish (De-En), English-Romanian (En-Ro), and English-German (En-De) translation tasks. For the De-En task, we use the IWSLT14 De-En corpus, where the training set comprises 160k sentence pairs extracted from TED talks. We use the combination of dev2010 and dev2012 as the validation set, and the combination of tst2010, tst2011, and tst2012 as the test set, respectively. For the En-Ro task, we use the dataset of the WMT16 En-Ro as the training set, containing 610k sentence pairs. We separately choose newsdev2016 and newstest2016 as the validation and test sets. For the En-De task, we use the WMT14 En-De dataset containing 4.5m sentence pairs for training, and we choose newstest2013 and newstest2014 as the validation and test sets, respectively. We employ Byte Pair Encoding (BPE) (Sennrich et al., 2016) to split words into subwords. Following common practices, we set the numbers of merging operations as 10k, 32k, and 32k for the three tasks, respectively. Finally, we report case-sensitive tokenized BLEU (Papineni et al., 2002) as well as COMET (Rei et al., 2020).\nModel Configuration. We develop AIO-KD and other baselines with fairseq (Ott et al., 2019). The standard Transformer with 6 encoder/decoder layers is adopted as the teacher. We use the transformer_iwslt_de_en setting for the De-En\ntask, and the transformer_wmt_en_de setting for the En-Ro and En-De tasks, respectively.\nTo optimize models, we use Adam (Kingma and Ba, 2015) optimizer with \u03b21=0.9, \u03b22=0.98, and \u03f5=10\u22129. All experiments are conducted on NVIDIA A100 GPUs with mixed-precision training, where the batch sizes are individually set to 4k, 4k, and 32k tokens for the three tasks. We set the training steps to 300k, 300k, and 400k per stage for the De-En, En-Ro, and En-De tasks. For other KD baselines, we set the training steps to 200k for each student, which are much longer than the average training steps for each student in AIO-KD. We set the number K of sample student as 2. The selections of hyper-parameters \u03b1, \u03b2, and \u03b7 are discussed in Section 4.2. Model Selection. In our work, we expect that all candidate students achieve satisfactory performance. However, it is impractical for each student to conduct beam search decoding on the validation set for model selection.\nAs an efficient alternative, we select the model according to the average cross-entropy losses of all candidate students on the validation set, which can be formulated as\n\u03b8\u2217 = argmin \u03b8\n1\n|C| |C|\u2211 k=1 LSkce , (9)\nwhere \u03b8\u2217 denotes the optimal parameters, which are essentially the teacher\u2019s parameters because all candidate students share them. Baselines. We compare our model with the following baselines:\n\u2022 Transformer (Vaswani et al., 2017). It is the most dominant NMT model.\n\u2022 Word-KD (Kim and Rush, 2016). Under WordKD, the student is optimized to mimic the output probability distributions of the teacher.\n\u2022 Selective-KD (Wang et al., 2021). By using Selective-KD, the student is optimized to mimic\nthe output probability distributions of the teacher on the complicated words, which have higher cross-entropy losses estimated by the student."
+        },
+        {
+            "heading": "4.2 Effects of Hyper-Parameters",
+            "text": "We first investigate the effects of \u03b1, \u03b2, and \u03b7, where \u03b1 and \u03b2 are used to balance Lkd and Lml (See Equations 7 and 8), and \u03b7 controls which students\u2019 gradients are not utilized to update the teacher\u2019s parameters during knowledge transfer (See Section 3.3).\nThrough our preliminary empirical studies, we find that changes in \u03b7 have negligible impacts on the selection of \u03b1 and \u03b2. Therefore, we tune \u03b1 and \u03b2 without dynamic gradient detaching, where \u03b7 is not involved. Concretely, we tune \u03b1 at the first stage and then tune \u03b2 at the second stage with \u03b1 fixed. Finally, we tune \u03b7 after determining the optimal \u03b1 and \u03b2.\nFigure 2 shows the effects of \u03b1, \u03b2, and \u03b7 on the En-Ro task, where we set (\u03b1, \u03b2, \u03b7) to (5.5, 0.5, 1.1). Similarly, we apply above procedures to the De-En and En-De tasks, where (\u03b1, \u03b2, \u03b7) are separately set to (5.5, 0.5, 1.1) and (4.5, 0.1, 1.01)."
+        },
+        {
+            "heading": "4.3 Main Results",
+            "text": "To demonstrate the superiority of AIO-KD, we report translation quality of all candidate students, as well as training costs. Translation Quality. Table 1 presents BLEU scores of all candidate students on the three tasks. We can draw the following conclusions:\nFirst of all, we observe that both Word-KD and Selective-KD achieve remarkable improvements compared with Transformer, echoing the results reported in previous studies (Kim and Rush, 2016; Wang et al., 2021). Second, AIO-KD significantly outperforms other baselines across all tasks, indicating its effectiveness. Furthermore, the teachers in AIO-KD demonstrate impressive performance.\nSpecifically, the teachers achieve 37.69, 35.44, and 29.18 BLEU scores on the De-En, En-Ro, and EnDe tasks, respectively, with improvements of +2.66, +3.43, and +1.20 BLEU scores over Transformer. We attribute the promising improvements of the teachers to the interactions with the students, which will be explored in Section 5.3.\nAlso, we report the results using COMET metric in Table 2, which support the above conclusions.\nTraining Costs. Apart from the satisfactory performance, the advantages of AIO-KD also owe to its training efficiency. To support our claim, we report the training time and memory usage of each approach, as displayed in Table 3.\nFirst of all, we observe that although adopting both Word-KD and Selective-KD significantly improves model performance, it also brings enormous training costs.\nBy contrast, AIO-KD is much more eco-friendly. Concretely, GPU hours of AIO-KD spent on training are comparable to those of Transformer on the De-En (29.83 vs. 26.11) and En-Ro (34.83 vs. 33.06) tasks, and much less than those of WordKD (218.67 vs. 456.67) and Selective-KD (218.67 vs. 406.67) on the En-De task. More encouragingly, AIO-KD also demonstrates its memoryfriendliness compared with Transformer on the DeEn (16.70 vs. 74.72), En-Ro (55.85 vs. 169.66), and En-De (123.67 vs. 221.22) tasks. Ultimately, AIO-KD saves only one model, i.e., the teacher, highlighting its storage-efficient."
+        },
+        {
+            "heading": "4.4 Ablation Studies",
+            "text": "To better investigate the effectiveness of the carefully-designed strategies, we compare AIO-KD with the following variants shown in Table 4:\n1) w/o DGD. In this variant, we discard the\nDynamic Gradient Detaching strategy. It can be found that this removal leads to a significant degeneration of the teacher, with BLEU score dropping from 29.18 to 28.25. Moreover, other candidate students suffer from varying degrees of performance degradation. These results support our claim that poorly-performed students harm the teacher, which further negatively affects other students.\n2) w/o ML. To verify the benefits of interactions between students, we remove the Mutual Learning loss Lml from Equation 8. The results show that BLEU scores of all candidate students decrease, indicating that mutual learning indeed further promotes students.\n3) w/o TST. We employ a one-stage training strategy to train this variant, with the same total training steps as the original AIO-KD. The loss function of this variant is L2 defined in Equation 8. As expected, AIO-KD benefits from the Two-Stage Training strategy across all candidate students, indicating that poorly-performed students at the earlystage training have negative impacts on mutual learning."
+        },
+        {
+            "heading": "5 Analysis",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Effect of Sample Student Number",
+            "text": "In previous experiments, we set the number K of sample students as 2. A question arises naturally: does increasing K further improve the students? To answer this question, we experiment with K ranging from 2 to 5, as illustrated in Figure 3.\nIn the left half of Figure 3, with an increase of K, the training time of AIO-KD grows from 33.33 to 59.17 GPU hours but does not lead to any performance improvements. Instead, the students degenerate. The right half of Figure 3 also displays loss curves on the validation set with different K, showing that increasing K leads to the over-fitting problem of the students.\nRegarding the above phenomenon, we attribute it to the gradient conflict problem (Yu et al., 2020; Liu et al., 2021a; Chai et al., 2022; Yue et al., 2023). Since different students share the parameters of the teacher, when K increases, the conflict of their gradients becomes more severe during training, ultimately leading to the decline in performance."
+        },
+        {
+            "heading": "5.2 Compatibility of AIO-KD with Seq-KD",
+            "text": "Seq-KD (Kim and Rush, 2016) is also a widelyused KD approach, where the student is trained on the teacher-generated data. Hence, we explore whether AIO-KD and Seq-KD complement to each other. The results are shown in Table 5.\nIt is evident that AIO-KD performs significantly better than Seq-KD. Moreover, when AIO-KD and Seq-KD are combined, i.e., AIO-KD+Seq-KD, it achieves an average BLEU score of 35.27, surpassing both AIO-KD (35.27 vs. 35.03) and Seq-KD (35.27 vs. 32.90). These results confirm that AIOKD and Seq-KD are compatible with each other."
+        },
+        {
+            "heading": "5.3 Win-Win Knowledge Distillation",
+            "text": "As discussed in Section 4.3, AIO-KD enhances both the teacher and students, making it a win-win KD technique. As shown in Table 6, we compare\nthe enhanced teacher with recently-proposed works on NMT and observe that our model outperforms these strong baselines.\nFurthermore, we explore the enhanced teacher from the perspective of model interaction. Under AIO-KD, the teacher is optimized not only to align with labels but also to interact with the students via knowledge transfer. Therefore, we speculate that the teacher\u2019s improvements come from these interactions.\nTo gain deeper insights, we delve into the effects of \u03b7 in dynamic gradient detaching, as illustrated in Figure 4. By adjusting \u03b7, the gradients of the KD loss specific to some students at the training steps are not utilized to update the teacher\u2019s parameters, where we refer to these training steps and students as detaching steps and detaching students, respectively.\nIn the left half of Figure 4, we observe that when \u03b7 decreases, the number of detaching steps gradually increases. During this process, the teacher\u2019s performance experiences an initial improvement, however, it subsequently undergoes a decline. The above observations reveal that the significant impacts on the teacher through the KD loss.\nIn the right half of Figure 4, we further present the proportion of different detaching students at detaching steps corresponding to different \u03b7. We find that when \u03b7=1.1 and \u03b7=1.05, most of poorlyperformed students are detached, thus positively impacting the teacher, which severally achieves 35.44 and 35.27 BLEU scores. Conversely, when we set \u03b7 to 1.005, more well-performed students are detached, resulting in a negative impact on the teacher, which achieves 34.51 BLEU score. The above results validate that the teacher benefits from interacting with well-performed students while suffering from the interactions with poorly-performed ones.\nOverall, our analyses suggest that the teacher can derive benefits from the weaker students, offering valuable insights for future research."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this work, we present AIO-KD, a novel KD framework for NMT that constructs various candidate students from the teacher itself. With AIOKD, we jointly optimize the teacher and the sample students from scratch. During this process, the students learn from the teacher and interact with other students via mutual learning, resulting in multiple satisfactory students with efficient training. Carefully-designed strategies are also introduced to accommodate AIO-KD. Extensive experiments and in-depth analyses on three benchmarks demonstrate the superiority of our AIO-KD.\nIn the future, we plan to explore more compact subnetworks of teacher as students using parameter pruning methods. Additionally, we aim to extend AIO-KD to large language models (LLMs) to validate its generalizability.\nLimitations\nAs mentioned above, the students in AIO-KD are derived from the teacher and they share parameters. Such a design yields multiple high-quality students with significantly reduced training costs, compared with conventional KD approaches. However, its limitation is that the students possess the\nsame model architecture as the teacher. Besides, despite achieving impressive efficiency and performance, our work is only conducted based on Transformer. Thus, we plan to validate AIO-KD on more model architectures in future work.\nEthics Statement\nThis work aims to explore an eco-friendly KD approach for NMT, and we hope our method can inspire future work. Our work does not involve any data collection. In the experiments, all the datasets are publicly available and commonly used in the NMT community. Besides, we develop AIOKD and other baselines based on a widely-used open-source tool fairseq (Ott et al., 2019). The comparisons in this work are conducted based on the same experimental settings and datasets."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "The project was supported by National Natural Science Foundation of China (Nos. 62036004, 62276219, 62076211), Natural Science Foundation of Fujian Province of China (No. 2020J06001), and University-Industry Cooperation Programs of Fujian Province of China (No. 2023H6001). We also thank the reviewers for their insightful comments."
+        }
+    ],
+    "title": "Exploring All-In-One Knowledge Distillation Framework for Neural Machine Translation",
+    "year": 2023
+}

@@ -1,0 +1,841 @@
+{
+    "abstractText": "Large Language models (LLMs) are trained on vast amounts of data, including sensitive information that poses a risk to personal privacy if exposed. LLMs have shown the ability to memorize and reproduce portions of their training data when prompted by adversaries. Prior research has focused on addressing this memorization issue and preventing verbatim replication through techniques like knowledge unlearning and data pre-processing. However, these methods have limitations regarding the number of protected samples, limited privacy types, and potentially lower-quality generative models. To tackle this challenge more effectively, we propose \u201cDeMem,\u201d a novel unlearning approach that utilizes an efficient reinforcement learning feedback loop via proximal policy optimization. By fine-tuning the language model with a negative similarity score as a reward signal, we incentivize the LLMs to learn a paraphrasing policy to unlearn the pre-training data. Our experiments demonstrate that DeMem surpasses strong baselines and state-ofthe-art methods in terms of its ability to generalize and strike a balance between maintaining privacy and LLM performance.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Aly M. Kassem"
+        },
+        {
+            "affiliations": [],
+            "name": "Omar Mahmoud"
+        },
+        {
+            "affiliations": [],
+            "name": "Sherif Saad"
+        }
+    ],
+    "id": "SP:2b072a2ae85115b13d2dda3766a54b712b8d33e3",
+    "references": [
+        {
+            "authors": [
+                "Li Zhang"
+            ],
+            "title": "Deep learning with differential pri",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Aida Amini",
+                "Saadia Gabriel",
+                "Peter Lin",
+                "Rik KoncelKedziorski",
+                "Yejin Choi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Mathqa: Towards interpretable math word problem solving with operation-based formalisms",
+            "venue": "arXiv preprint arXiv:1905.13319.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Rohan Anil",
+                "Badih Ghazi",
+                "Vineet Gupta",
+                "Ravi Kumar",
+                "Pasin Manurangsi."
+            ],
+            "title": "Large-scale differentially private bert",
+            "venue": "arXiv preprint arXiv:2108.01624.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Priyam Basu",
+                "Tiasa Singha Roy",
+                "Rakshit Naidu",
+                "Zumrut Muftuoglu",
+                "Sahib Singh",
+                "Fatemehsadat Mireshghallah."
+            ],
+            "title": "Benchmarking differential privacy and federated learning for bert models",
+            "venue": "arXiv preprint arXiv:2106.13973.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Stella Biderman",
+                "Hailey Schoelkopf",
+                "Quentin Anthony",
+                "Herbie Bradley",
+                "Kyle O\u2019Brien",
+                "Eric Hallahan",
+                "Mohammad Aflah Khan",
+                "Shivanshu Purohit",
+                "USVSN Sai Prashanth",
+                "Edward Raff"
+            ],
+            "title": "Pythia: A suite for analyzing large language models across training",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yonatan Bisk",
+                "Rowan Zellers",
+                "Jianfeng Gao",
+                "Yejin Choi"
+            ],
+            "title": "Piqa: Reasoning about physical commonsense in natural language",
+            "venue": "In Proceedings of the AAAI conference on artificial intelligence,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sid Black",
+                "Stella Biderman",
+                "Eric Hallahan",
+                "Quentin Anthony",
+                "Leo Gao",
+                "Laurence Golding",
+                "Horace He",
+                "Connor Leahy",
+                "Kyle McDonell",
+                "Jason Phang"
+            ],
+            "title": "Gpt-neox-20b: An open-source autoregressive language model",
+            "venue": "arXiv preprint arXiv:2204.06745",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sid Black",
+                "Leo Gao",
+                "Phil Wang",
+                "Connor Leahy",
+                "Stella Biderman."
+            ],
+            "title": "GPT-Neo: Large Scale Autoregressive Language Modeling with MeshTensorflow",
+            "venue": "If you use this software, please cite it using these metadata.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hannah Brown",
+                "Katherine Lee",
+                "Fatemehsadat Mireshghallah",
+                "Reza Shokri",
+                "Florian Tram\u00e8r"
+            ],
+            "title": "What does it mean for a language model to preserve privacy? arXiv preprint arXiv:2202.05520",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nicholas Carlini",
+                "Daphne Ippolito",
+                "Matthew Jagielski",
+                "Katherine Lee",
+                "Florian Tramer",
+                "Chiyuan Zhang."
+            ],
+            "title": "Quantifying memorization across neural language models",
+            "venue": "arXiv preprint arXiv:2202.07646.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nicholas Carlini",
+                "Florian Tramer",
+                "Eric Wallace",
+                "Matthew Jagielski",
+                "Ariel Herbert-Voss",
+                "Katherine Lee",
+                "Adam Roberts",
+                "Tom Brown",
+                "Dawn Song",
+                "Ulfar Erlingsson"
+            ],
+            "title": "Extracting training data from large language models",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peter Clark",
+                "Isaac Cowhey",
+                "Oren Etzioni",
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Carissa Schoenick",
+                "Oyvind Tafjord."
+            ],
+            "title": "Think you have solved question answering? try arc, the ai2 reasoning challenge",
+            "venue": "arXiv preprint arXiv:1803.05457.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "arXiv preprint arXiv:1810.04805.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "William Fedus",
+                "Barret Zoph",
+                "Noam Shazeer"
+            ],
+            "title": "Switch transformers: Scaling to trillion parameter models with simple and efficient sparsity",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Leo Gao",
+                "Stella Biderman",
+                "Sid Black",
+                "Laurence Golding",
+                "Travis Hoppe",
+                "Charles Foster",
+                "Jason Phang",
+                "Horace He",
+                "Anish Thite",
+                "Noa Nabeshima"
+            ],
+            "title": "The pile: An 800gb dataset of diverse text for language modeling",
+            "venue": "arXiv preprint arXiv:2101.00027",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Leo Gao",
+                "Jonathan Tow",
+                "Stella Biderman",
+                "Sid Black",
+                "Anthony DiPofi",
+                "Charles Foster",
+                "Laurence Golding",
+                "Jeffrey Hsu",
+                "Kyle McDonell",
+                "Niklas Muennighoff"
+            ],
+            "title": "A framework for few-shot language model evaluation",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ari Holtzman",
+                "Jan Buys",
+                "Maxwell Forbes",
+                "Antoine Bosselut",
+                "David Golub",
+                "Yejin Choi."
+            ],
+            "title": "Learning to write with cooperative discriminators",
+            "venue": "arXiv preprint arXiv:1805.06087.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Daphne Ippolito",
+                "Florian Tram\u00e8r",
+                "Milad Nasr",
+                "Chiyuan Zhang",
+                "Matthew Jagielski",
+                "Katherine Lee",
+                "Christopher A Choquette-Choo",
+                "Nicholas Carlini."
+            ],
+            "title": "Preventing verbatim memorization in language models gives a false sense of privacy",
+            "venue": "arXiv preprint",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Joel Jang",
+                "Dongkeun Yoon",
+                "Sohee Yang",
+                "Sungmin Cha",
+                "Moontae Lee",
+                "Lajanugen Logeswaran",
+                "Minjoon Seo."
+            ],
+            "title": "Knowledge unlearning for mitigating privacy risks in language models",
+            "venue": "arXiv preprint arXiv:2210.01504.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qiao Jin",
+                "Bhuwan Dhingra",
+                "Zhengping Liu",
+                "William W Cohen",
+                "Xinghua Lu."
+            ],
+            "title": "Pubmedqa: A dataset for biomedical research question answering",
+            "venue": "arXiv preprint arXiv:1909.06146.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nikhil Kandpal",
+                "Eric Wallace",
+                "Colin Raffel."
+            ],
+            "title": "Deduplicating training data mitigates privacy risks in language models",
+            "venue": "arXiv preprint arXiv:2202.06539.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Katherine Lee",
+                "Daphne Ippolito",
+                "Andrew Nystrom",
+                "Chiyuan Zhang",
+                "Douglas Eck",
+                "Chris Callison-Burch",
+                "Nicholas Carlini."
+            ],
+            "title": "Deduplicating training data makes language models better",
+            "venue": "arXiv preprint arXiv:2107.06499.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alexandra Levine."
+            ],
+            "title": "Suicide hotline shares data with for-profit spinoff, raising ethical questions",
+            "venue": "politico.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xuechen Li",
+                "Florian Tramer",
+                "Percy Liang",
+                "Tatsunori Hashimoto."
+            ],
+            "title": "Large language models can be strong differentially private learners",
+            "venue": "arXiv preprint arXiv:2110.05679.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Pierre Lison",
+                "Ildik\u00f3 Pil\u00e1n",
+                "David S\u00e1nchez",
+                "Montserrat Batet",
+                "Lilja \u00d8vrelid."
+            ],
+            "title": "Anonymisation models for text data: State of the art, challenges and future directions",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Lin-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Stephen Merity",
+                "Caiming Xiong",
+                "James Bradbury",
+                "Richard Socher."
+            ],
+            "title": "Pointer sentinel mixture models",
+            "venue": "arXiv preprint arXiv:1609.07843.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Denis Paperno",
+                "Germ\u00e1n Kruszewski",
+                "Angeliki Lazaridou",
+                "Quan Ngoc Pham",
+                "Raffaella Bernardi",
+                "Sandro Pezzelle",
+                "Marco Baroni",
+                "Gemma Boleda",
+                "Raquel Fern\u00e1ndez."
+            ],
+            "title": "The lambada dataset: Word prediction requiring a broad discourse context",
+            "venue": "arXiv",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Adam Paszke",
+                "Sam Gross",
+                "Soumith Chintala",
+                "Gregory Chanan",
+                "Edward Yang",
+                "Zachary DeVito",
+                "Zeming Lin",
+                "Alban Desmaison",
+                "Luca Antiga",
+                "Adam Lerer"
+            ],
+            "title": "Automatic differentiation in pytorch",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Guilherme Penedo",
+                "Quentin Malartic",
+                "Daniel Hesslow",
+                "Ruxandra Cojocaru",
+                "Alessandro Cappelli",
+                "Hamza Alobeidli",
+                "Baptiste Pannier",
+                "Ebtesam Almazrouei",
+                "Julien Launay"
+            ],
+            "title": "The refinedweb dataset for falcon llm: Outperforming curated corpora",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Keith Porcaro."
+            ],
+            "title": "The real harm of crisis text line\u2019s data sharing",
+            "venue": "wired.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Matt Post."
+            ],
+            "title": "A call for clarity in reporting BLEU scores",
+            "venue": "Proceedings of the Third Conference on Machine Translation: Research Papers, pages 186\u2013 191, Brussels, Belgium. Association for Computational Linguistics.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Karthik Narasimhan",
+                "Tim Salimans",
+                "Ilya Sutskever"
+            ],
+            "title": "Improving language understanding by generative pre-training",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Rajkumar Ramamurthy",
+                "Prithviraj Ammanabrolu",
+                "Kiant\u00e9 Brantley",
+                "Jack Hessel",
+                "Rafet Sifa",
+                "Christian Bauckhage",
+                "Hannaneh Hajishirzi",
+                "Yejin Choi"
+            ],
+            "title": "Is reinforcement learning (not) for natural language processing?",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jeff Rasley",
+                "Samyam Rajbhandari",
+                "Olatunji Ruwase",
+                "Yuxiong He."
+            ],
+            "title": "Deepspeed: System optimizations enable training deep learning models with over 100 billion parameters",
+            "venue": "Proceedings of the 26th ACM SIGKDD International Conference on Knowl-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Melissa Roemmele",
+                "Cosmin Adrian Bejan",
+                "Andrew S Gordon."
+            ],
+            "title": "Choice of plausible alternatives: An evaluation of commonsense causal reasoning",
+            "venue": "AAAI spring symposium: logical formalizations of commonsense reasoning, pages 90\u201395.",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Keisuke Sakaguchi",
+                "Ronan Le Bras",
+                "Chandra Bhagavatula",
+                "Yejin Choi."
+            ],
+            "title": "Winogrande: An adversarial winograd schema challenge at scale",
+            "venue": "Communications of the ACM, 64(9):99\u2013106.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Angela Fan",
+                "Christopher Akiki",
+                "Ellie Pavlick",
+                "Suzana Ili\u0107",
+                "Daniel Hesslow",
+                "Roman Castagn\u00e9",
+                "Alexandra Sasha Luccioni",
+                "Fran\u00e7ois Yvon",
+                "Matthias Gall\u00e9"
+            ],
+            "title": "Bloom: A 176bparameter open-access multilingual language model",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "John Schulman",
+                "Filip Wolski",
+                "Prafulla Dhariwal",
+                "Alec Radford",
+                "Oleg Klimov."
+            ],
+            "title": "Proximal policy optimization algorithms",
+            "venue": "arXiv preprint arXiv:1707.06347.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ross Taylor",
+                "Marcin Kardas",
+                "Guillem Cucurull",
+                "Thomas Scialom",
+                "Anthony Hartshorn",
+                "Elvis Saravia",
+                "Andrew Poulton",
+                "Viktor Kerkez",
+                "Robert Stojnic."
+            ],
+            "title": "Galactica: A large language model for science",
+            "venue": "arXiv preprint arXiv:2211.09085.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Florian Tram\u00e8r",
+                "Gautam Kamath",
+                "Nicholas Carlini."
+            ],
+            "title": "Considerations for differentially private learning with large-scale public pretraining",
+            "venue": "arXiv preprint arXiv:2212.06470.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Leandro von Werra",
+                "Younes Belkada",
+                "Lewis Tunstall",
+                "Edward Beeching",
+                "Tristan Thrush",
+                "Nathan Lambert."
+            ],
+            "title": "Trl: Transformer reinforcement learning",
+            "venue": "https://github.com/lvwerra/trl.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Thomas Wolf",
+                "Lysandre Debut",
+                "Victor Sanh",
+                "Julien Chaumond",
+                "Clement Delangue",
+                "Anthony Moi",
+                "Pierric Cistac",
+                "Tim Rault",
+                "R\u00e9mi Louf",
+                "Morgan Funtowicz"
+            ],
+            "title": "Huggingface\u2019s transformers: State-ofthe-art natural language processing",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Da Yu",
+                "Saurabh Naik",
+                "Arturs Backurs",
+                "Sivakanth Gopi",
+                "Huseyin A Inan",
+                "Gautam Kamath",
+                "Janardhan Kulkarni",
+                "Yin Tat Lee",
+                "Andre Manoel",
+                "Lukas Wutschitz"
+            ],
+            "title": "Differentially private fine-tuning of language models. arXiv preprint arXiv:2110.06500",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Rowan Zellers",
+                "Ari Holtzman",
+                "Yonatan Bisk",
+                "Ali Farhadi",
+                "Yejin Choi"
+            ],
+            "title": "Hellaswag: Can a machine really finish your sentence? arXiv preprint arXiv:1905.07830",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models. arXiv preprint arXiv:2205.01068",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with bert",
+            "venue": "arXiv preprint arXiv:1904.09675.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Daniel M Ziegler",
+                "Nisan Stiennon",
+                "Jeffrey Wu",
+                "Tom B Brown",
+                "Alec Radford",
+                "Dario Amodei",
+                "Paul Christiano",
+                "Geoffrey Irving."
+            ],
+            "title": "Fine-tuning language models from human preferences",
+            "venue": "arXiv preprint arXiv:1909.08593.",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large language models (LLMs) have experienced exponential growth in recent years, scaling up from millions to billions to trillions of parameters (Radford et al., 2019; Brown et al., 2020; Chowdhery et al., 2022; Fedus et al., 2021). As their scale increases, the training sets for these models also expand to billions of tokens (Gao et al., 2020), leading to overall performance improvements, even in few-shot learning scenarios (Brown et al., 2020). However, this growth in model size and training data has raised practical concerns regarding privacy risks associated with memorizing the training data. Adversaries can extract individual sequences from a pre-trained model, even if the training dataset is publicly available (Carlini et al., 2021).\nStudies have shown that a language model with 6 billion parameters (GPT-J) can memorize at least 1% of its training data (Carlini et al., 2022). One potential cause of this memorization is the training strategy of the language model, as its objective is to identify the relationships between tokens, either in an auto-regressive LM setup or through masked language modelling (MLM) (Devlin et al., 2018), where the model predicts the masked tokens based on their surrounding context (Radford et al., 2018). Additionally, repeated instances in the training corpus can contribute to memorization, as more frequent examples are more likely to be memorized (Lee et al., 2021). To address the issue of memorization in LLMs, several approaches have been proposed, including data sanitization (Lison et al., 2021), the application of differential privacy algorithms(Abadi et al., 2016; Anil et al., 2021; Li et al., 2021; Tram\u00e8r et al., 2022; Basu et al., 2021), data deduplication (Kandpal et al., 2022), and knowledge unlearning (Jang et al., 2022). These techniques aim to prevent the generation of memorized content. However, they also come with certain drawbacks. Data sanitization\nassumes that private information can be easily identified and is not context-dependent. Differential privacy can lead to lower-quality generative models (Anil et al., 2021). On the other hand, knowledge unlearning restricts the number of samples that can be forgotten at once to avoid degrading the overall capability of the language model, which may limit its effectiveness in real-world scenarios.\nIn this study, we propose DeMemorization (DeMem), a reward-based (un)learning framework for language models. DeMem leverages a paraphrasing policy to address memorization, using a negative similarity metric as a reward to encourage the language model (LM) to unlearn.\nGiven samples of prefixes and suffixes from the original pre-training data of the language model, we use a prefix as input for the language model to generate the suffix; then, we compute the negative BERTScore (Zhang et al., 2019) to measure the dissimilarity between the true suffix and generated suffix, the dissimilarity scores are then regarded as a reward signal to maximize in the training process, which guarantees that the approximate memorization will be mitigated.\nFor instance, given a training sample like \"Alice Green lives at 187 Bob Street,\" where the prefix is \"Alice Green lives at\" and the suffix is \"187 Bob Street\", our goal is to have the fine-tuned LM paraphrase the suffix as \"12 Red Street.\" This paraphrasing approach minimizes the memorization relationship between the prefix and suffix without erasing the training sample from the LM\u2019s parameters or replacing it with meaningless content, which can negatively impact the LM\u2019s performance\nWe conducted experiments using GPT-Neo and OPT LMs (with models ranging from 125M to 2.7B parameters) (Black et al., 2021; Zhang et al., 2022). DeMem achieved little to no performance degradation on the initial LM capabilities measured via nine common NLP classification benchmarks (Hellaswag (Zellers et al., 2019), Lambada (Paperno et al., 2016), Winogrande (Sakaguchi et al., 2021), COPA (Roemmele et al., 2011), ARC-Easy, ARCChallenge (Clark et al., 2018), Piqa(Bisk et al., 2020), MathQA (Amini et al., 2019), and PubmedQA (Jin et al., 2019)).\nWe also evaluate DeMem on increasing the context of the prefix, as many studies show that as a longer context is provided, the memorization ratio increases (Carlini et al., 2021, 2022). The proposed framework makes no explicit, implicit as-\nsumptions or limitations about the data\u2019s structure or size to be protected. Also, unlike the DP methods, the proposed framework does not apply any partition mechanism to split the data into public data and private data; as language data cannot be partitioned(Brown et al., 2022), we apply the policy on all training data as defining, partitioning data into private and public, and limiting the number of samples inadequate in the real-world scenarios.\nTo summarize, our main findings are the following:\n\u2022 Using a reinforcement learning feedback approach results in little to no performance degradation of general capabilities while being practical, consistent, and independent of increasing the number of protected samples. At the same time, maintaining the fluency and coherence of the generated samples.\n\u2022 As the language model size increases, the convergence rate improves. Convergence refers to the model-generated suffixes diverging significantly from the original ones while the perplexity difference between generated and original examples decreases.\n\u2022 As the size of a language model increases, the dissimilarity score increases. This suggests that larger models may tend to \"forget\" the memorized data faster.\n\u2022 Combining Deduplication with DeMemorization enhances privacy with insignificant degradation(\u223c0.5%) in the Language model performance."
+        },
+        {
+            "heading": "2 Background",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Memorization Definitions",
+            "text": "In the context of memorization in large language models, we follow the definition proposed by (Lee et al., 2021), which introduced approximate memorization. Given a string S, splitted into prefix (P) and suffix (ST ). We fed the prefix to the LM to get the generated suffix (SG). The memorization is measured with the chosen edit distance between the true and generated suffix. In our study, we choose the edit distance to be a similarity measure (SacreBLEU (Post, 2018)) as proposed in (Ippolito et al., 2022), to be able to capture the approximate memorization, not just the \u201cEidetic memorization\u201d (Carlini et al., 2021) as the definition of verbatim\nmemorization fails to include more subtle forms of memorization (Ippolito et al., 2022)."
+        },
+        {
+            "heading": "2.2 RL In Language Models",
+            "text": "Unlearning undesirable behaviors is more compatible with the reinforcement learning (RL) paradigm. In the realm of NLP, RL has been employed to enhance scalar metrics through reward optimization (Ramamurthy et al., 2022; Ziegler et al., 2019; Ouyang et al., 2022). Lately, RL has gained prominence for addressing undesirable behavior, including toxicity, social biases, and offensive speech. This is accomplished by using Proximal Policy Optimization (PPO) (Schulman et al., 2017) to optimize a Language Model (LLM) based on a reward model. In this paper, we investigate using RL with a language model to mitigate privacy risks associated with memorization."
+        },
+        {
+            "heading": "3 Related Work",
+            "text": "In this section, we delve into recent studies to mitigate memorization in language models, which can be categorized into three main approaches: data pre/post-processing, differential privacy methods, and knowledge unlearning.\nData Pre/Post-Processing: This approach reduces memorization in training data by applying filters before or after feeding it into the language model. One method is data deduplication (Kandpal et al., 2022), which removes duplicates and improves model performance. However, it only partially protects against memorization as the model can still memorize non-duplicate sequences. Another approach is \"MemFREE decoding\" (Ippolito et al., 2022), which efficiently checks the memorization in the LM generation by an n-gram in the training dataset.\nDifferential Privacy (DP): is a widely-used technique for training models to prevent memorization of individual training examples (Abadi et al., 2016). While effective for fine-tuning language models (Yu et al., 2021; Li et al., 2021), DP often reduces performance compared to non-private models (Anil et al., 2021). State-of-the-art language models are typically trained without DP, using large amounts of data and computational resources. DP algorithms are computationally expensive, slower to converge, and have lower utility compared to non-private methods (Anil et al., 2021). Applying DP to language data is challenging due to defining private information\nboundaries (Brown et al., 2022). Knowledge Unlearning (UL): is an effective method that reverses the training objective of minimizing the negative log-likelihood for forgotten tokens. It minimally affects language modeling performance in larger models for a small number of samples. UL has two approaches: batch unlearning for multiple samples and sequential unlearning for smaller chunks. However, unlearning a large number of samples at once significantly degrades average language model performance. While UL effectively addresses memorization, it has not been tested on sample sizes larger than 128. Also, It does not preserve fluency or coherency for generated suffixes, which are crucial for practical applications.\nIn this work, we compare our proposed method with a data-preprocessing approach proposed by (Kandpal et al., 2022), which shows that deduplicating helps minimize data memorization. While this method is effective, we show that memorization is still high in the LMs pre-trained with this approach; thus, we show that combining pre-processing with our approach, \u201cDeMemorization,\u201d effectively mitigates memorization. We also compare our method with UL and show it is not inadequate or impractical in real-world scenarios due to a limited number of samples to forget at once."
+        },
+        {
+            "heading": "4 Methodology",
+            "text": ""
+        },
+        {
+            "heading": "4.1 DeMemorization Via Dissimilarity Policy",
+            "text": "DeMemorization framework operates by learning a paraphrasing policy to mitigate memorization risks. We divide each sample into prefixes and suffixes using an LM and a subset of pre-training data. The unlearning process is as follows: we select a prefix P and a true suffix ST , then input the prefix into the pre-trained LM to produce a suffix SG. Using a negative similarity metric, we evaluate how the generated suffix is dissimilar to true. We use that as a reward signal to encourage the LM to develop a paraphrasing policy, generating dissimilar tokens to minimize memorization. These steps can be summarized as follows:\nP, ST \u223c Dt (1) SG = f\u03b8(sGi+1 |xP1 , ..., xPi) (2)\nDisScore = \u2212BERTScore(SG, ST ) (3)"
+        },
+        {
+            "heading": "4.1.1 Reward Function",
+            "text": "To yield the desired outcome of paraphrasing to mitigate memorization risk, we need to employ a similarity function to achieve this goal. The proposed reward function should allow changes in words or even the entire sentence while preserving the semantic meaning. Also, while learning the paraphrasing technique, we aim to ensure that the fine-tuned or Dememorized LM stays within the original LM to avoid potentially less coherent and relevant generation.\nLearning Dissimilarity with BERTScore. To achieve the dissimilarity goal, we employ BERTScore. One advantage of BERTScore over other contextual embedding methods is the ability to operate on pairwise tokens using contextual embeddings, providing a more flexible definition of dissimilarity in our context. This flexibility means that BERTScore can yield a high similarity score for different words that share the same entity, encouraging the language model to learn a paraphrasing policy effectively. We employed the F-score metric produced using BERTScore.\nAchieving Stability Via KL Penalty. To achieve the stability goal, we introduce a KL divergence penalty term to quantify the dissimilarity between these two policies. This step helps ensure that our optimization process remains within a trustworthy region. The KL divergence, calculated for the policies, is expressed as:\nKL(\u03b8||\u03b8c) = \u2211 i\u2208[1,t] \u03c0\u03b8(ai|si) \u00b7 log \u03c0\u03b8(ai|si) \u03c0\u03b8c(ai|si) (4)\nHere, we denote \u03b8 as the pre-trained policy, representing a model that has undergone initial training without fine-tuning. Additionally, we introduce \u03b8c as the updated policy, which signifies the policy after fine-tuning or further training.\". We deduct KL divergence with default value weight \u03b2 = 0.2 as a penalty term."
+        },
+        {
+            "heading": "4.1.2 Policy Optimization Via PPO",
+            "text": "To optimize the policy, we employ a Proximal Policy Optimization (PPO) methodology, incorporating a top-p sampling rate of 0.95, a technique commonly referred to as Natural Language Policy Optimization (NLPO), as elaborated in-depth in (Ramamurthy et al., 2022) (please refer to Appendix A for comprehensive elucidation). A value network V is included beside the language modeling head to estimate the value function. The batch size is 32 for\nall models; we selected a specific number of steps for each model as the convergence rate for each model is different. We mean by convergence in this context that the model-generated suffixes become significantly different from the original suffixes but without a considerable loss in the perplexity as the difference between the perplexity of the generated examples and original examples becomes smaller, so we selected the appropriate number of steps that balance between these goals."
+        },
+        {
+            "heading": "4.2 Measuring Memorization In Language Models",
+            "text": "As mentioned in subsection 2.1, we adopt the concept of approximate memorization, as it provides a more precise and adaptable approach to capturing subtle forms of memorization compared to the limitations of exact memorization. We employ a widely accepted text similarity measure from standard Natural Language Processing (NLP) evaluation techniques to quantify approximate memorization accurately: the SacreBLEU metric. SacreBLEU is an improved version of BLEU, known for its stability in measuring the quality of machine-generated text.\nTo measure forgetting, we consider the negative of SacreBLEU. By utilizing SacreBLEU as a metric for estimating approximate memorization, we define DeMemorization or forgetting as the process of minimizing the relationship between the given prefix P and the suffix S.\nThis relationship represents the information that the adversary seeks to extract based on the given prefix. The metric we mentioned quantifies this relationship. In an example scenario, an adversary has the personal email address \"bob@adam.com\" and seeks to obtain the password. If the LM has memorized this association, it can provide the password \"12345\" when given the email, however, by minimizing or altering their relationship. LM can generate a different suffix as the password \"0912,\",\nAs a result, the generated suffixes are valid and meaningful output without memorizing sensitive information. This approach achieves the dual objectives of preserving the LM\u2019s general capability and the fluency of generated suffixes while ensuring privacy. Also, the solution is more practical in real-world situations than completely removing all information, which can negatively impact the capabilities of the language model (LM)."
+        },
+        {
+            "heading": "5 Experiments",
+            "text": "In this section, we begin by introducing the dataset used for training and assessing the paraphrasing policy. Subsequently, we assess the overall performance of the dememorized LM general performance on nine benchmarks. We then establish the baseline methods for comparison. Finally, we define the evaluation metrics that enable us to measure the memorization and the performance in downstream tasks."
+        },
+        {
+            "heading": "5.1 Experimental Settings",
+            "text": ""
+        },
+        {
+            "heading": "5.1.1 Memorization Dataset",
+            "text": "We employed a subset of the Pile dataset, released as a benchmark for training data extraction attacks on large Language Models. Generally, the Pile dataset contains data from 16 different sources (e.g., books, Web scrapes, open source code). We used this version of the subset 1, designed to be easy to extract to assess targeted attack performance. The dataset contains only 15,000 samples since the full version has not been released yet. Each sample consists of 200 tokens sampled randomly from the Pile training set. The topics included in the subset are code, news, logs, conversations, copyrights, links, etc. Most of them are in the English language. The dataset is splitted into 13,500 samples for training and 1,500 samples for testing.\nTraining & Evaluation Data. Each sample consists of a 200-token sequence divided into 100 pre-prefix tokens, 50 prefix tokens, and 50 suffix tokens. During the training phase, we exclusively utilized the prefix and suffix tokens. However, we tested the model in two different settings during the\n1https://github.com/google-research/ lm-extraction-benchmark\nevaluation phase. In the first setting, we evaluated the model\u2019s ability to predict the suffix when provided with only the prefix. In the second setting, we evaluated the model\u2019s capability to predict the suffix when given the pre-prefix and prefix. This evaluation assessed the model\u2019s capacity to protect against acquiring additional information or knowledge. A longer context in a language model can be considered a form of attack (Carlini et al., 2022). The sequence splitting is illustrated in Figure 2."
+        },
+        {
+            "heading": "5.1.2 Downstream Tasks",
+            "text": "To ensure stronger privacy protections for language models (LMs) without compromising their original capabilities, we undertake a comprehensive evaluation that encompasses both privacy risks and the inherent strengths of LMs. This evaluation involves quantifying the LMs\u2019 performance across various classification tasks to assess their general capabilities. The tasks include Hellaswag (Zellers et al., 2019) and Lambada (Paperno et al., 2016) benchmarks, which gauge linguistic reasoning abilities, as well as Winogrande (Sakaguchi et al., 2021) and COPA (Roemmele et al., 2011), which measure commonsense reasoning abilities. Additionally, we utilize ARC-Easy, ARC-Challenge (Clark et al., 2018), Piqa (Bisk et al., 2020), MathQA (Amini et al., 2019), and PubmedQA (Jin et al., 2019) benchmarks to assess scientific reasoning abilities. In addition to these classification tasks. We also measure the perplexity on the Wikitext (Merity et al., 2016) and Lambada (Paperno et al., 2016) datasets to gain insights into the LMs\u2019 language understanding and modeling. Whenever possible, we use the test sets for these evaluations; otherwise, we resort to the validation sets. Also, we did not report Lambada\u2019s perplexity & and accuracy as it shows high values for perplexity & low values for accuracy for the UL baseline. To discard the anomaly and better assess the performance, we report it in Appendix E."
+        },
+        {
+            "heading": "5.1.3 Baseline Methods",
+            "text": "Our experiments used the GPT-NEO family (125M, 1.3B, 2.7B), pre-trained on the publicly available 825GB Pile dataset. Additionally, we employed the OPT family (125M, 1.3B, 2.7B) (Zhang et al., 2022), which was pre-trained on a subset of the deduplicated version of the Pile, along with other corpora from diverse domains. OPT served as our baseline method for deduplication, as per (Jang et al., 2022), since the deduplicated version of GPT-\nModel #Samples N-SacreBLEU\u2191 LM (ACC)\u2191 LM (PPL)\u2193 GEN (PPL)\u2193 Epochs/Steps\nNEO LMs by (Kandpal et al., 2022) were not publicly accessible. We also applied DeMemorization to the OPT LMs, which can be seen as a combination of the deduplication approach and DeMemorization, resulting in a significant enhancement in the privacy of these models. Furthermore, we included UL (Jang et al., 2022) as a second baseline method to highlight weaknesses and distinctions."
+        },
+        {
+            "heading": "5.1.4 Implementation Details",
+            "text": "For training, we utilized the training subset and finetuned the GPT-Neo & OPT LMs fine-tuned them for multiple iterations depending on the model size. To compare our proposed method with UL & deduplication, we followed the configuration proposed by (Jang et al., 2022) to ensure an adequate comparison, as we randomly sample s samples from the test subset and evaluate the models on those samples for UL since it forgets s samples only at once, we make the LM forget the s samples and then evaluated. To follow the same configuration, we show the average results of 5 random samplings of s samples for all of our experimental settings.\nTo explore the impact of increasing the sample size to be forgotten, we performed five random samplings of 32, 128, and 256. DeMemorization was carried out using a batch size of 32, and a default\nModel #Samples N-SacreBLEU\u2191 LM (ACC)\u2191 LM (PPL)\u2193 GEN (PPL)\u2193 Epochs/Steps\nvalue of learning rate of 1.41\u00d710\u22125 was applied to all models. We use the default value of KL Beta of 0.2 and a clip range of 0.2. The GPT-Neo & OPT LMs were employed using the official release in the Hugging Face library. For UL training and memorization evaluation, we utilized the official code provided by the authors. For the selection of hyperparameters, see Appendix F. In downstream tasks, we employed the lm-evaluation-harness framework (Gao et al., 2021) for all baseline methods."
+        },
+        {
+            "heading": "5.1.5 Evaluation Metrics",
+            "text": "We conducted a comprehensive evaluation of DeMemorization and baseline methods, employing a multi-perspective approach to assess their effectiveness in three key areas:\n(1) Measuring Forgetting: As mentioned in subsection 4.2, we employed negative Sacre-BLEU to quantify memorization. (2) Evaluating Generated Suffixes: To assess text fluency, we utilized the perplexity score of the underlying original model before forgetting. This metric enabled us to assess the grammatical correctness and coherence of the generated suffixes. (3) Performance on Downstream Tasks: We assessed the performance of the unlearned models across nine classification tasks, employing accuracy scores and perplexity measurements on Wiki-\ntext and Lambada."
+        },
+        {
+            "heading": "5.2 Experimental Results & Discussion",
+            "text": "We conducted comprehensive experiments to assess the performance of DeMemorization against the baseline methods. Our main observations are as follows:"
+        },
+        {
+            "heading": "5.2.1 Overview of The DeMemorization Performance",
+            "text": "We comprehensively evaluated the DeMemorization approach on nine classification tasks, wikitext for perplexity, and the generated samples. The evaluation results, as shown in Table 1, demonstrate that the DeMemorization approach effectively provides privacy and decreases the memorization for GPT-NEO while maintaining the LM general capability, measured by evaluating the classification tasks. It also maintains the fluency of the general LM and generated suffixes. On the other hand, the UL approach provides more robust protection since it removes the data points completely from the training data, which lowers the general LM capability by a large margin. This is effective privacy-wise but needs to be more practical from the performance perspective. Thus, we tried to balance this tradeoff by employing the DeMemorization approach. We provide the results for each dataset in Appendix E for reference."
+        },
+        {
+            "heading": "5.2.2 Deduplication With DeMemorization &",
+            "text": "UL\nWe included OPT LMs as a baseline for the preprocessing technique, which applies deduplication to decrease memorization. Deduplicating the training data has effectively mitigated memorization, as Table 1, Table 2 demonstrate. OPT models (dedu-\nplicated) exhibit higher N-sacreBLEU scores than NEO (non-duplicate version) models while achieving similar or better performance in downstream tasks. However, even in these models, memorization remains high, as only a portion of the memorized samples are duplicates.\nTherefore, we explored the UL approach and DeMemorization. The models that utilized both frameworks benefited significantly and became more robust privacy LMs. While UL reduced memorization by approximately 99% of N-sacreBLEU, it also negatively impacted the general capability of the LM, resulting in an \u223c11% difference from the original LM across various configurations. On the other hand, DeMemorization achieved comparable results to UL, with a reduction of \u223c94% in memorization, without the need to completely remove training data points from the LM parameters. In comparison, the loss in general LM capability was insignificant, at around \u223c0.5%, in the case of 125M and NEO 1.3B DeMemorization, even enhanced performance. These findings suggest that employing a combination of deduplication and DeMemorization effectively mitigates memorization while maintaining the general capability of the LM. Since data deduplication is applied in most of the recent & large language models (Penedo et al., 2023; Touvron et al., 2023; Biderman et al., 2023; Taylor et al., 2022; Scao et al., 2022; Black et al., 2022), we believe our approach combined with deduplication will effectively mitigate memorization."
+        },
+        {
+            "heading": "5.2.3 Number of Samples, Stability, & Universal Policy",
+            "text": "We investigated the impact of increasing the number of samples on the performance of both UL and DeMemorization. In line with the findings from\n(Jang et al., 2022), UL is sensitive to the number of samples being unlearned simultaneously. Our experimental results validate this observation in Table 1, Table 2. As the number of samples increases, we observe a decrease in the LM\u2019s performance. On the other hand, DeMemorization demonstrates a different behavior as it is unaffected by the number of samples as shown in Figure 3. In DeMemorization, the LM is fine-tuned one-time using negative similarity as a reward during training, followed by evaluation on a separate test set. This allows the model to learn a universal policy to forget an unlimited number of samples. Here, the term \"unlimited\" signifies the absence of any restrictions, assumptions, or re-training of the LM regarding the number of samples to be unlearned.\nIn UL, however, the model is fine-tuned and evaluated on the same samples to forget them at a time. To unlearn or forget multiple samples, the model needs to undergo fine-tuning multiple times through sequential or batch unlearning. In each iteration, the model is fine-tuned with a specific number of samples (typically 32, as suggested by the authors) to prevent a decrease in the LM\u2019s overall capability. This can be regarded as an assumption about the number of samples to be protected simultaneously, leading to an incomplete solution. See Appendix G to highlight more UL framework assumptions."
+        },
+        {
+            "heading": "5.2.4 Perplexity of WikiText & Generated",
+            "text": "Suffix\nPerplexity serves as a crucial metric for assessing the overall performance of a Language Model (LM) in terms of its ability to generate fluent and coherent text. We computed perplexity for Wikitext and presented the results in Table 1, Table 2.\nDeMemorization had a minimal impact on per-\nplexity for all models. UL showed significantly higher perplexity in some cases, even reaching infinity. UL\u2019s high perplexity is attributed to its gradient ascent approach, which softens the probability distribution and leads to a more uniform distribution and higher perplexity. However, this softening procedure degrades LM performance as the model becomes less confident in generating tokens. We also evaluated the perplexity of unlearned samples, which is crucial in practical applications where the unlearned data domain is used. DeMemorization caused an average degradation of approximately 0.5% in NEO models and around 1.5% in OPT models. UL exhibited higher degradation in both models due to the complete removal of corresponding data points from the model parameters."
+        },
+        {
+            "heading": "5.2.5 Protection Against Discoverability Phenomenon",
+            "text": "Discoverability phenomenon refers to the observation that some memorization only becomes apparent under certain conditions, such as when a model is prompted with a sufficiently long context. (Carlini et al., 2022) found that the fraction of extractable sequences increases in a log-linear fashion with the number of tokens in the context.\nFor example, with a context of 50 tokens, approximately 33% of training sequences can be extracted from the NEO-6B model. However, with a context of 450 tokens, this percentage rises to 65%.\nWe evaluated our DeMemorization approach by increasing the prefix context from 50 to 150 tokens. The results in Table 1, Table 2 show that extending the context does not significantly impact the 125M model in NEO, with a forgetting rate decrease from 58.44% to 45.47%, and has no effect in OPT-125M. However, for larger models like 1.3B and 2.7B, a longer context considerably reduces the forgetting rate by approximately 49% in NEO and around 10% in OPT. Nevertheless, DeMemorization effectively counters this type of attack, increasing the forgetting rate by approximately 10% for the 125M model and approximately 30% for larger sizes in OPT & NEO as shown in Table 3. This demonstrates the universality and generalizability of the learned policy across various scenarios."
+        },
+        {
+            "heading": "5.2.6 Approximate Memorization Threhold",
+            "text": "Based on (Ippolito et al., 2022), a BLEU score of 75% for the generated suffix is considered a suitable threshold for determining approximate memorization. However, our investigation found that even a threshold as low as 50% after applying the framework can mitigate this issue. Nevertheless, we chose to use the widely accepted threshold of 75% to demonstrate the effectiveness of our framework. Applying DeMemorization to the LM resulted in a significant decrease in memorized samples. For GPT-Neo 1.3B and 2.7B, approximate\nmemorization examples decreased from 910 to 497 and 1036 to 321, respectively (refer to Appendix B for other models). The red region in Figure 4 represents samples with scores equal to or above 75%. After DeMemorization, the distribution of samples spreads more evenly across different values instead of being concentrated beyond the 75% threshold. Box plots (see Appendix D) confirm the efficiency of the DeMemorization approach, as evidenced by the median of the sample\u2019s distribution before and after DeMemorization."
+        },
+        {
+            "heading": "5.2.7 Qualitative Results",
+            "text": "Figure 5 demonstrates that the framework is capable of learning a policy that reduces or eliminates the amount of memorized personal data, such as email addresses. However, it should be noted that in certain instances, this can increase perplexity. More samples demonstrating Dememorization can be found in Appendix C."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "In this paper, we present a novel framework that tackles the problem of training data memorization in LLMs. We achieve this by employing an RL paraphrasing policy. Through extensive evaluations conducted in diverse settings, we demonstrate the effectiveness of our approach. Our framework successfully reduces memorization by significantly decreasing the SacreBLEU score while preserving the overall capabilities of the LM as measured by nine classification benchmarks.\nLimitations\nOne of the limitations of our work is that it relies on a single scalar reward for optimization, as the problem has dual objectives: dissimilarity and perplexity. To overcome this limitation, we suggest exploring other techniques, such as Multi-objective Reinforcement Learning, which can potentially enhance performance and optimize both objectives simultaneously.\nEthics Statement\nImproving the large language model to be privacypreserving is crucial since the language models have become more prominent and involved in many applications in multi-aspect of life. Ensuring the data privacy of those models is vital since some adversary may be able to reach that information. To make those models widely used, we have to guarantee they cannot emit private data. In this paper, we hope our work will serve as a foundation for developing new and innovative solutions to the problem of approximate memorization in large language models since verbatim memorization can give a false sense of privacy, as earlier work suggested. Our proposed framework provides a promising approach to addressing this issue. Further research and experimentation in this area can lead to even more effective methods for reducing memorization in these models. Our work also highlights the importance of considering both the computational cost and the performance trade-off when developing new techniques for addressing memorization in large language models."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "The authors would like to thank Niloofar Mireshghallah for helpful feedback.\nThis research is supported by the Vector Scholarship in Artificial Intelligence, provided through the Vector Institute and Natural Sciences and Engineering Research Council of Canada (NSERC) by NSERC Discovery Grant. This research was enabled in part by support provided by Compute Ontario and the Digital Research Alliance of Canada."
+        },
+        {
+            "heading": "A Natural Language Policy Optimization vs PPO",
+            "text": "To tackle the challenge posed by large action spaces in language generation tasks, the NLPO (Natural Language Policy Optimization) framework was proposed. Previous research by (Ramamurthy et al., 2022) highlighted the difficulties faced by existing RL algorithms when dealing with models like GPT-2/3 and T5, which have extensive vocabularies of 50K and 32K tokens, respectively, and this issue becomes even more pronounced with newer models. NLPO introduces a masking policy that is periodically updated and incorporates a top-p sampling technique during training. This technique helps address the dilemma of balancing the inclusion of task-relevant information while mitigating the risk of reward hacking. By extending the PPO (Proximal Policy Optimization) algorithm, NLPO aims to enhance the stability and effectiveness of training language models. NLPO achieves this by employing top-p sampling through generating, which restricts the selection of tokens to a smaller setting where the cumulative probability surpasses a given threshold parameter, p (Holtzman et al., 2018)."
+        },
+        {
+            "heading": "B Displaying Approximate Memorization Threshold",
+            "text": "Recent studies suggested that approximate memorization occurs at the BLEU score of 75%; we follow this suggestion and demonstrate the effectiveness of the proposed framework in this section by comparing the number of samples that exceed this threshold before and after applying the framework.\nSacreBLEU(suffixG, suffixT ) > 0.75 (5)\nAs shown in Figure 6, the memorization ratio for the GPT-Neo 125M model is relatively low. However, when using standard and longer context settings, there are many instances where the samples are distributed on and beyond the 75% threshold. Despite this, after implementing the proposed framework, the distribution of samples is more evenly spread across various values rather than being concentrated solely in the region beyond the 75% threshold. In contrast to the other variation, GPT-Neo 1.3B & 2.7B have a large memorization ratio, especially in case of longer context; the framework effect can be seen obviously as many samples exceed the threshold in case of those variations as shown in Figure 7 and Figure 8."
+        },
+        {
+            "heading": "C Qualitative Results",
+            "text": "In this section, we demonstrate the effectiveness of our proposed framework by presenting a thorough analysis of samples generated before and after its application. To provide a comprehensive evaluation, we have chosen samples from various model sizes, including 125M, 1.3B, and 2.7B, and included examples from both standard and longer contexts. Additionally, we present samples from different training phases to showcase the learned policy\u2019s evolution over time. As previously mentioned, the policy initially focuses on replacing individual words or numbers to decrease the similarity between samples. As the training process progresses, the policy becomes more aggressive and replaces entire phrases, as shown in Figure 9."
+        },
+        {
+            "heading": "D Median Comparison",
+            "text": ""
+        },
+        {
+            "heading": "E Results of Each Dataset",
+            "text": ""
+        },
+        {
+            "heading": "F Baseline Method Hyperparameters",
+            "text": "We selected the hyperparameters for UL based on (Jang et al., 2022) for NEO models, using the number of epochs required for unlearning until the target sequences meet the forgetting criteria. For OPT models, we used half the number of epochs compared to NEO models in specific sizes, as OPT models achieved the same loss as NEO models but in fewer epochs."
+        },
+        {
+            "heading": "G Memorization\u2019s Assumptions",
+            "text": "As previously discussed, presenting assumptions to address the memorization problem often leads to incomplete solutions. This is evident in the case of differential privacy, which assumes whether the data is private or not. Similarly, UL assumes that the training and evaluation data are memorized, which is impractical in real-world applications considering that language models are trained on vast corpora with billions of tokens. Furthermore, fine-tuning an LM in an application involving potentially sensitive/private data poses challenges in splitting the data into sensitive/private and non-sensitive/private portions for the purpose of forgetting (Levine, 2021; Porcaro, 2022; Brown et al., 2022). On the other hand, DeMemorization does not rely on assumptions about the training data that need to be unlearned. Instead, we fine-tune the LM to learn a universal policy that reduces the relationship between the prefix and suffix. This policy achieves its objective by replacing the token with a similar entity or a context that is semantically correct but not directly linked to the same prefix, as illustrated in Figure 3. Another assumption is the limited number of samples to be unlearned at once, which we discussed before."
+        },
+        {
+            "heading": "H Hardware & Software Dependencies",
+            "text": "In order to fine-tune GPT-Neo models of sizes 125M and 1.3B, we utilized a cluster of two V100 GPUs, each equipped with 32GB of VRAM. The 125M model required approximately 0.38 minutes per PPO epoch, resulting in a total computation time of 3.04 minutes for six epochs. The 1.3B model required a slightly longer computation time of 1.68 minutes per PPO epoch, for a total of 13.44 minutes over eight epochs. For the largest variant, GPT-Neo 2.7B, we utilized a cluster of four V100 GPUs, each with 32GB of VRAM, and employed a sharding strategy with zero 3 (Rasley et al., 2020). Each PPO epoch for this model required 5.125 minutes, resulting in a total computation time of approximately 20 minutes over four epochs. For finetuning those models, we employed the HuggingFace library (Wolf et al., 2019) for training and Pytorch (Paszke et al., 2017) for parallelizing the model. For RL fine-tuning, we employed TRL (Transformer Reinforcement Learning) library(von Werra et al., 2020)."
+        }
+    ],
+    "title": "Preserving Privacy Through DeMemorization: An Unlearning Technique For Mitigating Memorization Risks In Language Models",
+    "year": 2023
+}

@@ -1,0 +1,656 @@
+{
+    "abstractText": "Topic segmentation is critical for obtaining structured documents and improving downstream tasks such as information retrieval. Due to its ability of automatically exploring clues of topic shift from abundant labeled data, recent supervised neural models have greatly promoted the development of long document topic segmentation, but leaving the deeper relationship between coherence and topic segmentation underexplored. Therefore, this paper enhances the ability of supervised models to capture coherence from both logical structure and semantic similarity perspectives to further improve the topic segmentation performance, proposing Topic-aware Sentence Structure Prediction (TSSP) and Contrastive Semantic Similarity Learning (CSSL). Specifically, the TSSP task is proposed to force the model to comprehend structural information by learning the original relations between adjacent sentences in a disarrayed document, which is constructed by jointly disrupting the original document at topic and sentence levels. Moreover, we utilize interand intra-topic information to construct contrastive samples and design the CSSL objective to ensure that the sentences representations in the same topic have higher similarity, while those in different topics are less similar. Extensive experiments show that Longformer with our approach significantly outperforms state-of-the-art (SOTA) methods. Our approach improves F1 of SOTA by 3.42 (73.74 \u2192 77.16) and improves Pk by 1.11 points (15.0 \u2192 13.89) on WIKI-727K and achieves an average relative reduction of 4.3% on Pk on WikiSection. The average relative Pk drop of 8.38% on two out-of-domain datasets also demonstrates the robustness of our approach1.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Hai Yu"
+        },
+        {
+            "affiliations": [],
+            "name": "Chong Deng"
+        },
+        {
+            "affiliations": [],
+            "name": "Qinglin Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiaqing Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Qian Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Wen Wang"
+        }
+    ],
+    "id": "SP:413f23c584fa72c193bd6771d914d7505c19fa42",
+    "references": [
+        {
+            "authors": [
+                "Sebastian Arnold",
+                "Rudolf Schneider",
+                "Philippe Cudr\u00e9Mauroux",
+                "Felix A Gers",
+                "Alexander L\u00f6ser."
+            ],
+            "title": "Sector: A neural model for coherent topic segmentation and classification",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:169\u2013184.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Pinkesh Badjatiya",
+                "Litton J Kurisinkel",
+                "Manish Gupta",
+                "Vasudeva Varma."
+            ],
+            "title": "Attention-based neural text segmentation",
+            "venue": "Advances in Information Retrieval: 40th European Conference on IR Research, ECIR 2018, Grenoble, France, March 26-29, 2018,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Joe Barrow",
+                "Rajiv Jain",
+                "Vlad Morariu",
+                "Varun Manjunatha",
+                "Douglas W Oard",
+                "Philip Resnik."
+            ],
+            "title": "A joint model for document segmentation and segment labeling",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Regina Barzilay",
+                "Mirella Lapata."
+            ],
+            "title": "Modeling local coherence: An entity-based approach",
+            "venue": "Computational Linguistics, 34(1):1\u201334.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Mostafa Bayomi",
+                "S\u00e9amus Lawless."
+            ],
+            "title": "C-hts: A concept-based hierarchical text segmentation approach",
+            "venue": "Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018).",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Doug Beeferman",
+                "Adam Berger",
+                "John Lafferty."
+            ],
+            "title": "Statistical models for text segmentation",
+            "venue": "Machine learning, 34:177\u2013210.",
+            "year": 1999
+        },
+        {
+            "authors": [
+                "Iz Beltagy",
+                "Matthew E Peters",
+                "Arman Cohan."
+            ],
+            "title": "Longformer: The long-document transformer",
+            "venue": "arXiv preprint arXiv:2004.05150.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Harr Chen",
+                "SRK Branavan",
+                "Regina Barzilay",
+                "David R Karger."
+            ],
+            "title": "Global models of document structure using latent permutations",
+            "venue": "Association for Computational Linguistics.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Freddy YY Choi."
+            ],
+            "title": "Advances in domain independent linear text segmentation",
+            "venue": "1st Meeting of the North American Chapter of the Association for Computational Linguistics.",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Somnath Basu Roy Chowdhury",
+                "Faeze Brahman",
+                "Snigdha Chaturvedi."
+            ],
+            "title": "Is everything in order? a simple way to order sentences",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 10769\u201310779.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "BERT: pre-training of deep bidirectional transformers for language understanding",
+            "venue": "NAACL-HLT, pages 4171\u20134186. Association for Computational Linguistics.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Lan Du",
+                "Wray Buntine",
+                "Mark Johnson."
+            ],
+            "title": "Topic segmentation with a structured topic model",
+            "venue": "Proceedings of the 2013 conference of the North American chapter of the Association for Computational Linguistics: Human language technologies, pages",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Jacob Eisenstein",
+                "Regina Barzilay."
+            ],
+            "title": "Bayesian unsupervised topic segmentation",
+            "venue": "Proceedings of the 2008 Conference on Empirical Methods in Natural Language Processing, pages 334\u2013343.",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Micha Elsner",
+                "Eugene Charniak."
+            ],
+            "title": "Extending the entity grid with entity-specific features",
+            "venue": "Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies, pages 125\u2013129.",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Yaxin Fan",
+                "Feng Jiang."
+            ],
+            "title": "Uncovering the potential of chatgpt for discourse analysis in dialogue: An empirical study",
+            "venue": "arXiv preprint arXiv:2305.08391.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haoyu Gao",
+                "Rui Wang",
+                "Ting-En Lin",
+                "Yuchuan Wu",
+                "Min Yang",
+                "Fei Huang",
+                "Yongbin Li."
+            ],
+            "title": "Unsupervised dialogue topic segmentation with topic-aware utterance representation",
+            "venue": "arXiv e-prints, pages arXiv\u2013 2305.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianyu Gao",
+                "Xingcheng Yao",
+                "Danqi Chen."
+            ],
+            "title": "Simcse: Simple contrastive learning of sentence embeddings",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 6894\u20136910.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Goran Glava\u0161",
+                "Federico Nanni",
+                "Simone Paolo Ponzetto."
+            ],
+            "title": "Unsupervised text segmentation using semantic relatedness graphs",
+            "venue": "Proceedings of the Fifth Joint Conference on Lexical and Computational Semantics, pages 125\u2013130.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Zheng Gong",
+                "Shiwei Tong",
+                "Han Wu",
+                "Qi Liu",
+                "Hanqing Tao",
+                "Wei Huang",
+                "Runlong Yu."
+            ],
+            "title": "Tipster: A topic-guided language model for topic-aware text segmentation",
+            "venue": "Database Systems for Advanced Applications: 27th International Conference, DASFAA",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Amir Hazem",
+                "B\u00e9atrice Daille",
+                "Dominique Stutzmann",
+                "Christopher Kermorvant",
+                "Louis Chevalier."
+            ],
+            "title": "Hierarchical text segmentation for medieval manuscripts",
+            "venue": "Proceedings of the 28th International Conference on Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Marti A Hearst."
+            ],
+            "title": "Multi-paragraph segmentation expository text",
+            "venue": "32nd Annual Meeting of the Association for Computational Linguistics, pages 9\u201316.",
+            "year": 1994
+        },
+        {
+            "authors": [
+                "Marti A Hearst."
+            ],
+            "title": "Text tiling: Segmenting text into multi-paragraph subtopic passages",
+            "venue": "Computational linguistics, 23(1):33\u201364.",
+            "year": 1997
+        },
+        {
+            "authors": [
+                "Hakan Inan",
+                "Rashi Rungta",
+                "Yashar Mehdad."
+            ],
+            "title": "Structured summarization: Unified text segmentation and segment labeling as a generation task",
+            "venue": "arXiv preprint arXiv:2209.13759.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shoaib Jameel",
+                "Wai Lam."
+            ],
+            "title": "An unsupervised topic segmentation model incorporating word order",
+            "venue": "Proceedings of the 36th international ACM SIGIR conference on Research and development in information retrieval, pages 203\u2013212.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Jacob Devlin Ming-Wei Chang Kenton",
+                "Lee Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "Proceedings of NAACL-HLT, pages 4171\u20134186.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Omri Koshorek",
+                "Adir Cohen",
+                "Noam Mor",
+                "Michael Rotman",
+                "Jonathan Berant."
+            ],
+            "title": "Text segmentation as a supervised learning task",
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics:",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Zhenzhong Lan",
+                "Mingda Chen",
+                "Sebastian Goodman",
+                "Kevin Gimpel",
+                "Piyush Sharma",
+                "Radu Soricut."
+            ],
+            "title": "Albert: A lite bert for self-supervised learning of language representations",
+            "venue": "arXiv preprint arXiv:1909.11942.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yang Liu",
+                "Chenguang Zhu",
+                "Michael Zeng."
+            ],
+            "title": "End-to-end segmentation-based news summarization",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2022, pages 544\u2013554.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kelvin Lo",
+                "Yuan Jin",
+                "Weicong Tan",
+                "Ming Liu",
+                "Lan Du",
+                "Wray Buntine."
+            ],
+            "title": "Transformer over pretrained transformer for neural text segmentation with enhanced topic coherence",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Lajanugen Logeswaran",
+                "Honglak Lee",
+                "Dragomir Radev."
+            ],
+            "title": "Sentence ordering and coherence modeling using recurrent neural networks",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, volume 32.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "arXiv preprint arXiv:1711.05101.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Michal Lukasik",
+                "Boris Dadachev",
+                "Kishore Papineni",
+                "Gon\u00e7alo Sim\u00f5es."
+            ],
+            "title": "Text segmentation by cross segment attention",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 4707\u20134716.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hemant Misra",
+                "Fran\u00e7ois Yvon",
+                "Joemon M Jose",
+                "Olivier Capp\u00e9."
+            ],
+            "title": "Text segmentation via topic modeling: an analytical study",
+            "venue": "Proceedings of the 18th ACM conference on Information and knowledge management, pages 1553\u20131556.",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Lev Pevzner",
+                "Marti A Hearst."
+            ],
+            "title": "A critique and improvement of an evaluation metric for text segmentation",
+            "venue": "Computational Linguistics, 28(1):19\u2013",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Violaine Prince",
+                "Alexandre Labadi\u00e9"
+            ],
+            "title": "Text segmentation based on document understanding for information retrieval",
+            "venue": "In Natural Language Processing and Information Systems: 12th International Conference on Applications of Natural Language",
+            "year": 2007
+        },
+        {
+            "authors": [
+                "Martin Riedl",
+                "Chris Biemann."
+            ],
+            "title": "Text segmentation with topic models",
+            "venue": "Journal for Language Technology and Computational Linguistics, 27(1):47\u201369.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Martin Riedl",
+                "Chris Biemann."
+            ],
+            "title": "Topictiling: a text segmentation algorithm based on lda",
+            "venue": "Proceedings of ACL 2012 student research workshop, pages 37\u201342.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Gennady Shtekh",
+                "Polina Kazakova",
+                "Nikita Nikitinsky",
+                "Nikolay Skachkov."
+            ],
+            "title": "Exploring influence of topic segmentation on information retrieval quality",
+            "venue": "Internet Science: 5th International Conference, INSCI 2018, St. Petersburg, Russia, October 24\u201326,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alessandro Solbiati",
+                "Kevin Heffernan",
+                "Georgios Damaskinos",
+                "Shivani Poddar",
+                "Shubham Modi",
+                "Jacques Cali."
+            ],
+            "title": "Unsupervised topic segmentation of meetings with bert embeddings",
+            "venue": "arXiv preprint arXiv:2106.12978.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Swapna Somasundaran"
+            ],
+            "title": "Two-level transformer and auxiliary coherence modeling for improved text segmentation",
+            "venue": "Proceedings of the AAAI Conference on Artificial Intelligence, volume 34, pages 7797\u20137804.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yi Tay",
+                "Mostafa Dehghani",
+                "Samira Abnar",
+                "Yikang Shen",
+                "Dara Bahri",
+                "Philip Pham",
+                "Jinfeng Rao",
+                "Liu Yang",
+                "Sebastian Ruder",
+                "Donald Metzler."
+            ],
+            "title": "Long range arena: A benchmark for efficient transformers",
+            "venue": "arXiv preprint arXiv:2011.04006.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "NeurIPS, pages 5998\u20136008.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Liang Wang",
+                "Sujian Li",
+                "Yajuan L\u00fc",
+                "Houfeng Wang."
+            ],
+            "title": "Learning to rank semantic coherence for topic segmentation",
+            "venue": "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, pages 1340\u20131344.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Wei Wang",
+                "Bin Bi",
+                "Ming Yan",
+                "Chen Wu",
+                "Zuyi Bao",
+                "Jiangnan Xia",
+                "Liwei Peng",
+                "Luo Si."
+            ],
+            "title": "Structbert: Incorporating language structures into pretraining for deep language understanding",
+            "venue": "arXiv eprints, pages arXiv\u20131908.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhuofeng Wu",
+                "Sinong Wang",
+                "Jiatao Gu",
+                "Madian Khabsa",
+                "Fei Sun",
+                "Hao Ma."
+            ],
+            "title": "Clear: Contrastive learning for sentence representation",
+            "venue": "arXiv preprint arXiv:2012.15466.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jinxiong Xia",
+                "Cao Liu",
+                "Jiansong Chen",
+                "Yuchen Li",
+                "Fan Yang",
+                "Xunliang Cai",
+                "Guanglu Wan",
+                "Houfeng Wang."
+            ],
+            "title": "Dialogue topic segmentation via parallel extraction network with neighbor smoothing",
+            "venue": "Proceedings of the 45th International ACM SIGIR",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wen Xiao",
+                "Giuseppe Carenini."
+            ],
+            "title": "Extractive summarization of long documents by combining global and local context",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Linzi Xing",
+                "Giuseppe Carenini."
+            ],
+            "title": "Improving unsupervised dialogue topic segmentation with utterance-pair coherence scoring",
+            "venue": "Proceedings of the 22nd Annual Meeting of the Special Interest Group on Discourse and Dialogue, pages 167\u2013177.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Linzi Xing",
+                "Brad Hackinen",
+                "Giuseppe Carenini",
+                "Francesco Trebbi."
+            ],
+            "title": "Improving context modeling in neural topic segmentation",
+            "venue": "Proceedings of the 1st Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yuanmeng Yan",
+                "Rumei Li",
+                "Sirui Wang",
+                "Fuzheng Zhang",
+                "Wei Wu",
+                "Weiran Xu."
+            ],
+            "title": "Consert: A contrastive framework for self-supervised sentence representation transfer",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Lin-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Qinglin Zhang",
+                "Qian Chen",
+                "Yali Li",
+                "Jiaqing Liu",
+                "Wen Wang."
+            ],
+            "title": "Sequence model with self-adaptive sliding window for efficient spoken document segmentation",
+            "venue": "2021 IEEE Automatic Speech Recognition and Understanding Workshop (ASRU), pages",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Topic segmentation aims to automatically segment the text into non-overlapping topically coherent\n1Our code is publicly available at https://github.com/ alibaba-damo-academy/SpokenNLP/\nparts (Hearst, 1994). Topic segmentation makes documents easier to read and understand, and also plays a key role in many downstream tasks such as information extraction (Prince and Labadi\u00e9, 2007; Shtekh et al., 2018) and document summarization (Xiao and Carenini, 2019; Liu et al., 2022). Topic segmentation methods can be categorized into linear segmentation (Hearst, 1997), which yields a linear sequence of topic segments, and hierarchical segmentation (Bayomi and Lawless, 2018; Hazem et al., 2020), which produces a hierarchical structure with top-level segments divided into subsegments. We focus on linear topic segmentation in this work, especially for long documents.\nBased on the definition of topics, each sentence in a topic relates to the central idea of the topic, and topics should be discriminative. Hence, two adjacent sentences from the same topic are more similar than those from different topics. Exploring this idea, prior unsupervised models mainly infer topic boundaries through computing text similarity (Riedl and Biemann, 2012b; Glava\u0161 et al., 2016) or exploring topic representation of text (Misra et al., 2009; Du et al., 2013). Different from the shallow features carefully designed and used by unsupervised methods, supervised neural models can model deeper semantic information and explore clues of topic shift from labeled data (Badjatiya et al., 2018; Koshorek et al., 2018). Supervised models have achieved large gains on topic segmentation through pre-training language models (PLMs) (e.g., BERT) and fine-tuning on large-scale supervised datasets (Kenton and Toutanova, 2019; Lukasik et al., 2020; Zhang et al., 2021; Inan et al., 2022). Recently, (Arnold et al., 2019; Xing et al., 2020; Somasundaran et al., 2020; Lo et al., 2021) improve topic segmentation performance by explicitly modeling text coherence. However, these approaches either neglect context modeling beyond adjacent sentences (Wang et al., 2017), or require additional label information (Arnold et al., 2019;\nBarrow et al., 2020; Lo et al., 2021; Inan et al., 2022), or impede learning sentence-pair coherence without considering both coherent and incoherent pairs (Xing et al., 2020). Moreover, compared to short documents, topic segmentation becomes more critical for understanding long documents, and coherence modeling for long document topic segmentation is more crucial.\nCoherence plays a key role in understanding both logical structures and text semantics. Consequently, to enhance coherence modeling in supervised topic segmentation methods, we propose two auxiliary coherence-related tasks, namely, Topicaware Sentence Structure Prediction (TSSP) and Contrastive Semantic Similarity Learning (CSSL). We create disordered incoherent documents, then the TSSP task utilizes these documents and enhances learning sentence-pair structure information. The CSSL task regulates sentence representations and ensures sentences in the same topic have higher semantic similarity while sentences in different topics are less similar. Experimental results demonstrate that both TSSP and CSSL improve topic segmentation performance and their combination achieves further gains. Moreover, performance gains on out-of-domain data from the proposed approaches demonstrate that they also significantly improve generalizability of the model.\nLarge Language Models such as ChatGPT 2 have achieved impressive performance on a wide variety of NLP tasks. We adopt the prompts proposed by Fan and Jiang (2023) and evaluate ChatGPT on the WIKI-50 dataset (Koshorek et al., 2018). We find ChatGPT performs considerably worse than fine-tuning BERT-sized PLMs on long document topic segmentation (as shown in Appendix A).\nOur contributions can be summarized as follows.\n\u2022 We investigate supervised topic segmentation on long documents and confirm the necessity of exploiting longer context information. \u2022 We propose two novel auxiliary tasks TSSP and CSSL for coherence modeling from the perspectives of both logical structure and semantic similarity, thereby improving the performance of topic segmentation. \u2022 Our proposed approaches set new state-of-theart (SOTA) performance on topic segmentation benchmarks, including long documents. Ablation study shows that both new tasks effectively\n2https://chat.openai.com\nimprove topic segmentation performance and they also improve generalizability of the model."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Topic Segmentation Models",
+            "text": "Both unsupervised and supervised approaches have been proposed before to solve topic segmentation. Unsupervised methods typically design features based on the assumption that segments in the same topic are more coherent than those that belong to different topics, such as lexical cohesion (Hearst, 1997; Choi, 2000; Riedl and Biemann, 2012b), topic models (Misra et al., 2009; Riedl and Biemann, 2012a; Jameel and Lam, 2013; Du et al., 2013) and semantic embedding (Glava\u0161 et al., 2016; Solbiati et al., 2021; Xing and Carenini, 2021). In contrast, supervised models can achieve more precise predictions by automatically mining clues of topic shift from large amounts of labeled data, either by classification on the pairs of sentences or chunks (Wang et al., 2017; Lukasik et al., 2020) or sequence labeling on the whole input sequence (Koshorek et al., 2018; Badjatiya et al., 2018; Xing et al., 2020; Zhang et al., 2021). However, the memory consumption and efficiency of neural models such as BERT (Kenton and Toutanova, 2019) can be limiting factors for modeling long documents as their length increases. Some approaches (Arnold et al., 2019; Lukasik et al., 2020; Lo et al., 2021; Somasundaran et al., 2020) use hierarchical modeling from tokens to sentences, while others (Somasundaran et al., 2020; Zhang et al., 2021) use sliding windows to reduce resource consumption. However, both directions of methods may not be adequate for capturing the full context of long documents, which is critical for accurate topic segmentation."
+        },
+        {
+            "heading": "2.2 Coherence Modeling",
+            "text": "The NLP community has developed models for comprehending text coherence and tasks to measure their effectiveness, such as predicting the coherence score of documents (Barzilay and Lapata, 2008), predicting the position where the removed sentence was originally located (Elsner and Charniak, 2011) and restoring out-of-order sentences (Logeswaran et al., 2018; Chowdhury et al., 2021). Some researchers have aimed to improve topic segmentation models by explicitly modeling text coherence. However, all of prior works consider coherence modeling for topic segmenta-\ntion only from a single perspective. For example, Wang et al. (2017) ranked sentence pairs based on their semantic coherence to segment documents within the Learning-to-Rank framework, but they did not consider contextual information beyond two sentences. CATS (Somasundaran et al., 2020) created corrupted text by randomly shuffling or replacing sentences to force the model to produce a higher coherence score for the correct document than for its corrupt counterpart. However the fluency of the constructed document is too low so that the semantic information is basically lost. Xing et al. (2020) proposed to add the Consecutive Sentence-pair Coherence (CSC) task by computing the cosine similarity as coherence score. But no more incoherent sentence pairs are considered in CSC, except for those located at segment boundaries. Other methods (Arnold et al., 2019; Barrow et al., 2020; Lo et al., 2021; Inan et al., 2022) have used topic labels to constrain sentence representations within the same topic, but they require additional topic label information. In contrast to these works, our work is the first to consider topical coherence as both text semantic similarity and logical structure (flow) of sentences."
+        },
+        {
+            "heading": "3 Methodology",
+            "text": "In this section, we first describe our baseline model for topic segmentation (Section 3.1), then introduce our proposed Topic-aware Sentence Structure Prediction (TSSP) module (Section 3.2) and Contrastive Semantic Similarity Learning (CSSL) module (Section 3.3). Figure 1 illustrates the overall architecture of our topic segmentation model."
+        },
+        {
+            "heading": "3.1 Baseline Model for Topic Segmentation",
+            "text": "Our supervised baseline model formulates topic segmentation as a sentence-level sequence labeling task (Zhang et al., 2021)). Given a document represented as a sequence of sentences [s1, s2, s3, ..., sn] (where n is the number of sentences), the model predicts binary labels [y1, y2, ..., yn\u22121] corresponding to each sentence except for the last sentence, where yi = 1, i \u2208 {1, \u00b7 \u00b7 \u00b7 , n \u2212 1} means si is the last sentence of a topic and 0 means not.\nFollowing prior works (Somasundaran et al., 2020; Zhang et al., 2021), we prepend a special token BOS before each sentence and the updated sentence is shown in Eq. 1, where ti,1 is BOS and |si| is the number of tokens in si.\ns\u2032i = [ti,1, ti,2, ..., ti,|si|+1] (1)\nThe token sequence for the document is embedded through the embedding layer and then fed into the encoder to obtain its contextual representations. We take the representation of each BOS hi as the sentence representation, as shown in Eq. 4. Then we apply a softmax binary classifier g as in Eq. 3 on top of hi to compute the topic segmentation probability p of each sentence. We use the standard binary cross-entropy loss function as in Eq. 2 to train the model.\nLts = \u2212 n\u22121\u2211 i=1 [yi ln pi + (1\u2212yi) ln(1\u2212pi)] (2)\npi = g(hi) (3)\nhi = Encoder(ti,1) (4)"
+        },
+        {
+            "heading": "3.2 Topic-aware Sentence Structure Prediction",
+            "text": "Learning sentence representations that reflect intersentence coherence (inter-sentence relations) is critical for topic segmentation. Several tasks have been proposed in prior works for modeling sentence-pair relations. The Next Sentence Prediction (NSP) task in BERT (Kenton and Toutanova, 2019) predicts whether two segments appear consecutively in the same document or come from different documents, hence it fuses topic prediction and coherence prediction in one task. In order to better model intersentence coherence, the Binary Sentence Ordering (BSO) task in ALBERT (Lan et al., 2019) constructs input as two consecutive segments from the\nsame document but 50% of the time their order is reversed. The ternary Sentence Structural Objective (SSO) in StructBERT (Wang et al., 2019) further increases the task difficulty of BSO by adding a class of sentence pairs from different documents.\nAll these tasks for learning inter-sentence coherence have not explored topic structures. Different from them, we propose a Topic-aware Sentence Structure Prediction (TSSP) task to help the model learn sentence representations with structural information that explore topic structures and hence are more suitable for topic segmentation.\nData Augmentation We tailor data augmentation techniques for topic segmentation. As depicted in the right half of Figure 1, we create an augmented document d \u2032 from the original document d and feed d \u2032\ninto the shared encoder after the embedding layer to enhance inter-sentence coherence modeling. Different from the auxiliary coherence modeling approach proposed by Somasundaran et al. (2020) which merely forces the model to predict a lower coherence for the corrupted document than for the original document, we simultaneously perturb d at both topic and sentence levels, constructing the augmented document to force the model to learn topic-aware inter-sentence structure information. Hence, our task is more challenging and the learned sentence representations are more suitable for topic segmentation. Figure 2 illustrates the process of constructing an augmented document. We first shuffle topics within the doc-\nument, then randomly replace some topics with topics from other documents to increase diversity. Specifically, for a randomly selected subset of p1 percent of the documents, we replace each topic in them with a topic snippet from other documents with a probability of p2 and keep the same with the probability of 1\u2212 p2. The default values of p1 and p2 are both 0.5. Finally, we shuffle the sentences in each topic to further increase the difficulty of the TSSP task.\nSentence-pair Relations After constructing the augmented document d \u2032 , we define the TSSP task as an auxiliary objective to assist the model to capture inter-sentence coherence, by learning the original structural relations between adjacent sentence pair a and b in the augmented incoherent document d \u2032 . We define three types of sentence-pair relations. The first type (label 0) is when a and b belong to different topics, indicating a topic shift. The second type (label 1) is when a and b are in the same topic and b is the next sentence of a. The third type (label 2) is when a and b belong to the same topic but b is not the next sentence of a. For example, the sequence of sentences in Figure 2 will be assigned with the TSSP labels as [1, 0, 2, 2, 0, 1, 2, 2]. We use y\u0303 = [y\u03030, y\u03031, y\u03032] to represent the one-hot encoding of the TSSP labels, where y\u0303j = 1, j \u2208 {0, 1, 2} if the sentence pair belongs to the j-th category; otherwise, y\u0303j = 0. For the TSSP task, we use the cross entropy loss function defined in Eq. 5, where \u02dcyi,j denotes the label of the i-th sentence pair, and \u02dcpi,j denotes the probability of the i-th sentence pair belonging to the j-th category.\nLtssp = \u2212 n\u22121\u2211 i=1 2\u2211 j=0 \u02dcyi,j ln( \u02dcpi,j) (5)"
+        },
+        {
+            "heading": "3.3 Contrastive Semantic Similarity Learning",
+            "text": "We assume that two sentences or segments from the same topic are inherently more coherent than those from different topics. Therefore, the motivation of our Contrastive Semantic Similarity Learning (CSSL) module is to adjust the sentence representation learning to grasp the relative high and low coherence relationship. Different from (Xing et al., 2020) which only calculates the cosine similarity of two adjacent sentences, our CSSL takes into account both similar and dissimilar sentence pairs to improve sentence representation learning. Construct Positive and Negative Samples The upper left part of Figure 1 illustrates how CSSL\nleverages contrastive learning to regulate sentence representations, which in turn influences the predictions of topic segmentation. To construct positive and negative sample pairs in the contrastive learning framework, prior works in NLP propose several data augmentation techniques such as word deletion and substitution (Wu et al., 2020), dropout (Gao et al., 2021), and adversarial attack (Yan et al., 2021). However, different from prior works that synthesize positive and negative pairs, we explore natural positive and negative pairs for topic segmentation, as two sentences or segments from the same topic are inherently more coherent than those from different topics. Accordingly, regarding each sentence in the document as the anchor sentence, we choose k1 sentences in the same topic to constitute positive pairs and k2 sentences from different topics as negative pairs based on the ordering of the distance of a sentence from the anchor sentence, starting from the nearest to the farthest. Recently, Gao et al. (2023) proposes a contrastive learning method for unsupervised topic segmentation. However, in their unsupervised method, similar and dissimilar sample pairs could be noisy due to lack of ground truth topic labels, which would not occur in our supervised settings.\nLoss Function As illustrated in Figure 1, we utilize the following loss function to train our model and learn contrastive semantic representations of inter-topic and intra-topic sentences. k1 and k2 are hyperparameters that determine the number of sentences used to form positive and negative pairs, respectively. For each sentence representation hi, h+i,j denotes the j-th similar sentence in the same topic as sentence i, while h\u2212i,j denotes the j-th dissimilar sentence in a different topic from sentence i. We select sentences to form sentence pairs based on their distances to the anchor sentence, from closest to farthest. The objective of our loss function is to bring semantically similar neighbors closer and push away negative sentence pairs, as in Eq. 6. \u03c4 in Eq. 8 is a temperature hyper-parameter to scale the cosine similarity of two vectors, with a default value 0.1. In future work, in order to avoid pushing away sentence pairs in different topics but covering similar topical semantics, we plan to consider refining the loss, such as assigning loss weights based on their semantic similarity.\nLcssl = \u2212 n\u2211\ni=1\nlog(licssl) (6)\nlicssl =\nk1\u2211 j=1 esim(hi,h + i,j)\nk1\u2211 j=1 esim(hi,h + i,j)+ k2\u2211 j=1 esim(hi,h \u2212 i,j)\n(7)\nsim(x1, x2) = xT1 x2\n\u2225x1\u2225 \u00b7 \u2225x2\u2225 /\u03c4 (8)\nCombining Eq. 2, 5 and 6, we form the final loss function of our topic segmentation model as Eq. 9, where \u03b11 and \u03b12 are hyper-parameters used to adjust the loss weights.\nLtotal = Lts + \u03b11Ltssp + \u03b12Lcssl (9)"
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Experimental Setup",
+            "text": "Datasets We conduct two sets of experiments to evaluate the effectiveness of our method, including intra-domain and out-of-domain settings. The details of the datasets are summarized in Table 1. Intra-domain Datasets We use WIKI727K (Koshorek et al., 2018) and English WikiSection (Arnold et al., 2019), which are widely used as benchmarks to evaluate the text segmentation performance of models. WIKI-727K is a large corpus with segmentation annotations, created by leveraging the manual structures of about 727K Wikipedia pages and automatically organizing them into sections. WikiSection consists of 38K English and German Wikipedia articles from the domains of disease and city, with the topic labeled for each section of the text. We use en_city and en_disease throughout the paper to denote the English subsets of disease and city domains, and use WikiSection to represent the collection of these two subsets. Each section is divided into sentences using the PUNKT tokenizer of the NLTK library3. Additionally, we utilize the newline information in WikiSection to only predict whether sentences with line breaks are\n3https://www.nltk.org/\ntopic boundaries, which is beneficial to alleviate the class imbalance problem. Out-of-domain Datasets Following prior work (Xing et al., 2020), to evaluate the domain transfer capability of our model, we fine-tune the model on the training set of WiKiSection dataset (union of en_city and en_disease) due to its distinct domain characteristics. Then we evaluate its performance on two other datasets, including WIKI-50 (Koshorek et al., 2018) and Elements (Chen et al., 2009), which have different domain distributions from WikiSection. Specifically, WIKI-50 consists of 50 samples randomly selected from Wikipedia, while Elements consists of 118 samples which are also extracted from Wikipedia but focuses on chemical elements. Evaluation Metrics Following prior works, we use three standard evaluation metrics for topic segmentation, namely, positive F1, Pk (Beeferman et al., 1999), and WindowDiff (WD) (Pevzner and Hearst, 2002) 4. To simplify notations, we use F1 and WD throughout the paper to denote posi-\n4We use https://segeval.readthedocs.io/ to compute Pk and WD\ntive F1 and WindowDiff. F1 is calculated based on precision and recall of correctly predicted topic segmentation boundaries. The Pk metric is introduced to address some limitations of positive F1, such as the inherent trade-off between precision and recall as well as its insensitivity to near-misses. WD is proposed by Pevzner and Hearst (2002) as a supplement to Pk to avoid being sensitive to variations in segment size distribution and over-penalizing nearmisses. By default, the window size for both Pk and WD is equal to half the average length of actual segments. Lower Pk and WD scores indicate better algorithm performance.\nBaseline Models Although Transformer (Vaswani et al., 2017) has become the SOTA architecture for sequence modeling on a wide variety of NLP tasks and transformer-based PLMs such as BERT (Devlin et al., 2019) become dominant in NLP, the core self-attention mechanism has quadratic time and memory complexity to the input sequence length (Vaswani et al., 2017), limiting the max sequence length during pre-training (e.g., 512 for BERT) for a balance between performance and memory usage. As shown in Table 1, the avg. num-\nber of tokens per document of each dataset exceeds 512 and hence these datasets contain long documents. We tailor the backbone model selection for long documents. Prior models using BERTlike PLMs for topic segmentation either truncate long documents into the max sequence length or use a sliding window. These approaches may degrade performance due to losing contextual information. Consequently, we first evaluate BERTBase (Devlin et al., 2019) and several competitive efficient transformers on the WikiSection dataset, including BigBird-Base (Zaheer et al., 2020) and Longformer-Base (Beltagy et al., 2020). As shown in Table 2, Longformer-Base achieves 82.19 and 72.29 F1, greatly outperforming BERT-Base (78.99 and 67.34 F1) by (+3.2, +4.95) F1 and BigBirdBase (80.49 and 70.61 F1). Hence we select Longformer-Base as the encoder for the main experiments. To compare with our coherence-related auxiliary tasks, we evaluate Longformer-Base on WikiSection with the prior auxiliary CATS or CSC task in Section 2.2. In addition, following Inan et al. (2022), we evaluate the pre-trained settings where we first pre-train Longformer on WIKI-727K and then fine-tune on WikiSection. Under the domain transfer setting, we cite the results in (Xing et al., 2020). Note that all the baselines we include for comparisons are well-established and exhibit top performances on these benchmarks. Implementation Details To investigate the efficacy of exploring longer context for topic segmentation, we conducted additional evaluations on WikiSection using maximum sequence lengths of 512, 1024, and 4096, alongside the default 2048. For documents longer than the max sequence length, we use a sliding window to take the last sentence of the prior sample as the start sentence of the next sample. We run the baseline Longformer-Base and w/ our model (i.e., Longformer-Base+TSSP+CSSL) three times with different random seeds and report means and standard deviations of the metrics. Details of hyperparameters are in Appendix B."
+        },
+        {
+            "heading": "4.2 Main Results",
+            "text": "Intra-domain Performance Table 2 and Table 3 show the performance of baselines and w/ our approaches on WikiSection and WIKI-727K test sets, respectively. The results of Longformer-Base and LongformerSim in Table 2 show that using cosine similarity alone is insufficient to predict the topic segmentation boundary. Longformer-\nBase already outperforms all baselines in the first group of Table 2 and Table 3 and BERT-Base and BigBird-Base. Training BERT-Base, BigBird-Base and Longformer-Base with our TSSP or CSSL task achieves further gains. Table 2 shows that our TSSP and CSSL both outperform CATS or CSC auxiliary tasks. More importantly, combining TSSP and CSSL exhibits complementary effects, as it achieves further gains and sets the new SOTA, confirming the necessity of modeling both sentence structure and text semantic similarity for modeling text coherence and in turn for topic segmentation. On WikiSection, +TSSP+CSSL improves BERT-Base by (+1.17, +0.92) F1, BigBirdBase by (+1.4, +1.53) F1, and Longformer-Base by (+1.0, +1.88) F1. On WIKI-727K, +TSSP+CSSL improves Longformer-Base by +0.89 F1. In addition, utilizing pre-training data also improves the performance on WikiSection, by (+1.95, +3.16) F1. Finally, our new SOTA reduces Pk of old SOTA by 1.11 points on WIKI-727K (15.0\u2192 13.89) and achieves an average relative reduction of 4.3% on Pk on WikiSection. It is also important to note that our proposed TSSP and CSSL are agnostic to document lengths and are also applicable to models and datasets for short documents, which is verified by their gains on both short and long document subsets of WIKI-727K test set (as shown in Appendix C).\nDomain Transfer Performance Table 4 shows the performance of the baselines and w/ our method on the out-of-domain WIKI-50 and Elements test sets. Longformer-Base already achieves 5.51 point reduction on Pk on Elements over the prior best performance from supervised models, and our approach further improves Pk by 2.83 points. While\nLongformer-Base does not perform best on WIKI50, incorporating our method achieves +5.84 F1 gain and 3.06 point gain on Pk, setting new SOTA on WIKI-50 and Elements for both unsupervised and supervised methods. Overall, the results demonstrate that our proposed method not only greatly improves the performance of a model under the intra-domain setting, but also remarkably improves the generalizability of the model. Inference Speed Our proposed TSSP and CSSL do not bring any additional computational cost to inference and do not change the inference speed. We randomly sample 1K documents from WIKI-727K test set and measure the inference speed on a single Tesla V100 GPU with batch_size = 1. On average, BERT-Base with max sequence length 512 processes 19.5K tokens/sec while Longformer-Base with max sequence length 2048 processes 15.9K tokens/sec. This observation is consistent with the findings in (Tay et al., 2020) that Longformer does not show a speed advantage over BERT until the input length exceeds 3K tokens."
+        },
+        {
+            "heading": "5 Analysis",
+            "text": "Effect of Context Size To study the effect of the context size, we evaluate Longformer with max sequence length of 512, 1024, 2048 and 4096 on WikiSection. We evaluate the effectiveness of our proposed methods using the corresponding max sequence length to investigate whether they remain effective with different context sizes. As can be seen from Figure 3, the topic segmentation F1 gradually improves as the context length increases. Among them, the effect of increasing the input length from 512 to 1024 is the largest with F1 on en_city and en_disease improved by +2.54 and\n+4.41 respectively. Considering that the average document length of WikiSection is 1321, we infer that capturing more context information is more beneficial to topic segmentation on long documents. We also observe that compared to LongformerBase, Longformer+TSSP+CSSL yields consistent improvements across different input lengths on both en_city and en_disease test sets. These results suggest that our methods are effective at enhancing topic segmentation across various context sizes and can be applied to a wide range of data sets. Ablation Study of TSSP and CSSL Figure 4 shows ablation study of TSSP and CSSL on the WikiSection dev set, respectively. Figure 4(a) demonstrates effectiveness of the three classification tasks in the TSSP task (Section 2.1). Compared to SSO and CATS, TSSP helps the model learn better intersentence relations and both intra- and inter-topic\nstructure labels are needed to improve performance. Figure 4(b) illustrates the impact of varying numbers of negative sample pairs for CSSL on Longformer. We find that adding similarity-related auxiliary tasks improves the performance. Compared with CSC, CSSL focuses on sentences of the same and different topics when learning sentence representations. As the number of negative samples increases, the model performance improves and optimizes at k2=3. Gain from TSSP is slightly larger than that from CSSL, indicating that comprehending structural information contributes more to coherence modeling. We speculate that encoding the entire topic segment into a semantic space to learn contrastive representation may help detecting topic boundaries, which we plan to explore in future work.\nSimilarity of Sentence-pair Representations To investigate impact of coherence-related auxiliary tasks on sentence representation learning, we calculate cosine similarity of adjacent sentence representations for predicting topic boundaries. We compute F1 of baselines and our Longformer (i.e., Longformer-Base+TSSP+CSSL) on en_city and en_disease dev sets. As shown in Figure 5, compared to Longformer-Base, our model achieves higher F1, indicating that sentence representations learned with our methods are more relevant to topic segmentation and are better at distinguishing sentences from different topics. We also explore combining probability and similarity to predict topic boundaries in Appendix D but find no further gain. The results suggest that the model trained with TSSP+CSSL covers more features than similarity."
+        },
+        {
+            "heading": "6 Conclusion",
+            "text": "Comprehending text coherence is crucial for topic segmentation, especially on long documents. We propose the Topic-aware Sentence Structure Prediction and Contrastive Semantic Similarity Learning auxiliary tasks to enhance coherence modeling. Experimental results show that Longformer trained with our methods significantly outperforms SOTAs on two English long document benchmarks. Our methods also significantly improve generalizability of the model. Future work includes extending our approach to spoken document topic segmentation and other segmentation tasks at various levels of granularity and with modalities beyond text.\nLimitations\nAlthough our approach has achieved SOTA results on long document topic segmentation, further research is required on how to more efficiently model even longer context. In addition, our method needs to construct augmented data for the TSSP task, which will take twice the training time."
+        },
+        {
+            "heading": "A ChatGPT for Topic Segmentation in Long Document",
+            "text": "To investigate the performance of ChatGPT on long document topic segmentation, we adopt the prompts proposed by Fan and Jiang (2023) and\nevaluate ChatGPT on the WIKI-50 test set. The prompts are shown in Table 5. We set temperature as 0 to ensure the consistency of ChatGPT. The post-processing strategy for ChatGPT remains unchanged to obtain the formatted output. Different from Fan and Jiang (2023), we change the key word dialogue to document in the prompt and try to use one-shot prompt to see if it can improve performance. Table 6 shows the results of ChatGPT with different prompts and Longformer with supervised data. Firstly, the results show that the generative prompt can achieve higher performance than the discriminative prompt, which is consistent with the conclusion of Fan and Jiang (2023) that representing structure directly can better leverage the generation ability of ChatGPT. Additionally, incorporating a single example in the generative prompt can further improve 2-point F1, which indicates one-shot prompt can better stimulate the in-context learning ability of Large Language Models. However, while ChatGPT-GPone achieves an F1 metric that is 4.6 points higher than Longformerood, its\u2019 Pk and WD metric are significantly worse due to the high false recall rate of topic boundaries. This suggests that how to fully apply the ability of Large Language Models to the topic segmentation in long documents remains to be further explored. Finally, compared with ChatGPT, the significant improvement of Longformeriid shows the key role supervised data plays in the topic segmentation task."
+        },
+        {
+            "heading": "B Training Details",
+            "text": "Our experiments are implemented with transformers package5. The model parameters are initialized with corresponding pre-trained parameters. The initial learning rate is 5e\u2212 5 and the dropout probability is 0.1. AdamW (Loshchilov and Hutter, 2017) is used for optimization. The batch size for WIKI-727K and WikiSection is 4 and 8, and the epoch for WIKI-727K and WikiSection is 3 and 5 respectively. We set the number of positive pair in CSSL as k1 = 1 and carry out grid-search of loss weight \u03b11, \u03b12 \u2208 [0.5, 1.0], k2 \u2208 [1, 2, 3, 4] on dev set. The final configuration in the two benchmarks is k2 = 3, \u03b11 = 0.5. \u03b12 performs best on WikiSection when set to 1.0 while on WIKI-727K \u03b12 = 0.5 performs best.\n5https://github.com/huggingface/transformers"
+        },
+        {
+            "heading": "C Performance of the Proposed Approach on Short and Long Documents",
+            "text": "It is important to note that our proposed TSSP and CSSL approaches are agnostic to document lengths and are applicable to models and datasets for short documents. In order to evaluate the performance of our proposed approach on various document lengths, we partition the WIKI-727K test set into a short document subset (18310 samples) and a long document subset (54922 samples) according to whether the number of tokens in a document is less than 512 or not. The results from the baseline Longformer and Longformer with our approaches\n(+TSSP+CSSL) are shown in Table 7. Our approach significantly improves the baseline on both short and long documents. Notably, the gains from our approach are larger on long documents, suggesting that our coherence modeling benefits long document topic segmentation even more. This is consistent with our hypothesis."
+        },
+        {
+            "heading": "D Ensemble Probability and Similarity",
+            "text": "As shown in Formula 10, we try to combine the cosine similarity of neighbor sentence representations (Sim) and model probability (Prob) to get the final score to infer topic boundary. Specifically, we get\ndifferent thresholds at intervals of 0.05 from 0 to 1. Then we choose the threshold when F1 reaches the best in the dev set, and finally use this threshold to obtain the effect on the test set. The results shown in Table 8 suggest that the score combining similarity of neighbor sentence representations and model probability lower the performance slightly. We speculate that the boundary probability prediction and auxiliary coherence tasks are performed during training simultaneously, therefore the model has incorporated more features than just similarity.\nScore = 1\n2 \u2217(Prob+Sigmoid(\u22121\u2217Sim)) (10)\nSigmoid(x) = 1\n1 + e\u2212x (11)"
+        }
+    ],
+    "title": "Improving Long Document Topic Segmentation Models With Enhanced Coherence Modeling",
+    "year": 2023
+}

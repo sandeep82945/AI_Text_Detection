@@ -1,0 +1,784 @@
+{
+    "abstractText": "The ability to actively ground task instructions from an egocentric view is crucial for AI agents to accomplish tasks or assist humans. One important step towards this goal is to localize and track key active objects that undergo major state change as a consequence of human actions/interactions in the environment (e.g., localizing and tracking the \u2018sponge\u2018 in video from the instruction \"Dip the sponge into the bucket.\") without being told exactly what/where to ground. While existing works approach this problem from a pure vision perspective, we investigate to which extent the language modality (i.e., task instructions) and their interaction with visual modality can be beneficial. Specifically, we propose to improve phrase grounding models\u2019 (Li* et al., 2022) ability in localizing the active objects by: (1) learning the role of objects undergoing change and accurately extracting them from the instructions, (2) leveraging preand post-conditions of the objects during actions, and (3) recognizing the objects more robustly with descriptional knowledge. We leverage large language models (LLMs) to extract the aforementioned actionobject knowledge, and design a per-object aggregation masking technique to effectively perform joint inference on object phrases with symbolic knowledge. We evaluate our framework on Ego4D (Grauman et al., 2022) and Epic-Kitchens (Dunnhofer et al., 2022) datasets. Extensive experiments demonstrate the effectiveness of our proposed framework, which leads to > 54% improvements in all standard metrics on the TREK-150-OPE-Det localization + tracking task, > 7% improvements in all standard metrics on the TREK-150-OPE tracking task, and > 3% improvements in average precision (AP) on the Ego4D SCOD task.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Te-Lin Wu"
+        },
+        {
+            "affiliations": [],
+            "name": "Yu Zhou"
+        },
+        {
+            "affiliations": [],
+            "name": "Nanyun Peng"
+        }
+    ],
+    "id": "SP:3d015d6ed504abe7bc0e9c3e03e84d8141856aa4",
+    "references": [
+        {
+            "authors": [
+                "Jean-Baptiste Alayrac",
+                "Ivan Laptev",
+                "Josef Sivic",
+                "Simon Lacoste-Julien."
+            ],
+            "title": "Joint discovery of object states and manipulation actions",
+            "venue": "International Conference on Computer Vision (ICCV).",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Gedas Bertasius",
+                "Hyun Soo Park",
+                "Stella X Yu",
+                "Jianbo Shi."
+            ],
+            "title": "First person action-object detection with egonet",
+            "venue": "Robotics: Science and Systems (RSS).",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Antoine Bosselut",
+                "Omer Levy",
+                "Ari Holtzman",
+                "Corin Ennis",
+                "Dieter Fox",
+                "Yejin Choi."
+            ],
+            "title": "Simulating action dynamics with neural process networks",
+            "venue": "International Conference on Learning Representations (ICLR).",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "S.R.K. Branavan",
+                "Nate Kushman",
+                "Tao Lei",
+                "Regina Barzilay."
+            ],
+            "title": "Learning high-level planning from text",
+            "venue": "Association for Computational Linguistics (ACL).",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Guo Chen",
+                "Sen Xing",
+                "Zhe Chen",
+                "Yi Wang",
+                "Kunchang Li",
+                "Yizhuo Li",
+                "Yi Liu",
+                "Jiahao Wang",
+                "Yin-Dong Zheng",
+                "Bingkun Huang"
+            ],
+            "title": "Internvideo-ego4d: A pack of champion solutions to ego4d challenges",
+            "venue": "arXiv preprint arXiv:2211.09529",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kenan Dai",
+                "Yunhua Zhang",
+                "Dong Wang",
+                "Jianhua Li",
+                "Huchuan Lu",
+                "Xiaoyun Yang."
+            ],
+            "title": "Highperformance long-term tracking with meta-updater",
+            "venue": "2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 6297\u20136306.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dima Damen",
+                "Hazel Doughty",
+                "Giovanni Maria Farinella",
+                "Sanja Fidler",
+                "Antonino Furnari",
+                "Evangelos Kazakos",
+                "Davide Moltisanti",
+                "Jonathan Munro",
+                "Toby Perrett",
+                "Will Price",
+                "Michael Wray."
+            ],
+            "title": "Scaling egocentric vision: The epic-kitchens dataset",
+            "venue": "European",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Dima Damen",
+                "Hazel Doughty",
+                "Giovanni Maria Farinella",
+                "Antonino Furnari",
+                "Jian Ma",
+                "Evangelos Kazakos",
+                "Davide Moltisanti",
+                "Jonathan Munro",
+                "Toby Perrett",
+                "Will Price",
+                "Michael Wray"
+            ],
+            "title": "Rescaling egocentric vision: Collection, pipeline and challenges for epic",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ahmad Darkhalil",
+                "Dandan Shan",
+                "Bin Zhu",
+                "Jian Ma",
+                "Amlan Kar",
+                "Richard Higgins",
+                "Sanja Fidler",
+                "David Fouhey",
+                "Dima Damen."
+            ],
+            "title": "Epic-kitchens visor benchmark: Video segmentations and object relations",
+            "venue": "Proceedings of the Neural Information Processing",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Matteo Dunnhofer",
+                "Antonino Furnari",
+                "Giovanni Maria Farinella",
+                "Christian Micheloni"
+            ],
+            "title": "Is first person vision challenging for object tracking",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kuan Fang",
+                "Te-Lin Wu",
+                "Daniel Yang",
+                "Silvio Savarese",
+                "Joseph J. Lim."
+            ],
+            "title": "Demo2vec: Reasoning object affordances from online videos",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Christoph Feichtenhofer",
+                "Axel Pinz",
+                "Andrew Zisserman."
+            ],
+            "title": "Detect to track and track to detect",
+            "venue": "International Conference on Computer Vision (ICCV).",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Qichen Fu",
+                "Xingyu Liu",
+                "Kris Kitani."
+            ],
+            "title": "Sequential voting with relational box fields for active object detection",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Antonino Furnari",
+                "Sebastiano Battiato",
+                "Kristen Grauman",
+                "Giovanni Maria Farinella."
+            ],
+            "title": "Nextactive-object prediction from egocentric videos",
+            "venue": "volume 49, pages 401\u2013411. Elsevier.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Matt Gardner",
+                "Joel Grus",
+                "Mark Neumann",
+                "Oyvind Tafjord",
+                "Pradeep Dasigi",
+                "Nelson F. Liu",
+                "Matthew Peters",
+                "Michael Schmitz",
+                "Luke S. Zettlemoyer"
+            ],
+            "title": "Allennlp: A deep semantic natural language processing platform",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Shi",
+                "Mike Zheng Shou",
+                "Antonio Torralba",
+                "Lorenzo Torresani",
+                "Mingfei Yan",
+                "Jitendra Malik."
+            ],
+            "title": "Ego4d: Around the World in 3,000 Hours of Egocentric Video",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Matthew Honnibal",
+                "Ines Montani."
+            ],
+            "title": "spaCy 2: Natural language understanding with Bloom embeddings, convolutional neural networks and incremental parsing",
+            "venue": "To appear.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Phillip Isola",
+                "Joseph J. Lim",
+                "Edward H. Adelson."
+            ],
+            "title": "Discovering states and transformations in image collections",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Evangelos Kazakos",
+                "Arsha Nagrani",
+                "Andrew Zisserman",
+                "Dima Damen."
+            ],
+            "title": "Epic-fusion: Audiovisual temporal binding for egocentric action recognition",
+            "venue": "International Conference on Computer Vision (ICCV).",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Jimmy Ba."
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "International Conference on Learning Representations (ICLR).",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Alexander Kirillov",
+                "Eric Mintun",
+                "Nikhila Ravi",
+                "Hanzi Mao",
+                "Chloe Rolland",
+                "Laura Gustafson",
+                "Tete Xiao",
+                "Spencer Whitehead",
+                "Alexander C. Berg",
+                "Wan-Yen Lo",
+                "Piotr Doll\u00e1r",
+                "Ross Girshick."
+            ],
+            "title": "Segment anything",
+            "venue": "arXiv:2304.02643.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ivan Krasin",
+                "Tom Duerig",
+                "Neil Alldrin",
+                "Vittorio Ferrari",
+                "Sami Abu-El-Haija",
+                "Alina Kuznetsova",
+                "Hassan Rom",
+                "Jasper Uijlings",
+                "Stefan Popov",
+                "Andreas Veit"
+            ],
+            "title": "Openimages: A public dataset for largescale multi-label and multi-class image classification",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ranjay Krishna",
+                "Yuke Zhu",
+                "Oliver Groth",
+                "Justin Johnson",
+                "Kenji Hata",
+                "Joshua Kravitz",
+                "Stephanie Chen",
+                "Yannis Kalantidis",
+                "Li-Jia Li",
+                "David A Shamma"
+            ],
+            "title": "Visual genome: Connecting language and vision using crowdsourced dense image annotations",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Chunyuan Li",
+                "Haotian Liu",
+                "Liunian Harold Li",
+                "Pengchuan Zhang",
+                "Jyoti Aneja",
+                "Jianwei Yang",
+                "Ping Jin",
+                "Yong Jae Lee",
+                "Houdong Hu",
+                "Zicheng Liu"
+            ],
+            "title": "Elevater: A benchmark and toolkit for evaluating language-augmented visual models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Dongxu Li",
+                "Junnan Li",
+                "Hung Le",
+                "Guangsen Wang",
+                "Silvio Savarese",
+                "Steven C.H. Hoi"
+            ],
+            "title": "2022. Lavis: A library for language-vision intelligence",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven Hoi."
+            ],
+            "title": "Blip-2: Bootstrapping language-image pretraining with frozen image encoders and large language models",
+            "venue": "arXiv preprint arXiv:2301.12597.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Liunian Harold Li",
+                "Pengchuan Zhang",
+                "Haotian Zhang",
+                "Jianwei Yang",
+                "Chunyuan Li",
+                "Yiwu Zhong",
+                "Lijuan Wang",
+                "Lu Yuan",
+                "Lei Zhang",
+                "Jenq-Neng Hwang",
+                "Kai-Wei Chang",
+                "Jianfeng Gao"
+            ],
+            "title": "Grounded language-image pre-training",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Michael Maire",
+                "Serge Belongie",
+                "James Hays",
+                "Pietro Perona",
+                "Deva Ramanan",
+                "Piotr Doll\u00e1r",
+                "C Lawrence Zitnick."
+            ],
+            "title": "Microsoft coco: Common objects in context",
+            "venue": "European Conference on Computer Vision (ECCV).",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Shilong Liu",
+                "Yaoyuan Liang",
+                "Feng Li",
+                "Shijia Huang",
+                "Hao Zhang",
+                "Hang Su",
+                "Jun Zhu",
+                "Lei Zhang."
+            ],
+            "title": "Dq-detr: Dual query detection transformer for phrase extraction and grounding",
+            "venue": "Association for the Advancement of Artificial Intelligence (AAAI).",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shilong Liu",
+                "Zhaoyang Zeng",
+                "Tianhe Ren",
+                "Feng Li",
+                "Hao Zhang",
+                "Jie Yang",
+                "Chunyuan Li",
+                "Jianwei Yang",
+                "Hang Su",
+                "Jun Zhu"
+            ],
+            "title": "Grounding dino: Marrying dino with grounded pre-training for open-set object detection",
+            "venue": "arXiv preprint arXiv:2303.05499",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ze Liu",
+                "Yutong Lin",
+                "Yue Cao",
+                "Han Hu",
+                "Yixuan Wei",
+                "Zheng Zhang",
+                "Stephen Lin",
+                "Baining Guo."
+            ],
+            "title": "Swin transformer: Hierarchical vision transformer using shifted windows",
+            "venue": "International Conference on Computer Vision (ICCV).",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Bhavana Dalvi Mishra",
+                "Lifu Huang",
+                "Niket Tandon",
+                "Wen-tau Yih",
+                "Peter Clark."
+            ],
+            "title": "Tracking state changes in procedural text: a challenge dataset and models for process paragraph comprehension",
+            "venue": "North American Chapter of the Association for Com-",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Muhammad Ferjad Naeem",
+                "Muhammad Gul Zain Ali Khan",
+                "Yongqin Xian",
+                "Muhammad Zeshan Afzal",
+                "Didier Stricker",
+                "Luc Van Gool",
+                "Federico Tombari"
+            ],
+            "title": "I2mvformer: Large language model generated multi-view document supervision for zero-shot image",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Vicente Ordonez",
+                "Girish Kulkarni",
+                "Tamara Berg"
+            ],
+            "title": "Im2text: Describing images using 1 million captioned photographs",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Bryan A Plummer",
+                "Liwei Wang",
+                "Chris M Cervantes",
+                "Juan C Caicedo",
+                "Julia Hockenmaier",
+                "Svetlana Lazebnik."
+            ],
+            "title": "Flickr30k entities: Collecting region-to-phrase correspondences for richer imageto-sentence models",
+            "venue": "International Conference on",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jong Wook Kim",
+                "Chris Hallacy",
+                "Aditya Ramesh",
+                "Gabriel Goh",
+                "Sandhini Agarwal",
+                "Girish Sastry",
+                "Amanda Askell",
+                "Pamela Mishkin",
+                "Jack Clark"
+            ],
+            "title": "Learning transferable visual models from natural language supervision",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Dandan Shan",
+                "Jiaqi Geng",
+                "Michelle Shu",
+                "David Fouhey."
+            ],
+            "title": "Understanding human hands in contact at internet scale",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dandan Shan",
+                "Jiaqi Geng",
+                "Michelle Shu",
+                "David F. Fouhey."
+            ],
+            "title": "Understanding human hands in contact at internet scale",
+            "venue": "pages 9866\u20139875.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Shuai Shao",
+                "Zeming Li",
+                "Tianyuan Zhang",
+                "Chao Peng",
+                "Gang Yu",
+                "Xiangyu Zhang",
+                "Jing Li",
+                "Jian Sun."
+            ],
+            "title": "Objects365: A large-scale, high-quality dataset for object detection",
+            "venue": "International Conference on Computer Vision (ICCV).",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Piyush Sharma",
+                "Nan Ding",
+                "Sebastian Goodman",
+                "Radu Soricut."
+            ],
+            "title": "Conceptual captions: A cleaned, hypernymed, image alt-text dataset for automatic image captioning",
+            "venue": "Association for Computational Linguistics (ACL), pages 2556\u20132565.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Peng Shi",
+                "Jimmy Lin."
+            ],
+            "title": "Simple bert models for relation extraction and semantic role labeling",
+            "venue": "ArXiv, abs/1904.05255.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Niket Tandon",
+                "Keisuke Sakaguchi",
+                "Bhavana Dalvi",
+                "Dheeraj Rajagopal",
+                "Peter Clark",
+                "Michal Guerquin",
+                "Kyle Richardson",
+                "Eduard Hovy."
+            ],
+            "title": "A dataset for tracking entities in open domain procedural text",
+            "venue": "Empirical Methods in Natural Language Process-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B Hashimoto."
+            ],
+            "title": "Alpaca: A strong, replicable instruction-following model",
+            "venue": "Stanford Center for Research on Foundation Models.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Scao",
+                "Sylvain Gugger",
+                "Mariama Drame",
+                "Quentin Lhoest",
+                "Alexander M. Rush."
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Te-Lin Wu",
+                "Caiqi Zhang",
+                "Qingyuan Hu",
+                "Alex Spangher",
+                "Nanyun Peng"
+            ],
+            "title": "Learning action conditions from instructional manuals for instruction understanding",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Guang Yang",
+                "Manling Li",
+                "Jiajie Zhang",
+                "Xudong Lin",
+                "Shih-Fu Chang",
+                "Heng Ji."
+            ],
+            "title": "Video event extraction via tracking visual states of arguments",
+            "venue": "AAAI Conference on Artificial Intelligence.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ziyan Yang",
+                "Kushal Kafle",
+                "Franck Dernoncourt",
+                "Vicente Ordonez."
+            ],
+            "title": "Improving visual grounding by encouraging consistent gradient-based explanations",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haotian Zhang",
+                "Pengchuan Zhang",
+                "Xiaowei Hu",
+                "YenChun Chen",
+                "Liunian Harold Li",
+                "Xiyang Dai",
+                "Lijuan Wang",
+                "Lu Yuan",
+                "Jenq-Neng Hwang",
+                "Jianfeng Gao"
+            ],
+            "title": "Glipv2: Unifying localization and visionlanguage understanding",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yu Zhou",
+                "Sha Li",
+                "Li Manling",
+                "Lin Xudong",
+                "Shih-Fu Chang",
+                "Mohit Bansal",
+                "Heng Ji."
+            ],
+            "title": "Nonsequential graph script induction via multimedia grounding",
+            "venue": "Proc. the 61th Annual Meeting of the Association for Computational Linguistics",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xueyan Zou",
+                "Zi-Yi Dou",
+                "Jianwei Yang",
+                "Zhe Gan",
+                "Linjie Li",
+                "Chunyuan Li",
+                "Xiyang Dai",
+                "Jianfeng Wang",
+                "Lu Yuan",
+                "Nanyun Peng",
+                "Lijuan Wang",
+                "Yong Jae Lee",
+                "Jianfeng Gao"
+            ],
+            "title": "Generalized decoding for pixel, image and language",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Recent technological advancements in smart glasses (and headsets) from industry leaders such\n\u2217The authors contribute equally, alphabetical order.\nas Meta, Google, and Apple have attracted growing research in on-device AI that can provide just-intime assistance to human wearers. 1 While giving (or receiving) instructions during task execution, the AI assistant should co-observe its wearer\u2019s firstperson (egocentric) viewpoint to comprehend the visual scenes and provide appropriate assistance. To accomplish this, it is crucial for AI to first be able to localize and track the objects that are undergoing significant state change according to the instruction and/or actions performed. For example in Figure 1, it can be inferred from the instruction that the object undergoing change which should be actively grounded and tracked is the pawpaw.\nExisting works have focused on the visual modality alone for such state change object localization tasks, including recognizing hand-object interac-\n1Code at: https://github.com/PlusLabNLP/ENVISION\ntions (Shan et al., 2020a) and object visual state changes (Alayrac et al., 2017). However, it remains under-explored whether the visual modality by itself is sufficient for providing signals to enable robust state change object localizing/tracking without enhanced signals from the textual modality. While utilizing a phrase grounding model (Liu et al., 2022, 2023) is presumably a straightforward alternative, it leaves unanswered questions of which mentioned objects/entities in the instruction are supposedly the one(s) that undergo major state changes, e.g., the pawpaw in Figure 1 instead of the knife is the correct target-object. Furthermore, how visual appearances of the objects can help such multimodal grounding is yet to be investigated.\nIn light of this, we tackle the active object grounding task by first extracting target object mentionsfrom the instructions using large language models (ChatGPT (OpenAI, 2023)) with a specifically designed prompting pipeline, and then finetuning an open-vocabulary detection model, GLIP (Li* et al., 2022), for visual grounding.\nWe further hypothesize that additional actionand object-level symbolic knowledge could be helpful. As shown in Figure 1, state conditions prior to (pre-conditions: which indicate pre-action states) and after (post-conditions: which suggest at past state changes) the execution of the action are often considered when locating the objects, especially when the state changes are more visually significant. Furthermore, generic object knowledge including visual descriptions (e.g., \"yellow-greenish flesh\"), are helpful for uncommon objects.2 Based on this hypothesis, we prompt the LLM to obtain pre- and post-conditions on the extracted object mentions, along with a brief description focusing on specific object attributes.\nTo improve the grounding models by effectively using all the aforementioned action-object knowledge, we design an object-dependent mask to separately attribute the symbolic knowledge to its corresponding object mentions for training. During inference time, a pre-/post-condition dependent scoring mechanism is devised to aggregate the object and the corresponding knowledge logit scores to produce a joint inference prediction.\nWe evaluate our proposed framework on two\n2This should not contradict with the application where an assistive AI judges if the outcomes of the actions are desirable, as here we are only using general commonsensical conditions generated by an LLM, while in reality there can be more subtle and task-dependent conditions that need to be examined.\nnarrated egocentric video datasets, Ego4D (Grauman et al., 2022) and Epic-Kitchens (Damen et al., 2022) and demonstrate strong gains. Our main contributions are two folds: (1) We design a sophisticated prompting pipeline to extract useful symbolic knowledge for objects undergoing state change during an action from instructions. (2) We propose a joint inference framework with a per-object knowledge aggregation technique to effectively utilize the extracted knowledge for improving multimodal grounding models."
+        },
+        {
+            "heading": "2 Tasks and Terminologies",
+            "text": "Active Object Grounding. For both robotics and assistant in virtual or augmented reality, the AI observes (or co-observes with the device wearer) the visual scene in the first-person (egocentric) point of view, while receiving (or giving) the task instructions of what actions to be performed next. To understand the context of the instructions as well as engage in assisting the task performer\u2019s actions, it is crucial to closely follow the key objects/entities that are involved in the actions undergoing major state change.3 We term these actively involved objects as objects undergoing change (OUC), and what facilitate such state change as Tools. Tasks. As there is not yet an existing resource that directly studies such active instruction grounding problem in real-world task-performing situations, we re-purpose two existing egocentric video datasets that can be seamlessly transformed into such a setting: Ego4D (Grauman et al., 2022) and Epic-Kitchens (Damen et al., 2018). Both come with per-time-interval annotated narrations transcribing the main actions occurred in the videos.4\nEgo4D: SCOD. According to Ego4D\u2019s definition,\n3State change can come from objects\u2019 physical properties such as composition, textures, and functionalities; as well as attributes such as sizes, shapes, and physical affordances.\n4The narrations are paraphrased as imperative instructions.\nobject state change can encapsulate both spatial and temporal aspects. There is a timestamp that the state change caused by certain actions start to occur, i.e., the point-of-no-return (PNR). Ego4D\u2019s state change object detection (SCOD) subtask then defines, chronologically, three types of frames: the pre-condition (Pre), the PNR, and the postcondition (Post) frames, during a performed action. Pre-frames capture the prior (visual) states where a particular action is allowed to take place, while post-frames depict the outcomes caused by the action, and hence also record the associated object state change. Each frame annotated with its corresponding frame-type is further annotated with bounding boxes of the OUC (and Tools, if applicable), that is required to be regressed by the models. Figure 2 shows an exemplar SCOD data point.\nOur re-purposed active grounding task is thus as follows: Given an instructed action and one of a Pre/PNR/Post-typed frames, localize (ground) both the OUC(s) and Tool(s) in the visuals. While the official SCOD challenge only evaluates the PNR frame predictions, we consider all (Pre, PNR, and Post) frames for both training and inference. Epic-Kitchens: TREK-150. TREK-150 object tracking challenge (Dunnhofer et al., 2022, 2021) enriches a subset of 150 videos from the EpicKitchens (Damen et al., 2018, 2022) dataset, with densely annotated per-frame bounding boxes for tracking a target object. Since the Epic-Kitchens also comprises egocentric videos capturing human performing (specifically kitchen) tasks, the target objects to track are exactly the OUCs per the terminology defined above. Hence, given an instructed action, the model is required to ground and track the OUC in the egocentric visual scenes.5\nIt is worth noting that some OUCs may occasionally go \"in-and-out\" of the egocentric point of view (PoV), resulting in partial occlusion and/or full occlusion frames where no ground truth annotations for the OUCs are provided. Such frames are excluded from the final evaluation. And in Section 4.2.3 we will show that our proposed model is very successful in predicting the objects when they come back due to the robustness of our symbolic joint inference grounding mechanism.\n5 Unlike Ego4D SCOD task, TREK-150 does not contain any defined Pre/PNR/Post frames. Our proposed model is trained to perform joint inference and autonomously decide which of the pre- and post-conditions to weigh more based on the frame image and instructed action. And hence, in the TREK-150 task, frame-type information is not required."
+        },
+        {
+            "heading": "3 Method",
+            "text": "Figure 3 overviews the proposed framework, consisted of: (1) A base multimodal grounding architecture, where we adopt a strong open vocabulary object detection module, GLIP (Li* et al., 2022). (2) A frame-type prediction subcomponent which adds output projection layers on top of GLIP to utilize both image (frame) and text features to predict of which frame-type (Pre/PNR/Post) is currently observed. (Section 3.2.1) (3) A prompting pipeline that is engineered to extract useful action-object knowledge from an LLM (GPT). (Section 3.2) (4) A per-object knowledge aggregation technique is applied to GLIP\u2019s wordregion alignment contrastive training. (Section 3.3)"
+        },
+        {
+            "heading": "3.1 Adapting GLIP",
+            "text": "GLIP (Li* et al., 2022; Zhang* et al., 2022) achieves open vocabulary object detection by pretraining on a contrastive phrase grounding objective. Specifically, GLIP extends the text(caption)to-image dot product matching objective from CLIP (Radford et al., 2021) to a word-region-level alignment objective. For some (tokenized) words of the textual description of an image, there are certain image region(s) that could be grounded to, while other regions are viewed as the negative samples for the CLIP-like alignment contrastive learning. During pretraining, GLIP utilizes both phrase grounding datasets (Ordonez et al., 2011; Plummer et al., 2015; Sharma et al., 2018) and object detection datasets (Krishna et al., 2017; Krasin et al., 2017; Shao et al., 2019).6\nContrastive Learning. We illustrate the GLIP 6The descriptions of object detection are a simple concatenation of all the available object class labels.\ntraining adapted to our task in Figure 4 left half. Notice that for simplicity we do not fully expand the tokenized word blocks, e.g., \"fish fillet\" should span two words where each word ( fish\" and \"fillet\") and its corresponding region is all regarded as the positive matching samples. The model is trained to align the encoded latent word and image features7 with their dot-product logits being supervised by the positive and negative word-region pairs. The alignment scores will then be used to score (and rank) the regressed bounding boxes produced by the image features, and each box will feature an object-class prediction score. Concretely, for jth regressed box, its grounding score to a phrase W = {w}1:T is a mean pooling of the dot-products between the jth region feature and all the word features that compose such a phrase: Sboxj = 1T \u2211T i Ij \u00b7 Wi. In this work, we mainly focus on the OUC and Tool object classes, i.e., each textually-grounded region will further predict whether it is an OUC or Tool class."
+        },
+        {
+            "heading": "3.2 LLM for Action-Object Knowledge",
+            "text": "Pipeline. As illustrated in Figure 5, we implement an LLM query pipeline to extract active entities and relevant symbolic knowledge from an instructional caption. To account for GPT\u2019s verbose tendency, we forcibly instruct GPT to produce the active objects (OUC and/or Tool) following a specifically designed format and then apply heuristic-based\n7For details of GLIP\u2019s multimodal fusion technique, we refer the readers to Li* et al. (2022); Zhang* et al. (2022).\npost-processing to further refine the extractions.8 Conditioned on the extracted OUC (and Tool), two additional queries are made to generate: (1) the symbolic pre- and post-conditions of such objects induced by the actions, and (2) brief descriptions characterizing the objects and their attributes. Interestingly, we empirically find it beneficial to situate GPT with a role, e.g., \"From the first-person view.\" GPT Intrinsic Evaluation. In Table 2, we automatically evaluate the OUC/Tool extraction of GPT against the labelled ground truth entities in both datasets. We report both exact (string) match and word overlapping ratio (as GPT often extracts complete clauses of entities), to quantify the robustness of our GPT active entity extractions.\nTable 3 reports human evaluation results of GPT symbolic knowledge, including pre-/postconditions and descriptions. Evaluation is based on two binary metrics, namely: (1). Textual Correctness: \"Based on text alone, does the knowledge make sense?\" and (2). Visual Correctness: \"Does the conds./desc. match the image?\" Despite impressive performance on both intrinsic evaluations, we qualitatively analyze in Table 1 some representative cases where GPT mismatches with annotations or humans, including cases where GPT\u2019s answer is actually more reasonable than the annotations."
+        },
+        {
+            "heading": "3.2.1 Incorporating Knowledge",
+            "text": "Adding Knowledge. We use the following schema to enrich the instruction with the obtained knowl-\n8More details are in Append. Sec. A.2.\nedge: \"{instr.} [SEP] object/tool (pre/post)-state is {conds.} [SEP] object/tool description is {desc.}\", where [SEP] is the separation special token; {conds.} and {desc.} are the pre-/post-condition and object definition knowledge to be filled-in. Empirically, we find diffusing the post-condition knowl-\nedge to PNR frame yield better results. As Figure 4 illustrates (omitting some prefixes for simplicity), we propagate the positive matching labels to object/tool\u2019s corresponding knowledge. In the same training mini-batch, we encourage the contrastiveness to focus on more detailed visual appearance changes grounded to the symbolic condition statements and/or descriptions, by sampling frames from the same video clips with higher probability.\nFrame-Type Prediction. Using both the encoded textual and image features, we learn an additional layer to predict the types of frames conditioned on the associated language instruction. Note that the frame-type definition proposed in Ego4D should be generalizable outside of the specific task, i.e., these frame types could be defined on any kinds of action videos. In addition to the annotated frames in SCOD, we randomly sub-sample nearby frames within 0.2 seconds (roughly 5-6 frames) to expand the training data. The frame-type prediction achieves a 64.38% accuracy on our SCOD test-set, which is then directly applied to the TREK-150 task for deciding the amount of pre- and post-condition\nknowledge to use given the multimodal inputs."
+        },
+        {
+            "heading": "3.3 Object-Centric Joint Inference",
+            "text": "Masking. As illustrated in Figure 4, a straightforward way to assign symbolic knowledge to its corresponding object type respectively is to construct a per-object-type mask. For example, an OUC mask MOUC will have 1s spanning the positions of the words from condition (e.g., \"fresh,raw\" of the OUC \"fish fillet\" in Figure 4) and descriptive knowledge, and 0s everywhere else. We omit the knowledge prefixes in Section 3.2.1 (e.g., the phrase \"object state is\") so that the models can concentrate on grounding the meaningful words. Such mask for each object type can be deterministically constructed to serve as additional wordregion alignment supervisions, and can generalize to object types outside of OUC and Tool (beyond the scope of this work) as the GPT extraction can clearly indicate the object-to-knowledge correspondences. In other words, we enrich the GLIP\u2019s phrase grounding to additionally consider symbolic knowledge during the contrastive training. Note that the mask is frame-type dependent, e.g., MPreOUC and MPostOUC will focus on their corresponding conditional knowledge. Aggregation. During the inference time, we combine the frame-type prediction scores Sfr with the per-object mask to aggregate the dot-product logit scores for ranking the regressed boxes. Specifically, we have SboxOUC = \u2211 fr S\nfr \u2217 MfrOUC , where S is a 3-way logit and fr \u2208 {Pre,PNR,Post}."
+        },
+        {
+            "heading": "4 Experiments and Analysis",
+            "text": "We adopt the GLIP-L variant (and its pretrained weights) for all of our experiments, where its visual encoder uses the Swin-L transformer (Liu et al., 2021). We train the GLIP-L with our framework primarily on the SCOD dataset, and perform a zeroshot transfer to the TREK-150 task."
+        },
+        {
+            "heading": "4.1 Ego4D SCOD",
+            "text": ""
+        },
+        {
+            "heading": "4.1.1 Experimental Setups",
+            "text": "Data Splits. We split the official SCOD train set following a 90-10 train-validation ratio and use the official validation set as our primary test set.9\nEvaluation Metrics. Following the original SCOD task\u2019s main settings, we adopt average precision\n9The official test-set only concerns the PNR frame, and deliberately excluded narrations to make a vision only localization task, which is not exactly suitable for our framework.\n(AP) as the main evaluation metric, and utilize the COCO API (Lin et al., 2014) for metric computation. Specifically, we report AP, AP50, (AP at IOU\u2265 0.5) and AP75 (AP at IOU\u2265 0.75)."
+        },
+        {
+            "heading": "4.1.2 Baselines",
+            "text": "We evaluate three categories of baselines: (1) Pure object detection models, where the language instructions are not utilized. (2) (Pseudo) referential grounding, where certain linguistic heuristics are used to propose the key OUCs. (3) GPT with symbolic knowledge, where GPT is used to extract both the OUCs and Tools, with additional symbolic knowledge available to utilize.\nPure Object Detection (OD). We finetune the state-of-the-art model of the SCOD task from Chen et al. (2022) (VidIntern) on all types of frames (Pre, PNR, and Post) to serve as the pure object detection model baseline, which learns to localize the OUC from a strong hand-object-interaction prior in the training distribution. We also train an OD version of GLIP providing a generic instruction, \"Find the object of change.\", to quantify its ability to fit the training distribution of plausible OUCs.\nPseudo Grounding (GT/SRL). We experiment four types of models utilizing the instructions and certain linguistic patterns as heuristics: (1) We extract all the nouns using Spacy NLP tool (Honnibal and Montani, 2017) and randomly assign OUC to one of which (Random Entity). (2) A simple yet strong baseline is to ground the full sentence of the instruction if the only object class to be predicted is the OUC type (Full-Instr.). (3) Following (2), we hypothesize that the first argument type (ARG1) of the semantic-role-labelling (SRL) parses (Shi and Lin, 2019; Gardner et al., 2017) of most simple instructions is likely regarded as the OUC ((SRLARG1)). (4) Lastly, to quantify a possible upper bound of simple grounding methods, we utilize the annotated ground truth object class labels from SCOD task and perform a simple pattern matching to extract the OUCs and Tools. For those ground truth words are not easily matched, we adopt the ARG1 method from (3) (GT-SRL-ARG1). GPT-based. For our main methods leveraging LLMs (GPT) and its generated action-object symbolic knowledge, we consider four types of combinations: (1) GPT with its extracted OUCs and Tools. (2) The model from (1) with additional utilization of object definitions (GPT+Desc.). (3) Similar to (2) but condition on generated pre- and\npost-conditions of the objects (GPT+Conds.). (4) Combining both (2) and (3) (GPT+Conds.+Desc.)."
+        },
+        {
+            "heading": "4.1.3 Results",
+            "text": "Table 4 summarizes the overall model performance on Ego4D SCOD task. Even using the ground truth phrases, GLIP\u2019s zero-shot performance is significantly worse than pure OD baselines, implying that many of the SCOD objects are uncommon to its original training distribution. Generally, the instruction grounded performance (Instr.) are all better than the pure OD baselines, even with using the whole instruction sentence as the grounding phrase. The significant performance gaps between our models and the VidIntern baseline verifies that visual-only models can be much benefit from incorporation of textual information (should they be available) for the active object grounding task.\nParticularly for OUC, with vanilla GPT extractions we can almost match the performance using the ground truth phrases, where the both the conditional and definition symbolic knowledge further improve the performance. Notice that condition knowledge by itself is more useful than the definition, and would perform better when combined. We also ablate a row excluding the per-object aggregation mechanism so that the conditional knowledge is simply utilized as a contextualized suffix for an instruction, which indeed performs worse, especially for the post-frames. As implied in Table 4 , best performance on Tool is achieved using the ground truth phrases, leaving room for improve-\nment on more accurate extractions and search of better suited symbolic knowledge.\nHowever, one may raise a natural question: if the OUC/Tool can be more robustly localized in the PNR frame, would a tracker improve the postframe performance over our grounding framework? We thus conduct an ablation study using the tracker in Section 4.2 to track from PNR-frames using either the ground truth box and our model grounded box to the post-frames. Results in Table 5 contradicts this hypothesis, where we find that, due to viewpoint variations and appearance differences induced by the state change, our grounding model is significantly more robust than using tracking."
+        },
+        {
+            "heading": "4.1.4 Qualitative Inspections",
+            "text": "Figure 6 shows six different examples for in-depth qualitative inspections. It mainly shows that, generally, when the models grounding with the symbolic knowledge outperforms the ones without, the provided symbolic knowledge, especially the conditional knowledge, plays an important role"
+        },
+        {
+            "heading": "4.2 TREK-150",
+            "text": ""
+        },
+        {
+            "heading": "4.2.1 Experimental Setups",
+            "text": "Protocols. TREK-150\u2019s official evaluation protocol is One-Pass Evaluation (OPE), where the tracker is initialized with the ground-truth bounding box of the target in the first frame; and then ran on every subsequent frame until the end of the video. Tracking predictions and the ground-truth bounding boxes are compared based on IOU and distance of box centers. However, as the premise of having ground-truth bounding box initialization can be generally impractical, a variant of OPE-Det is additionally conducted, where the first-frame bounding box is directly predicted by our trained grounding model (grounded to the instructions). Evaluation Metrics. Following Dunnhofer et al. (2022), we use common tracking metrics, i.e., Success Score (SS) and Normalized Precision Score (NSP), as the primary evaluation metrics. In addition, we also report standard OD metric (APs) simply viewing each frame to be tracked as the localization task, as an alternative reference."
+        },
+        {
+            "heading": "4.2.2 Baselines.",
+            "text": "We adopt the best performing framework, the LTMU-H, in the original TREK-150 paper as the major baseline. LTMU-H integrates an fpv (firstperson-view) object detector (HiC (Shan et al., 2020b)) into a generic object tracker (LTMU (Dai et al., 2020)), which is able to re-focus the tracker on the active objects after the (tracked) focus is lost (i.e., identified by low tracker confidence scores).\nFollowing the convention of utilizing object detection models to improve tracking (Feichtenhofer et al., 2017), we focus on improving object tracking performance by replacing the HiC-detector with our knowlede-enhanced GLIP models. We substi-\ntute the HiC-detector for all 8 GLIP-based models and the VideoIntern baseline trained on the SCOD task and perform a zero-shot knowledge transfer (directly from Ego4D SCOD).10"
+        },
+        {
+            "heading": "4.2.3 Results",
+            "text": "Table 6 summarizes the performance on TREK-150. Our best GLIP model trained using GPT-extracted objects and symbolic knowledge outperforms the best HiC baseline by over 54% relative gains in the SS metric and over 62% relative gains in the NPS scores for the OPE-D task. It also outperforms the VideoIntern baseline by 16-18% relative gains in SS/NPS and even the GLIP-(GT-SRL-ARG1) model by 7-9% relative gains on both metrics. This demonstrates the transferability of our OUC grounding model in fpv-tracking. For the OPE task with ground-truth initializations, the gains provided by our GLIP-GPT models over LTMU-H narrow to 7-8% relative gains across both metrics while still maintaining a lead over all other methods. This shows that the model is still able to better help the tracker re-focus on the OUCs although the overall tracking performance is more empirically bounded by the tracking module."
+        },
+        {
+            "heading": "5 Related Works",
+            "text": "Egocentric Vision. Egocentric vision has recently attracted research attentions thanks to advancements in smart wearable devices and robotics. Datasets used in this work, Ego4D (Grauman et al., 2022) and Epic-Kitchens (Damen et al., 2022, 2018; Dunnhofer et al., 2022) are two representative large-scale collections of egocentric videos\n10Mainly because: (1) The general bounding box annotations in Epic-Kitchens videos are machine annotated, and (2) we believe model learned from Ego4D\u2019s more general visual domains should transfer well to kitchen activities.\nrecording tasks performed by the camera wearers. Other existing works have also investigated egocentric vision in audio-visual learning (Kazakos et al., 2019), object detection with EgoNet (Bertasius et al., 2017; Furnari et al., 2017), object segmentation with eye-gazes (Kirillov et al., 2023) and videos (Darkhalil et al., 2022).\nAction-Object Knowledge. The knowledge of objects are often at the center of understanding human actions. Prior works in both NLP and vision communities, have studied problems such as tracking visual object state changes (Alayrac et al., 2017; Isola et al., 2015; Yang et al., 2022), understanding object manipulations and affordances (Shan et al., 2020a; Fang et al., 2018), tracking textual entity state changes (Branavan et al., 2012; Bosselut et al., 2018; Mishra et al., 2018; Tandon et al., 2020), and understanding textual pre-/post-conditions from action instructions (Wu et al., 2023). While handobject interactions (Shan et al., 2020a; Fu et al., 2022) are perhaps one of the most common object manipulation schemes, the objects undergoing change may not be directly in contact with the hands (see Figure 2). Here additional textual information can aid disambiguating the active object during localization and tracking. In this spirit, our work marries the merits from both modalities to tackle the active object grounding problem according to specific task instructions, and utilize actionobject knowledge to further improve the models.\nMultimodal Grounding. In this work, we adopt the GLIP model (Li* et al., 2022; Zhang* et al., 2022) for its compatibility with our settings and the joint inference framework, which indeed demonstrate significant improvements for the active object grounding task. There are many related works for multimodal grounding and/or leveraging language (LLMs) to help with vision tasks, including (but not limited to) Grounding-DINO (Liu et al., 2023), DQ-DETR (Liu et al., 2022), ELEVATER (Li* et al., 2022), phrase segmentation (Zou* et al., 2022), visually-enhanced grounding (Yang et al., 2023), video-to-text grounding (Zhou et al., 2023), LLM-enhanced zero-shot novel object classification (Naeem et al., 2023), and multimodal object description generations (Li et al., 2022, 2023)."
+        },
+        {
+            "heading": "6 Conclusions",
+            "text": "In this work, we approach the active object grounding task leveraging two narrated egocentric video datasets, Ego4D and Epic-Kitchens. We propose a carefully designed prompting scheme to obtain useful action-object knowledge from LLMs (GPT), with specific focuses on object pre-/post-conditions during an action and its attributional descriptions. Enriching the GLIP model with the aforementioned knowledge as well as the proposed perobject knowledge aggregation technique, our models outperforms various strong baselines in both active object localization and tracking tasks."
+        },
+        {
+            "heading": "7 Limitations",
+            "text": "We hereby discuss the potential limitations of our work:\n(1) While we make our best endeavours to engineer comprehensive and appropriate prompts for obtaining essential symbolic action-object knowledge from large language models (LLMs) such as GPT, there are still few cases where the extracted objects are not ideal (see Table 1). Hence, our model performance could potentially be bounded by such limitation inherited from the LLM ability to fully and accurately comprehend the provided instructions. Future works can explore whether more sophisticated in-context learning (by providing examples that could be tricky to the LLM) would be able to alleviate this issue. Alternatively, we may utilize LLM-self-constructed datasets to finetune another strong language models (such as Alpaca (Taori et al., 2023)) for the object extraction task. On the other hand, incorporating high-level descriptions of the visual contexts using off-theshelf captioning models could also be explored to make the LLM more situated to further improve the efficacy of the extracted knowledge.\n(2) As this work focuses on action frames in first-person egocentric videos (from both Ego4D (Grauman et al., 2022) and Epic-Kitchens dataset (Damen et al., 2018; Dunnhofer et al., 2022) datasets), the underlying learned model would obviously perform better on visual observations/scenes from first-person viewpoints. While we hypothesize that, unless heavy occlusion and drastic domain shifts (of the performed tasks and/or objects involved) occur, the learned models in this work should be able to transfer to third-person viewpoints, we have not fully tested and verified such hypothesis. However, if applied properly, the overall framework as well as the utilization of LLMs for action-object knowledge should be well-generalizable regardless of the viewpoints.\n(3) There is more object- and action-relevant knowledge that could be obtained from LLMs, such as spatial relations among the objects, size difference between the objects, and other subtle geometrical transitions of the objects. During experiments, we attempted to incorporate spatial and size information to our models. However, experimental results on the given datasets did not show significant improvement. Thus we omitted them from this work. We hope to inspire future relevant research along this line to further exploit other potentially\nuseful knowledge."
+        },
+        {
+            "heading": "8 Ethics and Broader Impacts",
+            "text": "We hereby acknowledge that all of the co-authors of this work are aware of the provided ACL Code of Ethics and honor the code of conduct. This work is mainly about understanding and localizing the key objects undergoing major state changes during human performing an instructed or guided action, which is a crucial step for application such as ondevice AI assistant for AR or VR devices/glasses.\nDatasets. We mainly use the state-changeobject-detection (SCOD) subtask provided by Ego4D (Grauman et al., 2022) grand challenge for training and (testing on their own tasks), and transfer the learned knowledge to TREK150 (Dunnhofer et al., 2022) from Epic-Kitchens dataset (Damen et al., 2018). These datasets is not created to have intended biases towards any population where the videos are collected spanning across multiple regions around the world. The main knowledge learned from the dataset is mainly physical knowledge, which should be generally applicable to any social groups when conducting daily tasks.\nTechniques. We propose to leverage both the symbolic knowledge from large-language models (LLMs) such as GPT to guide the multimodal grounding model and the visual appearances and relations among objects for localizing the object undergo changes. The technique should be generally transferable to similar tasks even outside of the domain concerned in this work, and unless misused intentionally to harmful data (or trained on), should not contain harmful information for its predictions and usages."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "Many thanks to I-Hung Hsu for his valuable feedback during our paper preparation, and to Liunian Harold Li for his tips on using his great work, GLIP models. This material is based on research supported by the Machine Common Sense (MCS) program under Cooperative Agreement N6600119-2-4032 and the ECOLE program under Cooperative Agreement HR00112390060, both with the US Defense Advanced Research Projects Agency (DARPA). The views and conclusions contained herein are those of the authors and should not be interpreted as necessarily representing DARPA, or the U.S. Government."
+        },
+        {
+            "heading": "A GPT Prompt Engineering Details",
+            "text": "A.1 GPT Prompts\nBelow are the prompts used in the GPT entity and symbolic knowledge extraction pipeline as described in Figure 5. # GPT Prompt Set\n# Identify OUC & Tool: GPT Prompt 1 = \"From the action [{}],\nplease extract the follow objects exactly as they are written: (a) The single object being manipulated (b) The one single tool used to manipulate (a). Please do not explain anything in you answer. Please only output one object for each part. If you cannot find either (a) or (b), please simply output [ None] for that field and print nothing else.\"\n# Precise Semantic Grounding (for both OUC and Tool): GPT Prompt 2 = \"Please output an exact subpart of the sentence [{}] where the object [{}] is referred to. Please remove leading verbs in your answer. Please output only the exact sentence subpart and nothing else.\nPlease make sure that you answer can be exactly found in the sentence [{}]. If question is not valid , please simply output [None] and nothing else. Please do not output any explaination of your answer. \"\n# State Change Forcast GPT Prompt 3 = \"From the first person\nview of the action [{}], would the object [{}] undergo significant change in its visual appearance? If so, please output [yes] in the first line and If not , please output [no] in the first line. If the answer is yes , then on the second line , please simply print one or two visually recognizable adjectives to describe the appearance of the object before the state change , on the third line , please simply print a few (<7) words that visually describe the object after the state change\"\n# Object Description GPT Prompt 4 = \"In one sentence , please\ndefine the object [{}] visually\"\nA.2 GPT Pipeline\nThe GPT prompts are used in the order above. First, we plug in the instructional caption to GPT Prompt 1 and generate a tentative OUC-Tool pair. If either entity is not found, GPT would return None and\nfuture queries will ignore that entity. Due to GPT\u2019s tendency to paraphrase and provide unwanted chain-of-thought explanations, we further pass GPT outputs for OUC and/or tool through an additional query aimed to produce exact grounding if it is not contained in the caption. Emperically this query has a very high chance of producing a caption-groundable answer if exist. In the unlikely event that no groundable OUC is found after running GPT Prompt 2, we resort to using SRL [ARG1] as the OUC. On the other hand, if no groundable Tool is found after running GPT Prompt 2, we set the Tool to None.\nAt this point, we run GPT Prompts 3 and 4 on the OUC and Tool (if exist). GPT results are parsed and stored if following the designated formats.\nA.3 GPT Situated Role\nFor a small randomly selected subset of Ego4d prompts (220 samples) in the human evaluation of GPT generated answers for pre/post conditions (Table 2), we evaluated results both with and without the situated role specification \"From the firstperson view.\" in Table 7.\nWe observed that when provided with additional situated viewpoint specification, GPT results displayed a significant increase in alignment with human judgment, thus it was incorporated into our final prompt."
+        },
+        {
+            "heading": "B Details of Modeling & Learning",
+            "text": "B.1 Narration Processing\nEgo4D. Ego4D\u2019s original annotated narrations are of third-person descriptive tone, e.g., \"#C cuts the vegetables with the knife.\", where the symbol of #C indicates the camera wearer. Since this pattern is universally applicable to all the available narrations of the videos, we perform a deterministic string transformation stripping these special indi-\ncators of camera wearers or other human characters, followed by a simple conversion to change the third-person singular verb to first-person verb. The rest of the pronouns are also deterministically converted, so that the narration becomes a first-person imperative tone. Although we did not empirically find such a transformation make any significant impacts to the model performance, we conduct this transformation for GPT to more easily grasp the situated roles (given to it) as well as conform to the main motivation of this work better.\nEpic-Kitchens. For TREK-150 where its videos basically belong to Epic-Kitchens, the original released narrations are already in an imperative instructional tone. In light of this, we simply adopt them as the task instructions seamlessly without needing to perform any modifications.\nB.2 Training & Implementation Details Training Details. For GLIP series of models, we simply truncate the textual inputs (the action instruction texts) at maximum 256 tokens, ensuring all of the textual inputs are below such maximum length even with additional symbolic knowledge is incorporated. The hyperparameters are manually tuned against an Ego4D SCOD validation set, and the checkpoints used for testing are selected by the best performing ones on such set.\nAll the models in this work are trained on 2- 4 Nvidia A100/A6000 GPUs1112 on a Ubuntu 20.04.2 operating system. The hyperparameters for each model are manually tuned against the development datasets, and the checkpoints used for testing are selected by the best performing ones on such held-out development sets.\nImplementation Details. The implementations of the transformer-based models are extended from the HuggingFace13 code base (Wolf et al., 2020), and our entire code-base is implemented in PyTorch.14\nB.3 Hyperparameters We train our models until performance convergence is observed on the held-out development set (split from the original train set from Ego4D SCOD subtask). The training time is roughly 12-14 hours, spanning 10-15 training epochs. We list all the\n11https://www.nvidia.com/en-us/data-center/a100/ 12https://www.nvidia.com/en-us/design-visualization/rtx-\na6000/ 13https://github.com/huggingface/transformers 14https://pytorch.org/\nhyperparameters used in Table 8. The basic hyperparameters such as learning rate, batch size, and gradient accumulation steps, are kept consistent for models based off the same architecture (for baselines and our GLIP-L model series). All of our models adopt the same search bounds and ranges of trials as in Table 9."
+        }
+    ],
+    "title": "Localizing Active Objects from Egocentric Vision with Symbolic World Knowledge",
+    "year": 2023
+}

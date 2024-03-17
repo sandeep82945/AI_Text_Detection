@@ -1,0 +1,626 @@
+{
+    "abstractText": "Fusion-in-Decoder (FiD) is an effective retrieval-augmented language model applied across a variety of open-domain tasks, such as question answering, fact checking, etc. In FiD, supporting passages are first retrieved and then processed using a generative model (Reader), which can cause a significant bottleneck in decoding time, particularly with long outputs. In this work, we analyze the contribution and necessity of all the retrieved passages to the performance of reader models, and propose eliminating some of the retrieved information, at the token level, that might not contribute essential information to the answer generation process. We demonstrate that our method can reduce run-time by up to 62.2%, with only a 2% reduction in performance, and in some cases, even improve the performance results.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Moshe Berchansky"
+        },
+        {
+            "affiliations": [],
+            "name": "Peter Izsak"
+        },
+        {
+            "affiliations": [],
+            "name": "Avi Caciularu"
+        },
+        {
+            "affiliations": [],
+            "name": "Ido Dagan"
+        },
+        {
+            "affiliations": [],
+            "name": "Moshe Wasserblat"
+        }
+    ],
+    "id": "SP:e3b8f94bfdeb9e2832f9f991ecd18c8a42a8616b",
+    "references": [
+        {
+            "authors": [
+                "Joshua Ainslie",
+                "Tao Lei",
+                "Michiel de Jong",
+                "Santiago Ontan\u2019on",
+                "Siddhartha Brahma",
+                "Yury Zemlyanskiy",
+                "David C. Uthus",
+                "Mandy Guo",
+                "James Lee-Thorp",
+                "Yi Tay",
+                "Yun-Hsuan Sung",
+                "Sumit K. Sanghai"
+            ],
+            "title": "Colt5: Faster long-range transformers with",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Avi Caciularu",
+                "Arman Cohan",
+                "Iz Beltagy",
+                "Matthew Peters",
+                "Arie Cattan",
+                "Ido Dagan."
+            ],
+            "title": "CDLM: Cross-document language modeling",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021, pages 2648\u20132662, Punta Cana, Do-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Daniel Fernando Campos",
+                "Tri Nguyen",
+                "Mir Rosenberg",
+                "Xia Song",
+                "Jianfeng Gao",
+                "Saurabh Tiwary",
+                "Rangan Majumder",
+                "Li Deng",
+                "Bhaskar Mitra."
+            ],
+            "title": "Ms marco: A human generated machine reading comprehension dataset",
+            "venue": "ArXiv, abs/1611.09268.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Danqi Chen",
+                "Adam Fisch",
+                "Jason Weston",
+                "Antoine Bordes."
+            ],
+            "title": "Reading wikipedia to answer opendomain questions",
+            "venue": "ACL.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Michiel de Jong",
+                "Yury Zemlyanskiy",
+                "Joshua Ainslie",
+                "Nicholas FitzGerald",
+                "Sumit K. Sanghai",
+                "Fei Sha",
+                "William Cohen."
+            ],
+            "title": "Fido: Fusion-in-decoder optimized for stronger performance and faster inference",
+            "venue": "ArXiv, abs/2212.08153.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Michiel de Jong",
+                "Yury Zemlyanskiy",
+                "Nicholas FitzGerald",
+                "Sumit Sanghai",
+                "William W. Cohen",
+                "Joshua Ainslie"
+            ],
+            "title": "Glimmer: generalized late-interaction memory reranker",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Maha Elbayad",
+                "Jiatao Gu",
+                "Edouard Grave",
+                "Michael Auli."
+            ],
+            "title": "Depth-adaptive transformer",
+            "venue": "ArXiv, abs/1910.10073.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Angela Fan",
+                "Yacine Jernite",
+                "Ethan Perez",
+                "David Grangier",
+                "Jason Weston",
+                "Michael Auli."
+            ],
+            "title": "Eli5: Long form question answering",
+            "venue": "ArXiv, abs/1907.09190.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Saurabh Goyal",
+                "Anamitra R. Choudhury",
+                "Saurabh Raje",
+                "Venkatesan T. Chakaravarthy",
+                "Yogish Sabharwal",
+                "Ashish Verma."
+            ],
+            "title": "Power-bert: Accelerating bert inference via progressive word-vector elimination",
+            "venue": "International Conference on Machine Learning.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kelvin Guu",
+                "Kenton Lee",
+                "Zora Tung",
+                "Panupong Pasupat",
+                "Ming-Wei Chang."
+            ],
+            "title": "Realm: Retrievalaugmented language model pre-training",
+            "venue": "ArXiv, abs/2002.08909.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sebastian Hofst\u00e4tter",
+                "Jiecao Chen",
+                "Karthik Raman",
+                "Hamed Zamani."
+            ],
+            "title": "Fid-light: Efficient and effective retrieval-augmented text generation",
+            "venue": "ArXiv, abs/2209.14290.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Distilling knowledge from reader to retriever for question answering",
+            "venue": "ArXiv, abs/2012.04584.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "EACL.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Patrick Lewis",
+                "Maria Lomeli",
+                "Lucas Hosseini",
+                "Fabio Petroni",
+                "Timo Schick",
+                "Jane A. Yu",
+                "Armand Joulin",
+                "Sebastian Riedel",
+                "Edouard Grave."
+            ],
+            "title": "Few-shot learning with retrieval augmented language models",
+            "venue": "ArXiv, abs/2208.03299.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Vladimir Karpukhin",
+                "Barlas O\u011fuz",
+                "Sewon Min",
+                "Patrick Lewis",
+                "Ledell Yu Wu",
+                "Sergey Edunov",
+                "Danqi Chen",
+                "Wen tau Yih."
+            ],
+            "title": "Dense passage retrieval for open-domain question answering",
+            "venue": "ArXiv, abs/2004.04906.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Gyuwan Kim",
+                "Kyunghyun Cho."
+            ],
+            "title": "Lengthadaptive transformer: Train once with length drop, use anytime with search",
+            "venue": "Annual Meeting of the Association for Computational Linguistics.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kalpesh Krishna",
+                "Aurko Roy",
+                "Mohit Iyyer."
+            ],
+            "title": "Hurdles to progress in long-form question answering",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kalpesh Krishna",
+                "Aurko Roy",
+                "Mohit Iyyer."
+            ],
+            "title": "Hurdles to progress in long-form question answering",
+            "venue": "North American Chapter of the Association for Computational Linguistics.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Uszkoreit",
+                "Quoc V. Le",
+                "Slav Petrov."
+            ],
+            "title": "Natural questions: A benchmark for question answering research",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:453\u2013466.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kenton Lee",
+                "Ming-Wei Chang",
+                "Kristina Toutanova."
+            ],
+            "title": "Latent retrieval for weakly supervised open domain question answering",
+            "venue": "ArXiv, abs/1906.00300.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Patrick Lewis",
+                "Ethan Perez",
+                "Aleksandara Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich Kuttler",
+                "Mike Lewis",
+                "Wen tau Yih",
+                "Tim Rockt\u00e4schel",
+                "Sebastian Riedel",
+                "Douwe Kiela"
+            ],
+            "title": "Retrieval-augmented generation for knowledge",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jesse Mu",
+                "Xiang Lisa Li",
+                "Noah D. Goodman."
+            ],
+            "title": "Learning to compress prompts with gist tokens",
+            "venue": "ArXiv, abs/2304.08467.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Fabio Petroni",
+                "Aleksandra Piktus",
+                "Angela Fan",
+                "Patrick Lewis",
+                "Majid Yazdani",
+                "Nicola De Cao",
+                "James Thorne",
+                "Yacine Jernite",
+                "Vassilis Plachouras",
+                "Tim Rocktaschel",
+                "Sebastian Riedel."
+            ],
+            "title": "Kilt: a benchmark for knowledge intensive language tasks",
+            "venue": "North Amer-",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Fabio Petroni",
+                "Aleksandra Piktus",
+                "Angela Fan",
+                "Patrick Lewis",
+                "Majid Yazdani",
+                "Nicola De Cao",
+                "James Thorne",
+                "Yacine Jernite",
+                "Vladimir Karpukhin",
+                "Jean Maillard",
+                "Vassilis Plachouras",
+                "Tim Rockt\u00e4schel",
+                "Sebastian Riedel"
+            ],
+            "title": "KILT: a benchmark for knowledge",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Guanghui Qin",
+                "Benjamin Van Durme."
+            ],
+            "title": "Nugget: Neural agglomerative embeddings of text",
+            "venue": "International Conference on Machine Learning.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam M. Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "ArXiv, abs/1910.10683.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "Sentence-bert: Sentence embeddings using siamese bert-networks",
+            "venue": "ArXiv, abs/1908.10084.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tal Schuster",
+                "Adam Fisch",
+                "Jai Gupta",
+                "Mostafa Dehghani",
+                "Dara Bahri",
+                "Vinh Quang Tran",
+                "Yi Tay",
+                "Donald Metzler."
+            ],
+            "title": "Confident adaptive language modeling",
+            "venue": "ArXiv, abs/2207.07061.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Roy Schwartz",
+                "Gabriel Stanovsky",
+                "Swabha Swayamdipta",
+                "Jesse Dodge",
+                "Noah A. Smith."
+            ],
+            "title": "The right tool for the job: Matching model and instance complexities",
+            "venue": "Annual Meeting of the Association for Computational Linguistics.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jasper Snoek",
+                "H. Larochelle",
+                "Ryan P. Adams."
+            ],
+            "title": "Practical bayesian optimization of machine learning algorithms",
+            "venue": "ArXiv, abs/1206.2944.",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Dan Su",
+                "Xiaoguang Li",
+                "Jindi Zhang",
+                "Lifeng Shang",
+                "Xin Jiang",
+                "Qun Liu",
+                "Pascale Fung."
+            ],
+            "title": "Read before generate! faithful long form question answering with machine reading",
+            "venue": "ArXiv, abs/2203.00343.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Surat Teerapittayanon",
+                "Bradley McDanel",
+                "H.T. Kung."
+            ],
+            "title": "Branchynet: Fast inference via early exiting from deep neural networks",
+            "venue": "2016 23rd International Conference on Pattern Recognition (ICPR), pages 2464\u20132469.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141 ukasz Kaiser",
+                "Illia Polosukhin."
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in Neural Information Processing Systems, volume 30. Curran Associates, Inc.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ellen M. Voorhees."
+            ],
+            "title": "The trec-8 question answering track report",
+            "venue": "Text Retrieval Conference.",
+            "year": 1999
+        },
+        {
+            "authors": [
+                "David Wingate",
+                "Mohammad Shoeybi",
+                "Taylor Sorensen."
+            ],
+            "title": "Prompt compression and contrastive conditioning for controllability and toxicity reduction in language models",
+            "venue": "Conference on Empirical Methods in Natural Language Processing.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Thomas Wolf",
+                "Lysandre Debut",
+                "Victor Sanh",
+                "Julien Chaumond",
+                "Clement Delangue",
+                "Anthony Moi",
+                "Pierric Cistac",
+                "Tim Rault",
+                "R\u00e9mi Louf",
+                "Morgan Funtowicz",
+                "Jamie Brew."
+            ],
+            "title": "Huggingface\u2019s transformers: State-of-the-art natural language processing",
+            "venue": "ArXiv,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Donghan Yu",
+                "Chenguang Zhu",
+                "Yuwei Fang",
+                "W. Yu",
+                "Shuohang Wang",
+                "Yichong Xu",
+                "Xiang Ren",
+                "Yiming Yang",
+                "Michael Zeng."
+            ],
+            "title": "Kg-fid: Infusing knowledge graph in fusion-in-decoder for opendomain question answering",
+            "venue": "ArXiv, abs/2110.04330.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tianyi Zhang",
+                "Varsha Kishore",
+                "Felix Wu",
+                "Kilian Q. Weinberger",
+                "Yoav Artzi."
+            ],
+            "title": "Bertscore: Evaluating text generation with bert",
+            "venue": "ArXiv, abs/1904.09675.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Izacard"
+            ],
+            "title": "2022), the scores can benefit from scaling by the l2 normalized values tensor V",
+            "venue": "Value Normalization",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gurevych"
+            ],
+            "title": "finetuned on the dataset, and keep only the top 100 ranked documents. D Method Implementation Details For the CALM, we utilize beam search for long",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Schuster"
+            ],
+            "title": "2022) utilized a complex threshold calibration system, we instead showcase the effect of the various thresholding settings, once applied to the decoder model",
+            "venue": "For the Token Filtering,",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "The task of Open-Domain Question Answering (ODQA) (Voorhees, 1999) consists of answering questions using external knowledge, which is used as a source of relevant information that might be helpful for a model to extract or generate the right answer for a question. The expected answer can be short and concise (Kwiatkowski et al., 2019), or long and detailed (Fan et al., 2019), in which it is called Long-Form Question Answering (LFQA).\nThe retriever-reader architecture has been widely-used and adopted for ODQA tasks (Chen et al., 2017). The retriever fetches the most relevant passages using the question as a query. Then, the reader extracts or generates an answer, using the question and the relevant passages. The explicit structure of the system, consisting of these two sub-modules, allows for a decoupled optimization of either the retrieving or the reading process. In this work, we exclusively focus on the optimization\n1We provide the source code for our work at https:// github.com/mosheber/token_elimination.\nof the reading process. In order to assess ODQA methods, Petroni et al. (2021) presented a comprehensive evaluation framework that examines these methods in various open-domain tasks. Our study specifically concentrates on the Long-Form Question Answering task, utilizing the ELI5 dataset as a foundation (Fan et al., 2019).\nThere has been rapid and remarkable progress in retriever-reader systems for solving ODQA tasks using a generative approach (Sachan et al., 2021; Izacard et al., 2022). One such prominent approach is Fusion-in-Decoder (FiD) (Izacard and Grave, 2021b) that utilizes a generative text-to-text model to generate an answer. Despite the significant performance improvements, there are several computational bottlenecks associated with FiD that have\na negative impact on efficiency. The most prominent ones are: (a) the need to retrieve a relatively large amount of documents to reach peak performance, and (b) an extensive cross-attention operation, caused by processing multiple concatenated retrieved passages, applied repeatedly for every generated token. These bottlenecks are negatively amplified in the case of Long-Form Question Answering.\nPrevious works have attempted to mitigate these bottlenecks, either by limiting the input to the reader or by directly optimizing it in a variety of methods. Yu et al. (2021) included a passage re-ranker inside the reader which aimed to filter out the least relevant passages during encoding. de Jong et al. (2022) optimized the decoder module by pretraining a modified and optimized architecture, and Ainslie et al. (2023) modified the attention operations performed to be less computationally intensive.\nIn this work, we tackle the heavy cross-attention computation in the decoder by introducing Token Filtering, a method that removes redundant tokens from input passages during the decoding stage, by dynamically computing their salience during generation. Using Token Filtering eliminates uninformative tokens from the cross-attention matrix, and prevents them from being utilized during answer generation, directly contributing to the reduction of the overall generation time. To further boost efficiency and reduce latency, we combine our Token Filtering approach with dynamic decoder layer skipping introduced by Schuster et al. (2022), referred to as CALM. By combining both approaches and by conducting experiments on three LFQA datasets, we find that this approach presents a better performance vs. efficiency trade-off than by using the methods separately, in most cases.\nOverall, our contributions are as follows:\n\u2022 We analyze the performance vs. efficiency trade-off of the FiD model, in terms of latency, FLOPs and the salience of the input information within the reader model, during long-form generation.\n\u2022 We propose a novel approach for improving the efficiency of FiD, with a combined approach of Token Filtering and decoder layer reduction, which removes tokens and irrelevant layers during the generation process of every token for long-form answers.\n\u2022 We show that models utilizing our approach can save up to 62.2% on the MS MARCO dataset, 54.9% on NQ, and 40.9% on ELI5, in terms of the generation time, while incurring a drop of no more than 2% in performance.\n\u2022 Without computational restrictions, our method reaches state-of-the-art performance in KILT\u2019s ELI5 task."
+        },
+        {
+            "heading": "2 Preliminaries",
+            "text": "In a retriever-reader system, the reader, which is typically a language model, receives a query along with a collection of passages, where each passage often consists of a title and a context. Additionally, we are provided with the ground truth, which can be an expected answer or a gold passage that is most relevant to the query. Since our main focus is on generative models, we employ the widelyused Fusion-in-Decoder (FiD) model (Izacard and Grave, 2021b), which is a cutting-edge encoderdecoder model based on the T5 model (Raffel et al., 2020). The encoder module of the FiD model processes the input passages in parallel, with each layer taking the output of the previous layer, and the final output of the encoder is the output of its last layer. Similarly, each layer of the decoder processes its input by receiving the output of the preceding layer.\nThe decoder module then cross-attends to the large number of concatenated input representations and assimilates the information from the different passages to generate an answer. At each decoding step, the decoder computes the attention scores based on the precomputed input tokens\u2019 representations which serve as the query for the multi-headed attention operation, concurrently taking into account the current decoded sequence."
+        },
+        {
+            "heading": "3 Efficiency Analysis",
+            "text": ""
+        },
+        {
+            "heading": "3.1 Encoder vs. Decoder Latency",
+            "text": "There are multiple parts in a retriever-reader setup that have a direct effect on the end-to-end latency. One of them is potentially reducing the number of passages provided to the reader model. Izacard and Grave (2021c) evaluated the performance of FiD when decreasing the amount of passages provided to the reader, and found that the performance of the model drops as the number of input passages decreases. However, when excluding the bottom\n50% of the passages, the performance only drops by approximately 2%.\nNaturally, the FiD latency could be reduced if we provide less input passages to the reader. However, it is unclear how much time is utilized by each of its sub-modules. de Jong et al. (2022) included a preliminary profiling of the execution time for the reader module of FiD. They show that even though the encoder is more expensive in terms of FLOPS computation, the decoder is more expensive in terms of actual latency.\nThus, we undertake an additional analysis, to comprehend how the time (latency) is distributed between the FiD encoder and the decoder modules, depending on the number of input passages and the amount of generated tokens. Our findings are illustrated in Figure 2. We artificially modify FiD to generate up to a fixed number of tokens. We observe that feeding a greater number of passages results in higher latency values for the encoder. However, as more output tokens are being generated, the share of the decoder of the total run-time significantly increases. Particularly, in the cases that the answer is long, we observe that regardless of the input number of passages provided to the reader, the majority of the time is spent in the decoder. Intriguingly, the ratio rapidly converges towards 100%, exceeding 50% after only 15 tokens.\nOverall, in the specific case of long-answer tasks such as LFQA, we can conclude that the decoder serves as the primary source of latency and computational load during inference. This finding is further supported by similar works (de Jong et al.,\n2022; Hofst\u00e4tter et al., 2022)."
+        },
+        {
+            "heading": "3.2 Cross-Attention Scores Analysis",
+            "text": "An additional bottleneck affecting the efficiency of FiD is the extended sequence created by concatenating input passages, which the decoder focuses on during generation. Assuming the reader is supplied with an excessive amount of passages, our objective is to assess the importance of the input token representations. Essentially, our primary research question pertains to filtering out uninformative tokens that have no impact on answer generation, without compromising performance. Inspired by previous works that have assessed the relevance of input to decoders, we focus on the cross-attention scores. These scores have been recently demonstrated to serve as a metric of importance for the input token representations, particularly in relation to their impact on the accuracy of the answer (Caciularu et al., 2021; Izacard and Grave, 2021a; Izacard et al., 2022).\nIn order to investigate the utility of crossattention scores as a meaningful indicator, we aim to verify their ability to focus on the important information within the input text. To accomplish this, we include the gold passage in a list of 100 retrieved passages (given a specific question). To simplify the analysis, we position the gold passage at rank 1, as the input matrix of the decoder\u2019s crossattention matrix does not inherently incorporate any notion of order.\nIn order to examine the input token scores throughout the entire generation process, we calculate the average cross-attention scores for each decoder layer and at every generated token index. With the aim of identifying and filtering out irrelevant tokens, we select the top p% of tokens with the highest cross-attention scores and compute the proportion of the tokens that originate from the gold passage. Figure 3a demonstrates the outcomes of our investigation, where we selected p = 10% of the input tokens. This analysis was performed on a set of 1000 queries taken from the development set of ELI5, employing the FiD-Base model.\nWe observe that the decoder\u2019s initial layers (2nd and 3rd) exhibit the greatest proportion of tokens derived from the gold passage. This implies that these layers should be employed for calculating the input relevance scores. Additionally, we have noticed that, in most layers, the ratio reaches its peak around the 20th generated token and subsequently\n0 50 100 150\n1.6\n1.8\n2\n2.2\n2.4\n2.6\n2.8\n3 1\n2\n3\n6\n12\nAnswer Length (in tokens)\n% o\nf G\no ld\nf r o m\nC h o s e n\n(a) The percentage of gold tokens for several chosen decoder layers.\n0 50 100 150\n1\n1.5\n2\n2.5\n3 1\n2\n10\n20\n50\n80\n100\nAnswer Length (in tokens)\n% f\nr o m\nC h o s e n T\no k e n s\n(b) The distribution of passages over the chosen tokens, in the 2nd layer.\nFigure 3: Cross attention score analysis when choosing p = 10% of the tokens, as a function of the generated answer length. Left: The ratio of tokens that were chosen from the gold passage, per decoder layer (1-12). Right: The percentage of tokens that were chosen from each passage (1-100). The gold passage (labeled as 1) is colored red.\ndeclines during the generation process. This indicates that it is most advantageous to utilize the cross-attention scores in the early stages of generation.\nNext, we proceed to examine the extent to which the model attends to tokens from the gold passage compared to other less informative tokens. The findings of this analysis are presented in Figure 3b, where we illustrate the number of selected tokens taken from each input passage specifically at the second layer. Our observations consistently indicate that the gold passage consistently maintains a notably higher proportion of selected tokens compared to any other passage, throughout the entirety of the generation process. Conversely, most of the passages exhibit ratios that are lower than what would be expected from a uniform distribution. Interestingly, we also note that the top passages exhibit higher ratios compared to the bottom ones.\nIn summary, we have demonstrated that the cross-attention scores possess the capability to prioritize the most pertinent information in the input, making them a reliable mechanism for selecting informative input tokens. Moreover, we have identified the optimal layers and ranges of generated token indices to generate these scores, ensuring the selection of the most appropriate input tokens. For a comprehensive examination of the cross-attention patterns, we encourage readers to refer to Appendix A for further details."
+        },
+        {
+            "heading": "4 Method",
+            "text": "Following our analysis in Section 3.2, we turn to implementing a method for filtering out the redundant information during the decoding stage. We aim to find a subset of the input tokens that is the most relevant for generating the correct answer. As pointed out previously, we can utilize the crossattention scores computed between the generated tokens and the passages as basic signal for filtering out irrelevant tokens, similarly to Goyal et al. (2020).\nThus, we suggest a token filtering approach, using the cross-attention scores computed at a predetermined layer and generated token index during inference. At that point, for each input token, we compute the average attention scores over all attention heads, similarly to Caciularu et al. (2021); Izacard and Grave (2021a). Once these scores are computed, we keep the top k%-scored input tokens, which will be the only tokens to be considered towards the next tokens\u2019 predictions. Formally, the cross-attention scores per input token are defined as follows:\nSt,l = 1\nh h\u2211 i=1 Ait,l, (1)\nwhere t is the generated token index, l is the layer index, h is the number of attention heads, and Ait,l represents the cross-attention scores at index t, layer l and head i.\nWe perform a descending argsort operation on\nthe scores above, and take the top p% from the sorted input token indices. Hence, we denote T as the total number of input tokens from all the passages, and T \u2032 as the amount of tokens we keep after filtering, which is p% from T :\nSortedt,l = argsort(St,l)\nTopt,l = (Sortedt,l[i]) T \u2032 i=1,\n(2)\nwhere [i] indicates accessing the vector at index i. Finally, we keep only the tokens chosen in Topt,l from the cross-attention past key-values states Kpast, Vpast:\nKpast = Kpast[Topt,l], Vpast = Vpast[Topt,l], (3) where A[B] selects the elements from A whose indices appear in B. These new past key-value states are the only ones used for generating all subsequent tokens.\nSince the filtering percentage, token index and layer can effect the quality of this mechanism, as inspected in Section 3.2, we obtain the optimal values for them by performing a hyperparameterlike search over their possible values, which is described in Section 5.4. We produce new past key and value representations for the input sequence (across all the decoder layers), containing only the selected tokens, resulting in a more compact tensor to attend to. We name the filtering mechanism Token Filtering, with an overview of the approach presented in Figure 1.\nNote that we remove the irrelevant tokens from the keys and values of the encoder output sequence during inference time only once, hence reducing their dynamic dimension during computation for all the subsequent tokens. For additional details about the cross-attention scoring computation we refer the reader to Appendix B."
+        },
+        {
+            "heading": "5 Experimental Setup",
+            "text": ""
+        },
+        {
+            "heading": "5.1 Datasets",
+            "text": "Our experiments are conducted on commonly used datasets for LFQA.\nELI5 (Fan et al., 2019) A dataset created from a Reddit forum named \u201cExplain Like I\u2019m Five\u201d. We use the train, validation and test sets as provided by the KILT benchmark2(Petroni et al., 2020).\n2https://huggingface.co/datasets/kilt_tasks\nMS MARCO (Campos et al., 2016) A collection of crowd sourced responses to Bing queries. We use the Passage Ranking track, which consists of human generated natural and complete answers.\nNaturalQuestions (NQ) (Kwiatkowski et al., 2019) A large-scale dataset by Google designed for natural language understanding and question answering research, consisting of real user queries from Google Search paired with corresponding Wikipedia passages.\nFor all datasets, we use the validation as the test set and a subset of the training set for validation, as done by Lee et al. (2019). We note that ELI5 is part of the KILT Benchmark3, and thus is additionally evaluated on a held-out test set. We use the gold passages as the answers in MS MARCO and NQ. For a full specification of the dataset sizes, we refer to Table 5 in the Appendix."
+        },
+        {
+            "heading": "5.2 Baseline Readers",
+            "text": "We specify the hyperparameters used for training on the various datasets in Table 6 in the Appendix.\nFiD We base our models on the FiD generative reader (Izacard and Grave, 2021c), which uses pretrained T5 models (Wolf et al., 2019). We used the official implementation4 of FiD throughout all our experiments.\nCALM While our Token Filtering approach primarily focuses on eliminating redundant input tokens, it does not decrease the number of decoder layers responsible for processing them. To tackle this concern, we also incorporate a recent effective early exiting method for the decoder module (Schuster et al., 2022), known as CALM. We thus implement CALM and compare it to our method (see Schuster et al. (2022) for more information on the training scheme employed to train the FiD model, including the confidence classifier stage). In addition to independently evaluating CALM, we combine it together with our Token Filtering approach, resulting in a combined approach referred to as Combined."
+        },
+        {
+            "heading": "5.3 Implementation Details",
+            "text": "Retrieval We first create an index for retrieval over a Wikipedia dump5, comprised of multiple\n3https://eval.ai/web/challenges/ challenge-page/689/leaderboard/1908/ROUGE-L\n4https://github.com/facebookresearch/FiD 5https://huggingface.co/datasets/kilt_\nwikipedia\npassages. For all the evaluated datasets, we retrieve 100 passages for each question from the index, using a combination of dense and sparse passage rankers. We refer the reader to Appendix C for more details regarding the retrieval process.\nHardware We used 8 24GB NVIDIA RTX3090 for training base-sized models, and 8 40GB A100 GPUs for training large-sized models. For inference and latency measurements we used a single accelerator.\nInference setup Throughout our latency measurements, we used a batch size of 1 and averaged the latency over all queries. Decoding is done using beam-search with 4 beams, and similarly as (Su et al., 2022) we limit the generated answer length to 300 tokens. We also control the minimal answer length per dataset, which we specify in Table 4 in the Appendix."
+        },
+        {
+            "heading": "5.4 Performance vs. Efficiency Evaluation Process",
+            "text": "We use KILT\u2019s implementation of ROUGE-L and F1 for performance measurements6. We measure efficiency as end-to-end latency in seconds for generating an answer to a question. To evaluate each method, on each dataset, we focus on the performance vs. efficiency trade-off, particularly on ROUGE-L vs. latency. For the evaluation of a given method (for example Token Filtering), we perform a hyperparameter search over multiple combinations on the development set, and end up with a collection of 2-dimensional points, where the x-axis is the latency, and the y-axis is the performance (ROUGE-L). Each latency-performance measurement is averaged across all questions in the development set. Then, we take the maximum and minimum over the observed values of the x-axis, and divide the resulting range into equally-sized intervals. In our experiments, we use 30 distinct intervals. For each interval, we find it\u2019s representative point, by taking the point with the maximum y-axis value from all the combinations in interval. Once all such points are determined per interval, they form a curve, which we name as the Max Curve of the method. We visualize the process in Figure 4, where the line in blue is the Max Curve.\nThus, for a method to be better than another, the Max Curve for it should be above and to the left of the curve of the other, meaning that it reaches equivalent results for less resources. Using the\n6https://github.com/facebookresearch/KILT\ncurve, we find the best hyperparameters for each method per interval, by selecting the hyperparameters of the representative point in the current interval. Finally, we take the best setting per interval, and run each one on the test set. For each of our methods, we produce a smoothed version, as the results are not necessarily monotonically increasing, which is shown in Figure 4 as the green line. These smoothed curves are the ones showcased in the final results in Figure 5.\nWhen performing the search over the hyperparameter space, we used grid search, with the hyperparameters and their value ranges being specified in Table 7 in the Appendix. Other methods (such as random search, Bayesian Optimization (Snoek et al., 2012), etc.) may be attempted just as well in future works."
+        },
+        {
+            "heading": "6 Experimental Results",
+            "text": ""
+        },
+        {
+            "heading": "6.1 Main Trade-off Comparison",
+            "text": "In Figure 5, we showcase the performance vs. efficiency trade-off in terms of ROUGE-L and latency on the test set of each dataset. These results are the ones obtained after performing the hyperparameter optimization procedure stated described Section 5.4. The methods shown are the standard FiD model, CALM, Token Filtering, and Combined.\nFor the base-sized models (Figures 5a, 5b, 5c), we can observe all methods improve upon the baseline model, each one in a different aspect. For CALM, the method is able to reach lower latency\nvalues, due to skipping the redundant layer computations. In the case of Token Filtering, it is also able to preserve and at times improve the performance of the model overall, while the latency improvement remains limited, since it is still computing the remaining tokens across all decoder layers. The performance improvement is presumably due to the redundant tokens being removed early on during the generation process, hence allowing the model to better attend to the salient information in the input.\nWhen combining both methods, the performance enhancement of the Token Filtering and the latency reduction of CALM produce a better curve than either method alone. In addition, we showcase the drop in 2% performance per dataset, showing that our method is able to reduce the latency significantly more than the regular FiD, with the best reduction reached on the MS MARCO dataset for FiD-Base, saving 62.2% of the latency. In the NQ dataset however, for both the base-sized and large-sized models, while the CALM method does achieve proper latency reduction, the Token Filtering does not effect the results significantly. Since we focus on real-world scenarios, we showcase the trade-off with the actual latency, instead of measurements such as FLOPS (MACs), as done by previous works (de Jong et al., 2022). For those, we refer to Figure 6 in the Appendix for the trade-off\nand FLOPS (MACs) analysis. For the large-sized models (Figures 5d, 5e, and 5f), we observe similar patterns to those in the base-sized variations, with the latency values being significantly larger. We note that the overall performance values for these models are not substantially different than those produced by the smaller versions, hence we do not focus as much on them."
+        },
+        {
+            "heading": "6.2 Performance Comparison",
+            "text": "To asses the performance of our Combined method further, we choose the best performing hyperparameter setting for the FiD-Base model, and report the test set results for each dataset, with Table 1 showing the results, compared to approaches suggested in Su et al. (2022). In particular, we compare to their implementation of FiD (named RBG FID) and their suggested system (named RBG), with the results of both taken from their published work. We note that both our models and the RBG models are of the same size. In our experiments, we denote the original FiD model we trained as FiD (ours), the FiD model with the Token Filtering method as FiD TF, and the Combined method as FiD Comb. On both datasets, FiD (ours), FiD TF and FiD Comb achieve state-of-the-art results, with Combined reaching the best overall performance in terms of ROUGE-L and F1 (aside from MS MARCO F1, where our approach is second).\nAs an additional point of comparison, we compute the BERTScore (Zhang et al., 2019) metric on the original FiD model, and our FiD Comb method, and present our findings in Table 2. We observe that our model performs on par and even a bit better overall than the original FiD implementation. We present a supplementary comparison of some of the answers generated by our method for the ELI5 test set in Table 8 in the Appendix. In addition, at the time of writing this paper, our Combined is ranked at the #1 position in terms of ROUGE-L and F1 on the ELI5 KILT leaderboard, with Table 3 containing all leaderboard results7."
+        },
+        {
+            "heading": "7 Related Work",
+            "text": "Open-Domain Question Answering Many previous works utilized setups which are based on the retriever and the language model reader components (Chen et al., 2017; Guu et al., 2020; Lewis et al., 2020). The goal of the retriever is to fetch the most relevant passages to a given question (Karpukhin et al., 2020). The reader processes the question and the relevant passages to extract or generate the answer, with generative approaches\n7Since the results in Table 3 are on a hidden test set for the leaderboard, the results are different from those reported in Table 1.\nachieve substantially better results (Izacard and Grave, 2021b). Subsequent works (Su et al., 2022; Krishna et al., 2021b) have adapted these generative approaches to produce long-form answers as well.\nEncoder-Decoder Efficiency Due to computation bottlenecks in generative models, particularly in encoder-decoder models (Vaswani et al., 2017; Raffel et al., 2020), previous works attempt to mitigate them. The encoder model can be used to filter out irrelevant passages during generation (Yu et al., 2021; de Jong et al., 2023). Nevertheless, the encoder\u2019s impact on the model\u2019s latency in longform scenarios is negligible, as depicted in Figure 2. Consequently, our research centers on analyzing the computational aspects of the decoder instead.\nIn particular, the decoder model utilizes many redundant and heavy cross-attention operations, which can be removed or replaced with simpler alternatives (de Jong et al., 2022; Ainslie et al., 2023).\nSince encoder-decoder models perform compute heavy operations in multiple layers, previous works have proposed stopping the layer propagation dynamically by assessing the model\u2019s confidence for prediction at a certain layer (Teerapittayanon et al., 2016; Schwartz et al., 2020). Other works have adapted this mechanism to decoder models as well (Schuster et al., 2022; Elbayad et al., 2019). However, these studies fail to tackle the issue of input size during generation, thereby resulting in computations being performed on irrelevant input to some degree, which we address through complementary token filtering.\nData Reduction for an Efficient Computation The input to encoder models tends to become increasingly large, especially in ODQA settings with many input passages. Since not all spans of infor-\nmation are relevant to produce the correct answer, previous works propose eliminating the irrelevant tokens from the input to the encoder, by identifying the salient information during inference time (Goyal et al., 2020; Kim and Cho, 2020). Although these techniques effectively decrease computation at each layer, they are implemented in the encoder model rather than the decoder, which has been previously determined to have a more significant influence on latency. Our work leverages the crossattention in the decoder early on during generation, thus effectively filtering the input tokens.\nQin and Durme (2023) suggested transforming language into a representation, by selecting a dynamically determined subset of input tokens, with these \u201cnuggets\u201d being acquired through tasks such as machine translation. However, our method doesn\u2019t incorporate any learning, focusing on analyzing the necessary input tokens for direct decoding instead.\nWingate et al. (2022); Mu et al. (2023) proposed prompt compression techniques for minimizing the amount of token vectors required to represent the same text. We note that our work does not discuss such aspects, given the context of questions and passages in our inputs."
+        },
+        {
+            "heading": "8 Conclusions",
+            "text": "We analyze the precise performance vs. efficiency trade-off of the FiD\u2019s encoder and decoder in long-form settings, with an analysis of the crossattention operation in the decoder model. We show that the decoder has more impact on the latency, particularly for long outputs, and that the decoder attends to more salient information early on during generation. Hence, our proposed approach for efficiency reduction, namely a combined approach of Token Filtering and CALM, removes irrelevant layers and tokens during the generation process, for every token produced. Our approach achieves a significant reduction in resources (up to 62.2%), while not sacrificing more than 2% of the performance, and is the current state-of-the-art on the ELI5 KILT leaderboard. Future work can further develop a more dynamic method for choosing the most relevant tokens from the input, instead of using predetermined hyperparameters, and train the cross-attention patterns to better attend to the salient information during generation.\nLimitations\nRegarding the retriever, as mentioned in Section 5.2, we did not experiment with a vast array of retrievers, due to the scope of the work being on the reader model.\nRegarding the models for comparison, we primarily focused on the performance of the FiD model versus our own approach, while testing them on various datasets. Hence, we did not perform extensive reproductions of other methods, such other encoder-decoder models, but instead report their original results as they were published. We believe that our results can be generalized to other architectures as well.\nIn our hyperparameter search, we chose a subspace of all the possible values each parameter has, due to a limited amount of computation available. Our approximation of the space covers the main areas of relevance for our purposes."
+        },
+        {
+            "heading": "A Cross Attention Pattern Analysis",
+            "text": "In this section, we continue our discussion from section 3.2, regarding the analysis of the crossattention scores.\nIn Figure 7, we present multiple versions of the plot in Figure 3a, with the rows indicating the dataset (ELI5, MS MARCO, NQ), and the columns representing a different percent of chosen tokens (10, 30, 50). For MS MARCO and NQ in 10%, the percentage of the gold passage tokens remains high for the lower layers, starting from token 10. The other layers do not reach the same percentage and degrade during the generation process. When increasing the percentage to 30, and later 50, the percentage of the gold passage is getting reduced substantially.\nIn Figure 8, we showcase an extended version of Figure 3b, for the various datasets and chosen token percentages as in Figure 7, with the rows and columns being similarly organized. For 10%, the gold passage gets the most tokens out of all the rest, for all datasets, with the lower passages getting less than 1%. However, for 30%, the gold passage is no longer the highest ranking for some of the datasets (MS MARCO, NQ), with the upper passages reaching higher, and the lower ones still being at the 1% mark. At 50%, the gold passage is no longer the most prominent, with it being nearly as insignificant as the lower passages in the case of MSMARCO. This suggests that increasing the percentage of tokens taken introduces unnecessary noise to the selected tokens, thus forcing the model to receive input from lower ranked passages. For MS MARCO and NQ in 10%, the percentage of the gold passage tokens remains high for the lower layers, starting from token 10. While the results above were done using an FiD-Base model, similar patterns are present for FiD-Large models through all previously discussed aspects."
+        },
+        {
+            "heading": "B Attention Score Computation Extensions",
+            "text": "In addition to the methods introduced in 4, the computation of the cross-attention scores can be further altered in a few key areas, which we tackle as well.\nValue Normalization. As mentioned in Izacard et al. (2022), the scores can benefit from scaling by the l2 normalized values tensor V . Thus, we can instead transform Ait,l into:\nAit,l[n] = A i t,l[n]vn (4)\n, where [n] is the nth row, in this case the nth token, and vn = ||V [n]||2 is the norm of the nth row (token) in V . Hence, we apply this normalization to the attention scoring operation.\nMean over all decoder layers. Instead of taking the representation of the current decoder layer only, we instead take the average over every layer before the current one. Thus, we compute the attention scores St,l for the input tokens as follows:\nSt,l = 1\nlh \u2211 l\u2032\u2208[1,l] \u2211 i\u2208[1,h] Ait,l\u2032 (5)\nFrom our preliminary analysis, this mean operation does not effect the quality of the filtering method, and hence is not applied."
+        },
+        {
+            "heading": "C Retrieval Details",
+            "text": "Since our method primarily focuses on the reader model, we have implemented a generalized approach for creating ranked passage lists. Our document corpus is taken from a Wikipedia Dump, which has been split into 100-word-long passages, as done in Karpukhin et al. (2020), including the article title. These documents are then stored in an Elasticsearch8 index. Given a question from a dataset, we use BM25 over the passage index, to retrieve 250 documents. Then, we re-rank the passages using a sentence transformer9(Reimers and Gurevych, 2019) model that was finetuned on the dataset, and keep only the top 100 ranked documents."
+        },
+        {
+            "heading": "D Method Implementation Details",
+            "text": "For the CALM, we utilize beam search for long sequence generation. In the beam-search setting, we use nb beams, there which causes the issue of how to allow some tokens to cease computation at a certain level, while allowing the others to continue computation. For the scope of our work, we apply the hard assumption that the confidence value is the lowest one from all beams, hence exiting only if all the tokens in the beams have satisfied the exiting condition. Formally, given confidence scores c\u0304l = (c 1 l , c 2 l , ..., c nb l ) at layer l, the confidence value used at the layer will thus be cl = minj\u2208[1,nb] c j l .\n8https://www.elastic.co 9multi-qa-mpnet-base-dot-v1\nWe note that while Schuster et al. (2022) utilized a complex threshold calibration system, we instead showcase the effect of the various thresholding settings, once applied to the decoder model.\nFor the Token Filtering, since we are discussing mainly Encoder-Decoder architectures, we apply the filtering by removing the redundant tokens from the past key and value states for the cross-attention. In addition, we also remove said tokens from the encoder hidden states, encoder attention mask, and the encoder-decoder position bias."
+        }
+    ],
+    "title": "Optimizing Retrieval-augmented Reader Models via Token Elimination",
+    "year": 2023
+}

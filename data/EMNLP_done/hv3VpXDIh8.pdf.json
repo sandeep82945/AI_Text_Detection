@@ -1,0 +1,872 @@
+{
+    "abstractText": "Recent code translation techniques exploit neural machine translation models to translate source code from one programming language to another to satisfy production compatibility or to improve efficiency of codebase maintenance. Most existing code translation datasets only focus on a single pair of popular programming languages. To advance research on code translation and meet diverse requirements of real-world applications, we construct CodeTransOcean, a large-scale comprehensive benchmark that supports the largest variety of programming languages for code translation. CodeTransOcean consists of three novel multilingual datasets, namely, MultilingualTrans supporting translations between multiple popular programming languages, NicheTrans for translating between niche programming languages and popular ones, and LLMTrans for evaluating executability of translated code by large language models (LLMs). CodeTransOcean also includes a novel cross-framework dataset, DLTrans, for translating deep learning code across different frameworks. We develop multilingual modeling approaches for code translation and demonstrate their great potential in improving the translation quality of both low-resource and high-resource language pairs and boosting the training efficiency. We also propose a novel evaluation metric Debugging Success Rate@K for program-level code translation. Last but not least, we evaluate LLM ChatGPT on our datasets and investigate its potential for fuzzy execution predictions. We build baselines for CodeTransOcean and analyze challenges of code translation for guiding future research. The CodeTransOcean datasets and code are publicly available at https://github. com/WeixiangYAN/CodeTransOcean. \u2217Equal contribution. Work is supported by Speech Lab, Alibaba Group.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Weixiang Yan"
+        },
+        {
+            "affiliations": [],
+            "name": "Yuchen Tian"
+        },
+        {
+            "affiliations": [],
+            "name": "Yunzhe Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Qian Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Wen Wang"
+        }
+    ],
+    "id": "SP:b53624f19f03a97067efab31a4da205d7055d969",
+    "references": [
+        {
+            "authors": [
+                "Roee Aharoni",
+                "Melvin Johnson",
+                "Orhan Firat."
+            ],
+            "title": "Massively multilingual neural machine translation",
+            "venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Wasi Uddin Ahmad",
+                "Saikat Chakraborty",
+                "Baishakhi Ray",
+                "Kai-Wei Chang."
+            ],
+            "title": "Unified pre-training for program understanding and generation",
+            "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Lin-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wasi Uddin Ahmad",
+                "Md Golam Rahman Tushar",
+                "Saikat Chakraborty",
+                "Kai-Wei Chang."
+            ],
+            "title": "AVATAR: A parallel corpus for java-python program translation",
+            "venue": "Findings of the Association for Computational Linguistics: ACL 2023, Toronto, Canada, July 9-14,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Badr AlKhamissi",
+                "Siddharth Verma",
+                "Ping Yu",
+                "Zhijing Jin",
+                "Asli Celikyilmaz",
+                "Mona T. Diab."
+            ],
+            "title": "OPTR: exploring the role of explanations in finetuning and prompting for reasoning skills of large language models",
+            "venue": "CoRR, abs/2305.12001.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Saikat Chakraborty",
+                "Toufique Ahmed",
+                "Yangruibo Ding",
+                "Premkumar T. Devanbu",
+                "Baishakhi Ray."
+            ],
+            "title": "Natgen: generative pre-training by \"naturalizing\" source code",
+            "venue": "Proceedings of the 30th ACM Joint European Software Engineering Conference and Sym-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Angelica Chen",
+                "J\u00e9r\u00e9my Scheurer",
+                "Tomasz Korbak",
+                "Jon Ander Campos",
+                "Jun Shern Chan",
+                "Samuel R. Bowman",
+                "Kyunghyun Cho",
+                "Ethan Perez."
+            ],
+            "title": "Improving code generation by training with natural language feedback",
+            "venue": "CoRR, abs/2303.16749.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xinyun Chen",
+                "Maxwell Lin",
+                "Nathanael Sch\u00e4rli",
+                "Denny Zhou."
+            ],
+            "title": "Teaching large language models to self-debug",
+            "venue": "CoRR, abs/2304.05128.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xinyun Chen",
+                "Chang Liu",
+                "Dawn Song."
+            ],
+            "title": "Treeto-tree neural networks for program translation",
+            "venue": "Advances in Neural Information Processing Systems 31: Annual Conference on Neural Information Processing Systems 2018, NeurIPS 2018, December 3-8,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yi Chen",
+                "Rui Wang",
+                "Haiyun Jiang",
+                "Shuming Shi",
+                "Ruifeng Xu."
+            ],
+            "title": "Exploring the use of large language models for reference-free text quality evaluation: A preliminary empirical study",
+            "venue": "CoRR, abs/2304.00723.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yihong Dong",
+                "Jiazheng Ding",
+                "Xue Jiang",
+                "Zhuo Li",
+                "Ge Li",
+                "Zhi Jin."
+            ],
+            "title": "Codescore: Evaluating code generation by learning code execution",
+            "venue": "CoRR, abs/2301.09043.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aryaz Eghbali",
+                "Michael Pradel."
+            ],
+            "title": "Crystalbleu: Precisely and efficiently measuring the similarity of code",
+            "venue": "37th IEEE/ACM International Conference on Automated Software Engineering, ASE 2022, Rochester, MI, USA, October 10-14, 2022, pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ting Liu",
+                "Daxin Jiang",
+                "Ming Zhou."
+            ],
+            "title": "Codebert: A pre-trained model for programming and natural languages",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2020, Online Event, 16-20 November 2020, volume EMNLP 2020",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jinlan Fu",
+                "See-Kiong Ng",
+                "Zhengbao Jiang",
+                "Pengfei Liu."
+            ],
+            "title": "Gptscore: Evaluate as you desire",
+            "venue": "CoRR, abs/2302.04166.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mingqi Gao",
+                "Jie Ruan",
+                "Renliang Sun",
+                "Xunjian Yin",
+                "Shiping Yang",
+                "Xiaojun Wan."
+            ],
+            "title": "Humanlike summarization evaluation with chatgpt",
+            "venue": "CoRR, abs/2304.02554.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Stefanos Georgiou",
+                "Maria Kechagia",
+                "Tushar Sharma",
+                "Federica Sarro",
+                "Ying Zou"
+            ],
+            "title": "2022. Green AI: do deep learning frameworks have different costs",
+            "venue": "In 44th IEEE/ACM 44th International Conference on Software Engineering,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yiyang Hao",
+                "Ge Li",
+                "Yongqiang Liu",
+                "Xiaowei Miao",
+                "He Zong",
+                "Siyuan Jiang",
+                "Yang Liu",
+                "He Wei."
+            ],
+            "title": "Aixbench: A code generation benchmark dataset",
+            "venue": "CoRR, abs/2206.13179.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Steven Basart",
+                "Saurav Kadavath",
+                "Mantas Mazeika",
+                "Akul Arora",
+                "Ethan Guo",
+                "Collin Burns",
+                "Samir Puranik",
+                "Horace He",
+                "Dawn Song",
+                "Jacob Steinhardt."
+            ],
+            "title": "Measuring coding challenge competence with APPS",
+            "venue": "Proceedings of the Neural",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yunjie Ji",
+                "Yan Gong",
+                "Yiping Peng",
+                "Chao Ni",
+                "Peiyan Sun",
+                "Dongyu Pan",
+                "Baochang Ma",
+                "Xiangang Li."
+            ],
+            "title": "Exploring chatgpt\u2019s ability to rank content: A preliminary study on consistency with human preferences",
+            "venue": "CoRR, abs/2303.07610.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenxiang Jiao",
+                "Wenxuan Wang",
+                "Jen tse Huang",
+                "Xing Wang",
+                "Zhaopeng Tu"
+            ],
+            "title": "Is chatgpt a good translator? yes with gpt-4 as the engine",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Geunwoo Kim",
+                "Pierre Baldi",
+                "Stephen McAleer."
+            ],
+            "title": "Language models can solve computer tasks",
+            "venue": "CoRR, abs/2303.17491.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Kocmi",
+                "Christian Federmann."
+            ],
+            "title": "Large language models are state-of-the-art evaluators of translation quality",
+            "venue": "Proceedings of the 24th Annual Conference of the European Association for Machine Translation, EAMT 2023, Tampere, Finland, 12-15",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa."
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sumith Kulal",
+                "Panupong Pasupat",
+                "Kartik Chandra",
+                "Mina Lee",
+                "Oded Padon",
+                "Alex Aiken",
+                "Percy Liang."
+            ],
+            "title": "Spoc: Search-based pseudocode to code",
+            "venue": "Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Process-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Pengfei Liu",
+                "Weizhe Yuan",
+                "Jinlan Fu",
+                "Zhengbao Jiang",
+                "Hiroaki Hayashi",
+                "Graham Neubig."
+            ],
+            "title": "Pretrain, prompt, and predict: A systematic survey of prompting methods in natural language processing",
+            "venue": "ACM Comput. Surv., 55(9):195:1\u2013195:35.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized BERT pretraining approach",
+            "venue": "CoRR, abs/1907.11692.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yongkang Liu",
+                "Shi Feng",
+                "Daling Wang",
+                "Yifei Zhang",
+                "Hinrich Sch\u00fctze."
+            ],
+            "title": "Evaluate what you can\u2019t evaluate: Unassessable generated responses quality",
+            "venue": "CoRR, abs/2305.14658.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "daresan",
+                "Shao Kun Deng",
+                "Shengyu Fu",
+                "Shujie Liu"
+            ],
+            "title": "Codexglue: A machine learning benchmark dataset for code understanding and generation",
+            "venue": "In Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ziyang Luo",
+                "Can Xu",
+                "Pu Zhao",
+                "Qingfeng Sun",
+                "Xiubo Geng",
+                "Wenxiang Hu",
+                "Chongyang Tao",
+                "Jing Ma",
+                "Qingwei Lin",
+                "Daxin Jiang."
+            ],
+            "title": "Wizardcoder: Empowering code large language models with evolinstruct",
+            "venue": "CoRR, abs/2306.08568.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Clark."
+            ],
+            "title": "Self-refine: Iterative refinement with self-feedback",
+            "venue": "CoRR, abs/2303.17651.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alireza Mohammadshahi",
+                "Vassilina Nikoulina",
+                "Alexandre Berard",
+                "Caroline Brun",
+                "James Henderson",
+                "Laurent Besacier."
+            ],
+            "title": "Small-100: Introducing shallow multilingual machine translation model for lowresource languages",
+            "venue": "Proceedings of the 2022 Con-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Varun Nair",
+                "Elliot Schumacher",
+                "Geoffrey J. Tso",
+                "Anitha Kannan."
+            ],
+            "title": "DERA: enhancing large language model completions with dialog-enabled resolving agents",
+            "venue": "CoRR, abs/2303.17071.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Anh Tuan Nguyen",
+                "Tung Thanh Nguyen",
+                "Tien N. Nguyen."
+            ],
+            "title": "Lexical statistical machine translation for language migration",
+            "venue": "Joint Meeting of the European Software Engineering Conference and the ACM SIGSOFT Symposium on the Foundations of",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Toan Q. Nguyen",
+                "David Chiang."
+            ],
+            "title": "Transfer learning across low-resource, related languages for neural machine translation",
+            "venue": "Proceedings of the Eighth International Joint Conference on Natural Language Processing, IJCNLP 2017, Taipei, Taiwan,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "OpenAI."
+            ],
+            "title": "GPT-4 technical report",
+            "venue": "CoRR, abs/2303.08774.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, July 6-12, 2002, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Keqin Peng",
+                "Liang Ding",
+                "Qihuang Zhong",
+                "Li Shen",
+                "Xuebo Liu",
+                "Min Zhang",
+                "Yuanxin Ouyang",
+                "Dacheng Tao."
+            ],
+            "title": "Towards making the most of chatgpt for machine translation",
+            "venue": "CoRR, abs/2303.13780.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ruchir Puri",
+                "David S. Kung",
+                "Geert Janssen",
+                "Wei Zhang",
+                "Giacomo Domeniconi",
+                "Vladimir Zolotov",
+                "Julian Dolby",
+                "Jie Chen",
+                "Mihir R. Choudhury",
+                "Lindsey Decker",
+                "Veronika Thost",
+                "Luca Buratti",
+                "Saurabh Pujar",
+                "Ulrich Finkler"
+            ],
+            "title": "Project codenet: A large",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shuo Ren",
+                "Daya Guo",
+                "Shuai Lu",
+                "Long Zhou",
+                "Shujie Liu",
+                "Duyu Tang",
+                "Neel Sundaresan",
+                "Ming Zhou",
+                "Ambrosio Blanco",
+                "Shuai Ma"
+            ],
+            "title": "Codebleu: a method",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Israt Jahan Rithy",
+                "Hasib Hossain Shakil",
+                "Niloy Mondal",
+                "Fatema Sultana",
+                "Faisal Muhammad Shah."
+            ],
+            "title": "Xtest: A parallel multilingual corpus with test cases for code translation and its evaluation",
+            "venue": "2022 25th International Conference on Computer and Informa-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Baptiste Rozi\u00e8re",
+                "Marie-Anne Lachaux",
+                "Lowik Chanussot",
+                "Guillaume Lample."
+            ],
+            "title": "Unsupervised translation of programming languages",
+            "venue": "Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Baptiste Rozi\u00e8re",
+                "Jie Zhang",
+                "Fran\u00e7ois Charton",
+                "Mark Harman",
+                "Gabriel Synnaeve",
+                "Guillaume Lample."
+            ],
+            "title": "Leveraging automated unit tests for unsupervised code translation",
+            "venue": "The Tenth International Conference on Learning Representations, ICLR 2022,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Noah Shinn",
+                "Federico Cassano",
+                "Beck Labash",
+                "Ashwin Gopinath",
+                "Karthik Narasimhan",
+                "Shunyu Yao"
+            ],
+            "title": "Reflexion: Language agents with verbal reinforcement learning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ngoc M. Tran",
+                "Hieu Tran",
+                "Son Nguyen",
+                "Hoan Nguyen",
+                "Tien N. Nguyen"
+            ],
+            "title": "Does BLEU score work for code migration",
+            "venue": "In Proceedings of the 27th International Conference on Program Comprehension,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jiaan Wang",
+                "Yunlong Liang",
+                "Fandong Meng",
+                "Haoxiang Shi",
+                "Zhixu Li",
+                "Jinan Xu",
+                "Jianfeng Qu",
+                "Jie Zhou."
+            ],
+            "title": "Is chatgpt a good NLG evaluator? A preliminary study",
+            "venue": "CoRR, abs/2303.04048.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yiren Wang",
+                "ChengXiang Zhai",
+                "Hany Hassan."
+            ],
+            "title": "Multi-task learning for multilingual neural machine translation",
+            "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing, EMNLP 2020, Online, November 16-20, 2020,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yue Wang",
+                "Hung Le",
+                "Akhilesh Deepak Gotmare",
+                "Nghi D.Q. Bui",
+                "Junnan Li",
+                "Steven C.H. Hoi."
+            ],
+            "title": "Codet5+: Open code large language models for code understanding and generation",
+            "venue": "CoRR, abs/2305.07922.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yue Wang",
+                "Weishi Wang",
+                "Shafiq R. Joty",
+                "Steven C.H. Hoi"
+            ],
+            "title": "Codet5: Identifier-aware unified",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Brian Ichter",
+                "Fei Xia",
+                "Ed H. Chi",
+                "Quoc V. Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain-of-thought prompting elicits reasoning in large language models",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Justin D. Weisz",
+                "Michael J. Muller",
+                "Stephanie Houde",
+                "John T. Richards",
+                "Steven I. Ross",
+                "Fernando Martinez",
+                "Mayank Agarwal",
+                "Kartik Talamadupula."
+            ],
+            "title": "Perfection not required? human-ai partnerships in code translation",
+            "venue": "IUI \u201921: 26th International Con-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Justin D. Weisz",
+                "Michael J. Muller",
+                "Steven I. Ross",
+                "Fernando Martinez",
+                "Stephanie Houde",
+                "Mayank Agarwal",
+                "Kartik Talamadupula",
+                "John T. Richards."
+            ],
+            "title": "Better together? an evaluation of ai-supported code translation",
+            "venue": "IUI 2022: 27th International Confer-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ning Wu",
+                "Ming Gong",
+                "Linjun Shou",
+                "Shining Liang",
+                "Daxin Jiang."
+            ],
+            "title": "Large language models are diverse role-players for summarization evaluation",
+            "venue": "Natural Language Processing and Chinese Computing - 12th National CCF Conference, NLPCC 2023,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jingfeng Yang",
+                "Hongye Jin",
+                "Ruixiang Tang",
+                "Xiaotian Han",
+                "Qizhang Feng",
+                "Haoming Jiang",
+                "Bing Yin",
+                "Xia Hu."
+            ],
+            "title": "Harnessing the power of llms in practice: A survey on chatgpt and beyond",
+            "venue": "CoRR, abs/2304.13712.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qihuang Zhong",
+                "Liang Ding",
+                "Juhua Liu",
+                "Bo Du",
+                "Dacheng Tao."
+            ],
+            "title": "Can chatgpt understand too? A comparative study on chatgpt and fine-tuned BERT",
+            "venue": "CoRR, abs/2302.10198.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shuyan Zhou",
+                "Uri Alon",
+                "Sumit Agarwal",
+                "Graham Neubig."
+            ],
+            "title": "Codebertscore: Evaluating code generation with pretrained models of code",
+            "venue": "CoRR, abs/2302.05527.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ming Zhu",
+                "Aneesh Jain",
+                "Karthik Suresh",
+                "Roshan Ravindran",
+                "Sindhu Tipirneni",
+                "Chandan K. Reddy."
+            ],
+            "title": "Xlcost: A benchmark dataset for crosslingual code intelligence",
+            "venue": "CoRR, abs/2206.08474.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ming Zhu",
+                "Karthik Suresh",
+                "Chandan K. Reddy."
+            ],
+            "title": "Multilingual code snippets training for program translation",
+            "venue": "Thirty-Sixth AAAI Conference on Artificial Intelligence, AAAI 2022, Thirty-Fourth",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenhao Zhu",
+                "Hongyi Liu",
+                "Qingxiu Dong",
+                "Jingjing Xu",
+                "Lingpeng Kong",
+                "Jiajun Chen",
+                "Lei Li",
+                "Shujian Huang."
+            ],
+            "title": "Multilingual machine translation with large language models: Empirical results and analysis",
+            "venue": "CoRR, abs/2304.04675.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Barret Zoph",
+                "Deniz Yuret",
+                "Jonathan May",
+                "Kevin Knight."
+            ],
+            "title": "Transfer learning for low-resource neural machine translation",
+            "venue": "Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing, EMNLP 2016, Austin, Texas,",
+            "year": 2016
+        }
+    ],
+    "sections": [
+        {
+            "text": "Recent code translation techniques exploit neural machine translation models to translate source code from one programming language to another to satisfy production compatibility or to improve efficiency of codebase maintenance. Most existing code translation datasets only focus on a single pair of popular programming languages. To advance research on code translation and meet diverse requirements of real-world applications, we construct CodeTransOcean, a large-scale comprehensive benchmark that supports the largest variety of programming languages for code translation. CodeTransOcean consists of three novel multilingual datasets, namely, MultilingualTrans supporting translations between multiple popular programming languages, NicheTrans for translating between niche programming languages and popular ones, and LLMTrans for evaluating executability of translated code by large language models (LLMs). CodeTransOcean also includes a novel cross-framework dataset, DLTrans, for translating deep learning code across different frameworks. We develop multilingual modeling approaches for code translation and demonstrate their great potential in improving the translation quality of both low-resource and high-resource language pairs and boosting the training efficiency. We also propose a novel evaluation metric Debugging Success Rate@K for program-level code translation. Last but not least, we evaluate LLM ChatGPT on our datasets and investigate its potential for fuzzy execution predictions. We build baselines for CodeTransOcean and analyze challenges of code translation for guiding future research. The CodeTransOcean datasets and code are publicly available at https://github. com/WeixiangYAN/CodeTransOcean.\n\u2217Equal contribution. Work is supported by Speech Lab, Alibaba Group."
+        },
+        {
+            "heading": "1 Introduction",
+            "text": "Early software systems are developed using programming languages such as Fortran and COBOL, which have a significantly smaller user base compared to modern mainstream programming languages (e.g., Python and Java). Hence maintaining and modernizing early software systems are expensive (Opidi, 2020). Moreover, the readability and compatibility of the mixed multitude of programming languages are challenging when migrating existing software systems to new technology ecosystems or integrating software systems using different programming languages. The code translation task aims to convert source code from one programming language to another and is of great value in industry.\nCode translation methods evolve from the inefficient, costly, and error-prone manual rewriting method to automatic methods. Automatic code translation methods can be categorized into compilers and transpilers, rule-based methods, and neural network based methods. Neural models (Feng et al., 2020; Wang et al., 2021, 2023b) have become dominant in code translation. Details of code translation methods are presented in Appendix A.1. The performance of neural models relies heavily on large-scale high-quality parallel data. However, existing code translation datasets are limited by insufficient coverage of programming languages and mostly focusing on a single pair of popular programming languages, limited scale, and uneven data distribution. The widely used CodeTrans (Lu et al., 2021) is a small dataset containing only JavaC# parallel data for quite short code samples. Other datasets (Ahmad et al., 2023; Rozi\u00e8re et al., 2020; Zhu et al., 2022b; Nguyen et al., 2013; Chen et al., 2018) suffer from the same limitations. Consequently, existing code translation models (Feng et al., 2020; Wang et al., 2021; Ahmad et al., 2021) are confined to a narrow range of one-to-one code\ntranslation scenarios. Moreover, deep learning has been broadly used and achieved unprecedented success. However, there are barriers between different deep learning frameworks during the actual production process. Existing code translation datasets also neglect important demands from real-world applications, including modernizing early software systems developed in niche programming languages and migrating code across different deep learning frameworks.\nTo address these limitations and advance neural code translation models, we construct a largescale comprehensive multilingual code translation benchmark CodeTransOcean, summarized in Table 1. CodeTransOcean is an innovative benchmark that aims to provide a unified platform for evaluating various models on a comprehensive set of code translation tasks that reflect real-world demands. Based on this goal, each dataset in CodeTransOcean is specifically designed to tackle a key challenge in the field of code translation. CodeTransOcean includes three multilingual datasets, namely, the MultilingualTrans dataset (including eight popular programming languages), the NicheTrans dataset (translating between thirtyseven niche programming languages and the eight popular ones1), and a specialized dataset LLMTrans (including 350 data samples and their executed results) to evaluate executability of code translated by large language models (LLMs), and a cross-framework dataset DLTrans facilitating our proposed task for translating code between deep learning frameworks to enhance code reusability.\n1We define popular and niche programming languages based on the TIOBE Programming Community Index, which is a metric of the popularity of programming languages.\nDLTrans includes 408 samples covering four mainstream deep learning frameworks.\nMultilingual modeling shows great potential in neural machine translation (Aharoni et al., 2019; Wang et al., 2020; Zhu et al., 2023), but it has not been systematically explored for code translation. We investigate multilingual modeling for code translation using our MultilingualTrans, NicheTrans, and DLTrans datasets. Experimental results demonstrate that multilingual modeling significantly improves translation quality for both high-resource and low-resource language pairs and improves the model training efficiency.\nRecent research indicates that the proficiency of the LLM ChatGPT in natural language translation is on par with commercial-grade translation systems (Jiao et al., 2023). To the best of our knowledge, our work is the first to systematically investigate the potential of ChatGPT in code translation. We develop a fully automated translationexecution-evaluation pipeline AutoTransExecuter to support this study. Note that match-based metrics and execution-based metrics have been used for evaluating code translation methods, with details in Appendix A.1. In order to accurately evaluate the usability of translated code from ChatGPT, we propose a novel execution-based evaluation metric Debugging Success Rate @K (DSR@K), which is the percentage of samples with translation results that successfully execute and produce the expected functionality after K debugging rounds. On our LLMTrans dataset, the baseline ChatGPT setting achieves 48.57% DSR@0. We find that self-debugging and one-shot improve the performance while chain-of-thought strategies degrade the translation accuracy. Since our AutoTransEx-\necuter still cannot cover arbitrary programming languages, we also propose a novel metric fuzzy execution, attempting to address the limitations of existing evaluation metrics for code translation. Our preliminary study using ChatGPT shows that ChatGPT is still inadequate to predict fuzzy execution for any arbitrary programming language, which demands future research.\nOur contributions can be summarized as follows:\n\u2022 A large-scale multilingual code translation benchmark: CodeTransOcean covers the largest number of popular and niche programming languages so far with the largest scale. It also includes an unprecedented dataset for translating code across different deep learning frameworks and a dataset and an automated pipeline for evaluating LLMs on code translation. We establish baselines for all datasets in CodeTransOcean. \u2022 Multilingual modeling for code translation: We are the first to systematically evaluate multilingual modeling on code translation for both high-resource and low-resource language pairs. Experimental results demonstrate that multilingual modeling significantly improves translation quality for both high-resource and low-resource language pairs and improves training efficiency. \u2022 ChatGPT on code translation: We conduct the first comprehensive study of the potential of ChatGPT on code translation, investigating efficacy of prompting strategies, hyperparameters, selfdebugging, One-shot, and Chain-of-Thought. \u2022 New evaluation metrics: We propose DSR@K to evaluate translation and debugging capabilities of LLMs. We also propose a fuzzy execution metric based on LLMs and conduct a preliminary study using ChatGPT on this metric."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Code Translation Datasets The success of neural models for code translation relies heavily on large-scale high-quality parallel data. However, existing code translation datasets are plagued by issues such as insufficient coverage of programming languages, limited scale, and imbalanced data distribution. The widely used code translation dataset CodeTrans (Lu et al., 2021) in the CodeXGLUE benchmark consists of Java-C# function pairs. The small parallel corpus AVATAR (Ahmad et al., 2023) is constructed for Java-Python code translation. Nguyen et al. (2013) construct a Java-C# dataset to explore statistical machine\ntranslation on code translation tasks2. Chen et al. (2018) explore this dataset from Nguyen et al. and also construct a CoffeeScript-JavaScript parallel dataset for investigating tree-to-tree neural models for code translation. Rozi\u00e8re et al. (2020) create a dataset containing 852 programs to evaluate unsupervised methods. Recently, Zhu et al. (2022b) construct a new translation dataset CoST from the GeeksForGeeks website3. Subsequently, they release the translation dataset XLCoST (Zhu et al., 2022a), which expands the CoST dataset by 7.3 times. However, the limited language coverage of these datasets and their imbalanced data distribution hinder their practical applications. Rozi\u00e8re et al. (2022) construct the TransCoder-ST dataset to perform unsupervised code translation using automated unit tests. Details of these datasets are summarized in Table 2. Rithy et al. (2022) proposes a code translation dataset XTest containing nine programming languages with unit tests, but it is not open-sourced4. Although CodeNet (Puri et al., 2021) comprises many problem statements and provides corresponding solutions, experts have proven that about half of the CodeNet dataset has incorrect solutions (Zhu et al., 2022b), making it unsuitable for code translation tasks. With the limitations of existing code translation datasets, neural models trained on them may encounter overfitting, underfitting, and poor generalizability. Clearly, these issues impede the development of neural models for code translation. Therefore, constructing datasets that effectively address these problems is critical to enhance performance of code translation algorithms.\nCode Translation Methods and Evaluation Metrics Details of code translation methods and evaluation metrics are presented in Appendix A.1."
+        },
+        {
+            "heading": "3 The CodeTransOcean Benchmark",
+            "text": "In this section, we provide detailed descriptions and analyses of our CodeTransOcean benchmark, including the code translation tasks, their associated datasets, and dataset statistics. Details of data collection methods and licensing information as well as quality control and quality assessment are presented in Appendix A.2. Note that the vast\n2It was not possible to count specific information about this dataset because it was not released to the public and we were unable to obtain response from the authors.\n3In Table 2, we report the program-level counts for the CoST dataset to facilitate a fair comparison with our own program-level datasets.\n4We tried to contact the authors but there was no response.\nmajority of the samples in CodeTransOcean provides explicit input and output, which is equivalent to unit tests. Overall, CodeTransOcean consists of 270,507 samples (over 200K unit tests), covering 45 programming languages for multilingual code translation and 4 deep learning frameworks for cross-framework code translation5. Note that all samples in all CodeTransOcean datasets are constructed at the program-level. We ensure a balanced distribution of each language/framework when constructing the datasets (Appendix A.2). There is no overlap between CodeTransOcean datasets and existing code translation datasets."
+        },
+        {
+            "heading": "3.1 Multilingual Code Translation",
+            "text": "With the increasing need to unify the language variety when implementing system integration or extensions with multilingual programming environments, we construct the MultilingualTrans dataset for multiple popular programming languages6. Among programming languages in the rankings, we select the Top-10 languages as popular ones except JavaScript and SQL7 and construct the MultilingualTrans dataset based on the 8 pro-\n5Code Translation also extends to conversions between different versions of the same language, e.g., Python 2 to Python 3. However, according to our survey, these translation tasks are quite straightforward. Naive Copy methods, specific translation tools, and tutorials (e.g., Python 2 to 3 Conversion Guide) already achieve high translation accuracy. As a result, we no longer include these types of tasks in our benchmark.\n6We categorize languages as popular or niche based on the TIOBE Index Programming Language Rankings released in April 2023 https://www.tiobe.com/ tiobe-index/.\n7It is important to note that JavaScript and SQL, both within the top 10, are mainly used for front-end programming and database management respectively, signifying considerable differences in their usage scenarios compared to the other 8 languages.\ngramming languages. We treat the other languages in the rankings as niche languages and construct the NicheTrans dataset for translating between niche languages and popular languages. Additionally, in order to quantitatively evaluate the execution capabilities of the code generated by LLMs (e.g., ChatGPT, PaLM2 (Anil et al., 2023)), we construct LLMTrans, which includes the execution results for a subset of MultilingualTrans and facilitates evaluating LLMs for multilingual code translation.\nMultilingualTrans Dataset This dataset contains 30,419 program samples covering eight popular programming languages, namely, C, C++, C#, Java, Python, Go, PHP, and Visual Basic. Table 11 shows the statistics of each language pair. Note that XLCoST (Zhu et al., 2022a) is the only existing multilingual code translation dataset. Compared to XLCoST, MultilingualTrans is advantageous in more balanced data distribution across various programming languages, practicality of language pairs, and data quality. For example, the real-world requirement for translating Java into JavaScript as in XLCoST is quite limited. As to data quality, our MultilingualTrans originates from a programming chrestomathy website, with all data already reviewed and verified by the website.\nNicheTrans Dataset The NicheTrans dataset contains 236,468 program samples, covering code translation pairs from thirty-seven niche programming languages, including Ada, COBOL, Pascal, Perl, Erlang, Fortran, Scala, Julia and others, to the eight popular ones. Table 12 shows statistics of each niche language. Although many studies have highlighted the practical necessity of code translation for modernizing niche programming languages (Chen et al., 2018; Zhu et al., 2022b; Rozi\u00e8re et al.,\n2020), our NicheTrans dataset is the first dataset for code translation between these niche languages and popular ones. We believe this dataset will not only facilitate modernization of outdated programming languages more effectively, but also augment and evaluate generalizability of neural models.\nLLMTrans Dataset The LLMTrans dataset aims to provide a benchmark for evaluating the performance of LLMs on code translation. The dataset translates seven popular programming languages to Python, totaling 350 program samples. We compile and test these samples and record the execution results. Based on this dataset, we design and implement an automated pipeline, AutoTransExecuter8, automatically using LLMs to conduct code translation, execution, debugging, and calculating the success rate. This dataset and the automated pipeline ease investigation of the actual debugging success rate of LLMs on code translation and effectively measure the practical usability of LLMs. Details of the LLMTrans dataset are in Table 1."
+        },
+        {
+            "heading": "3.2 Cross-framework Code Translation",
+            "text": ""
+        },
+        {
+            "heading": "Cross-Deep-Learning-Framework Translation",
+            "text": "Task The widespread applications of deep learning (DL) has spawned emergence of various DL frameworks, such as PyTorch, TensorFlow, MXNet, and Paddle. However, there are significant differences in syntax and dependency libraries between different frameworks, severely impeding reusability of projects9. Moreover, studies illustrate significant disparities in energy consumption and economic costs during training and inference between various frameworks (Georgiou et al., 2022). Selecting an appropriate DL framework for green AI has become paramount in an era of large models (Ananthaswamy, 2023). Code reusability and energy-economic efficiency in DL have emerged as critical considerations for both research and practical engineering implementation. Converting code between different DL frameworks is challenging, mainly due to differences between frameworks, code complexity, structural inconsistencies, and cross-platform compatibility (more details are in Appendix A.3). Existing cross-DL-framework adaptive technologies such as the ONNX10 model conversion protocol require both parties to import\n8AutoTransExecuter only supports translation from any source language to Python. We discuss it in Limitations.\n9https://www.assemblyai.com/blog/ pytorch-vs-tensorflow-in-2023/\n10https://onnx.ai/\nand export based on agreed data formats or to convert only the final model through the computation graphs. These technologies have obvious limitations. In contrast, we propose a Cross-DLframework Translation task for code migration between different DL frameworks through code translation (Appendix A.4). Compared to existing cross-framework adaptive technologies, Cross-DLframework Translation achieves re-implementation under multiple DL frameworks through an automated process, which not only generates highly readable code and enables secondary development, but also provides developers with flexibility on combining advantages of multiple frameworks.\nDLTrans Dataset We construct the DLTrans dataset for Cross-DL-framework Translation, including four deep learning frameworks and spanning twelve directions. To the best of our knowledge, our work is the first to define the cross-DLframework translation task and construct a corresponding dataset. We create two subsets of different granularities based on the collected code, namely, coarse-grained at the program level and fine-grained at the function or class level. Each code pair comprises code that shares the same functionality but is written in different popular DL frameworks, including PyTorch, TensorFlow, MXNet, and Paddle. The coarse-grained and finegrained datasets have 408 and 3,270 samples, respectively. In this work, we only experiment on the coarse-grained subset."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": "We present experiments of multilingual training for code translation (Section 4.1). We then introduce a novel evaluation metric Debugging Success Rate@K for program-level code translation (Section 4.2) and the first comprehensive exploration of ChatGPT for code translation (Section 4.3)."
+        },
+        {
+            "heading": "4.1 Multilingual Modeling",
+            "text": "Multilingual modeling has been pivotal in broadening the applicability of neural machine translation (Aharoni et al., 2019; Wang et al., 2020; Zhu et al., 2023; Johnson et al., 2017). This is primarily evidenced in enhancing the performance of low-resource languages and cross-language transfer learning (Mohammadshahi et al., 2022; Zoph et al., 2016; Nguyen and Chiang, 2017; Johnson et al., 2017). CodeTransOcean covers nearly fifty\nprogramming languages and deep learning frameworks. We use its datasets to explore multilingual modeling on code translation tasks.\nExperimental Setups In this work, we use pretrained CodeT5+ (Wang et al., 2023b)11 as the backbone based on its superior performance on code understanding and generation evaluations reported in (Wang et al., 2023b). We use the MultilingualTrans dataset to investigate four multilingual modeling strategies based on data sharing in the source or target language or both, namely, One-toOne, One-to-Many, Many-to-One, and Many-toMany, with One-to-One as the baseline. Details of the four strategies are in Appendix A.5. To understand the strengths and weaknesses of the four strategies, we compare their average performance on all language pairs and focus on low-resource and high-resource pairs. Since the CodeBLEU metric (Ren et al., 2020) does not cover all eight languages in MultilingualTrans, we use BLEU to measure translation accuracy for the four strategies. Then, we establish baselines for the DLTrans and NicheTrans datasets.\nWe rank the resource richness of the eight programming languages in MultilingualTrans in descending order based on their amounts in the CodeT5+ pre-training data, as Java, PHP, C, C#, Python, C++, and Go (Visual Basic is not covered by the CodeT5+ pre-training data). Based on this ranking, we consider Visual Basic, C++, and Go as low-resource languages and Java, PHP and C as high-resource languages.\nResults and Analysis Detailed experimental results are shown in Table 14 in Appendix. For All language pairs, the performance of the four strategies is ranked as One-to-Many > Many-to-Many > Many-to-One > One-to-One. (1) Under One-toMany strategy, the model encoder can provide more comprehensive information for source language translation due to its ability to absorb more source\n11We will conduct evaluations of a broader selection of models on our datasets in future work, including LLaMA (Touvron et al., 2023), WizardCoder (Luo et al., 2023), etc.\nlanguage features, thereby improving generalizability of the model. (2) Many-to-Many can be considered as expanding the One-to-Many strategy by employing a greater volume of non-source language data for training. Since the encoder must be attuned to the features of various languages simultaneously under Many-to-Many, parameter sharing may potentially undermine the performance. (3) Manyto-One helps the model to learn from a broader range of data than the baseline. Specific patterns or expressions in diverse source languages assist the model in more precisely comprehending how to translate into the target language. The shared semantic representations across different source languages allow the model to implement effective transfer learning strategies. Furthermore, increase in training samples enables the model to optimize the loss function more stably. These results are consistent with previous findings on multilingual modeling for natural language translation (Aharoni et al., 2019): Many-to-Many models, trained across multiple target languages instead of just one target language, can function effectively as a regularization strategy for Many-to-One, thereby reducing the possibility of over-matching.\nFor High-resource and Low-resource languages, as shown in Table 3, the ranking of the four strategies is the same as for All, but there is notable difference in their adaptability across languages of varying resource scales. High-resource languages can take advantage more effectively from the shared information across multiple source languages; whereas, low-resource languages are relatively less equipped to handle the additional uncertainty and noise introduced by shared parameters, and thus often have to rely on a larger volume of source language data to optimize their benefits.\nResults from the Many-to-Many strategy on DLTrans and NicheTrans datasets are shown in Tables 4 and 5. The experimental results suggest that significant improvements in translation accuracy can be achieved by swapping the source and target languages in the training set to facilitate data augmentation and training a bidirectional model.\nNotably, prior studies on multilingual neural machine translation often overlook the comparison between One-to-Many and other strategies. Nevertheless, One-to-Many demonstrates superiority over the One-to-One baseline across all our experiments. Overall, our results strongly recommend a targeted multilingual modeling strategy for code translation, as it not only can translate multiple language pairs with a single model, but also achieves better and more stable accuracy than baselines."
+        },
+        {
+            "heading": "4.2 Debugging Success Rate@K",
+            "text": "For evaluations, we adopt existing code translation evaluation metrics in our experiments, including Exact Match (EM), BLEU, and CodeBLEU (details are in Appendix A.1.2). However, all these metrics are based on surface-form matching (or with some adaptations as for CodeBLEU) and are not suitable for our program-level translation tasks since they cannot reliably evaluate functional correctness of translated code. Moreover, in real-world software development scenarios, developers typically ensure the functionality of code by testing and debugging upon completion, rather than writing and testing multiple versions of the code to achieve the expected functionality as measured by the existing pass@k (Kulal et al., 2019) metric.\nMeanwhile, recent research shows that LLMs such as ChatGPT demonstrate preliminary code debugging capabilities (Chen et al., 2023b,a). Hence, we propose a novel and robust evaluation metric for LLM on code translation, Debugging Success Rate@K (DSR@K), by measuring whether the translated code can be compiled and executed with the same behavior as the input source code, with K rounds of debugging. To the best of our knowledge, DSR@K is the first metric designed to accurately reflect real-world software development scenarios.\nDSR@K is the percentage of the samples that successfully execute and produce the expected results among all samples. Each sample is given K generation and debugging attempts by an LLM. If the generated code successfully executes and produces the expected results with these K rounds, the sample is marked as successful. DSR@K is computed as 1N \u2211N i=1 S(i,K), where N denotes the total number of samples. If the ith code sample succeeds within K attempts, then S(i,K) = 1; otherwise, S(i,K) = 0. Note that DSR@0 can be used for program-level code translation evaluation for any models. In this work, we employ DSR@K to evaluate the ability of LLMs such as ChatGPT for debugging code and translating code with debugging results."
+        },
+        {
+            "heading": "4.3 ChatGPT for Code Translation",
+            "text": "The recent LLM ChatGPT demonstrates competitive performance on language generation tasks such as summarization and machine translation (Yang et al., 2023; Peng et al., 2023; Gao et al., 2023). However, ChatGPT for code translation has not been systematically explored. We study the effectiveness and potential of ChatGPT on code translation and investigate strategies to improve its performance. We use DSR@K as the principal evaluation metric since we focus on the practical usability of ChatGPT. We use the ChatGPT API and gpt3.5-turbo as the default model and evaluate on the\nLLMTrans dataset for all experiments. We investigate the efficacy of prompts and hyperparameters and context in zero-shot setting, then compare oneshot versus zero-shot and study Chain-of-Thought.\nEffect of Prompts and Hyperparameters Prior works show that prompts can influence the performance of ChatGPT (Zhong et al., 2023; Peng et al., 2023; Jiao et al., 2023). We set an initial prompt \u201cTranslate [SL] to [TL]:[SC].\u201d as the baseline, where [SL] and [TL] denote the source language and the target language respectively and [SC] denotes the source code. We also add \u201cDo not return anything other than the translated code.\u201d for each prompting strategy to require ChatGPT to return only code in order to ease code execution. We design three prompt variants. Details of the experimental settings and prompt variants are in Appendix A.6. We also investigate the effect of hyperparameters on code translation performance.\nAs shown in Table 6, implementing role assignments, clarifying usage, and polite inquiry in prompts all degrade the performance compared to the baseline prompt. These results show that the baseline with the most straightforward prompt produces the best performance, possibly because it provides clear, short, and unambiguous instructions for the task to the model. More intricate prompting strategies may introduce noise and confuse ChatGPT. The performance of polite inquiry prompt is comparable to but still worse than the baseline performance. We speculate that the improvement from polite inquiries in prior studies (Ak\u0131n, 2023) may stem from their explicit and comprehensive formulations which make it easier for the model to understand the task requirements. We also observe in Table 6 that same as prior findings, BLEU and CodeBLEU have no obvious positive correlations with the debugging success rate (DSR@0). Since the reference target code exhibits the same functionality as the source language code but their execution results could differ slightly, EM also does not correlate with DSR@0. Therefore, in subsequent experiments, we only report DSR@0. We also evaluate the CodeT5+_220M model on LLMTrans with the Many-to-Many strategy and find that DSR@0 is 0, suggesting that CodeT5+_220M Zero-shot is unable to generate executable translation results.\nChatGPT selects the token with the highest probability during generation. The hyperparameter temperature influences the randomness of the generated text, while top_p controls the range of vocabu-\nlary considered during generation. Higher temperature or top_p could increase diversity in the generated results from ChatGPT. However, as shown in Table 16 in Appendix, independently varying temperature or top_p does not notably change the performance of ChatGPT; hence for the other ChatGPT experiments, we set both temperature and top_p as 0 to ensure stability an reproducibility.\nEffect of Context We explore a Divide-andConquer strategy, which segments the source language code into snippets (e.g., functions and subfunctions), translate each snippet independently, then merge their outputs as the final result. As shown in Table 6, Divide-and-Conquer significantly degrades the performance. We hypothesize that lack of the global context in Divide-andConquer could prevent ChatGPT from considering the overall structure and variable configurations of the code for translation.\nEffect of Self-debugging Since ChatGPT has shown preliminary capability in error detection and correction during code generation (Shinn et al., 2023; Chen et al., 2023b; Kim et al., 2023; Nair et al., 2023; Madaan et al., 2023), we use ChatGPT to perform multiple rounds of self-debugging and investigate the impact on DSR. Specifically, ChatGPT first translates the source language code into the target language (which is Python as in our AutoTransExecuter) and then attempts to execute the translated code. If the execution passes and executing the translated code exhibits the same functionality as the source code, it is regarded as\na successful execution. Otherwise, feedback from the compiler will be also fed to ChatGPT for the next round of translation, and this process is repeated until reaching a pre-defined number K of debugging rounds. The whole process is shown in Table 17 in Appendix. As shown in Table 7, DSR improves significantly with multiple rounds of selfdebugging. The first self-debugging improves DSR by 3% absolutely. Each subsequent round of selfdebugging brings further gain but DSR begins to plateau after the second debugging round. This suggests that ChatGPT has limitations in its capacity to rectify errors after multiple debugging cycles, which is consistent with human behaviors.\nEffect of One-shot In-context learning (Brown et al., 2020) allows the model to learn from input examples, enabling it to understand and manage each new task. This method has been validated as an effective strategy for enhancing the performance of model inference (Peng et al., 2023; Liu et al., 2023a). Therefore, we explore one-shot learning for ChatGPT on code translation. We investigate three one-shot learning sample selection strategies. Descriptions of the strategies and the corresponding prompts are in Appendix A.7.\nTable 8 shows that all three One-shot learning strategies effectively improve DSR@0 of ChatGPT over the Zero-shot baseline. The Experiment#2 strategy (provided contextual example has both same source and target languages as the original task) achieves the best performance, yielding 1.72% absolute gain in DSR@0, with Experiment #1 (example has the same target language but different source language) and #3 (example has different source and target languages) following closely with 1.14% and 0.29% absolute gains, respectively. These results show that One-shot learning entirely tailored to the translation requirements is most effective in boosting code translation performance for ChatGPT. The results corroborate previous findings in natural language translation (Peng et al., 2023) that the performance of ChatGPT is sensitive to the provided contextual example in One-shot learning.\nEffect of Chain-of-Thought Chain-of-Thought (CoT) allows the model to simulate an orderly and structured way of thinking by sorting out the thinking process. It helps guide the model to output the final answer step by step (Wei et al., 2022; Peng et al., 2023; Kojima et al., 2022). For code translation, we investigate four CoT strategies. Detailed"
+        },
+        {
+            "heading": "Strategy Expts #num DSR@0 Strategy Expts #num DSR@0",
+            "text": "descriptions and translation prompts for each strategy are in Appendix A.8. As shown in Table 8, CoT degrades executability of the translated code. In Experiment #2, DSR@0 even declines by 6% absolutely. We study the translation results of ChatGPT and find that when CoT strategies are applied, the model tends to translate the source code line by line, neglecting compatibility issues between libraries and functions in different languages. CoT also compromises the global planning ability of the model. These observations are consistent with the findings in (Peng et al., 2023) that CoT may lead to word-by-word translations of natural language, thereby degrading the translation quality.\nFuzzy Execution To address the limitations of existing evaluation metrics and our AutoTransExecuter, we propose another novel code translation evaluation metric fuzzy execution using LLMs in Section Limitations, inspired by recent progress in using LLMs as evaluation metrics for NLP tasks. Our preliminary studies evaluates the performance of ChatGPT for predicting whether a given code can be executed or not, and if executable, also for predicting the executed output. Experimental results show that using ChatGPT for fuzzy execution is not yet practical and demands future research."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "We construct CodeTransOcean, a comprehensive code translation benchmark that includes multilingual and cross-framework datasets. We demonstrate that multilingual modeling has remarkable potential in enhancing code translation quality. We also reveal the superior code translation capability of ChatGPT and advanced strategies lead to significant performance gains. Moreover, we introduce fuzzy execution that may overcome limitations of existing metrics but requires future research. In summary, we provide a comprehensive suite of resources, tools, and baselines for code translation."
+        },
+        {
+            "heading": "6 Limitations",
+            "text": "Existing match-based evaluation metrics for code translation (Papineni et al., 2002; Ren et al., 2020; Eghbali and Pradel, 2022; Zhou et al., 2023; Tran et al., 2019) focus solely on semantics, overlooking executability of the code and the functional equivalence under different implementations. Executionbased metrics (Kulal et al., 2019; Hao et al., 2022; Hendrycks et al., 2021; Rozi\u00e8re et al., 2020; Dong et al., 2023) that require providing test cases are expensive to conduct in practice, and the significant overhead of executing numerous test cases and the heightened security risks during the execution process remain unresolved. It is crucial to establish an evaluation metric that overcomes these limitations.\nOur proposed DSR@K and the automated AutoTransExecuter aim to measure the executability of the code and reflect the real-world software development scenarios. However, AutoTransExecuter currently only supports Python as the target language. This is mainly due to the fact that different programming languages necessitate distinct runtime environments and libraries, making it particularly challenging to automatically detect and install the required dependencies for each code. While certain existing tools, such as Dynatrace12, can carry out dependency detection, the range of supported programming languages remains limited. Moreover, the configuration methods for compilers vary substantially among different programming languages, which further complicates automated configuration. In addition, fully automated execution systems could be exploited by malicious code, thus necessitating further security measures. Therefore, achieving this goal requires overcoming many technical and practical difficulties.\nTo address limitations of existing evaluation metrics and limitations of AutoTransExecuter, we propose another novel code translation evaluation metric fuzzy execution.\nRecent studies have begun to utilize LLMs as evaluation metrics in the field of NLP (Chen et al., 2023c; Wang et al., 2023a; Fu et al., 2023; Kocmi and Federmann, 2023; Ji et al., 2023). Inspired by these works, we create a new dataset ExecuteStatus by randomly selecting 300 executable samples from MultilingualTrans and 300 non-executable samples from the translation results of ChatGPT.\n12https://www.dynatrace.com/ platform/artificial-intelligence/ dependency-detection/"
+        },
+        {
+            "heading": "Metrics Calculation formula Zero-Shot Few-Shot",
+            "text": "Each entry in this dataset includes the execution status and, if executable, the result of the execution. We use ExecuteStatus and AutoTransExecuter to evaluate the performance of ChatGPT for predicting whether a given code can be executed or not, and if executable, also predict the executed output. The Zero-shot prompts are shown in Table 18 in Appendix. For the Few-shot strategy, in addition to the Zero-shot baseline, we include an example of executable code and an example of non-executable code, as detailed in Table 18.\nWe define fuzzy execution as first testing the consistency between the actual pass rate and the predicted pass rate of ChatGPT, followed by further testing the accuracy in predicting execution results using ChatGPT without relying on a compiler. Since we are interested in the ability of ChatGPT to identify samples that cannot actually be executed accurately, we present the confusion matrix in Table 9 based on the results. To evaluate the performance of ChatGPT on the fuzzy execution prediction task, we use the standard accuracy, precision, recall, and F1 scores. Experimental results based on these evaluation metrics are in Table 10. The low accuracy, recall and F1 scores show that ChatGPT still has difficulty in identifying errors in the code, exhibiting about an 88% tendency to predict that the code is executable. Overall, ChatGPT has low accuracy in the binary classification task of \u201cwhether it can be executed\u201d, and its ability to predict execution results, being at a scant 4%, clearly\nrequires further enhancement. Thus, using ChatGPT for fuzzy execution is not yet practical (Liu et al., 2023b). Despite this, fuzzy execution with LLMs holds the potential to overcome the deficiencies of current code translation evaluation metrics. We will continue this exploration in future work."
+        },
+        {
+            "heading": "A Appendix",
+            "text": ""
+        },
+        {
+            "heading": "A.1 Related Work",
+            "text": ""
+        },
+        {
+            "heading": "A.1.1 Code Translation Methods",
+            "text": "Naive Copy directly duplicates the source code as the target code without making any modifications. Given that the results produced by this method are often unusable, it is treated as the lower bound of performance for code translation. Early code translation relies heavily on manual rewriting, which requires developers to have a deep understanding of both source and target languages along with the ability to navigate various complex programming structures and semantic challenges. This method is inefficient, costly, and prone to errors.\nAutomatic code translation methods fall into several categories. Compilers and transpilers13 can automatically translate the source code into a target language, significantly saving time and effort. However, these methods cannot fully preserve all the linguistic features and behaviors of the source code, nor can they comprehend the intent and semantics inherent to the source code as humans do. Rule-based methods (Weisz et al., 2021, 2022; Rozi\u00e8re et al., 2020) treat the code translation task as a program synthesis problem. They define a set of transformation rules and employ the rules or pattern matching for code translation. Research on rule-based methods is quite scarce, mainly because they overly rely on the completeness of the rules and also require a considerable amount of manual preprocessing.\nNeural network based methods have become dominant in the field of code translation in recent\n13https://en.wikipedia.org/wiki/ Source-to-source_compiler\nyears. These methods mainly treat code translation as a sequence-to-sequence generation problem. Among them, Chen et al. (Chen et al., 2018) are the first to successfully apply neural networks to code translation, designing a tree-to-tree neural model. CodeBERT (Feng et al., 2020) significantly improves code translation accuracy by pretraining models with masked language modeling and replaced token detection. GraphCodeBERT (Guo et al., 2021) further improves code translation accuracy by introducing two additional pre-training tasks as edge prediction and node alignment. CodeT5 (Wang et al., 2021), based on the Transformer encoder-decoder architecture, achieves excellent performance on code translation through four pre-training tasks, namely, masked span prediction, identifier tagging, masked identifier prediction, and bimodal dual generation. With a similar architecture as CodeT5, PLBART (Ahmad et al., 2021) adopts three tasks of token masking, token deletion and token infilling for denoising seq2seq pre-training, which enables PLBART to infer language syntax and semantics and to learn how to generate language coherently. NatGen (Chakraborty et al., 2022) forces the model to learn to capture intent of the source code by setting up \u201cCode-Naturalization\u201d tasks during pre-training, and forces the model to make the generated code closer to the human-written style.\nIn the line of neural network based methods, recently released large language models (LLMs) (e.g., ChatGPT (OpenAI, 2023)) have shown remarkable performance in a wide range of NLP tasks with instructions and a few in-context examples. ChatGPT is built upon GPT and is optimized with Reinforcement Learning from Human Feedback. ChatGPT can efficiently understand and generate code sequences, and can self-learn from human feedback to improve the quality and accuracy of its outputs. This significant advancement has markedly propelled progress in the field of code translation."
+        },
+        {
+            "heading": "A.1.2 Code Translation Metrics",
+            "text": "Match-Based Evaluation Metrics These evaluation metrics are based on the similarity between the translation output and the reference translation. Among them, the Exact Match (EM) metric calculates the percentage of translation outputs that exactly match the reference translation, which overlooks the fact that the same function can be implemented in various ways. The Bilingual Evalu-\nation Understudy (BLEU) (Papineni et al., 2002) metric evaluates the similarity between the translation output and the reference translation by multiplying the geometric average of n-gram precision scores with a brevity penalty. The CodeBLEU (Ren et al., 2020) metric extends BLEU by considering syntactic and semantic characteristics of programming languages; it not only considers shallow matching but also pays attention to syntactic and semantic matching. CrystalBLEU (Eghbali and Pradel, 2022) focuses more on the inherent differences between source code and natural language, such as trivial shared n-gram syntax. CodeBERTScore (Zhou et al., 2023) uses pre-trained models to encode the translation output and reference translation, then calculates the dot product similarity between them, enabling comparisons of code pairs with distinct lexical forms. However, CodeBLEU, CrystalBLEU, and CodeBERTScore have limitations as they only support a limited range of programming languages and cannot be used in general multilingual scenarios. Ruby (Tran et al., 2019), a new method for evaluating code translation, considers the lexical, syntactic, and semantic representations of source code. However, its codebase has not yet been open-sourced. These match-based evaluation metrics can only evaluate the surface form and semantic differences of the code, while neglecting the executability of the code and the functional equivalence of implementation variations."
+        },
+        {
+            "heading": "Execution-Based Evaluation Metrics",
+            "text": "Execution-based evaluation metrics mainly compare the executed result of the generated code with the expected result. The PASS@k score (Kulal et al., 2019) is evaluated by unit tests: if any of the k samples meets the expected result, the generated result is deemed successful. AvgPassRatio (Hao et al., 2022; Hendrycks et al., 2021) evaluates the overall executable result of code by calculating the average pass rate of test cases. Computational accuracy (Rozi\u00e8re et al., 2020) measures the quality of the generated code snippet by comparing the output of this snippet with the reference code snippet when given the same input. Additionally, CodeScore (Dong et al., 2023) claims that it can estimate the PassRatio of test cases for the generated code without executing the code, but its codebase has not yet been open-sourced. These execution-based evaluation metrics require construction of executable test\nsets, which could be costly. Furthermore, due to potential security threats from the execution environment and the code, they need to be run in an isolated sandbox."
+        },
+        {
+            "heading": "A.2 Data Management",
+            "text": ""
+        },
+        {
+            "heading": "A.2.1 Data Sources & Licenses",
+            "text": "We collect CodeTransOcean from two different platforms. The MultilingualTrans and NicheTrans datasets are collected from Rosetta Code14, a programming site presenting solution strategies for identical tasks across as many programming languages as possible, thereby demonstrating both similarities and differences among these languages. We strictly adhere to the data distribution license of the platform as Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license15.\nThe DLTrans dataset is derived from an opensource teaching platform Dive into Deep Learning16, which is dedicated to teaching deep learning knowledge ranging from theoretical background, conceptual understanding, to coding practices. We strictly adhere to the data distribution license of this platform as Apache-2.017. To ensure legal and regulated use of these datasets, we require strict\n14https://rosettacode.org/wiki/Rosetta_ Code\n15https://creativecommons.org/licenses/ by-sa/4.0/\n16https://github.com/d2l-ai/d2l-zh 17https://github.com/d2l-ai/d2l-zh/\nblob/master/LICENSE\nadherence to these licenses."
+        },
+        {
+            "heading": "A.2.2 Data Processing",
+            "text": "Multilingual Datasets Given the variations in compilation requirements among programming languages, we keep the original format as much as possible to ensure the compilability of the data while ensuring its accuracy. Additionally, we employ a duplicate-file-detection tool to identify and remove duplicate data from the dataset to avoid any potential data leakage problems during model training.\nCross-Framework Dataset To ensure the compilability of Python, we keep the original formatting information. We manually verify all automatically collected samples, identify and exclude samples that do not meet the requirements."
+        },
+        {
+            "heading": "A.2.3 Data Quality",
+            "text": "We randomly select 1K samples from each dataset within CodeTransOcean for manual quality assessment. We find that for the MultilingualTrans dataset with compilation requirements, the compilability rate exceeds 90%. We verify that the code pairs in each dataset are functionally identical and confirm that CodeTransOcean is of high quality.\nAdditionally, during data collection, we pay special attention to the diversity of domain knowledge and code styles. CodeTransOcean includes various code examples ranging from basic syntactic structures to complex algorithm implementations, as well as building neural networks from scratch and conducting training and inference. This rich\ndiversity ensures that CodeTransOcean reflects a wide variety of real-world scenarios."
+        },
+        {
+            "heading": "A.3 Specific Challenges in Implementing Cross-framework Translation",
+            "text": "Firstly, there are significant design differences between frameworks, including data processing methods, model-building strategies, and network connection techniques. Secondly, the inherent complexity of DL code increases the difficulty of conversion, as these codes usually contain various components such as neural network layers, loss functions, optimizers, and learning rate schedulers. Thirdly, there are significant inconsistencies in the code structure of different frameworks, such as code organization and variable naming rules. Lastly, cross-platform compatibility must be considered because DL code may encounter compatibility issues when executing on different hardware platforms (e.g., GPUs, CPUs, TPUs) and operating systems."
+        },
+        {
+            "heading": "A.4 Code Examples on Different Deep Learning Frameworks",
+            "text": "Figures 1 and 2 show the implementation of two different deep learning components in various deep learning frameworks."
+        },
+        {
+            "heading": "A.5 Multilingual Modeling",
+            "text": "One-to-One For each language pair in the dataset, we train an independent model, e.g., translating C++ to Java.\nOne-to-Many We train individual models from one language to many other languages, e.g., translating Python to all other languages.\nMany-to-One We train individual models from multiple languages to one language, e.g., translating all other languages to Python.\nMany-to-Many We train a unified model for the multiple to multiple languages in the dataset, which can handle translations between all languages.\nWe ensure all experiments are performed under the same hyperparameters and environment for comparison. Table 13 shows these in detail."
+        },
+        {
+            "heading": "A.6 Prompt Variations",
+            "text": "Role Assignment (Peng et al., 2023; AlKhamissi et al., 2023; Wu et al., 2023; Ak\u0131n, 2023) We configured two distinct roles for the model, each with unique skills. This arrangement empowers the\nmodel to simulate more domain-adaptable and specialized expert roles.\nPolite inquiry (Ak\u0131n, 2023) These strategies add polite expression and set up imperative and interrogative requests. Given that ChatGPT is designed to simulate human conversation styles as closely as possible, including understanding and simulating polite language expressions. Therefore, we expect these strategies to boost the comprehension of the model and augment the quality of its generated results.\nClarify usage This strategy aims to make the model clearly aware of its requirements during the code translation process - the generated code needs to be guaranteed to execute without issues. The translation prompts of the above four strategies\nare shown in Table 15."
+        },
+        {
+            "heading": "A.7 One-Shot",
+            "text": "Experiment #1 selects a training sample from a high-resource language code pair as an example. In this case, the target language type aligns with the target language type of the translation request, but the source language does not.\nExperiment #2 selects a code pair whose source and target language directions are congruent with the translation requirements as an example. That is, the source and target languages of the example dynamically adjust following the translation requirements.\nExperiment #3 randomly selects a code pair as an example, in which neither the source nor the target languages match the translation requirements. The specific translation prompts are shown in Table 19."
+        },
+        {
+            "heading": "A.8 Chain of Thought",
+            "text": "Experiment #1 First, describe the function of the source code in the natural language, then translate it according to the source code and the corresponding natural language description.\nExperiment #2 First, let ChatGPT understand the function of the source code, followed by the translation, while ensuring that the function of the code remains unchanged during the translation process.\nExperiment #3 First, let ChatGPT understand the function of the source code, then predict the output result of the source code, and finally perform the translation, demanding that the translated code successfully executes.\nExperiment #4 Building upon Experiment #3 and the one-shot approach of Experiment #2, we introduce a CoT one-shot variation. That is, first, provide a case in the same direction for ChatGPT reference, then require it to understand the func-\ntion of the source code, then predict the output of the source code, and finally translate it, with the condition that the translated code must successfully execute. The specific translation prompts are shown in Table 19.\nZero-shot prompting"
+        }
+    ],
+    "title": "CodeTransOcean: A Comprehensive Multilingual Benchmark for Code Translation",
+    "year": 2023
+}

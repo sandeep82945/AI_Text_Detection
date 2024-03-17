@@ -1,0 +1,744 @@
+{
+    "abstractText": "Recent work has shown that language models (LMs) have strong multi-step (i.e., procedural) reasoning capabilities. However, it is unclear whether LMs perform these tasks by cheating with answers memorized from pretraining corpus, or, via a multi-step reasoning mechanism. In this paper, we try to answer this question by exploring a mechanistic interpretation of LMs for multi-step reasoning tasks. Concretely, we hypothesize that the LM implicitly embeds a reasoning tree resembling the correct reasoning process within it. We test this hypothesis by introducing a new probing approach (called MechanisticProbe) that recovers the reasoning tree from the model\u2019s attention patterns. We use our probe to analyze two LMs: GPT2 on a synthetic task (k-th smallest element), and LLaMA on two simple language-based reasoning tasks (ProofWriter & AI2 Reasoning Challenge). We show that MechanisticProbe is able to detect the information of the reasoning tree from the model\u2019s attentions for most examples, suggesting that the LM indeed is going through a process of multi-step reasoning within its architecture in many cases.1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Yifan Hou"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiaoda Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Yu Fei"
+        },
+        {
+            "affiliations": [],
+            "name": "Alessandro Stolfo"
+        },
+        {
+            "affiliations": [],
+            "name": "Wangchunshu Zhou"
+        },
+        {
+            "affiliations": [],
+            "name": "Guangtao Zeng"
+        },
+        {
+            "affiliations": [],
+            "name": "Antoine Bosselut"
+        },
+        {
+            "affiliations": [],
+            "name": "Mrinmaya Sachan"
+        }
+    ],
+    "id": "SP:e2009b1989cf5ef88e9550930535f12bb742f29e",
+    "references": [
+        {
+            "authors": [
+                "Samira Abnar",
+                "Willem Zuidema."
+            ],
+            "title": "Quantifying attention flow in transformers",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, pages 4190\u20134197, Online. Association for Computational Linguistics.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yonatan Belinkov."
+            ],
+            "title": "Probing classifiers: Promises, shortcomings, and advances",
+            "venue": "Computational Linguistics, 48(1):207\u2013219.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Adrien Bibal",
+                "R\u00e9mi Cardon",
+                "David Alfter",
+                "Rodrigo Wilkens",
+                "Xiaoou Wang",
+                "Thomas Fran\u00e7ois",
+                "Patrick Watrin."
+            ],
+            "title": "Is attention explanation? an introduction to the debate",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Compu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gino Brunner",
+                "Yang Liu",
+                "Damian Pascual",
+                "Oliver Richter",
+                "Massimiliano Ciaramita",
+                "Roger Wattenhofer."
+            ],
+            "title": "On identifiability in transformers",
+            "venue": "8th International Conference on Learning Representations, ICLR 2020, Addis Ababa, Ethiopia, April",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nicholas Carlini",
+                "Daphne Ippolito",
+                "Matthew Jagielski",
+                "Katherine Lee",
+                "Florian Tram\u00e8r",
+                "Chiyuan Zhang."
+            ],
+            "title": "Quantifying memorization across neural language models",
+            "venue": "CoRR, abs/2202.07646.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hila Chefer",
+                "Shir Gur",
+                "Lior Wolf."
+            ],
+            "title": "Generic attention-model explainability for interpreting bimodal and encoder-decoder transformers",
+            "venue": "2021 IEEE/CVF International Conference on Computer Vision, ICCV 2021, Montreal, QC, Canada, October",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zeming Chen",
+                "Gail Weiss",
+                "Eric Mitchell",
+                "Asli Celikyilmaz",
+                "Antoine Bosselut."
+            ],
+            "title": "RECKONING: reasoning through dynamic knowledge encoding",
+            "venue": "CoRR, abs/2305.06349.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Peter Clark",
+                "Isaac Cowhey",
+                "Oren Etzioni",
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Carissa Schoenick",
+                "Oyvind Tafjord."
+            ],
+            "title": "Think you have solved question answering? try arc, the AI2 reasoning challenge",
+            "venue": "CoRR, abs/1803.05457.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Antonia Creswell",
+                "Murray Shanahan."
+            ],
+            "title": "Faithful reasoning using large language models",
+            "venue": "CoRR, abs/2208.14271.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Antonia Creswell",
+                "Murray Shanahan",
+                "Irina Higgins."
+            ],
+            "title": "Selection-inference: Exploiting large language models for interpretable logical reasoning",
+            "venue": "CoRR, abs/2205.09712.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Joseph F. DeRose",
+                "Jiayao Wang",
+                "Matthew Berger."
+            ],
+            "title": "Attention flows: Analyzing and comparing attention mechanisms in language models",
+            "venue": "IEEE Trans. Vis. Comput. Graph., 27(2):1160\u20131170.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yue Dong",
+                "Chandra Bhagavatula",
+                "Ximing Lu",
+                "Jena D. Hwang",
+                "Antoine Bosselut",
+                "Jackie Chi Kit Cheung",
+                "Yejin Choi."
+            ],
+            "title": "On-the-fly attention modulation for neural generation",
+            "venue": "Findings of the Association for Computational Linguistics: ACL/IJCNLP",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Oliver Eberle",
+                "Stephanie Brandl",
+                "Jonas Pilot",
+                "Anders S\u00f8gaard"
+            ],
+            "title": "Do transformer models show similar attention patterns to task-specific human gaze",
+            "venue": "In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yanai Elazar",
+                "Shauli Ravfogel",
+                "Alon Jacovi",
+                "Yoav Goldberg."
+            ],
+            "title": "Amnesic probing: Behavioral explanation with amnesic counterfactuals",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:160\u2013 175.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kawin Ethayarajh",
+                "Dan Jurafsky."
+            ],
+            "title": "Attention flows are shapley value explanations",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mor Geva",
+                "Jasmijn Bastings",
+                "Katja Filippova",
+                "Amir Globerson."
+            ],
+            "title": "Dissecting recall of factual associations in auto-regressive language models",
+            "venue": "CoRR, abs/2304.14767.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "John Hewitt",
+                "Percy Liang."
+            ],
+            "title": "Designing and interpreting probes with control tasks",
+            "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yifan Hou",
+                "Mrinmaya Sachan."
+            ],
+            "title": "Bird\u2019s eye: Probing for linguistic graph structures with a simple information-theoretic approach",
+            "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Takeshi Kojima",
+                "Shixiang Shane Gu",
+                "Machel Reid",
+                "Yutaka Matsuo",
+                "Yusuke Iwasawa."
+            ],
+            "title": "Large language models are zero-shot reasoners",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Karim Lasri",
+                "Tiago Pimentel",
+                "Alessandro Lenci",
+                "Thierry Poibeau",
+                "Ryan Cotterell."
+            ],
+            "title": "Probing for the usage of grammatical number",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yibing Liu",
+                "Haoliang Li",
+                "Yangyang Guo",
+                "Chenqi Kong",
+                "Jing Li",
+                "Shiqi Wang."
+            ],
+            "title": "Rethinking attentionmodel explainability through faithfulness violation test",
+            "venue": "International Conference on Machine Learning, ICML 2022, 17-23 July 2022, Baltimore, Mary-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "7th International Conference on Learning Representations, ICLR 2019, New Orleans, LA, USA, May 6-9, 2019. OpenReview.net.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Donald W. Loveland."
+            ],
+            "title": "Automated theorem proving",
+            "venue": "a logical basis. Journal of Symbolic Logic, 45(3):629\u2013630.",
+            "year": 1980
+        },
+        {
+            "authors": [
+                "Christopher D. Manning",
+                "Kevin Clark",
+                "John Hewitt",
+                "Urvashi Khandelwal",
+                "Omer Levy."
+            ],
+            "title": "Emergent linguistic structure in artificial neural networks trained by self-supervision",
+            "venue": "Proc. Natl. Acad. Sci. USA, 117(48):30046\u201330054.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jack Merullo",
+                "Carsten Eickhoff",
+                "Ellie Pavlick"
+            ],
+            "title": "Language models implement simple word2vec-style vector arithmetic",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shikhar Murty",
+                "Pratyusha Sharma",
+                "Jacob Andreas",
+                "Christopher Manning."
+            ],
+            "title": "Grokking of hierarchical structure in vanilla transformers",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Neel Nanda",
+                "Lawrence Chan",
+                "Tom Lieberum",
+                "Jess Smith",
+                "Jacob Steinhardt."
+            ],
+            "title": "Progress measures for grokking via mechanistic interpretability",
+            "venue": "The Eleventh International Conference on Learning Representations, ICLR 2023, Kigali, Rwanda, May",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chris Olah",
+                "Nick Cammarata",
+                "Ludwig Schubert",
+                "Gabriel Goh",
+                "Michael Petrov",
+                "Shan Carter."
+            ],
+            "title": "Zoom in: An introduction to circuits",
+            "venue": "Distill, 5(3):e00024\u2013 001.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chris Olah",
+                "Alexander Mordvintsev",
+                "Ludwig Schubert."
+            ],
+            "title": "Feature visualization",
+            "venue": "Distill, 2(11):e7.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Chris Olah",
+                "Arvind Satyanarayan",
+                "Ian Johnson",
+                "Shan Carter",
+                "Ludwig Schubert",
+                "Katherine Ye",
+                "Alexander Mordvintsev."
+            ],
+            "title": "The building blocks of interpretability",
+            "venue": "Distill, 3(3):e10.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Catherine Olsson",
+                "Nelson Elhage",
+                "Neel Nanda",
+                "Nicholas Joseph",
+                "Nova DasSarma",
+                "Tom Henighan",
+                "Ben Mann",
+                "Amanda Askell",
+                "Yuntao Bai",
+                "Anna Chen"
+            ],
+            "title": "In-context learning and induction heads",
+            "venue": "arXiv preprint arXiv:2209.11895",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Linlu Qiu",
+                "Liwei Jiang",
+                "Ximing Lu",
+                "Melanie Sclar",
+                "Valentina Pyatkin",
+                "Chandra Bhagavatula",
+                "Bailin Wang",
+                "Yoon Kim",
+                "Yejin Choi",
+                "Nouha Dziri"
+            ],
+            "title": "Phenomenal yet puzzling: Testing inductive reasoning capabilities of language",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeff Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever."
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tilman R\u00e4uker",
+                "Anson Ho",
+                "Stephen Casper",
+                "Dylan Hadfield-Menell."
+            ],
+            "title": "Toward transparent AI: A survey on interpreting the inner structures of deep neural networks",
+            "venue": "CoRR, abs/2207.13243.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Abhilasha Ravichander",
+                "Yonatan Belinkov",
+                "Eduard Hovy"
+            ],
+            "title": "Probing the probing paradigm: Does probing accuracy entail task relevance",
+            "venue": "In Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics:",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yasaman Razeghi",
+                "Robert L Logan IV",
+                "Matt Gardner",
+                "Sameer Singh."
+            ],
+            "title": "Impact of pretraining term frequencies on few-shot numerical reasoning",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2022, pages 840\u2013854, Abu Dhabi,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Danilo Neves Ribeiro",
+                "Shen Wang",
+                "Xiaofei Ma",
+                "Henghui Zhu",
+                "Rui Dong",
+                "Deguang Kong",
+                "Juliette Burger",
+                "Anjelica Ramos",
+                "Zhiheng Huang",
+                "William Yang Wang",
+                "George Karypis",
+                "Bing Xiang",
+                "Dan Roth"
+            ],
+            "title": "STREET: A multi-task struc",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Anna Rogers",
+                "Olga Kovaleva",
+                "Anna Rumshisky."
+            ],
+            "title": "A primer in BERTology: What we know about how BERT works",
+            "venue": "Transactions of the Association for Computational Linguistics, 8:842\u2013866.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sebastian Ruder",
+                "Jonas Pfeiffer",
+                "Ivan Vuli\u0107."
+            ],
+            "title": "Modular and parameter-efficient fine-tuning for NLP models",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing: Tutorial Abstracts, pages 23\u201329, Abu Dubai, UAE.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jules Samaran",
+                "Noa Garcia",
+                "Mayu Otani",
+                "Chenhui Chu",
+                "Yuta Nakashima"
+            ],
+            "title": "Attending self-attention: A case study of visually grounded supervision",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alessandro Stolfo",
+                "Yonatan Belinkov",
+                "Mrinmaya Sachan."
+            ],
+            "title": "Understanding arithmetic reasoning in language models using causal mediation analysis",
+            "venue": "arXiv preprint arXiv:2305.15054.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Oyvind Tafjord",
+                "Bhavana Dalvi",
+                "Peter Clark."
+            ],
+            "title": "ProofWriter: Generating implications, proofs, and abductive statements over natural language",
+            "venue": "Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021, pages 3621\u20133634, Online.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiaojuan Tang",
+                "Zilong Zheng",
+                "Jiaqi Li",
+                "Fanxu Meng",
+                "Song-Chun Zhu",
+                "Yitao Liang",
+                "Muhan Zhang."
+            ],
+            "title": "Large language models are in-context semantic reasoners rather than symbolic reasoners",
+            "venue": "CoRR, abs/2305.14825.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jesse Vig",
+                "Yonatan Belinkov."
+            ],
+            "title": "Analyzing the structure of attention in a transformer language model",
+            "venue": "Proceedings of the 2019 ACL Workshop BlackboxNLP: Analyzing and Interpreting Neural Networks for NLP, pages 63\u201376, Florence, Italy. As-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Elena Voita",
+                "David Talbot",
+                "Fedor Moiseev",
+                "Rico Sennrich",
+                "Ivan Titov."
+            ],
+            "title": "Analyzing multi-head self-attention: Specialized heads do the heavy lifting, the rest can be pruned",
+            "venue": "Proceedings of the 57th Annual Meeting of the Association for Computa-",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Brian Ichter",
+                "Fei Xia",
+                "Ed H. Chi",
+                "Quoc V. Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain-of-thought prompting elicits reasoning in large language models",
+            "venue": "NeurIPS.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhengxuan Wu",
+                "Atticus Geiger",
+                "Christopher Potts",
+                "Noah D. Goodman."
+            ],
+            "title": "Interpretability at scale: Identifying causal mechanisms in alpaca",
+            "venue": "CoRR, abs/2305.08809.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shizhuo Dylan Zhang",
+                "Curt Tigges",
+                "Stella Biderman",
+                "Maxim Raginsky",
+                "Talia Ringer"
+            ],
+            "title": "Can transformers learn to solve problems recursively? CoRR, abs/2305.14699",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Large language models (LMs) have shown impressive capabilities of solving complex reasoning problems (Brown et al., 2020; Touvron et al., 2023). Yet, what is the underlying \u201cthought process\u201d of these models is still unclear (Figure 1). Do they cheat with shortcuts memorized from pretraining corpus (Carlini et al., 2022; Razeghi et al., 2022; Tang et al., 2023)? Or, do they follow a rigorous reasoning process and solve the problem procedurally (Wei et al., 2022; Kojima et al., 2022)? Answering this question is not only critical to our understanding of these models but is also critical for the development of next-generation faithful\n1Our code, as well as analysis results, are available at https://github.com/yifan-h/MechanisticProbe.\nlanguage-based reasoners (Creswell and Shanahan, 2022; Creswell et al., 2022; Chen et al., 2023).\nA recent line of work tests the behavior of LMs by designing input-output reasoning examples (Zhang et al., 2023; Dziri et al., 2023). However, it is expensive and challenging to construct such high-quality examples, making it hard to generalize these analyses to other tasks/models. Another line of work, mechanistic interpretability (Merullo et al., 2023; Wu et al., 2023; Nanda et al., 2023; Stolfo et al., 2023; Bayazit et al., 2023), directly analyzes the parameters of LMs, which can be easily extended to different tasks. Inspired by recent work (Abnar and Zuidema, 2020; Voita et al., 2019; Manning et al., 2020; Murty et al., 2023) that uses attention patterns for linguistic phenomena prediction, we propose an attention-based mechanistic interpretation to expose how LMs perform multi-step reasoning tasks (Dong et al., 2021).\nWe assume that the reasoning process for answering a multi-step reasoning question can be represented as a reasoning tree (Figure 2). Then, we investigate if the LM implicitly infers such a tree when answering the question. To achieve this, we designed a probe model, MechanisticProbe, that recovers the reasoning tree from the LM\u2019s attention patterns. To simplify the probing problem and gain a more fine-grained understanding, we decompose the problem of discovering reasoning trees into two\nsubproblems: 1) identifying the necessary nodes in the reasoning tree; 2) inferring the heights of identified nodes. We design our probe using two simple non-parametric classifiers for the two subproblems. Achieving high probing scores indicates that the LM captures the reasoning tree well.\nWe conduct experiments with GPT-2 (Radford et al., 2019) on a synthetic task (finding the k-th smallest number in a sequence of numbers) and with LLaMA (Touvron et al., 2023) on two natural language reasoning tasks: ProofWriter (Tafjord et al., 2021) and AI2 Reasoning Challenge (i.e., ARC: Clark et al., 2018). For most examples, we successfully detect reasoning trees from attentions of (finetuned) GPT-2 and (few-shot & finetuned) LLaMA using MechanisticProbe. We also observe that LMs find useful statements immediately at the bottom layers and then do the subsequent reasoning step by step (\u00a74).\nTo validate the influence on the LM\u2019s predictions of the attention mechanisms that we identify, we conduct additional analyses. First, we prune the attention heads identified by MechanisticProbe and observe a significant accuracy degradation (\u00a75). Then, we investigate the correlation between our probing scores and the LM\u2019s performance and robustness (\u00a76). Our findings suggest that LMs exhibit better prediction accuracy and tolerance to noise on examples with higher probing scores. Such observations highlight the significance of accurately capturing the reasoning process for the efficacy and robustness of LMs."
+        },
+        {
+            "heading": "2 Reasoning with LM",
+            "text": "In this section, we formalize the reasoning task and introduce the three tasks used in our analysis: k-th smallest element, ProofWriter, and ARC."
+        },
+        {
+            "heading": "2.1 Reasoning Formulation",
+            "text": "In our work, the LM is asked to answer a question Q given a set of statements denoted by S = {S1, S2, ...}. Some of these statements may not be useful for answering Q. To obtain the answer, the LM should perform reasoning using the statements in multiple steps. We assume that this process can be represented by a reasoning tree G. We provide specific examples in Figure 2 for the three reasoning tasks used in our analysis.2 This is a very broad formulation and includes settings such as theorem proving (Loveland, 1980) where the statements could be facts or rules. In our analyses, we study the tasks described below."
+        },
+        {
+            "heading": "2.2 Reasoning Tasks",
+            "text": "k-th smallest element. In this task, given a list of m numbers (m = 16 by default) in any order, the LM is asked to predict (i.e., generate) the k-th smallest number in the list. For simplicity, we only consider numbers that can be encoded as one token with GPT-2\u2019s tokenizer. We select m numbers randomly among them to construct the input number list. The reasoning trees have a depth of 1 (Figure 2 left). The root node is the k-th smallest number and the leaf nodes are top-k numbers.\nFor this task, we select GPT-2 (Radford et al., 2019) as the LM for the analysis. We randomly generate training data to finetune GPT-2 and ensure that the test accuracy on the reasoning task is larger than 90%. For each k, we finetune an independent GPT-2 model. More details about finetuning (e.g., hyperparameters) are in Appendix B.1.\nProofWriter. The ProofWriter dataset (Tafjord et al., 2021) contains theorem-proving problems.\n2Note that we can leave out the question if Q remains the same for all examples (e.g., Figure 2 left).\nIn this task, given a set of statements (verbalized rules and facts) and a question, the LM is asked to determine if the question statement is true or false. Annotations of reasoning trees G are also provided in the dataset. Again, each tree has only one node at any height larger than 0. Thus, knowing the node height is sufficient to recover G. To simplify our analysis, we remove examples annotated with multiple reasoning trees. Details are in Appendix C.3. Furthermore, to avoid tree ambiguity (Appendix C.4), we only keep examples with reasoning trees of depth upto 1, which account for 70% of the data in ProofWriter.\nAI2 Reasoning Challenge (ARC). The ARC dataset contains multiple-choice questions from middle-school science exams (Clark et al., 2018). However, the original dataset does not have reasoning tree annotations. Thus, we consider a subset of the dataset provided by Ribeiro et al. (2023), which annotates around 1000 examples. Considering the limited number of examples, we do not include analysis of finetuned LMs and mainly focus on the in-context learning setting. More details about the dataset are in Appendix C.3.\nFor both ProofWriter and ARC tasks, we select LLaMA (7B) (Touvron et al., 2023) as the LM for analysis. The tasks are formalized as classifications: predicting the answer token (e.g., true or false for ProofWriter).3 We compare two settings: LLaMA with 4-shot in-context learning setting, and LLaMA finetuned with supervised signal (i.e., LLaMAFT). We partially finetune LLaMA on attention parameters. Implementation details about in-context learning and finetuning on LLaMA can be found in Appendix C.1."
+        },
+        {
+            "heading": "3 MechanisticProbe",
+            "text": "In this section, we introduce MechanisticProbe: a probing approach that analyzes how LMs solve multi-step reasoning tasks by recovering reasoning trees from the attentions of LMs."
+        },
+        {
+            "heading": "3.1 Problem Formulation",
+            "text": "Our goal is to shed light on how LMs solve procedural reasoning tasks. Formally, given an LM with L layers and H attention heads, we assume that the LM can handle the multi-step reasoning task with sufficiently high accuracy.\n3Note that most reasoning tasks with LMs can be formalized as the single-token prediction format (e.g., multi-choice question answering).\nLet us consider the simplest of the three tasks (k-th smallest element). Each statement Si here is encoded as one token ti. The input text (containing all statements in S) to the LM comprises a set of tokens as T = (t1, t2, ...). We denote the hidden representations of the token ti at layer l by zli. We further denote the attention of head h between zl+1i and z l j as A(l, h)[i, j]. As shown in Figure 3, the attention matrix at layer l of head h is denoted as A(l, h), the lower triangular matrix.4 The overall attention matrix then can be denoted by A = {A(l, h)|1 \u2264 l \u2264 L; 1 \u2264 h \u2264 H}.\nOur probing task is to detect G from A, i.e. modeling P (G|A). However, note that the size of A is very large \u2013 L \u00d7 H \u00d7 |T |2, and it could contain many redundant features. For example, if the number of tokens in the input is 100, the attention matrix A for LLaMA contains millions of attention weights. It is impossible to probe the information directly from A. In addition, the tree prediction task is difficult (Hou and Sachan, 2021) and we want our probe to be simple (Belinkov, 2022) as we want it to provide reliable interpretation about the LM rather than learn the task itself. Therefore, we introduce two ways to simplify attentions and the probing task design."
+        },
+        {
+            "heading": "3.2 Simplification of A",
+            "text": "In general, we propose two ways to simplify A. Considering that LLaMA is a large LM, we propose extra two ways to further reduce the number of considered attention weights in A for it.\nFocusing on the last token. For causal LMs, the representation of the last token in the last layer zL|T |\n4Note that in this work we only consider causal LMs.\nis used to predict the next token t|T |+1 (Figure 3). Thus, we simplify A by focusing on the attentions on the last input token, denoted as Asimp. This reduces the size of attentions to L\u00d7H\u00d7|T |. Findings in previous works support that Asimp is sufficient to reveal the focus of the prediction token (Brunner et al., 2020; Geva et al., 2023). In our experimental setup, we also find that analysis on Asimp gives similar results to that on A (Appendix B.4).\nAttention head pooling. Many existing attention-based analysis methods use pooling (e.g., mean pooling or max pooling) on attention heads for simplicity (Abnar and Zuidema, 2020; Manning et al., 2020; Murty et al., 2023). We follow this idea and take the mean value across all attention heads for our analysis. Then, the size of Asimp is further reduced to L\u00d7 |T |.\nIgnoring attention weights within the statement (LLaMA). For LLaMA on the two natural language reasoning tasks, a statement Si could contain multiple tokens, i.e., |T | >> |S|. Thus, the size of Asimp can still be large. To further simplify Asimp under this setting, we regard all tokens of a statement as a hypernode. That is, we ignore attentions within hypernodes and focus on attentions across hypernodes. As shown in Figure 4, we can get Acrosssimp via mean pooling on all tokens of a statement and max pooling on all tokens of Q as:5\nAcrosssimp (l, h)[i]=max tj\u2032\u2208Q ( mean ti\u2032\u2208Si ( A(l, h)[i\u2032, j\u2032] )) .\nThe size of simplified cross-hypernode attention matrix Acrosssimp is further reduced to L\u00d7 (|S|+ 1).\nPruning layers (LLaMA). Large LMs (e.g., LLaMA) are very deep (i.e., L is large), and are pretrained for a large number of tasks. Thus, they have many redundant parameters for performing the reasoning task. Inspired by Rogers et al. (2020), we prune the useless layers of LLaMA for the reasoning task and probe attentions of the remaining layers. Specifically, we keep a minimum number of layers that maintain the LM\u2019s performance on a held-out development set, and deploy our analysis on attentions of these layers. For 4-shot LLaMA, 13/15 (out of 32) layers are removed for\n5We take mean pooling for statements since max pooling cannot differentiate statements with many overlapped words. We take max pooling for Q since it is more differentiable for the long input text. In practice, users can select different pooling strategies based on their own requirements.\nProofWriter and ARC respectively. For finetuned LLaMA, 18 (out of 32) layers are removed for ProofWriter. More details about the attention pruning can be found in Appendix C.2."
+        },
+        {
+            "heading": "3.3 Simplification of the Probing Task",
+            "text": "We simplify the problem of predicting G by breaking it down into two classification problems: classifying if the statement is useful or not, and classifying the height of the statement in the tree.\nP (G|Asimp) = P (V |Asimp) \u00b7 P (G|V,Asimp).\nHere, V is the set of nodes in G. P (V |Asimp) (binary classification) measures if LMs can select useful statements from the input based on attentions, revealing if LMs correctly focus on useful statements. Given the set of nodes in G, the second probing task is to decide the reasoning tree. We model P (G|V,Asimp) as the multiclass classification for predicting the height of each node. For example, when the reasoning tree depth is 2, the height label set is {0, 1, 2}. Note that for the three reasoning tasks considered by us, G is always a simple tree that has multiple leaf nodes but one intermediate node at each height.6"
+        },
+        {
+            "heading": "3.4 Probing Score",
+            "text": "To limit the amount of information the probe learns about the probing task, we use a non-parametric classifier: k-nearest neighbors (kNN) to perform the two classification tasks. We use SF1(V |Asimp) and SF1(G|V,Asimp) to denote their F1-Macro scores. To better interpret the probing results, we\n6In practice, many reasoning graphs can be formalized as the chain-like tree structure (Wei et al., 2022). We leave the analysis with more complex G for future work.\nintroduce a random probe baseline as the control task (Hewitt and Liang, 2019) and instead of looking at absolute probing values, we interpret the probing scores compared to the score of the random baseline. The probe scores are defined as:\nSP1 = SF1(V |Asimp)\u2212 SF1(V |Arand)\n1\u2212 SF1(V |Arand) , (1)\nSP2 = SF1(G|V,Asimp)\u2212 SF1(G|V,Arand)\n1\u2212 SF1(G|V,Arand) , (2)\nwhere Arand is the simplified attention matrix given by a randomly initialized LM. After normalization, we have the range of our probing scores: SP1, SP2 \u2208 [0, 1]. Small values mean that there is no useful information about G in attention, and large values mean that the attention patterns indeed contain much information about G."
+        },
+        {
+            "heading": "4 Mechanistic Probing of LMs",
+            "text": "We use the probe to analyze how LMs perform the reasoning tasks. We first verify the usefulness of attentions in understanding the reasoning process of LMs by visualizing Asimp (\u00a74.1). Then, we use the probe to quantify the information of G contained in Asimp (\u00a74.2). Finally, we report layer-wise probing results to understand if LMs are reasoning procedurally across their architecture (\u00a74.3). 7"
+        },
+        {
+            "heading": "4.1 Attention Visualization",
+            "text": "We first analyze Asimp on the k-th smallest element task via visualizations. We permute Asimp arranging the numbers in ascending order and denote this permulation as \u03c0(Asimp). We show visualizations of E[\u03c0(Asimp)] on the test data in Figure 5. We observe that when GPT-2 tries to find the k-th smallest number, the prediction token first focuses on top-k numbers in the list with bottom layers. Then, the correct answer is found in the top layers. These findings suggest that GPT-2 solves the reasoning task in two steps following the reasoning tree G. We further provide empirical evidence in Appendix B.4 to show that analysis on Asimp gives similar conclusions compared to that on A."
+        },
+        {
+            "heading": "4.2 Probing Scores",
+            "text": "Next, we use our MechanisticProbe to quantify the information of G contained in Asimp (GPT-2)\n7We have additional empirical explorations in the Appendix. Appendix B.6 shows that different finetuning methods would not influence probing results. Appendix B.7 explores how the reasoning task difficulty and LM capacity influence the LM performance. Appendix B.8 researches the relationships between GPT-2 performance and our two probing scores.\nor Acrosssimp (LLaMA).\nGPT-2 on k-th smallest element (Asimp). We consider two versions of GPT-2: a pretrained version and a finetuned version (GPT-2FT). We report our two probing scores (Eq. 1 and Eq. 2) with different k in Table 1. The unnormalized F1-macro scores (i.e., SF1(V |Asimp) and SF1(G|V,Asimp)) can be found in Appendix B.2.\nThese results show that without finetuning, GPT2 is incapable of solving the reasoning task, and we can detect little information about G from GPT2\u2019s attentions.8 However, for GPT-2FT, which has high test accuracy on the reasoning task, MechanisticProbe can easily recover the reasoning tree G from Asimp. This further confirms that GPT-2FT solves this synthetic reasoning task following G in Figure 2 (left).\nLLaMA on ProofWriter and ARC (Acrosssimp ). Similarly, we use MechanisticProbe to probe LLaMA on the two natural language reasoning tasks. For efficiency, we randomly sampled 1024 examples from the test sets for our analysis. When depth = 0, LLaMA only needs to find out the useful statements for reasoning (SP1). When depth=1, LLaMA needs to determine the next reasoning step.\nProbing results with different numbers of input statements (i.e., |S|) are in Table 2. Unnormalized classification scores can be found in Appendix C.5. It can be observed that all the probing scores are much larger than 0, meaning that the attentions indeed contain information about G.\n8Visualization of E[\u03c0(Asimp)] for (pretrained) GPT-2 can be found in Appendix B.3. It shows that GPT-2 can somehow find out the largest number from the number list."
+        },
+        {
+            "heading": "ProofWriter",
+            "text": ""
+        },
+        {
+            "heading": "ARC",
+            "text": "Looking at SP1 on ProofWriter, when the number of input statements is small, MechanisticProbe can clearly decide the useful statements based on attentions. However, it becomes harder when there are more useless statements (i.e., |S| is large). However, for ARC, our probe can always detect useful\nstatements from attentions easily. Looking at SP2, we notice that our probe can easily determine the height of useful statements based on attentions on both ProofWriter and ARC datasets. By comparing the probing scores on ProofWriter, we find that LLaMAFT always has higher probing scores than 4-shot LLaMA, implying that finetuning with supervised signals makes the LM to follow the reasoning tree G more clearly. We also notice that 4-shot LLaMA is affected more by the number of useless statements than LLaMAFT, indicating a lack of robustness of reasoning in the few-shot setting."
+        },
+        {
+            "heading": "4.3 Layer-wise Probing",
+            "text": "After showing that LMs perform reasoning following oracle reasoning trees, we investigate how this reasoning happens inside the LM layer-by-layer.\nGPT-2 on k-th smallest element. In order to use our probe layer-by-layer, we define the set of simplified attentions before layer l as Asimp(: l) = {Asimp(l\u2032)|l\u2032 \u2264 l}. Then, we report our probing scores SP1(l) and SP2(l) on these partial attentions from layer 1 to layer 12. We denote these layer-wise probing scores as SF1(V |Asimp(: l)) and SF1(G|V,Asimp(: l)).\nFigure 6 shows the layer-wise probing scores for each k for GPT-2FT models. Observing SP1, i.e., selecting top-k numbers, we notice that GPT2FT quickly achieves high scores in initial layers and then, SP1 increases gradually. Observing SP2, i.e., selecting the k-th smallest number from top-k numbers, we notice that GPT-2FT does not achieve high scores until layer 10. This reveals how GPT2FT solves the task internally. The bottom layers find out the top-k numbers, and the top layers select the k-th smallest number among them. Results in Figure 5 also support the above findings.\nLLaMA on ProofWriter and ARC (Acrosssimp ). Similarly, we report layer-wise probing scores SP1(l) and SP2(l) for LLaMA under the 4-shot setting. We further report SF1(Vheight|Acrosssimp (: l)) for nodes with height = 0 and height = 1 to show if the statement at height 0 is processed in LLaMA before the statement at height 1.\nThe layer-wise probing results for ProofWriter are shown in Figure 7(a-e). We find that similar to GPT-2, probing results for 4-shot LLaMA reach a plateau at an early layer (layer 2 for SP1(l)), and at middle layers for SP2(l). This obserrvation holds as we vary|S| from 4 to 20. This shows that similar to GPT-2, LLaMA first tries to identify useful statements in the bottom layers.\nThen, it focuses on predicting the reasoning steps given the useful statements. Figure 7(f) shows how SF1(Vheight|Acrosssimp (: l)) varies across layers. LLaMA identifies the useful statements from all the input statements (height 0) immediately in layer 2. Then, LLaMA gradually focuses on these statements and builds the next layer of the reasoning tree (height 1) in the middle layers.\nThe layer-wise probing results for ARC are in Figure 8. Similar to ProofWriter, the SP1(l) scores on ARC for 4-shot LLaMA reach a plateau at an early layer (layer 2), and at middle layers for SP2(l). This also shows that LLaMA tries to identify useful statements in the bottom layers and focuses on the next reasoning steps in the higher layers.\n5 Do LMs Reason Using Asimp?\nOur analysis so far shows that LMs encode the reasoning trees in their attentions. However, as argued by Ravichander et al. (2021); Lasri et al. (2022); Elazar et al. (2021), this information might be accidentally encoded but not actually used by the LM for inference. Thus, we design a causal analysis for GPT-2 on the k-th smallest element task to show that LMs indeed perform reasoning following the reasoning tree. The key idea is to prove that the attention heads that contribute to Asimp are useful to solve the reasoning task, while those heads that are irrelevant (i.e., independent) to Asimp are not useful in the reasoning task.\nIntuitively, for the k-th smallest element task, attention heads that are sensitive to the number size (rank) are useful, while heads that are sensitive to the input position are not useful. Therefore, for each head, we calculate the attention distribution on the test data to see if the head specially focuses on numbers with a particular size or position. We use the entropy of the attention distribution to measure this9: small entropy means that the head focuses particularly on some numbers. We call the entropy with respect to number size as size entropy and that with respect to input position as position entropy. The entropy of all the heads in terms of number size and position can be found in Appendix B.5.\nWe prune different kinds of attention heads in order of their corresponding entropy values and report the test accuracy on the pruned GPT-2.10 Results with different k are shown in Figure 9. We find that the head with a small size entropy is essential for solving the reasoning task. Dropping 10% of this kind of head, leads to a significant drop in performance on the reasoning task. The heads with small position entropy are highly redundant. Dropping 40% of the heads with small position entropy does not affect the test accuracy much. Especially when k = 1, dropping 90% position heads could still promise a high test accuracy.\nThese results show that heads with small size entropy are fairly important for GPT-2 to find k-th smallest number while those with small position entropy are useless for solving the task. Note that the reasoning tree G is defined on the input number\n9We regard the attentions E[Asimp(l, h)] as probabilities, and calculate the entropy of head h at layer l using them.\n10We gradually prune heads, and the order of pruning heads is based on the size/position entropy. For example, for the size entropy pruning with 50% pruned heads, we remove attention heads that have the top 50% smallest size entropy.\nsize and it is independent of the number position. MechanisticProbe detects the information of G from attentions. Thus, our probing scores would be affected by the heads with small size entropy but would not be affected by heads with small position entropy. Then, we can say that changing our probing scores (via pruning heads in terms of size entropy) would cause the test accuracy change. Therefore, we say that there is a causal relationship between our probing scores and LM performance, and LMs perform reasoning following the reasoning tree in Asimp."
+        },
+        {
+            "heading": "6 Correlating Probe Scores with Model Accuracy and Robustness",
+            "text": "Our results show that LMs indeed reason mechanistically. But, is mechanistic reasoning necessary for LM performance or robustness? We attempt to answer this question by associating the probing scores with the performance and robustness of LMs. Given that finetuned GPT-2 has a very high test accuracy on the synthetic task and LLaMA does not perform as well on ARC, we conduct our analysis mainly with LLaMA on the ProofWriter task.\nAccuracy. We randomly sample 64 to 128 examples from the dataset and test 4-shot LLaMA on these examples. We calculate their test accuracy\nand the two probing scores SP1 and SP2. We repeat this experiment 2048 times. Then, we calculate the correlation between the probing scores and test accuracy. From Table 3, we find that test accuracy is closely correlated with SP2. This implies that when we can successfully detect reasoning steps of useful statements from LM\u2019s attentions, the model is more likely to produce a correct prediction.\nRobustness. Following the same setting, we also associate the probing scores with LM robustness. In order to quantify model robustness, we randomly corrupt one useless input statement for each example, such that the prediction would remain unchanged.11 We measure robustness by the decrease in test accuracy after the corruption.\nx\nFigure 10 shows that if SP2 is small (less than 0.7), the prediction of LLaMA could be easily influenced by the noise (test accuracy decreases around 10%). However, if the probing SP2 is high, LLaMA is more robust, i.e., more confident in its correct prediction (test accuracy increases around 4%). This provides evidence that if the LM encodes the gold reasoning trees, its predictions are more reliable (i.e., robust to noise in the input)."
+        },
+        {
+            "heading": "7 Related Work",
+            "text": "Attention-based analysis of LMs. Attention has been popularly used to interpret LMs (Vig and\n11We do it by adding negation: corrupting Si as [\u201cThat\u201d\u25e6 Si \u25e6 \u201c is false\u201d], where \u25e6 means string concatenation.\nBelinkov, 2019; DeRose et al., 2021; Bibal et al., 2022). A direct way for interpreting an attentionbased model is to visualize attentions (Samaran et al., 2021; Chefer et al., 2021). But the irrelevant, redundant, and noisy information captured by attentions makes it hard to find meaningful patterns. Alternatively, accumulation attentions that quantify how information flows across tokens can be used for interpretation (Abnar and Zuidema, 2020; Eberle et al., 2022). However, for casual LMs, information flows in one direction, and it causes an over-smoothing problem when the model is deep.12 To tackle this, other works propose new metrics and analyze attentions using them (Ethayarajh and Jurafsky, 2021; Liu et al., 2022). However, these metrics are proposed under specific scenarios, and these are not useful for detecting the reasoning process in LMs. We address this challenge by designing a more structured probe that predicts the reasoning tree in LMs.\nMechanistic Interpretability. Mechanistic interpretation explains how LMs work by reverse engineering, i.e., reconstructing LMs with different components (R\u00e4uker et al., 2022). A recent line of work provides interpretation focusing on the LM\u2019s weights and intermediate representations (Olah et al., 2017, 2018, 2020). Another line of work interprets LMs focusing on how the information is processed inside LMs (Olsson et al., 2022; Nanda et al., 2023). Inspired by them, Qiu et al. (2023) attempts to interpret how LMs perform reasoning. However, existing explorations do not cover the research problem we discussed."
+        },
+        {
+            "heading": "8 Conclusion",
+            "text": "In this work, we raised the question of whether LMs solve procedural reasoning tasks step-by-step within their architecture. In order to answer this question, we designed a new probe that detects the oracle reasoning tree encoded in the LM architecture. We used the probe to analyze GPT-2 on a synthetic reasoning task and the LLaMA model on two natural language reasoning tasks. Our empirical results show that we can often detect the information in the reasoning tree from the LM\u2019s attention patterns, lending support to the claim that LMs may indeed be reasoning \u201cmechanistically\u201d.\n12The issue is that all token representations are dominated by the first token. Detailed discussion is in Appendix A."
+        },
+        {
+            "heading": "Limitations",
+            "text": "One key limitation of this work is that we considered fairly simple reasoning tasks. We invite future work to understand the mechanism behind LM-based reasoning by exploring more challenging tasks. We list few other limitations of our work below:\nMutli-head attention. In this work, most of our analysis takes the mean value of attentions across all heads. However, we should notice that attention heads could have different functions, especially when the LM is shallow but wide (e.g., with many attention heads, and very high-dimensional hidden states). Shallow models might still be able to solve procedural reasoning tasks within a few layers, but the functions of the head could not be ignored.\nAuto-regressive reasoning tasks. In our analysis, we formalize the reasoning task as classification, i.e., single-token prediction. Thus, the analysis could only be deployed on selected reasoning tasks. Some recent reasoning tasks are difficult and can only be solved by LMs via chain-of-thought prompting. We leave the analysis of reasoning under this setting for future work."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "We are grateful to anonymous reviewers for their insightful comments and suggestions. Yifan Hou is supported by the Swiss Data Science Center PhD Grant (P22-05) and Alessandro Stolfo is supported by armasuisse Science and Technology through a CYD Doctoral Fellowship. Antoine Bosselut gratefully acknowledges the support of the Swiss National Science Foundation (No. 215390), Innosuisse (PFFS-21-29), the EPFL Science Seed Fund, the EPFL Center for Imaging, Sony Group Corporation, and the Allen Institute for AI. Mrinmaya Sachan acknowledges support from the Swiss National Science Foundation (Project No. 197155), a Responsible AI grant by the Haslerstiftung; and an ETH Grant (ETH-19 21-1)."
+        },
+        {
+            "heading": "A Proof of The First-Token Domination",
+            "text": "Proof. Without loss of generality, we assume the LM have L layers with only 1 attention head (h = H = 1), and the attention weight matrix in layer l is A(l, h). We consider the input that have more than 1 token. We model attention as flows following the setting of Abnar and Zuidema (2020). Then, the attention accumulation Accum() of the token zl+1i in the layer l + 1 can be written as\nAccum(zl+1i ) = \u2211\n1\u2264j\u2264|T |\nai,j(l, h) \u00b7 Accum(zlj),\n(3) where we have\nAccum(z1i ) = \u2211\n1\u2264j\u2264|T |\nai,j(l, h) \u00b7 tj . (4)\nSince ai,j(l, h) is the attention weight for casual LM, we have ai,j(l, h) = 0 if i < j 0 < ai,j(l, h) < 1 if i \u2265 j\u2211\nj ai,j(l, h) = 1 . (5)\nNote that attention is normalized by Softmax function in LMs. The minimum attention weight is non-zero, and we assume there exist a constant \u03f5 > 0 such as \u03f5 \u2264 ai,j(l, h) < 1 if i \u2265 j. Now we define the information ratio IRzli(tj) as the information of token tj stored in the hidden representation zli. Consider that in each layer, token t1 would propagate its information to all tokens in the next layer with at least \u03f5 amount. Then, by tracing the information flow from other tokens j > 1, we have\n1\u2212 IRzl+1i (t1) \u2264 (1\u2212 \u03f5)(1\u2212 IRzli(t1)). (6)\nUsing the chain rule, we have\n1\u2212 IRzLi (t1) \u2264 (1\u2212 \u03f5) L(1\u2212 IRz1i (t1)), (7)\nwhich means\nIRzLi (t1) \u2265 1\u2212 (1\u2212 \u03f5) L\u22121(1\u2212 IRz1i (t1)), (8) IRzLi (t1) \u2265 1\u2212 (1\u2212 \u03f5) L. (9)\nWith the inequality above, we know that if the LM is deep, i.e., L is large, we have IRzLi (t1) increase exponentially in terms of layer L, which means that IRzLi (t1) \u2248 1 with large L in general."
+        },
+        {
+            "heading": "B Supplementary about GPT-2",
+            "text": "We provide some more details on our experiments on GPT-2 as well as LLaMA to help in reproducibility. First of all, we fix the random seed (42) and use the same random seed for all experiments, including LM finetuning and interpretations. In addition, to make sure the random seed is unbiased, we further re-run the same experiment with different random seeds. All of our experiments have roughly the same results as those of using other seeds.\nSecond, we design our analysis as simply as possible to ensure that there is as little random influence (i.e., confounder) as possible. For MechanisticProbe, we select the kNN classifier. For LLaMA, we run analysis experiments on a 4- shot in-context learning setting.\nThird, we report as many intermediate and supplement results as possible. In the Appendix, there are many other interesting findings. However, due to the space limit, we cannot present them in the main paper. We hope our findings are helpful to the community to better understand LMs."
+        },
+        {
+            "heading": "B.1 GPT-2 Finetuning",
+            "text": "The finetuning settings for all GPT-2 models are roughly identical. We generate 0.98 million sequences of numbers as the training data and 10, 000 in data for validation and testing. Note that the collision probability is extremely small, thus we can assume that there is no data leakage. The epoch number is set as 2, and the batch size here is 256. We use the AdamW (Loshchilov and Hutter, 2019) optimizer with weight decay 1e\u2212 3 from Huggingface13 for finetuning. The learning rate is 1e\u2212 6."
+        },
+        {
+            "heading": "B.2 Original Probing Scores",
+            "text": "The original classification scores (F1-Macro) for two probing tasks can be found in Table 4. Here, random means we randomly initialize GPT-2 and use its attentions for probing as the random baseline. The other two pretrained and finetuned are the pretrained GPT-2 model and GPT-2 model after finetuning with supervised signals.\nB.3 Visualization of E[\u03c0(Asimp)] for GPT-2 We visualize the Asimp for pretrained GPT-2 without finetuning in Figure 11. We can find that even if pretrained GPT-2 cannot solve the synthetic reasoning task (finding k-th smallest number from a list). It can still somehow differentiate the size of\n13https://huggingface.co/\nnumbers. The largest number of the list often has slightly larger attentions in layer 11.\nB.4 Visulization of A\nTo avoid disturbance, we remove 40% position heads (heads with small position entropy) and take mean pooling on all left heads. We visualize A to directly show that Asimp contains sufficient essential information of A. We consider a special case when k = 2, the largest number is at position 8 and the second largest number is at position 12.14\nThe attention E[A] is visualized as in Figure 12. From Figure 12, we can get similar conclusion as on the visualization of E[Asimp]. In the bottom layers, most hidden representations focus on top-2 numbers. In the top layers, most hidden representations focus on the second smallest number. This result proves that our analysis on Asimp is as reasonable as that on A.\nWe also provide the visualization of E[A] on normal test data (i.e., the input position is independent of the size) in Figure 13. We can find that the attention distribution is even, and there is no\n14We modify our test data only to satisfy this condition.\ntypical tendency."
+        },
+        {
+            "heading": "B.5 Attention Head Entropy",
+            "text": "From Figure 14, we can find that most heads belong to either position head or size head. Note that we generate input data randomly, thus, the number size and input position are independent of each other. Thus, one head cannot be both position head and size head."
+        },
+        {
+            "heading": "B.6 Do Finetuning Methods Matter?",
+            "text": "To show that our analysis is robust, we explore the attention of GPT-2 with different ways of param-\n1 2 3 4 5 6 7 8 9 10 11 12\n1 2 3 4 5 6 7 8 9 10 11 12 At te nt io n he\nad Layers\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n(a) Entropy in terms of number size (rank)\n1 2 3 4 5 6 7 8 9 10 11 12\n1 2 3 4 5 6 7 8 9 10 11 12 At te nt io n he ad\nLayers\n0.0\n0.2\n0.4\n0.6\n0.8\n1.0\n(b) Entropy in terms of number input position\nFigure 14: Entropy for all attention heads of finetuned GPT-2. x-axis represents layers and y-axis represents the head index. The cube (better view in color) shows the entropy value.\neter efficient finetuning (Ruder et al., 2022). We report our two probing scores SP1 and SP2 with various ways of finetuning in Figure 15 (We consider the condition when k = 2 and m = 16). We find that probing scores of finetuning the full GPT-2 model are similar to that of partially finetuning on attention parameters and MLP (multilayer perceptron) parameters. These consistent results ensure the general usage of our MechanisticProbe on current large LMs with partial finetuning.\nThe direct visualization of E[\u03c0(Asimp)] for different finetuning methods can be found Figure 16(ad). And the test accuracy of these 4 finetuned models are: 99.42, 99.31, 94.11, and 76.84. We can find that finetuning attention parameters or MLP parameters can obtain quite similar attention pat-\nterns to that of full model finetuning. Regarding the bias tuning, it is slightly different. We speculate that this is because the LM does not learn the k-th smallest element task well (with much lower test accuracy). Generally, without significant performance drops, these results can support the general usage of our probing method MechanisticProbe under different finetuning settings."
+        },
+        {
+            "heading": "B.7 Task Difficulty & Model Capacity",
+            "text": "This subsection discusses which factors can let GPT-2 handle reasoning tasks with more leaf nodes in G, i.e., large k. We explore the model capacity and reasoning task difficulty. Specifically, we extend the list length m from 16 to 64, and maximum k from 8 to 32. For each k, we finetune LMs with the same finetuning settings and evaluate them on test data with accuracy. For model capacity, we compare three versions of GPT-2 with different sizes: Distilled GPT-2, GPT-2 (small), and GPT-2 Medium. For task difficulty, we construct synthetic data by selecting m=64 numbers from 256, 384,\nand 512 distinct numbers. We report their test accuracies in Figure 17. Note that here the setting remains the same: for each reasoning task (i.e., k), we finetune an individual model. From Figure 17(a), we find that LMs with large model capacities can better solve procedural tasks with more complex G (i.e., more leaf nodes in G). But it does not mean that small LMs fail in this case. If we can reasonably reduce the task difficulty (e.g., decompose the procedural task), small LMs are still able to handle that task with complex G (Figure 17(b))."
+        },
+        {
+            "heading": "B.8 What if Reasoning Tasks Become Harder?",
+            "text": "Till now, we have experimented on a relatively easy task (m = 16). In this subsection, we increase the difficulty of the task by extending the input number list from m = 16 numbers to m = 64 numbers. We report the test accuracy as well as the two probing scores in Figure 18, varying k from 1 to 32. As expected, the test accuracy decreases smoothly from near 100% to around 15%. Interestingly, SP1 and SP2 do not decrease with the same speed. Even when the model has a very low accuracy, SP1 still maintains at a high score (above 30%), while SP2 quickly jumps to 0 when k is around 20. This suggests that GPT-2FT solves the two steps sequentially, and step 2 fails first when the task goes beyond the capacity of the model."
+        },
+        {
+            "heading": "C Supplementary about LLaMA",
+            "text": "C.1 Settings for 4-shot and Finetuned LLaMA\nFor the in-context learning of LLaMA, we construct the input prompt as simple as possible. Given set of statements [S1, S2, ...], the question statement Q, and the answer label A (e.g., \u201cTrue\u201d or \u201cFalse\u201d), the prompt templates for ProofWriter and ARC are:\n[S1, S2, ...] + [Q] + True or False? + [A],\n[S1, S2, ...] + [Q] + The answer is: + [A].\nThe test accuracy of 0-shot, 2-shot, 4-shot, and 8- shot prompting of LLaMA can be found in Table 5. We select 4-shot in-context learning setting in our analysis due to its best performance."
+        },
+        {
+            "heading": "ProofWriter",
+            "text": ""
+        },
+        {
+            "heading": "ARC",
+            "text": "Regarding the finetuning of LLaMA (i.e., partially finetuning on attention parameters), most settings are similar to that of GPT-2. The epoch number is set as 2, and the batch size is 256. We use the AdamW optimizer with weight decay 1e \u2212 5 for finetuning, and the warmup number is 500. The\nlearning rate is 1e\u2212 6. Test accuracy of finetuned models can be found in Table 5 as well."
+        },
+        {
+            "heading": "C.2 Layer (Attention) Pruning",
+            "text": "For the layer pruning, we use the greedy search strategy. Specifically, we remove all attentions in layers from top to bottom.15 If the performance decrease on test data is small (less than 5% in total), the attention in that layer is dropped. For 4-shot LLaMA on ProofWriter, 13 (out of 32) top layers are removed, and 15 (out of 32) top layers are removed for ARC. For finetuned LLaMA on ProofWriter, 2 middle layers (layer 9 and layer 13) and 16 top layers are removed. After removing all attentions in these layers, the performance decreases are around 2% for both in-context learning and finetuning settings."
+        },
+        {
+            "heading": "C.3 Statistics of Cleaned ProofWriter and Annotated ARC",
+            "text": "ProofWriter. We follow the original data split for training, development, and test sets. However, the depth split of ProofWriter is not suitable in our case. The original dataset only considers the largest depth of a set of examples (with similar templates) for the split. It means for example in depth 5, there would be many of them with depth smaller than 5. In our case, we classify examples into 6 types from depth 0 to 5 only based on the example\u2019s reasoning tree depth. After the depth split, we also remove examples whose reasoning trees have loops or multiple annotations. Besides, we remove few examples whose depth annotations are wrong (e.g., annotated as depth 5 but only with 4 nodes in G). Statistics of the cleaned and re-split ProofWriter\n15Transformer layers without attention degrade to MLPs.\ncan be found in Table 6. We can find that there are less than 2000 4/5-depth examples in test data.\nARC. We follow the original data split for training, development, and test sets (Ribeiro et al., 2023). Note that the number of examples in ARC is quite small. Thus, in our analysis, we do not run experiments only on test data. We simply merge all data for the analysis."
+        },
+        {
+            "heading": "C.4 Reasoning Tree Ambiguity Example",
+            "text": "We consider a simple case to explore if the reasoning tree ambiguity issues happens in LLaMA. We sample 1024 examples whose annotations of 2-depth reasoning trees are"
+        },
+        {
+            "heading": "S1\u2212 > S2\u2212 > S3 99K Q.",
+            "text": "We give a real example from the dataset randomly to illustrate the issue of reasoning tree ambiguity. Consider the three statements of G (from 17 input statements) as\nS1 : Erin is cold;\nS2 : If someone is cold then they are rough;\nS3 : If someone is rough then they are white;\nQ : Erin is white (True).\nIt is intuitive that following the annotated reasoning tree could obtain correct answer. However, there are other ways to answer the question. We can first combine S2 and S3 to get a new statement S4 as\nS4 : If someone is cold then they are white.\nThen, the reasoning tree becomes"
+        },
+        {
+            "heading": "S2\u2212 > S3\u2212 > S1 99K Q,",
+            "text": "and we can rewrite it with brackets as\nS1\u2212 > (S2\u2212 > S3) 99K Q.\nThere are multiple ways to do reasoning for this example, and we do not know which one the LM uses. Thus, in this work, we ignore these kinds of examples with reasoning tree depth larger than 1.16"
+        },
+        {
+            "heading": "C.5 Original Probing Scores",
+            "text": "The original classification scores (F1-Macro) for two probing tasks on LLaMA can be found in Table 8. Here, random means we randomly initialize LLaMA and use its attentions for probing as the random baseline.\n16In ProofWriter, there are only 30% examples that have reasoning trees with depth larger than 1."
+        }
+    ],
+    "title": "Towards a Mechanistic Interpretation of Multi-Step Reasoning Capabilities of Language Models",
+    "year": 2023
+}

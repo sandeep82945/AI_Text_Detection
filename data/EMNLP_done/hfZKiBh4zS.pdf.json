@@ -1,0 +1,709 @@
+{
+    "abstractText": "The large language models have achieved superior performance on various natural language tasks. One major drawback of such approaches is they are resource-intensive in fine-tuning new datasets. Soft-prompt tuning presents a resource-efficient solution to fine-tune the pretrained language models (PLMs) while keeping their weight frozen. Existing soft prompt methods mainly focus on designing the inputindependent prompts that steer the model to fit the domain of the new dataset. Those methods often ignore the fine-grained information about the task and context of the text. In this paper, we propose a multi-level prompt tuning (MPrompt) method for machine reading comprehension. It utilizes prompts at task-specific, domain-specific, and context-specific levels to enhance the comprehension of input semantics at different granularities. We also propose an independence constraint to steer each domainspecific prompt to focus on information within its domain to avoid redundancy. Moreover, we present a prompt generator that incorporates context-related knowledge in the prompt generation to enhance contextual relevancy. We conducted extensive experiments on 12 benchmarks of various QA formats and achieved an average improvement of 1.94% over the stateof-the-art methods1.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Guoxin Chen"
+        },
+        {
+            "affiliations": [],
+            "name": "Yiming Qian"
+        },
+        {
+            "affiliations": [],
+            "name": "Bowen Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Liangzhi Li"
+        }
+    ],
+    "id": "SP:ee5dd3b5228bfdab7d28099b9f9c89a3e53984b3",
+    "references": [
+        {
+            "authors": [
+                "Razieh Baradaran",
+                "Razieh Ghiasi",
+                "Hossein Amirkhani."
+            ],
+            "title": "A survey on machine reading comprehension systems",
+            "venue": "Natural Language Engineering, 28(6):683\u2013732.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "NeurIPS,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Guoxin Chen",
+                "Yongqing Wang",
+                "Fangda Guo",
+                "Qinglang Guo",
+                "Jiangli Shao",
+                "Huawei Shen",
+                "Xueqi Cheng."
+            ],
+            "title": "Causality and independence enhancement for biased node classification",
+            "venue": "Proceedings of the 32nd ACM International Conference on Informa-",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Christopher Clark",
+                "Kenton Lee",
+                "Ming-Wei Chang",
+                "Tom Kwiatkowski",
+                "Michael Collins",
+                "Kristina Toutanova."
+            ],
+            "title": "Boolq: Exploring the surprising difficulty of natural yes/no questions",
+            "venue": "arXiv preprint arXiv:1905.10044.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Peter Clark",
+                "Isaac Cowhey",
+                "Oren Etzioni",
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Carissa Schoenick",
+                "Oyvind Tafjord."
+            ],
+            "title": "Think you have solved question answering? Try ARC, the AI2 reasoning challenge",
+            "venue": "arXiv preprint arXiv:1803.05457.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Peter Clark",
+                "Oren Etzioni",
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Oyvind Tafjord",
+                "Peter Turney",
+                "Daniel Khashabi."
+            ],
+            "title": "Combining retrieval, statistics, and inference to answer elementary science questions",
+            "venue": "AAAI, volume 30.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Jordan Clive",
+                "Kris Cao",
+                "Marek Rei."
+            ],
+            "title": "Control prefixes for parameter-efficient text generation",
+            "venue": "Proceedings of the 2nd Workshop on Natural Language Generation, Evaluation, and Metrics (GEM), pages 363\u2013382.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova."
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "arXiv preprint arXiv:1810.04805.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Dheeru Dua",
+                "Yizhong Wang",
+                "Pradeep Dasigi",
+                "Gabriel Stanovsky",
+                "Sameer Singh",
+                "Matt Gardner."
+            ],
+            "title": "Drop: A reading comprehension benchmark requiring discrete reasoning over paragraphs",
+            "venue": "arXiv preprint arXiv:1903.00161.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Arthur Gretton",
+                "Olivier Bousquet",
+                "Alexander J. Smola",
+                "Bernhard Sch\u00f6lkopf."
+            ],
+            "title": "Measuring statistical dependence with hilbert-schmidt norms",
+            "venue": "Algorithmic Learning Theory, 16th International Conference, ALT 2005, volume 3734, pages 63\u201377.",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Xiaodong Gu",
+                "Kang Min Yoo",
+                "Sang-Woo Lee."
+            ],
+            "title": "Response generation with context-aware prompt learning",
+            "venue": "arXiv preprint arXiv:2111.02643.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Gautier Izacard",
+                "Edouard Grave."
+            ],
+            "title": "Leveraging passage retrieval with generative models for open domain question answering",
+            "venue": "arXiv preprint arXiv:2007.01282.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhengbao Jiang",
+                "Jun Araki",
+                "Haibo Ding",
+                "Graham Neubig."
+            ],
+            "title": "Understanding and improving zeroshot multi-hop reasoning in generative question answering",
+            "venue": "arXiv preprint arXiv:2210.04234.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Daniel Khashabi",
+                "Tushar Khot",
+                "Ashish Sabharwal."
+            ],
+            "title": "More bang for your buck: Natural perturbation for robust question answering",
+            "venue": "arXiv preprint arXiv:2004.04849.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Daniel Khashabi",
+                "Yeganeh Kordi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Unifiedqa-v2: Stronger generalization via broader cross-format training",
+            "venue": "arXiv preprint arXiv:2202.12359.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Daniel Khashabi",
+                "Sewon Min",
+                "Tushar Khot",
+                "Ashish Sabharwal",
+                "Oyvind Tafjord",
+                "Peter Clark",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Unifiedqa: Crossing format boundaries with a single qa system",
+            "venue": "arXiv preprint arXiv:2005.00700.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tushar Khot",
+                "Peter Clark",
+                "Michal Guerquin",
+                "Peter Jansen",
+                "Ashish Sabharwal."
+            ],
+            "title": "Qasc: A dataset for question answering via sentence composition",
+            "venue": "AAAI, volume 34, pages 8082\u20138090.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tom\u00e1\u0161 Ko\u010disk\u1ef3",
+                "Jonathan Schwarz",
+                "Phil Blunsom",
+                "Chris Dyer",
+                "Karl Moritz Hermann",
+                "G\u00e1bor Melis",
+                "Edward Grefenstette."
+            ],
+            "title": "The narrativeqa reading comprehension challenge",
+            "venue": "Transactions of the Association for Computational Linguistics, 6:317\u2013328.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Guokun Lai",
+                "Qizhe Xie",
+                "Hanxiao Liu",
+                "Yiming Yang",
+                "Eduard Hovy."
+            ],
+            "title": "Race: Large-scale reading comprehension dataset from examinations",
+            "venue": "arXiv preprint arXiv:1704.04683.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Brian Lester",
+                "Rami Al-Rfou",
+                "Noah Constant."
+            ],
+            "title": "The power of scale for parameter-efficient prompt tuning",
+            "venue": "arXiv preprint arXiv:2104.08691.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mike Lewis",
+                "Yinhan Liu",
+                "Naman Goyal",
+                "Marjan Ghazvininejad",
+                "Abdelrahman Mohamed",
+                "Omer Levy",
+                "Ves Stoyanov",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Bart: Denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Patrick Lewis",
+                "Ethan Perez",
+                "Aleksandra Piktus",
+                "Fabio Petroni",
+                "Vladimir Karpukhin",
+                "Naman Goyal",
+                "Heinrich K\u00fcttler",
+                "Mike Lewis",
+                "Wen-tau Yih",
+                "Tim Rockt\u00e4schel"
+            ],
+            "title": "Retrieval-augmented generation for knowledge-intensive nlp tasks. NeurIPS",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xiang Lisa Li",
+                "Percy Liang."
+            ],
+            "title": "Prefix-tuning: Optimizing continuous prompts for generation",
+            "venue": "arXiv preprint arXiv:2101.00190.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin."
+            ],
+            "title": "Rouge: A package for automatic evaluation of summaries",
+            "venue": "Text summarization branches out, pages 74\u201381.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Pengfei Liu",
+                "Weizhe Yuan",
+                "Jinlan Fu",
+                "Zhengbao Jiang",
+                "Hiroaki Hayashi",
+                "Graham Neubig."
+            ],
+            "title": "Pretrain, prompt, and predict: A systematic survey of prompting methods in natural language processing",
+            "venue": "ACM Computing Surveys, 55(9):1\u201335.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xiao Liu",
+                "Kaixuan Ji",
+                "Yicheng Fu",
+                "Weng Lam Tam",
+                "Zhengxiao Du",
+                "Zhilin Yang",
+                "Jie Tang."
+            ],
+            "title": "P-tuning v2: Prompt tuning can be comparable to fine-tuning universally across scales and tasks",
+            "venue": "arXiv preprint arXiv:2110.07602.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiao Liu",
+                "Yanan Zheng",
+                "Zhengxiao Du",
+                "Ming Ding",
+                "Yujie Qian",
+                "Zhilin Yang",
+                "Jie Tang."
+            ],
+            "title": "GPT understands, too",
+            "venue": "arXiv preprint arXiv:2103.10385.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter."
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "arXiv preprint arXiv:1711.05101.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Fang Ma",
+                "Chen Zhang",
+                "Lei Ren",
+                "Jingang Wang",
+                "Qifan Wang",
+                "Wei Wu",
+                "Xiaojun Quan",
+                "Dawei Song."
+            ],
+            "title": "XPrompt: Exploring the extreme of prompt tuning",
+            "venue": "EMNLP, pages 11033\u201311047.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "J MacQueen."
+            ],
+            "title": "Classification and analysis of multivariate observations",
+            "venue": "5th Berkeley Symp. Math. Statist. Probability, pages 281\u2013297. University of California Los Angeles LA USA.",
+            "year": 1967
+        },
+        {
+            "authors": [
+                "Todor Mihaylov",
+                "Peter Clark",
+                "Tushar Khot",
+                "Ashish Sabharwal."
+            ],
+            "title": "Can a suit of armor conduct electricity? A new dataset for open book question answering",
+            "venue": "EMNLP, pages 2381\u20132391.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Thao Nguyen",
+                "Maithra Raghu",
+                "Simon Kornblith."
+            ],
+            "title": "Do wide and deep networks learn the same things? uncovering how neural network representations vary with width and depth",
+            "venue": "arXiv preprint arXiv:2010.15327.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hariom A Pandya",
+                "Brijesh S Bhatt."
+            ],
+            "title": "Question answering survey: Directions, challenges, datasets, evaluation matrices",
+            "venue": "arXiv preprint arXiv:2112.03572.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Adam Paszke",
+                "Sam Gross",
+                "Francisco Massa",
+                "Adam Lerer",
+                "James Bradbury",
+                "Gregory Chanan",
+                "Trevor Killeen",
+                "Zeming Lin",
+                "Natalia Gimelshein",
+                "Luca Antiga"
+            ],
+            "title": "Pytorch: An imperative style, high-performance deep learning",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Maithra Raghu",
+                "Thomas Unterthiner",
+                "Simon Kornblith",
+                "Chiyuan Zhang",
+                "Alexey Dosovitskiy"
+            ],
+            "title": "Do vision transformers see like convolutional neural networks? NeurIPS, 34:12116\u201312128",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Pranav Rajpurkar",
+                "Robin Jia",
+                "Percy Liang."
+            ],
+            "title": "Know what you don\u2019t know: Unanswerable questions for squad",
+            "venue": "arXiv preprint arXiv:1806.03822.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Nils Reimers",
+                "Iryna Gurevych."
+            ],
+            "title": "SentenceBERT: Sentence embeddings using siamese bertnetworks",
+            "venue": "EMNLP.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Matthew Richardson",
+                "Christopher JC Burges",
+                "Erin Renshaw."
+            ],
+            "title": "MCTest: A challenge dataset for the open-domain machine comprehension of text",
+            "venue": "EMNLP, pages 193\u2013203.",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Adam Roberts",
+                "Colin Raffel",
+                "Noam Shazeer"
+            ],
+            "title": "How much knowledge can you pack into the parameters of a language model? arXiv preprint arXiv:2002.08910",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Timo Schick",
+                "Hinrich Sch\u00fctze."
+            ],
+            "title": "Exploiting cloze questions for few shot text classification and natural language inference",
+            "venue": "arXiv preprint arXiv:2001.07676.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Minjoon Seo",
+                "Aniruddha Kembhavi",
+                "Ali Farhadi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Bidirectional attention flow for machine comprehension",
+            "venue": "arXiv preprint arXiv:1611.01603.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Taylor Shin",
+                "Yasaman Razeghi",
+                "Robert L Logan IV",
+                "Eric Wallace",
+                "Sameer Singh."
+            ],
+            "title": "AutoPrompt: Eliciting knowledge from language models with automatically generated prompts",
+            "venue": "arXiv preprint arXiv:2010.15980.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Le Song",
+                "Alex Smola",
+                "Arthur Gretton",
+                "Karsten M Borgwardt",
+                "Justin Bedo."
+            ],
+            "title": "Supervised feature selection via dependence estimation",
+            "venue": "ICML, pages 823\u2013830.",
+            "year": 2007
+        },
+        {
+            "authors": [
+                "Chuanqi Tan",
+                "Furu Wei",
+                "Nan Yang",
+                "Bowen Du",
+                "Weifeng Lv",
+                "Ming Zhou."
+            ],
+            "title": "S-Net: From answer extraction to answer synthesis for machine reading comprehension",
+            "venue": "AAAI, volume 32.",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Tianyi Tang",
+                "Junyi Li",
+                "Wayne Xin Zhao",
+                "Ji-Rong Wen."
+            ],
+            "title": "Context-tuning: Learning contextualized prompts for natural language generation",
+            "venue": "arXiv preprint arXiv:2201.08670.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Adam Trischler",
+                "Tong Wang",
+                "Xingdi Yuan",
+                "Justin Harris",
+                "Alessandro Sordoni",
+                "Philip Bachman",
+                "Kaheer Suleman."
+            ],
+            "title": "Newsqa: A machine comprehension dataset",
+            "venue": "arXiv preprint arXiv:1611.09830.",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Laurens Van der Maaten",
+                "Geoffrey Hinton."
+            ],
+            "title": "Visualizing data using t-sne",
+            "venue": "Journal of machine learning research, 9(11).",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Nan Yang",
+                "Furu Wei",
+                "Baobao Chang",
+                "Ming Zhou."
+            ],
+            "title": "Gated self-matching networks for reading comprehension and question answering",
+            "venue": "ACL, pages 189\u2013198.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Thomas Wolf",
+                "Lysandre Debut",
+                "Victor Sanh",
+                "Julien Chaumond",
+                "Clement Delangue",
+                "Anthony Moi",
+                "Pierric Cistac",
+                "Tim Rault",
+                "R\u00e9mi Louf",
+                "Morgan Funtowicz"
+            ],
+            "title": "Transformers: State-of-the-art natural language processing",
+            "year": 2020
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "In recent years, pre-trained language models (PLMs) have been widely applied in questionanswering tasks (Pandya and Bhatt, 2021), particularly in machine reading comprehension (Baradaran et al., 2022), and achieved remarkable success through the pretrain-then-finetune paradigm (Roberts et al., 2020; Khashabi et al., 2020b). Despite the excellent performance, due to the explosive growth of parameter sizes in PLMs,\n\u2217Corresponding author. 1The code is available at https://github.com/\nChen-GX/MPrompt.\nthe fine-tuning paradigm has become resource intensive.\nRecently, soft-prompt tuning has been widely explored as a parameter-efficient approach to addressing the aforementioned issues (Liu et al., 2023). For example, Li and Liang (2021) proposed Prefixtuning, which prepends a sequence of optimizable prefixes to each transformer layer while keeping the parameters of PLMs frozen. Prefix-tuning provides a lightweight alternative to fine-tuning and has achieved comparable performance with fewer trainable parameters. Lester et al. (2021) proposed Prompt-tuning, which only prepends optimizable prompt vectors to the input sequence, which used fewer parameters compared to Prefix-tuning. Ma et al. (2022) discovered negative tokens in Prompttuning that have a detrimental effect on downstream tasks and proposed XPrompt to mask these negative tokens, resulting in improved performance. However, the aforementioned methods are inputindependent, i.e., assigning a uniform prompt to all inputs of a given task, which under-utilizes the input semantics for the answer generation in machine reading comprehension.\nThere is a growing trend towards designing input-dependent prompts (a.k.a dynamic prompts) for various tasks (Gu et al., 2021; Clive et al., 2022; Tang et al., 2022). For example, Gu et al. (2021) proposed DialogPrompt for a dialog system, which dynamically generates prompt vectors according to the input dialogue context. Tang et al. (2022) extracts input-related information from BERT (Devlin et al., 2018) as contextualized prompts for natural language generation (Lewis et al., 2019; Raffel et al., 2020), which improves the relevance between the generated text and the input text. However, to the best of our knowledge, there has been little research exploring input-dependent prompt methods for question-answering tasks, especially for machine reading comprehension. It is challenging to apply input-independent methods to ma-\nchine reading comprehension where the answer is context-sensitive.\nTo address the above issues, we propose MPrompt, a novel Multi-level Prompt tuning approach for machine reading comprehension. Our method utilizes the dataset and the context information to create three levels of prompts: task-specific, domain-specific, and context-specific. The taskspecific prompts are input-independent and generate a prompt based on the tasks. The domainspecific prompts utilize the domain knowledge generated from the dataset while context-specific prompts rely on the input context. These multilevel prompts endow PLMs with multiple finegrained considerations of input semantics. To further enhance the domain-specific prompts and avoid information redundancy, we propose the independence constraint to steer each prompt to focus on knowledge within the domain rather than cross-domain knowledge. Furthermore, we extract context-related knowledge from a small-scale PLM, such as T5-small (Raffel et al., 2020), and integrate it into the prompt generation process to enrich the context sensitivity of prompts. With the help of these three levels of prompts, we achieve an average improvement of 1.94% over the state-of-the-art methods on 12 benchmark datasets.\nOur main contributions are as follows:\n\u2022 We propose a novel multi-level prompt tuning (MPrompt) for machine reading comprehension which generates prompts at task-specific, domain-specific, and context-specific levels to improve answer generation.\n\u2022 We propose an independence constraint to steer each domain-specific prompt to focus on intra-domain information, avoiding information redundancy, at the same time enriching the domain-related semantics.\n\u2022 We propose a prompt generator based on a small-scale PLM to integrate context-related knowledge into prompt generation, which enriches the context awareness and sensitivity of the generated prompts."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Machine Reading Comprehension",
+            "text": "Machine Reading Comprehension (MRC) is a challenging task and hot topic in Question Answering (QA) (Pandya and Bhatt, 2021; Baradaran et al.,\n2022). It aims to comprehend contexts and provides answers to corresponding questions. In recent years, the focus of Machine Reading Comprehension research has shifted from Extractive Question Answering (Seo et al., 2016; Wang et al., 2017; Tan et al., 2018) to Generative Question Answering (Izacard and Grave, 2020; Khashabi et al., 2020b, 2022; Jiang et al., 2022). For example, Lewis et al. (2020) has explored a retrievalaugmented generation scheme that combined pretrained retrieval models to enhance the performance of the generative question answering models. Khashabi et al. (2020b, 2022) unified the input format of different QA tasks into the same format and fine-tune the generative models (Raffel et al., 2020) for question answering. However, with the explosive growth in the parameter size of PLMs, the fine-tuning process becomes exponentially more resource intensive. One way to relax this computational requirement is through prompt learning (Li and Liang, 2021; Liu et al., 2023)."
+        },
+        {
+            "heading": "2.2 Prompt Learning",
+            "text": "With the success of GPT-3 (Brown et al., 2020), prompt learning (Liu et al., 2023) has provided another efficient way to utilize PLMs, which has attracted widespread attention. The format of prompts can be in human-readable natural language (discrete prompts) (Shin et al., 2020; Schick and Sch\u00fctze, 2020), or embedding vectors (continuous prompts) (Lester et al., 2021; Li and Liang, 2021; Liu et al., 2021a,b; Ma et al., 2022). The continuous prompts provide a more flexible solution that encodes information into a trainable embedding which presents the information to a pre-trained model more efficiently. For example, Lester et al. (2021) proposed Prompt-tuning, which achieves competitive performance by prepending trainable prompts to input sequences, and Ma et al. (2022) further improved the Prompt-tuning by pruning the negative prompt tokens.\nThe aforementioned approaches did not sufficiently consider the full utilization of the input semantics and applied the same prompt for all examples in the dataset, which potentially limits the delivery of the language models. Therefore, Tang et al. (2022) extracts contextualized prompts based on the input text from external PLMs, resulting in better performance in natural language generation. Clive et al. (2022) proposes to combine taskspecific prompts with dynamic prompts, enabling\nthe model to have finer-grained control over the generated text.\nHowever, there has been little research exploring input-dependent prompt learning in question answering. In contrast to natural language generation, question-answering tasks emphasize understanding of the given question and context. Therefore, a lack of input-dependent prompts may lead to an under-leverage of the context information present in addition to the questions, particularly in machine reading comprehension tasks."
+        },
+        {
+            "heading": "3 Methodology",
+            "text": "Our proposed multi-level prompt tuning (MPrompt) framework is illustrated in Figure 1. The framework consists of a prompt generator and a generative question answering model, whereas the former relies on a smaller-sized encoder-decoder architecture. The prompt generator generates domainspecific and context-specific prompts and elicits context-related knowledge from small-scale PLMs into the generation process."
+        },
+        {
+            "heading": "3.1 Task-specific Prompt",
+            "text": "Many previous works (Li and Liang, 2021; Lester et al., 2021) have demonstrated that shareable prompt parameters learned from particular tasks can effectively enhance the performance of pretrained language models on downstream tasks. Therefore, following Li and Liang (2021), we construct task-specific prompts that share common prompt information within the task.\nWe prepend a prefix P \u2208 Rt\u00d7d for the different types of attention class in the pre-trained language models, where t is the length of the task-specific prompt and d is the dimension of the embedding in generative QA model. For each attention class2, the prefix for key-value pairs T = {T1, T2, ..., TL} are learned through an MLP, T = MLP(P ), where L denotes the number of layers in the generative QA model, Tl = (Tl,K , Tl,V ) \u2200l \u2208 {1, ..., L}, Tl,K and Tl,V \u2208 Rt\u00d7d, and T \u2208 Rt\u00d72dL. The overall task-specific prompt is Ttask = {TE , TDm, TDc}."
+        },
+        {
+            "heading": "3.2 Domain-specific Prompt",
+            "text": "In question answering scenarios, especially in machine reading comprehension, the context plays a\n2In encoder-decoder architecture models, there are typically three types of attention: self-attention in the encoder, masked self-attention in the decoder, and cross-attention in the decoder. The corresponding task-specific prompts are denoted as TE , TDm, and TDc.\ncrucial role as it contains the answer or the evidence in support of the answer. Meanwhile, the context in QA datasets can often be divided into several domains. For example, in NewsQA (Trischler et al., 2016), the context can be grouped into different domains such as politics, economics, society, and so on. To improve the semantic understanding of context, the context from different domains should utilize different prompts, and each domain-specific prompt should imply a specific knowledge shared within the domain.\nHowever, most QA datasets do not have explicit information about the domain of the context. To avoid additional annotation costs, we cluster the context C in an unsupervised manner to obtain different domains D \u2208 {D1, ...,Dn}, where n denotes the number of domains, and each context can only belong to one domain. Each domain has its own shared prompt, therefore the domainspecific prompts D = {D1, ...,Dn}, where Di \u2208 R\u03c1\u00d7dp \u2200i \u2208 {1, ..., n}, Di denotes the prompt shared within the domain Di, \u03c1 denotes the length of the domain-specific prompts, dp denotes the dimension of embedding from the prompt generator.\nIntuitively, domain-specific prompts should encapsulate information for each respective domain. Therefore, we introduce the independence constraint to steer Di to focus on the information within domain Di. Focusing on the knowledge specific to each domain can enhance contextual understanding, as confirmed by subsequent experiments. Specifically, for any pair of Da and Db \u2208 D, we introduce the Hilbert-Schmidt Independence Criterion (HSIC) (Gretton et al., 2005; Song et al., 2007) to measure the independence between the prompts of two domains:\nHSIC(Da,Db) = 1\n(\u03c1\u2212 1)2 tr(KHLH), (1)\nwhere H is the centering matrix H\u03c1 = I\u03c1 \u2212 1 \u03c111\nT, Kij = \u03d5(Dai ,Daj ), Lij = \u03c8(Dbi ,Dbj ), Dai \u2208 R1\u00d7dp , \u03d5 and \u03c8 denote the kernel functions. HSIC = 0 indicates independence, when \u03d5 and \u03c8 are universal kernels. However, HSIC is not invariant to isotropic scaling, which can be addressed by normalizing HSIC which is known as Centered Kernal Alignment (CKA) (Nguyen et al., 2020; Raghu et al., 2021; Chen et al., 2023):\nCKA(Da,Db)= HSIC(Da,Db)\u221a\nHSIC(Da,Da)HSIC(Db,Db) ,\n(2)\nwhere CKA \u2208 [0, 1], and CKA = 0 implies independence.\nComputing the pair-wise independence requires n(n\u22121)\n2 iterations, which is slow for large n. To reduce computational costs, we randomly sample m pairs of domains as \u0398 to calculate the Lidp constraints in each training iteration:\nLidp = \u2211\n(i,j)\u2208\u0398\nCKA(Di,Dj). (3)"
+        },
+        {
+            "heading": "3.3 Context-specific Prompt",
+            "text": "The domain-specific prompts provide shared intradomain information, which provides fine-grained knowledge compared to task-specific prompts. However, there are still diversities among contexts within the same domain, and utilizing such diverse information is critical for answering questions accurately.\nTherefore, we construct context-specific prompts to enhance the understanding of each context, which provides fine-grained knowledge compared to domain-specific prompts. Specifically, all contexts have a shared context-specific prompt C \u2208 R\u03ba\u00d7dp , where \u03ba denotes the length of the context-specific prompt. Furthermore, we propose the prompt generator to ensure that C generates different prompts for different contexts, especially for those contexts unseen in the training data and discuss its other roles in the next section."
+        },
+        {
+            "heading": "3.4 Prompt Generator",
+            "text": "In general, task-specific prompts are related to the task of specific datasets, while domain-specific and context-specific prompts both are closely related to the context. To better leverage domain-specific and context-specific prompts to enhance PLMs\u2019 understanding of the context semantics, we introduce a\nsmall-scale PLM to encode contexts and integrate them into the prompt generation process.\nFor a context ci, which belongs to the domain Dj . The encoder of the prompt generator takes the context ci as its input, while the concatenation of domain-specific prompt Dj and context-specific prompt C serves as the input X for the decoder,\nX = [Dj ; C], (4)\nwhere X \u2208 R(\u03c1+\u03ba)\u00d7dp . It should be noted that we have removed the original decoder embedding layer. The output of the prompt generator is mapped to key-value pairs P = {P1, ...,PL} through the MLP,\nP = MLP(PromptGenerator(ci,X )), (5)\nwhere P \u2208 R(\u03c1+\u03ba)\u00d72dL, Pl = (Pl,K ,Pl,V ), Pl,K and Pl,V \u2208 R(\u03c1+\u03ba)\u00d7d, and L denotes the number of layers in the generative QA model. Intuitively, the knowledge related to the context ci is steered from the encoder of PLMs, and then integrated into the prompt generation process in the decoder. In this way, our approach allows for better learning of the semantics between prompt and context than previous work (Li and Liang, 2021; Lester et al., 2021; Ma et al., 2022), since both domain-specific prompt and context-specific prompt are closely related to the context."
+        },
+        {
+            "heading": "3.5 Applying Multi-level Prompts",
+            "text": "Overall, P contains the information of domainspecific and context-specific prompts as well as knowledge from PLMs related to the context, while Ttask contains the shared information within the task. In order to exploit multi-level prompt information to enhance the performance on question answering, we integrate the above different levels\nof prompts into the encoder of the generative QA model. Specifically, for the self-attention computation of layer l in the encoder of the generative QA model, the original Kl and Vl are augmented as:\nK \u2032l = [TEl,K ;Pl,K ;Kl], V \u2032l = [TEl,V ;Pl,V ;Vl]\n(6)\nwhere K \u2032l and V \u2032 l \u2208 R(t+\u03c1+\u03ba+M)\u00d7d, M denotes the length of the input sequence. For the selfattention and cross-attention computation of layer l in the decoder, Kl and Vl are augmented as:\nK \u2032l = [TDm(Dc)l,K ;Kl], V \u2032 l = [TDm(Dc)l,V ;Vl]\n(7) where K \u2032l and V \u2032 l \u2208 R(t+M)\u00d7d.\nTo train the multi-level prompts, the loss function is a weighted sum of the two loss terms:\nL = LNLL + \u03bbLidp, (8)\nwhere \u03bb is the hyperparameter used to control the independence constraint, LNLL is the text generation loss, as follows:\nLNLL = \u2212 N\u2211 t=1 log p(yt|x, y<t), (9)\nwhere yt denotes the t-th element of the target sequence, and x represents the input sequence. It is worth noting that, guided by Equation 8, we only update the MLP, task-specific, domain-specific, and context-specific prompts, while keeping all other parameters frozen."
+        },
+        {
+            "heading": "4 Experiments",
+            "text": ""
+        },
+        {
+            "heading": "4.1 Datasets and Baselines",
+            "text": "Datasets. To cover a wide range of QA tasks in our experiments, we evaluated our approach on 12 benchmark datasets in the fields of Extractive QA (EX): SQuAD2 (Rajpurkar et al., 2018), NewsQA (Trischler et al., 2016), Abstractive QA (AB): NarrativeQA (Koc\u030cisky\u0300 et al., 2018), DROP (Dua et al., 2019), Multiplechoice QA (MC): MCTest (Richardson et al., 2013), ARC(easy, challenge) (Clark et al., 2016, 2018), OpenBookQA (Mihaylov et al., 2018), QASC (Khot et al., 2020),RACE (Lai et al., 2017), and Yes/No QA (YN): BoolQ (Clark et al., 2019), BoolQ-NP (Khashabi et al., 2020a). Table 1 presents the statistics of these datasets. Following Khashabi et al. (2020b), the above-mentioned\ndatasets in different formats were converted to a unified format to suit generative QA tasks. Due to space limitations, more details are available in Appendix A.1.\nMetrics. We evaluate each dataset using the metrics most often used in previous work. For SQuAD2 and DROP, we used the F1 score with token overlap between the answer text and the gold answers. For NewsQA and NarrativeQA, we use ROUGE-L metric (Lin, 2004). For the multiplechoice and Yes/No QA, we use accuracy for evaluation (sometimes referred to as exact match), i.e., a generated answer is considered correct only if it exactly matches the gold answers.\nBaselines. To comprehensively evaluate the performance of MPrompt, we compared it with a wide range of state-of-the-art soft-prompt methods, such as Fine-tuning (Khashabi et al., 2022), Prefixtuning (Li and Liang, 2021), Prompt-tuning (Lester et al., 2021) and XPrompt (Ma et al., 2022)."
+        },
+        {
+            "heading": "4.2 Implementation",
+            "text": "We convert each dataset into a unified text-to-text format to suit generative question answering models following (Khashabi et al., 2020b, 2022). Our MPrompt is based on three scales of pre-trained UnifiedQA (Khashabi et al., 2020b) (which is a T5 model for question-answering tasks): Base, Large, XL with 220M, 770M and 3B parameters, respectively. For the prompt generator, we utilize UnifiedQA-Small with 60M parameters to ensure that there is no excessive demand for GPU memory.\nIn all experiments, we employ the AdamW optimizer (Loshchilov and Hutter, 2017) and set \u03b21 = 0.9, \u03b22 = 0.999, and the weight decay is\n0.01. We train our method with a learning rate of 5e-5, 10% warmup ratio, \u03bb=1e-4, 50 epochs and record the model with the best performance on the validation set. To ensure a fair comparison, we fix the length of task-specific prompts to 10 and adjust the lengths of domain-specific and contextspecific prompts to {5, 10, 15, 20, 30, 40, 50, 60}. We use Kmeans (MacQueen, 1967) and SentenceTransformers (all-mpnet-base-v2) (Reimers and Gurevych, 2019) to cluster the context and fix the number of clusters to 3 to obtain domain information D. The visualization of the clustering results by t-SNE (Van der Maaten and Hinton, 2008) is deferred to Appendix A.2. For all baselines, all hyperparameter settings are based on the reported values in the original paper to achieve optimal results. Our method is implemented with PyTorch (Paszke et al., 2019) and Transformers (Wolf et al., 2020) library and experiments are conducted on Ubuntu 22.04 systems with NVIDIA RTX A100 or 4090 GPUs. Other implementation details and optimal hyperparameters are deferred to Appendix A.3."
+        },
+        {
+            "heading": "4.3 Performance Comparison",
+            "text": "Table 2 displays the main experimental results of different methods on 12 benchmark datasets. We conduct a comprehensive comparison between MPrompt and state-of-the-art methods, including Prompt-tuning (Lester et al., 2021), Prefixtuning (Li and Liang, 2021), and XPrompt (Ma et al., 2022) for different parameter sizes of PLMs. The datasets cover a wide range of questionanswering scenarios, which is beneficial for the comprehensive evaluation of different methods.\nWe observe that: (1) Our method MPrompt outperforms other soft-prompt methods by a large margin across all tasks and model scales. For example, MPrompt achieves absolute improvements of 2.17%, 1.85%, and 1.82% relative to Prefixtuning on UnifiedQA-Base, Large, and XL respectively. It is due to the input-independent prompt learning methods applying a uniform prompt to all inputs for a given task, which evidently underutilizing the input semantics in answer generation. However, MPrompt significantly improves the performance in question-answering tasks by enhancing the contextual comprehension of the PLMs with multiple levels of prompts. (2) Prefixtuning and XPrompt have comparable performance at the same model size. Both algorithms outperform Prompt-tuning on the NewsQA, DROP,\nOBQA, QASC, and BoolQ-NP datasets. It is because Prefix-tuning provides deeper prompts, while XPrompt removes negative prompts in Prompttuning. However, MPrompt achieves higher performance than Prefix-tuning and XPrompt at the same model sizes, demonstrating its effectiveness. (3) Due to the luxury of having high computational resources and a full-weight update scheme in full fine-tuning, there is still a significant performance gap between soft-prompt tuning and full finetuning. However, As shown in Table 2, MPrompt matches the fine-tuning performance on all tasks and even outperforms the fine-tuning performance of UnifiedQA-Base and XL on most tasks. Specifically for UnifiedQA-Base, MPrompt achieves the best performance on SQuAD2, NewsQA, NarQA, MCTest, ARC (easy), RACE, and BoolQ, resulting in +0.69%, +0.62%, +0.24%, +1.31%, +0.78%, 0.21%, and 0.25% improvements over fine-tuning, respectively. We incorporate context knowledge from other PLMs (such as UnifiedQA-small in this paper) into prompt generation to enrich the semantics.\nIn summary, our method achieved excellent performance compared to state-of-the-art soft prompt methods, closing and even surpassing the performance gap over fine-tuning. This demonstrates that MPrompt effectively enhances contextual comprehension and enriches the semantics of the PLMs which significantly improves the quality of downstream question-answering tasks."
+        },
+        {
+            "heading": "4.4 Ablation Analysis",
+            "text": "In this part, we perform an ablation study on the various components of MPrompt, as shown in Figure\n2. Firstly, we observe a decrease in performance when removing domain-specific or context-specific prompts. The domain-specific or context-specific prompts are constructed based on inputs of different granularity, which enhances the semantic comprehension of the input. Secondly, when removing the independence constraint, there was a significant decrease in performance. The independence constraint steers domain-specific prompts to focus on intra-domain information rather than interdomain information, which can effectively avoid information redundancy. Furthermore, performance decreases when the prompt generator is removed. The prompt generator ensures that context-specific prompts are generated differently for different contexts, even those that never appear in the training data, which enhances the semantic understanding of the input context. Moreover, the prompt generator elicits context-related knowledge from PLM and incorporates it into the prompt generation process, which helps improve the context awareness of the prompts."
+        },
+        {
+            "heading": "4.5 Sensitivity Analyses",
+            "text": "In this part, we conducted comprehensive sensitivity analyses on our proposed method, including the length of prompts, the weight \u03bb of the loss Lidp, different clustering results D, different scales of PLMs in the prompt generator, and the number of sampled domain pairs m."
+        },
+        {
+            "heading": "4.5.1 The Length of Prompts",
+            "text": "In MPrompt, the length of prompts is a key factor that affects model performance. Here, we investigate how the length of domain-specific and\ncontext-specific prompts impacts the final performance. We fixed the length of one prompt to 10 and varied the other in the range of {5, 10, 15, 20, 30, 40, 50, 60}. As shown in Figure 3, in most cases, MPrompt shows stable performance for the length of domain-specific and context-specific prompts. Moreover, since DROP and OBQA require reasoning ability (Roberts et al., 2020), they are more sensitive to the prompt length compared to other datasets.\n4.5.2 The Weight of Loss Lidp\nWe investigated the impact of loss weighing \u03bb on the results, as shown in Table 3. We found the change of weighting has minor impact on the SQuAD2 dataset and there is an optimal weight of 0.0001 for DROP, OBQA, and BoolQ-NP datasets. Lidp takes values between [0, 1], a too large \u03bb means that the model is not focusing on generating answers as its primary goal. An extremely small \u03bb would make the domain-specific prompts lose focus on unique intra-domain information."
+        },
+        {
+            "heading": "1 72.60 38.72 55.80 76.28",
+            "text": ""
+        },
+        {
+            "heading": "4.5.3 Clustering Results",
+            "text": "We investigated the impact of different numbers of clusters on performance, as shown in Table 4. Since the gold label of clustering results is not available in the question-answering datasets, it is difficult to determine the optimal number of clusters. Our evaluation shows, the performance of the model is not sensitive to the number of clusters. KMeans always outperforms randomly assigning cluster labels, which demonstrates that introducing contextual cluster information to the model improves context comprehension."
+        },
+        {
+            "heading": "4.5.4 Different Scales of Prompt Generator",
+            "text": "In general, increasing the parameter number of PLMs brings abundant semantic knowledge. Therefore, we investigated the impact of PLMs with different scales on performance, as shown in Figure 4. The prompt generator delivers significant performance improvements. Our evaluation shows, larger-scale PLMs tend to have better results, but require more computational resources. To balance the trade-off between cost and performance, the UnifiedQA-small already delivers satisfactory performance gains with a small computational overhead (60M parameters)."
+        },
+        {
+            "heading": "4.5.5 Number of sampled domain pairs",
+            "text": "We investigated the impact of sampled domain pairs on the results. The number of clusters is set to 6, which requires 15 iterations per batch. We evaluate the number of sample pair m in {1, 3, 5,\n10, 15}. Our evaluation in Table 5 shows that our algorithm is not sensitive to the number of sampled domain pairs m. Even with a smaller m per batch, it still provides sufficient sampling frequency in training, which greatly reduces the computational costs."
+        },
+        {
+            "heading": "5 Conclusion",
+            "text": "In this paper, we propose a novel Multi-level Prompt (MPrompt) tuning method for machine reading comprehension. Our method strengthens PLMs\u2019 utilization of input semantics through three levels of prompts: task-specific prompts, domainspecific prompts, and context-specific prompts. The task-specific prompts are input-independent and generate prompts specific to a task. The domain-specific prompts utilize the domain knowledge generated from the dataset while contextspecific prompts are relying on the input context. Our experiments show the combination of three level prompts improves the answer generation performance on different sizes of PLMs and 12 benchmark datasets. In future work, we will extend our method to more tasks such as summarization, translation, and sentiment analysis.\nLimitations\nIn our method, the length of prompts is the most critical parameter that affects performance. In our experiments, we observe that MPrompt is sensitive to prompt length for some challenging datasets. To obtain the optimal hyperparameter combination, it is inevitable to perform a grid search on the length of prompts. Our model is designed for encoderdecoder structure, so the decoder-only structure like LLaMA, GPT, or Bloom is not applicable. Our model requires access to the parameter of the model which any black box model is not applicable to our algorithm.\nEthics Statement\nOur work is developed with the highest ethical standards in mind. Our work should not be used for any entity that may violate human rights."
+        },
+        {
+            "heading": "A Appendix",
+            "text": "A.1 Datasets: Details We evaluated our method on 12 datasets covering a wide range of QA tasks. Due to some datasets (such as ARC, OpenBookQA and QASC) lacking the context, following Khashabi et al. (2020b, 2022), we used the datasets that contain retrieved contexts. Due to limited test access for some datasets, such as SQuAD2, NewsQA, DROP, QASC, BoolQ, and BoolQ-NP, we used the validation set as the test set and re-randomized an equal number of samples from the training set as the validation set. For MCTest, we used the sum of mc160 and mc500. For RACE, we used RACE-middle, which consists of English reading comprehension questions designed for Chinese middle school students. The datasets would be available in our code.\nA.2 Visualization of context clustering results with Kmeans\nIn the paper, we cluster the contexts by Kmeans and fix the number of clusters to 3, since we do not have access to the gold standard clustering results for each dataset. To observe the results of clustering, we conducte visualization using t-SNE (Van der Maaten and Hinton, 2008), as shown in Figure 5. Most of the datasets present better clustering results when the number of clusters is 3, which will provide better domain information.\nA.3 Implementation details In Table 6, we report the hyperparameters used for training our models recorded in the experimental section. For model inference (answer generation), we set num_beams to 2, min_length to 1, and early_stopping to True. For MLP, we set the hidden layer dimension to 512 and utilize the Tanh activation function. For domain-specific prompts and context-specific prompts, we initialize each prompt token as an embedded vector extracted from the prompt generator\u2019s vocabulary, as Lester et al. (2021) done."
+        }
+    ],
+    "title": "MPrompt: Exploring Multi-level Prompt Tuning for Machine Reading Comprehension",
+    "year": 2023
+}

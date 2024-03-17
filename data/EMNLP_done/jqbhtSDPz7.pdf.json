@@ -1,0 +1,749 @@
+{
+    "abstractText": "Chain-of-Thought (CoT) prompting enables large language models to solve complex reasoning problems by generating intermediate steps. However, confined by its inherent singlepass and sequential generation process, CoT heavily relies on the initial decisions, causing errors in early steps to accumulate and impact the final answers. In contrast, humans adopt recursive thinking when tackling complex reasoning problems, i.e., iteratively breaking the original problem into approachable subproblems and aggregating their answers to resolve the original one. Inspired by the human cognitive process, we propose SOCRATIC QUESTIONING, a divide-and-conquer style algorithm that mimics the recursive thinking process. Specifically, SOCRATIC QUESTIONING leverages large language models to raise and answer sub-questions until collecting enough information to tackle the original question. Unlike CoT, SOCRATIC QUESTIONING explicitly navigates the thinking space, stimulates effective recursive thinking, and is more robust towards errors in the thinking process. Extensive experiments on several complex reasoning tasks, including MMLU, MATH, LogiQA, and visual question-answering demonstrate significant performance improvements over the stateof-the-art prompting methods, such as CoT, and Tree-of-Thought. The qualitative analysis clearly shows that the intermediate reasoning steps elicited by SOCRATIC QUESTIONING are similar to humans\u2019 recursively thinking process of complex reasoning problems12.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Jingyuan Qi"
+        },
+        {
+            "affiliations": [],
+            "name": "Zhiyang Xu"
+        },
+        {
+            "affiliations": [],
+            "name": "Ying Shen"
+        },
+        {
+            "affiliations": [],
+            "name": "Minqian Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Di Jin"
+        },
+        {
+            "affiliations": [],
+            "name": "Qifan Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Lifu Huang"
+        }
+    ],
+    "id": "SP:616ebfaa700db02c634bba2d4aa9097c013c85f9",
+    "references": [
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Meier-Hellstern",
+                "Douglas Eck",
+                "Jeff Dean",
+                "Slav Petrov",
+                "Noah Fiedel."
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "J. Mach. Learn. Res., 24:240:1\u2013 240:113.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Narang",
+                "Gaurav Mishra",
+                "Adams Yu",
+                "Vincent Y. Zhao",
+                "Yanping Huang",
+                "Andrew M. Dai",
+                "Hongkun Yu",
+                "Slav Petrov",
+                "Ed H. Chi",
+                "Jeff Dean",
+                "Jacob Devlin",
+                "Adam Roberts",
+                "Denny Zhou",
+                "Quoc V. Le",
+                "Jason Wei"
+            ],
+            "title": "Scaling instruction-finetuned language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenliang Dai",
+                "Junnan Li",
+                "Dongxu Li",
+                "Anthony Meng Huat Tiong",
+                "Junqi Zhao",
+                "Weisheng Wang",
+                "Boyang Li",
+                "Pascale Fung",
+                "Steven C.H. Hoi."
+            ],
+            "title": "Instructblip: Towards general-purpose visionlanguage models with instruction tuning",
+            "venue": "CoRR,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qingxiu Dong",
+                "Lei Li",
+                "Damai Dai",
+                "Ce Zheng",
+                "Zhiyong Wu",
+                "Baobao Chang",
+                "Xu Sun",
+                "Jingjing Xu",
+                "Lei Li",
+                "Zhifang Sui."
+            ],
+            "title": "A survey for in-context learning",
+            "venue": "CoRR, abs/2301.00234.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jinlan Fu",
+                "See-Kiong Ng",
+                "Zhengbao Jiang",
+                "Pengfei Liu."
+            ],
+            "title": "Gptscore: Evaluate as you desire",
+            "venue": "CoRR, abs/2302.04166.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mor Geva",
+                "Daniel Khashabi",
+                "Elad Segal",
+                "Tushar Khot",
+                "Dan Roth",
+                "Jonathan Berant"
+            ],
+            "title": "Did aristotle use a laptop? a question answering benchmark with",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yash Goyal",
+                "Tejas Khot",
+                "Douglas Summers-Stay",
+                "Dhruv Batra",
+                "Devi Parikh."
+            ],
+            "title": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering",
+            "venue": "Proceedings of the IEEE conference on computer vision and pattern",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Collin Burns",
+                "Steven Basart",
+                "Andy Zou",
+                "Mantas Mazeika",
+                "Dawn Song",
+                "Jacob Steinhardt."
+            ],
+            "title": "Measuring massive multitask language understanding",
+            "venue": "CoRR, abs/2009.03300.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Collin Burns",
+                "Saurav Kadavath",
+                "Akul Arora",
+                "Steven Basart",
+                "Eric Tang",
+                "Dawn Song",
+                "Jacob Steinhardt."
+            ],
+            "title": "Measuring mathematical problem solving with the MATH dataset",
+            "venue": "CoRR, abs/2103.03874.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jordan Hoffmann",
+                "Sebastian Borgeaud",
+                "Arthur Mensch",
+                "Elena Buchatskaya",
+                "Trevor Cai",
+                "Eliza Rutherford",
+                "Diego de Las Casas",
+                "Lisa Anne Hendricks",
+                "Johannes Welbl",
+                "Aidan Clark"
+            ],
+            "title": "Training compute-optimal large language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kung-Hsiang Huang",
+                "Hou Pong Chan",
+                "Heng Ji."
+            ],
+            "title": "Zero-shot faithful factual error correction",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 5660\u20135676, Toronto, Canada.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhengbao Jiang",
+                "Jun Araki",
+                "Haibo Ding",
+                "Graham Neubig."
+            ],
+            "title": "How can we know when language models know? on the calibration of language models for question answering",
+            "venue": "Transactions of the Association for Computational Linguistics, 9:962\u2013977.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Kaplan."
+            ],
+            "title": "Language models (mostly) know what they know",
+            "venue": "CoRR, abs/2207.05221.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Junnan Li",
+                "Dongxu Li",
+                "Silvio Savarese",
+                "Steven C.H. Hoi."
+            ],
+            "title": "BLIP-2: bootstrapping language-image pre-training with frozen image encoders and large language models",
+            "venue": "International Conference on Machine Learning, ICML 2023, 23-29 July 2023,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haotian Liu",
+                "Chunyuan Li",
+                "Qingyang Wu",
+                "Yong Jae Lee"
+            ],
+            "title": "Visual instruction tuning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jian Liu",
+                "Leyang Cui",
+                "Hanmeng Liu",
+                "Dandan Huang",
+                "Yile Wang",
+                "Yue Zhang."
+            ],
+            "title": "Logiqa: A challenge dataset for machine reading comprehension with logical reasoning",
+            "venue": "Proceedings of the TwentyNinth International Joint Conference on Artificial",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yang Liu",
+                "Dan Iter",
+                "Yichong Xu",
+                "Shuohang Wang",
+                "Ruochen Xu",
+                "Chenguang Zhu."
+            ],
+            "title": "G-eval: NLG evaluation using GPT-4 with better human alignment",
+            "venue": "CoRR, abs/2303.16634.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Pan Lu",
+                "Baolin Peng",
+                "Hao Cheng",
+                "Michel Galley",
+                "KaiWei Chang",
+                "Ying Nian Wu",
+                "Song-Chun Zhu",
+                "Jianfeng Gao."
+            ],
+            "title": "Chameleon: Plug-and-play compositional reasoning with large language models",
+            "venue": "CoRR, abs/2304.09842.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kenneth Marino",
+                "Mohammad Rastegari",
+                "Ali Farhadi",
+                "Roozbeh Mottaghi."
+            ],
+            "title": "Ok-vqa: A visual question answering benchmark requiring external knowledge",
+            "venue": "Conference on Computer Vision and Pattern Recognition (CVPR).",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Sewon Min",
+                "Victor Zhong",
+                "Luke Zettlemoyer",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Multi-hop reading comprehension through question decomposition and rescoring",
+            "venue": "CoRR, abs/1906.02916.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Rodrigo Nogueira",
+                "Kyunghyun Cho."
+            ],
+            "title": "Taskoriented query reformulation with reinforcement learning",
+            "venue": "Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, pages 574\u2013583, Copenhagen, Denmark. Association",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "OpenAI."
+            ],
+            "title": "ChatGPT: Optimizing language models for dialogue",
+            "venue": "https://openai.com/blog/ chatgpt/.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pruthvi Patel",
+                "Swaroop Mishra",
+                "Mihir Parmar",
+                "Chitta Baral"
+            ],
+            "title": "Is a question decomposition unit all we need",
+            "venue": "In Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ethan Perez",
+                "Patrick S.H. Lewis",
+                "Wen-tau Yih",
+                "Kyunghyun Cho",
+                "Douwe Kiela"
+            ],
+            "title": "Unsupervised question decomposition for question answering",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chengwei Qin",
+                "Aston Zhang",
+                "Zhuosheng Zhang",
+                "Jiaao Chen",
+                "Michihiro Yasunaga",
+                "Diyi Yang"
+            ],
+            "title": "Is chatgpt a general-purpose natural language processing task solver",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kirk Roberts",
+                "Kate Masterton",
+                "Marcelo Fiszman",
+                "Halil Kilicoglu",
+                "Dina Demner-Fushman."
+            ],
+            "title": "Annotating question decomposition on complex medical questions",
+            "venue": "Proceedings of the Ninth International Conference on Language Resources and Evaluation,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Daniel Rose",
+                "Vaishnavi Himakunthala",
+                "Andy Ouyang",
+                "Ryan He",
+                "Alex Mei",
+                "Yujie Lu",
+                "Michael Saxon",
+                "Chinmay Sonar",
+                "Diba Mirza",
+                "William Yang Wang."
+            ],
+            "title": "Visual chain of thought: Bridging logical gaps with multimodal infillings",
+            "venue": "CoRR, abs/2305.02317.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dustin Schwenk",
+                "Apoorv Khandelwal",
+                "Christopher Clark",
+                "Kenneth Marino",
+                "Roozbeh Mottaghi."
+            ],
+            "title": "A-okvqa: A benchmark for visual question answering using world knowledge",
+            "venue": "Computer Vision\u2013ECCV 2022: 17th European Conference, Tel Aviv, Israel,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kumar Shridhar",
+                "Jakub Macina",
+                "Mennatallah El-Assady",
+                "Tanmay Sinha",
+                "Manu Kapur",
+                "Mrinmaya Sachan."
+            ],
+            "title": "Automatic generation of socratic subquestions for teaching math word problems",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "D\u00eddac Sur\u00eds",
+                "Sachit Menon",
+                "Carl Vondrick."
+            ],
+            "title": "Vipergpt: Visual inference via python execution for reasoning",
+            "venue": "CoRR, abs/2303.08128.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Miles Turpin",
+                "Julian Michael",
+                "Ethan Perez",
+                "Samuel R. Bowman."
+            ],
+            "title": "Language models don\u2019t always say what they think: Unfaithful explanations in chain-of-thought prompting",
+            "venue": "CoRR, abs/2305.04388.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc V. Le",
+                "Ed H. Chi",
+                "Sharan Narang",
+                "Aakanksha Chowdhery",
+                "Denny Zhou"
+            ],
+            "title": "Self-consistency improves chain of thought reasoning in language",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "Ed H. Chi",
+                "Quoc Le",
+                "Denny Zhou."
+            ],
+            "title": "Chain of thought prompting elicits reasoning in large language models",
+            "venue": "CoRR, abs/2201.11903.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chenfei Wu",
+                "Shengming Yin",
+                "Weizhen Qi",
+                "Xiaodong Wang",
+                "Zecheng Tang",
+                "Nan Duan."
+            ],
+            "title": "Visual chatgpt: Talking, drawing and editing with visual foundation models",
+            "venue": "CoRR, abs/2303.04671.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhiyang Xu",
+                "Trevor Ashby",
+                "Chao Feng",
+                "Rulin Shao",
+                "Ying Shen",
+                "Di Jin",
+                "Qifan Wang",
+                "Lifu Huang"
+            ],
+            "title": "Vision-flan: Scaling visual instruction tuning",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhiyang Xu",
+                "Ying Shen",
+                "Lifu Huang."
+            ],
+            "title": "Multiinstruct: Improving multi-modal zero-shot learning via instruction tuning",
+            "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), ACL 2023,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhengyuan Yang",
+                "Zhe Gan",
+                "Jianfeng Wang",
+                "Xiaowei Hu",
+                "Yumao Lu",
+                "Zicheng Liu",
+                "Lijuan Wang."
+            ],
+            "title": "An empirical study of GPT-3 for few-shot knowledgebased VQA",
+            "venue": "Thirty-Sixth AAAI Conference on Artificial Intelligence, AAAI 2022, Thirty-Fourth Con-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shunyu Yao",
+                "Dian Yu",
+                "Jeffrey Zhao",
+                "Izhak Shafran",
+                "Thomas L. Griffiths",
+                "Yuan Cao",
+                "Karthik Narasimhan."
+            ],
+            "title": "Tree of thoughts: Deliberate problem solving with large language models",
+            "venue": "CoRR, abs/2305.10601.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chenyu You",
+                "Nuo Chen",
+                "Fenglin Liu",
+                "Shen Ge",
+                "Xian Wu",
+                "Yuexian Zou."
+            ],
+            "title": "End-to-end spoken conversational question answering: Task, dataset and model",
+            "venue": "In Findings of NAACL 2022.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chenyu You",
+                "Nuo Chen",
+                "Fenglin Liu",
+                "Dongchao Yang",
+                "Yuexian Zou."
+            ],
+            "title": "Towards data distillation for end-to-end spoken conversational question answering",
+            "venue": "arXiv preprint arXiv:2010.08923.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Andy Zeng",
+                "Adrian Wong",
+                "Stefan Welker",
+                "Krzysztof Choromanski",
+                "Federico Tombari",
+                "Aveek Purohit",
+                "Michael S. Ryoo",
+                "Vikas Sindhwani",
+                "Johnny Lee",
+                "Vincent Vanhoucke",
+                "Pete Florence"
+            ],
+            "title": "Socratic models: Composing zero-shot multimodal reasoning",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "har",
+                "Tianlu Wang",
+                "Luke Zettlemoyer"
+            ],
+            "title": "OPT: open pre-trained transformer language models. CoRR, abs/2205.01068",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "The art of Socratic Questioning is important for critical thinkers and excellence of thought. What Socratic adds is systematicity, depth, and a keen\n1* Co-first Authors, \u2020 Co-second Authors 2All the programs and necessary resources are released in https://github.com/VT-NLP/SOCRATIC-QUESTIONING"
+        },
+        {
+            "heading": "1. Because there is no external force doing work, so this question follows engergy conservation law.",
+            "text": "interest in assessing the plausibility of things.\n- L. ELDER and R. PAUL, 1998\nOne unique capability that allows humans to excel at solving complex reasoning problems is recursive thinking. If the answer is not immediately achievable, humans think deeper by recursively decomposing the complex problem into simpler and solvable sub-problems.\nRecently, by scaling up the parameters, large-\nscale language models (LLMs) (Brown et al., 2020; Chung et al., 2022; OpenAI, 2022; Touvron et al., 2023) gain emerging capabilities, such as Chainof-Thought (CoT) (Wei et al., 2022) which decomposes the complex problem and solves it step by step. Though CoT has been proven to be effective on various complex reasoning tasks, it\u2019s in nature a single-pass and sequential thinking process that generates the next step based on previous steps, thus only exploring a single way of thinking to approach a problem and easily accumulating errors from previous steps (Turpin et al., 2023). In addition, CoT lacks the ability to refine the already generated reasoning path, as shown in Figure 1.\nInspired by the recursive thinking of humans, we propose SOCRATIC QUESTIONING, a novel divide-and-conquer fashion algorithm that prompts language models to solve complex reasoning problems. As shown in Figure 2 (e), SOCRATIC QUESTIONING consists of a top-down exploration process and a bottom-up backtracking process. Specifically, in the top-down exploration process, the original complex problem is decomposed into simpler or related sub-problems until the sub-problems can be solved. In the bottom-up backtracking process, the solutions to the sub-problems are returned and selectively used to solve the original problem. The fundamental component that drives SOCRATIC QUESTIONING is a SELF-QUESTIONING (SQ) module, that leverages large-scale language models to proactively raise and answer questions that are essential to solving the target question. SOCRATIC QUESTIONING recursively backtracks and tailors the intermediate thoughts acquired from SELF-QUESTIONING until reaching an answer to the original input question. It explicitly navigates the thinking space and is more robust towards thinking errors compared with pre-\nvious prompting methods including CoT, SelfConsistency Chain-of-Thought (Wang et al., 2023), and Tree-of-Thought (Yao et al., 2023), as shown in Figure 2.\nTo show the effectiveness of SOCRATIC QUESTIONING, we conduct extensive experiments on various complex reasoning tasks including the chemistry and physics tasks (Hendrycks et al., 2020), mathematical tasks (Hendrycks et al., 2021), and reading comprehension tasks (Liu et al., 2020). Additionally, we showcase the generalizability of our method by conducting experiments with few-shot multimodal reasoning on VQA-V2 (Goyal et al., 2017), OK-VQA (Marino et al., 2019), and AOKVQA (Schwenk et al., 2022) datasets. Experimental results indicate that SOCRATIC QUESTIONING substantially improves performance over CoT, SCCoT, and ToT across all language tasks and outperforms several strong baselines in few-shot multimodal reasoning. The qualitative analysis further demonstrates that SOCRATIC QUESTIONING is capable of eliciting the intermediate reasoning steps through SELF-QUESTIONING, like a critical thinker, and solving complex reasoning problems. The main contributions of our paper are as follows:\n\u2022 We propose SOCRATIC QUESTIONING, a novel prompting algorithm that can navigate the cognitive thinking space in a recursive manner.\n\u2022 We introduce the SELF-QUESTIONING module, a core component that actively probes complex problems from various perspectives by raising and addressing questions essential for solving the main problem.\n\u2022 Our approach achieves significant improvements over the previous prompting methods in various complex reasoning tasks."
+        },
+        {
+            "heading": "2 Related Work",
+            "text": "Prompting Large Language Models With the scaling of both modal size and corpus size, large language models (LLMs) such as GPT-3 (Brown et al., 2020) and ChatGPT (OpenAI, 2022) have exhibited emergent abilities, including prompting (Brown et al., 2020), in-context learning (Dong et al., 2023), and commonsense reasoning (Wei et al.). One notable example of emergent abilities is the Chain-of-Thought (CoT) (Wei et al., 2022) which steers large language models to resolve complex problems by guiding them to produce a sequence of intermediate steps before giving the final answer. Self-Consistency Chain-of-Thought (SCCoT) (Wang et al., 2023) improves naive CoT by sampling multiple reasoning paths and selecting the most consistent answer. SC-CoT is based on the assumption that given a complex reasoning problem, multiple reasoning paths can lead to the unique correct answer. Tree-of-Thought (ToT) (Yao et al., 2023) proposes to break the thinking process into small steps and at each step, the language model deliberately decides a set of next steps to try."
+        },
+        {
+            "heading": "Multimodal Reasoning with Large Language",
+            "text": "Models Recent studies have explored the collaboration among diverse language and visual models (Yang et al., 2022; Zeng et al., 2022; Huang et al., 2022). For example, PICa (Yang et al., 2022) utilize image captions as the bridge between visual model and GPT-3 to peform few-shot knowledgebased VQA. Socratic models (Zeng et al., 2022) present a modular framework that utilizes languagebased exchange between pre-trained models and other modules. However, these studies only rely on text as the shared interface, which can inevitably lead to information loss when translating visual information into language. In addition, several concurrent studies (Wu et al., 2023; Sur\u00eds et al., 2023; Lu et al., 2023) have also explored the utilization of large language models for composing various language and visual models.\nQuestion Decomposition Recent research has underscored the effectiveness of question decomposition and sub-question generation techniques in tackling complex tasks. DECOMPRC (Min et al., 2019), for instance, utilizes a limited amount of human-labeled data to train a spanbased sub-question generator and simplifies multihop questions into single-hop questions. Similarly, (Nogueira and Cho, 2017) leverages reinforcement\nlearning for weakly supervised question generation and (Perez et al., 2020) introduces ONUS, an algorithm that harnesses large-scale questions sourced from the internet to perform unsupervised question decomposition. More recently, (Patel et al., 2022) proposes an alternative approach to enhance the performance of LLMs by decomposing challenging questions into simpler sub-questions on various tasks. Notably, the efficacy of question decomposition has been demonstrated across a range of tasks and domains, including solving mathematical problems (Shridhar et al., 2022), medical question answering (Roberts et al., 2014), and factual correction (Huang et al., 2023)."
+        },
+        {
+            "heading": "3 Method",
+            "text": ""
+        },
+        {
+            "heading": "3.1 SOCRATIC QUESTIONING",
+            "text": "Figure 3 shows the overview of the SOCRATIC QUESTIONING approach, which is essentially a recursive thinking process involving a top-down exploration process (in red line) and a bottomup backtracking process (in green line). The top-down exploration process proactively breaks down the question into simpler sub-questions until the sub-questions are answered with high confidence. The bottom-up backtracking process recursively solves questions in which the answers to sub-questions are collected to solve the higher-level more complex questions.\nIn the beginning, we are given a target question Q0,01 , the context C (if provided), and an optional hint H0,01 . The hint is initially Null but will be updated and enriched as the recursive thinking process continues and results from sub-questions are aggregated. We first run the top-down process to explore the thinking space by invoking the SELFQUESTIONING module. We use depth d and turn t to identify the node in our reasoning tree. Depth d refers to the traditional depth of the recursion algorithm. Turn t refers to the times of SOCRATIC QUESTIONING invoking the SELF-QUESTIONING module for each question. For example, at depth d, turn t, SELF-QUESTIONING takes in the ith question Qd,ti , hint H d,t i , the context C, and decides if it can answer the question Qd,ti : (1) If SELFQUESTIONING can directly output the answer Ad,ti for the question Qd,ti with high confidence, the bottom-up backtracking process starts by converting the answer Ad,ti to a hint H\u0303 d,t i with a QA-toHint module (H\u03030,ti equals A 0,t i directly when d =\n0) and adding H\u0303d,ti into the hints H d\u22121,t of the parent question Qd\u22121. (2) If SELF-QUESTIONING cannot directly output an answer with high confidence, it outputs a set of sub-questions Qd+1,t related to Qd,ti . Then we run SELF-QUESTIONING on each newly generated sub-question Qd+1,tj until it\u2019s answered with high confidence. Once we obtain the answers to all the sub-questions Qd+1,t, we convert the answers into hints and incorporate them to update Hd,ti to H d,t+1 i . We then run SELFQUESTIONING on Qd,t+1i again with updated hints Hd,t+1i . This recursive process continues until we reach the tree\u2019s root and the original question Q01 is answered by H\u030301 . We provide the pseudo-code of SOCRATIC QUESTIONING in Algorithm 1."
+        },
+        {
+            "heading": "3.2 SELF-QUESTIONING",
+            "text": "SELF-QUESTIONING is designed to answer the given question, self-check the answer, and raise sub-questions. At depth d, turn t, SELFQUESTIONING takes in the ith question Q d,t i , the context C (if available), and hints Hd,ti (if available) and tries to generate an answer or a set of related sub-questions. SELF-QUESTIONING consists of two modules, a Question-Answering (QA) Module that outputs an answer Ad,ti for Q d,t i based on C and Hd,ti , and an associated confidence level: high, medium, or low. If the confidence of the answer is high, or either depth d or turn t met the pre-defined limit dm and tm, SELF-QUESTIONING invokes the QA2H module to merge the question Qd,ti and answer A d,t i to hint H\u0303 d,t i as output (when d = 0, we skip the merging process because the\nAlgorithm 1: SOCRATIC QUESTIONING Input: Question Qd,ti , Hint H d,t i , Context C, Current\nDepth d, Max Depth dm, Current Turn t, Max Turn tm, Question Answer Prompt PQA, Question Generate Prompt PQG, QA to Hint Prompt PQA2H\nOutput: Hint H\u0303d,ti 1 for t \u2264 tm do // call self-questioning 2 < Qd+1,t,Hd+1,t, C >\u2190\nSELF-QUESTIONING(Qd,ti , H d,t i , C,\nd, dm, t, tm, PQA, PQG) ; 3 ifQd+1,t \u0338= \u2205 then 4 for each Qd+1,tj \u2208 Q\nd+1,t do // recursively answer\nsub-questions 5 H\u0303d+1,tj \u2190\nSOCRATIC QUESTIONING(Qd+1j , Hd+1,tj , C, d+ 1, dm, t, tm, PQA, PQG);\n// gather hint 6 Hd.insert(H\u0303d+1,tj ));\n7 else 8 H\u0303d,tj \u2190 H\nd+1,t[0]; 9 return H\u0303d,tj ;\n10 t\u2190 t+ 1;\nanswer A0,1 is the final answer and does not need to be rewritten to hint). Both Max Depth dm and Max Turn tm prevent SOCRATIC QUESTIONING from infinite recursion. On the other hand, if the confidence of the answer is lower than high, a Question-Generation (QG) Module is called to generate a set of sub-questions {Qd+1,t0 , .., Q d+1,t n } to collect more information based on Qd,ti , C, and\nAlgorithm 2: SELF-QUESTIONING Input: Question Qd,ti , Hint H d,t i , Context C, Current\nDepth d, Max Depth dm, Current Turn t, Max Turn tm, Question Answer Prompt PQA, Question Generate Prompt PQG, QA to Hint Prompt PQA2H\nOutput: < Qd+1,t,Hd+1,t, C > 1 Must_Answer\u2190False; 2 if d = dm or t = tm then 3 Must_Answer\u2190True; // call the Question-Answering module 4 < Ad,ti , confidence >\u2190 QA(Qd,ti , H d,t i , C, PQA) ; 5 if confidence = high or Must_Answer then 6 if d \u0338= 0 then // merge QA to a hint 7 H\u0303d,ti \u2190 QA2H(Q d,t i , A d,t i , PQA2H) ; 8 else 9 H\u0303d,ti \u2190 A d ;\n10 Qd+1 \u2190 \u2205; 11 Hd+1,t \u2190 {H\u0303d,ti }; 12 else\n// call the Question-Generation module\n13 Qd+1,t \u2190 QG(Qd,ti , H d,t i , C, PQG) ; 14 Hd+1,t \u2190 \u2205; 15 return < Qd+1,t,Hd+1,t, C >;\nHd,ti , where n < nm and nm denotes the maximum number of sub-questions to be generated. Algorithm 2 shows the pseudo-code of the SELFQUESTIONING algorithm."
+        },
+        {
+            "heading": "3.2.1 Question-Answering (QA) Module",
+            "text": "The QA module aims to answer either the target question or a sub-question asked by the SELFQUESTIONING module, based on the optional context and hints. We propose to leverage a large-scale language model (LLM), such as GPT-3 or ChatGPT (OpenAI, 2022), to answer the question given their superior reasoning capabilities demonstrated in previous studies (Brown et al., 2020; Zhang et al., 2022; Wei et al., 2022; Touvron et al., 2023; Yao et al., 2023).\nSpecifically, the input to the QA module consists of the given question Qd,ti , the context C, the optional hints Hd,ti , and a prompt PQA designed to guide the QA module to generate an answer Ad,ti based on the inputs and output a confidence level. When the hints Hd,ti are available, PQA also asks the QA module to indicate which hints ared used to produce the answer.\nAd,ti , confidence = QA(Q d,t i , H d,t i , C, PQA), (1)\nwhere confidence \u2208 {high,medium, low}."
+        },
+        {
+            "heading": "3.2.2 Question-Generation (QG) Module",
+            "text": "When the QA module outputs an answer for question Qd,ti with low confidence, it\u2019s very likely that the answer is not correct and we need to collect additional hints to help the QA module produce a more confident answer. To do so, we design a Question-Generation (QG) module to raise a set of sub-questions that are related to Qd,ti . The QG module is also based on a large language model, such as ChatGPT, that takes the question Qd,ti , optional hints Hd,ti , the context C, and a prompt PQG as input and outputs a set of sub-questions:\n{Qd+10 , ...,Q d+1 n } = QG(Qd,ti , H d,t i ,C, PQG), (2)\nwhere n < nm. Intuitively, the sub-questions should be simpler than Qd,ti and more likely to be answered by the QA module with high confidence."
+        },
+        {
+            "heading": "3.2.3 QA-to-Hint (QA2H) Module",
+            "text": "Since the answers to sub-questions may not be selfcontained, we further design a QA-to-Hint module (QA2H) to merge each sub-question with its answer into a statement. Specifically, we feed the subquestion Qd,ti and its answer A d,t i to an LLM with the prompt PQA2H which asks the LLM to rewrite the question to a statement by incorporating the answer:\nH\u0303d = QA2H(Qd,ti , A d,t i , PQA2H), (3)"
+        },
+        {
+            "heading": "4 SOCRATIC QUESTIONING for Few-Shot",
+            "text": "Multimodal Reasoning\nSOCRATIC QUESTIONING can be naturally applied to text-based complex reasoning tasks as all the key components are based on large language models, such as ChatGPT. There are two critical challenges when applying SOCRATIC QUESTIONING to multimodal reasoning: (1) the language model cannot process visual information, and (2) simply applying a generic captioning model to convert visual content to natural language may not capture the key information required to answer a question.\nConverting Visual Information into Context We propose to leverage LLMs to answer visual questions since some of the visual questions are knowledge-demanding (Marino et al., 2019; Schwenk et al., 2022) and LLMs are capable of storing commonsense knowledge and excel in complex reasoning tasks (Brown et al., 2020; Wei et al., 2022; Wang et al., 2023). To overcome the LLMs\u2019\nshortcomings that they cannot perceive visual information, previous works (Yang et al., 2022; Zeng et al., 2022) leverage an image captioning model to convert visual information into text and use LLMs to perform few-shot visual question answering (VQA) tasks. However, considering the richness and density of the information contained in an image, a generic caption may not be able to capture the key information that is necessary to answer a question. Thus, in order to adapt our SOCRATIC QUESTIONING, we employ a visual perception model, BLIP-2 (Li et al., 2023), to describe the content of the image that is specific to a prompt. The input to BLIP-2 is an image I (i.e., the image input of the VQA task) and a text prompt Q, and the output is an image caption C describing the part of the image related to the prompt: C = BLIP-2(I,Q), where the text prompt Q corresponds to Qd in Equation (1) and the caption C corresponds to the context C in Equation (1). By leveraging the visual perception model, we are able to resolve the hindrance and adopt our SOCRATIC QUESTIONING framework on VQA. We show more details on how we adapt SOCRATIC QUESTIONING to VQA in Appendix A."
+        },
+        {
+            "heading": "5 Experiment Setups",
+            "text": "Language-Only Tasks We leverage ChatGPT as the LLM for QA, QG, and QA2H modules, and provide detailed prompts for each module in Appendix K. We evaluate SOCRATIC QUESTIONING on several complex reasoning tasks, including the Physics and Chemistry tasks in Massive Multitask Language Understanding (MMLU) (Hendrycks et al., 2020), Mathematical tasks in MATH (Hendrycks et al., 2021), and logical reasoning tasks based on LogiQA (Liu et al., 2020). We adopt several state-of-the-art prompting methods as baselines, including Standard Prompting (SP) that directly prompts ChatGPT to answers a question with a few in-context examples. Chain-of-Thought (CoT) (Wei et al., 2022), Self-Consistency Chain-of-Thought (SCCoT) (Wang et al., 2023), and Tree-of-Thought (ToT) (Yao et al., 2023). Following previous studies (Chowdhery et al., 2023; Hoffmann et al., 2022), we use exact match to measure the accuracy for all language-only tasks. More details for the baselines, evaluation metrics, and evaluation datasets are discussed in Appendix C.1.\nMultimodal Tasks We use blip2-flan-t5-xl as our Visual Perception module. We leverage ChatGPT (OpenAI, 2022) for Factual/Visual Question Generation and Factual Question Answering and GPT-3 (GPT-3-davinci-003) for Visual Question Answering3, motivated by the observation that ChatGPT tends to be excessively cautious and neutral, and avoids answering some questions. We provide detailed sample prompts for each module in Appendix K. We evaluate SOCRATIC QUESTIONING on several visual question answering datasets, including VQA-V2 (Goyal et al., 2017), OK-VQA (Marino et al., 2019) and AOKVQA (Schwenk et al., 2022), and compare our approach with several baselines, including BLIP2 (Li et al., 2023) and. PICa (Yang et al., 2022). More details for implementation, baselines, and datasets are discussed in Appendix C.2. For evaluation, we employ the conventional VQA accuracy metric (Goyal et al., 2017) to measure the performance. To alleviate stringent penalization for minor discrepancies between predicted answers and ground truth, we normalize the answers by converting plural forms to singular forms and changing the tense of verbs to present tense. In addition, to address the conventional metric\u2019s limitation due to synonyms and expression differences, we design semantic-based accuracy by employing ChatGPT to evaluate the correctness of the predicted answers (Fu et al., 2023; Liu et al., 2023b). We provide ChatGPT with the visual question, the predicted answer and the ground-truth answer, and ask if the ground-truth answer and the predicted answer can support each other. If the answer is \"Yes\", we treat the predicted answer as correct. We show the exact prompts used for ChatGPT in Appendix K.8."
+        },
+        {
+            "heading": "6 Results and Discussions",
+            "text": ""
+        },
+        {
+            "heading": "6.1 Quantitative Results",
+            "text": "Language-only Tasks Table 1 shows the quantitative results in terms of accuracy for languageonly reasoning tasks. Our method substantially outperforms previous state-of-the-art methods by 4.34%, 2.98%, 4.22%, and 4.66% absolute gains in MATH, Physics, Chemistry, and Logic benchmarks, respectively. This effectively demonstrates the superiority of our approach. We also conduct an experiment on how the maximum number of turns tm affects the performance. Specifically, we experiment with the setting where tm = 2 (2-Turns)\n3These components are detailed in Appendix A.\nand tm = 3 (3-Turns). From Table 1, the model with maximum 2 turns achieves better performance on Physics and LogiQA datasets, while the model with tm = 3 performs better on the MATH dataset. One possible reason is that the Physics and LogiQA benchmarks may not be challenging enough and reasoning within 2 turns is sufficient to answer most of the questions. We provide a concrete example in Appendix G.1.\nMultimodal Tasks Table 2 and 3 show the quantitative results using traditional VQA accuracy and semantic-based accuracy, respectively. For both results, our SOCRATIC QUESTIONING method outperforms the previous state-of-the-art approaches\non most benchmarks, often by a large margin. The only exception is semantic-based accuracy on the VQA-V2 dataset. A possible reason is that the tasks on VQA-V2 focus more on the visual recognition and detection aspect and do not require much reasoning capability and external knowledge."
+        },
+        {
+            "heading": "6.2 Qualitative Result",
+            "text": "Language-only Tasks Figure 4 shows the qualitative results of SOCRATIC QUESTIONING and baselines on the Physics task. As one can observe, SOCRATIC QUESTIONING can effectively prompt hints containing the necessary information to solve the original problem and selectively use the hints to reach the correct final answer. On the other hand, CoT and ToT reach the wrong answer due to the\npoorly sampled reasoning path.\nMultimodal Tasks Figure 5 shows several examples of few-shot VQA tasks from the baselines and SOCRATIC QUESTIONING. We demonstrate that the hints acquired via the sub-problems are highly related to the original problem (e.g., \"weather conditions are cold\"), and by considering the collected hints, the SOCRATIC QUESTIONING reaches the correct final answer (e.g., \"warmth\"). In contrast, the answer from BLIP-2 is irrelevant to the given question, due to the generic caption."
+        },
+        {
+            "heading": "6.3 How do the Numbers of Turns and Depths Affect the Model?",
+            "text": ""
+        },
+        {
+            "heading": "Performance Breakdown w/ Number of Turns",
+            "text": "To study how the number of reasoning turns affects the performance across different benchmarks, we investigate how the baselines and our method per-\nStandard-Prompting CoT SC-CoT ToT SOCRATIC QUESTIONING (2-Turns) SOCRATIC QUESTIONING (3-Turns)\nform on the examples that triggered 2 and 3 turns of reasoning by SOCRATIC QUESTIONING in Figure 6 and Figure 7, respectively. This experiment can be considered as breaking down the results in Table 1 into two groups based on the number of reasoning turns. From Figure 6, our approach outperforms the baselines on all benchmarks except for the MATH dataset. From Figure 7, our approach outperforms the baselines on relatively challenging tasks such as MATH but performs more poorly on easier tasks such as Physics. This indicates SOCRATIC QUESTIONING with more turns can tackle challenging problems more effectively.\nThe Effect of Hyperparameters tm and dm In addition to the discussion in 6.1, we conduct a more in-depth analysis of how the maximum number of turns tm and maximum number of depths dm affect the performance of our SOCRATIC QUESTIONING. In Figure 8, we show the heat map under different hyperparameter settings, where the number in each cell is the accuracy (%) given a specific combination of tm and dm. We observe two general trends: (1) the accuracy increases when tm gets larger, and\n(2) the accuracy decreases when dm gets larger. These results imply that our approach can benefit from raising more questions directly related to the original question. Also, performing reasoning with a larger maximum depth does not yield better performance since the benchmark may not be challenging enough, and exploring at a deeper level may introduce irrelevant information. We provide a concrete example in Appendix G.2. In addition, we analyze the computational cost of SOCRATIC QUESTIONING compared to other baselines in Appendix H, and show that while achieving stronger performance, our proposed algorithm enjoys higher efficiency than most of baselines."
+        },
+        {
+            "heading": "6.4 How does the Difficulty of Questions Affect the Model?",
+            "text": "Table 4 presents the averaged numbers of hints and depth used to answer the original questions for correct and incorrect answers. As one can observe, for incorrect answers, the LLM raises more sub-questions, which demonstrates that the LLM tends to explore more thinking space when tackling questions that it does not know the answers. This trend also agrees with the depth. If the question is hard for the LLM, the model tends to break the sub-questions into even more basic questions."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "We present SOCRATIC QUESTIONING, a novel divide-and-conquer fashion algorithm that is inspired by human\u2019s recursive thinking processes. SOCRATIC QUESTIONING consists of a top-down reasoning phase that decomposes a complex problem into simpler sub-problems and a bottom-top phase where the solutions to the sub-problems are recursively returned and used to solve the original problem at higher levels. Extensive experiments\non four challenging language-only tasks and the few-shot VQA task validate the effectiveness of our SOCRATIC QUESTIONING. Moreover, qualitative analysis demonstrates our approach can effectively elicit intermediate reasoning steps and consequently yield a correct final answer while enjoying transparency and interpretability."
+        },
+        {
+            "heading": "Limitation",
+            "text": "The self-checking functionality lacks sufficient sensitivity to incorrect responses, as its confidence estimation heavily relies on LLMs themselves. While we employed ChatGPT as the backbone for our algorithm, its tendency towards overconfidence leads to a low frequency of sub-question generation.\nOur study exhibits a lack of diversity in visual models used to extract information from images. We only use BLIP-2 (Li et al., 2023) as an image caption model in current experiments. However, the incorporation of diverse visual models, such as dense caption models, Optical Character Recognition (OCR), or scene graph models, may potentially yield a broader spectrum of image information, thus facilitating the resolution of subquestions. In addition, to help BLIP-2 to better follow instructions from LLMs, we propose to leverage recent techniques developed in visual instruction tuning (Liu et al., 2023a; Xu et al., 2023b,a; Dai et al., 2023).\nAdditionally, our experiments were constrained to the English language datasets and we only consider the VQA task to showcase the multi-modal performance. However, given the generality of our algorithm, we plan to test its functionality with multilingual datasets and experiment it on other domains, such as speech (You et al., 2020, 2022), and video (Rose et al., 2023)."
+        },
+        {
+            "heading": "Acknowledgments",
+            "text": "This research is based upon work supported by the U.S. DARPA ECOLE Program # HR001122S0052. The views and conclusions contained herein are those of the authors and should not be interpreted as necessarily representing the official policies, either expressed or implied, of DARPA or the U.S. Government. The U.S. Government is authorized to reproduce and distribute reprints for governmental purposes notwithstanding any copyright annotation therein."
+        },
+        {
+            "heading": "A Adapting SOCRATIC QUESTIONING to",
+            "text": "Visual Question Answering\nQuestion-Generation (QG) Module Some tasks (e.g., OK-VQA, AOK-VQA) require commonsense knowledge. Although LLMs can retrieve knowledge from its parameter, they are prone to hallucination and the black-box retrieving process is hard to debug. In order to gain a clear understanding of the factual knowledge used in answering a question, we divide the QG module in Section 3.2.2 into two sub-modules: A Fact-Question-Generation (FQG) sub-module which generates factual questions related to background knowledge of the given question, and a Visual-Question-Generation (VQG) submodule generates visual questions, which aims to guide the Visual Perception module to focus on question-related image regions and seek more image information.\nQuestion-Answering (QA) Module To accommodate the two question types, we also divide the QA module in section 3.2.1 into two submodules: A Factual-Question-Answering module (FQA) and a Visual-Question-Answering module (VQA). Both FQA and VQA modules follow the same formulation in Equation (1). The input C to VQA is the caption related to the question Qd and is prompted via the Equation of BLIP-2.\nSELF-QUESTIONING Figure 9 demonstrates the detailed step of the SELF-QUESTIONING algorithm in the multimodal setting. At depth d, SELFQUESTIONING algorithm takes in a visual question Qd which can be the original visual question (d = 0) or a sub-question generated by VQG, a question-related caption C, and hints Hd (if it is available), and try to generate an answer Ad via VQA. If the confidence level of Ad is not high, the SELF-QUESTIONING algorithm starts to raise sub-questions. First, the FQG module takes in Qd, context C, and hints Hd as input and raises a set of factual questions Qf . Each question in Qf is answered by the FQA module and we denote the answer as Af . Each Qf and its answer Af is mearged into a factual statement hf via the QA2H module\nand the statement is appended to hints Hd to form Hd+1. Second, the VQG module takes in Qd, context C, and hints Hd+1 and raises a set of visual questions Qd+1.\nB Visualization of Recursive Thinking Process\nFigure 10 shows a complete recursive thinking process of our SOCRATIC QUESTIONING method. It involves 4 additional questions to acquire additional information to answer the target question. From this example, we see that LLMs, such as GPT-3 or ChatGPT, have strong capabilities not only in reasoning but also self-questioning. Given the target question to be answered, \u201cWhy are the children wearing hats?\u201d, LLMs are able to proactively acquire additional commonsense knowledge through factual questions, e.g., \u201cWhat are the common reasons why children wear hats?\u201d, and finegrained visual information from the input image, e.g., \u201cWhat\u2019s the position of the sun in the sky at the time the children are shown wearing hats\u201d, \u201cAre the weather conditions in the image cold or hot\u201d. By combining the additional knowledge, e.g., \u201ccold weather makes people wear hats\u201d and visual information, e.g., \u201cit is cold\u201d, acquired from the recursive Self-Questioning process, the model finally achieves the answer \u201cwarmth\u201d. This analysis demonstrates that the recursive thinking process of our approach is highly transparent and interpretable.\nC Implementation Details"
+        },
+        {
+            "heading": "C.1 Language-only Tasks",
+            "text": "Implementation Details We leverage ChatGPT (OpenAI, 2022) as the LLM for QA, QG, and QA2H modules. We provide detailed prompts for each module in Appendix K.\nBaselines Standard Prompting (SP) prompts ChatGPT to directly answers a question with a few in-context examples. Chain-of-Thought (CoT) (Wei et al., 2022) prompts ChatGPT to first generate the thinking process and then generate the answer. We also add the thinking process into the in-context examples. Self-Consistency Chain-ofThought (SC-CoT) (Wang et al., 2023) proposes to run chain-of-thought multiple times on ChatGPT and marginalize the thinking process by taking the most consistent answer. Tree-of-Thought (ToT) (Yao et al., 2023) is a recently proposed\nframework for improving the reasoning capability of language models. We follow their implementation 4 which leverages tree-search algorithms to explore the thinking space and select the best thinking path. 5\nEvaluation Metrics For a fair comparison, we use exact match and measure the accuracy for all language-only tasks following previous works (Chowdhery et al., 2023; Hoffmann et al., 2022).\nAll questions in MMLU Physics, MMLU Chemistry, and LogiQA are multiple-choice questions and the answer is always a single letter like \u201cA\u201d, \u201cB\u201d or \u201cC\u201d. To easily parse the model\u2019s final output, we use \u201cThus, the final answer is:\u201d as the prefix for the final answers (A or B or C or D, ect.) in the incontext examples for all methods. When we parse the output, we first run a template-based method to extract the answers after \u201cThus, the final answer is:\u201d. For a few instances (12.52% in CoT, 16.4% in ToT and 11.64% in Socratic Questioning on average) that do not match the template as shown in Figure 4 ToT, the authors manually compare the model\u2019s predictions to the ground truth answers. Thus, we assure that the final performance of all methods is not affected by the output formats."
+        },
+        {
+            "heading": "Datasets Massive Multitask Language Under-",
+            "text": "standing (MMLU) (Hendrycks et al., 2020) dataset contains 57 diverse tasks and is used to measure the model\u2019s complex reasoning capability. In this work, we use the physics and chemistry tasks which contain conceptual physics and chemistry multiple-choice questions, respectively. MATH (Hendrycks et al., 2021) dataset consists of challenging competition-level mathematics problems which require strong mathematical reasoning ability. LogiQA (Liu et al., 2020) dataset contains expert-written questions for testing the logical reasoning capability of humans. For each task, we use the validation set to make design decisions and measure the model\u2019s performance on the test set. The detailed statistics of all datasets can be found in Table 5.\n4https://github.com/kyegomez/ tree-of-thoughts\n5By the time we submit the work, we don\u2019t have access to GPT4 so we use ChatGPT for ToT."
+        },
+        {
+            "heading": "C.2 Multimodal Tasks",
+            "text": "Implementation Details We use blip2-flan-t5xl6 as our Visual Perception module. We leverage ChatGPT (OpenAI, 2022) for the FQG, VQG, and FQA modules and GPT-3 (GPT-3-davinci-003) for the VQA module. This decision is motivated by the observation that ChatGPT tends to be excessively cautious and neutral, and avoids answering some questions. We provide detailed sample prompts for each module in Appendix K.\nBaselines BLIP-2 (Li et al., 2023) is a pretrained vision-language model that leverages an efficient and generic pre-training strategy and is able to follow text prompts. We use the released blip2-flan-t5-xl checkpoint. PICa (Yang et al., 2022) prompts GPT-3 with generic image captions to solve VQA in an in-context learning manner. In our experiments, we implement PICa by using blip2-flan-t5-xl as the image captioning model and GPT-3-davinci-003 as the LLM.\nEvaluation Metrics We employ the conventional VQA accuracy metric (Goyal et al., 2017) to measure the performance. To alleviate stringent penalization for minor discrepancies between predicted answers and ground truth, we normalize the answers by converting plural forms to singular forms and changing the tense of verbs to present tense. In addition, to address the limitation due to synonyms and expression differences, we employ ChatGPT to evaluate the correctness of the predicted answers (Fu et al., 2023; Liu et al., 2023b). We provide ChatGPT with the visual question, the predicted answer and the ground-truth answer, and ask if the ground-truth answer and the predicted answer can support each other. If the answer is \"Yes\", we treat the predicted answer as correct. We show the exact prompts used for ChatGPT in Appendix K.8.\nDatasets VQA-V2 (Goyal et al., 2017) is a dataset containing open-ended questions about images. OK-VQA (Marino et al., 2019) requires\n6https://huggingface.co/Salesforce/ blip2-flan-t5-xl\nmodel to leverage external knowledge to answer visual questions. AOK-VQA (Schwenk et al., 2022) is an augmented successor of OK-VQA, which require commonsense knowledge and strong reasoning capabilities to answer its questions. For each task, we use the validation set to make design decisions and measure the model\u2019s performance on the test set. The detailed statistics of all datasets can be found in Table 6 and Appendix E."
+        },
+        {
+            "heading": "D SELF-QUESTIONING in the",
+            "text": "Multimodal Setting\nSee Figure 9."
+        },
+        {
+            "heading": "E Data Leakage in BLIP-2 and GPT-3",
+            "text": "In our preliminary experiments, we discovered an issue that pre-trained models could be subject to data leakage during their pre-training stage. We observed that the baseline models (i.e., BLIP-2 and GPT-3) achieved unjustifiably high performance across all three VQA datasets even without taking images as inputs (see Table 7). To address this issue, we applied a filtering process to remove such contaminated instances. We first test the BLIP-2 and GPT-3 on zero-shot VQA tasks while replacing the original input image with an image composed entirely of black pixels of the same size. Then, we only retain the samples where the models failed to yield a correct answer when the original image is not given. After the filtering, we adopt the 500, 462, and 444 test samples for VQA-V2, OK-VQA, and AOK-VQA, respectively. We use these clean examples for the evaluation throughout the rest of our experiments.\nF Visualization of Complete SOCRATIC QUESTIONING\nSee Figure 10."
+        },
+        {
+            "heading": "G Concrete Example",
+            "text": ""
+        },
+        {
+            "heading": "G.1 Large Maximum Number of Turn",
+            "text": "Due to the calibration error in LLMs (Jiang et al., 2021), sometimes the pre-trained model\u2019s confidence is not aligned with the answer\u2019s correctness. Thus, in such cases, the model predicts \u201clow\u201d or \u201cmedium\u201d confidence in correct answers in the early turns and hence misses the correct answers. If we use fewer turns, we can keep the answer in the early turn regardless of the confidence and hence alleviate the calibration error. Below we show a concrete example in which the model predicts the correct answer in 2 turns and predicts the incorrect answer in 3 turns. When we increase the number of turns, Socratic Questioning may raise some less relevant sub-questions and hence introduce noisy information in the reasoning process. This noisy information can confuse the model, leading to incorrect responses to the original question. For example, consider a simple physics question:\nThe speed of sound is slightly greater on a [ \"A. cold day\", \"B. hot day\", \"C. day with steady temperature\", \"D. None of these\"]?\nIn a 2-turn setting, our approach obtains hints: (1) \"The speed of sound increases with increasing temperature.\", and (2) \"Humidity is a factor in the speed of sound.\" According to the hints, it is obvious that the correct answer is B, which is chosen by\nour approach in the second turn with the \"middle\" confidence. In a 3-turn setting, since the LLM does not assign \u201chigh\u201d confidence to the answer in the 2 turn, our approach goes deeper in the third turn and gets more information (e.g., (3) \"The speed of sound can be affected by several factors, including temperature, humidity and density of the medium.\", (4) \"The speed of sound depends on the density and elasticity of the medium it is traveling through, in terms of physical properties.\", (5) \"The speed of sound increases with humidity as a result of increased air density.\") As a result, by considering more hints, we potentially introduce less relevant information to the LLM and the noisy information causes the LLM to change its answer to D."
+        },
+        {
+            "heading": "G.2 Large Maximum Number of Depth",
+            "text": "We observe that as the depth increases, the context information in the original questions start to vanish and the answers to the sub-questions may be inaccurate in the context of the original question. Thus, by adding the answers to sub-question in larger depth as hints, we can introduce noises to the reasoning process of the LLM which results in wrong answers. Consider a physics question example:\nWhen a spinning system contracts in the absence of an external torque, its rotational speed increases, and its angular momentum [ A. decreases, B. increases, C. remains unchanged, D. may increase or decrease ]\"?\nSocratic Questioning raises a sub-question: \"What affects the rotational speed of a spinning system?\" The initial answer to this sub-question\nis \u201cConservation of angular momentum\u201d, which provides enough information to answer the original question. In a larger depth setting, the Socratic Questioning raises a deeper sub-question: \u201cWhat is the relationship between rotational speed and angular momentum in a spinning system?\u201d The answer to this question is: \u201cThe angular momentum is directly proportional to the rotational speed\u201d. Incorporate this hint, the Socratic Questioning changes the answer of the first sub-question to: \u201cThe angular momentum is directly proportional to the rotational speed.\u201d, which results in an incorrect final answer B."
+        },
+        {
+            "heading": "H Evaluation of Computational Cost",
+            "text": "In Table 8, we provide the theoretical number of calls in CoT, SC-CoT, ToT and Socratic Questioning in 2 and 3 turns settings. We also provide the empirical results of the average number of calls per instance and average running time per instance in seconds for all methods. For SC-CoT, we fix the number of calls to 20 times on all the datasets based on the performance curve in (Wang et al., 2023). In ToT, k represents the number of thoughts allowed to be generated per step, T represents the maximum number of steps and b represents the maximum number of states to keep at each step in BFS. Following (Yao et al., 2023), we set k=5, T=3, and b=4. In Socratic Questioning, q represents the maximum number of raised sub-questions for a parent node.\nAs one can observe, Socratic Questioning with 2 turns and 3 turns achieves better efficiency compared to SC-CoT and ToT. The main reason is that, in the experimental datasets, most questions do not require a large amount of thinking steps to reach the correct answers. Socratic Questioning, adaptively raises sub-questions based on the complexity of the original question and arrives at the correct answer without reaching the theoretical maximum number of turns or depth. In contrast, both SCCOT and ToT employ fixed settings for the number of thoughts generated per step. For relatively straightforward questions, these fixed settings introduce high computational overhead, making the algorithms less efficient in these questions."
+        },
+        {
+            "heading": "I Experimental Results on Other QA and Math Datasets",
+            "text": "Table 9 provides the performance of our method and two strong baselines on GSM8K and Strate-\ngyQA datasets. As one can observe, our method has significant performance improvement compared to baselines. We use ChatGPT with temperature 0.7 for all methods. For SC-CoT, we sample 20 reasoning paths.\nWe tried our best to reproduce the results of CoT and SC-CoT reported in (Wang et al., 2023) on StrategyQA. Following (Wang et al., 2022), we use the question-only set from BIG-bench collaboration (2021) and use the exact same prompt template and in-context examples in SC-CoT. However, we cannot reproduce the results on StrategyQA in (Geva et al., 2021) since Code-davinci-002 and Code-davinci-001 are no longer publicly available. In addition, our results of ChatGPT on StrategyQA also agree with more recent studies in (Qin et al., 2023)."
+        },
+        {
+            "heading": "J Experiment Results based on GPT-4",
+            "text": "To showcase the generalizability of our approach, we have run CoT and Socratic Questioning on MMLU Chemistry and LogiQA based on GPT4. The experimental results show that our Socratic Questioning approach still significantly outperforms CoT."
+        },
+        {
+            "heading": "K Prmopt Templates",
+            "text": "To make our method generalize to other reasoning domains, we carefully design in-context demonstrations to guide the LLM to generate more basic sub-questions in an efficient manner. More concretely, to create high-quality sub-questions in the in-context examples, we take the human reasoning process and domain knowledge into account and carefully annotate the sub-questions by ensuring that they are more basic questions compared to the original question and their solutions can contribute to the reasoning process of the original questions. For examples of sub-questions, please refer to Figure 12. Based on our experiments in math, physics, chemistry and VQA domains, we argue that with a few examples (5 in all our experiments) SocraticQuestioning can generalize to a new domain.\nFollowing (Kadavath et al., 2022), we ask the LLM itself to output a confidence level, \u201chigh\u201d, \u201cmiddle\u201d, or \u201clow\u201d, towards its answer. In the incontext demonstrations, we label the correct answers with supportive hints in the context as \u201chigh\u201d confidence, label the correct answers without supportive hints as \u201cmiddle\u201d confidence, and label incorrect answers as \u201clow\u201d confidence. In this way,\nStandardPrompting CoT SCCoT\nToT Socratic Questioning (2 turns) Socratic Questioning (3 turns)\nTheoretical Number of Calls 1 1 20 k + b*k*(T-1) 3\u00d7 \u2211d\u22121 i=1 [q\u00d7 (t\u22121)]i 3\u00d7 \u2211d\u22121\ni=1 [q\u00d7 (t\u22121)]i Avg. Calls per Instance 1 1 20 31.1 9.22 18.7 Avg. Running Time per Instance (second) 0.33 3.35 67.09 77.99 34.15 53.65\nTable 8: Evaluation of computational cost of different methods.\nwe can guide the model to align its confidence to the correctness of the predicted answers. Our algorithm will continue raising sub-questions if the estimated confidence is not \u201chigh\u201d. Please refer to Figure 11 for more examples."
+        },
+        {
+            "heading": "K.1 Prompts template of QA module",
+            "text": "See Figure 11."
+        },
+        {
+            "heading": "K.2 Prompts template of QG module",
+            "text": "See Figure 12."
+        },
+        {
+            "heading": "K.3 Prompts template of FQG",
+            "text": "See Figure 13."
+        },
+        {
+            "heading": "K.4 Prompts template of FQA",
+            "text": "See Figure 14."
+        },
+        {
+            "heading": "K.5 Prompts template of VQG",
+            "text": "See Figure 15."
+        },
+        {
+            "heading": "K.6 Prompts template of VQA",
+            "text": "See Figure 16 and 17."
+        },
+        {
+            "heading": "K.7 Prompts template of QA-to-Hint",
+            "text": "See Figure 18.\nK.8 Prompt for chatGPT for semantic-based accuracy evaluation\nSee Figure 19."
+        }
+    ],
+    "title": "The Art of SOCRATIC QUESTIONING: Recursive Thinking with Large Language Models",
+    "year": 2023
+}

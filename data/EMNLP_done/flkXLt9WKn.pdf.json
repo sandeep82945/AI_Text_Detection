@@ -1,0 +1,797 @@
+{
+    "abstractText": "Human-like chatbots necessitate the use of commonsense reasoning in order to effectively comprehend and respond to implicit information present within conversations. Achieving such coherence and informativeness in responses, however, is a non-trivial task. Even for large language models (LLMs), the task of identifying and aggregating key evidence within a single hop presents a substantial challenge. This complexity arises because such evidence is scattered across multiple turns in a conversation, thus necessitating integration over multiple hops. Hence, our focus is to facilitate such multi-hop reasoning over a dialogue context, namely dialogue chain-of-thought (CoT) reasoning. To this end, we propose a knowledge distillation framework that leverages LLMs as unreliable teachers and selectively distills consistent and helpful rationales via alignment filters. We further present DOCTOR, a DialOgue Chain-of-ThOught Reasoner that provides reliable CoT rationales for response generation1. We conduct extensive experiments to show that enhancing dialogue agents with high-quality rationales from DOCTOR significantly improves the quality of their responses2.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Hyungjoo Chae"
+        },
+        {
+            "affiliations": [],
+            "name": "Yongho Song"
+        },
+        {
+            "affiliations": [],
+            "name": "Kai Tzu-iunn Ong"
+        },
+        {
+            "affiliations": [],
+            "name": "Taeyoon Kwon"
+        },
+        {
+            "affiliations": [],
+            "name": "Minjin Kim"
+        },
+        {
+            "affiliations": [],
+            "name": "Youngjae Yu"
+        },
+        {
+            "affiliations": [],
+            "name": "Dongha Lee"
+        },
+        {
+            "affiliations": [],
+            "name": "Dongyeop Kang"
+        },
+        {
+            "affiliations": [],
+            "name": "Jinyoung Yeo"
+        }
+    ],
+    "id": "SP:804e4ab91452a49a7e01ba617105d62d15a4ad6d",
+    "references": [
+        {
+            "authors": [
+                "Forough Arabshahi",
+                "Jennifer Lee",
+                "Antoine Bosselut",
+                "Yejin Choi",
+                "Tom Mitchell"
+            ],
+            "title": "Conversational multi-hop reasoning with neural commonsense",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Antoine Bosselut",
+                "Hannah Rashkin",
+                "Maarten Sap",
+                "Chaitanya Malaviya",
+                "Asli Celikyilmaz",
+                "Yejin Choi."
+            ],
+            "title": "Comet: Commonsense transformers for automatic knowledge graph construction",
+            "venue": "Proceedings of ACL.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Proceedings of NeurIPS",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Leyang Cui",
+                "Yu Wu",
+                "Shujie Liu",
+                "Yue Zhang",
+                "Ming Zhou."
+            ],
+            "title": "Mutual: A dataset for multi-turn dialogue reasoning",
+            "venue": "Proceedings of ACL.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Silin Gao",
+                "Jena D. Hwang",
+                "Saya Kanno",
+                "Hiromi Wakaki",
+                "Yuki Mitsufuji",
+                "Antoine Bosselut."
+            ],
+            "title": "ComFact: A benchmark for linking contextual commonsense knowledge",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2022, pages",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Deepanway Ghosal",
+                "Siqi Shen",
+                "Navonil Majumder",
+                "Rada Mihalcea",
+                "Soujanya Poria."
+            ],
+            "title": "CICERO: A dataset for contextualized commonsense inference in dialogues",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Computational",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Deepanway Ghosal",
+                "Siqi Shen",
+                "Navonil Majumder",
+                "Rada Mihalcea",
+                "Soujanya Poria."
+            ],
+            "title": "Cicero: A dataset for contextualized commonsense inference in dialogues",
+            "venue": "Proceedings of ACL.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jena D Hwang",
+                "Chandra Bhagavatula",
+                "Ronan Le Bras",
+                "Jeff Da",
+                "Keisuke Sakaguchi",
+                "Antoine Bosselut",
+                "Yejin Choi."
+            ],
+            "title": "comet-) atomic 2020: On symbolic and neural commonsense knowledge graphs",
+            "venue": "Proceedings of the AAAI Conference on Artificial",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jaehun Jung",
+                "Lianhui Qin",
+                "Sean Welleck",
+                "Faeze Brahman",
+                "Chandra Bhagavatula",
+                "Ronan Le Bras",
+                "Yejin Choi."
+            ],
+            "title": "Maieutic prompting: Logically consistent reasoning with recursive explanations",
+            "venue": "Proceedings of EMNLP.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Minki Kang",
+                "Seanie Lee",
+                "Jinheon Baek",
+                "Kenji Kawaguchi",
+                "Sung Ju Hwang."
+            ],
+            "title": "Knowledgeaugmented reasoning distillation for small language models in knowledge-intensive tasks",
+            "venue": "arXiv preprint.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hyunwoo Kim",
+                "Jack Hessel",
+                "Liwei Jiang",
+                "Ximing Lu",
+                "Youngjae Yu",
+                "Pei Zhou",
+                "Ronan Le Bras",
+                "Malihe Alikhani",
+                "Gunhee Kim",
+                "Maarten Sap"
+            ],
+            "title": "2022a. Soda: Million-scale dialogue distillation with social commonsense contextualization",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Seungone Kim",
+                "Se June Joo",
+                "Hyungjoo Chae",
+                "Chaehyeong Kim",
+                "Seung-won Hwang",
+                "Jinyoung Yeo."
+            ],
+            "title": "Mind the gap! injecting commonsense knowledge for abstractive dialogue summarization",
+            "venue": "Proceedings of the 29th International Conference",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Brian Lester",
+                "Rami Al-Rfou",
+                "Noah Constant."
+            ],
+            "title": "The power of scale for parameter-efficient prompt tuning",
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing, pages 3045\u20133059, Online and Punta Cana, Domini-",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Siheng Li",
+                "Wangjie Jiang",
+                "Pengda Si",
+                "Cheng Yang",
+                "Qiu Yao",
+                "Jinchao Zhang",
+                "Jie Zhou",
+                "Yujiu Yang."
+            ],
+            "title": "Enhancing dialogue generation with conversational concept flows",
+            "venue": "Findings of the Association for Computational Linguistics: EACL 2023, pages 1484\u2013",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yanran Li",
+                "Hui Su",
+                "Xiaoyu Shen",
+                "Wenjie Li",
+                "Ziqiang Cao",
+                "Shuzi Niu."
+            ],
+            "title": "Dailydialog: A manually labelled multi-turn dialogue dataset",
+            "venue": "Proceedings of IJCNLP.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin."
+            ],
+            "title": "ROUGE: A package for automatic evaluation of summaries",
+            "venue": "Text Summarization Branches Out, pages 74\u201381, Barcelona, Spain. Association for Computational Linguistics.",
+            "year": 2004
+        },
+        {
+            "authors": [
+                "Jiacheng Liu",
+                "Alisa Liu",
+                "Ximing Lu",
+                "Sean Welleck",
+                "Peter West",
+                "Ronan Le Bras",
+                "Yejin Choi",
+                "Hannaneh Hajishirzi."
+            ],
+            "title": "Generated knowledge prompting for commonsense reasoning",
+            "venue": "Proceedings of the 60th Annual Meeting of the Association for Compu-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Junpeng Liu",
+                "Yanyan Zou",
+                "Hainan Zhang",
+                "Hongshen Chen",
+                "Zhuoye Ding",
+                "Caixia Yuan",
+                "Xiaojie Wang."
+            ],
+            "title": "Topic-aware contrastive learning for abstractive dialogue summarization",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2021,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Junpeng Liu",
+                "Yanyan Zou",
+                "Hainan Zhang",
+                "Hongshen Chen",
+                "Zhuoye Ding",
+                "Caixia Yuan",
+                "Xiaojie Wang."
+            ],
+            "title": "Topic-aware contrastive learning for abstractive dialogue summarization",
+            "venue": "Findings of EMNLP.",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov."
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "venue": "arXiv preprint.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "WeiJing Zhu."
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics, pages 311\u2013318, Philadelphia,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Baolin Peng",
+                "Michel Galley",
+                "Pengcheng He",
+                "Hao Cheng",
+                "Yujia Xie",
+                "Yu Hu",
+                "Qiuyuan Huang",
+                "Lars Liden",
+                "Zhou Yu",
+                "Weizhu Chen",
+                "Jianfeng Gao"
+            ],
+            "title": "Check your facts and try again: Improving large language models with external knowledge and automated feed",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu."
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Christopher Richardson",
+                "Larry Heck."
+            ],
+            "title": "Commonsense reasoning for conversational ai: A survey of the state of the art",
+            "venue": "Knowledge Augmented Methods for Natural Language Processing Workshop at AAAI.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Viktor Schlegel",
+                "Kamen Pavlov",
+                "Ian Pratt-Hartmann"
+            ],
+            "title": "Can transformers reason in fragments of natural language",
+            "venue": "In Proceedings of EMNLP",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Siqi Shen",
+                "Deepanway Ghosal",
+                "Navonil Majumder",
+                "Henry Lim",
+                "Rada Mihalcea",
+                "Soujanya Poria"
+            ],
+            "title": "Multiview contextual commonsense inference: A new dataset and task",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Vered Shwartz",
+                "Peter West",
+                "Ronan Le Bras",
+                "Chandra Bhagavatula",
+                "Yejin Choi."
+            ],
+            "title": "Unsupervised commonsense question answering with self-talk",
+            "venue": "Proceedings of EMNLP.",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Kai Sun",
+                "Dian Yu",
+                "Jianshu Chen",
+                "Dong Yu",
+                "Yejin Choi",
+                "Claire Cardie."
+            ],
+            "title": "DREAM: A challenge data set and models for dialogue-based reading comprehension",
+            "venue": "Transactions of the Association for Computational Linguistics, 7:217\u2013231.",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Peifeng Wang",
+                "Zhengyang Wang",
+                "Zheng Li",
+                "Yifan Gao",
+                "Bing Yin",
+                "Xiang Ren."
+            ],
+            "title": "Scott: Selfconsistent chain-of-thought distillation",
+            "venue": "Proceedings of ACL.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xuezhi Wang",
+                "Jason Wei",
+                "Dale Schuurmans",
+                "Quoc V Le",
+                "Ed H. Chi",
+                "Sharan Narang",
+                "Aakanksha Chowdhery",
+                "Denny Zhou."
+            ],
+            "title": "Self-consistency improves chain of thought reasoning in language models",
+            "venue": "Proceedings of ICLR.",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Maarten Bosma",
+                "brian ichter",
+                "Fei Xia",
+                "Ed H. Chi",
+                "Quoc V Le",
+                "Denny Zhou"
+            ],
+            "title": "2022. Chain of thought prompting elicits reasoning in large language models",
+            "venue": "Proceedings of NeurIPS",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peter West",
+                "Chandra Bhagavatula",
+                "Jack Hessel",
+                "Jena Hwang",
+                "Liwei Jiang",
+                "Ronan Le Bras",
+                "Ximing Lu",
+                "Sean Welleck",
+                "Yejin Choi."
+            ],
+            "title": "Symbolic knowledge distillation: from general language models to commonsense models",
+            "venue": "Proceedings of",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sixing Wu",
+                "Ying Li",
+                "Ping Xue",
+                "Dawei Zhang",
+                "Zhonghai Wu."
+            ],
+            "title": "Section-aware commonsense knowledge-grounded dialogue generation with pretrained language model",
+            "venue": "Proceedings of the 29th International Conference on Computational Linguis-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sixing Wu",
+                "Ying Li",
+                "Dawei Zhang",
+                "Yang Zhou",
+                "Zhonghai Wu."
+            ],
+            "title": "Diverse and informative dialogue generation with context-specific commonsense knowledge awareness",
+            "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chao Zhao",
+                "Wenlin Yao",
+                "Dian Yu",
+                "Kaiqiang Song",
+                "Dong Yu",
+                "Jianshu Chen."
+            ],
+            "title": "Learning-by-narrating: Narrative pre-training for zero-shot dialogue comprehension",
+            "venue": "Proceedings of ACL.",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peixiang Zhong",
+                "Di Wang",
+                "Pengfei Li",
+                "Chen Zhang",
+                "Hao Wang",
+                "Chunyan Miao"
+            ],
+            "title": "Care: Commonsense-aware emotional response generation with latent concepts",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shanshan Zhong",
+                "Jinghui Qin",
+                "Zhongzhan Huang",
+                "Daifeng Li."
+            ],
+            "title": "CEM: Machine-human chatting handoff via causal-enhance module",
+            "venue": "Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, pages 3242\u20133253, Abu",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Denny Zhou",
+                "Nathanael Sch\u00e4rli",
+                "Le Hou",
+                "Jason Wei",
+                "Nathan Scales",
+                "Xuezhi Wang",
+                "Dale Schuurmans",
+                "Claire Cui",
+                "Olivier Bousquet",
+                "Quoc V Le",
+                "Ed H. Chi."
+            ],
+            "title": "Least-to-most prompting enables complex reasoning in large language models",
+            "venue": "Proceedings",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Pei Zhou",
+                "Hyundong Cho",
+                "Pegah Jandaghi",
+                "Dong-Ho Lee",
+                "Bill Yuchen Lin",
+                "Jay Pujara",
+                "Xiang Ren."
+            ],
+            "title": "Reflect, not reflex: Inference-based common ground improves dialogue response quality",
+            "venue": "Proceedings of the 2022 Conference on Empirical Meth-",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pei Zhou",
+                "Karthik Gopalakrishnan",
+                "Behnam Hedayatnia",
+                "Seokhwan Kim",
+                "Jay Pujara",
+                "Xiang Ren",
+                "Yang Liu",
+                "Dilek Hakkani-Tur."
+            ],
+            "title": "Think before you speak: Explicitly generating implicit commonsense knowledge for response generation",
+            "venue": "Proceedings",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Following Liu"
+            ],
+            "title": "2022a), we use the perplex",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ghosal"
+            ],
+            "title": "2022a) and convert the data format",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "SEP>. ChatGPT"
+            ],
+            "title": "ChatGPT is an LLM with 175B parameters based on InstructGPT (Ouyang et al., 2022)16. ChatGPT is trained to follow instructions given by users and return requested information",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 Introduction",
+            "text": "Commonsense reasoning is crucial in human conversation (Richardson and Heck, 2023). However, most conversational agents still lack commonsense reasoning, limiting their capability to engage in rich conversations with users (Arabshahi et al., 2021). Recent studies (Gao et al., 2022; Zhou et al., 2022a,b) aim to tackle this issue by generating commonsense knowledge (Hwang et al., 2021; Bosselut et al., 2019) relevant to the dialogue context, but\n\u2217Equal contribution 1We release our source code on https://github.com/ kyle8581/DialogueCoT. 2We release demonstrations of dialogue CoT reasoning in https://dialoguecot.web.app/.\nthey still suffer from limited or incorrect reasoning that leads to dull and incoherent responses, as shown on the left in Figure 1.\nThe problem lies in that commonsense reasoning in a conversation involves multi-hop reasoning. Since key evidence is scattered across and implicitly stated in multiple dialogue turns (Liu et al., 2021a; Zhao et al., 2022), it is challenging to capture all necessary information in a single hop. For example, the response on the right in Figure 1 (e.g., \u201cYou should go to ...\u201d) can only be obtained by integrating multiple implicit evidence (e.g., E1, E2, and E3) from the dialogue. The process of finding and aggregating such scattered evidence takes multiple steps, highlighting the need for multi-hop reasoning for coherent and informative responses.\nInspired by the success of Large Language Models (LLMs) (Brown et al., 2020), we formulate multi-hop commonsense reasoning as Chain-ofThought (CoT) reasoning (Wei et al., 2022) for dia-\nlogue response generation, namely Dialogue CoT. Our goal is to facilitate dialogue CoT reasoning by enabling language models to decompose commonsense reasoning into multiple steps and generate rationale as a sequence of inferred commonsense knowledge required for response generation.\nDespite their potential effectiveness, we observe two limitations of prompting LLMs for commonsense reasoning in conversations: (1) LLMs tend to rely much on explicit cues, necessitating taskspecific constraints to seek implicit knowledge. (2) LLMs exhibit poor alignment between rationales and dialogues, resulting in inconsistent and unhelpful rationales. These challenges motivate the need for a robust symbolic distillation mechanism (West et al., 2022; Kim et al., 2022a) that selectively transfers CoT capabilities from LLMs to train a reliable CoT reasoner.\nOur contributions are threefold: (1) We propose a dialogue chain-of-thought distillation framework that extracts plausible rationales from unreliable LLMs and collects high-quality CoT rationales via iterative question answering and alignment filtering. (2) Using our framework, we collect DONUT, a dialogue dataset annotated with highquality CoT rationales. Our qualitative analysis of the collected rationales shows the effectiveness of our method for controlling the reliability of LLMs in extracting rationales. (3) With DONUT, we train DOCTOR, a DialOgue Chain-of-Thought cOmmonsense Reasoner that integrates implicit information in dialogue into rationale for generating responses3. We conduct experiments on response generation tasks to show that augmenting dialogue models with high-quality rationales from DOCTOR significantly improves their performance."
+        },
+        {
+            "heading": "2 Dialogue Chain-of-Thought Reasoning",
+            "text": ""
+        },
+        {
+            "heading": "2.1 Preliminaries",
+            "text": "Recent work (Wu et al., 2020; Zhou et al., 2022a,b; Gao et al., 2022; Zhong et al., 2021) aims to enrich dialogue modeling by augmenting dialogue agents with commonsense knowledge to infer implicit information in conversations. Specifically, a dialogue model \u03b8 is given commonsense knowledge Z as an additional input to predict the next response ut for the dialogue context U<t of t\u2212 1 turns:\nut \u223c P\u03b8(\u00b7|Z,U<t) (1) 3We release the model checkpoint on https://\nhuggingface.co/DLI-Lab/DOCTOR.\nIn these approaches, commonsense knowledge Z is either retrieved from symbolic knowledge bases (KBs) (Zhou et al., 2022b; Gao et al., 2022) such as ATOMIC (Hwang et al., 2021), or generated from neural KBs such as COMET (Bosselut et al., 2019). These methods, however, tend to miss subtle yet implicit details in a conversation (Shwartz et al., 2020; Schlegel et al., 2022), leading to dull and incoherent responses. We posit that commonsense reasoning in a conversation requires multiple hops to capture such implicit details scattered across multiple turns (Liu et al., 2021b; Zhao et al., 2022)."
+        },
+        {
+            "heading": "2.2 Formulating Chain-of-Thought Reasoning in Dialogues",
+            "text": "Inspired by the success of rationale-augmented LLMs on multiple reasoning tasks (Wei et al., 2022; Zhou et al., 2023), we formulate multi-hop reasoning in conversation as dialogue CoT reasoning, which decomposes reasoning into multiple steps and combines inferred commonsense knowledge into a rationale that supports response generation. With dialogue CoT reasoning, dialogue agents can generate coherent responses by identifying relevant contextual cues in a dialogue and making use of implicit information underlying the context.\nA naive approach to facilitate dialogue CoT reasoning is to apply CoT prompting on LLMs. However, we find this approach is suboptimal due to the following limitations: (1) LLMs attend more to explicit cues (e.g. lexical overlap) in dialogues for reasoning, requiring task-specific constraints to guide the model to infer implicit information; (2) The rationales are often misaligned with the dialogues, i.e., inconsistent with the contexts (Peng et al., 2023) or unhelpful in response generation (Jung et al., 2022). Based on these insights, we aim to construct a reliable CoT reasoner that generates high-quality rationales for dialogue agents."
+        },
+        {
+            "heading": "3 Dialogue Chain-of-Thought Distillation",
+            "text": "In this section, we propose a robust knowledge distillation framework that extracts plausible CoT rationales from an unreliable LLM (\u00a73.1) and selectively distills high-quality rationales via alignment filters (\u00a73.2) to (re-)train a reliable CoT reasoner. Figure 2 presents an overview of our framework."
+        },
+        {
+            "heading": "3.1 QA-driven Rationalization",
+            "text": "Our framework is designed to augment existing large-scale dialogue corpora with dialogue CoT\nrationales by leveraging the capability of LLMs to rationalize. We first prompt an LLM to generate a plausible rationale Z\u2217 for a dialogue context U<t and the ground-truth response ut such that the next response ut is induced from the rationale Z\u2217:\nZ\u2217 = argmax Z PLLM(Z|ut, U<t) (2)\nSpecifically, we represent a rationale Z with a sequence of k question-answer pairs {(qi, ai)}ki=1, where qi is an information-seeking question about implicit information ai in U<t. By instructing an LLM to iteratively generate questions and answers, we ask the model to pinpoint relevant contextual cues and infer underlying knowledge that supports response generation.\nIn practice, we choose a set of commonsense relations from ATOMIC (Hwang et al., 2021) that are commonly used in dialogue domains. We prompt LLMs to construct questions qi based on the relation type to guide the model to construct questions pertaining to conversations. We further include 5 demonstrations of dialogue CoT, each of which contains human-authored question-answer pairs for a dialogue U = [U<t;ut]. We present the list of commonsense relations along with the example prompt used for rationale collection in Appendix A.1."
+        },
+        {
+            "heading": "3.2 Alignment Filtering",
+            "text": "To ensure the quality of the annotated rationales, we further introduce two alignment filters that filter out rationales based on their alignment with the dialogue contexts and the ground-truth responses.\nRationale-to-context alignment. LLMs tend to hallucinate facts without attending to the con-\ntext (Peng et al., 2023), which can often lead to rationales that are misaligned with the dialogue context. Inspired by West et al. (2022), we minimize such inconsistent rationales from LLMs by employing a critic model to detect counterfactual rationales generated without correctly grounding on the dialogue context4. We ask the LLM to generate a counterfactual rationale Z\u0303 from a counterfactual context U\u0303<t containing only the last utterance:\nZ\u0303 = argmax Z\nPLLM(Z|ut, U\u0303<t) (3)\nThe critic model is trained to distinguish between Z\u2217 and Z\u0303 for given dialogue contexts. We sample 6K dialogues from SODA (Kim et al., 2022a) and collect 6K (U<t, Z\u2217) pairs by manually choosing consistent Z\u2217 from the set of generated rationales. We then construct 6K (U\u0303<t, Z\u0303) pairs for the collected samples, resulting in 5k training instances of (U<t, Z \u2217) and (U\u0303<t, Z\u0303) pairs for our critic model.\nRationale-to-response alignment. We consider a rationale to be aligned with a response if augmenting dialogue models with the rationale helps predicting the ground-truth response. Hence, we introduce an indicator function helpful(\u00b7) to determine if a dialogue model \u03b8 benefits from a rationale Z when predicting the ground-truth response ut given a context U<t5. Formally, we define a boolean function helpful(\u00b7) as:\nhelpful(Z) = 1 [ P\u03b8(ut|Z,U<t) P\u03b8(ut|U<t) > \u03c4 ] (4)\n4We implement the critic model with RoBERTa-large (Liu et al., 2019). See Appendix A.3 for more details.\n5We use Cosmo-3B (Kim et al., 2022a) trained on a largescale dialogue dataset covering diverse social interactions.\nwhere 1[\u00b7] is a binary indicator and \u03c4 is a hyperparameter6. Intuitively, higher probability P\u03b8(ut|Z,U<t) indicates that the rationale Z is more helpful in predicting the response ut."
+        },
+        {
+            "heading": "3.3 Training DOCTOR",
+            "text": "Using the annotated dialogue corpus, we train a DialOgue Chain-of-ThOught Reasoner, namely DOCTOR. We train our model with a causal language modeling objective to predict the probability of generating the rationale Z\u2217 given the dialogue history U<t. Essentially, the training objective can be formulated as next-token prediction over a sequence of question-answer pairs (qi, ai) in a rationale, where the model iteratively predicts qi and ai following previously generated question-answer pairs. We posit that by learning to generate and answer subquestions, the model can identify all implicit information required to infer the corresponding commonsense knowledge from the dialogue.\nDOCTOR is built on top of OPT-1.3B (Zhang et al., 2022) and is trained using 80% of the annotated data with a constant learning rate of 5e-4 for 5 epochs. See Appendix A for details."
+        },
+        {
+            "heading": "4 DONUT",
+            "text": "Alongside DOCTOR, we present its training corpus, DONUT, a DialOgue chaiN-of-thoUght dataseT with annotated rationales for dialogue CoT reasoning7. We choose three human-collected dialogue datasets, DailyDialog (Li et al., 2017), DREAM (Sun et al., 2019), and MuTual (Cui et al., 2020), to sample source dialogues for annotation8. We also include 5% of the dialogues in SODA (Kim et al., 2022a), a million-scale social dialogue dataset, for scalability. In total, we obtain 10K dialogues for annotation. For each utterance in a dialogue (except for the first one), we instruct ChatGPT to generate 10 rationale candidates.\nUsing the two alignment filters from \u00a73.2, we filter out 122,319 candidates (24.98%) that are either inconsistent with the dialogue context or not helpful in predicting the next response. The resulting dataset, DONUT, consists of 10K dialogues with 367K CoT rationales. Table 1 shows a sample from\n6We use 0.95 for \u03c4 . We provide the distribution of the ratio in Appendix D.1.\n7DONUT is available on https://huggingface.co/ datasets/DLI-Lab/DONUT.\n8We use a subset of dialogue samples from the three datasets as curated by Ghosal et al. (2022a).\nDialogue Context: A: Hi, Viggo. How are you doing today? B: Hey, Yovani. I\u2019m doing all right. Thanks for asking. A: No problem. I saw that you left your coffee mug on the counter this morning. Did you forget to take it with you? B: Yeah, I did. Thanks for grabbing it for me. A: No problem at all. I know how busy you are and I didn\u2019t want you to have to come back for it later. B: You\u2019re a lifesaver, Yovani. Seriously, thank you so much.\nDialogue Chain-of-Thought Rationale: Q1: What did Person A do for Person B? (oReact) A1: Person A grabbed Person B\u2019s coffee mug for him when he forgot it. Q2: What is Person B\u2019s reaction to Person A\u2019s help? (xReact) A2: Person B is thankful and expresses gratitude to Person A for helping him out. Q3: What might Person A want to convey to Person B, based on their previous interactions? (xIntent) A3: Based on their previous interactions, Person A might want to convey that he understands how important coffee is to Person B and that he is always willing to help him out.\nGround-truth Response: \u2022 A: Any time. I know how much you love your coffee in the morning.\nTable 1: A sample from DONUT.\nDONUT. Further analyses on the alignment filtering and generated rationales are in Appendix D."
+        },
+        {
+            "heading": "4.1 DONUT vs. Human-annotated Datasets",
+            "text": "Here we summarize the advantages of DONUT over three dialogue datasets: CICERO (Ghosal et al., 2022a), Reflect-9K (Zhou et al., 2022a), and ComFact (Gao et al., 2022). These datasets provide high-quality human-annotated commonsense knowledge for dialogues.\nLarge scale. As shown in Table 2, DONUT contains a larger amount of annotated dialogue samples compared to existing dialogue datasets with human-annotated commonsense knowledge.\nCost & time-efficiency. Unlike human-authored datasets, DONUT is automatically annotated via ChatGPT in a time and cost-efficient manner. With\nChatGPT, the annotation process takes 0.1 seconds per sample and costs 0.003 USD with a total of 1,200 USD. This significantly reduces the time and cost for data annotation.\nHigh quality. We conduct a human evaluation via Amazon Mechanical Turk to compare the quality of CoT rationales from DONUT with Reflect9K and CICERO. At each voting stage, three human judges are given two dialogues, one from DONUT and one from CICERO or Reflect-9K, and asked to choose a sample with better commonsense annotation based on five criteria: (1) faithfulness, (2) helpfulness, (3) relevance, (4) specificity, and (5) overall. To avoid potential bias from different annotation formats (i.e., commonsense knowledge vs. rationales), we only use the last answer in the QA pairs from DONUT. Figure 3 presents human evaluation results on 100 randomly sampled dialogues. Judges deem commonsense inferences (i.e., rationales) from DONUT superior in quality to the two human-authored ones across all aspects, validating the outstanding quality of the dataset."
+        },
+        {
+            "heading": "4.2 Effects of Rationale Alignment",
+            "text": "To investigate the effect of rationale alignment, we conduct additional human evaluations on rationales that have passed and failed each alignment filter via Amazon Mechanical Turk (AMT). From DONUT, we randomly sample 100 dialogues that contain two rationales, one that has passed the alignment filter (i.e., pass) and another that has been filtered out (i.e., fail). For each dialogue sample, human judges are given the two rationales and asked to choose the better one based on the same criteria used for quality assessment (\u00a74.1).\nTable 3 compares the win percentages between the two sets of rationales (i.e., pass vs. fail) for each alignment filter. We observe that judges tend to find a rationale to be more consistent if it passes\nthe rationale-to-context alignment filter. The same applies to the rationale-to-response filter, where judges tend to consider a rationale that passed the filter to be more helpful. These findings are in line with our intuition that aligning rationales with dialogue contexts and ground-truth responses improves consistency and helpfulness of the generated rationales, respectively."
+        },
+        {
+            "heading": "5 Experiments",
+            "text": "Our work builds upon previous efforts (Zhou et al., 2022b; Shen et al., 2022; Zhou et al., 2022a) to enrich dialogue models by injecting external commonsense knowledge. Hence, we conduct extensive experiments on response generation to examine how dialogue CoT reasoning from DOCTOR provides commonsense knowledge to assist dialogue agents in generating high-quality responses."
+        },
+        {
+            "heading": "5.1 Datasets",
+            "text": "In-domain. We evaluate DOCTOR on held-out test sets of the three datasets used for knowledge distillation: DailyDialog (Li et al., 2017), DREAM (Sun et al., 2019), and MuTual (Cui et al., 2020). These datasets contain open-domain dialogues that require commonsense knowledge to thoroughly understand dialogue contexts (Ghosal et al., 2022a). Note that DREAM and MuTual are\ndesigned for dialogue comprehension, but we adapt these datasets into response generation setting to fully leverage their high-quality conversations9.\nOut-of-domain. To assess the generalizability of DOCTOR, we consider Reflect-9K (Zhou et al., 2022a) as an additional dialogue dataset. Reflect9K contains dialogues annotated with common knowledge between speakers. Note that we label this dialogue dataset as out-of-domain since it is an unseen dataset that has not been used to train DOCTOR, posing a challenge to its generalization."
+        },
+        {
+            "heading": "5.2 Dialogue Agents",
+            "text": "We consider two large-scale dialogue agents, ChatGPT and Cosmo (Kim et al., 2022a). ChatGPT is an LLM with 175B parameters, trained to follow instructions. Cosmo is a general dialogue model trained with a million-scale dialogue corpus on top of T5 (Raffel et al., 2020; Lester et al., 2021). For our experiments, we use the 3B version of Cosmo10.\nSpecifically, we augment both dialogue models with commonsense knowledge in a zero-shot manner to assess whether knowledge sources can be readily used to assist state-of-the-art dialogue models. To incorporate commonsense knowledge into dialogue agents, we simply prepend commonsense inference to the dialogue history as string concatenation (Zhou et al., 2022b; Kim et al., 2022b), where commonsense knowledge and dialogue history are separated using indicators (e.g., <SEP>). We include the details on dialogue models in Appendix A.8 and our ChatGPT prompt in Table 13.\n9For MuTual, we retain the original dataset of dialogue context and ground truth response pairs to maintain the integrity of the original setup.\n10https://huggingface.co/allenai/cosmo-xl"
+        },
+        {
+            "heading": "5.3 Baselines",
+            "text": "To assess whether and how different knowledge sources affect the quality of generated responses, we compare DOCTOR with the following baselines. (1) Without commonsense knowledge: We first adopt the standard response generation baseline, where the dialogue agents predict responses conditioned on the dialogue history only. (2) General-purpose commonsense knowledge model: We then consider dialogue agents augmented with a general-purpose commonsense knowledge model COMET (Hwang et al., 2021). To align knowledge from COMET with dialogues, we implemented a retriever using ComFact (Gao et al., 2022) that retrieves relevant triplets to the dialogue context. (3) Dialogue-focused commonsense knowledge model: Finally, we construct task-specific baselines with knowledge models tailored for dialogue understanding. Specifically, we implement two knowledge models, DIALeCT (Shen et al., 2022) and Reflect (Zhou et al., 2022a), trained on dialogue datasets with qualified commonsense knowledge annotations. DIALeCT is trained on DailyDialog, DREAM, and MuTual, which are also used to train DOCTOR. Reflect, on the other hand, is trained on Reflect-9K which is tested as an out-of-domain dataset for DOCTOR. When tested on Reflect-9K, the model produces commonsense knowledge conditioned on oracle information, which is not given to DOCTOR. See Appendix A.6 for more details.\nNote that both general-purpose and dialoguefocused knowledge models are single-hop approaches, as they are not designed to handle multihop reasoning in conversations."
+        },
+        {
+            "heading": "5.4 Main Results",
+            "text": "We report the results of the automatic evaluation in Table 4 and human evaluation via Amazon Mechanical Turk in Table 5. For examples of generated responses, see Appendix E."
+        },
+        {
+            "heading": "Helpfulness of dialogue CoT rationales. On",
+            "text": "both automatic (Table 4) and human evaluations (Table 5), we observe that integrating dialogue CoT into dialogue models improves their performance over the vanilla dialogue models without commonsense. Table 5 shows that responses conditioned on dialogue CoT are particularly more natural and specific than those from vanilla ChatGPT. We also observe from Table 4 that DOCTOR generates helpful rationales for the dialogue models on Reflect-9K, which is not used to train DOCTOR. While these dialogue models are trained on significantly largescale datasets, they still benefit from DOCTOR in capturing implicit information in conversations.\nComparison with single-hop approaches. Table 4 compares the performance of dialogue models paired with the single-hop baselines, i.e. general-purpose and dialogue-focused commonsense knowledge models. We find that augmenting dialogue models with baseline knowledge models show only a slight improvement and sometimes even a subtle decrease in performance compared to the vanilla model. These results suggest that the baselines struggle to produce correct reasoning\nwith limited knowledge of implicit contexts. Overall, CoT rationales from DOCTOR lead to a larger improvement over the baselines. In particular, we find that dialogue models augmented with DOCTOR outperform the models paired with Reflect, which serves as an oracle in the unseen benchmark Reflect-9K. Furthermore, human evaluation results in Table 5 show that responses grounded to dialogue CoT rationales tend to be more natural and helpful compared those grounded to baseline knowledge models such as DIALeCT, which is trained using the same corpora.\nComparison with self-generated CoT. To examine the validity of LLMs as dialogue CoT reasoners, we compare the performance of dialogue agents augmented with CoT rationales from DOCTOR and the teacher LLM (i.e. ChatGPT). Specifically, we instruct ChatGPT with the same demonstrations used in DONUT construction to generate dialogue CoT rationales and predict the next response conditioned on them. Surprisingly, we observe in Table 4 that augmenting dialogue models with CoT rationales from ChatGPT, denoted as Self-CoT, does not lead to better response quality over DOCTOR. This result shows that LLMs do not reliably produce helpful rationales for response generation, suggesting the need for alignment filter to control the quality of the rationales."
+        },
+        {
+            "heading": "5.5 Analysis",
+            "text": "Better knowledge leads to better responses. To better understand the effect of knowledge on response generation, we conduct a human evaluation\nof the quality of knowledge. We randomly sample 100 knowledge inferences on the test set of DailyDialog and ask three different human judges for each sample to compare the knowledge generated by DOCTOR and the baseline model on the same aspects used in \u00a74.1. For the evaluation details, see Appendix C. The results are shown in Table 6. While the baselines produce knowledge relevant to the dialogue contexts, the knowledge lacks consistency and is usually unhelpful in predicting the responses. Since DOCTOR generates CoT rationales by grounding on implicit evidence aggregated over multiple turns, knowledge from DOCTOR is far superior in terms of specificity and helpfulness, which in turn leads to better response quality.\nIterative QA helps response generation. To analyze the role of questions, we conduct an ablation on the generation of questions. We train an ablated model under the same setting as DOCTOR to generate only answers. Specifically, we explicitly remove questions from the rationale annotations in DONUT and train the model with the reconstructed data. We use ChatGPT for the dialogue model and compare the response quality on DailyDialog. The results are shown in Table 7. Without questions, the response quality drops significantly, suggesting the importance of the questions in rationalization. We posit that the role of questions in guiding the answers is crucial, as the answers are poorly aligned with the dialogues without guidance.\nApplying filters improves response quality. To analyze the impact of the alignment filters, we train two reasoning models with only passed and filtered rationales respectively for each filter. For fair comparisons, in training, we use the same amount of rationale labels that are aligned with the same context. We show the results in Table 8. The performance of the dialogue model drops significantly when the reasoning model is trained without the rationale-tocontext alignment filter, suggesting the importance of the alignment between rationales and contexts. Also, when the model is trained with the rationales not aligned with the responses, the quality of the\nresponse decreases, as the generated rationales are not helpful in predicting the next responses.\nTo gain a deeper understanding on the effect of well-aligned rationales on the response quality, we perform an in-depth analysis on the 600 evaluation examples randomly sampled from DailyDialog. For each sample, we present human annotators from AMT with the dialogue context, rationales, reference response and predicted response and ask them to answer (1) whether the knowledge is aligned with the dialogue context, (2) whether the knowledge is aligned with the reference response, and (3) whether the predicted response is coherent with the dialogue context.\nIn Figure 4, we find that 81.2% of the annotated rationales are considered to be aligned with both dialogue contexts and gold responses, suggesting that DOCTOR trained using filtered data from DONUT learns to generate rationales aligned with both the dialogue contexts and the responses. We also observe that only 2.1% out of 81.1% of samples with aligned rationales are deemed incoherent, indicating that the generated response tends to be coherent\nif the provided rationale is well aligned. We provide an error analysis on the generated rationales and responses in Appendix B."
+        },
+        {
+            "heading": "6 Related Work",
+            "text": "Commonsense-aware dialogue models. Recent studies incorporate commonsense knowledge into dialogue models to facilitate engaging interactions between humans. These approaches leverage knowledge from a general-purpose knowledge model (Zhou et al., 2022b; Wu et al., 2022; Liu et al., 2022b; Li et al., 2023) or a dialogue-focused knowledge model trained with human-annotated dataset (Ghosal et al., 2022a; Gao et al., 2022). On the other hand, we focus on building a knowledge model for multi-hop commonsense reasoning in dialogues, where desired knowledge is induced from implicit evidence scattered in dialogue contexts.\nChain-of-Thought reasoning. LLMs have shown an emergent capability in reasoning by eliciting rationales as explanations via CoT prompting (Wei et al., 2022; Wang et al., 2023b; Zhou et al., 2023). Despite their promising ability, we find that applying CoT prompting in dialogues is a non-trivial challenge even for LLMs.\nMeanwhile, recent work proposes distillation frameworks for transferring the reasoning ability of LLMs to small language models (Wang et al., 2023a; Kang et al., 2023). However, these approaches focus on generating rationales for answering factoid questions and are suboptimal for commonsense reasoning in dialogues. This motivates the need to selectively transfer CoT rationales from LLMs in conversations."
+        },
+        {
+            "heading": "7 Conclusion",
+            "text": "Commonsense reasoning in conversations involves multi-hop reasoning, which poses challenges even for LLMs. To address this, we present a dialogue chain-of-thought distillation framework that selectively annotates high-quality rationales using LLMs. Our contributions are as follows: (1) With our framework, we collect DONUT, a large-scale dataset for dialogue CoT reasoning. (2) We present DOCTOR, a dialogue chain-of-thought reasoner trained on DONUT. (3) Through extensive experiments, we show the efficacy of DOCTOR, especially in the human evaluation, where 67% of the responses generated using DOCTOR are preferred over the responses using knowledge from LLMs."
+        },
+        {
+            "heading": "Limitations",
+            "text": "We test DOCTOR on 4 diverse dialogue datasets, but our experiments are limited to open-domain and dyadic dialogues. Further study can apply DOCTOR to task-oriented or multi-party dialouges. Further studies could adjust this variable dynamically, potentially allowing for deeper levels of dialogue reasoning. The rationale annotations in DONUT are fully machine-generated. Caution must be exercised when training models with them."
+        },
+        {
+            "heading": "Ethical Considerations",
+            "text": "Texts generated by a large language model can contain harmful, biased, or offensive content. However, we argue that this risk is mostly mitigated in our work, as we focused on the knowledge within widely-used popular dialogue datasets. The four source datasets: DailyDialog, MuTual, DREAM, and SODA are either high-quality datasets authored by humans or examined via safety filtering mechanisms (both models and web-based API) targeting crimes, violence, hate, sexuality, etc. We also examine the generated rationales and manually eliminate toxic and offensive uses of language. We guarantee fair compensation for judges we hire on Amazon Mechanical Turk. We ensure an effective pay rate higher than $15 per hour based on the estimated time required to complete the tasks. The presented DONUT dataset does not contain personal data or information that provides clues for the identification of any individual or group."
+        },
+        {
+            "heading": "Acknowledgements",
+            "text": "This work was supported by Institute of Information & Communications Technology Planning & Evaluation (IITP) grant funded by the Korean government (MSIT) (No. 2020-0-01361, Artificial Intelligence Graduate School Program (Yonsei University)) and (No.2021-0-02068, Artificial Intelligence Innovation Hub) and (No.2022-0-00077, AI Technology Development for Commonsense Extraction, Reasoning, and Inference from Heterogeneous Data). Jinyoung Yeo, Dongha Lee, and Youngjae Yu are co-corresponding authors."
+        },
+        {
+            "heading": "A Experimental Details",
+            "text": ""
+        },
+        {
+            "heading": "A.1 Rationale Candidate Generation",
+            "text": "We prompt ChatGPT to annotate CoT rationales for a given dialogue context (i.e., history) and the ground-truth response. We set temperature to 0.5, and max tokens to 300. The generation is led by subquestions based on several selected types of commonsense relations. Following West et al. (2022) and Gao et al. (2022), we carefully choose 11 relation types which are crucial in conversations (Zhong et al., 2022; Ghosal et al., 2022b; Zhou et al., 2022a) from ATOMIC (Hwang et al., 2021) as presented in Table 9. The prompt used for rationale generation is shown in Table 12.\nA.2 Ablation on number of reasoning steps\nTo better understand the effect of k on the quality of rationale, we conduct human evaluation using 100 random dialogue samples from DailyDialog, DREAM, and MuTual. For each dialogue, we prompt ChatGPT to generate five CoT rationales with k = {1, 2, 3, 4, 5}, respectively, as we do in \u00a73.1. Using the same criteria from Table 3, we ask 3 different workers from Amazon Mechanical Turk to evaluate the quality of the rationale from each dialogue. The results are shown in Table 10.\nThe workers prefer the rationales with k = 3 most in terms of consistency, helpfulness, and overall. The Krippendorff alpha (0.82, 0.58, 0.74, 0.71) scores show a moderate agreement among the raters."
+        },
+        {
+            "heading": "A.3 Rationale-to-context Alignment Filter",
+            "text": "Data collection. To collect training data for the rationale-to-context alignment filter, we randomly sample 6K dialogues from SODA (Kim et al., 2022a) that do not overlap with those used as source dialogues for our DONUT. For each dialogue (context and ground-truth response), we first remove all utterances in the context except for the last one to obtain an incomplete context, and prompt an LLM to generate rationales based on the original and incomplete contexts respectively. For the rationales generated with the original contexts, we manually select one rationale that is wellaligned with the context. We, therefore, acquire a rationale that is grounded on the whole context along with a counterfactual rationale, which ought to be inconsistent with the dialogue as it merely considers the last utterance.\nThis results in 6K dialogues aligned with their rationales and counterfactual rationales. We duplicate the dialogues and align them with either type of rationale for the binary classification of rationaleto-context alignment. The data (12K) is split into training (10K), validation (1K), and test set (1K) without the overlap of dialogues across them.\nTraining. To train this alignment filter, we use the aforementioned data to finetune the RoBERTalarge (Liu et al., 2019) model for 3 epochs, with a batch size of 40 and a learning rate of 1e-511. The training is run on one NVIDIA RTX A5000 GPU. The classification performance of this filter on the test set in terms of accuracy is 93.38%.\n11https://huggingface.co/roberta-large"
+        },
+        {
+            "heading": "A.4 Rationale-to-response Alignment Filter",
+            "text": "Following Liu et al. (2022a), we use the perplexity of the ground-truth response for calculating P\u03b8(ut|\u00b7). For efficiency, we implement the filter with 4-bit quantization. The filtering process on whole rationale candidates with rationale-toresponse alignment filter takes about 8 GPU hours with 8 NVIDIA RTX A5000 GPUs."
+        },
+        {
+            "heading": "A.5 DOCTOR",
+            "text": "We train DOCTOR with DONUT for 5 epochs using a constant learning rate of 5e-4 on 8 NVIDIA RTX A5000 GPUs. We use a batch size of 8, and the whole training process takes about 12 GPU hours. For efficiency, we adopt 16-bit quantization for training."
+        },
+        {
+            "heading": "A.6 Baseline Knowledge Models",
+            "text": "ComFact. Following the setting of Gao et al. (2022), we use COMET and the same relation types (i.e., xReact, xIntent, xNeed, xEffect, and xWant). We use COMET-BART to implement COMET12. We use the same decoding strategy used by Gao et al. (2022) to generate inference with COMET. We implement the knowledge retriever using the source code on the official GitHub repository13 using DeBERTa-large. Among the inferences generated by COMET, we apply the retriever and choose the inferences predicted as relevant to the dialogue context.\nDIALeCT. We take the CICERO v1 dataset from Ghosal et al. (2022a) and convert the data format following DONUT. We then fine-tuning the OPT1.3B (Zhang et al., 2022) with the converted data14. The training details are identical to DOCTOR. Taking the name, DIALeCT, from Shen et al. (2022), we re-implemented the model to generate commonsense inference with CICERO v1. When we generate inferences with DIALeCT, we use all the question types defined in CICERO v1 (i.e., \u201cWhat is or could be the cause of target?\u201d, \u201cWhat subsequent event happens or could happen following the target?\u201d, \u201cWhat is or could be the prerequisite of target?\u201d, \u201cWhat is the possible emotional reaction of the listener in response to target?\u201d, and \u201cWhat is or could be the motivation of target?\u201d) and we set the target of inference as the last utterance in the dialogue history. We concatenate all generated\n12https://github.com/allenai/comet-atomic-2020 13https://github.com/silin159/comfact 14https://huggingface.co/facebook/opt-1.3b\ninferences with the newline characters and prepend it to the dialogue history for response generation.\nReflect. We finetune the OPT-1.3B with the Reflect-9K dataset (Zhou et al., 2022a). It is a human-authored dialogue dataset with aligned inference sentences that approximate common beliefs between interlocutors. Specifically, we concatenate the annotated question and the dialogue history as inputs and train a knowledge model to predict the paired inference. The training details are identical to DOCTOR. When inference, we generate all types of inference dimensions defined in Reflect-9K (i.e., \u201cHow would you describe Speaker?\u201d, \u201cWhat might have happened before?\u201d, \u201cWhat might happen after?\u201d, \u201cWhat is Speaker feeling now?\u201d, and \u201cWhat Responder feeling now?\u201d). For response generation, we concatenate inferences generated by this knowledge model using the newline characters and prepend to the dialogue history."
+        },
+        {
+            "heading": "A.7 Self Chain-of-Thought",
+            "text": "We prompt ChatGPT to generate CoT rationales and predict the target response based on the dialogue context and self-generated rationales. We use the same demonstrations as the prompt used in our framework and instruct ChatGPT to generate a dialogue CoT rationale and the following response."
+        },
+        {
+            "heading": "A.8 Dialogue Agents for Response Generation",
+            "text": "Cosmo. Cosmo is a dialogue model trained with a million-scale dialogue corpus on top of T5 (Lester et al., 2021). We use the 3B version of Cosmo15. To generate the response from Cosmo, we use greedy decoding, and 4-bit quantization for efficiency. When the length of the input context exceeds 512 tokens, we truncate the sequence from left to ensure the last utterance is not removed from the input. We use a special token <SEP> to separate commonsense knowledge and dialogue history. Cosmo is trained to generate responses conditioned on a narrative expanded from commonsense sentences, which are separated by a dialogue context using the <SEP>.\nChatGPT. ChatGPT is an LLM with 175B parameters based on InstructGPT (Ouyang et al., 2022)16. ChatGPT is trained to follow instructions given by users and return requested information in\n15https://huggingface.co/allenai/cosmo-xl 16https://openai.com/blog/chatgpt\na conversational manner. We use langchain17 to send API calls to OpenAI API.\nWe prompt ChatGPT to predict the next response based on the dialogue context (i.e., history) and the augmented knowledge The prompt used for response generation is in Table 13. We append speaker tags (e.g., \u201cA:\u201d) to enforce the model to predict the next response and not confuse which speaker takes the next turn."
+        },
+        {
+            "heading": "B Error Analysis",
+            "text": "For error analysis, we collect 600 random samples from the test set of DailyDialog. We present workers from AMT with the dialogue context, rationales, the reference response and the predicted response and ask them to evaluate generated rationales and predicted responses by answering the following yes-no questions:\n\u2022 Do you agree that knowledge is well aligned with the dialogue context?\n\u2022 Do you agree that knowledge is well aligned with the reference response?\n\u2022 Do you agree that the predicted response is coherent with the dialogue context?\nEach sample is evaluated by 3 different workers to reduce variance and improve the reliability of the evaluation. To collect error cases, we manually inspect samples where at least 2 workers disagree with the statement in each question. Refer to Figure 4 for the statistics of our evaluation.\nAmong all test examples, DOCTOR generates rationales that are not aligned with the dialogue contexts for only 5.5% of the cases. We observe two major error types behind such misalignment with the dialogue contexts: (1) for 49% of the error cases, DOCTOR struggles to follow the complex dialogue flow and does not answer the questions correctly, failing to aggregate enough evidence even for the correct subquestions; (2) for 38% of the error cases, DOCTOR concludes the rationale with a statement that cannot be induced from the dialogue context, mostly because it is either too short or not specific enough to contain necessary evidence for coherent reasoning.\nWe also find only 16.3% of the test samples where DOCTOR generates rationales that are not aligned with the reference responses. The two major reasons behind the misalignment between the\n17https://github.com/hwchase17/langchain\nrationales and the responses are as follows: (1) 33% of the error cases contain plausible rationales from the dialogue context that lead to responses different from the reference since the openness of dialogue allows for multiple possible responses for a single dialogue context. (2) for 31% of the error cases, DOCTOR generates sophisticated rationales to describe its reasoning even in scenarios where simple conversations are enough. e.g., daily greetings.\nAs discussed in Section 5.5, we observe in Figure 4 that few samples with aligned rationales lead to incoherent responses from the dialogue model. One possible reason behind these few failure cases is that rationales from DOCTOR might be too complex and lengthy due to the complex nature of dialogue. In such cases, chat LLMs sometimes fail to fully reflect the rationales in their responses, leading to incoherent responses."
+        },
+        {
+            "heading": "C Details for the Human Evaluation",
+            "text": ""
+        },
+        {
+            "heading": "C.1 Annotated Knowledge Quality",
+            "text": "We outsource a human evaluation comparing our DONUT and human-authored datasets on Amazon Mechanical Turk (AMT). We show the interface for the evaluation in Figure 7. We ask the human judges to compare the annotated knowledge from each dataset based on the following five criteria:\n\u2022 Faithfulness: Which knowledge statement is less contradictory to its aligned dialogue context and target response?\n\u2022 Helpfulness: Which knowledge statement is more helpful in predicting the target response?\n\u2022 Relevance: Which knowledge statement is more relevant to its aligned dialogue context?\n\u2022 Specificity: Which knowledge statement is more specific and focused on the target response?\n\u2022 Overall: Overall, which knowledge statement is more useful and valuable?\nAt each voting stage, human judges are given two dialogues with aligned commonsense inferences and asked to select a better knowledge statement according to the above criteria. We show answers in our rationales without the prefix (i.e., \u201cSubquestion:\u201d) to match the format."
+        },
+        {
+            "heading": "C.2 Knowledge Inference Quality",
+            "text": "We conduct human evaluation of the quality of inferred knowledge via AMT. The interface for evaluation is shown in Figure 8. We ask human judges to compare the knowledge from DOCTOR and the baseline knowledge models. We focus on these four criteria:\n\u2022 Consistency: Which inference sentence is more consistent with the dialogue context?\n\u2022 Specificity: Which inference sentence is more specific and focused on the target response?\n\u2022 Helpfulness: Which inference sentence is more helpful in predicting the target response?\n\u2022 Overall: Overall, which inference sentence is more useful and valuable?"
+        },
+        {
+            "heading": "C.3 Response Quality",
+            "text": "We also outsource a human evaluation for comparing the responses from ChatGPT when paired with DOCTOR and the baseline knowledge models on AMT. We ask human judges to compare the responses based on these four criteria following Kim et al. (2022a) and Zhou et al. (2022a):\n\u2022 Naturalness: Which response is more natural (human-like)?\n\u2022 Consistency: Which response is more consistent (well aligned) with the dialogue context?\n\u2022 Specificity: Which response is more specific?\n\u2022 Engagingness: Which response is more engaging?"
+        },
+        {
+            "heading": "D Statistical Study on Generated Rationales and Alignment Filters",
+            "text": ""
+        },
+        {
+            "heading": "D.1 Distribution of the Helpfulness Ratio",
+            "text": "In Figure 5, we provide the distribution of the helpfulness ratio Hr from the rationale-to-response alignment filter:\nHr = P\u03b8(ut|Z,U<t) P\u03b8(ut|U<t)\n(5)\nThe mean of all Hr is 1.076 with a standard deviation of 0.496."
+        },
+        {
+            "heading": "D.2 Why Two Alignment Filters?",
+            "text": "Figure 6 illustrates the percentage of rationales filtered out by the two alignment filters targeting rationale-to-context and rationale-to-response alignment, respectively. The two filters together filter out 24.98% of the rationales in total, while the rationales being simultaneously filtered out by both filters only accounted for 1.9% of all the samples. This manifests the necessity of implementing filters that target different types of alignment. We include examples that have gone through the two filters in Table 14 to 16."
+        },
+        {
+            "heading": "D.3 Relation Types in Rationales",
+            "text": "As a formal framework for CoT reasoning, we investigate if questions in the QA sequence evolve from more generic types of commonsense relation to more specific ones. Table 11 is the distribution\nof commonsense relation types in each generation step. We present the top five most used relation types. In the first step, a large portion (39.7%) of questions focused on acquiring information about the participants of the dialogue (xAttr), facilitating better alignment between the rationales and context. In the last step, the most questions are related to the intention of the speaker (xWant). By inferring the communicative intent of speakers, the rationale could be more helpful in predicting the next response."
+        },
+        {
+            "heading": "E Examples of Response Generation with Different Knowledge Sources",
+            "text": "We show some examples of response generation using ChatGPT with different knowledge sources in Table 17, Table 18, and Table 19."
+        }
+    ],
+    "title": "Dialogue Chain-of-Thought Distillation for Commonsense-aware Conversational Agents",
+    "year": 2023
+}
