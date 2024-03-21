@@ -1,0 +1,982 @@
+{
+    "abstractText": "Language modeling at scale has proven very effective and brought unprecedented success to natural language models. Many typical representatives, especially decoder-only models, e.g., BLOOM and LLaMA, and encoder-decoder models, e.g., Flan-T5 and AlexaTM, have exhibited incredible instruction-following capabilities while keeping strong task completion ability. These large language models can achieve superior performance in various tasks and even yield emergent capabilities, e.g., reasoning and universal generalization. Though the above two paradigms are mainstream and well explored, the potential of the BERT family, which are encoder-only based models and have ever been one of the most representative pre-trained models, also deserves attention, at least should be discussed. In this work, we adopt XML-R to explore the effectiveness of the BERT family for instruction following and zero-shot learning. We first design a simple yet effective strategy to utilize the encoder-only models for generation tasks and then conduct multi-task instruction tuning. Experimental results demonstrate that our fine-tuned model, Instruct-XMLR, outperforms Bloomz on all evaluation tasks and achieves comparable performance with mT0 on most tasks. Instruct-XMLR also possesses strong task and language generalization abilities, indicating that Instruct-XMLR can also serve as a good instruction follower and zero-shot learner. Besides, Instruct-XMLR can accelerate decoding due to its non-autoregressive generation manner, achieving around 3 times speedup compared with current autoregressive large language models. Although we also witnessed several limitations through our experiments, such as the performance decline in long-generation tasks and the shortcoming of length prediction, Instruct-XMLR can still become a good member of the family of current large language models.1",
+    "authors": [],
+    "id": "SP:3e7adfa77256baa232a601728f84f9662551b382",
+    "references": [
+        {
+            "authors": [
+                "Stephen H Bach",
+                "Victor Sanh",
+                "Zheng-Xin Yong",
+                "Albert Webson",
+                "Colin Raffel",
+                "Nihal V Nayak",
+                "Abheesht Sharma",
+                "Taewoon Kim",
+                "M Saiful Bari",
+                "Thibault Fevry"
+            ],
+            "title": "Promptsource: An integrated development environment and repository for natural language prompts",
+            "venue": "arXiv preprint arXiv:2202.01279,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ying-Hong Chan",
+                "Yao-Chung Fan"
+            ],
+            "title": "A recurrent bert-based model for question generation",
+            "venue": "In Proceedings of the 2nd Workshop on Machine Reading for Question Answering,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hyung Won Chung",
+                "Le Hou",
+                "Shayne Longpre",
+                "Barret Zoph",
+                "Yi Tay",
+                "William Fedus",
+                "Eric Li",
+                "Xuezhi Wang",
+                "Mostafa Dehghani",
+                "Siddhartha Brahma"
+            ],
+            "title": "Scaling instruction-finetuned language models",
+            "venue": "arXiv preprint arXiv:2210.11416,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kevin Clark",
+                "Minh-Thang Luong",
+                "Quoc V Le",
+                "Christopher D Manning"
+            ],
+            "title": "Electra: Pre-training text encoders as discriminators rather than generators",
+            "venue": "arXiv preprint arXiv:2003.10555,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Ruty Rinott",
+                "Guillaume Lample",
+                "Adina Williams",
+                "Samuel R. Bowman",
+                "Holger Schwenk",
+                "Veselin Stoyanov"
+            ],
+            "title": "Xnli: Evaluating cross-lingual sentence representations",
+            "venue": "In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing. Association for Computational Linguistics,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Kartikay Khandelwal",
+                "Naman Goyal",
+                "Vishrav Chaudhary",
+                "Guillaume Wenzek",
+                "Francisco Guzm\u00e1n",
+                "\u00c9douard Grave",
+                "Myle Ott",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov"
+            ],
+            "title": "Unsupervised cross-lingual representation learning at scale",
+            "venue": "In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mike Conover",
+                "Matt Hayes",
+                "Ankit Mathur",
+                "Jianwei Xie",
+                "Jun Wan",
+                "Sam Shah",
+                "Ali Ghodsi",
+                "Patrick Wendell",
+                "Matei Zaharia",
+                "Reynold Xin"
+            ],
+            "title": "Free dolly: Introducing the world\u2019s first truly open instruction-tuned llm, 2023",
+            "venue": "URL https://www.databricks.com/blog/2023/04/ 12/dolly-first-open-commercially-viable-instruction-tuned-llm",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Marta R Costa-juss\u00e0",
+                "James Cross",
+                "Onur \u00c7elebi",
+                "Maha Elbayad",
+                "Kenneth Heafield",
+                "Kevin Heffernan",
+                "Elahe Kalbassi",
+                "Janice Lam",
+                "Daniel Licht",
+                "Jean Maillard"
+            ],
+            "title": "No language left behind: Scaling human-centered machine translation",
+            "venue": "arXiv preprint arXiv:2207.04672,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova. Bert"
+            ],
+            "title": "Pre-training of deep bidirectional transformers for language understanding",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Li Dong",
+                "Nan Yang",
+                "Wenhui Wang",
+                "Furu Wei",
+                "Xiaodong Liu",
+                "Yu Wang",
+                "Jianfeng Gao",
+                "Ming Zhou",
+                "Hsiao-Wuen Hon"
+            ],
+            "title": "Unified language model pre-training for natural language understanding and generation",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Marjan Ghazvininejad",
+                "Omer Levy",
+                "Yinhan Liu",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Mask-predict: Parallel decoding of conditional masked language models",
+            "venue": "In Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Naman Goyal",
+                "Jingfei Du",
+                "Myle Ott",
+                "Giri Anantharaman",
+                "Alexis Conneau"
+            ],
+            "title": "Larger-scale transformers for multilingual masked language modeling",
+            "venue": "arXiv preprint arXiv:2105.00572,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiatao Gu",
+                "James Bradbury",
+                "Caiming Xiong",
+                "Victor OK Li",
+                "Richard Socher"
+            ],
+            "title": "Non-autoregressive neural machine translation",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Junliang Guo",
+                "Zhirui Zhang",
+                "Linli Xu",
+                "Hao-Ran Wei",
+                "Boxing Chen",
+                "Enhong Chen"
+            ],
+            "title": "Incorporating bert into parallel sequence decoding with adapters",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Pengcheng He",
+                "Xiaodong Liu",
+                "Jianfeng Gao",
+                "Weizhu Chen"
+            ],
+            "title": "Deberta: Decoding-enhanced bert with disentangled attention",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tianyu He",
+                "Xu Tan",
+                "Yingce Xia",
+                "Di He",
+                "Tao Qin",
+                "Zhibo Chen",
+                "Tie-Yan Liu"
+            ],
+            "title": "Layer-wise coordination between encoder and decoder for neural machine translation",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Zhengfu He",
+                "Tianxiang Sun",
+                "Kuanning Wang",
+                "Xuanjing Huang",
+                "Xipeng Qiu"
+            ],
+            "title": "Diffusionbert: Improving generative masked language models with diffusion models",
+            "venue": "arXiv preprint arXiv:2211.15029,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jordan Hoffmann",
+                "Sebastian Borgeaud",
+                "Arthur Mensch",
+                "Elena Buchatskaya",
+                "Trevor Cai",
+                "Eliza Rutherford",
+                "Diego de Las Casas",
+                "Lisa Anne Hendricks",
+                "Johannes Welbl",
+                "Aidan Clark"
+            ],
+            "title": "Training compute-optimal large language models",
+            "venue": "arXiv preprint arXiv:2203.15556,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chao Jiang",
+                "Mounica Maddela",
+                "Wuwei Lan",
+                "Yang Zhong",
+                "Wei Xu"
+            ],
+            "title": "Neural CRF model for sentence alignment in text simplification",
+            "venue": "In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, ACL 2020,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ting Jiang",
+                "Shaohan Huang",
+                "Zihan Zhang",
+                "Deqing Wang",
+                "Fuzhen Zhuang",
+                "Furu Wei",
+                "Haizhen Huang",
+                "Liangjie Zhang",
+                "Qi Zhang"
+            ],
+            "title": "Improving non-autoregressive generation with mixup training",
+            "venue": "arXiv preprint arXiv:2110.11115,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Jimmy Ba"
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "International Conference on Learning Representations,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Hugo Lauren\u00e7on",
+                "Lucile Saulnier",
+                "Thomas Wang",
+                "Christopher Akiki",
+                "Albert Villanova del Moral",
+                "Teven Le Scao",
+                "Leandro Von Werra",
+                "Chenghao Mou",
+                "Eduardo Gonz\u00e1lez Ponferrada",
+                "Huu Nguyen"
+            ],
+            "title": "The bigscience roots corpus: A 1.6 tb composite multilingual dataset",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiwei Li",
+                "Michel Galley",
+                "Chris Brockett",
+                "Jianfeng Gao",
+                "Bill Dolan"
+            ],
+            "title": "A diversity-promoting objective function for neural conversation models",
+            "venue": "arXiv preprint arXiv:1510.03055,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Xiaobo Liang",
+                "Juntao Li",
+                "Lijun Wu",
+                "Ziqiang Cao",
+                "Min Zhang"
+            ],
+            "title": "Dynamic and efficient inference for text generation via bert family",
+            "venue": "In Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xiaobo Liang",
+                "Zecheng Tang",
+                "Juntao Li",
+                "Min Zhang"
+            ],
+            "title": "Open-ended long text generation via masked language modeling",
+            "venue": "In Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yaobo Liang",
+                "Chenfei Wu",
+                "Ting Song",
+                "Wenshan Wu",
+                "Yan Xia",
+                "Yu Liu",
+                "Yang Ou",
+                "Shuai Lu",
+                "Lei Ji",
+                "Shaoguang Mao"
+            ],
+            "title": "Taskmatrix. ai: Completing tasks by connecting foundation models with millions of apis",
+            "venue": "arXiv preprint arXiv:2303.16434,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bill Yuchen Lin",
+                "Wangchunshu Zhou",
+                "Ming Shen",
+                "Pei Zhou",
+                "Chandra Bhagavatula",
+                "Yejin Choi",
+                "Xiang Ren"
+            ],
+            "title": "CommonGen: A constrained text generation challenge for generative commonsense reasoning",
+            "venue": "In Findings of the Association for Computational Linguistics: EMNLP",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Chin-Yew Lin",
+                "Eduard Hovy"
+            ],
+            "title": "Manual and automatic evaluation of summaries",
+            "venue": "In Proceedings of the ACL-02 Workshop on Automatic Summarization,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Myle Ott",
+                "Naman Goyal",
+                "Jingfei Du",
+                "Mandar Joshi",
+                "Danqi Chen",
+                "Omer Levy",
+                "Mike Lewis",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov"
+            ],
+            "title": "Roberta: A robustly optimized bert pretraining approach",
+            "year": 1907
+        },
+        {
+            "authors": [
+                "Shayne Longpre",
+                "Le Hou",
+                "Tu Vu",
+                "Albert Webson",
+                "Hyung Won Chung",
+                "Yi Tay",
+                "Denny Zhou",
+                "Quoc V Le",
+                "Barret Zoph",
+                "Jason Wei"
+            ],
+            "title": "The flan collection: Designing data and methods for effective instruction tuning",
+            "venue": "arXiv preprint arXiv:2301.13688,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Niklas Muennighoff",
+                "Thomas Wang",
+                "Lintang Sutawika",
+                "Adam Roberts",
+                "Stella Biderman",
+                "Teven Le Scao",
+                "M Saiful Bari",
+                "Sheng Shen",
+                "Zheng-Xin Yong",
+                "Hailey Schoelkopf"
+            ],
+            "title": "Crosslingual generalization through multitask finetuning",
+            "venue": "arXiv preprint arXiv:2211.01786,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shashi Narayan",
+                "Shay B Cohen",
+                "Mirella Lapata"
+            ],
+            "title": "Don\u2019t give me the details, just the summary! topic-aware convolutional neural networks for extreme summarization",
+            "venue": "In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Myle Ott",
+                "Sergey Edunov",
+                "Alexei Baevski",
+                "Angela Fan",
+                "Sam Gross",
+                "Nathan Ng",
+                "David Grangier",
+                "Michael Auli"
+            ],
+            "title": "fairseq: A fast, extensible toolkit for sequence modeling",
+            "venue": "In Proceedings of NAACL-HLT 2019: Demonstrations,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Denis Paperno",
+                "Germ\u00e1n Kruszewski",
+                "Angeliki Lazaridou",
+                "Quan Ngoc Pham",
+                "Raffaella Bernardi",
+                "Sandro Pezzelle",
+                "Marco Baroni",
+                "Gemma Boleda",
+                "Raquel Fern\u00e1ndez"
+            ],
+            "title": "The lambada dataset: Word prediction requiring a broad discourse context",
+            "venue": "arXiv preprint arXiv:1606.06031,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "Wei-Jing Zhu"
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "In Proceedings of the 40th annual meeting of the Association for Computational Linguistics,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Edoardo Maria Ponti",
+                "Goran Glava\u0161",
+                "Olga Majewska",
+                "Qianchu Liu",
+                "Ivan Vuli\u0107",
+                "Anna Korhonen"
+            ],
+            "title": "Xcopa: A multilingual dataset for causal commonsense reasoning",
+            "venue": "arXiv preprint arXiv:2005.00333,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Matt Post"
+            ],
+            "title": "A call for clarity in reporting BLEU scores",
+            "venue": "In Proceedings of the Third Conference on Machine Translation: Research Papers,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Lihua Qian",
+                "Hao Zhou",
+                "Yu Bao",
+                "Mingxuan Wang",
+                "Lin Qiu",
+                "Weinan Zhang",
+                "Yong Yu",
+                "Lei Li"
+            ],
+            "title": "Glancing transformer for non-autoregressive neural machine translation",
+            "venue": "In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-totext transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alexander M Rush",
+                "Sumit Chopra",
+                "Jason Weston"
+            ],
+            "title": "A neural attention model for abstractive sentence summarization",
+            "venue": "In Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing (EMNLP),",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Victor Sanh",
+                "Albert Webson",
+                "Colin Raffel",
+                "Stephen H Bach",
+                "Lintang Sutawika",
+                "Zaid Alyafeai",
+                "Antoine Chaffin",
+                "Arnaud Stiegler",
+                "Teven Le Scao",
+                "Arun Raja"
+            ],
+            "title": "Multitask prompted training enables zero-shot task generalization",
+            "venue": "arXiv preprint arXiv:2110.08207,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yongliang Shen",
+                "Kaitao Song",
+                "Xu Tan",
+                "Dongsheng Li",
+                "Weiming Lu",
+                "Yueting Zhuang"
+            ],
+            "title": "Hugginggpt: Solving ai tasks with chatgpt and its friends in huggingface",
+            "venue": "arXiv preprint arXiv:2303.17580,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Emily Sheng",
+                "David Uthus"
+            ],
+            "title": "Investigating societal biases in a poetry composition",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Richard Socher",
+                "Alex Perelygin",
+                "Jean Wu",
+                "Jason Chuang",
+                "Christopher D Manning",
+                "Andrew Y Ng",
+                "Christopher Potts"
+            ],
+            "title": "Recursive deep models for semantic compositionality over a sentiment treebank",
+            "venue": "In Proceedings of the 2013 conference on empirical methods in natural language processing,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Yixuan Su",
+                "Deng Cai",
+                "Yan Wang",
+                "David Vandyke",
+                "Simon Baker",
+                "Piji Li",
+                "Nigel Collier"
+            ],
+            "title": "Nonautoregressive text generation with pre-trained language models",
+            "venue": "In Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B Hashimoto"
+            ],
+            "title": "Alpaca: A strong, replicable instructionfollowing model",
+            "venue": "Stanford Center for Research on Foundation Models. https://crfm. stanford. edu/2023/03/13/alpaca. html,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "James Thorne",
+                "Andreas Vlachos",
+                "Christos Christodoulopoulos",
+                "Arpit Mittal"
+            ],
+            "title": "FEVER: a largescale dataset for fact extraction and VERification",
+            "venue": "In NAACL-HLT,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alexey Tikhonov",
+                "Max Ryabinin"
+            ],
+            "title": "It\u2019s all in the heads: Using attention heads as a baseline for cross-lingual transfer in commonsense reasoning, 2021",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar",
+                "Aurelien Rodriguez",
+                "Armand Joulin",
+                "Edouard Grave",
+                "Guillaume Lample"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Alex Wang",
+                "Kyunghyun Cho"
+            ],
+            "title": "Bert has a mouth, and it must speak: Bert as a markov random field language model",
+            "venue": "In Proceedings of the Workshop on Methods for Optimizing and Evaluating Neural Language Generation,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yizhong Wang",
+                "Swaroop Mishra",
+                "Pegah Alipoormolabashi",
+                "Yeganeh Kordi",
+                "Amirreza Mirzaei",
+                "Anjana Arunkumar",
+                "Arjun Ashok",
+                "Arut Selvan Dhanasekaran",
+                "Atharva Naik",
+                "David Stap"
+            ],
+            "title": "Super-naturalinstructions: Generalization via declarative instructions on",
+            "venue": "nlp tasks. arXiv preprint arXiv:2204.07705,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yue Wang",
+                "Lijun Wu",
+                "Juntao Li",
+                "Xiaobo Liang",
+                "Min Zhang"
+            ],
+            "title": "Are the bert family zero-shot learners? a study on their potential and limitations",
+            "venue": "Artificial Intelligence,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jason Wei",
+                "Maarten Bosma",
+                "Vincent Y Zhao",
+                "Kelvin Guu",
+                "Adams Wei Yu",
+                "Brian Lester",
+                "Nan Du",
+                "Andrew M Dai",
+                "Quoc V Le"
+            ],
+            "title": "Finetuned language models are zero-shot learners",
+            "venue": "arXiv preprint arXiv:2109.01652,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yisheng Xiao",
+                "Lijun Wu",
+                "Junliang Guo",
+                "Juntao Li",
+                "Min Zhang",
+                "Tao Qin",
+                "Tie-yan Liu"
+            ],
+            "title": "A survey on non-autoregressive generation for neural machine translation and beyond",
+            "venue": "arXiv preprint arXiv:2204.09269,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yisheng Xiao",
+                "Ruiyang Xu",
+                "Lijun Wu",
+                "Juntao Li",
+                "Tao Qin",
+                "Tie-Yan Liu",
+                "Min Zhang"
+            ],
+            "title": "Amom: adaptive masking over masking for conditional masked language model",
+            "venue": "In Proceedings of the AAAI Conference on Artificial Intelligence,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiacheng Yang",
+                "Mingxuan Wang",
+                "Hao Zhou",
+                "Chengqi Zhao",
+                "Weinan Zhang",
+                "Yong Yu",
+                "Lei Li"
+            ],
+            "title": "Towards making the most of bert in neural machine translation",
+            "venue": "In Proceedings of the AAAI conference on artificial intelligence,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Saizheng Zhang",
+                "Emily Dinan",
+                "Jack Urbanek",
+                "Arthur Szlam",
+                "Douwe Kiela",
+                "Jason Weston"
+            ],
+            "title": "Personalizing dialogue agents: I have a dog, do you have pets too",
+            "venue": "In Proceedings of the 56th Annual Meeting of the Association for Computational Linguistic,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Shengyu Zhang",
+                "Linfeng Dong",
+                "Xiaoya Li",
+                "Sen Zhang",
+                "Xiaofei Sun",
+                "Shuhe Wang",
+                "Jiwei Li",
+                "Runyi Hu",
+                "Tianwei Zhang",
+                "Fei Wu"
+            ],
+            "title": "Instruction tuning for large language models: A survey",
+            "venue": "arXiv preprint arXiv:2308.10792,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xuandong Zhao",
+                "Siqi Ouyang",
+                "Zhiguo Yu",
+                "Ming Wu",
+                "Lei Li"
+            ],
+            "title": "Pre-trained language models can be fully zero-shot learners",
+            "venue": "arXiv preprint arXiv:2212.06950,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chunting Zhou",
+                "Pengfei Liu",
+                "Puxin Xu",
+                "Srini Iyer",
+                "Jiao Sun",
+                "Yuning Mao",
+                "Xuezhe Ma",
+                "Avia Efrat",
+                "Ping Yu",
+                "Lili Yu"
+            ],
+            "title": "Lima: Less is more for alignment",
+            "venue": "arXiv preprint arXiv:2305.11206,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jinhua Zhu",
+                "Yingce Xia",
+                "Lijun Wu",
+                "Di He",
+                "Tao Qin",
+                "Wengang Zhou",
+                "Houqiang Li",
+                "Tieyan Liu"
+            ],
+            "title": "Incorporating bert into neural machine translation",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Making large language models (LLMs) as good instruction followers further unleashes their power for different usages. Through instruction tuning with annotated examples and human preference feedback (if possible), the output of these LLMs can align with human expectations well on various tasks, e.g., understanding, generation, commonsense reasoning, under different settings, including zero-shot, few-shot, and chain-of-thought (Ouyang et al., 2022; Longpre et al., 2023). Many recent works have pointed out the key factors and insights into the success of instruction following techniques on the popular decoder-only (e.g., GPT (Brown et al., 2020), LLaMA (Touvron et al., 2023)) and encoder-decoder frameworks (e.g., T5 (Raffel et al., 2020a)), including but not limited to annotation quality (Zhou et al., 2023), data formats, and scaling (Chung et al., 2022). It can be predicted that more powerful alignment methods will occur for more model variants.\nTo enlarge the application range of alignment techniques, we alternatively explore the potential and limitations of the BERT family as instruction followers. To our knowledge, this is the first work that attempts to provide suggestions for building instruction-following models on the BERT family. Our study is motivated by existing observations that: 1) the BERT family can also be zero-shot learners (Zhao et al., 2022; Wang et al., 2023). Further equipping them with instruction understanding capabilities will expand their usage scenarios; 2) their masking language model objective can support open-ended long text generation and meanwhile achieve much faster decoding speed than\n1Our code and models will be available at https://anonymous.github.\nthe popular autoregressive fashion (Liang et al., 2023b); 3) complicated real-world applications usually involves the collaboration of generative LLMs and expert models (Liang et al., 2023c; Shen et al., 2023), while the BERT family have moved countless tasks forward before the rising of large generative models and still hold the records for various downstream tasks.\nContributions Throughout this paper, we mainly (1) provide a basic method that can hint at the potential and limitations of the BERT family as instruction followers; (2) present the key factors in making the BERT family competitive with the popular encoder-decoder and decoder-only models that have similar model scale and pretraining data; (3) disclose the risks and limitations (4) along with the possible reasons and solutions to give suggestions for further performance improvement.\nImportant Observations Although this work is at the preliminary stage, we still have some important observations for reference and future research. First, the BERT family has the possibility to be good instruction followers that can generalize well across tasks and languages compared to the other popular LLMs with similar model sizes and data. Besides, our presented method is scalable, in which one can use more computation resources and data to improve performance significantly. Some of the problems are possibly owing to the limited capabilities of the backbone models since there are no previous BERT family models that are as powerful as the decoder-only and encoder-decoder counterparts yet. The inherent shortages of non-autoregressive decoding also result in unconvinced and unreliability to feed different tasks and scenarios.\nIn the rest of this paper, we first provide the background of text generation via the BERT family and instruction tuning in Section 2. We then present the details for post-training the BERT family as a language generator in Section 3 and detailed experimental settings for instruction fine-tuning in Section 4. Section 5 and 6 analyze their potential and the possible reasons behind the limitations."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": ""
+        },
+        {
+            "heading": "2.1 TEXT GENERATION VIA BERT FAMILY",
+            "text": "BERT (Devlin et al., 2019) revolutionized the field of Natural Language Processing by leveraging the Transformer architecture and large-scale pre-training. BERT is a typical encoder-only architecture consisting of a multi-layer bidirectional Transformer encoder (Vaswani et al., 2017) with stacked identical blocks. Building upon the foundation laid by BERT, researchers have further explored and expanded the capabilities of the original BERT architecture, leading to the development of the BERT family, such as RoBERTa (Liu et al., 2019), ELECTRA (Clark et al., 2020), DeBERTa (He et al., 2020), and XLM-R (Conneau et al., 2020), among others. The bidirectional modeling characteristic and parallelizable masked language model (MLM) objective enables it to learn contextual word representations, facilitating the capture of comprehensive semantic information. Thus, the BERT family is renowned for its ability in natural language understanding (NLU) tasks. However, there is a scarcity of research that delves into their potential for text-generation tasks. Previous works (Dong et al., 2019; Wang & Cho, 2019) have theoretically indicated that the BERT family can generate coherent and high-quality textual content. However, the primary usage of the BERT family has been focused on extracting contextual features rather than generating text by itself (Zhu et al., 2019; Guo et al., 2020; Yang et al., 2020). Recent works (Chan & Fan, 2019; Jiang et al., 2021; Su et al., 2021; Liang et al., 2023b;a) explore the application of the BERT family in non-autoregressive generation using MLMs and receive positive feedback regarding performance. Their settings still follow the traditional pre-training and task-specific fine-tuning paradigm. In our work, we further explore the potential of becoming multitask instruction followers, which has been well explored in recent autoregressive language models but is a blank area for BERT family."
+        },
+        {
+            "heading": "2.2 INSTRUCTION TUNING",
+            "text": "Instruction tuning refers to the process of fine-tuning LLMs on an instruction dataset consisting of (instruction, output) pairs in a supervised fashion, which narrows the gap between the next-word prediction objective of LLMs and the users\u2019 objective of having LLMs adhere to human instructions (Zhang et al., 2023). The concept of merging diverse NLP tasks as generative tasks was pioneered by the T5 model (Raffel et al., 2020b). This method effectively simplifies the application\nof LLMs and paves the way for further advancements in instruction tuning models. Subsequent instruction tuning models like FLAN (Wei et al., 2021; Chung et al., 2022)(Wei et al., 2021; Chung et al., 2022) and T0 (Sanh et al., 2021) have further improved performance across diverse tasks by incorporating more task-specific instructions during the pre-training phase. Currently, instruction tuning represents an important research direction in NLP. The open-source community offers a variety of instruction datasets, such as xP3 (Muennighoff et al., 2022), Alpaca (Taori et al., 2023), and Dolly (Conover et al., 2023), as well as instruction fine-tuned LLMs, such as BLOOMZ (Muennighoff et al., 2022), FLAN-T5 (Chung et al., 2022), and Alpaca (Taori et al., 2023). However, the backbone of present instruction fine-tuned LLMs is mainly encoder-decoder and decoder-only based. The instruction-following capabilities of the BERT family, which are encoder-only based models, are severely under-explored. In this work, we introduced Instruct-XMLR to explore the potential and limitations of the BERT family for instruction following."
+        },
+        {
+            "heading": "3 METHODOLOGY",
+            "text": ""
+        },
+        {
+            "heading": "3.1 UTILIZING BERT FAMILY FOR LANGUAGE GENERATION",
+            "text": "Dramatically different from the prevalent left-to-right autoregressive unidirectional language models, the conditional independent factorization due to the bi-directional nature of BERT family captures more complex dependencies between tokens during training and also results in difficulty in generating reliable texts from scratch. In this section, we review the potential solution to utilize BERT family for language generation. As shown in previous work (Wang & Cho, 2019; He et al., 2022), BERT can be viewed as a Markov random field language model and then sample texts. Specifically, the sequence Y = (Y1, Y2, ..., YT ) can be viewed as random variables of an undirected fully-connected graph S, and this full graph can be defined as a clique in the Markov Random Field. Then the potential of this graph clique can be decomposes into a sum of T log-potential terms :\n\u03c8(S) = T\u220f i=1 \u03c8i(S) = exp\n{ T\u2211\ni=1\nlog\u03c8i(S)\n} , (1)\nwhere S denotes the fully-connected graph created from the original sequence Y , T denotes the number of random variables, i.e., the length of sequence Y . This can also be simplified by Conditional Distribution and Pseudo Log-Likelihood which maximizes the probability of each variable rather than joint probability of the entire graph:\n\u03c8(S) = 1\nT T\u2211 i=1 logP(yi|S\\i). (2)\nThen for BERT family, S\\i can represent that yi is replaced by the masked token [MASK] in the entire sequence Y , yi can represent each masked token. Then, the original training objective can be approximated as a masked language model (MLM), where each potential \u03c8(S) is based on the model probability P(yi|S\\i, \u03b8). Given the sequence Y , we can achieve:\n\u03c8(Y ) = 1\nT T\u2211 i=1 logP(yi|Y\\i) \u2248 1 R R\u2211 i=1 logP(yi|Y\\i, \u03b8), (3)\nwhere R is the number of masked tokens sampled from Y , and the upper bound is the length of Y . Then we can expand this non-conditional language model to conditional scenarios, i.e., sequence to sequence generation. Given a training pair (X,Y ), the model maximizes the following likelihood:\n\u03c8(Y ) = 1\nR R\u2211 i=1 logP(yi|Y\\i, X, \u03b8). (4)\nDuring inference, we begin with a fully Y with all tokens masked and generate them in each step of |Y | (Wang & Cho, 2019). Notice that the conditional MLM and Mask-Predict are suitable for BERT family, which keeps the training and inference objective consistent with pre-training."
+        },
+        {
+            "heading": "3.2 ONE-STEP TRAINING WITH DYNAMIC MIXED ATTENTION",
+            "text": "We can draw inspiration from the previous practices for language generation; the encoder-decoderbased models feed the source sequence X into the encoder to extract the representations and use the decoder to learn the internal relationships of the target sequence Y . Then, a cross-attention module is inserted into each decoder layer to aggregate the source representation and the target sequence. The key factor to language generation is how to learn the conditional probabilities P(Y |X) well, and this is the same for BERT family. However, unlike previous encoder-decoder-based models, the BERT family only contains a single multi-layer bidirectional Transformer encoder. To best match the traditional learning formats, we first build an additional model to perform like the decoder, then introduce mixed attention module (He et al., 2018; Liang et al., 2023b) to substitute for the original cross-attention and self-attention modules in the decoder. Specifically, given a training pair (X,Y ), the pre-training MLM containing L layers where each comprises one self-attention layer and one feed-forward layer. We can get the source representation Hlsrc of each encoder layer l:\nH\u0302lsrc = Self Attention(Hl\u22121src ) +Hl\u22121src , Hlsrc = FFN(H\u0302lsrc) + H\u0302lsrc. (5)\nFor target sequence Y , we randomly select partial tokens to be replaced by the [MASK] token and feed this corrupted sequence into the additional MLM. Then, this model tries to recover these masked tokens during training, and get the target representation Hltgt of each decoder layer l:\nH\u0302ltgt = Mixed Attention(HLsrc \u2295Hl\u22121tgt ) +Hl\u22121src , Hltgt = FFN(H\u0302ltgt) + H\u0302ltgt, (6)\nwhere \u2295 denotes the concatenation operation. Mixed-attention brings no additional parameters but just take the concatenated vector of source and target hidden states as key and value in the original attention mechanism. As a result, this additional MLM can completely share parameters with the MLM encoder. Thus, we can adopt only one pre-training BERT model to save model parameters and accelerate the training process. However, the mix-attention mechanism first acquires the last layer\u2019s source representation. We must pass the model twice during training, leading to low training efficiency. As a result, we introduce dynamic mixed-attention, which allows the model to get source representation and learn to predict the masked tokens at the same pass as the model. This mechanism adopts each source representation of the corresponding previous layer rather the last layer as:\nH\u0302ltgt = Mixed Attention(Hl\u22121src \u2295Hl\u22121tgt ) +Hl\u22121tgt , Hltgt = FFN(H\u0302ltgt) + H\u0302ltgt. (7)\nIn practice, we can simply concatenate the source and the masked target sequence, then feed them into the model for training. Besides, as shown in Figure 1, we prevents the query of each source token attending the target sequence in the attention module, which keeps consistent with the inference process since there is no target sequence in advance. Dynamic mixed-attention is more matching with the pretraining tasks of BERT family, making the idea of shared parameters more reliable."
+        },
+        {
+            "heading": "3.3 TRAINING AND INFERENCE PROCESS",
+            "text": "To better adapt to generation tasks, given a training pair (X,Y ), we uniformly mask 1 to L (target length) tokens following CMLM (Ghazvininejad et al., 2019) rather the original fixed masking in BERT family. Besides, we also\nrandomly mask a small ratio of tokens in source sequence to improve generality as mentioned in AMOM (Xiao et al., 2023). Then the training objective is to maximum the conditional MLM loss like the pre-training process:\nLMLM = M\u2211 i=1 logP(yi|YM, XM, \u03b8), (8)\nwhere M is the number of masked tokens in masked target sequence YM. Notice the model do not need to predict the masked tokens in the source sequence XM.\nDuring inference, we adopt the same Mask-Predict algorithm in CMLM (Ghazvininejad et al., 2019), which adopts multiple iterations to generate the final sequence. Specifically, given the total decoding iteration T in advance, we begin with the fully masked target sequence at the first decoding iteration. In the following T \u2212 1 iterations, a specific number of low-confidence tokens will be masked and re-generated. The number of masked tokens in each iteration can be computed as n = T\u2212tT \u2217 LY , where t denotes the current iteration number. The model selects the specific masked tokens in the next iteration based on the prediction probability, where tokens with the lowest probability will be masked, and their scores will be updated after the new prediction. Besides, unlike traditional left-to-right auto-regressive models, we should obtain the target length before initializing the fully masked target sequence. Naturally, we can directly give a length before inference. We also introduce a length prediction module following previous non-autoregressive models where a special token [LENGTH] is used to predict the target length."
+        },
+        {
+            "heading": "4 EXPERIMENTAL SETTINGS",
+            "text": "In this section, we introduce our experimental settings in fine-tuning and evaluation process."
+        },
+        {
+            "heading": "4.1 FINE-TUNING DETAILS",
+            "text": "Backbone Model. Recent generative LLMs have been proven to be good instruction followers (Wei et al., 2021; Taori et al., 2023), especially for these with relatively large size (Chung et al., 2022; OpenAI, 2023). To fully explore this capability of BERT family, we also select our backbone model with large size version. As a result, we only find XML-R (Conneau et al., 2020), which is pre-trained on around 100 languages with masked language modeling objective and has two large versions, XML-RXL and XML-RXXL (Goyal et al., 2021), containing 3.5 and 10.7 billion parameters respectively. Due to the cost of computing resources, We choose XML-RXL in our main experiments.\nInstruction Data. For fine-tuning instruction data, to make full use of the multilingual knowledge during the pre-training process of XML-R, we select a multilingual instruction dataset xP3 (Muennighoff et al., 2022) xP3 adds 30 new multilingual datasets with English prompts and serves as the multilingual version of P3 (Sanh et al., 2021) Overall, xP3 contains 46 languages and a similar language distribution of ROOTS (Laurenc\u0327on et al., 2022). In the original xP3 paper (Muennighoff et al., 2022), the authors use around 80 million samples for training, which is much more than the actual needs and increases the training expenses. As a result, we sample partial instruction samples (around 1/80) from the original training corpus in our experiment. Our sampled data only differs from the original data in sample size and remains strictly consistent in all other aspects, such as the composition ratio of each language, the number of tasks, prompt formats, etc.\nImplementation Details. Our experiments use the pre-trained XML-RXL, which contains 36 layers, 2560 hidden sizes, and 10240 feed-forward filter sizes. We implement all the experiments based on the Fairseq (Ott et al., 2019) library on 8 NVIDIA A100-PCIE-40GB GPU cards. We adopt the Adam (Kingma & Ba, 2014) as an optimization algorithm during training. The learning rate will warm up to 2e-5 in the first 500 updates and then decrease gradually with the polynomial decay schedule. We select the final model based on the validation performance."
+        },
+        {
+            "heading": "4.2 EVALUATION PROCESS",
+            "text": "Baseline Models. To make a relatively fair comparison between our fine-tuned model and other LLMs, we choose mT0-3.7B and BLOOMZ-3B since they have comparable model parameters and are also fine-tuned on the instruction dataset xP3. We give more comparison in Table 1. These models are with different but covers the current popular architectures. Need to notice a big difference exists in the number of training tokens, which always plays an important role on performance. Instruct-XMLRXL is trained on a bit more tokens than BLOOMZ-3B and half of mT0-3.7B during pre-training. While in fine-tuning Instruct-XMLRXL is training on much fewer tokens.\nTasks and Datasets. Following the previous work (Muennighoff et al., 2022), we evaluate the model\u2019s ability of task generalization in three held-out tasks that are not contained in the fine-\ntuned instruction data: conference resolution, sentence completion, and natural language inference (NLI). Specifically, we use XWinograd (Tikhonov & Ryabinin, 2021), XCOPA (Ponti et al., 2020), XNLI (Conneau et al., 2018) dataset for each task, respectively. Besides, we also evaluate in machine translation as a language generation task, which can also serve as a held-in task since xP3 contains various translation samples in multiple languages sampled from Flores-200 datasets (Costa-jussa\u0300 et al., 2022). We use WMT\u201914 translation datasets2 which contains five language splits between English and others. We adopt the test set for evaluation, each containing around 3,000 sentence pairs. Fortunately, these datasets all contain the language splits that do not exist in xP3, so we can also study and evaluate the model\u2019s ability for language generalization.\nEvaluation Settings. During evaluation, we select 5 prompts from PromptSource (Bach et al., 2022) and then use them for all language splits of each dataset mentioned above. Finally, we report the average performance of these prompts. Since our model need to get target length in advance, we adopt length prediction module for WMT\u201914 datasets and fixed length for others. Besides, we should adopt some constraints on the design of prompts depending on the specific task formats due to the length prediction, more information can be found in Section 5.1."
+        },
+        {
+            "heading": "5 ON THE POTENTIAL OF BERT FAMILY FOR INSTRUCTION FOLLOWING",
+            "text": "In this section, we first present the potential of length prediction in successfully applying BERT family for instruction following. We then present the overall performance on three held-out tasks under the zero-shot setting to evaluate the model\u2019s ability task generalization. Finally, we further study the scaling effects, which serves as an important aspect in assessing the potential for further improvement of model capabilities and performance."
+        },
+        {
+            "heading": "5.1 LENGTH PREDICTION",
+            "text": "For several non-autoregressive models, length prediction is an extra task to determine the target sequence length during inference (Ghazvininejad et al., 2019; Qian et al., 2021). In comparison, the autoregressive models, e.g., the two baseline models BLOOMZ and mT0, generate the texts oneby-one in a left-to-right manner, and they can dynamically finish generation when meeting a special token indicating the end of sentences (e.g., [EOS]). For Instruct-XMLRXL which adopts MaskPredict algorithm (Ghazvininejad et al., 2019) for generating the texts as mentioned in Section 3.3, length prediction is an essential process and directly related to the quality of final generation results. Next, we discuss the potential of length prediction through our experiments.\nAdopting the length predicted by the model-self is a common practice in original task-specific non-autoregressive models for various generation tasks, e.g., machine translation, summarization, and story generation. In their experiments, length prediction only brings a tiny decline in performance compared with directly using the target length. It is also explainable that since these generation tasks are flexible, word adjustments can eliminate the effect of minor length differences during generation. Unlike several above-mentioned generation tasks with flexible target lengths, some tasks with determined target lengths may heavily rely on the length prediction. To verify this, we choose the XWinograd task and the prompt as {The in the sentence below refers to {option1}. True or False? {sentence} }, the label space is {True, False}. Notice these two labels have different lengths after the sentencepiece tokenizer in Instruct-XMLRXL. As a result, once we set the length as one in advance during infer-\n2https://www.statmt.org/wmt14/translation-task.html\nence, the predictions are always {True}. If we set the length as two, the predictions are always {False}, indicating that the predicted length directly determines the label. This is not a reasonable situation and should be avoided in practical applications. As a result, we can add some constraints when selecting the prompts for these tasks.\nSpecifically, we can adopt length prediction module to get target length for traditional language generation tasks (e.g., machine translation since their target length can be flexible) and adopt a fixed length for determined tasks (e.g., multiple choice tasks since they always have the target length as one). However, for such tasks whose labels have determined but different lengths, such as the task with label space {False, True}, we can transform the label space into {Yes, No} whose labels have the same length, and then adopt the corresponding fixed length without leaking information about target labels.\n5.2 OVERALL PERFORMANCE\nMany works have shown that large language models after multitask instruction tuning can solve completely new tasks (Wei et al., 2021; Taori et al., 2023; Wang et al., 2022), we also examine our fine-tuned model: if Instruct-XMLR can successfully understand and complete the tasks which are not included in the fine-tuning process. Table 2 presents\nthe results. To avoid the influence of language generalization discussed in Section 6.1, we only choose the languages included in the fine-tuned data here. We report the average accuracy of 5 prompts in all tasks. We can find that Instruct-XMLR also demonstrates strong task generalization ability. After fine-tuning only 1/25 tokens of baseline models, Instruct-XMLR can significantly outperform a decoder-only model with comparable size BLOOMZ-3B in all tasks. Compared with the more competitive model mT0-3.7B, Instruct-XMLR achieves better performance on XCOPA and comparable performance on XWinograd, but underperforms a little on XNLI. We attribute this failure to: (1) XNLI is a multilingual dataset for traditional natural language inference (NLI) task, and mT0 with the encoder-decoder architecture is more beneficial to this task as also mentioned in Muennighoff et al. (2022), and (2) mT0-3.7B is trained more much longer in both pre-training (1 trillion v.s. 0.5 trillion tokens) and instruction tuning stage (15 billion v.s. 0.6 billion tokens), which can boost the performance of NLI tasks (Goyal et al., 2021; Hoffmann et al., 2022)."
+        },
+        {
+            "heading": "5.3 SCALING EFFECTS",
+            "text": "Scaling law plays a vital role in the recent success of LLMs (Hoffmann et al., 2022; Touvron et al., 2023). Since XML-R has different versions containing various parameters, we study the performance changes as the model size increases. Besides, we also focus on another layer of scaling, the number of training tokens during the fine-tuning process. Firstly, we also conduct experiments on two relatively small models, XML-RBase and XML-RLarge containing 270M and 550M, respectively. Table 3 presents the results. We can find an apparent growing trend as the model parameters increase. After fine-tuned with the same data, Instruct-XMLRXL outperforms Instruct-XMLRBase and Instruct-XMLRLarge on all tasks, indicating the important role of model size in task generalization. Then, we focus on the scaling effects of training tokens during instruction tuning process. Figure 2 plots the performance changes in the training process. The performance of all tasks keeps improving as the training continues, which is consistent with our intuition. Overall, Instruct-XMLR also demonstrates the positive scaling effects, which presents potential improvements in the future."
+        },
+        {
+            "heading": "6 POSSIBLE LIMITATIONS, REASONS AND SOLUTIONS",
+            "text": "In Section 5, we have noticed the potential of the BERT family for instruction following. However, more aspects remain to be explored for Instruct-XMLR before becoming a superior instruction followers. In this section, we investigate some limitations that may be caused by the specific factors of our model, e.g., the backbone model, including the original architecture and training corpus, the traditional non-autoregressive generation manner we adopted during inference, etc. Then, after finding these limitations, we also give some possible solutions."
+        },
+        {
+            "heading": "6.1 LANGUAGE GENERALIZATION",
+            "text": "Since Instruct-XMLR and two baseline models are multilingual, they should support multiple languages. Naturally, we aim to explore their abilities of language generalization, i.e., whether the model can perform well in languages not contained in fine-tuned datasets. Language generalization is also a widespread concern of language models and is related strongly to language distribution in the training data.\nWe select the language splits that are not included in the fine-tuned data of each task for evaluation. Table 4 presents the results. We can find that InstructXMLR outperforms BLOOMZ-3B but fails behind mT0-3.7B in all tasks, especially on XNLI dataset. Considering the same language composition in finetuning datasets, we explain this to the\ndifference between their pre-training stages. Firstly, all these languages are outside the pre-training data of BLOOMZ-3B, the declines for BLOOMZ-3B are easy to understand. Regarding InstructXMLR and mT0-3.7B, these languages are all in the pre-training data and show a similar composition distribution. As shown in Table 1, mT0-3.7B is trained with twice as many tokens than Instruct-XMLR and learns more robust language knowledge. As a result, Instruct-XMLR is inferior to mT0-3.7B in the ability of language generalization.\n6.2 GENERATION TASKS\nAs mentioned in numerous previous works (Gu et al., 2018; Xiao et al., 2022), the non-autoregressive models remove the target-side dependency during training. They will result in a performance drop in generation quality compared with the traditional autoregressive models. As Instruct-XMLR also adopts the non-autoregressive manner to generate texts, this performance decline still\nexists. What\u2019s more, unlike the generative pre-training of baseline models, the pre-training paradigm of the BERT family is not designed for language generation, leading to difficulty in learning well just in the instruction tuning process. To evaluate the generation ability of Instruct-XMLR, we choose WMT\u201914 translation datasets, which are widely used in non-autoregressive works. Table 5 presents the results. We use SacreBLEU 3 (Post, 2018) as our evaluation metric for all translation directions. We split the dataset into two subsets whose source and target language is English (EN\u2192X and X\u2192EN). We report the average performance of 5 prompts. Besides we also report the speedup by computing the number of tokens per second when translating the texts. As mT0-3.7B is the lowest, the corresponding speedup is 1.0x. Results show that although Instruct-XMLRXL can speed up the decoding by around 3 times that baselines due to the non-autoregressive manner, the performance drops seriously compared with mT0-3.7B.\n3https://github.com/mjpost/sacrebleu\nWe further analyze the main internal reasons: non-autoregressive generation manner or the pretraining paradigm. As mentioned in (Muennighoff et al., 2022), our fine-tuned dataset contains much more short target texts for training. Thus, Instruct-XMLRXL still can not learn superior generation abilities. As a result, we aim to enhance the learning on generation tasks during the instruction tuning process. Specifically, we random sample a subset containing all translation pairs but keep the language distribution the same as the original one. We get Instruct-XMLRXL-MT after fine-tuning on this purer instruction dataset with only a quarter updates steps of Instruct-XMLRXL. We can witness a significant performance improvement, indicating that the pre-training paradigm is more decisive. Therefore, it is necessary to enhance the learning on generation tasks for the BERT family; even a suitable generative post-training process is optimal before instruction tuning.\n6.3 UNRELIABLE PREDICTED LENGTH\nAs mentioned in section 5.1, we should transform the label space by designing the prompts for several tasks. However, we also recognize that this can not be adapted to all tasks in practical applications. For example, it is unrealizable for a language modeling task whose targets have different lengths of various samples. Besides, length prediction also seems not suitable since the length of each sample is determined. Therefore, we conduct quantitative experiments to analyze the effects of length prediction in various\ntasks with determined target length. Specifically, we select the following evaluation settings: (1) multiple choice questions task with options {A, B, C, D}, denoted as setting A; (2) the specific XWinograd task mentioned above with label space as {True, False} without transforming the label space, denoted as setting B; (3) a language modeling task LAMBADA (Paperno et al., 2016), where the target words to be generated are with various length, this is a more challenging setting, denoted as setting C. Table 6 presents the results. We report the accuracy of length prediction (the column Accuracy) and the performance gap compared with using fixed target length or the ground length (the column Gap). We can find that: length prediction is unreliable when meeting challenging testing scenarios. For setting A, since the model may predict the incorrect length, e.g., one as two, the result cab be {C:} or {C.}, which is equal to the label {C}. For settings B and C, length prediction almost fails, leading to a seriously declining performance. Therefore, we look forward to a more robust mechanism to determine the target length for non-aoturegressive models."
+        },
+        {
+            "heading": "6.4 FEW-SHOT PROMPTING LEARNING",
+            "text": "Few-shot prompting, also known as in-context learning (ICL), is first mentioned in GPT-3 (Brown et al., 2020) and allows the LLMs to learn specific abilities to solve different tasks with only a few examples concatenated in the demonstration. Then, LLMs can perform well in various without updating model parameters. ICL has become a mainstream method to boost the performance of various LLMs. Unfortunately, Instruct-XMLR has not yet demonstrated this ability during our experiments. We also concatenate several examples simply before the test example. However, this setting confuses the model and results in disorganized predictions. We attribute this to the bi-directional nature of BERT family since ICL has only been proven effective in autoregressive unidirectional language model. Therefore, we need more efforts to explore this and leave it as a future work."
+        },
+        {
+            "heading": "7 CONCLUSION",
+            "text": "This paper thoroughly explores the potential and limitations of BERT family as instruction followers. We find that our fine-tuned Instruct-XMLR can also generalize well across tasks and languages compared with current popular LLMs of model architecture with comparable model parameters. Besides, we also witnessed several limitations through our experiments, such as the performance decline of long-generation task and failure in few-shot prompting learning. We further analyze the reasons and point out that some of the problems are possibly owing to the limited capabilities of the backbone models since there are no previous BERT family models that are as powerful as the decoder-only and encoder-decoder counterparts yet. Therefore, we hope that researchers can pay more attention to BERT family, and make them become competitive members in the family of current large language models."
+        },
+        {
+            "heading": "A APPENDIX",
+            "text": "A.1 PROMPTS\nWe provide the prompts adopted in our main experiments here.\nA.2 ALL RESULTS\nAs we only report the average performance in the main body of our paper, we present different results based on the different prompts different languages splits here.\nA.3 THE PERFORMANCE VARIANCE OF DIFFERENT PROMPTS.\nSince we adopt five prompts for each task, analyzing how stable these models perform across different prompts is essential. As a result, we present the performance variance of difference prompts here. Table 12, Table 13 and Table 14 shows the results. We report the performance range, i.e., the performance boundary, to show the performance variance of difference prompts. We can find that: (1) The performance difference across prompts of Instruct-XMLR is nearly compared with two baseline models in all tasks and even smaller in XCOPA, XNLI, and machine translation task, indicating that our method does not bring instability across prompts. (2) The performance difference in XCOPA is relatively big, but this is the case for all models. Instruct-XMLR performs better than other models.\nA.4 EVALUATION ON MORE TASKS AND DATASETS.\nBeyond the tasks shown in 4.2, we also conduct evaluations on various tasks and datasets. Table 15 and Table 16 present the corresponding results.\nTask and Datasets. We aim to evaluate our models in various tasks, including language generation and understanding. For language generation, except the machine translation task we have included in Table 5, we select various tasks with different characteristics, e.g., text summarization which has relatively long sequences, text simplification and paraphrase generation whose inputs and targets have the similar expression, controllable generation which requires the model to generates texts meeting certain controllable constraints as humans wish reliably, and dialogue which has relatively flexible outputs. For text summarization, we use XSUM (Narayan et al., 2018) and Gigaword (Rush et al., 2015), which contain the online articles and single sentence summary pairs from the British Broadcasting Corporation and summary from Gigaword corpus, respectively. For text simplication, we adopt WIKI-AUTO (Jiang et al., 2020) which contains aligned sentences from English Wikipedia and Simple English Wikipedia. We adopt Quora Question Pairs (QQP) for paraphrase generation, where each question pair is semantically equivalent. For controllable generation, we adopt COMMONGEN (Lin et al., 2020)in which the model needs to generate a coherent sentence using the given common concepts. For the dialogue generation task, we adopt PersonaChat (Zhang et al.,\n2018), which contains around 150k data triples formatted as (profile, conversation, response). For language understanding tasks, we select FEVER (Thorne et al., 2018) for the fact verification task, which aims to verify the correctness of textual claims against textual sources. We also evaluate the sentiment analysis task which aims to analyze the sentiment information given the specific sentence using SST-2 (Socher et al., 2013) and Poem (Sheng & Uthus, 2020).\nEvaluation Metrics. We utilize various evaluation metrics for different tasks. For text summarization, we adopt ROUGE F1 score (Lin & Hovy, 2002) following previous works. For other language generation tasks, i.e., text simplification, paraphrase generation, controllable generation, and dialogue generation, we adopt BLEU (Papineni et al., 2002) and Distinct (Li et al., 2015) to measure the n-gram level precision and the diversity of the generated texts. For language understanding and math reasoning tasks, we report the corresponding accuracy.\nResults. As shown in Table 15 and Table 16, we also report the performance of Instruct-XMLR w/GL which decodes with ground truth length rather than the predicted length to analyze the effects of length prediction for different tasks. We can mainly find that: (1) Instruct-XMLR is more suitable for language understanding tasks. It outperforms mT0 and BLOOMZ in most testing scenarios (except underperforming BLOOMZ on sst-2). (2) We can notice two groups for language generation tasks according to the effects of length prediction. The length prediction is usable for text summarization, text Simplification, and paraphrase Generation. The performance in these tasks of Instruct-XMLR outperforms BLOOMZ in most testing scenarios but underperforms mT0. This is the same case for the machine translation task as shown in Table 4 in the original paper. (3) For other language generation tasks, i.e., COMMONGEN and PersonaChat, although Instruct-XMLR can achieve promising performance with target length, adopting length prediction results in a significant performance decline. This is easy to understand, i.e., these tasks have no strong alignment relationship between source length and target length. Hence, the model fails to predict the reliable length based on the source representation. More reliable alternative solutions should be explored to determine the target length for these tasks. (4) The Distinct score of Instruct-XMLR is best in all generation tasks, indicating that Instruct-XMLR can generate more diverse texts for all text generation tasks. We attribute this to the non-autoregressive generation (Mask-Predict algorithm) generation manner where the dependency of different tokens is released compared with that with adopting the standard next token prediction algorithm in traditional autoregressive models.\nA.5 MORE EXPLORATION FOR FEW-SHOT PROMPTING LEARNING\nAs mentioned in Section 6.4, Instruct-XMLR has not yet demonstrated the ability of few-shot prompting during our experiments. Since this capacity is first noticed in GPT-3 (Brown et al., 2020), current researchers believe that few-shot prompt learning arises in the pre-training stage and benefits from its generative pre-training paradigm. However, the different pre-training paradigm of InstructXMLR (i.e., simply predicting the masked tokens without generative paradigm) fails to equip the capacity of few-shot prompt learning. As a result, We have tried to make up for this flaw by including some few-shot instruction data for training rather than the only zero-shot instruction data we adopted in our main experiments. Unfortunately, this also doesn\u2019t bring any profit. Table 17 and Table 18 present the corresponding results. We can find that adopting in-context learning harms the overall performance.\nA.6 RESULTS OF XML-R WITHOUT INSTRUCTION TUNING\nTo analyze the effects of instruction tuning for our model, we compare Instruct-XMLR and the original pre-trained XML-R without instruction tuning. However, it is difficult or even impossible to collect the evaluation results of XMLR-w/o instruction tuning owing to its poor performance on these tasks. We provide a few representative examples for intuitive understanding in Table 19. We can find that XML-R fails to complete the task without instruction tuning, i.e., it always generates the special tokens [PAD] without actual meaning in XCOPA, XNLI, and XWinograd task and generates texts unrelated to the specific prompt in machine translation."
+        }
+    ],
+    "year": 2023
+}

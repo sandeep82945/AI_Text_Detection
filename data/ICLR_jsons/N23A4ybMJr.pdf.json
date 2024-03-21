@@ -1,0 +1,1004 @@
+{
+    "abstractText": "Transformers have become the standard in state-of-the-art vision architectures, achieving impressive performance on both image-level and dense pixelwise tasks. However, training vision transformers for high-resolution pixelwise tasks has a prohibitive cost. Typical solutions boil down to hierarchical architectures, fast and approximate attention, or training on low-resolution crops. This latter solution does not constrain architectural choices, but it leads to a clear performance drop when testing at resolutions significantly higher than that used for training, thus requiring ad-hoc and slow post-processing schemes. In this paper, we propose a novel strategy for efficient training and inference of high-resolution vision transformers: the key principle is to mask out most of the high-resolution inputs during training, keeping only N random windows. This allows the model to learn local interactions between tokens inside each window, and global interactions between tokens from different windows. As a result, the model can directly process the high-resolution input at test time without any special trick. We show that this strategy is effective when using relative positional embedding such as rotary embeddings. It is 4 times faster to train than a full-resolution network, and it is straightforward to use at test time compared to existing approaches. We apply this strategy to two dense prediction tasks with high resolution data. First, we show on the task of semantic segmentation that a simple setting with 2 windows performs best, hence the name of our method: Win-Win. To demonstrate the generality of our contribution, we further extend it to the binocular task of optical flow, reaching state-of-the-art performance on the Spring benchmark that contains Full-HD images with an inference time an order of magnitude faster than the best competitor. 0 10 20 30 40 50 60 Training time (hours) 45 50 55 60 m ea n Io U Semantic segmentation on BDD100k Win-Win (31GB) Full-res. (58GB) Full-res ViTDet (32GB) 0 25 50 75 100 125 150 175 Training time (hours) 1.6 2.0 2.4 2.8 3.2 En dPo in t E rro r ( EP E) Optical flow estimation on MPI-Sintel-clean Win-Win (14GB) Full-res. (28GB) Full-res ViT-Det (21GB) 80 100 120 140 160 180 Training time (hours) 0.0 0.5 1.0 1.5 In fe re nc e tim e (s ec on ds ) Optical flow estimation on MPI-Sintel-clean Full-res ViT Full-res ViT-Det Win-Win ViT + Tiling Figure 1: Validation performance vs. training time on semantic segmentation (left) and optical flow (middle). We compare our two-window training (Win-Win) to a standard full-resolution training as well as a sparsification of the attention following ViT-Det (Li et al., 2022a). We indicate the memory usage in parenthesis in the legend. Compared to full-resolution training, Win-Win allows to reduce the training time by a factor 3-4 and to half the memory usage while reaching a similar performance. Training and inference times on optical flow, for Win-Win vs. other strategies (right). ViT+Tiling corresponds to a setup similar to CroCo-Flow (Weinzaepfel et al., 2023) where the model is trained on random crops, but requires a tiling strategy at inference. While Win-Win is as fast to train as the latter, it can directly process full-resolution inputs at test time.",
+    "authors": [],
+    "id": "SP:ded5338984df66529c79c3ec4cc9ef0c38158175",
+    "references": [
+        {
+            "authors": [
+                "Alaaeldin Ali",
+                "Hugo Touvron",
+                "Mathilde Caron",
+                "Piotr Bojanowski",
+                "Matthijs Douze",
+                "Armand Joulin",
+                "Ivan Laptev",
+                "Natalia Neverova",
+                "Gabriel Synnaeve",
+                "Jakob Verbeek",
+                "Herv\u00e9 J\u00e9gou"
+            ],
+            "title": "Xcit: Crosscovariance image transformers",
+            "venue": "NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Roman Bachmann",
+                "David Mizrahi",
+                "Andrei Atanov",
+                "Amir Zamir"
+            ],
+            "title": "Multimae: Multi-modal multitask masked autoencoders",
+            "venue": "In ECCV,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lucas Beyer",
+                "Pavel Izmailov",
+                "Alexander Kolesnikov",
+                "Mathilde Caron",
+                "Simon Kornblith",
+                "Xiaohua Zhai",
+                "Matthias Minderer",
+                "Michael Tschannen",
+                "Ibrahim Alabdulmohsin",
+                "Filip Pavetic"
+            ],
+            "title": "Flexivit: One model for all patch sizes",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Daniel Bolya",
+                "Cheng-Yang Fu",
+                "Xiaoliang Dai",
+                "Peizhao Zhang",
+                "Christoph Feichtenhofer",
+                "Judy Hoffman"
+            ],
+            "title": "Token merging: Your vit but faster",
+            "venue": "In ICLR,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "D.J. Butler",
+                "J. Wulff",
+                "G.B. Stanley",
+                "M.J. Black"
+            ],
+            "title": "A naturalistic open source movie for optical flow evaluation",
+            "venue": "In ECCV,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Mathilde Caron",
+                "Hugo Touvron",
+                "Ishan Misra",
+                "Herv\u00e9 J\u00e9gou",
+                "Julien Mairal",
+                "Piotr Bojanowski",
+                "Armand Joulin"
+            ],
+            "title": "Emerging properties in self-supervised vision transformers",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jun Chen",
+                "Ming Hu",
+                "Boyang Li",
+                "Mohamed Elhoseiny"
+            ],
+            "title": "Efficient self-supervised vision pretraining with local masked reconstruction",
+            "venue": "arXiv preprint arXiv:2206.00790,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pengguang Chen",
+                "Shu Liu",
+                "Hengshuang Zhao",
+                "Jiaya Jia"
+            ],
+            "title": "Gridmask data augmentation",
+            "venue": "arXiv preprint arXiv:2001.04086,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Richard J Chen",
+                "Chengkuan Chen",
+                "Yicong Li",
+                "Tiffany Y Chen",
+                "Andrew D Trister",
+                "Rahul G Krishnan",
+                "Faisal Mahmood"
+            ],
+            "title": "Scaling vision transformers to gigapixel images via hierarchical self-supervised learning",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xuanyao Chen",
+                "Zhijian Liu",
+                "Haotian Tang",
+                "Li Yi",
+                "Hang Zhao",
+                "Song Han"
+            ],
+            "title": "Sparsevit: Revisiting activation sparsity for efficient high-resolution vision transformer",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Krzysztof Choromanski",
+                "Valerii Likhosherstov",
+                "David Dohan",
+                "Xingyou Song",
+                "Andreea Gane",
+                "Tamas Sarlos",
+                "Peter Hawkins",
+                "Jared Davis",
+                "Afroz Mohiuddin",
+                "Lukasz Kaiser"
+            ],
+            "title": "Rethinking attention with performers",
+            "venue": "In ICLR,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiangxiang Chu",
+                "Zhi Tian",
+                "Yuqing Wang",
+                "Bo Zhang",
+                "Haibing Ren",
+                "Xiaolin Wei",
+                "Huaxia Xia",
+                "Chunhua Shen"
+            ],
+            "title": "Twins: Revisiting the design of spatial attention in vision transformers",
+            "venue": "NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mostafa Dehghani",
+                "Josip Djolonga",
+                "Basil Mustafa",
+                "Piotr Padlewski",
+                "Jonathan Heek",
+                "Justin Gilmer",
+                "Andreas Steiner",
+                "Mathilde Caron",
+                "Robert Geirhos",
+                "Ibrahim Alabdulmohsin"
+            ],
+            "title": "Scaling vision transformers to 22 billion parameters",
+            "venue": "arXiv preprint arXiv:2302.05442,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mostafa Dehghani",
+                "Basil Mustafa",
+                "Josip Djolonga",
+                "Jonathan Heek",
+                "Matthias Minderer",
+                "Mathilde Caron",
+                "Andreas Steiner",
+                "Joan Puigcerver",
+                "Robert Geirhos",
+                "Ibrahim Alabdulmohsin"
+            ],
+            "title": "Patch n\u2019pack: Navit, a vision transformer for any aspect ratio and resolution",
+            "venue": "arXiv preprint arXiv:2307.06304,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Philipp Fischer",
+                "Eddy Ilg",
+                "Philip H\u00e4usser",
+                "Caner Hazirbas",
+                "Vladimir Golkov",
+                "Patrick van der Smagt",
+                "Daniel Cremers",
+                "Thomas Brox"
+            ],
+            "title": "FlowNet: Learning Optical Flow with Convolutional Networks",
+            "venue": "In ICCV,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Lucas Beyer",
+                "Alexander Kolesnikov",
+                "Dirk Weissenborn",
+                "Xiaohua Zhai",
+                "Thomas Unterthiner",
+                "Mostafa Dehghani",
+                "Matthias Minderer",
+                "Georg Heigold",
+                "Sylvain Gelly"
+            ],
+            "title": "An image is worth 16x16 words: Transformers for image recognition at scale",
+            "venue": "In ICLR,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haoqi Fan",
+                "Bo Xiong",
+                "Karttikeya Mangalam",
+                "Yanghao Li",
+                "Zhicheng Yan",
+                "Jitendra Malik",
+                "Christoph Feichtenhofer"
+            ],
+            "title": "Multiscale vision transformers",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yuxin Fang",
+                "Shusheng Yang",
+                "Shijie Wang",
+                "Yixiao Ge",
+                "Ying Shan",
+                "Xinggang Wang"
+            ],
+            "title": "Unleashing vanilla vision transformer with masked image modeling for object detection",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Christoph Feichtenhofer",
+                "Haoqi Fan",
+                "Yanghao Li",
+                "Kaiming He"
+            ],
+            "title": "Masked autoencoders as spatiotemporal learners",
+            "venue": "In NeurIPS,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Andreas Griewank",
+                "Andrea Walther"
+            ],
+            "title": "Algorithm 799: Revolve: An implementation of checkpointing for the reverse or adjoint mode of computational differentiation",
+            "venue": "ACM Trans. Math. Softw.,",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Xinlei Chen",
+                "Saining Xie",
+                "Yanghao Li",
+                "Piotr Doll\u00e1r",
+                "Ross B. Girshick"
+            ],
+            "title": "Masked autoencoders are scalable vision learners",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhaoyang Huang",
+                "Xiaoyu Shi",
+                "Chao Zhang",
+                "Qiang Wang",
+                "Ka Chun Cheung",
+                "Hongwei Qin",
+                "Jifeng Dai",
+                "Hongsheng Li"
+            ],
+            "title": "Flowformer: A transformer architecture for optical flow",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zilong Huang",
+                "Xinggang Wang",
+                "Lichao Huang",
+                "Chang Huang",
+                "Yunchao Wei",
+                "Wenyu Liu"
+            ],
+            "title": "Ccnet: Criss-cross attention for semantic segmentation",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Andrew Jaegle",
+                "Sebastian Borgeaud",
+                "Jean-Baptiste Alayrac",
+                "Carl Doersch",
+                "Catalin Ionescu",
+                "David Ding",
+                "Skanda Koppula",
+                "Daniel Zoran",
+                "Andrew Brock",
+                "Evan Shelhamer",
+                "Olivier J. H\u00e9naff",
+                "Matthew M. Botvinick",
+                "Andrew Zisserman",
+                "Oriol Vinyals",
+                "Jo\u00e3o Carreira"
+            ],
+            "title": "Perceiver IO: A general architecture for structured inputs & outputs",
+            "venue": "In ICLR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Azin Jahedi",
+                "Maximilian Luz",
+                "Lukas Mehl",
+                "Marc Rivinius",
+                "Andr\u00e9s Bruhn"
+            ],
+            "title": "High resolution multi-scale raft (robust vision challenge 2022)",
+            "venue": "arXiv preprint arXiv:2210.16900,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alex Kendall",
+                "Yarin Gal",
+                "Roberto Cipolla"
+            ],
+            "title": "Multi-task learning using uncertainty to weigh losses for scene geometry and semantics",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yanghao Li",
+                "Hanzi Mao",
+                "Ross B. Girshick",
+                "Kaiming He"
+            ],
+            "title": "Exploring plain vision transformer backbones for object detection",
+            "venue": "In ECCV,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yanghao Li",
+                "Chao-Yuan Wu",
+                "Haoqi Fan",
+                "Karttikeya Mangalam",
+                "Bo Xiong",
+                "Jitendra Malik",
+                "Christoph Feichtenhofer"
+            ],
+            "title": "Mvitv2: Improved multiscale vision transformers for classification and detection",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhaoshuo Li",
+                "Xingtong Liu",
+                "Nathan Drenkow",
+                "Andy Ding",
+                "Francis X. Creighton",
+                "Russell H. Taylor",
+                "Mathias Unberath"
+            ],
+            "title": "Revisiting stereo depth estimation from a sequence-to-sequence perspective with transformers",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mingbao Lin",
+                "Mengzhao Chen",
+                "Yuxin Zhang",
+                "Ke Li",
+                "Yunhang Shen",
+                "Chunhua Shen",
+                "Rongrong Ji"
+            ],
+            "title": "Super vision transformer",
+            "venue": "arXiv preprint arXiv:2205.11397,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ze Liu",
+                "Yutong Lin",
+                "Yue Cao",
+                "Han Hu",
+                "Yixuan Wei",
+                "Zheng Zhang",
+                "Stephen Lin",
+                "Baining Guo"
+            ],
+            "title": "Swin transformer: Hierarchical vision transformer using shifted windows",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ze Liu",
+                "Han Hu",
+                "Yutong Lin",
+                "Zhuliang Yao",
+                "Zhenda Xie",
+                "Yixuan Wei",
+                "Jia Ning",
+                "Yue Cao",
+                "Zheng Zhang",
+                "Li Dong"
+            ],
+            "title": "Swin transformer v2: Scaling up capacity and resolution",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhuang Liu",
+                "Hanzi Mao",
+                "Chao-Yuan Wu",
+                "Christoph Feichtenhofer",
+                "Trevor Darrell",
+                "Saining Xie"
+            ],
+            "title": "A convnet for the 2020s",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter"
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "In ICLR,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nikolaus Mayer",
+                "Eddy Ilg",
+                "Philip H\u00e4usser",
+                "Philipp Fischer",
+                "Daniel Cremers",
+                "Alexey Dosovitskiy",
+                "Thomas Brox"
+            ],
+            "title": "A large dataset to train convolutional networks for disparity, optical flow, and scene flow estimation",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Lukas Mehl",
+                "Jenny Schmalfuss",
+                "Azin Jahedi",
+                "Yaroslava Nalivayko",
+                "Andr\u00e9s Bruhn"
+            ],
+            "title": "Spring: A high-resolution high-detail dataset and benchmark for scene flow, optical flow and stereo",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bowen Pan",
+                "Rameswar Panda",
+                "Yifan Jiang",
+                "Zhangyang Wang",
+                "Rogerio Feris",
+                "Aude Oliva"
+            ],
+            "title": "Ia-red 2\u0302: Interpretability-aware redundancy reduction for vision transformers",
+            "venue": "NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ren\u00e9 Ranftl",
+                "Alexey Bochkovskiy",
+                "Vladlen Koltun"
+            ],
+            "title": "Vision transformers for dense prediction",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yongming Rao",
+                "Wenliang Zhao",
+                "Benlin Liu",
+                "Jiwen Lu",
+                "Jie Zhou",
+                "Cho-Jui Hsieh"
+            ],
+            "title": "DynamicVit: Efficient vision transformers with dynamic token sparsification",
+            "venue": "NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiaoyu Shi",
+                "Zhaoyang Huang",
+                "Dasong Li",
+                "Manyuan Zhang",
+                "Ka Chun Cheung",
+                "Simon See",
+                "Hongwei Qin",
+                "Jifeng Dai",
+                "Hongsheng Li"
+            ],
+            "title": "Flowformer++: Masked cost volume autoencoding for pretraining optical flow estimation",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nathan Silberman",
+                "Derek Hoiem",
+                "Pushmeet Kohli",
+                "Rob Fergus"
+            ],
+            "title": "Indoor segmentation and support inference from RGBD images",
+            "venue": "In ECCV,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Jianlin Su",
+                "Yu Lu",
+                "Shengfeng Pan",
+                "Ahmed Murtadha",
+                "Bo Wen",
+                "Yunfeng Liu"
+            ],
+            "title": "Roformer: Enhanced transformer with rotary position embedding",
+            "venue": "arXiv preprint arXiv:2104.09864,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xiuchao Sui",
+                "Shaohua Li",
+                "Xue Geng",
+                "Yan Wu",
+                "Xinxing Xu",
+                "Yong Liu",
+                "Rick Goh",
+                "Hongyuan Zhu"
+            ],
+            "title": "Craft: Cross-attentional flow transformer for robust optical flow",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Deqing Sun",
+                "Xiaodong Yang",
+                "Ming-Yu Liu",
+                "Jan Kautz"
+            ],
+            "title": "Models matter, so does training: An empirical study of cnns for optical flow estimation",
+            "venue": "IEEE trans. PAMI,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Deqing Sun",
+                "Daniel Vlasic",
+                "Charles Herrmann",
+                "Varun Jampani",
+                "Michael Krainin",
+                "Huiwen Chang",
+                "Ramin Zabih",
+                "William T Freeman",
+                "Ce Liu"
+            ],
+            "title": "Autoflow: Learning a better training set for optical flow",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shangkun Sun",
+                "Yuanqi Chen",
+                "Yu Zhu",
+                "Guodong Guo",
+                "Ge Li"
+            ],
+            "title": "SKFlow: Learning optical flow with super kernels",
+            "venue": "In NeurIPS,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zachary Teed",
+                "Jia Deng"
+            ],
+            "title": "Raft: Recurrent all-pairs field transforms for optical flow",
+            "venue": "In ECCV,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rui Tian",
+                "Zuxuan Wu",
+                "Qi Dai",
+                "Han Hu",
+                "Yu Qiao",
+                "Yu-Gang Jiang"
+            ],
+            "title": "Resformer: Scaling vits with multi-resolution training",
+            "venue": "arXiv preprint arXiv:2212.00776,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhan Tong",
+                "Yibing Song",
+                "Jue Wang",
+                "Limin Wang"
+            ],
+            "title": "Videomae: Masked autoencoders are dataefficient learners for self-supervised video pre-training",
+            "venue": "NeurIPS,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Matthieu Cord",
+                "Matthijs Douze",
+                "Francisco Massa",
+                "Alexandre Sablayrolles",
+                "Herv\u00e9 J\u00e9gou"
+            ],
+            "title": "Training data-efficient image transformers & distillation through attention",
+            "venue": "In ICML,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "NeurIPS,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Prajit Ramachandran",
+                "Aravind Srinivas",
+                "Niki Parmar",
+                "Blake A. Hechtman",
+                "Jonathon Shlens"
+            ],
+            "title": "Scaling local self-attention for parameter efficient visual backbones",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haoqing Wang",
+                "Yehui Tang",
+                "Yunhe Wang",
+                "Jianyuan Guo",
+                "Zhi-Hong Deng",
+                "Kai Han"
+            ],
+            "title": "Masked image modeling with local multi-scale reconstruction",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sinong Wang",
+                "Belinda Z Li",
+                "Madian Khabsa",
+                "Han Fang",
+                "Hao Ma"
+            ],
+            "title": "Linformer: Self-attention with linear complexity",
+            "venue": "arXiv preprint arXiv:2006.04768,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Wenhai Wang",
+                "Enze Xie",
+                "Xiang Li",
+                "Deng-Ping Fan",
+                "Kaitao Song",
+                "Ding Liang",
+                "Tong Lu",
+                "Ping Luo",
+                "Ling Shao"
+            ],
+            "title": "Pyramid vision transformer: A versatile backbone for dense prediction without convolutions",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wenshan Wang",
+                "Delong Zhu",
+                "Xiangwei Wang",
+                "Yaoyu Hu",
+                "Yuheng Qiu",
+                "Chen Wang",
+                "Yafei Hu",
+                "Ashish Kapoor",
+                "Sebastian Scherer"
+            ],
+            "title": "Tartanair: A dataset to push the limits of visual slam",
+            "venue": "In IROS,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Philippe Weinzaepfel",
+                "Vincent Leroy",
+                "Thomas Lucas",
+                "Romain Br\u00e9gier",
+                "Yohann Cabon",
+                "Vaibhav Arora",
+                "Leonid Antsfeld",
+                "Boris Chidlovskii",
+                "Gabriela Csurka",
+                "J\u00e9r\u00f4me Revaud"
+            ],
+            "title": "CroCo: SelfSupervised Pre-training for 3D Vision Tasks by Cross-View Completion",
+            "venue": "NeurIPS,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Philippe Weinzaepfel",
+                "Vaibhav Arora",
+                "Yohann Cabon",
+                "Thomas Lucas",
+                "Romain Br\u00e9gier",
+                "Vincent Leroy",
+                "Gabriela Csurka",
+                "Leonid Antsfeld",
+                "Boris Chidlovskii",
+                "J\u00e9r\u00f4me Revaud"
+            ],
+            "title": "CroCo v2: Improved cross-view completion pre-training for stereo matching",
+            "venue": "In ICCV,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haiping Wu",
+                "Bin Xiao",
+                "Noel Codella",
+                "Mengchen Liu",
+                "Xiyang Dai",
+                "Lu Yuan",
+                "Lei Zhang"
+            ],
+            "title": "Cvt: Introducing convolutions to vision transformers",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhenda Xie",
+                "Zheng Zhang",
+                "Yue Cao",
+                "Yutong Lin",
+                "Jianmin Bao",
+                "Zhuliang Yao",
+                "Qi Dai",
+                "Han Hu"
+            ],
+            "title": "Simmim: A simple framework for masked image modeling",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Haofei Xu",
+                "Jing Zhang",
+                "Jianfei Cai",
+                "Hamid Rezatofighi",
+                "Fisher Yu",
+                "Dacheng Tao",
+                "Andreas Geiger"
+            ],
+            "title": "Unifying flow, stereo and depth estimation",
+            "venue": "arXiv preprint arXiv:2211.05783,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiarui Xu",
+                "Shalini De Mello",
+                "Sifei Liu",
+                "Wonmin Byeon",
+                "Thomas M. Breuel",
+                "Jan Kautz",
+                "Xiaolong Wang"
+            ],
+            "title": "Groupvit: Semantic segmentation emerges from text supervision",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hongxu Yin",
+                "Arash Vahdat",
+                "Jose M Alvarez",
+                "Arun Mallya",
+                "Jan Kautz",
+                "Pavlo Molchanov"
+            ],
+            "title": "A-vit: Adaptive tokens for efficient vision transformer",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Fisher Yu",
+                "Haofeng Chen",
+                "Xin Wang",
+                "Wenqi Xian",
+                "Yingying Chen",
+                "Fangchen Liu",
+                "Vashisht Madhavan",
+                "Trevor Darrell"
+            ],
+            "title": "Bdd100k: A diverse driving dataset for heterogeneous multitask learning",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Li Yuan",
+                "Yunpeng Chen",
+                "Tao Wang",
+                "Weihao Yu",
+                "Yujun Shi",
+                "Zihang Jiang",
+                "Francis E.H. Tay",
+                "Jiashi Feng",
+                "Shuicheng Yan"
+            ],
+            "title": "Tokens-to-token vit: Training vision transformers from scratch on imagenet",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mingliang Zhai",
+                "Xuezhi Xiang",
+                "Ning Lv",
+                "Xiangdong Kong"
+            ],
+            "title": "Optical flow and scene flow estimation: A survey",
+            "venue": "Pattern Recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Bowen Zhang",
+                "Zhi Tian",
+                "Quan Tang",
+                "Xiangxiang Chu",
+                "Xiaolin Wei",
+                "Chunhua Shen"
+            ],
+            "title": "Segvit: Semantic segmentation with plain vision transformers",
+            "venue": "NeurIPS,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pengchuan Zhang",
+                "Xiyang Dai",
+                "Jianwei Yang",
+                "Bin Xiao",
+                "Lu Yuan",
+                "Lei Zhang",
+                "Jianfeng Gao"
+            ],
+            "title": "Multi-scale vision longformer: A new vision transformer for high-resolution image encoding",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shiyu Zhao",
+                "Long Zhao",
+                "Zhixing Zhang",
+                "Enyu Zhou",
+                "Dimitris N. Metaxas"
+            ],
+            "title": "Global matching with overlapping attention for optical flow estimation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sixiao Zheng",
+                "Jiachen Lu",
+                "Hengshuang Zhao",
+                "Xiatian Zhu",
+                "Zekun Luo",
+                "Yabiao Wang",
+                "Yanwei Fu",
+                "Jianfeng Feng",
+                "Tao Xiang",
+                "Philip H.S. Torr",
+                "Li Zhang"
+            ],
+            "title": "Rethinking semantic segmentation from a sequence-to-sequence perspective with transformers",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "text": "Transformers have become the standard in state-of-the-art vision architectures, achieving impressive performance on both image-level and dense pixelwise tasks. However, training vision transformers for high-resolution pixelwise tasks has a prohibitive cost. Typical solutions boil down to hierarchical architectures, fast and approximate attention, or training on low-resolution crops. This latter solution does not constrain architectural choices, but it leads to a clear performance drop when testing at resolutions significantly higher than that used for training, thus requiring ad-hoc and slow post-processing schemes. In this paper, we propose a novel strategy for efficient training and inference of high-resolution vision transformers: the key principle is to mask out most of the high-resolution inputs during training, keeping only N random windows. This allows the model to learn local interactions between tokens inside each window, and global interactions between tokens from different windows. As a result, the model can directly process the high-resolution input at test time without any special trick. We show that this strategy is effective when using relative positional embedding such as rotary embeddings. It is 4 times faster to train than a full-resolution network, and it is straightforward to use at test time compared to existing approaches. We apply this strategy to two dense prediction tasks with high resolution data. First, we show on the task of semantic segmentation that a simple setting with 2 windows performs best, hence the name of our method: Win-Win. To demonstrate the generality of our contribution, we further extend it to the binocular task of optical flow, reaching state-of-the-art performance on the Spring benchmark that contains Full-HD images with an inference time an order of magnitude faster than the best competitor."
+        },
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "We explore the training of non-hierarchical vision transformers (Dosovitskiy et al., 2021) (ViTs) for dense tasks at high resolutions. Self-attention (Vaswani et al., 2017) based architectures have been shown to scale well with large amounts of data (Dosovitskiy et al., 2021; Touvron et al., 2021; Dehghani et al., 2023a) and can be trained in a self-supervised manner (Caron et al., 2021; Xie et al., 2022; He et al., 2022; Weinzaepfel et al., 2022; Feichtenhofer et al., 2022; Tong et al., 2022). Their generic structure allows them to be fine-tuned on both image-level and pixel-level downstream tasks (Caron et al., 2021; He et al., 2022; Oquab et al., 2023; Weinzaepfel et al., 2022), however, the applicability of vanilla vision transformers to high resolution images is limited, due to the quadratic complexity of global self-attention. This problem is compounded by the fact that ViTs tend to generalize poorly to test resolutions significantly higher than that seen at training, which was recently evidenced in several works (Tian et al., 2022; Ali et al., 2021; Oquab et al., 2023; Ranftl et al., 2021).\nExisting solutions can broadly be separated into three categories. First, one can replace the quadratic global attention by either a local or windowed attention mechanism (Li et al., 2022a; Liu et al., 2021; 2022a), or by using an approximation of the attention with sub-quadratic complexity (Ali et al., 2021; Wang et al., 2020a). The second category of approach aims at reducing the number of tokens by using hierarchical representations with pooling, downsampling or pruning (Wang et al., 2021; Fan et al., 2021; Li et al., 2022b; Zhang et al., 2021; Liu et al., 2021; Yin et al., 2022; Pan et al., 2021; Chen et al., 2023; Rao et al., 2021), or by varying the patch resolution (Beyer et al., 2023; Lin et al., 2022). This is typically effective for tasks that do not require pixelwise predictions. The third category consists in keeping a vanilla ViT architecture and training on small-sized crops of fixed size, while resorting to tiling at test time to obtain high resolution outputs (Weinzaepfel et al., 2023; Huang et al., 2022; Shi et al., 2023; Jaegle et al., 2022), i.e. with a sliding window strategy, where multiple predictions from overlapping crops can be aggregated. An alternative consists in performing most training at lower resolutions and finally finetuning at the target high resolution (Zheng et al., 2021; Ranftl et al., 2021), but this remains very costly. In this paper, we propose a novel path that maintains vanilla self-attention, uses a non-hierarchical transformer backbone, does not require intensive fine-tuning, and produces high-resolution outputs in a single forward pass at test time.\nOur proposed approach to train a high-resolution transformer with vanilla self-attention relies on masking most of the input tokens, leading to a 3\u22124\u00d7 faster training and 2\u00d7 reduced memory, see Figure 1. Our main contribution is to show that specific masking configurations, unlike the random one typically employed in masked input modeling (He et al., 2022; Tong et al., 2022), must be used to enable high-resolution generalization at inference time, see Figure 2. These configurations allow to jointly consider global and local interactions, which is key for dense prediction tasks. Our proposed solution is to randomly select multiple windows in the input image, so that both global (inter-windows) and local (intra-windows) interactions occur during training. We restrict our study to rectangular windows that naturally lends themselves to the convolutional heads typically used with transformers backbones for dense prediction tasks (Ranftl et al., 2021; Liu et al., 2022b). Empirically, we find that a simple setup with two squared windows of the same shape performs as well as more elaborate strategies. We therefore call our training strategy with two windows Win-Win.\nTo demonstrate the generality of our training framework, we show its effectiveness on monocular and binocular tasks. Specifically, we experiment with semantic segmentation and optical flow\nestimation. On the first task, we achieve a final performance on par with more elaborate training strategies that can require test-time processing tricks such as sliding windows, which is slow and produces artifacts. Applying this idea to the second task of optical flow estimation is non trivial as it involves an additional input image for which the window sampling strategy depends of the first image\u2019s windows. We thus propose an extension of our window sampling strategy to the case of multiple image. Using it, we obtain state-of-the-art performance on the Full-HD Spring benchmark (Mehl et al., 2023) without employing task-specific designs nor requiring tiling at test time.\nWhile our training strategy allows to test directly at the target resolution, we observe that the statistics of the self-attention can change when more tokens become visible at test time. We compensate for this using a temperature factor in the softmax of the attention, validated using the performance on the full-resolution training images."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": "High-Resolution ViTs are costly to train due to the quadratic complexity of the global attention mechanism with respect to the number of input tokens. A common strategy is to train on a small resolution and test on higher-resolution inputs (Ranftl et al., 2021; Oquab et al., 2023; Zhang et al., 2021), or to use a fixed scale during both training and test (Li et al., 2022a; Kirillov et al., 2023). In the first case, the authors all report that the train/test discrepancy consistently decreases performance. For instance, DPT (Ranftl et al., 2021) trains on 480\u00d7480 crops and notices a clear drop in performance as test resolution increases. Three trends emerged to decrease training cost: sub-quadratic approximations of the global attention, local/sparse attention and hierarchical approaches.\nFirstly, a strategy is to approximate the original global attention mechanism with sub-quadratic variants. The most computationally efficient methods have a linear complexity w.r.t. to the number of tokens, via an approximations of the softmax (Choromanski et al., 2021), by spatial reduction (Wang et al., 2020a; 2021) or linearization (Ali et al., 2021) of the query-key product.\nSecondly, instead of modifying the quadratic attention, several works propose to sparsify the affinity matrix between queries and keys, e.g. attention sparsification. This can either be done using local attention mechanisms (Vaswani et al., 2017; 2021), via subsampling (Wu et al., 2021; Zhang et al., 2022; Huang et al., 2019) or a combination of local and low-resolution global attention (Zhang et al., 2021; Chu et al., 2021). For instance, ViT-Det (Li et al., 2022a) proposes to use a windowed attention in almost all transformer blocks except 4 of them, in order to still model global interactions for object detection. SAM (Kirillov et al., 2023) uses a similar backbone for segmentation. However, this remains costly to train (only 25% training speed-up, see Figure 1) and tends to achieve slightly lower performance than using vanilla attention, as shown in (Li et al., 2022a).\nSeveral methods have proposed to reduce the number of tokens (Lin et al., 2022), possibly with the use of hierarchical structures, either regular (Liu et al., 2021; 2022a; Wu et al., 2021; Fan et al., 2021; Li et al., 2022b; Wang et al., 2021; Chen et al., 2022b) or irregular (Yuan et al., 2021; Bolya et al., 2023; Xu et al., 2022b). However, this redesigning of the original ViT does not allow to easily leverage task-agnostic large-scale pre-training, which is generally performed with a standard ViT backbone. Finally, another solution is to drop random tokens as proposed in (Fang et al., 2023) for object detection, a task that does not require a pixelwise prediction, or more recently in a concurrent work (Dehghani et al., 2023b) for image classification in which case the goal was mainly to allow batching despite various image sizes during training. However, when considering pixelwise prediction task, reducing the number of tokens might harm the final performance, given the importance of low-level details for these tasks.\nIn comparison to all these approaches, Win-Win allows to train a general model from a structured subset of tokens, and thus to keep the original global attention in all blocks. It has the same cost as when training from small crops while enabling full-resolution testing, without resizing or tiling.\nDense Binocular Tasks. Even though the quadratic complexity is a problem common to all methods in optical flow, we only focus here on methods that leverage transformers for this task; we refer the reader to (Zhai et al., 2021) for a more general overview. In particular, we study the state of the art through the scope of the computational burden of high-resolution training and testing. Most of the previous art devised task-specific architectures (Huang et al., 2022; Li et al., 2021; Sui et al., 2022; Zhao et al., 2022; Xu et al., 2022a). These methods all make use of a dedicated decoder that\ntakes as input the query image and a learned representation. This representation, be it a 4D costvolume (Huang et al., 2022; Sui et al., 2022), the result of pure cross-attention (Zhao et al., 2022; Xu et al., 2022a) or a hybrid of both (Li et al., 2021), is where the computational complexity lies. The vanilla global attention of transformers is often replaced with either coarse-to-fine approaches (Zhao et al., 2022; Xu et al., 2022a) or through attention sparsification (Li et al., 2021). When it is not, tiling is employed at test-time (Huang et al., 2022; Shi et al., 2023; Jaegle et al., 2022). In (Li et al., 2021), gradient checkpointing (Griewank & Walther, 2000) is also used, which complexifies the procedure. In contrast, the philosophy of this work lies in the idea that a simpler general architecture could be used without bells and whistles. Some previous works explore this direction (Weinzaepfel et al., 2023; Jaegle et al., 2022), but still train on low resolutions and resort to tiling at test-time to alleviate the training computational burden. To the best of our knowledge, we are the first to show that testing directly at high resolution is possible while training with a reasonable cost."
+        },
+        {
+            "heading": "3 TRAINING FROM MULTIPLE WINDOWS: WIN-WIN",
+            "text": "The standard vision transformer (Dosovitskiy et al., 2021) views an input image x as a set P of patches, or equivalently, tokens. A series of blocks alternating multi-head self-attention and a multilayer perceptron (MLP) then processes this set of tokens. Win-Win relies on the idea of using a subset P \u2032 \u2282 P during training, i.e. masking (or rather, discarding) the other tokens, while allowing to directly process P at test time. The training complexity is thus reduced from O(|P|2) to O(|P \u2032|2); the size of subset P \u2032 can be adapted to the memory budget and made independent from input image resolution.\nGiven how local interactions are important for vision tasks (Chen et al., 2022a; Wang et al., 2023), it seems desirable to preserve as many neighboring tokens as possible in P \u2032. This can be easily implemented, e.g. by defining the selected tokens to be inside a rectangular crop. On the other hand, it seems crucial to preserve long-range interactions as well. Without them, generalizing to high-resolution images might be impossible due to the domain gap, since long-range dependencies would have never been observed in the small training crops. Such drop of performance when increasing the resolution was recently evidenced in (Tian et al., 2022; Ali et al., 2021; Oquab et al., 2023; Ranftl et al., 2021). The main idea of Win-Win consists in selecting the tokens of P \u2032 in a structured configuration, where both local and long-range token interactions are guaranteed to be present. Specifically, we select tokens from a set of N \u2265 2 non-overlapping rectangles {Ri}i=1..N , see Figure 2:\nP \u2032 = {p | \u2203i \u2208 {1..N}, p \u2208 Ri} . (1)\nWe now detail the token selection procedure, architectural details and generalization to binocular tasks of our Win-Win approach.\nWindow distribution. The principle of Win-Win is to randomly sample N non-overlapping windows for each training image. Note that, thanks to randomness, all training token positions end up being selected at some point during training. Experimentally, one of our findings is that the simplest strategy (i.e., sampling N = 2 squared windows of the same size) performs best, see Section 4. Beyond choosing N , different window sizes can be chosen, depending on the compute budget desired for training.\nConvolutional heads. State-of-the-art ViT-based architectures for pixelwise prediction tasks typically rely on convolutional heads (Ranftl et al., 2021; Liu et al., 2022b; Weinzaepfel et al., 2023). In contrast to unstructured MAE-like random masking (He et al., 2022; Fang et al., 2023; Dehghani et al., 2023b), Win-Win is compatible with a convolutional head. Token features output by the transformer backbone can be split and reshaped into features maps from the N rectangles, to which convolutions can be applied separately as illustrated in Figure 2.\nPositional embeddings. Dense tasks such as semantic segmentation are typically translation equivariant, which becomes a useful guiding principle when designing deep models. Classical absolute positional embeddings that are added to the signal, either learned (Dosovitskiy et al., 2021) or using cosine functions (Vaswani et al., 2017), do not satisfy this property. We therefore employ relative positional embeddings that are applied directly at the level of self-attention computations. They can either be learned constants (Liu et al., 2022a; Li et al., 2022b), outputs of a neural network (Liu et al., 2022a) or given by transforms only applied to queries and keys (Su et al., 2021). In this work,\nwe use this latter option as it does not involve any learnable parameters, and empirically performs better than absolute embeddings.\nTest time. At test time, the windowed sampling scheme can simply be removed and the full image, i.e. the full set of tokens P is processed. Note that memory requirement at test time are drastically lower, since intermediate tensors can be immediately freed during inference.\nFeature distribution changes. Using the full image at test time induces a change in the number of tokens compared to training. Although self-attention handles arbitrary numbers of tokens, the softmax distribution can be altered by this increase. To compensate for this, we tune the temperature hyper-parameter in the softmax attention\u03c4 (Q,K, V ) = softmax ( \u03c4QKT ) V , which normally defaults to \u03c4 = \u221a d, where d is the feature dimension of each head. Once Win-Win training is performed, we validate \u03c4 on full-resolution images of the train set (i.e. without masking). Please refer to Appendix E for more details.\nGeneralization to binocular tasks. Win-Win is a general framework for transformer-based architectures that can also be applied to multi-image tasks. For instance, but with no loss of generality, we focus in this paper on the binocular task of optical flow estimation. The task consists of predicting the displacements of pixels between two consecutive video frames. In this scenario, masking only one frame is not sufficient to limit the training complexity, and we thus need to mask both frames simultaneously, see Figure 3. This is not trivial, since valuable information with respect to a given window in the first frame is located at a particular spot in the second frame. Hence, simply applying the random crop strategy on each frame independently would likely lead to a very sparse training signal, as matching pixels would have a low chance of being visible in both inputs.\nTo circumvent this issue, we propose a simple binocular extension to Win-Win. We first sample N non-overlapping random windows in the first frame. We then evaluate whether each token in the second frame has a corresponding visible token in the first frame, based on the ground-truth flow. We finally sample M non-overlapping windows in the second frame, this time using random sampling weighted by the amount of matched tokens inside each window. We refer to Appendix B for more details. We experiment in Section 4.2 with this strategy as well as with simpler strategies (e.g. using the same windows in both frames) and demonstrate superior performance for the proposed sampling scheme."
+        },
+        {
+            "heading": "4 EXPERIMENTS",
+            "text": "In this section, we first validate our Win-Win training strategy on a monocular task (semantic segmentation) in Section 4.1 and then present results for the binocular task of optical flow (Section 4.2)."
+        },
+        {
+            "heading": "4.1 MONOCULAR TASK RESULTS",
+            "text": "Experimental setup. Experiments are performed on the BDD-100k dataset (Yu et al., 2020) that comprise 7,000 training images and 1,000 validation images in a driving scenario with 19 semantic classes. All images are of resolution 1280\u00d7720 pixels. We report the mean intersection-over-union (mIoU) metric on the validation set in percentage. We also experiment with the monocular depth prediction task in Appendix D.\nTraining details. We use a ViT-Base encoder (Dosovitskiy et al., 2021) followed by a Conv-NeXt head (Liu et al., 2022b; Bachmann et al., 2022), finetuned for 100 epochs from a CroCo pretrained\nmodel (Weinzaepfel et al., 2022; 2023) with RoPE positional embeddings (Su et al., 2021), except otherwise stated. Detailed training settings are in Appendix F.\nTraining with multiple rectangles. Table 1 (left) reports results obtained with our multi-window training strategy, for a fixed budget of approximately 1024 tokens (up to rounding errors depending on resolutions) out of 3600 tokens in the full resolution input, with varying numbers of windows. A single window yields the worst performance, demonstrating the importance of learning long-range interactions. Using more windows performs better, and we find that 2 windows is enough to achieve the best performance.\nImpact of softmax temperature. Table 1 (left) shows the results obtained with and without a temperature parameter added to the softmax, to account for the discrepancy of the number of tokens during training (around 1024) and testing (around 3600). The impact is moderate, with results improved in terms of mIoU by a margin between 0 and 0.5, showing near-perfect generalization capabilities when using two windows.\nImpact of positional embeddings. Next, we compare our strategy when using cosine absolute positional embeddings instead of RoPE. The mIoU goes down from 63.6% to 57.0%. This clear drop of performance can be explained by the fact that absolute positional embeddings suffer from interpolation from the low-resolution pre-trained models and to the absence of the translation equivariance. We also find that trying to apply a correction to the temperatures in the softmax did not help either in this setting (-7% mIoU). We hypothesize that this is caused by the relationship between the softmax temperature \u03c4 and the self-probability in the attention when using relative positional embedding, see Appendix E.\nWindow sizes. Fixing the number of windows to N = 2, we vary the window sizes in Table 1 (right). We observe similar performance (between 63 and 64 mIoU) as long as the number of tokens remains fixed at \u223c1024. Square windows of identical sizes thus suffice, and we keep this setting (first row) as default setting for the rest of the experiments for simplicity. We also try to reduce the size of the second window, but this result in a small drop of performance (last row of Table 1). Finally, we experiment with (a) adding other isolated random tokens, in addition to the windows or (b) choosing window sizes randomly at each iteration, but we do not notice any improvement, see Appendix C for details. Overall, we note that Win-Win is robust to various window designs, and that simpler (two squared windows of the same size) is better.\nComparison to other baselines. We compare Win-Win to other baselines in Table 2 (left). The first baseline consists of training at full-resolution, denoted as \u2018Full-res ViT\u2019, but has a large cost due to 3600 tokens going into quadratic self-attention blocks (see also Figure 1 left). To mitigate this, ViT-Det (Li et al., 2022a) and SAM (Kirillov et al., 2023) have proposed to replace global attention by windowed attention in the ViT, except at 4 layers regularly spread across blocks where global attention is kept. While altering the attention mechanism, this alternative (denoted as \u2018ViT-Det\u2019) performs roughly on par with Full-res. However, training time is only reduced by about 25%, see Figure 1. In comparison, Win-Win trained on 2 windows of size 352\u00d7352 (i.e. 22\u00d722 tokens) slightly improves the performance while reducing the training time by a factor of 4 and the memory requirement by a factor of 2. The slight improvement in performance might be explained by the masking acting as data augmentation for this semantic task (Chen et al., 2020).\nWe also compare to a baseline with randomly selected tokens which we clearly outperform. This indicates that our method may allow to better leverage local interactions inside each window. Additionally, our approach allows to train convolutional head on top, even if this does not explain alone the gains (Section C). We finally compare to a baseline that is trained on a single fixed-size crop but for which we evaluate three different test-time strategies: either (i) perform full-resolution inference without any change, (ii) downscale the test image and upscale the output prediction (denoted as resize), or (iii) split the image into a set of (overlapping) fixed-size crops and aggregate per-crop predictions afterwards (denoted as tiling). Note that tiling requires many forward passes. For instance, up to 6 predictions per pixel are computed to go from (512\u00d7512) to (1280\u00d7720) with a crop overlap of 50%, and up to 33 predictions per pixel for a 90% one. We find that tiling overall yields the best baseline results, most likely due to the fact that the first two baselines result in large domain gaps w.r.t. training data. To conclude, our proposed multi-window training strategy achieves the best of both worlds: it allows to directly process high-resolution images at test time in a single forward pass, without any sliding window or other strategy required, while being cheaper to train than full-resolution approaches.\nImpact of the number of tokens. In Table 2 (right), we experiment with different numbers of training tokens (200, 580, 1024) and compare the performance of Win-Win w.r.t. training with a single crop and using tiling at test time. When using 200 tokens, Win-Win performs on par with the baseline but allows to produce high-resolution results at test time in one forward pass instead of using tiling. With more tokens, Win-Win outperforms the single-crop tiling baseline."
+        },
+        {
+            "heading": "4.2 BINOCULAR TASK RESULT",
+            "text": "We now experiment with the binocular task of optical flow estimation. We first select the window sampling strategy on a small synthetic dataset built for this purpose, and then evaluate the best configurations on the MPI-Sintel (Butler et al., 2012) and Spring (Mehl et al., 2023) benchmarks.\nExperimental setup. We base our model on CroCo-Flow-Base (Weinzaepfel et al., 2023). It comprises a Siamese ViT-Base image encoder followed by a ViT-Base decoder with additional crossattention modules to handle the second frame, and a DPT head (Ranftl et al., 2021). We refer to Appendix F for more details.\nMulti-Window training for optical flow. As explained in Section 3, our masking strategy for optical flow consits of extracting N and M windows in the first and second frame, respectively. We evaluate different options for N and M in Table 3. Results are reported on a small synthetic dataset, constructed akin to AutoFlow (Sun et al., 2021), with a smaller network architecture for the sake of speed. The performance improves significantly when going from M = 2 to M = 3 windows, and using M \u2265 3 windows performs similarly. Stochasticity denotes the level of randomness when sampling windows in the second frame. No\nstochasticity means that the selection is optimal w.r.t. windows selected in the first frame. We experiment with different amounts of stochasticity in the window selection process and obtain the best performance with a value of 0.3. Using N = 3 windows in the first frame tends to degrade results slightly, though the training still works and seems robust to this change. As a sanity check, we also compare to a simpler variant where the same windows are used in the second frame and obtain a degraded performance. Finally, we also compare in this setting to the case of a single window, which significantly degrades performance due the lack of global interaction modeling.\nResults on MPI-Sintel validation. Using the best settings found previously (i.e. N = 2 and M = 4), we evaluate Win-Win on MPI-Sintel (Butler et al., 2012) in Table 4. Models are trained on FlyingChairs (Dosovitskiy et al., 2015), FlyingThings (Mayer et al., 2016), and MPI-Sintel from which we keep two sequences apart for validation. We report the average endpoint error (EPE) on this validation set in the \u2018clean\u2019 rendering.\nOn the left, we first compare performance for different number of training tokens (200, 300, 400 and 500) for Win-Win while keeping the window scheme (number of windows in each image) constant. The performance improves when the number of visible tokens grows, and we thus use the 500 tokens setting, a similar value as used in CroCo-Flow (Weinzaepfel et al., 2023).\nOn the right, we compare Win-Win to full-resolution training (with or without ViT-Det). This has a higher cost for training, see Figure 1 middle. Win-Win obtains a slightly better performance while significantly reducing the training cost.\nWe also compare to several baselines trained on fixed-size crops of resolution 384\u00d7320 (480 tokens) in Table 4. Applying directly the model to full-resolution test frames performs extremely poorly. The second test strategy, consisting of downscaling the test frame to the training crop size, achieves better results, but still relatively low due to the loss of details when downscaling the frames and upscaling the predicted flow. This highlights that ViTs suffer from train/test resolution discrepancy. The best inference strategy for this baseline is obtained using a tiling-based approach that requires many forward passes at test time, leading to a high inference cost, see Figure 1 (right). In contrast, Win-Win (sixth row) achieves the best EPE overall while predicting directly at the full resolution.\nComparison to the state of the art. We finally compare to the state of the art on two benchmarks. First, we evaluate on MPI-Sintel in Table 5. In this setup, we finetune our model using TartanAir (Wang et al., 2020b) in addition to FlyingChairs, FlyingThings and MPI-Sintel, following CroCo-Flow (Weinzaepfel et al., 2023). We fine-tune the softmax temperature \u03c4 in each attention head for half an hour on full-resolution images from the train set while freezing the network weights. Doing so yields a performance improvement of about 0.05 in EPE. Our model performs closely to the other transformer-based models such as CroCoFlow (Weinzaepfel et al., 2023), FlowFormer (Huang et al., 2022) and FlowFormer++ (Shi et al., 2023). Note that Win-Win is based on the same architecture as CroCo-Flow, except that the latter is using a ViT-Large encoder backbone (we use a ViT-Base), yet Win-Win is still competitive. Furthermore, all these methods rely on tiling at test time and thus require multiple forward passes per frame pairs, with ad-hoc designs to merge the overlapping predictions. In contrast our method is simple and fast at test time, since predictions are made directly from the high-resolution inputs, see Figure 1 (right). Our method performs also close to highly task-specific approaches such as GMFlow+ (Zhao et al., 2022) which rely on coarse-to-fine and cost volumes, whereas we use generic vision transformers.\nResults for the more recent Spring benchmark, with 1920\u00d71080 Full-HD images, are reported in Table 6. On these larger images, it is even more critical to reduce training and inference costs, compared to full-resolution training and to tiling-based approaches. We finetune Win-Win on this dataset using 2025 tokens (i.e. 25% of 8100 tokens at full-resolution, which is a comparable proportion than for MPI-Sintel) for 16 epochs. Win-Win yields state-of-the-art performance for the EPE metric, particularly improving with large displacements, and even beating CroCo-Flow (Weinzaepfel et al., 2023) that uses a 3\u00d7 larger backbone. Moreover, the usage of tiling by CroCo-Flow at inference results in strong blocking artifacts as illustrated in Figure 4 (right). In comparison, Win-Win can directly process the Full-HD frames at test time and yields smooth predictions without any artifacts. Again, inference with Win-Win is more than an order of magnitude faster than that of CroCo-Flow."
+        },
+        {
+            "heading": "5 CONCLUSION",
+            "text": "We have shown that high-resolution vision transformers can be efficiently trained with a multiwindow training strategy and directly applied to the target resolution at test time. In other words, Win-Win combines the benefits of both (1) reduced training cost as training from crops, and (2) a direct inference as when training methods in high-resolution.\nReproducibility statement. The training setups are described in the experimental section (Section 4), and we included hyper-parameters details in Appendix F. Thanks to the simplicity of our approach, we believe Win-Win to be easily reproducible for other training settings.\nEthics statement. We have read the ICLR Code of Ethics and ensures that this work follows it. Datasets used are all publicly available. We believe the negative impacts of this work to be rather limited. In fact, the application of our method does not allow for new tasks or new behaviors than that of previous works, but rather eases the training and lowers the costs. The societal impacts are the same than that of ViTs."
+        },
+        {
+            "heading": "A ROBUSTNESS TO TEST RESOLUTION",
+            "text": "So far, all test images were assumed to have the same resolution known during training. For the case of semantic segmentation, we study the robustness to various test resolutions. To do so, when testing at a given resolution, we sample crops of this given size and evaluate on them. We report results in Figure 5. We observe a clear drop for the full-resolution training. The method trained on 512\u00d7512 crops have drops both for small sized regions and larger regions. These two results highlight again that ViTs are not robust to change of resolution between train and test. Our Win-Win training is more robust to changes of resolution but still drops. However, this drop can be mainly explained by the fact that smaller resolutions allow to leverage less context for predictions. To better measure that, we show in a dashed line a model trained on the target test resolution, which shows a similar drop as for Win-Win."
+        },
+        {
+            "heading": "B GUIDING THE WINDOWS IN THE SECOND FRAME WITH THE FLOW",
+            "text": "Guiding the windows of the second view purely based on the optical flow would provide the network with part of the answer to solve the training task. On the other hand, randomly selecting windows would lead to a very scarce supervision signal. To overcome this, we guide the windows of the second frame using a perturbed flow. After having chosen a set of rectangular windows in the first frame, the window selection process for the second frame consists in three distinct steps: 1) we bin the visible endpoints of the optical flow for each token in the second frame, 2) we perturb the binning with Gaussian noise, 3) we use a greedy algorithm to sequentially select N rectangular windows on the maximum binned values. A visual explanation is provided in Figure 6, for the two windows shown on the top of the middle column. We compute the binned forward flow, by counting the number of flow values that fall inside each token. We then perturb the bin values with Gaussian\nnoise, centered on the mean of the binned flow values. Finally, a greedy algorithm sequentially selects three rectangular windows that encompass the maximal values of the perturbed binned forward flow. The only hyperparameter is the standard deviation (std) of the normal distribution, expressed as a ratio of the std of the binned map."
+        },
+        {
+            "heading": "C OTHER WINDOW SETTINGS",
+            "text": "Variable window sizes. In Table 1 of the main paper, we study the impact of the number of squared windows and also try non-squared windows or windows of different sizes; we have also tried some other variants for which we report results in Table 7. In the left table, we randomize a) the number of tokens used at each training iteration (either fixed to 1024 or randomly chosen in [768,1280]), b) the number of windows (either fixed to 2 or randomly chosen among 2, 3 or 4), c) the ratio of tokens of the respective size of the windows (either of equal size or such that the size of larger rectangle is up to 2 times bigger than the average), and d) the aspect ratio of the windows (either fixed to squared windows or with an aspect ratio randomly chosen in the range [1/2,2/1]). We observe that all these variants perform on par with the simple set-up of two squared windows of constant size.\nAdditional isolated tokens. Next, we experiment with a combination of 1 or 2 large square windows (e.g. one 32x32 or two 22x22 token windows) and a small set of additional isolated tokens (i.e. outside of the windows). While large windows are beneficial to model local interactions and to train the convolutional head, the extra tokens could help to model long-range interactions. Note that these extra tokens are dropped for the convolutional head, and the loss is only applied on the main windows. We report results in the right-hand side of Table 7. We observe that these extra tokens have no impact with one single window, and tend to degrade performance when we use two windows, meaning that the 2-window case is sufficient to learn long-range interactions.\nAdditional random tokens. We also experiment with isolated tokens randomly chosen, i.e. we select a large set of windows of size 1\u00d71, instead of rectangular windows, as popularized in Masked Image Modeling (MAE) (He et al., 2022; Xie et al., 2022). We perform an experimental study on the optical flow estimation task, using the synthetic flow dataset (see Section 4.2 of the main paper). In this case, visible tokens are selected randomly and independently in the first frame. In the second frame, we still use the same flow-based voting mechanism, disturbed by an optional noise to add more diversity. Note that we cannot train a convolutional head in this setting due to the a-trous\nstructure of the output (only a few tokens/patches get an output), which is a severe limitation. We therefore use a simple linear regression head and report results in Table 8. Random tokens have trouble to converge and lead to poor results overall. We also experiment with substituting random token sampling with our 2-window strategy instead, either in the first or second frame in the pair. We observe a slight improvement when the second frame is using the 2-window training, but results are still far from the 2-windows + 2-windows baseline, indicating that random tokens intrinsically does not possess the necessary qualities for full-resolution generalization.\nResults with a linear head. Table 1 shows that Win-Win significantly outperforms a strategy of randomly selecting the tokens. This can be explained by (a) the fact that Win-Win allows to better model local interactions thanks to the window scheme, (b) the convolutional head on top of the backbone which is hard to train with tokens far apart. To verify this, we also evaluate our model with a linear head in the right column of Table 9. With this head, Win-Win still outperforms the random tokens baseline as well as the full-resolution baseline."
+        },
+        {
+            "heading": "D RESULTS ON MONOCULAR DEPTH ESTIMATION",
+            "text": "Experimental setup. We also experiment with the monocular task of depth estimation on the NYU v2 dataset (Silberman et al., 2012). The dataset consists of 640\u00d7480 images (i.e., 1200 tokens for patches of 16\u00d716 pixels). We use a ConvNeXt prediction head Liu et al. (2022b) to predict the depth at every pixel. We report the \u03b41 metric, i.e., the percentage of pixels such that max(d/d\u0302, d\u0302/d) < 1.25 where d is the predicted depth and d\u0302 is the ground-truth one.\nResults. We report in Table 10 the results for random tokens, full-resolution training with standard ViT or Vit-Det, as well as our approach. \u2018Random tokens\u2019 performs poorly compared to our approach, which allows to better model local interactions and to better train the convolutional head. We perform in the same range as full-resolution while using less than one third of the total number of tokens during training, thus significantly reducing the training time and GPU memory requirement. These results confirm the findings of the other tasks.\nE TEST-TIME ADJUSTMENT OF THE TEMPERATURE OF THE softmax IN THE ATTENTION\nThe number of tokens between training with multi-window and testing at full resolution impacts statistics of the self-attention operation. To showcase this, let us assume a simple case where the probability of attending other tokens is uniform, e.g. the query-key product is constant, before RoPE relative positional embedding is applied. In Figure 7, we show attention maps for the token shown in red (top left) once RoPE is applied (bottom left). We compare this to the case with full-resolution inputs (top right) and observe a clear discrepancy, especially when looking at the probability of the red token paying attention to itself. This is due to the significantly larger sets of tokens, leading to an increased divider in the softmax. By setting a well chosen temperature in the softmax, we can obtain an attention map that has a similar behavior in the neighborhood of the red token, and importantly for the self-probability, i.e. the weight for attending to itself.\nEmpirical Results. We set the softmax temperature in self-attention block for full resolution images empirically using train images. The full resolution input is used without windows, for both monocular and binocular tasks. For semantic segmentation, we show in Fig. 8 (left) the train loss value on the training dataset in full resolution w.r.t. a multiplier of the default temperature. For the optical flow, we plot in Fig. 8 (right) the EPE on the train set in full resolution with varying factors as well.\nIn all our experiments, we clearly observed bell-shaped curves with a minimum value that varies depending on the masking used at train-time. The minima of the curves give us the optimal temperature parameter, that we use at test-time.\nLearning the temperature. Furthermore, instead of simply validating a single given temperature for all heads of all layers, our results for optical flow estimation on existing leader-boards were obtained by further finetuning the temperatures, i.e. learning them while freezing all networks\u2019 weight once the network is trained with Win-Win. Because we only finetune a few scalar parameters {\u03c4} in every attention heads, i.e. a few hundred parameters, and for very few iterations, this process is fast and the finetuning time (in the order of minutes) is typically negligible compared to the main training. This allows to further reduce the EPE compared to the validated temperature. At the same time, we have observed that the learned temperatures remain close to the validated one."
+        },
+        {
+            "heading": "F DETAILED TRAINING SETUPS",
+            "text": "F.1 SEMANTIC SEGMENTATION\nWe train our models for 200 epochs on the 7,000 training images from the BDD10k dataset (Yu et al., 2020) that has 19 semantic classes. The model is a ViT-Base network with RoPE positional embeddings, initialized with models from (Weinzaepfel et al., 2023). A ConvNeXt head is appended at the end of the vision transformer backbone, following (Bachmann et al., 2022). We use the AdamW (Loshchilov & Hutter, 2019) optimizer, with betas of 0.9 and 0.999, a cosine learning rate schedule with a base learning rate of 0.0001, with two warmup epochs, a weight decay of 0.05 and a learning rate layer decay of 0.75.\nTo set the softmax temperatures after training, we measure the training loss on a subset of 700 images where the forward is run at full resolution, with a temperature swept with steps of 0.02 and chose the one with minimal training loss, as shown in 8 (left).\nF.2 OPTICAL FLOW\nWe follow the CroCo-Flow architecture (Weinzaepfel et al., 2023): each image is embedded using a ViT-Base backbone with RoPE positional embeddings. A binocular decoder then uses a transformer decoder architecture to output one token for each patch of the first image. A convolutional head is used for prediction the flow along the x axis, along the y axis and an uncertainty measure. It is based on DPT (Ranftl et al., 2021) that are decoupled by first learning a fully-connected layer for each of these 3 predictions, before a shared DPT is run on these features. We use the pre-trained weights with cross-view completion (Weinzaepfel et al., 2022; 2023) for the ViT encoder and the decoder. We optimize a Laplacian loss, i.e., that minimizes the L1 loss while taking into account the predicted uncertainty (Kendall et al., 2018). We use the AdamW (Loshchilov & Hutter, 2019) optimizer, with betas of 0.9 and 0.95, a cosine learning rate schedule with a base learning rate of 0.0001, with one warmup epoch, a weight decay of 0.05 and a minimum learning rate of 10\u22126. We train the model\nfor 100 epochs. When submitting to the MPI-Sintel test set, we finetune the model with the addition of the TartanAir dataset (Wang et al., 2020b) for 15 epochs.\nTo set the softmax temperatures after training, we measure the training EPE on the Sintel train set, where the forward is run at full resolution with a temperature between 1.0 and 2.0 with a step of 0.02 and chose the one with minimal value, as shown in 8 (right).\nG VARIANCE OF THE RUNS\nWe report the standard deviation (std) over 3 runs of several key experiments here; this study is limited to a select few experiments, to limit computation costs.\nFor semantic segmentation, our Win-Win training strategy with two windows of size 22\u00d722 tokens has a std of 0.28. This is why we reported only decimal with 1 digit, and do not consider run 0.1 above the baseline in Table 1 right of the main paper as performing better. For comparison, when training on crops of 32\u00d732 tokens and testing with tiles overlapping with a ratio of 50%, the standard deviation is 0.37 on 3 runs.\nFor optical flow, when training with 2 windows of size 16\u00d7 16 in the first image and 4 windows of size 11\u00d7 11 in the second, we obtain a standard deviation of 0.07."
+        }
+    ],
+    "title": "WIN-WIN: TRAINING HIGH-RESOLUTION VISION TRANSFORMERS",
+    "year": 2023
+}

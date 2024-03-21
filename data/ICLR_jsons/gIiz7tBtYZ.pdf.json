@@ -1,0 +1,982 @@
+{
+    "abstractText": "We introduce a novel neural network-based algorithm to compute optimal transport (OT) plans for general cost functionals. In contrast to common Euclidean costs, i.e., l or l, such functionals provide more flexibility and allow using auxiliary information, such as class labels, to construct the required transport map. Existing methods for general costs are discrete and have limitations in practice, i.e. they do not provide an out-of-sample estimation. We address the challenge of designing a continuous OT approach for general costs that generalizes to new data points in high-dimensional spaces, such as images. Additionally, we provide the theoretical error analysis for our recovered transport plans. As an application, we construct a cost functional to map data distributions while preserving the class-wise structure. Figure 1: Dataset transfer problem. Input P = \u2211 n \u03b1nPn, target Q = \u2211 n \u03b2nQn distributions are mixtures of N classes. The task is to learn a transport map T preserving the class. The learner has the access to labeled input data \u223c P and only partially labeled target data \u223c Q. Optimal transport (OT) is a powerful framework to solve mass-moving problems for data distributions which finds many applications in machine learning and computer vision (Bonneel & Digne, 2023). Most existing methods to compute OT plans are designed for discrete distributions (Flamary et al., 2021; Peyr\u00e9 et al., 2019; Cuturi, 2013). These methods have good flexibility: they allow to control the properties of the plan via choosing the cost function. However, discrete methods find an optimal matching between two given (train) sets which does not generalize to new (test) data points. This limits the applications of discrete OT plan methods to scenarios when one needs to generate new data, e.g., image-to-image transfer (Zhu et al., 2017). Recent works (Rout et al., 2022; Korotin et al., 2023b; 2021b; Fan et al., 2021a; Daniels et al., 2021) propose continuous methods to compute OT plans. Thanks to employing neural networks to parameterize OT solutions, the learned transport plan can be used directly as the generative model in data synthesis (Rout et al., 2022) and unpaired learning (Korotin et al., 2023b; Rout et al., 2022; Daniels et al., 2021; Gazdieva et al., 2022). Existing continuous OT methods mostly focus on classic cost functions such as l (Korotin et al., 2021b; 2023b; Fan et al., 2021a; Gazdieva et al., 2022) which estimate the closeness of input and output points. However, choosing such costs for problems where a specific optimality of the mapping is required may be challenging. For example, when one needs to preserve the object class during the transport (Figure 1), common l cost may be suboptimal (Su et al., 2022, Appendix C), (Daniels et al., 2021, Figure 3). This limitation could be fixed by considering general cost functionals (Paty & Cuturi, 2020) which may take into account additional information, e.g., class labels. Despite the large popularity of OT, the approach for continuous OT with general cost functionals (general OT) is still missing. We address this limitation. The main contributions of our paper are: 1. We show that the general OT problem (M1) can be reformulated as a saddle point optimization problem (M3.1), which allows to implicitly recover the OT plan (M3.2) in the continuous setting. The problem can be solved with neural networks and stochastic gradient methods (Algorithm 2).",
+    "authors": [],
+    "id": "SP:1d0dc63f13cd89217c13167f60b3830555764ab1",
+    "references": [
+        {
+            "authors": [
+                "J-J Alibert",
+                "Guy Bouchitt\u00e9",
+                "Thierry Champion"
+            ],
+            "title": "A new class of costs for optimal transport planning",
+            "venue": "European Journal of Applied Mathematics,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Amjad Almahairi",
+                "Sai Rajeshwar",
+                "Alessandro Sordoni",
+                "Philip Bachman",
+                "Aaron Courville"
+            ],
+            "title": "Augmented cyclegan: Learning many-to-many mappings from unpaired data",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "David Alvarez-Melis",
+                "Nicolo Fusi"
+            ],
+            "title": "Geometric dataset distances via optimal transport",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "David Alvarez-Melis",
+                "Nicol\u00f2 Fusi"
+            ],
+            "title": "Dataset dynamics via gradient flows in probability space",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "David Alvarez-Melis",
+                "Yair Schiff",
+                "Youssef Mroueh"
+            ],
+            "title": "Optimizing functionals on the space of probabilities with input convex neural networks",
+            "venue": "arXiv preprint arXiv:2106.00774,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Brandon Amos",
+                "Lei Xu",
+                "J Zico Kolter"
+            ],
+            "title": "Input convex neural networks",
+            "venue": "In Proceedings of the 34th International Conference on Machine Learning-Volume",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Martin Arjovsky",
+                "L\u00e9on Bottou"
+            ],
+            "title": "Towards principled methods for training generative adversarial networks",
+            "venue": "arXiv preprint arXiv:1701.04862,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Julio Backhoff-Veraguas",
+                "Mathias Beiglb\u00f6ck",
+                "Gudmun Pammer"
+            ],
+            "title": "Existence, duality, and cyclical monotonicity for weak transport costs",
+            "venue": "Calculus of Variations and Partial Differential Equations,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nicolas Bonneel",
+                "Julie Digne"
+            ],
+            "title": "A survey of optimal transport for computer graphics and computer vision",
+            "venue": "In Computer Graphics Forum,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Charlotte Bunne",
+                "Laetitia Meng-Papaxanthos",
+                "Andreas Krause",
+                "Marco Cuturi"
+            ],
+            "title": "Jkonet: Proximal optimal transport modeling of population",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tarin Clanuwat",
+                "Mikel Bober-Irizar",
+                "Asanobu Kitamoto",
+                "Alex Lamb",
+                "Kazuaki Yamamoto",
+                "David Ha"
+            ],
+            "title": "Deep learning for classical japanese literature",
+            "venue": "arXiv preprint arXiv:1812.01718,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Nicolas Courty",
+                "R\u00e9mi Flamary",
+                "Devis Tuia",
+                "Alain Rakotomamonjy"
+            ],
+            "title": "Optimal transport for domain adaptation",
+            "venue": "IEEE transactions on pattern analysis and machine intelligence,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Marco Cuturi"
+            ],
+            "title": "Sinkhorn distances: Lightspeed computation of optimal transport",
+            "venue": "In Advances in neural information processing systems,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Grady Daniels",
+                "Tyler Maunu",
+                "Paul Hand"
+            ],
+            "title": "Score-based generative neural networks for large-scale optimal transport",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nabarun Deb",
+                "Promit Ghosal",
+                "Bodhisattva Sen"
+            ],
+            "title": "Rates of estimation of optimal transport maps using plug-in estimators via barycentric projections",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Montacer Essid",
+                "Justin Solomon"
+            ],
+            "title": "Quadratically regularized optimal transport on graphs",
+            "venue": "SIAM Journal on Scientific Computing,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jiaojiao Fan",
+                "Shu Liu",
+                "Shaojun Ma",
+                "Yongxin Chen",
+                "Haomin Zhou"
+            ],
+            "title": "Scalable computation of monge maps with general costs",
+            "venue": "arXiv preprint arXiv:2106.03812,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiaojiao Fan",
+                "Amirhossein Taghvaei",
+                "Yongxin Chen"
+            ],
+            "title": "Variational wasserstein gradient flow",
+            "venue": "arXiv preprint arXiv:2112.02424,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiaojiao Fan",
+                "Shu Liu",
+                "Shaojun Ma",
+                "Hao-Min Zhou",
+                "Yongxin Chen"
+            ],
+            "title": "Neural monge map estimation and its applications",
+            "venue": "Transactions on Machine Learning Research,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sira Ferradans",
+                "Nicolas Papadakis",
+                "Gabriel Peyr\u00e9",
+                "Jean-Fran\u00e7ois Aujol"
+            ],
+            "title": "Regularized discrete optimal transport",
+            "venue": "SIAM Journal on Imaging Sciences,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "R\u00e9mi Flamary",
+                "Nicolas Courty",
+                "Alexandre Gramfort",
+                "Mokhtar Z Alaya",
+                "Aur\u00e9lie Boisbunon",
+                "Stanislas Chambon",
+                "Laetitia Chapel",
+                "Adrien Corenflos",
+                "Kilian Fatras",
+                "Nemo Fournier"
+            ],
+            "title": "Pot: Python optimal transport",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yaroslav Ganin",
+                "Victor S. Lempitsky"
+            ],
+            "title": "Unsupervised domain adaptation by backpropagation",
+            "venue": "Proceedings of the 32nd International Conference on Machine Learning, ICML 2015,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Milena Gazdieva",
+                "Litu Rout",
+                "Alexander Korotin",
+                "Alexander Filippov",
+                "Evgeny Burnaev"
+            ],
+            "title": "Unpaired image super-resolution with optimal transport maps",
+            "venue": "arXiv preprint arXiv:2202.01116,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aude Genevay"
+            ],
+            "title": "Entropy-regularized optimal transport for machine learning",
+            "venue": "PhD thesis, Paris Sciences et Lettres (ComUE),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Aude Genevay",
+                "Marco Cuturi",
+                "Gabriel Peyr\u00e9",
+                "Francis Bach"
+            ],
+            "title": "Stochastic optimization for largescale optimal transport",
+            "venue": "In Advances in neural information processing systems,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Aude Genevay",
+                "L\u00e9naic Chizat",
+                "Francis Bach",
+                "Marco Cuturi",
+                "Gabriel Peyr\u00e9"
+            ],
+            "title": "Sample complexity of sinkhorn divergences",
+            "venue": "In The 22nd international conference on artificial intelligence and statistics,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Nathael Gozlan",
+                "Nicolas Juillet"
+            ],
+            "title": "On a mixture of brenier and strassen theorems",
+            "venue": "Proceedings of the London Mathematical Society,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Nathael Gozlan",
+                "Cyril Roberto",
+                "Paul-Marie Samson",
+                "Prasad Tetali"
+            ],
+            "title": "Kantorovich duality for general transport costs and applications",
+            "venue": "Journal of Functional Analysis,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Arthur Gretton",
+                "Karsten M. Borgwardt",
+                "Malte J. Rasch",
+                "Bernhard Sch\u00f6lkopf",
+                "Alexander J. Smola"
+            ],
+            "title": "A kernel two-sample test",
+            "venue": "J. Mach. Learn. Res.,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Xiangyu Zhang",
+                "Shaoqing Ren",
+                "Jian Sun"
+            ],
+            "title": "Deep residual learning for image recognition",
+            "venue": "In Proceedings of the IEEE conference on computer vision and pattern recognition,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Pierre Henry-Labordere"
+            ],
+            "title": "martingale) optimal transport and anomaly detection with neural networks: A primal-dual algorithm",
+            "venue": "Available at SSRN",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Martin Heusel",
+                "Hubert Ramsauer",
+                "Thomas Unterthiner",
+                "Bernhard Nessler",
+                "Sepp Hochreiter"
+            ],
+            "title": "GANs trained by a two time-scale update rule converge to a local nash equilibrium",
+            "venue": "In Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Judy Hoffman",
+                "Eric Tzeng",
+                "Taesung Park",
+                "Jun-Yan Zhu",
+                "Phillip Isola",
+                "Kate Saenko",
+                "Alexei A. Efros",
+                "Trevor Darrell"
+            ],
+            "title": "Cycada: Cycle-consistent adversarial domain adaptation",
+            "venue": "Proceedings of the 35th International Conference on Machine Learning,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Xun Huang",
+                "Ming-Yu Liu",
+                "Serge Belongie",
+                "Jan Kautz"
+            ],
+            "title": "Multimodal unsupervised image-to-image translation",
+            "venue": "In Proceedings of the European conference on computer vision (ECCV),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jan-Christian H\u00fctter",
+                "Philippe Rigollet"
+            ],
+            "title": "Minimax estimation of smooth optimal transport",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Jimmy Ba"
+            ],
+            "title": "Adam: A method for stochastic optimization",
+            "venue": "arXiv preprint arXiv:1412.6980,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Lev Borisovich Klebanov",
+                "Viktor Bene\u0161",
+                "Ivan Saxl"
+            ],
+            "title": "N-distances and their applications",
+            "venue": "Charles University in Prague, the Karolinum Press Prague, Czech Republic,",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Vage Egiazarian",
+                "Arip Asadulaev",
+                "Alexander Safin",
+                "Evgeny Burnaev"
+            ],
+            "title": "Wasserstein-2 generative networks",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Lingxiao Li",
+                "Aude Genevay",
+                "Justin M Solomon",
+                "Alexander Filippov",
+                "Evgeny Burnaev"
+            ],
+            "title": "Do neural optimal transport solvers work? a continuous wasserstein-2 benchmark",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Lingxiao Li",
+                "Justin Solomon",
+                "Evgeny Burnaev"
+            ],
+            "title": "Continuous wasserstein-2 barycenter estimation without minimax optimization",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Vage Egiazarian",
+                "Lingxiao Li",
+                "Evgeny Burnaev"
+            ],
+            "title": "Wasserstein iterative networks for barycenter estimation",
+            "venue": "In Thirty-Sixth Conference on Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Alexander Kolesov",
+                "Evgeny Burnaev"
+            ],
+            "title": "Kantorovich strikes back! wasserstein GANs are not optimal transport",
+            "venue": "In Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Daniil Selikhanovych",
+                "Evgeny Burnaev"
+            ],
+            "title": "Kernel neural optimal transport",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Alexander Korotin",
+                "Daniil Selikhanovych",
+                "Evgeny Burnaev"
+            ],
+            "title": "Neural optimal transport",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wouter M Kouw",
+                "Marco Loog"
+            ],
+            "title": "An introduction to domain adaptation and transfer learning",
+            "venue": "arXiv preprint arXiv:1812.11806,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Cosmin Lazar",
+                "Stijn Meganck",
+                "Jonatan Taminau",
+                "David Steenhoff",
+                "Alain Coletta",
+                "Colin Molter",
+                "David Y Weiss-Sol\u00eds",
+                "Robin Duque",
+                "Hugues Bersini",
+                "Ann Now\u00e9"
+            ],
+            "title": "Batch effect removal methods for microarray gene expression data integration: a survey",
+            "venue": "Briefings in bioinformatics,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Jeffrey T Leek",
+                "Robert B Scharpf",
+                "H\u00e9ctor Corrada Bravo",
+                "David Simcha",
+                "Benjamin Langmead",
+                "W Evan Johnson",
+                "Donald Geman",
+                "Keith Baggerly",
+                "Rafael A Irizarry"
+            ],
+            "title": "Tackling the widespread and critical impact of batch effects in high-throughput data",
+            "venue": "Nature Reviews Genetics,",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Ruilin Li",
+                "Xiaojing Ye",
+                "Haomin Zhou",
+                "Hongyuan Zha"
+            ],
+            "title": "Learning to match via inverse optimal transport",
+            "venue": "Journal of machine learning research,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Huidong Liu",
+                "Xianfeng Gu",
+                "Dimitris Samaras"
+            ],
+            "title": "Wasserstein GAN with quadratic transport cost",
+            "venue": "In Proceedings of the IEEE International Conference on Computer Vision,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ming-Yu Liu",
+                "Thomas Breuel",
+                "Jan Kautz"
+            ],
+            "title": "Unsupervised image-to-image translation networks",
+            "venue": "In Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ruishan Liu",
+                "Akshay Balsubramani",
+                "James Zou"
+            ],
+            "title": "Learning transport cost from subset correspondence",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mingsheng Long",
+                "Yue Cao",
+                "Jianmin Wang",
+                "Michael I. Jordan"
+            ],
+            "title": "Learning transferable features with deep adaptation networks",
+            "venue": "Proceedings of the 32nd International Conference on Machine Learning, ICML 2015,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Mingsheng Long",
+                "Han Zhu",
+                "Jianmin Wang",
+                "Michael I. Jordan"
+            ],
+            "title": "Deep transfer learning with joint adaptation networks",
+            "venue": "Proceedings of the 34th International Conference on Machine Learning,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Mingsheng Long",
+                "Zhangjie Cao",
+                "Jianmin Wang",
+                "Michael I. Jordan"
+            ],
+            "title": "Conditional adversarial domain adaptation",
+            "venue": "Advances in Neural Information Processing Systems 31: Annual Conference on Neural Information Processing Systems",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Ashok Makkuva",
+                "Amirhossein Taghvaei",
+                "Sewoong Oh",
+                "Jason Lee"
+            ],
+            "title": "Optimal transport mapping via input convex neural networks",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tudor Manole",
+                "Sivaraman Balakrishnan",
+                "Jonathan Niles-Weed",
+                "Larry Wasserman"
+            ],
+            "title": "Plugin estimation of smooth optimal transport maps",
+            "venue": "arXiv preprint arXiv:2107.12364,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mark W Meckes"
+            ],
+            "title": "Positive definite metric spaces. Positivity",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Gonzalo Mena",
+                "Jonathan Niles-Weed"
+            ],
+            "title": "Statistical bounds for entropic optimal transport: sample complexity and the central limit theorem",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Mehdi Mirza",
+                "Simon Osindero"
+            ],
+            "title": "Conditional generative adversarial nets",
+            "venue": "arXiv preprint arXiv:1411.1784,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Petr Mokrov",
+                "Alexander Korotin",
+                "Lingxiao Li",
+                "Aude Genevay",
+                "Justin Solomon",
+                "Evgeny Burnaev"
+            ],
+            "title": "Large-scale wasserstein gradient flows",
+            "venue": "arXiv preprint arXiv:2106.00736,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "John C Nash"
+            ],
+            "title": "The (dantzig) simplex method for linear programming",
+            "venue": "Computing in Science & Engineering,",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Fran\u00e7ois-Pierre Paty",
+                "Marco Cuturi"
+            ],
+            "title": "Regularized optimal transport is ground cost adversarial",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Micha\u00ebl Perrot",
+                "Nicolas Courty",
+                "R\u00e9mi Flamary",
+                "Amaury Habrard"
+            ],
+            "title": "Mapping estimation for discrete optimal transport",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Henning Petzka",
+                "Asja Fischer",
+                "Denis Lukovnicov"
+            ],
+            "title": "On the regularization of wasserstein gans",
+            "venue": "arXiv preprint arXiv:1709.08894,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Gabriel Peyr\u00e9",
+                "Marco Cuturi"
+            ],
+            "title": "Computational optimal transport",
+            "venue": "Foundations and Trends\u00ae in Machine Learning,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Aram-Alexandre Pooladian",
+                "Jonathan Niles-Weed"
+            ],
+            "title": "Entropic estimation of optimal transport",
+            "venue": "maps. arXiv preprint arXiv:2109.12004,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alain Rakotomamonjy",
+                "R\u00e9mi Flamary",
+                "Nicolas Courty"
+            ],
+            "title": "Generalized conditional gradient: analysis of convergence and applications",
+            "venue": "arXiv preprint arXiv:1510.06567,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Maria L Rizzo",
+                "G\u00e1bor J Sz\u00e9kely"
+            ],
+            "title": "Energy distance. wiley interdisciplinary reviews",
+            "venue": "Computational statistics,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Olaf Ronneberger",
+                "Philipp Fischer",
+                "Thomas Brox"
+            ],
+            "title": "U-net: Convolutional networks for biomedical image segmentation",
+            "venue": "In International Conference on Medical image computing and computer-assisted intervention,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Litu Rout",
+                "Alexander Korotin",
+                "Evgeny Burnaev"
+            ],
+            "title": "Generative modeling with optimal transport maps",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Filippo Santambrogio"
+            ],
+            "title": "Optimal transport for applied mathematicians",
+            "venue": "Birka\u0308user, NY,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Vivien Seguy",
+                "Bharath Bhushan Damodaran",
+                "R\u00e9mi Flamary",
+                "Nicolas Courty",
+                "Antoine Rolet",
+                "Mathieu Blondel"
+            ],
+            "title": "Large-scale optimal transport and mapping estimation",
+            "venue": "arXiv preprint arXiv:1711.02283,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Dino Sejdinovic",
+                "Bharath Sriperumbudur",
+                "Arthur Gretton",
+                "Kenji Fukumizu"
+            ],
+            "title": "Equivalence of distance-based and rkhs-based statistics in hypothesis testing",
+            "venue": "The Annals of Statistics,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Andrew M Stuart",
+                "Marie-Therese Wolfram"
+            ],
+            "title": "Inverse optimal transport",
+            "venue": "SIAM Journal on Applied Mathematics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xuan Su",
+                "Jiaming Song",
+                "Chenlin Meng",
+                "Stefano Ermon"
+            ],
+            "title": "Dual diffusion implicit bridges for imageto-image translation",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "C\u00e9dric Villani"
+            ],
+            "title": "Optimal transport: old and new, volume 338",
+            "venue": "Springer Science & Business Media,",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Mei Wang",
+                "Weihong Deng"
+            ],
+            "title": "Deep visual domain adaptation: A survey",
+            "venue": "doi: 10.1016/j.neucom.2018.05.083. URL https://doi.org/10.1016/j",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Han Xiao",
+                "Kashif Rasul",
+                "Roland Vollgraf"
+            ],
+            "title": "Fashion-mnist: a novel image dataset for benchmarking machine learning algorithms",
+            "venue": "arXiv preprint arXiv:1708.07747,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Luke Zappia",
+                "Belinda Phipson",
+                "Alicia Oshlack"
+            ],
+            "title": "Splatter: simulation of single-cell rna sequencing data",
+            "venue": "Genome biology,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Jun-Yan Zhu",
+                "Taesung Park",
+                "Phillip Isola",
+                "Alexei A Efros"
+            ],
+            "title": "Unpaired image-to-image translation using cycle-consistent adversarial networks",
+            "venue": "In Proceedings of the IEEE international conference on computer vision,",
+            "year": 2017
+        }
+    ],
+    "sections": [
+        {
+            "text": "We introduce a novel neural network-based algorithm to compute optimal transport (OT) plans for general cost functionals. In contrast to common Euclidean costs, i.e., \u21131 or \u21132, such functionals provide more flexibility and allow using auxiliary information, such as class labels, to construct the required transport map. Existing methods for general costs are discrete and have limitations in practice, i.e. they do not provide an out-of-sample estimation. We address the challenge of designing a continuous OT approach for general costs that generalizes to new data points in high-dimensional spaces, such as images. Additionally, we provide the theoretical error analysis for our recovered transport plans. As an application, we construct a cost functional to map data distributions while preserving the class-wise structure.\ndistributions are mixtures of N classes. The task is to learn a transport map T preserving the class. The learner has the access to labeled input data \u223c P and only partially labeled target data \u223c Q.\nOptimal transport (OT) is a powerful framework to solve mass-moving problems for data distributions which finds many applications in machine learning and computer vision (Bonneel & Digne, 2023). Most existing methods to compute OT plans are designed for discrete distributions (Flamary et al., 2021; Peyr\u00e9 et al., 2019; Cuturi, 2013). These methods have good flexibility: they allow to control the properties of the plan via choosing the cost function. However, discrete methods find an optimal matching between two given (train) sets which does not generalize to new (test) data points. This limits the applications of discrete OT plan methods to scenarios when one needs to generate new data, e.g., image-to-image transfer (Zhu et al., 2017).\nRecent works (Rout et al., 2022; Korotin et al., 2023b; 2021b; Fan et al., 2021a; Daniels et al., 2021) propose continuous methods to compute OT plans. Thanks to employing neural networks to parameterize OT solutions, the learned transport plan can be used directly as the generative model in data synthesis (Rout et al., 2022) and unpaired learning (Korotin et al., 2023b; Rout et al., 2022; Daniels et al., 2021; Gazdieva et al., 2022).\nExisting continuous OT methods mostly focus on classic cost functions such as \u21132 (Korotin et al., 2021b; 2023b; Fan et al., 2021a; Gazdieva et al., 2022) which estimate the closeness of input and output points. However, choosing such costs for problems where a specific optimality of the mapping is required may be challenging. For example, when one needs to preserve the object class during the transport (Figure 1), common \u21132 cost may be suboptimal (Su et al., 2022, Appendix C), (Daniels et al., 2021, Figure 3). This limitation could be fixed by considering general cost functionals (Paty & Cuturi, 2020) which may take into account additional information, e.g., class labels.\nDespite the large popularity of OT, the approach for continuous OT with general cost functionals (general OT) is still missing. We address this limitation. The main contributions of our paper are:\n1. We show that the general OT problem (M1) can be reformulated as a saddle point optimization problem (M3.1), which allows to implicitly recover the OT plan (M3.2) in the continuous setting. The problem can be solved with neural networks and stochastic gradient methods (Algorithm 2).\n2. We provide the error analysis of solving the proposed saddle point optimization problem via the duality gaps, i.e., errors for solving inner and outer optimization problems (M3.3).\n3. We construct and test an example of a general cost functional for mapping data distributions with the preservation of the class-wise structure (M 4, Algorithm 1, M5).\nFrom the theoretical perspective, our max-min reformulation is generic and subsumes previously known reformulations for classic (Fan et al., 2023; Rout et al., 2022) and weak (Korotin et al., 2021b) OT. Furthermore, existing error analysis works exclusively with the classic OT and operate only under certain restrictive assumptions such as the the convexity of the dual potential. Satisfying these assumptions in practice leads to a severe performance drop (Korotin et al., 2021c, Figure 5a). In contrast, our error analysis is free from assumptions on the dual variable and, besides general OT, it is applicable to weak OT for which there is currently no existing error analysis.\nFrom the practical perspective, we apply our method to the dataset transfer problem (Figure 1), previously not solved using continuous optimal transport. This problem arises when it is necessary to repurpose fixed or black-box models to classify previously unseen partially labelled target datasets with high accuracy by mapping the data into the dataset on which the classifier was trained. The dataset transfer problem was previously considered in related OT literature (Alvarez-Melis & Fusi, 2021). Our method achieves notable improvements in accuracy over existing algorithms."
+        },
+        {
+            "heading": "1 BACKGROUND AND NOTATIONS",
+            "text": "In this section, we provide key concepts of the optimal transport theory. Throughout the paper, we consider compact X = Y \u2282 RD and P,Q \u2208 P(X ),P(Y). Notations. The notation of our paper is based on that of (Paty & Cuturi, 2020; Korotin et al., 2023b). For a compact Hausdorf space S, we use P(S) to denote the set of Borel probability distributions on S. We denote the space of continuous R-valued functions on S endowed with the supremum norm by C(S). Its dual space is the space M(S) \u2283 P(S) of finite signed Borel measures over S. For a functional F :M(S)\u2192R \u222a {\u221e}, we use F\u2217(h) def= sup\u03c0\u2208M(S) [\u222b S h(s)d\u03c0(s)\u2212F(\u03c0)\n] to denote its convex conjugate F\u2217 : C(S)\u2192R \u222a {\u221e}. Let X ,Y be compact Hausdorf spaces and P \u2208 P(X ), Q \u2208 P(Y). We use \u03a0(P) \u2282 P(X \u00d7 Y) to denote the subset of probability distributions on X \u00d7Y , which projection onto the first marginal is P. We use \u03a0(P,Q) \u2282 \u03a0(P) to denote the subset of probability distributions (transport plans) on X \u00d7 Y with marginals P,Q. For u, v \u2208 C(X ), C(Y) we write u\u2295 v \u2208 C(X \u00d7 Y) to denote the function u\u2295 v : (x, y) 7\u2192 u(x) + v(y). For a functional F :M(X \u00d7 Y)\u2192 R we say that it is separably *-increasing if for all functions u, v \u2208 C(X ), C(Y) and any function c \u2208 C(X \u00d7 Y) from u\u2295 v \u2264 c (point-wise) it follows F\u2217(u\u2295 v) \u2264 F\u2217(c). For a measurable map T : X \u00d7 Z \u2192 Y , we denote the associated push-forward operator by T#. Classic and weak OT. For a cost function c \u2208 C(X \u00d7 Y), the OT cost between P,Q is\nCost(P,Q) def= inf \u03c0\u2208\u03a0(P,Q) \u222b X\u00d7Y c(x, y)d\u03c0(x, y), (1)\nsee (Villani, 2008, M1). We call (1) the classic OT. Problem (1) admits a minimizer \u03c0\u2217 \u2208 \u03a0(P,Q), which is called an OT plan (Santambrogio, 2015, Theorem 1.4). It may be not unique (Peyr\u00e9 et al., 2019, Remark 2.3). Intuitively, the cost function c(x, y) measures how hard it is to move a mass piece between points x \u2208 X and y \u2208 Y . That is, \u03c0\u2217 shows how to optimally distribute the mass of P to Q, i.e., with minimal effort. For cost functions c(x, y) = \u2225x\u2212 y\u22252 and c(x, y) = 12\u2225x\u2212 y\u2225 2 2, the OT cost (1) is called the Wasserstein-1 (W1) and the (square of) Wasserstein-2 (W2) distance, respectively, see (Villani, 2008, M1) or (Santambrogio, 2015, M1, 2).\nRecently, classic OT obtained the weak OT extension (Gozlan et al., 2017; Backhoff-Veraguas et al., 2019). Consider C : X \u00d7 P(Y)\u2192 R, i.e., a weak cost function whose inputs are a point x \u2208 X and a distribution of y \u2208 Y . The weak OT cost is\nCost(P,Q) def= inf \u03c0\u2208\u03a0(P,Q) \u222b X C ( x, \u03c0(\u00b7|x) ) d\u03c0(x), (2)\nwhere \u03c0(\u00b7|x) denotes the conditional distribution. Weak formulation (2) is reduced to classic formulation (1) when C(x, \u00b5) = \u222b Y c(x, y)d\u00b5(y). Another example of a weak cost function is the \u03b3-weak\nquadratic cost C ( x, \u00b5 ) = \u222b Y 1 2\u2225x\u2212 y\u2225 2 2d\u00b5(y)\u2212 \u03b3 2 Var(\u00b5), where \u03b3 \u2265 0 and Var(\u00b5) is the variance\nof \u00b5, see (Korotin et al., 2023b, Eq. 5), (Alibert et al., 2019, M5.2), (Gozlan & Juillet, 2020, M5.2) for details. For this cost, we denote the optimal value of (2) byW22,\u03b3 and call it \u03b3-weak Wasserstein-2. Regularized and general OT. The expression inside (1) is a linear functional. It is common to add a lower semi-continuous convex regularizerR :M(X \u00d7 Y)\u2192 R \u222a {\u221e} with weight \u03b3 > 0:\nCost(P,Q) def= inf \u03c0\u2208\u03a0(P,Q) {\u222b X\u00d7Y c(x, y)d\u03c0(x, y) + \u03b3R(\u03c0) } . (3)\nRegularized OT formulation (3) typically provides several advantages over original formulation (1). For example, ifR(\u03c0) is strictly convex, the expression inside (3) is a strictly convex functional in \u03c0 and yields the unique OT plan \u03c0\u2217. Besides, regularized OT typically has better sample complexity (Genevay, 2019; Mena & Niles-Weed, 2019; Genevay et al., 2019). Common regularizers are the entropic (Cuturi, 2013), quadratic (Essid & Solomon, 2018), lasso (Courty et al., 2016), etc.\nTo consider a general OT formulation let F : M(X \u00d7 Y) \u2192 R \u222a {+\u221e} be a convex lower semi-continuous functional. Assume that there exists \u03c0 \u2208 \u03a0(P,Q) for which F(\u03c0) <\u221e. Let\nCost(P,Q) def= inf \u03c0\u2208\u03a0(P,Q) F(\u03c0). (4)\nThis problem is a generalization of classic OT (1), weak OT (2), and regularized OT (3). Following (Paty & Cuturi, 2020), we call problem (4) a general OT problem. One may note that regularized OT (3) represents a similar problem: it is enough to put c(x, y) \u2261 0, \u03b3 = 1 andR(\u03c0) = F(\u03c0) to obtain (4) from (3), i.e., regularized (3) and general OT (4) can be viewed as equivalent formulations.\nWith mild assumptions on F , general OT problem (4) admits a minimizer \u03c0\u2217 (Paty & Cuturi, 2020, Lemma 1). If F is separately *-increasing, the dual problem is given by\nCost(P,Q) = sup u,v [\u222b X u(x)dP(x) + \u222b Y v(y)dQ(y)\u2212F\u2217(u\u2295 v) ] , (5)\nwhere optimization is performed over u, v \u2208 C(X ), C(Y) which are called potentials (Paty & Cuturi, 2020, Theorem 2). The popular regularized functionals (3) are indeed separately *-increasing, including the OT regularized with entropy (Paty & Cuturi, 2020, Example 7) or Lp (Paty & Cuturi, 2020, Example 8). That is, formulation (5) subsumes many known duality formulas for OT."
+        },
+        {
+            "heading": "2 RELATED WORK: DISCRETE AND CONTINUOUS OT SOLVERS",
+            "text": "Solving OT problems usually implies either finding an OT plan \u03c0\u2217 or dual potentials u\u2217, v\u2217. Existing computational OT methods can be roughly split into two groups: discrete and continuous.\nDiscrete OT considers discrete distributions P\u0302N = \u2211N n=1 pn\u03b4xn and Q\u0302N = \u2211M\nm=1 qm\u03b4ym and aims to find the OT plan (1), (2), (4), (3) directly between P = P\u0302N and Q = Q\u0302M . In this case, the OT plan \u03c0\u2217 can be represented as a doubly stochastic N \u00d7M matrix. For a survey of computational methods for discrete OT, we refer to (Peyr\u00e9 et al., 2019). In short, one of the most popular is the Sinkhorn algorithm (Cuturi, 2013) which is designed to solve formulation (3) with the entropic regularization.\nGeneral discrete OT is extensively studied (Nash, 2000; Courty et al., 2016; Flamary et al., 2021; Ferradans et al., 2014; Rakotomamonjy et al., 2015); these methods are often employed in domain adaptation problems (Courty et al., 2016). Additionally, the available labels can be used to reconstruct the classic cost function, to capture the underlying data structure (Courty et al., 2016; Stuart & Wolfram, 2020; Liu et al., 2020; Li et al., 2019).\nThe major drawback of discrete OT methods is that they only perform a (stochastic) matching between the given empirical samples and usually do not provide out-of-sample estimates. This limits their application to real-world scenarios where new (test) samples frequently appear. Recent works (H\u00fctter & Rigollet, 2021; Pooladian & Niles-Weed, 2021; Manole et al., 2021; Deb et al., 2021) consider the OT problem with the quadratic cost and develop out-of-sample estimators by wavelet/kernel-based plugin estimators or by the barycentric projection of the discrete entropic OT plan. In spite of tractable theoretical properties, the performance of such methods in high dimensions is questionable.\nContinuous OT usually considers pn = 1N and qn = 1 M and assumes that the given discrete distributions P\u0302N = 1N \u2211N n=1 \u03b4xn , Q\u0302M = 1 M \u2211M m=1 \u03b4ym are the empirical counterparts of the underlying\ndistributions P, Q. That is, the goal of continuous OT is to recover the OT plan between P,Q which are accessible only by their (finite) empirical samples {x1, x2, . . . , xN} \u223c P and {y1, y2, . . . , yM} \u223c Q. In this case, to represent the plan one has to employ parametric approximations of the OT plan \u03c0\u2217 or dual potentials u\u2217, v\u2217 which, in turn, provide straightforward out-of-sample estimates.\nA notable development is the use of neural networks to compute OT maps for solving weak (2) and classic (1) functionals (Korotin et al., 2023b; 2022a; 2021b; Rout et al., 2022; Fan et al., 2021a; Henry-Labordere, 2019). Previous OT methods were based on formulations restricted to convex potentials (Makkuva et al., 2020; Korotin et al., 2021a;c; Mokrov et al., 2021; Fan et al., 2023; Bunne et al., 2021; Alvarez-Melis et al., 2021), and used Input Convex Neural Networks (Amos et al., 2017, ICNN) to approximate them, which limited the application of OT in large-scale tasks (Korotin et al., 2021b; Fan et al., 2021b; Korotin et al., 2022a). In (Genevay et al., 2016; Seguy et al., 2017; Daniels et al., 2021; Fan et al., 2021b), the authors propose methods for f -divergence regularized functionals (3). In particular, (Genevay et al., 2016; Seguy et al., 2017) recover biased plans, which is a notable issue in high dimensions (Korotin et al., 2021b, M4.2). The method in (Daniels et al., 2021) is computationally heavy due to using Langevin dynamics. Additionally, many approaches in generative learning use OT cost as the loss function to update generative models, such as WGANs (Arjovsky & Bottou, 2017; Petzka et al., 2017; Liu et al., 2019), see (Korotin et al., 2022b) for a survey. These are not related to our work as they do not compute OT plans or maps.\nOur work vs. prior works. While the discrete version of the general OT problem (4) is well studied in the literature, its continuous counterpart is not yet analyzed. The above-mentioned continuous methods focus on special cases, e.g., on weak and classic cost functionals (rather than general OT). Such functionals are suitable for the tasks of unpaired image-to-image style translation (Zhu et al., 2017, Figures 1,2). However, they typically do not take into account the class-wise structure of data or available side information, e.g., the class labels. As a result, such methods are hardly applicable to certain tasks such as the dataset transfer where the preservation of the class-wise structure is required. Therefore, in our work, we fill this gap by proposing the algorithm to solve the (continuous) general OT problem (M3), provide error bounds (M3.3). As an illustration, we construct an example general OT cost functional which can take into account the available task-specific information (M4)."
+        },
+        {
+            "heading": "3 MAXIMIN REFORMULATION OF THE GENERAL OT",
+            "text": "In this section, we derive a saddle point formulation for the general OT problem (4) which we later solve with neural networks. All the proofs of the statements are given in Appendix A."
+        },
+        {
+            "heading": "3.1 MAXIMIN REFORMULATION OF THE DUAL PROBLEM",
+            "text": "In this subsection, we derive the dual form, which is an alternative to (5) and can be used to get the OT plan \u03c0\u2217. Our two following theorems constitute the main theoretical idea of our approach. Theorem 1 (Maximin reformulation of the dual problem). For *-separately increasing convex and lower semi-continuous functional F :M(X\u00d7Y)\u2192R\u222a{+\u221e} it holds\nCost(P,Q)=sup v inf \u03c0\u2208\u03a0(P) L(v, \u03c0) = sup v inf \u03c0\u2208\u03a0(P)\n{[ F(\u03c0)\u2212 \u222b Y v(y)d\u03c0(y)]+ \u222b Y v(y)dQ(y) } , (6)\nwhere the sup is taken over v\u2208C(Y) and \u03c0(y) is the marginal distribution over y of the plan \u03c0.\nFrom (6) we also see that it is enough to consider values of F in \u03c0 \u2208 \u03a0(P) \u2282 M(X \u00d7 Y). For convention, in further derivations we always consider F(\u03c0) = +\u221e for \u03c0 \u2208M(X \u00d7 Y) \\\u03a0(P). Theorem 2 (Optimal saddle points provide optimal plans). Let v\u2217\u2208arg supv inf\u03c0\u2208\u03a0(P)L(v, \u03c0) be any optimal potential. Then for every OT plan \u03c0\u2217 \u2208 \u03a0(P,Q) it holds:\n\u03c0\u2217 \u2208 arg inf \u03c0\u2208\u03a0(P) L(v\u2217, \u03c0). (7)\nIfF is strictly convex in \u03c0 \u2208 \u03a0(P), thenL(v\u2217, \u03c0) is strictly convex as a functional of \u03c0. Consequently, it has a unique minimizer. As a result, expression (7) is an equality. We have the following corollary. Corollary 1 (Every optimal saddle point provides the OT plan). Assume additionally that F is strictly convex. Then the unique OT plan satisfies \u03c0\u2217 = arg inf\u03c0\u2208\u03a0(P) L(v\u2217, \u03c0).\nUsing our results above, one may solve (6) and obtain the OT plan \u03c0\u2217 from the solution (v\u2217, \u03c0\u2217) of the saddle point problem (6). The challenging part is to optimize over the distributions \u03c0 \u2208 \u03a0(P)."
+        },
+        {
+            "heading": "3.2 GENERAL OT MAXIMIN REFORMULATION VIA STOCHASTIC MAPS",
+            "text": "To make optimization over probability distributions \u03c0 \u2208 \u03a0(P) practically feasible, we reformulate it as the optimization over functions T which generate them. Inspired by (Korotin et al., 2023b, M4.1), we introduce a latent space Z = RZ and an atomless distribution S \u2208 P(Z) on it, e.g., S = N (0, IZ). For every \u03c0 \u2208 P(X \u00d7Y), there exists a measurable function T = T\u03c0 : X \u00d7Z \u2192 Y which implicitly represents it. Such T\u03c0 satisfies T\u03c0(x, \u00b7)\u266fS = \u03c0(\u00b7|x) for all x \u2208 X . That is, given x \u2208 X and a random latent vector z \u223c S, the function T produces sample T\u03c0(x, z) \u223c \u03c0(y|x). In particular, if x \u223c P, the random vector [x, T\u03c0(x, z)] is distributed as \u03c0. Thus, every \u03c0 \u2208 \u03a0(P) can be implicitly represented as a function T\u03c0 : X \u00d7 Z \u2192 Y . Note that there might exist several suitable T\u03c0 . Every measurable function T : X \u00d7 Z \u2192 Y is an implicit representation of the distribution \u03c0T which is the joint distribution of a random vector [x, T (x, z)] with x \u223c P, z \u223c S. Consequently, the optimization over \u03c0 \u2208 \u03a0(P) is equivalent to the optimization over measurable functions T : X \u00d7 Z \u2192 Y . From our Theorem 1, we have the following corollary. Corollary 2. For *-separately increasing, lower semi-continuous and convex F it holds\nCost(P,Q)=sup v inf T L\u0303(v, T )= sup v inf T\n{ F\u0303(T )\u2212 \u222b X\u00d7Z v ( T (x, z) ) dP(x)dS(z)+ \u222b Y v(y)dQ(y) } ,(8)\nwhere the sup is taken over potentials v \u2208 C(Y) and inf \u2013 over measurable functions T : X\u00d7Z \u2192 Y . Here we identify F\u0303(T ) def= F(\u03c0T ) and L\u0303(v, T ) def = L(v, \u03c0T ).\nWe say that T \u2217 is a stochastic OT map if it represents some OT plan \u03c0\u2217, i.e., T \u2217(x, \u00b7)\u266fS = \u03c0\u2217(\u00b7|x) holds P-almost surely for all x\u2208X . From Theorem 2 and Corollary 1, we obtain the following result.\nCorollary 3 (Optimal saddle points provide stochastic OT maps). Let v\u2217\u2208arg supv infT L\u0303(v, T ) be any optimal potential. Then for every stochastic OT map T \u2217 it holds:\nT \u2217 \u2208 arg inf T L\u0303(v\u2217, T ). (9)\nIf F is strictly convex in \u03c0, we have T \u2217 \u2208 arg infT L\u0303(v\u2217, T )\u21d4 T \u2217 is a stochastic OT map.\nFrom our results it follows that by solving (8) and obtaining an optimal saddle point (v\u2217, T \u2217), one gets a stochastic OT map T \u2217. To ensure that all the solutions are OT maps, one may consider adding strictly convex regularizers to F with a small weight, e.g., conditional interaction energy, see Appendices D and D.1 which is also known as the conditional kernel variance (Korotin et al., 2023a).\nOverall, problem (8) replaces the optimization over distributions \u03c0 \u2208 \u03a0(P) in (6) with the optimization over stochastic maps T , making it practically feasible. After our reformulation, every term in (8) can be estimated with Monte Carlo by using random empirical samples from P,Q, allowing us to approach the general OT problem (4) in the continuous setting (M2). To solve the problem (8) in practice, one may use neural networks T\u03b8 : RD\u00d7RS \u2192 RD and v\u03c9 : RD \u2192 R to parametrize T and v, respectively. To train them, one may employ stochastic gradient ascent-descent (SGAD) by using random batches from P,Q,S. We summarize the optimization procedure for general cost functionals F in Algorithm 2 of Appendix B. In the main text below (M4), we focus on the special case of the class-guided functional FG, which is targeted to be used in the dataset transfer task (Figure 1). Relation to prior works. Maximin reformulations analogous to our (8) appear in the continuous OT literature (Korotin et al., 2021c; 2023b; Rout et al., 2022; Fan et al., 2021a) yet they are designed only for classic (1) and weak (2) OT. Our formulation is generic and automatically subsumes all of them. Importantly, it allows using general cost functionals F which, e.g., may easily take into account side information such as the class labels, see M4."
+        },
+        {
+            "heading": "3.3 ERROR BOUNDS FOR APPROXIMATE SOLUTIONS FOR GENERAL OT",
+            "text": "For a pair (v\u0302, \u03c0\u0302) approximately solving (6), it is natural to ask how close is \u03c0\u0302 to the OT plan \u03c0\u2217. Based on the duality gaps, i.e., errors for solving outer and inner optimization problems with (v\u0302, \u03c0\u0302) in (6), we give an upper bound on the difference between \u03c0\u0302 and \u03c0\u2217. Our analysis holds for functionals F which are strongly convex in some metric \u03c1(\u00b7, \u00b7), see Definition 1 in Appendix A. Recall that the strong convexity of F also implies the strict convexity, i.e., the OT plan \u03c0\u2217 is unique.\nAlgorithm 1: Neural optimal transport with the class-guided cost functional F\u0303G. Input :Distributions P = \u2211 n \u03b1nPn, Q = \u2211 n \u03b2nQn, S accessible by samples (unlabeled);\nweights \u03b1n are known and samples from each Pn,Qn are accessible (labeled); mapping network T\u03b8 : RP \u00d7 RS \u2192 RQ; potential network v\u03c9 : RQ \u2192 R; number of inner iterations KT ;\nOutput :Learned stochastic OT map T\u03b8 representing an OT plan between distributions P,Q; repeat\nSample (unlabeled) batches Y \u223c Q, X \u223c P and for each x \u2208 X sample batch Z[x] \u223c S; Lv \u2190 \u2211 x\u2208X \u2211 z\u2208Z[x] v\u03c9(T\u03b8(x,z)) |X|\u00b7|Z[x]| \u2212 \u2211 y\u2208Y v\u03c9(y) |Y | ; Update \u03c9 by using \u2202Lv\u2202\u03c9 ; for kT = 1, 2, . . . ,KT do\nPick n \u2208 {1, 2, . . . , N} at random with probabilities (\u03b11, . . . , \u03b1N ); Sample (labeled) batches Xn \u223c Pn, Yn \u223c Qn; for each x \u2208 X sample batch Zn[x] \u223c S; LT \u2190 \u2206\u0302E2 ( Xn, T (Xn, Zn), Yn ) \u2212 \u2211 x\u2208Xn \u2211 z\u2208Zn[x] v\u03c9(T\u03b8(x,z)) |Xn|\u00b7|Zn[x]| ; Update \u03b8 by using \u2202LT\u2202\u03b8 ;\nuntil not converged;\nTheorem 3 (Error analysis via duality gaps). Let F :M(X \u00d7 Y)\u2192 R \u222a {+\u221e} be a convex cost functional. Let \u03c1(\u00b7, \u00b7) be a metric on \u03a0(P) \u2282M(X \u00d7 Y). Assume that F is \u03b2-strongly convex in \u03c1 on \u03a0(P). Consider the duality gaps for an approximate solution (v\u0302, \u03c0\u0302) \u2208 C(Y)\u00d7\u03a0(P) of (6):\n\u03f51(v\u0302, \u03c0\u0302) def =L(v\u0302, \u03c0\u0302)\u2212 inf\n\u03c0\u2208\u03a0(P) L(v\u0302, \u03c0), (10) \u03f52(v\u0302)\ndef = sup\nv inf \u03c0\u2208\u03a0(P) L(v, \u03c0)\u2212 inf \u03c0\u2208\u03a0(P) L(v\u0302, \u03c0), (11)\nwhich are the errors of solving the outer supv and inner inf\u03c0 problems in (6), respectively. Then for OT plan \u03c0\u2217 in (4) between P and Q the following inequality holds\n\u03c1(\u03c0\u0302, \u03c0\u2217) \u2264 \u221a 2\n\u03b2\n(\u221a \u03f51(v\u0302, \u03c0\u0302) + \u221a \u03f52(v\u0302) ) , (12)\ni.e., the sum of the roots of duality gaps upper bounds the error of the plan \u03c0\u0302 w.r.t. \u03c0\u2217 in \u03c1(\u00b7, \u00b7). The significance of our Theorem 3 is manifested when moving from theoretical objectives (5), (6) to its numerical counterparts. In practice, the dual potential v in (6) is parameterized by NNs (a subset of continuous functions) and may not reach the optimizer v\u2217. Our duality gap analysis shows that we can still find a good approximation of the OT plan. It suffices to find a pair (v\u0302, \u03c0\u0302) that achieves nearly optimal objective values in the inner inf\u03c0 and outer supv problems of (6). In such a pair, \u03c0\u0302 is close to the OT plan \u03c0\u2217. To apply our duality gap analysis the strong convexity of F is required. We give an example of a strongly convex regularizer and a general recipe for using it in Appendix D. In turn, Appendix D.1 demonstrates the application of this regularization technique in practice.\nRelation to prior works. The authors of (Fan et al., 2021a), (Rout et al., 2022), (Makkuva et al., 2020) carried out error analysis via duality gaps resembling our Theorem 3. Their error analysis works only for classic OT (1) and requires the potential v\u0302 to satisfy certain convexity properties. Our error analysis is free from assumptions on v\u0302 and works for general OT (4) with strongly convex F ."
+        },
+        {
+            "heading": "4 LEARNING WITH THE CLASS-GUIDED COST FUNCTIONAL",
+            "text": "In this section, we show that general cost functionals (4) are useful, for example, for the class-guided dataset transfer (Figure 1). An additional example of a pair-guided cost functional is considered in Appendix E. To begin with, we theoretically formalize the problem setup.\nLet each input P and output Q distributions be a mixture of N distributions (classes) {Pn}Nn=1 and {Qn}Nn=1, respectively. That is P = \u2211N n=1 \u03b1nPn and Q = \u2211N n=1 \u03b2nQn where \u03b1n, \u03b2n \u2265 0 are the\nrespective weights (class prior probabilities) satisfying \u2211N n=1 \u03b1n = 1 and \u2211N\nn=1 \u03b2n = 1. In this general setup, we aim to find the transport plan \u03c0(x, y) \u2208 \u03a0(P,Q) for which the classes of x \u2208 X\nand y \u2208 Y are the same for as many pairs (x, y) \u223c \u03c0 as possible. That is, its respective stochastic map T should map each component Pn (class) of P to the respective component Qn (class) of Q.\nThe task above is related to domain adaptation or transfer learning problems. It does not always have a solution with each Pn exactly mapped to Qn due to possible prior/posterior shift (Kouw & Loog, 2018). We aim to find a stochastic map T between P and Q satisfying T\u266f(Pn\u00d7S) \u2248 Qn for all n = 1, . . . , N . To solve the above-discussed problem, we propose the following functional:\nFG(\u03c0) = F\u0303G(T\u03c0) def = N\u2211 n=1 \u03b1nE2 ( T\u03c0\u266f(Pn\u00d7S),Qn ) , (13)\nwhere E denotes the energy distance (14). For two distributions Q,Q\u2032 \u2208 P(Y) with Y \u2282 RD, the (square of) energy distance E (Rizzo & Sz\u00e9kely, 2016) between them is:\nE2(Q,Q\u2032) = E\u2225Y1 \u2212 Y2\u22252 \u2212 1\n2 E\u2225Y1 \u2212 Y \u20321\u22252 \u2212\n1 2 E\u2225Y2 \u2212 Y \u20322\u22252, (14)\nwhere Y1 \u223c Q, Y \u20321 \u223c Q, Y2 \u223c Q\u2032, Y \u20322 \u223c Q\u2032 are independent random vectors. Energy distance (14) is a particular case of the Maximum Mean Discrepancy (Sejdinovic et al., 2013). It equals zero only when Q1 = Q2. Hence, our functional (13) is non-negative and attains zero value when the components of P are correctly mapped to the respective components of Q (if this is possible). Theorem 4 (Properties of the class-guided cost functional FG). Functional FG(\u03c0) is convex in \u03c0 \u2208 \u03a0(P), lower semi-continuous and \u2217-separably increasing.\nIn practice, each of the terms E2 ( T\u03c0\u266f(Pn\u00d7S),Qn ) in (13) admits estimation from samples from \u03c0.\nProposition 1 (Estimator for E2). Let Xn \u223c Pn be a batch of KX samples from class n. For each x \u2208 Xn let Zn[x] \u223c S be a latent batch of size KZ . Consider a batch Yn \u223c Qn of size KY . Then\n\u2206\u0302E2 ( Xn, T (Xn, Zn), Yn ) def = \u2211 y\u2208Yn \u2211 x\u2208Xn \u2211 z\u2208Zn[x] \u2225y \u2212 T (x, z)\u22252 KY \u00b7KX \u00b7KZ \u2212\n\u2211 x\u2208Xn \u2211 z\u2208Zn[x] \u2211 x\u2032\u2208Xn\\{x} \u2211 z\u2032\u2208Zx\u2032 \u2225T (x, z)\u2212 T (x\u2032, z\u2032)\u22252 2 \u00b7 (K2X \u2212KX) \u00b7K2Z\n(15)\nis an estimator of E2 ( T\u266f(Pn\u00d7S),Qn ) up to a constant T -independent shift.\nTo estimate F\u0303G(T ), one may separately estimate terms E2 ( T\u266f(Pn\u00d7S),Qn ) for each n and sum them up with weights \u03b1n. We only estimate n-th term with probability \u03b1n at each iteration.\nWe highlight the two key details of the estimation of (13) which are significantly different from the estimation of classic (1) and weak OT costs (2) appearing in related works (Fan et al., 2021a; Korotin et al., 2023b; 2021b). First, one has to sample not just from the input distribution P, but separately from each its component (class) Pn. Moreover, one also has to be able to separately sample from the target distribution\u2019s Q components Qn. This is the part where the guidance (semi-supervision) happens. We note that to estimate costs such as classic or weak (2), no target samples from Q are needed at all, i.e., they can be viewed as unsupervised.\nIn practice, we assume that the learner is given a labelled empirical sample from P for training. In contrast, we assume that the available samples from Q are only partially labelled (with \u2265 1 labelled data point per class). That is, we know the class label only for a limited amount of data (Figure 1). In this case, all n cost terms (15) can still be stochastically estimated. These cost terms are used to learn the transport map T\u03b8 in Algorithm 2. The remaining (unlabeled) samples will be used when training the potential v\u03c9, as labels are not needed to update the potential in (8). We provide the detailed procedure for learning with the functional FG (13) in Algorithm 1."
+        },
+        {
+            "heading": "5 EXPERIMENTAL ILLUSTRATIONS",
+            "text": "In this section, we test our continuous general OT approach with our cost functional FG on toy cases (M5.1) and image data (M5.2). The code is written in PyTorch framework and will be made public along with the trained networks. On the image data, our method converges in 5\u201315 hours on a Tesla V100 (16 GB). We give the details (architectures, pre-processing, etc.) in Appendix C.1.\nOur Algorithm 1 learns stochastic (one-to-many) transport maps T (x, z). Following (Korotin et al., 2021b, M5), we also test deterministic T (x, z) \u2261 T (x), i.e., do not add a random noise z to input. This disables stochasticity and yields deterministic (one-to-one) transport maps x 7\u2192 T (x). In M5.1, (toy examples), we test only the deterministic variant of our method. In M5.2, we test both cases."
+        },
+        {
+            "heading": "5.1 TOY EXAMPLES",
+            "text": "The task is to map two balanced classes of moons (red and green) between P and Q (circles and crosses in Figure 2(a), respectively). The target distribution Q is P rotated by 90 degrees. The number of randomly picked labelled samples in each target moon is 10. The maps learned by neural OT algorithm with the quadratic cost (W2, (Fan et al., 2021a; Korotin et al., 2023b)) and our Algorithm 1 with functional FG are given in Figures 2(c) and 2(d), respectively. In Figure 2(b) we show the matching performed by a discrete OT-SI algorithm which learns the transport cost with a neural net from a known classes\u2019 correspondence (Liu et al., 2020). As expected, the map for W2 does not preserve the classes (Figure 2(c)), while our map solves the task (Figure 2(d)). We provide an additional example with matching Gaussian Mixutres with class overlapping, and solving the batch effect on biological data in Appendices C.1 and C.12, respectively."
+        },
+        {
+            "heading": "5.2 IMAGE DATA EXPERIMENTS",
+            "text": "Datasets. We use MNIST (LeCun & Cortes, 2010), FashionMNIST (Xiao et al., 2017) and KMNIST (Clanuwat et al., 2018) datasets as P,Q. Each dataset has 10 (balanced) classes and the pre-defined train-test split. In this experiment, the goal is to find a class-wise map between unrelated domains: MNIST\u2192 KMNIST and FashionMNIST\u2192MNIST. We use the default class correspondence between the datasets. For completeness, in Appendices we provide additional results with imbalanced classes (C.7), non-default correspondence (C.10), and mapping related domains (C.1).\nBaselines: Well known conditional models, e.g., GAN (Mirza & Osindero, 2014), Adversarial Autoencoder (Makhzani et al., 2015) and contrastive-penalty neural OT (Fan et al., 2023, M6.2), use the class labels to apply conditional generation. Due to that, they are not relevant to our work as we use only partial labeling information during the training and do not use any label information during the inference. Domain adaptation methods (Gretton et al., 2012; Long et al., 2015; 2017; Ganin & Lempitsky, 2015; Long et al., 2018) align probability distributions while maintaining the discriminativity between classes (Wang & Deng, 2018). But mostly they perform domain adaptation for image data at the feature level, which makes them also not relevant to the dataset transfer problem.\nDue to that, we compare our method to the pixel-level adaptation methods such as (one-to-many) AugCycleGAN (Almahairi et al., 2018; Zhu et al., 2017; Hoffman et al., 2018; Almahairi et al., 2018) and MUNIT (Huang et al., 2018; Liu et al., 2017). We use the official implementations with the hyperparameters from the respective papers. Also, we test Neural OT (Korotin et al., 2023b; Fan et al., 2023) with Euclidean cost functions: the quadratic cost 12\u2225x\u2212 y\u2225 2 2 (W2) and the \u03b3-weak (oneto-many) quadratic cost (W2,\u03b3 , \u03b3 = 110 ). For semi-supervised mapping, we considered (one-to-one) OTDD flow (Alvarez-Melis & Fusi, 2021; 2020). This method employs gradient flows to perform the transfer preserving the class label. We also add a General Discrete OT (DOT) which use labels, especially the Sinkhorn (Cuturi, 2013) with Laplacian cost regularization (Courty et al., 2016) from ot.da (Flamary et al., 2021) with its default out-of-sample estimation procedure. We show the results of ICNN-based OT method (Makkuva et al., 2020; Korotin et al., 2021a) in Appendix C.8.\nMetrics. All the models are fitted on the train parts of datasets; all the provided qualitative and quantitative results are exclusively for test (unseen) data. To evaluate the visual quality, we compute FID (Heusel et al., 2017) of the entire mapped source test set w.r.t. the entire target test set. To estimate the accuracy of the mapping we use a pre-trained ResNet18 (He et al., 2016) classifier (with 95+ accuracy) on the target data. We consider the mapping T to be correct if the predicted label for the mapped sample T (x, z) matches the corresponding label of x.\nResults. Qualitative results are shown in Figure 3; FID, accuracy \u2013 in Tables 2 and 1, respectively. To keep the figures simple, for all the models (one-to-one, one-to-many), we plot a single output per input. For completeness, we show multiple outputs per each input for our method and ablation study on Z size in Appendices C.3, C.5, and C.6. Our method, general discrete OT and OTDD, use 10 labeled samples for each class in the target. Other baselines lack the capability to use label information. As seen in Figure 3 and Table 1, our approach using our cost FG preserves the class-wise structure accurately with just 10 labelled samples per class. The accuracy of other neural OT methods is around 10%, equivalent to a random guess. Both the general discrete OT and OTDD methods do not preserve the class structure in high dimensions, resulting in samples with poor FID, see table 2. Visually, the OTDD results are comparable to those in Figure 3 of (Alvarez-Melis & Fusi, 2021)."
+        },
+        {
+            "heading": "6 DISCUSSION",
+            "text": "Our method is a generic tool to learn transport maps between data distributions with a task-specific cost functional F . In general, the potential impact of our work on society depends on the scope of its application in digital content creation. As a limitation, we can consider the fact that to apply our method, one has to provide an estimator F\u0302(T ) for the functional F which may be non-trivial. Besides, the construction of a cost functional F for a particular downstream task may be not straightforward. This should be taken into account when using the method in practice. Constructing task-specific functionals F and estimators F\u0302 is a promising future research avenue."
+        },
+        {
+            "heading": "7 REPRODUCIBILITY",
+            "text": "To ensure the reproducibility of our experiments, we provide the source code in the supplementary material. For toy experiments M5.1, run twomoons_toy.ipynb and gaussian_toy.ipynb. For the dataset transfer experiments M5.2, run dataset_transfer.ipynb and dataset_transfer_no_z.ipynb. The detailed information about the data preprocessing and training hyperparameters is presented in M5 and Appendix C.1."
+        },
+        {
+            "heading": "A PROOFS",
+            "text": ""
+        },
+        {
+            "heading": "A.1 PROOFS OF RESULTS OF M3",
+            "text": "Proof of Theorem 1. We use the dual form (5) to derive\nCost(P,Q) = sup v { sup u [\u222b X u(x)dP(x)\u2212F\u2217(u\u2295 v) ] + \u222b Y v(y)dQ(y) } = (16)\nsup v { sup u [\u222b X u(x)dP(x)\u2212 sup \u03c0 (\u222b X\u00d7Y (u\u2295 v)d\u03c0(x, y)\u2212F(\u03c0) )] + \u222b Y v(y)dQ(y) } = (17)\nsup v { sup u [\u222b X u(x)dP(x) + inf \u03c0 ( F(\u03c0)\u2212 \u222b X\u00d7Y (u\u2295 v)d\u03c0(x, y) )] + \u222b Y v(y)dQ(y) } = (18)\nsup v { sup u inf \u03c0 ( F(\u03c0)\u2212 \u222b X u(x)d ( \u03c0 \u2212 P)(x)\u2212 \u222b Y v(y)d\u03c0(y) ) + \u222b Y v(y)dQ(y) } \u2264 (19)\nsup v { sup u inf \u03c0\u2208\u03a0(P) ( F(\u03c0)\u2212 \u222b X u(x)d ( \u03c0 \u2212 P)(x)\u2212 \u222b Y v(y)d\u03c0(y) ) + \u222b Y v(y)dQ(y) } = (20)\nsup v { sup u inf \u03c0\u2208\u03a0(P) ( F(\u03c0)\u2212 \u222b Y v(y)d\u03c0(y) ) + \u222b Y v(y)dQ(y) } = (21)\nsup v\n{ inf\n\u03c0\u2208\u03a0(P)\n( F(\u03c0)\u2212 \u222b Y v(y)d\u03c0(y) ) + \u222b Y v(y)dQ(y) } \u2264 (22)\nsup v\n{ F(\u03c0\u2217)\u2212 \u222b Y v(y) d\u03c0\u2217(y)\ufe38 \ufe37\ufe37 \ufe38\ndQ(y)\n+ \u222b Y v(y)dQ(y) } = F(\u03c0\u2217) = Cost(P,Q). (23)\nIn line (16), we group the terms involving the potential u. In line (17), we express the conjugate functional F\u2217 by using its definition. In the transition to line (18), we replace inf\u03c0 operator with the equivalent sup\u03c0 operator with the changed sign. In transition to (19), we put the term \u222b X u(x)dP(x) under the inf\u03c0 operator; we use definition (u\u2295v)(x, y) = u(x)+v(y) to split the integral over \u03c0(x, y) into two separate integrals over \u03c0(x) and \u03c0(y) respectively. In transition to (20), we restrict the inner inf\u03c0 to probability distributions \u03c0 \u2208 \u03a0(P) which have P as the first marginal, i.e. d\u03c0(x) = dP(x). This provides an upper bound on (19), in particular, all u-dependent terms vanish, see (21). As a result, we remove the supu operator in line (22). In transition to line (23) we substitute an optimal plan \u03c0\u2217 \u2208 \u03a0(P,Q) \u2282 \u03a0(Q) to upper bound (22). Since Cost(P,Q) turns to be both an upper bound (23) and a lower bound (16) for (22), we conclude that (6) holds.\nProof of Theorem 2. Assume that \u03c0\u2217 /\u2208 arg inf\u03c0\u2208\u03a0(P) L(v\u2217, \u03c0), i.e., L(v\u2217, \u03c0\u2217) > inf\n\u03c0\u2208\u03a0(P) L(v\u2217, \u03c0) = Cost(P,Q).\nWe substitute v\u2217 and \u03c0\u2217 to L and see that L(v\u2217, \u03c0\u2217) = [ F(\u03c0\u2217)\u2212 \u222b Y v(y) d\u03c0\u2217(y)\ufe38 \ufe37\ufe37 \ufe38\ndQ(y)\n]+ \u222b Y v(y)dQ(y) = F(\u03c0\u2217) = Cost(P,Q),\nwhich is a contradiction. Thus, the assumption is wrong and (7) holds.\nDefinition 1 (Strongly convex functional w.r.t. metric \u03c1(\u00b7, \u00b7)). Let F :M(X \u00d7Y)\u2192 R\u222a {+\u221e} be a convex lower semi-continuous functional. Let U \u2282 P(X \u00d7 Y) \u2282M(X \u00d7 Y) be a convex subset such that \u2203\u03c0 \u2208 U : F(\u03c0) < +\u221e. Functional F is called \u03b2-strongly convex on U w.r.t. metric \u03c1(\u00b7, \u00b7) if \u2200\u03c01, \u03c02 \u2208 U ,\u2200\u03b1 \u2208 [0, 1] it holds:\nF(\u03b1\u03c01 + (1\u2212 \u03b1)\u03c02) \u2264 \u03b1F(\u03c01) + (1\u2212 \u03b1)F(\u03c02)\u2212 \u03b2\n2 \u03b1(1\u2212 \u03b1)\u03c12(\u03c01, \u03c02). (24)\nLemma 1 (Property of minimizers of strongly convex cost functionals). Consider a lowersemicontinuous \u03b2-strongly convex in metric \u03c1(\u00b7, \u00b7) on U \u2282 P(X \u00d7 Y) functional F . Assume that \u03c0\u2217 \u2208 U satisfies F(\u03c0\u2217) = inf\n\u03c0\u2208U F(\u03c0). Then \u2200\u03c0 \u2208 U it holds:\nF(\u03c0\u2217) \u2264 F(\u03c0)\u2212 \u03b2 2 \u03c12(\u03c0\u2217, \u03c0). (25)\nProof of Lemma 1. We substitute \u03c01 = \u03c0\u2217, \u03c02 = \u03c0 to formula (24) and fix \u03b1 \u2208 [0, 1]. We obtain\nF(\u03b1\u03c0\u2217 + (1\u2212 \u03b1)\u03c0) \u2264 \u03b1F(\u03c0\u2217) + (1\u2212 \u03b1)F(\u03c0)\u2212 \u03b2 2 \u03b1(1\u2212 \u03b1)\u03c12(\u03c0\u2217, \u03c0)\u21d0\u21d2\nF(\u03b1\u03c0\u2217 + (1\u2212 \u03b1)\u03c0)\ufe38 \ufe37\ufe37 \ufe38 \u2265 inf\n\u03c0\u2032\u2208U F(\u03c0\u2032)=F(\u03c0\u2217)\n\u2212\u03b1F(\u03c0\u2217) \u2264 (1\u2212 \u03b1)F(\u03c0)\u2212 \u03b2 2 \u03b1(1\u2212 \u03b1)\u03c12(\u03c0\u2217, \u03c0) =\u21d2\n(1\u2212 \u03b1)F(\u03c0\u2217) \u2264 (1\u2212 \u03b1)F(\u03c0)\u2212 \u03b2 2 \u03b1(1\u2212 \u03b1)\u03c12(\u03c0\u2217, \u03c0)\u21d0\u21d2\nF(\u03c0\u2217) \u2264 F(\u03c0)\u2212 \u03b2 2 \u03b1\u03c12(\u03c0\u2217, \u03c0). (26)\nTaking the limit \u03b1\u2192 1\u2212 in inequality (26), we obtain (25).\nProof of Theorem 3. Given a potential v \u2208 C(Y), we define functional Vv : \u03a0(P)\u2192 R \u222a {+\u221e}:\nVv(\u03c0) def = F(\u03c0)\u2212 \u222b Y v(y)d\u03c0(y). (27)\nSince the term \u222b Y v(y)d\u03c0(y) is linear w.r.t. \u03c0, the \u03b2-strong convexity ofF implies \u03b2-strong convexity of Vv . Moreover, since Vv is lower semi-continuous and \u03a0(P) is compact (w.r.t. weak-\u2217 topology), it follows from the Weierstrass theorem (Santambrogio, 2015, Box 1.1) that\n\u2203\u03c0v \u2208 \u03a0(P) : Vv(\u03c0v) = inf \u03c0\u2208\u03a0(P) Vv(\u03c0); (28)\ni.e. the infimum of Vv(\u03c0) is attained. Note that \u03c0v minimizes the functional \u03c0 7\u2192 L(v, \u03c0) as well since L(v, \u03c0) = Vv(\u03c0) + Const(v). Therefore, the duality gaps (10), (11) permit the following reformulation:\n\u03f51(v\u0302, \u03c0\u0302) = L(v\u0302, \u03c0\u0302)\u2212 L(v\u0302, \u03c0v\u0302), (29) \u03f52(v\u0302) = L(v\u2217, \u03c0\u2217)\u2212 L(v\u0302, \u03c0v\u0302); (30)\nwhere \u03c0v\u0302 is a minimizer (28) for v = v\u0302. Consider expression (29):\n\u03f51(v\u0302, \u03c0\u0302) = L(v\u0302, \u03c0\u0302)\u2212 L(v\u0302, \u03c0v\u0302) Lemma 1 \u2265 \u03b2\n2 \u03c12(\u03c0\u0302, \u03c0v\u0302) =\u21d2\u221a\n2 \u03b2 \u03f51(v\u0302, \u03c0\u0302) \u2265 \u03c1(\u03c0\u0302, \u03c0v\u0302). (31)\nConsider expression (30):\n\u03f52(v\u0302) = L(v\u2217, \u03c0\u2217)\u2212 L(v\u0302, \u03c0v\u0302) = F(\u03c0\u2217)\u2212 \u222b Y v\u2217(y)d ( \u03c0\u2217 \u2212Q ) (y)\u2212F(\u03c0v\u0302) + \u222b Y v\u0302(y)d ( \u03c0v\u0302 \u2212Q ) (y) =\nF(\u03c0\u2217)\u2212 \u222b Y v\u0302(y)d(\u03c0\u2217 \u2212Q)(y) + \u222b Y {v\u0302(y)\u2212 v\u2217(y)}d ( \u03c0\u2217 \u2212Q ) (y)\u2212F(\u03c0v\u0302) + \u222b Y v\u0302(y)d ( \u03c0v\u0302 \u2212Q ) (y) = (32)\nF(\u03c0\u2217)\u2212 \u222b Y v\u0302(y)d\u03c0\u2217(y)\ufe38 \ufe37\ufe37 \ufe38\n=Vv\u0302(\u03c0\u2217)\n+ \u222b Y {v\u0302(y)\u2212 v\u2217(y)}d ( \u03c0\u2217 \u2212Q ) (y)\ufe38 \ufe37\ufe37 \ufe38\n=0, since d\u03c0\u2217(y)=dQ(y)\n\u2212F(\u03c0v\u0302) + \u222b Y v\u0302(y)d\u03c0v\u0302(y)\ufe38 \ufe37\ufe37 \ufe38\n=\u2212Vv\u0302(\u03c0v\u0302)\n=\nVv\u0302(\u03c0\u2217)\u2212 Vv\u0302(\u03c0v\u0302) Lemma 1 \u2265 \u03b2\n2 \u03c12(\u03c0\u2217, \u03c0v\u0302) =\u21d2\u221a\n2 \u03b2 \u03f52(v\u0302) \u2265 \u03c1(\u03c0\u2217, \u03c0v\u0302); (33)\nwhere in line (32) we add and subtract \u222b Y v\u0302(y)d(\u03c0 \u2217 \u2212Q)(y).\nThe triangle inequality \u03c1(\u03c0\u2217, \u03c0\u0302) \u2264 \u03c1(\u03c0\u2217, \u03c0v\u0302) + \u03c1(\u03c0\u0302, \u03c0v\u0302) = \u221a\n2 \u03b2 (\u221a \u03f51(v\u0302, \u03c0\u0302) + \u221a \u03f52(v\u0302) ) for norm\n\u03c1(\u00b7, \u00b7) finishes the proof."
+        },
+        {
+            "heading": "A.2 PROOFS OF RESULTS OF M4",
+            "text": "Proof of Theorem 4. First, we prove that F = FG it is *-separately increasing. For \u03c0 \u2208 M(X \u00d7 Y) \\\u03a0(P) it holds that F(\u03c0) = +\u221e. Consequently,\u222b\nX\u00d7Y c(x, y)d\u03c0(x, y)\u2212F(\u03c0) = \u222b X\u00d7Y ( u(x) + v(y) ) d\u03c0(x, y)\u2212F(\u03c0) = \u2212\u221e. (34)\nWhen \u03c0 \u2208 \u03a0(P) it holds that \u03c0 is a probability distribution. We integrate u(x) + v(y) \u2264 c(x, y) w.r.t. \u03c0, subtract F(\u03c0) and obtain\u222b\nX\u00d7Y c(x, y)d\u03c0(x, y)\u2212F(\u03c0) \u2265 \u222b X\u00d7Y ( u(x) + v(y) ) d\u03c0(x, y)\u2212F(\u03c0). (35)\nBy taking the sup of (34) and (35) w.r.t. \u03c0 \u2208M(X \u00d7 Y), we obtain F\u2217(c) \u2265 F\u2217(u\u2295 v).1 Next, we prove that F is convex. We prove that every term E2 ( T\u03c0\u266f(Pn \u00d7 S),Qn ) is convex in \u03c0.\nFirst, we show that \u03c0 7\u2192 fn(\u03c0) def = T\u03c0\u266f(Pn \u00d7 S) is linear in \u03c0 \u2208 \u03a0(P).\nPick any \u03c01, \u03c02, \u03c03 \u2208 \u03a0(P) which lie on the same line. Without loss of generatity we assume that \u03c03 \u2208 [\u03c01, \u03c02], i.e., \u03c03 = \u03b1\u03c01 + (1\u2212 \u03b1)\u03c02 for some \u03b1 \u2208 [0, 1]. We need to show that\nfn(\u03c03) = \u03b1fn(\u03c01) + (1\u2212 \u03b1)fn(\u03c02). (36)\nIn what follows, for a random variable U we denote its distribution by Law(U).\nThe first marginal distribution of each \u03c0i is P. From the glueing lemma (Villani, 2008, M1) it follows that there exists a triplet of (dependent) random variables (X,Y1, Y2) such that Law(X,Yi) = \u03c0i for i = 1, 2. We define Y3 = Yr, where r is an independent random variable which takes values in {1, 2} with probabilities {\u03b1, 1 \u2212 \u03b1}. From the construction of Y3 it follows that Law(X,Y3) is a mixture of Law(X,Y1) = \u03c01 and Law(X,Y2) = \u03c02 with weights \u03b1 and 1\u2212\u03b1. Thus, Law(X,Y3) = \u03b1\u03c01 + (1\u2212 \u03b1)\u03c02 = \u03c03. We conclude that Law(Y3|X=x) = \u03c03(\u00b7|x) for P-almost all x \u2208 X (recall that Law(X)=P). On the other hand, again by the construction, the conditional Law(Y3|X=x) is a mixture of Law(Y1|X=x) = \u03c01(\u00b7|x) and Law(Y2|X=x) = \u03c02(\u00b7|x) with weights \u03b1 and 1 \u2212 \u03b1. Thus, \u03c03(\u00b7|x) = \u03b1\u03c01(\u00b7|x) + (1\u2212 \u03b1)\u03c02(\u00b7|x) holds true for P-almost all x \u2208 X . Consider independent random variables Xn \u223c Pn and Z \u223c S. From the definition of T\u03c0i we conclude that Law ( T\u03c0i(x, Z) ) = \u03c0i(\u00b7|x) for P-almost all x \u2208 X and, since Pn is a component of P, for Pn-almost all x \u2208 X as well. As a result, we define Ti = T\u03c0i(Xn, Z) and derive\nLaw(T3|Xn = x) = \u03c03(\u00b7|x) = \u03b1\u03c01(\u00b7|x) + (1\u2212 \u03b1)\u03c02(\u00b7|x) = \u03b1Law(T1|Xn = x) + (1\u2212 \u03b1)Law(T2|Xn = x)\nfor Pn-almost all x \u2208 X . Thus, Law(Xn, T3) is also a mixture of Law(Xn, T1) and Law(Xn, T2) with weights \u03b1 and 1 \u2212 \u03b1. In particular, Law(T3) = \u03b1Law(T1) + (1 \u2212 \u03b1)Law(T2). We note that Law(Ti) = fn(\u03c0i) by the definition of fn and obtain (36).\nSecond, we highlight that for every \u03bd \u2208 P(Y), the functional P(Y) \u220b \u00b5\u2192 E2(\u00b5, \u03bd) is convex in \u00b5. Indeed, E2 is a particular case of (the square of) Maximum Mean Discrepancy (MMD, (Sejdinovic et al., 2013)). Therefore, there exists a Hilbert space H and a function \u03d5 : Y \u2192 H (feature map), such that\nE2(\u00b5, \u03bd) = \u2225\u2225\u2225\u2225\u222b\nY \u03d5(y)d\u00b5(y)\u2212 \u222b Y \u03d5(y)d\u03bd(y) \u2225\u2225\u2225\u22252 H .\nSince the kernel mean embedding \u00b5 7\u2192 \u222b Y \u03d5(y)d\u00b5(y) is linear in \u00b5 and \u2225 \u00b7 \u2225 2 H is convex, we conclude that E2(\u00b5, \u03bd) is convex in \u00b5. To finish this part of the proof, it remains to combine the fact that \u03c0 7\u2192 T\u03c0\u266f(Pn \u00d7 S) is linear and E2(\u00b7,Qn) is convex in the first argument. Third, we note that the lower semi-continuity ofF(\u03c0) in \u03a0(P) follows from the lower semi-continuity of the Energy distance (E2) terms in (13). That is, it suffices to show that E2 defined in equation (14)\n1The proof is generic and works for any functional which equals +\u221e outside \u03c0 \u2208 P(X \u00d7 Y).\nis indeed lower semi-continuous in the first argument Q1. In (14), there are two terms depending on Q1. The term E\u2225X1 \u2212 X \u20321\u22252 = \u222b X [ \u222b X \u2225x1 \u2212 x2\u22252dQ2(x2) ] dQ1(x1) is linear in Q1. It is just the expectation of a continuous function w.r.t. Q1. Hence it is lower semi-continuous by the definition of the lower semi-continuity. Here we also use the fact that Y is compact. The other term \u2212 12E\u2225X1\u2212X \u2032 1\u22252 = \u2212 12 \u222b X\u00d7X \u2225x2\u2212x \u2032 2\u22252d ( Q1\u00d7Q1 ) (x1, x2) is a quadratic term in Q1. This term can be viewed as the interaction energy (Santambrogio, 2015, M7) between particles in Q1 with the interaction function W (x1, x\u20321) def = \u2212\u2225x1 \u2212 x\u20321\u22252. Thanks to the compactness of Y , it is also lower semi-continuous in Q1, see (Santambrogio, 2015, Proposition 7.2) for the proof.\nProof of Proposition 1. Direct calculation of the expectation of (15) yields the value\nE\u2225Y \u2212 T (X,Z)\u22252 \u2212 1\n2 E\u2225T (X,Z)\u2212 T (X \u2032, Z \u2032)\u22252 =\nE\u2225Y \u2212 T (X,Z)\u2225 \u2212 1 2 E\u2225T (X,Z)\u2212 T (X \u2032, Z \u2032)\u22252 \u2212 1 2 E\u2225Y \u2212 Y \u2032\u22252 + 1 2 E\u2225Y \u2212 Y \u2032\u22252 =\nE2 ( T\u266f(Pn \u00d7 S),Qn ) + 1\n2 E\u2225Y \u2212 Y \u2032\u22252, (37)\nwhere Y, Y \u2032 \u223c Qn and (X,Z), (X \u2032, Z \u2032) \u223c (Pn \u00d7 S) are independent random variables. It remains to note that 12E\u2225Y \u2212 Y \u2032\u22252 is a T -independent constant."
+        },
+        {
+            "heading": "B ALGORITHM FOR GENERAL COST FUNCTIONALS",
+            "text": "In this section, we present the procedure to optimize (8) for general cost functionals F . In practice, one may utilize neural networks T\u03b8 : RD \u00d7 RS \u2192 RD and v\u03c9 : RD \u2192 R to parameterize T and v\u03c9 , correspondingly, to solve the problem (8). One may train them with stochastic gradient ascent-descent (SGAD) using random batches from P,Q,S. The procedure is summarized in Algorithm 2.\nAlgorithm 2: Neural optimal transport for general cost functionals Input :Distributions P,Q,S accessible by samples; mapping network T\u03b8 : RP \u00d7 RS \u2192 RQ;\npotential network v\u03c9 : RQ \u2192 R; number of inner iterations KT ; empirical estimator F\u0302 ( X,T (X,Z) ) for cost F\u0303(T );\nOutput :Learned stochastic OT map T\u03b8 representing an OT plan between distributions P,Q; repeat\nSample batches Y \u223c Q, X \u223c P and for each x \u2208 X sample batch Z[x] \u223c S; Lv \u2190 \u2211 x\u2208X \u2211 z\u2208Z[x] v\u03c9(T\u03b8(x,z)) |X|\u00b7|Z[x]| \u2212 \u2211 y\u2208Y v\u03c9(y) |Y | ; Update \u03c9 by using \u2202Lv\u2202\u03c9 ; for kT = 1, 2, . . . ,KT do\nSample batch X \u223c P and for each x \u2208 X sample batch Z[x] \u223c S; LT \u2190 F\u0302(X,T\u03b8(X,Z))\u2212 \u2211 x\u2208X \u2211 z\u2208Z[x] v\u03c9(T\u03b8(x,z)) |X|\u00b7|Z[x]| ; Update \u03b8 by using \u2202LT\u2202\u03b8 ;\nuntil not converged;\nAlgorithm 2 requires an empirical estimator F\u0302 for F\u0303(T ). Providing such an estimator might be non-trivial for generalF . IfF(\u03c0) = \u222b X C(x, \u03c0(\u00b7|x))dP(x), i.e., the cost is weak (2), one may use the\nfollowing unbiased Monte-Carlo estimator: F\u0302 ( X,T (X,Z) ) def = |X|\u22121 \u2211 x\u2208X C\u0302 ( x, T (x, Z[x]) ) , where C\u0302 is the respective estimator for the weak cost C and Z[x] denotes a random batch of latent vectors z \u223c S for a given x \u2208 X . For classic costs and the \u03b3-weak quadratic cost, the estimator C\u0302 is given by (Korotin et al., 2023b, Eq. 18 and 19) and Algorithm 2 for general OT 4 reduces to the neural OT algorithm (Korotin et al., 2023b, Algorithm 1) for weak (2) or classic (1) OT. Unlike the predecessor, the algorithm is suitable for general OT formulation (4). In M4, we propose a cost functionalFG and provide an estimator for it to solve the class-guided dataset transfer task (Algorithm 1)."
+        },
+        {
+            "heading": "C ADDITIONAL EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "C.1 TRAINING DETAILS OF THE MAIN EXPERIMENTS",
+            "text": "Algorithm details. In our Algorithm 1, we use Adam (Kingma & Ba, 2014) optimizer with lr = 10\u22124 for both T\u03b8 and v\u03c9 . The number of inner iterations for T\u03b8 is KT = 10. Doing preliminary experiments, we noted that it is sufficient to use small mini-batch sizes KX ,KY ,KZ in (15). Therefore, we decided to average loss values over KB small independent mini-batches (each from class n with probability \u03b1n) rather than use a single large batch from one class. This is done parallel with tensor operations.\nTwo moons. We use 500 train and 150 test samples for each moon. We use the fully-connected net with 2 ReLU hidden layers size of 128 for both T\u03b8 and v\u03c9. We train the model for 10k iterations of v\u03c9 with KB = 32,KX = KY = 2 (KZ plays no role as we do not use z here).\nImages experiments details. We rescale the images to size 32\u00d732 and normalize their channels to [\u22121, 1]. For the grayscale images, we repeat their channel 3 times and work with 3-channel images. We do not apply any augmentations to data. We use the default train-test splits for all the datasets.\nWe use WGAN-QC discriminator\u2019s ResNet architecture (He et al., 2016) for potential v\u03c9. We use UNet2 (Ronneberger et al., 2015) as the stochastic transport map T\u03b8(x, z). To condition it on z, we insert conditional instance normalization (CondIN) layers after each UNet\u2019s upscaling block3. We use CondIN from AugCycleGAN (Almahairi et al., 2018). In experiments, z is the 128-dimensional standard Gaussian noise.\nThe batch size is KB = 32, KX = KY = 2, KZ = 2 for training with z. When training without z, we use the original UNet without conditioning; the batch parameters are the same (KZ does not matter). Our method converges in \u2248 60k iterations of v\u03c9 . For comparison in the image domain, we use the official implementations with the hyperparameters from the respective papers: AugCycleGAN4 (Almahairi et al., 2018), MUNIT5(Huang et al., 2018). For comparison with neural OT (W2,W2,\u03b3), we use their publicly available code.6. . For the stochastic maps T (x, z), we only sampled one z per x during computing the metric, no averaging over z was applied. The accuracy of the ResNet18 classifiers is 99.17 for the MNIST and 95.56 for the USPS datasets. For the KMNIST and MNITST, the accuracy\u2019s are 99.39 and 97.19, respectively.\nOTDD flow details. As in our method, the number of labelled samples in each class is 10. We learn the OTDD flow between the labelled source dataset7 and labelled target samples. Note the OTDD method does not use the unlabeled target samples. As the OTDD method does not produce out-of-sample estimates, we train UNet to map the source data to the data produced by the OTDD flow via regression. Then we compute the metrics on the test (FID, accuracy) for this mapping network.\nDOT details. Input pre-processing was the same as in our method. We tested a variety of discrete OT solvers from Python Optimal Transport (POT) package (Flamary et al., 2021), including EMD, MappingTransport (Perrot et al., 2016) and SinkhornTransport with Laplacian and L2 regularization (Courty et al., 2016) from ot.da (Flamary et al., 2021). These methods are semi-supervised and can receive labels to construct a task-specific plan. As in our method, the number of labelled samples in each class is 10. For most of these methods, two tunable hyper-parameters are available: entropic and class regularization values. We evaluated a range of these values (1, 2, 5, 10, and 100). To assess the accuracy of the DOT solvers, we used the same oracle classifiers as in all the other cases. Empirically, we found that the Sinkhorn with Laplacian regularization and both regularization values equal to 5 achieves the best performance in most cases. Thus, to keep Table 1 simple, we report the test accuracy results only for this DOT approach. Additionally, we calculated its test FID (Table 2).\n2github.com/milesial/Pytorch-UNet 3github.com/kgkgzrtk/cUNet-Pytorch 4github.com/aalmah/augmented_cyclegan 5github.com/NVlabs/MUNIT 6https://github.com/iamalexkorotin/NeuralOptimalTransport 7We use only 15k source samples since OTDD is computationally heavy (the authors use 2k samples)."
+        },
+        {
+            "heading": "C.2 GAUSSIANS MIXTURES.",
+            "text": "In this additional experiment both P,Q are balanced mixtures of 16 Gaussians, and each color denotes a unique class. The goal is to map Gaussians in P (Figure 4(a)) to respective Gaussians in Q which have the same color, see Figure 4(b). The result of our method 10 known target labels per class) is given in Figure 4(c). It correctly maps the classes. Neural OT for the quadratic cost is not shown as it results in the identity map (the same image as Figure 4(a)) which is completely mistaken in classes. We use the fully connected network with 2 ReLU hidden layers size of 256 for both T\u03b8 and v\u03c9 . There are 10000 train and 500 test samples in each Gaussian. We train the model for 10k iterations of v\u03c9 with KB = 32,KX = KY = 2 (KZ plays no role here as well).\nUsing the same settings as in the previous experiment, we conducted additional tests involving overlapping classes. In this scenario, specific samples within one class are identical to samples from another class. To execute this experiment, we adjusted the Gaussian modes of each class to be closer to each other, as illustrated in Figure 5(a). The target classes are depicted in Figure 5(b). Our method handles this scenario, demonstrating the robustness of our model in handling overlapping classes. The visual representation can be observed in Figure 5(c)."
+        },
+        {
+            "heading": "C.3 RELATED DOMAINS",
+            "text": "Here we test the case when the source and target domains are related. We consider MNIST\u2192USPS and MNIST\u2192MNISTM translation. As in the main text, we are given only 10 labeled samples from the target dataset; the rest are unlabeled. The results are in Table 3, 4 and Figure 6.\nIn this related domains case (Figure 6), GAN-based methods and our approach with our guided cost FG show high accuracy \u2265 90%. However, neural OT with classic and weak quadratic costs provides low accuracy (35-50%). We presume that this is because for these dataset pairs the ground truth OT map for the (pixel-wise) quadratic cost simply does not preserve the class. This agrees with (Daniels et al., 2021, Figure 3) which tests an entropy-regularized quadratic cost in a similar MNIST\u2192USPS setup. For our method with cost FG, The OTDD gradient flows method provides reasonable accuracy on MNIST\u2192USPS. However, OTDD has a much higher FID than the other methods."
+        },
+        {
+            "heading": "C.4 ADDITIONAL VISUALIZATION",
+            "text": "To further qualitative demonstrate that our model preserves the classes well, we provide an additional visualization of the learned maps. The same models were used as in Figure 5.2. The only difference is that in Figure 5.2 we show a single input and target per class, while here (Figure 7) we show three inputs and three outputs per class for the different methods."
+        },
+        {
+            "heading": "C.5 ADDITIONAL EXAMPLES OF STOCHASTIC MAPS",
+            "text": "In this subsection, we provide additional examples of the learned stochastic map for FG (with z). We consider all the image datasets from the main experiments (M5). The results are shown in Figure 9 and demonstrate that for a fixed x and different z, our model generates diverse samples."
+        },
+        {
+            "heading": "C.6 ABLATION STUDY OF THE LATENT SPACE DIMENSION",
+            "text": "In this subsection, we study the structure of the learned stochastic map for FG with different latent space dimensions Z. We consider MNIST\u2192 USPS transfer task (10 classes). The results are shown in Figures 10, 11 and Table 5. As can be seen, our model performs comparably for different Z.\nC.7 IMBALANCED CLASSES\nIn this subsection, we study the behaviour of the optimal map for FG when the classes are imbalanced in input and target domains. Since our method learns a transport map from P to Q, it should capture the class balance of the Q regardless of the class balance in P. We check this below.\nWe consider MNIST\u2192 USPS datasets with n = 3 classes in MNIST and n = 3 classes in USPS. We assume that the class probabilities are \u03b11 = \u03b12 = 12 , \u03b13 = 0 and \u03b21 = \u03b22 = \u03b23 = 1 3 . That is, there is no class 3 in the source dataset and it is not used anywhere during training. In turn, the target class 3 is not used when training T\u03b8 but is used when training f\u03c9. All the hyperparameters here are the same as in the previous MNIST\u2192 USPS experiments with 10 known labels in target classes. The results are shown in Figure 12(a) and 13(a). We present deterministic (no z) and stochastic (with z) maps.\nOur cost functional FG stimulates the map to maximally preserve the input class. However, to transport P to Q, the model must change the class balance. We show the confusion matrix for learned\nmaps T\u03b8 in Figures 12(b), 13(b). It illustrates that the model maximally preserves the input classes 0, 1 and uniformly distributes the input classes 0 and 1 into class 2, as suggested by our cost functional.\nC.8 ICNN-BASED DATASET TRANSFER\nFor completeness, we show the performance of ICNN-based method for the classic (1) quadratic transport cost c(x, y) = 12\u2225x \u2212 y\u2225\n2 on the dataset transfer task. We use the non-minimax version (Korotin et al., 2021a) of the ICNN-based method by (Makkuva et al., 2020). We employ the publicly available code and dense ICNN architectures from the Wasserstein-2 benchmark repository 8. The batch size is KB = 32, the total number of iterations is 100k, lr = 3 \u00b7 10\u22123, and the Adam optimizer is used. The datasets are preprocessed as in the other experiments, see Appendix C.1.\n8github.com/iamalexkorotin/Wasserstein2Benchmark\nThe qualitative results for MNIST\u2192USPS and FashionMNIST\u2192MNIST transfer are given in Figure 14. The results are reasonable in the first case (related domains). However, they are visually unpleasant in the second case (unrelated domains). This is expected as the second case is notably harder. More generally, as derived in the Wasserstein-2 benchmark (Korotin et al., 2021b), the ICNN models do not work well in the pixel space due to the poor expressiveness of ICNN architectures. The ICNN method achieved 18.8% accuracy and\u226b100 FID in the FMNIST\u2192MNIST transfer, and 35.6% and accuracy and 13.9 FID in the MNIST\u2192USPS case. All the metrics are much worse than those achieved by our general OT method with the class-guided functional FG, see Table 1, 2 for comparison."
+        },
+        {
+            "heading": "C.9 CLASSIC COST OT FOR DATASET TRANSFER",
+            "text": "Our general cost functional-based algorithm can use both labeled and unlabeled target samples for training, which can be useful for the data transfer tasks. Existing continuous OT approaches do not handle a such type of training. Indeed, suppose we have additional information (labels) in the dataset and try to solve the class-guided mapping using the (W2)Korotin et al. (2023b); Fan et al. (2021a). In this scenario, we can train OT using only the labeled samples (10 separate maps in case of MNIST). In this case, the unlabeled data immediately becomes useless. Indeed, using unlabeled data for a class during training for that class implies that we know the labels for that class, which is a contradiction.\nFor illustrative purposes, we performed these experiments using the W2 algorithm for one of the clases on the FMNIST to MNITS mapping problem. We clearly see that the qualitative results are not competitive with our algorithm. This is because W2 is forced to train with only 10 target samples, the only labeled target samples in the problem setup."
+        },
+        {
+            "heading": "C.10 NON-DEFAULT CLASS CORRESPONDENCE",
+            "text": "To show that our method can work with any arbitrary correspondence between datasets, we also consider FMNIST\u2192MNIST dataset transfer with the following non-default correspondence between the dataset classes:\n0 ) 9, 1 ) 0, 2 ) 1, 3 ) 2, 4 ) 3, 5 ) 4, 6 ) 5, 7 ) 6, 8 ) 7, 9 ) 8.\nIn this experiment, we use the same architectures and data preprocessing as in dataset transfer tasks; see Appendix C.1. We use our FG (13) as the cost functional and learn a deterministic transport map T (no z). In this setting, our method produces comparable results to the previously reported in Section 5 accuracy equal to 83.1, and FID 6.69. The qualitative results are given in Figure 16.\nC.11 IN DOMAIN CLASS-PRESERVING\nTo provide an additional illustration, we also consider MNIST\u2192MNIST dataset transfer with the following non-default correspondence between the dataset classes:\n0 ) 9, 1 ) 0, 2 ) 1, 3 ) 2, 4 ) 3, 5 ) 4, 6 ) 5, 7 ) 6, 8 ) 7, 9 ) 8.\nIn this experiment, we use the same architectures, data preprocessing and metrics as in dataset transfer tasks (C.1). We use our FG (13) as the cost functional and learn a transport map T . The resulted accuracy is equal to 95.1, and FID 3.35. The qualitative results are given in Figure 17."
+        },
+        {
+            "heading": "C.12 SOLVING BATCH EFFECT",
+            "text": "The batch effect is a well-known issue in biology, particularly in high-throughput genomic studies such as gene expression microarrays, RNA-seq, and proteomics Leek et al. (2010). It occurs when nonbiological factors, such as different processing times or laboratory conditions, introduce systematic variations in the data. Addressing batch effects is crucial for ensuring robust and reproducible findings in biological research Lazar et al. (2013). By solving this problem using our method, directly in the input space, we can preserve the samples\u2019 intrinsic structure, minimizing artifacts, and ensuring biological validation.\nIn our experiments, we map classes across two domains: TM-baron-mouse-for-segerstolpe and segerstolpe-human, consisting of 3,329 and 2,108 samples, respectively. The data was generated by the Splatter package Zappia et al. (2017). Each domain consists of eight classes. The source domain P is fully-labelled, and the target Q contains 10 labelled samples per class. Each sample is a 657-sized vector pre-processed with default Splatter settings. Zappia et al. (2017).\nWe employed feed-forward networks with one hidden layer of size 512 for the map T\u03b8 and a hidden layer of size 1024 for the potential network v\u03c9. To evaluate the accuracy, we trained single-layer neural network classifiers with soft-max output activation, using the available target data. Our method improved accuracy from 63.0\u2192 92.5. Meanwhile, the best DOT solver (EMD) identified through search, as described in Appendix C.1, reduced accuracy from 63.0\u2192 50.4."
+        },
+        {
+            "heading": "D GENERAL FUNCTIONALS WITH CONDITIONAL INTERACTION ENERGY REGULARIZER",
+            "text": "Generally speaking, for practically useful general cost functionals F :M(X \u00d7 Y)\u2192 R \u222a {+\u221e} it may be difficult or even impossible to establish their strict or strong convexity. For instance, our considered class-guided functional FG (13) is not necessarily strictly convex. In such cases, our results on the uniqueness of OT plan \u03c0\u2217 (Corollary 1) and the closeness of approximate OT plan \u03c0\u0302 to the true one (Theorem 3) are not directly applicable.\nIn this section, we propose a generic way to overcome this problem by means of strongly convex regularizers. Let F ,R :M(X \u00d7 Y)\u2192 R \u222a {+\u221e} be convex, lower semi-continuous functionals, which are equal to +\u221e on \u00b5 \u2208 M(X \u00d7 Y) \\ P(X \u00d7 Y). Additionally, we will assume that R is \u03b2-strongly convex on \u03a0(P) in some metric \u03c1(\u00b7, \u00b7). For \u03b3 > 0, one may consider the following R-regularized general OT problem:\ninf \u03c0\u2208\u03a0(P,Q)\n{ F(\u03c0) + \u03b3R(\u03c0) } .\nNote that \u03c0 7\u2192 F(\u03c0) + \u03b3R(\u03c0) is convex, lower semi-continuous, separately *-increasing (since it equals +\u221e outside \u03c0 \u2208 P(X \u00d7 Y), see the proof of Theorem 4 in Appendix A) and \u03b2\u03b3-strongly convex on \u03a0(P) in \u03c1(\u00b7, \u00b7). In the considered setup, functional F corresponds to a real problem a practitioner may want to solve, and functionalR is the regularizer which slightly shifts the resulting solution but induces nice theoretical properties. Our proposed technique resembles the idea of the Neural Optimal Transport with Kernel Variance (Korotin et al., 2023a). In this section, we generalize their approach and make it applicable to our duality gap analysis (Theorem 3). Below we introduce an example of a strongly convex regularizer. Corresponding practical demonstrations are left to Appendix D.1.\nConditional interaction energy functional. Let (Y, l) be a semimetric space of negative type (Sejdinovic et al., 2013, \u00a72.1), i.e. l : Y\u00d7Y \u2192 R is the semimetric and \u2200N \u2265 2 , y1, y2, . . . , yN \u2208 Y and \u2200\u03b11, , \u03b12, . . . \u03b1N \u2208 R such that \u2211N n=1 \u03b1n = 0 it holds \u2211N n=1 \u2211N n\u2032=1 \u03b1n\u03b1n\u2032 l(yn, yn\u2032) \u2264 0. The (square of) energy distance El w.r.t. semimetric l between probability distributions Q1,Q2 \u2208 P(Y) is ((Sejdinovic et al., 2013, \u00a72.2)):\nE2l (Q1,Q2) = 2El(Y1, Y2)\u2212 El(Y1, Y \u20321)\u2212 El(Y2, Y \u20322), (38)\nwhere Y1, Y \u20321 \u223c Q1; Y2, Y \u20322 \u223c Q2. Note that for l(y, y\u2032) = 12\u2225y \u2212 y \u2032\u22252 formula (38) reduces to (14). The energy distance is known to be a metric on P(Y) (Klebanov et al., 2005) (note that Y is compact). The examples of semimetrics of negative type include l(y, y\u2032) = \u2225x \u2212 y\u2225min{1,p}p for 0 < p \u2264 2 (Meckes, 2013, Th. 3.6).\nConsider the following generalization of energy distance El on space \u03a0(P). Let \u03c01, \u03c02 \u2208 \u03a0(P).\n\u03c12l (\u03c01, \u03c02) def = \u222b X E2l (\u03c01(\u00b7|x), \u03c02(\u00b7|x))dP(x). (39)\nProposition 2. It holds that \u03c1l(\u00b7, \u00b7) is a metric on \u03a0(P).\nProof of Proposition 2. Obviously, \u2200\u03c0 \u2208 \u03a0(P) : \u03c1l(\u03c0, \u03c0) = 0 and \u2200\u03c01, \u03c02 \u2208 \u03a0(P) : \u03c1l(\u03c01, \u03c02) = \u03c1l(\u03c02, \u03c01) \u2265 0. We are left to check the triangle inequality. Consider \u03c01, \u03c02, \u03c03 \u2208 \u03a0(P). In what follows, for \u03c0 \u2208 \u03a0(P) and x \u2208 X , we denote the conditional distribution \u03c0(\u00b7|x) as \u03c0x:\n\u03c1l(\u03c01, \u03c02) + \u03c1l(\u03c02, \u03c03) \u2265 \u03c1l(\u03c01, \u03c03)\u21d4 (\u03c1l(\u03c01, \u03c02) + \u03c1l(\u03c02, \u03c03))\n2 \u2265 \u03c12l (\u03c01, \u03c03)\u21d4\u222b X E2l (\u03c0x1 , \u03c0x2 )dP(x)+ \u222b X E2l (\u03c0x2 , \u03c0x3 )dP(x)+2 \u221a\u222b X E2l (\u03c0x1 , \u03c0x2 )dP(x) \u222b X E2l (\u03c0x2 , \u03c0x3 )dP(x)\u2265 \u222b X E2l (\u03c0x1 , \u03c0x3 )dP(x)\u21d0 (40)\u222b\nX E2l (\u03c0x1 , \u03c0x2 )dP(x)+ \u222b X E2l (\u03c0x2 , \u03c0x3 )dP(x)+ 2 \u222b X El(\u03c0x1 , \u03c0x2 )El(\u03c0x2 , \u03c0x3 )dP(x)\u2265 \u222b X E2l (\u03c0x1 , \u03c0x3 )dP(x)\u21d4\u222b\nX\n[ (El(\u03c0x1 , \u03c0x2 ) + El(\u03c0x2 , \u03c0x3 ))2 \u2212 E2l (\u03c0x1 , \u03c0x3 ) ]\ufe38 \ufe37\ufe37 \ufe38 \u22650 due to triangle inequality for El dP(x) \u2265 0,\nwhere in line (40) we apply the Cauchy\u2013Bunyakovsky inequality (Bouniakowsky, 1859):\u222b X E2l (\u03c0x1 , \u03c0x2 )dP(x) \u222b X E2l (\u03c0x2 , \u03c0x3 )dP(x) \u2265 (\u222b X El(\u03c0x1 , \u03c0x2 )El(\u03c0x2 , \u03c0x3 )dP(x) )2 .\nNow we are ready to introduce our proposed strongly convex (w.r.t. \u03c1l) regularizer. Let \u03c0 \u2208 \u03a0(X ) and l be a semimetric on Y of negative type. We define\nRl(\u03c0) = \u2212 1\n2 \u222b X \u222b Y \u222b Y l(y, y\u2032)d\u03c0x(y)d\u03c0x(y\u2032)dP(x). (41)\nWe callRl to be conditional interaction energy functional. In the context of solving the OT problem, it was first introduced in (Korotin et al., 2023a) from the perspectives of RKHS and kernel embeddings (Sejdinovic et al., 2013, \u00a73). The authors of (Korotin et al., 2023a) establish the conditions under which the semi-dual (max-min) formulation of weak OT problem regularized with Rl yields the unique solution, i.e., they deal with the strict convexity ofRl. In contrast, our paper exploits strong convexity and provides the additional error analysis (Theorem 3) which helps with tailoring theoretical guarantees to actual practical procedures for arbitrary strongly convex functionals. Below, we prove thatRl is strongly convex w.r.t. \u03c1l and, under additional assumptions on l, is lower semi-continuous. Proposition 3. Rl is 1-strongly convex on \u03a0(P) w.r.t. \u03c1l.\nProof of Proposition 3. Let \u03c01, \u03c02 \u2208 \u03a0(P), 0 \u2264 \u03b1 \u2264 1. Consider the left-hand side of (24):\nRl(\u03b1\u03c01 + (1\u2212 \u03b1)\u03c02) =\n\u22121 2 \u222b X \u222b Y\u00d7Y l(y, y\u2032)d[\u03b1\u03c01 + (1\u2212 \u03b1)\u03c02]x(y)d[\u03b1\u03c01 + (1\u2212 \u03b1)\u03c02]x(y\u2032)dP(x) =\n\u22121 2 \u03b12 \u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 1 (y \u2032)dP(x) +\n\u2212\u03b1(1\u2212 \u03b1) \u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 2 (y \u2032)dP(x) +\n\u22121 2 (1\u2212 \u03b1)2 \u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x2 (y)d\u03c0 x 2 (y\n\u2032)dP(x) =( \u2212 1\n2 \u03b1+\n1 2 \u03b1(1\u2212 \u03b1) )\u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 1 (y \u2032)dP(x) +\n\u2212\u03b1(1\u2212 \u03b1) \u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 2 (y\n\u2032)dP(x) +( \u2212 1\n2 (1\u2212 \u03b1) + 1 2 \u03b1(1\u2212 \u03b1) )\u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x2 (y)d\u03c0 x 2 (y \u2032)dP(x) =\n\u22121 2 \u03b1 \u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 1 (y\n\u2032)dP(x)\ufe38 \ufe37\ufe37 \ufe38 =\u03b1Rl(\u03c01) \u22121 2 (1\u2212 \u03b1)\n\u222b X \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x2 (y)d\u03c0 x 2 (y\n\u2032)dP(x)\ufe38 \ufe37\ufe37 \ufe38 =(1\u2212\u03b1)Rl(\u03c02) +\n\u03b1(1\u2212\u03b1) 2 \u222b X (\u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 1 (y \u2032)+ \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x2 (y)d\u03c0 x 2 (y \u2032)\u22122 \u222b Y\u00d7Y l(y, y\u2032)d\u03c0x1 (y)d\u03c0 x 2 (y \u2032) ) \ufe38 \ufe37\ufe37 \ufe38\n=\u2212El(\u03c0x1 ,\u03c0x2 )\ndP(x) =\n\u03b1Rl(\u03c01) + (1\u2212 \u03b1)Rl(\u03c02)\u2212 1\n2 \u03b1(1\u2212 \u03b1)\u03c12l (\u03c01, \u03c02),\ni.e.,Rl(\u03b1\u03c01+(1\u2212\u03b1)\u03c02)=\u03b1Rl(\u03c01)+(1\u2212\u03b1)Rl(\u03c02)\u2212 \u03b1(1\u2212\u03b1)2 \u03c1 2 l (\u03c01, \u03c02), which finishes the proof.\nProposition 4. Assume that l is continuous (it is the case for all reasonable semimetrics l). ThenRl is lower semi-continuous on \u03a0(P).\nProof of Proposition 4. Consider the functionalWl : X \u00d7 P(Y)\u2192 R \u222a {+\u221e}: Wl(x, \u00b5) = \u2212 \u222b Y\u00d7Y l(y, y\u2032)d\u00b5(y)d\u00b5(y\u2032),\nthen the conditional interaction energy functional could be expressed as follows: Rl(\u03c0) = 1 2 \u222b X Wl(x, \u03c0\nx)dP(x). We are to check thatWl satisfies Condition (A+) in (Backhoff-Veraguas et al., 2019, Definition 2.7). Note thatWl actually does not depend on x \u2208 X .\n\u2022 The lower-semicontinuity of Wl follows from (Santambrogio, 2015, Proposition 7.2) and the equivalence of the weak convergence and the convergence w.r.t. Wasserstein metric on P(Y) where Y is compact, see (Villani, 2008, Theorem 6.8).\n\u2022 Since (y, y\u2032) 7\u2192 \u2212l(y, y\u2032) is a lower-semicontinuous, it achieves its minimum on the compact Y \u00d7 Y which lower-bounds the functionalWl.\n\u2022 The convexity (even 1-strong convexity w.r.t. metric El(\u00b7, \u00b7)) of functional Wl was de facto established in Proposition 3. In particular, given \u00b51, \u00b52 \u2208 P(Y), \u03b1 \u2208 (0, 1), x \u2208 X it holds:\nWl(x, \u03b1\u00b51+(1\u2212\u03b1)\u00b52)=\u03b1Wl(x, \u00b51)+(1\u2212\u03b1)Wl(x, \u00b52)\u2212 \u03b1(1\u2212 \u03b1)\n2 E2l (\u00b51, \u00b52).\nThe application of (Backhoff-Veraguas et al., 2019, Proposition 2.8, Eq. (2.16)) finishes the proof."
+        },
+        {
+            "heading": "D.1 EXPERIMENTS WITH CONDITIONAL INTERACTION ENERGY REGULARIZER",
+            "text": "In the previous Section D, we introduce an example of the strongly convex regularizer. In this section, we present experiments to investigate the impact of strongly convex regularization on our general cost functionalFG. In particular, we conduct experiments on the FMNIST-MNIST dataset transfer problem using the proposed conditional interaction energy regularizer with l(y, y\u2032) = \u2225y\u2212y\u2032\u22252. To empirically estimate the impact of the regularization, we test different coefficients \u03b3 \u2208 [0.001, 0.01, 0.1]. The results are shown in the following Figure D.1 and Table 18.\nIt can be seen that the small amount of regularization (\u03b3 = 0.001) does not affect the results. But high values decrease the accuracy, which is expected because the regularization contradicts the dataset transfer problem. Increasing the value of \u03b3 shifts the solution to be more diverse instead of matching the classes."
+        },
+        {
+            "heading": "E PAIR-GUIDED COST FUNCTIONAL",
+            "text": "In the main part of our manuscript, we introduced and dealt with class-guided cost functional FG. In this section, we demonstrate that our general OT formulation permits another practically-appealing specification. In particular, we consider pair-guided general OT cost functional:\nFS(\u03c0) def = \u222b X\u00d7Y \u2113(y, y\u2217(x))d\u03c0(x, y), (42)\nwhere we are given a paired data set (x1, y\u2217(x1)), . . . , (xN , y\u2217(xN )) for training. Note that samples X1:N = {x1, . . . xN} and y\u2217(X1:N ) = {y\u2217(x1), . . . , y\u2217(xN )} are assumed to follow the source P and target Q distributions respectively. The function \u2113 : X \u00d7Y \u2192 R is an appropriate cost measuring the deviation between samples. In the majority of our experiments we choose \u2113(y, y\u2032) = \u2225y \u2212 y\u2032\u22252 since it seems to be a natural choice for \u2113. Our methodology in tandem with pair-guided functionalFS is directly applicable for the paired image-to-image translation problem. In subsection E.1 we discuss the optimization stuff and come up with algorithm for FS . In subsections E.2 and E.3 we explain the experiment\u2019s setup and briefly discuss baseline methods. In subsection E.4 we demonstrate the results."
+        },
+        {
+            "heading": "E.1 ALGORITHM",
+            "text": "Following our main manuscript, we parameterize the learned plan \u03c0 via stochastic map [x, T (x, z)], x \u223c P, z \u223c S. In practice, we found that substitution T (x, z) with a deterministic map T (x) generally improves the results. This is possibly due to the paired nature of the considered problem. We adapt our proposed Algorithm 3 for deterministic map T (x) and report all metrics and demonstrations exactly for this setup.\nAlgorithm 3: Neural optimal transport with pair-guided cost functional and deterministic map Input :Distributions P,Q accessible by samples; paired data set (x1, y\u2217(x1)), . . .\n. . . , (xN , y \u2217(xN )), where x1:N \u223c P and y\u2217(x1:N ) \u223c Q; mapping network\nT\u03b8 : RP \u2192 RQ; potential network v\u03c9 : RQ \u2192 R; number of inner iterations KT ; Output :Learned OT map T\u03b8 representing (pair-guided) OT plan between distributions P,Q; repeat\nSample batches Y \u223c Q, X \u223c P; Lv \u2190 \u2211 x\u2208X v\u03c9(T\u03b8(x)) |X| \u2212 \u2211 y\u2208Y v\u03c9(y) |Y | ; Update \u03c9 by using \u2202Lv\u2202\u03c9 ; for kT = 1, 2, . . . ,KT do\nSample batch Xd from the paired data set; LT \u2190 \u2211 xd\u2208Xd \u2113(T\u03b8(xd),y \u2217(xd)) |Xd| \u2212 \u2211 xd\u2208XP v\u03c9(T\u03b8(xd)) |Xd| ; Update \u03b8 by using \u2202LT\u2202\u03b8 ;\nuntil not converged;"
+        },
+        {
+            "heading": "E.2 DATASETS",
+            "text": "Comic-faces-v1 9: This dataset contains paired samples which are useful for real-to-comic convertion. Resolution is 512x512, 10000 pairs (total 20k images)\nEdges-to-Shoes: This dataset consists of 50,025 shoe images and their corresponding edges split into train and test subsets.\nCelebAMask-HQ10: This is a large-scale face image dataset that has 30,000 high-resolution face images selected from CelebA-HQ dataset. Each image has segmentation mask of facial attributes corresponding to CelebA. The masks of CelebAMask-HQ were manually-annotated with the size of 512 x 512 images.\n9https://www.kaggle.com/datasets/defileroff/comic-faces-paired-synthetic 10https://github.com/switchablenorms/CelebAMask-HQ"
+        },
+        {
+            "heading": "E.3 SETTINGS",
+            "text": "In our experiments we compared a several methods. As baselines we considered (unsupervised) NOT, and RMSE regression, we use U2Net 11 as the transport map T\u03b8(x). For comparison with neural OT\n11https://github.com/xuebinqin/U-2-Net\n(W1, W2), we use their publicly available code 12. For comparison with Pix2Pix, we use the official implementations with the hyperparameters from the respective method implementation: Pix2Pix 13.\nFor our method we use WGAN-QC discriminator\u2019s ResNet architecture (He et al., 2016) for potential v\u03c9 . The Adam (Kingma & Ba, 2014) optimizer with lr = 10\u22124 for both T\u03b8 and v\u03c9 was applied. The number of inner iterations for T\u03b8 is KT = 10.\nThe batch size is KB = 8, was set for the comic-faces and shoes experiments. The batch size of KB = 32 was used for CelebAMask-HQ. Our method converges in \u2248 60k iterations of v\u03c9 , the same number of updates was used for the other methods as well. We use the default train-test splits for all the datasets. All results are reported on the test set. To evaluate the performance of the models we used the FID metric. The settings for computing FID was equal to the one presented in (5)"
+        },
+        {
+            "heading": "E.4 RESULTS",
+            "text": "The results for the Comic-faces-v1 dataset are presented in Figure 19. The resulting FID scores for this dataset are presented Table 7. In this dataset, we utilized RMSE as a cost function for our method. Notably, the NOT and Regression (RMSE in Figures) models were also trained with this loss function. As evident from the results, our method outperforms the other considered methods.\nFor the Edges-to-shoes dataset, the results are shown in Figure 20 and Table 7. In these experiments, Pix2Pix results are not reported due to incorrect outcomes. Similarly, the NOT method with a classic cost function (W1) yielded uninterpretable results too, highlighting the limitation of classic cost functions in handling paired information. Our method, employing the paired cost functional, demonstrates the ability to extend optimal transport to problems that were previously unsolvable using OT.\n12https://github.com/iamalexkorotin/NeuralOptimalTransport 13https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix\nAdditionally, we tested our method on the CelebAMask-HQ dataset, employing a VGG perceptual loss as a cost function, please see Figure 21. Furthermore, we conducted tests on a Comic-faces dataset with a resolution of 512\u00d7 512, see Figure 22. The presented results indicate that our method is versatile, capable of being applied further to face parsing, generation and editing tasks."
+        }
+    ],
+    "year": 2023
+}

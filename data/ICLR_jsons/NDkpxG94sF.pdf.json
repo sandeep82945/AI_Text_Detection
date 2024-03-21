@@ -1,0 +1,684 @@
+{
+    "abstractText": "We introduce a highly performant 3D object detector for point clouds using the DETR framework. The prior attempts all end up with suboptimal results because they fail to learn accurate inductive biases from the limited scale of training data. In particular, the queries often attend to points that are far away from the target objects, violating the locality principle in object detection. To address the limitation, we introduce a novel 3D Vertex Relative Position Encoding (3DV-RPE) method which computes position encoding for each point based on its relative position to the 3D boxes predicted by the queries in each decoder layer, thus providing clear information to guide the model to focus on points near the objects, in accordance with the principle of locality. Furthermore, we have systematically refined our pipeline, including data normalization, to better align with the task requirements. Our approach demonstrates remarkable performance on the demanding ScanNetV2 benchmark, showcasing substantial enhancements over the prior state-of-the-art CAGroup3D. Specifically, we achieve an increase in AP25 from 75.1% to 77.8% and in AP50 from 61.3% to 66.0%, all while achieving a nearly 2\u00d7 speed improvement during inference.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "V-DETR: DETR"
+        }
+    ],
+    "id": "SP:faf79d1b6251cf93ee02f970386b20b493ab6da3",
+    "references": [
+        {
+            "authors": [
+                "Amir Bar",
+                "Xin Wang",
+                "Vadim Kantorov",
+                "Colorado J Reed",
+                "Roei Herzig",
+                "Gal Chechik",
+                "Anna Rohrbach",
+                "Trevor Darrell",
+                "Amir Globerson"
+            ],
+            "title": "Detreg: Unsupervised pretraining with region priors for object detection",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nicolas Carion",
+                "Francisco Massa",
+                "Gabriel Synnaeve",
+                "Nicolas Usunier",
+                "Alexander Kirillov",
+                "Sergey Zagoruyko"
+            ],
+            "title": "End-to-end object detection with transformers",
+            "venue": "In ECCV,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jintai Chen",
+                "Biwen Lei",
+                "Qingyu Song",
+                "Haochao Ying",
+                "Danny Z. Chen",
+                "Jian Wu"
+            ],
+            "title": "A hierarchical graph network for 3d object detection on point clouds",
+            "venue": "In CVPR,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qiang Chen",
+                "Xiaokang Chen",
+                "Gang Zeng",
+                "Jingdong Wang"
+            ],
+            "title": "Group detr: Fast training convergence with decoupled one-to-many label assignment",
+            "venue": "arXiv preprint arXiv:2207.13085,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bowen Cheng",
+                "Lu Sheng",
+                "Shaoshuai Shi",
+                "Ming Yang",
+                "Dong Xu"
+            ],
+            "title": "Back-tracing representative points for voting-based 3d object detection in point clouds",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Angela Dai",
+                "Angel X Chang",
+                "Manolis Savva",
+                "Maciej Halber",
+                "Thomas Funkhouser",
+                "Matthias Nie\u00dfner"
+            ],
+            "title": "Scannet: Richly-annotated 3d reconstructions of indoor scenes",
+            "venue": "In CVPR,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Xiyang Dai",
+                "Yinpeng Chen",
+                "Jianwei Yang",
+                "Pengchuan Zhang",
+                "Lu Yuan",
+                "Lei Zhang"
+            ],
+            "title": "Dynamic detr: End-to-end object detection with dynamic attention",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Lunhao Duan",
+                "Shanshan Zhao",
+                "Nan Xue",
+                "Mingming Gong",
+                "Gui-Song Xia",
+                "Dacheng Tao"
+            ],
+            "title": "Condaformer: Disassembled transformer with local structure enhancement for 3d point cloud understanding",
+            "venue": "In Thirty-seventh Conference on Neural Information Processing Systems,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Francis Engelmann",
+                "Martin Bokeloh",
+                "Alireza Fathi",
+                "Bastian Leibe",
+                "Matthias Nie\u00dfner"
+            ],
+            "title": "3d-mpa: Multi-proposal aggregation for 3d semantic instance segmentation",
+            "venue": "In CVPR,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Guofan Fan",
+                "Zekun Qi",
+                "Wenkai Shi",
+                "Kaisheng Ma"
+            ],
+            "title": "Point-gcc: Universal self-supervised 3d scene pre-training via geometry-color contrast",
+            "venue": "arXiv preprint arXiv:2305.19623,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Lue Fan",
+                "Yuxue Yang",
+                "Feng Wang",
+                "Naiyan Wang",
+                "Zhaoxiang Zhang"
+            ],
+            "title": "Super sparse 3d object detection",
+            "venue": "arXiv preprint arXiv:2301.02562,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Peng Gao",
+                "Minghang Zheng",
+                "Xiaogang Wang",
+                "Jifeng Dai",
+                "Hongsheng Li"
+            ],
+            "title": "Fast convergence of detr with spatially modulated co-attention",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ross Girshick"
+            ],
+            "title": "Fast r-cnn",
+            "venue": "In ICCV, pp. 1440\u20131448,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "JunYoung Gwak",
+                "Christopher Choy",
+                "Silvio Savarese"
+            ],
+            "title": "Generative sparse detection networks for 3d single-shot object detection",
+            "venue": "In ECCV,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ding Jia",
+                "Yuhui Yuan",
+                "Haodi He",
+                "Xiaopei Wu",
+                "Haojun Yu",
+                "Weihong Lin",
+                "Lei Sun",
+                "Chao Zhang",
+                "Han Hu"
+            ],
+            "title": "Detrs with hybrid matching",
+            "venue": "arXiv preprint arXiv:2207.13080,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xin Lai",
+                "Jianhui Liu",
+                "Li Jiang",
+                "Liwei Wang",
+                "Hengshuang Zhao",
+                "Shu Liu",
+                "Xiaojuan Qi",
+                "Jiaya Jia"
+            ],
+            "title": "Stratified transformer for 3d point cloud segmentation",
+            "venue": "In arXiv preprint arXiv:2203.14508,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alex H Lang",
+                "Sourabh Vora",
+                "Holger Caesar",
+                "Lubing Zhou",
+                "Jiong Yang",
+                "Oscar Beijbom"
+            ],
+            "title": "Pointpillars: Fast encoders for object detection from point clouds",
+            "venue": "In CVPR,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Feng Li",
+                "Hao Zhang",
+                "Shilong Liu",
+                "Jian Guo",
+                "Lionel M Ni",
+                "Lei Zhang"
+            ],
+            "title": "Dn-detr: Accelerate detr training by introducing query denoising",
+            "venue": "arXiv preprint arXiv:2203.01305,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zechuan Li",
+                "Hongshan Yu",
+                "Zhengeng Yang",
+                "Tongjia Chen",
+                "Naveed Akhtar"
+            ],
+            "title": "Ashapeformer: Semantics-guided object-level active shape encoding for 3d object detection via transformers",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Priya Goyal",
+                "Ross Girshick",
+                "Kaiming He",
+                "Piotr Doll\u00e1r"
+            ],
+            "title": "Focal loss for dense object detection",
+            "venue": "In ICCV,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Shilong Liu",
+                "Feng Li",
+                "Hao Zhang",
+                "Xiao Yang",
+                "Xianbiao Qi",
+                "Hang Su",
+                "Jun Zhu",
+                "Lei Zhang"
+            ],
+            "title": "Dab-detr: Dynamic anchor boxes are better queries for detr",
+            "venue": "arXiv preprint arXiv:2201.12329,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wei Liu",
+                "Dragomir Anguelov",
+                "Dumitru Erhan",
+                "Christian Szegedy",
+                "Scott Reed",
+                "Cheng-Yang Fu",
+                "Alexander C Berg"
+            ],
+            "title": "Ssd: Single shot multibox detector",
+            "venue": "In ECCV,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Ze Liu",
+                "Yutong Lin",
+                "Yue Cao",
+                "Han Hu",
+                "Yixuan Wei",
+                "Zheng Zhang",
+                "Stephen Lin",
+                "Baining Guo"
+            ],
+            "title": "Swin transformer: Hierarchical vision transformer using shifted windows",
+            "venue": "In CVPR,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ze Liu",
+                "Zheng Zhang",
+                "Yue Cao",
+                "Han Hu",
+                "Xin Tong"
+            ],
+            "title": "Group-free 3d object detection via transformers",
+            "venue": "In CVPR,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter"
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Depu Meng",
+                "Xiaokang Chen",
+                "Zejia Fan",
+                "Gang Zeng",
+                "Houqiang Li",
+                "Yuhui Yuan",
+                "Lei Sun",
+                "Jingdong Wang"
+            ],
+            "title": "Conditional detr for fast training convergence",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ishan Misra",
+                "Rohit Girdhar",
+                "Armand Joulin"
+            ],
+            "title": "An End-to-End Transformer Model for 3D Object Detection",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alexander Neubeck",
+                "Luc Van Gool"
+            ],
+            "title": "Efficient non-maximum suppression",
+            "venue": "In ICPR,",
+            "year": 2006
+        },
+        {
+            "authors": [
+                "Charles R Qi",
+                "Or Litany",
+                "Kaiming He",
+                "Leonidas J Guibas"
+            ],
+            "title": "Deep hough voting for 3d object detection in point clouds",
+            "venue": "In ICCV,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Shaoqing Ren",
+                "Kaiming He",
+                "Ross Girshick",
+                "Jian Sun"
+            ],
+            "title": "Faster r-cnn: Towards real-time object detection with region proposal networks",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Danila Rukhovich",
+                "Anna Vorontsova",
+                "Anton Konushin"
+            ],
+            "title": "Fcaf3d: fully convolutional anchor-free 3d object detection",
+            "venue": "In ECCV,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Danila Rukhovich",
+                "Anna Vorontsova",
+                "Anton Konushin"
+            ],
+            "title": "TR3D: towards real-time indoor 3d object detection",
+            "venue": "CoRR, abs/2302.02858,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shaoshuai Shi",
+                "Xiaogang Wang",
+                "Hongsheng Li"
+            ],
+            "title": "Pointrcnn: 3d object proposal generation and detection from point cloud",
+            "venue": "In CVPR,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Shuran Song",
+                "Samuel P Lichtenberg",
+                "Jianxiong Xiao"
+            ],
+            "title": "Sun rgb-d: A rgb-d scene understanding benchmark suite",
+            "venue": "In CVPR, pp",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "In NeurIPS,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Haiyang Wang",
+                "Lihe Ding",
+                "Shaocong Dong",
+                "Shaoshuai Shi",
+                "Aoxue Li",
+                "Jianan Li",
+                "Zhenguo Li",
+                "Liwei Wang"
+            ],
+            "title": "Cagroup3d: Class-aware grouping for 3d object detection on point clouds",
+            "venue": "arXiv preprint arXiv:2210.04264,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Haiyang Wang",
+                "Shaoshuai Shi",
+                "Ze Yang",
+                "Rongyao Fang",
+                "Qi Qian",
+                "Hongsheng Li",
+                "Bernt Schiele",
+                "Liwei Wang"
+            ],
+            "title": "Rbgnet: Ray-based grouping for 3d object detection",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Peng-Shuai Wang"
+            ],
+            "title": "Octformer: Octree-based transformers for 3d point clouds",
+            "venue": "arXiv preprint arXiv:2305.03045,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yingming Wang",
+                "Xiangyu Zhang",
+                "Tong Yang",
+                "Jian Sun"
+            ],
+            "title": "Anchor detr: Query design for transformer-based",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhenyu Wang",
+                "Yali Li",
+                "Xi Chen",
+                "Hengshuang Zhao",
+                "Shengjin Wang"
+            ],
+            "title": "Uni3detr: Unified 3d detection transformer",
+            "venue": "arXiv preprint arXiv:2310.05699,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Qian Xie",
+                "Yu-Kun Lai",
+                "Jing Wu",
+                "Zhoutao Wang",
+                "Yiming Zhang",
+                "Kai Xu",
+                "Jun Wang"
+            ],
+            "title": "Mlcvnet: Multi-level context votenet for 3d object detection",
+            "venue": "In CVPR,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Qian Xie",
+                "Yu-Kun Lai",
+                "Jing Wu",
+                "Zhoutao Wang",
+                "Dening Lu",
+                "Mingqiang Wei",
+                "Jun Wang"
+            ],
+            "title": "Venet: Voting enhancement network for 3d object detection",
+            "venue": "In ICCV,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yu-Qi Yang",
+                "Yu-Xiao Guo",
+                "Jian-Yu Xiong",
+                "Yang Liu",
+                "Hao Pan",
+                "Peng-Shuai Wang",
+                "Xin Tong",
+                "Baining Guo"
+            ],
+            "title": "Swin3d: A pretrained transformer backbone for 3d indoor scene understanding",
+            "venue": "arXiv preprint arXiv:2304.06906,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zetong Yang",
+                "Li Jiang",
+                "Yanan Sun",
+                "Bernt Schiele",
+                "Jiaya Jia"
+            ],
+            "title": "A unified query-based paradigm for point cloud understanding",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianwei Yin",
+                "Xingyi Zhou",
+                "Philipp Krahenbuhl"
+            ],
+            "title": "Center-based 3d object detection and tracking",
+            "venue": "In CVPR,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hao Zhang",
+                "Feng Li",
+                "Shilong Liu",
+                "Lei Zhang",
+                "Hang Su",
+                "Jun Zhu",
+                "Lionel M Ni",
+                "Heung-Yeung Shum. Dino"
+            ],
+            "title": "Detr with improved denoising anchor boxes for end-to-end object detection",
+            "venue": "arXiv preprint arXiv:2203.03605,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zaiwei Zhang",
+                "Bo Sun",
+                "Haitao Yang",
+                "Qixing Huang"
+            ],
+            "title": "H3dnet: 3d object detection using hybrid geometric primitives",
+            "venue": "In ECCV,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yu Zheng",
+                "Yueqi Duan",
+                "Jiwen Lu",
+                "Jie Zhou",
+                "Qi Tian"
+            ],
+            "title": "Hyperdet3d: Learning a scene-conditioned 3d object detector",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yin Zhou",
+                "Oncel Tuzel"
+            ],
+            "title": "Voxelnet: End-to-end learning for point cloud based 3d object detection",
+            "venue": "In CVPR,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Xizhou Zhu",
+                "Weijie Su",
+                "Lewei Lu",
+                "Bin Li",
+                "Xiaogang Wang",
+                "Jifeng Dai"
+            ],
+            "title": "Deformable detr: Deformable transformers for end-to-end object detection",
+            "venue": "arXiv preprint arXiv:2010.04159,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "DETR Carion"
+            ],
+            "title": "2020), using approximately 1% of the training data (1, 200 images), following your suggestion. We train DETR for the same number of iterations (2, 217, 881 iterations) as the original DETR, which was trained on the full dataset for \u223c300 epochs, while maintaining a batch size of 16. First, we observe that the mAP of the validation",
+            "year": 2020
+        }
+    ],
+    "sections": [
+        {
+            "text": "1 INTRODUCTION\n3D object detection from point clouds is a challenging task that involves identifying and localizing the objects of interest present in a 3D space. This space is represented using a collection of data points that have been gleaned from the surfaces of all accessible objects and background in the scene. The task has significant implications for various industries, including augmented reality, gaming, robotics, and autonomous driving.\nTransformers have made remarkable advancement in 2D object detection, serving as both powerful backbones (Vaswani et al., 2017; Liu et al., 2021a) and detection architectures (Carion et al., 2020). However, their performance in 3D detection (Misra et al., 2021) is significantly worse than the state-of-the-art methods. Our in-depth evaluation of 3DETR (Misra et al., 2021) revealed\nthat the queries often attend to points that are far away from the target objects (Figure 1 (b) shows three typical visualizations), which violates the principle of locality in object detection. The principle of locality dictates that object detection should only consider subregions of data that contain the object of interest and not the entire space. Besides, the behavior is also in contrast with the\nsuccess that Transformers have achieved in 2D detection, where they have been able to effectively learn the inductive biases, including locality. We attribute the discrepancy to the limited scale of training data available for 3D object detection, making it difficult for Transformers to acquire the correct inductive biases.\nIn this paper, we present a simple yet highly performant method for 3D object detection using the transformer architecture DETR (Carion et al., 2020). To improve locality in the cross-attention mechanism, we introduce a novel 3D Vertex Relative Position Encoding (3DV-RPE) method. It computes a position encoding for each point based on its relative offsets to the vertices of the predicted 3D boxes associated with the queries, providing clear positional information such as whether each point is inside the boxes. This information can be utilized by the model to guide cross-attention to focus on points inside the box, in accordance with the principle of locality. The prediction of these boxes is consistently refined as the decoder layers progress, resulting in increasingly accurate position encoding.\nTo mitigate the impact of object rotation, we propose to compute 3DV-RPE in a canonical object space where all objects are consistently rotated. Particularly, for each query, we predict a rotated 3D box and compute the relative offsets between the 3D points rotated in the same way, and the eight vertices of the box. This results in consistent position encoding for different instances of the same object regardless of their positions or orientations in the space, greatly facilitating the learning of the locality property in cross-attention even from limited training data. Figure 1 (c) visualizes the attention weights obtained by our method. We can see that the query for detecting the chair nicely attends to the points on the chair. Our experiment demonstrates that 3DV-RPE boosts the performance.\nWe also systematically enhance our pipeline from various aspects such as data normalization and network architectures based on our understanding of the task. For example, we propose objectbased normalization, instead of the scene-based one used by the DETR series, to parameterize the 3D boxes. This is because the former is more stable for point clouds which differs from 2D detection where the sizes of the same object in images can be very different depending on the camera parameters, impelling them to use image size to coarsely normalize the boxes. Besides, we also evaluate and adapt some of the recent advancement in 2D DETR.\nWe conduct thorough experiments to empirically show that our simple DETR-based approach significantly outperforms the previous state-of-the-art fully convolutional 3D detection methods, which helps to accelerate the convergence of the detection head architecture design for 2D and 3D detection tasks. We report the results of our approach on two challenging indoor 3D object detection benchmarks including ScanNetV2 and SUN RGB-D. Overall, compared to the DETR baseline (Misra et al., 2021), our method with 3DV-RPE improves AP25/AP50 from 65.0%/47.0% to 77.8%/66.0%, respectively, and reduces the training epochs by 50%. Particularly, on ScanNetV2, our approach outperforms the very recent state-of-the-art CAGroup3D (Wang et al., 2022a) by +2.7%/+4.7% measured by AP25/AP50, respectively."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": "DETR-based Object Detection. DETR (Carion et al., 2020) is a groundbreaking work that applies transformers (Vaswani et al., 2017) to 2D object detection, eliminating many hand-designed components such as non-maximum suppression (Neubeck & Van Gool, 2006) or anchor boxes (Girshick, 2015; Ren et al., 2015; Lin et al., 2017; Liu et al., 2016). Many extensions of DETR have been proposed (Meng et al., 2021; Gao et al., 2021; Dai et al., 2021; Wang et al., 2021; Jia et al., 2022; Zhang et al., 2022), such as Deformable-DETR (Zhu et al., 2020), which uses multi-scale deformable attention to focus on key sampling points and improve performance on small objects. DAB-DETR (Liu et al., 2022) introduces a novel query formulation to enhance detection accuracy. Some recent works (Li et al., 2022; Zhang et al., 2022; Jia et al., 2022; Chen et al., 2022) achieve state-of-theart results on object detection by using query denoising or one-to-many matching schemes, which addressed the training inefficiency of one-to-one matching. H-DETR (Jia et al., 2022) shows that one-to-many matching can also speed up convergence on 3D object detection tasks. Following the DETR-based approach, GroupFree (Liu et al., 2021b) and 3DETR (Misra et al., 2021) built strong 3D object detection systems for indoor scenes. However, they are still inferior to other methods such as CAGroup3D (Wang et al., 2022a). In this work, we propose several critical modifications\nto improve the DETR-based methods and achieve new records on two indoor 3D object detection tasks.\n3D Indoor Object Detection. We revisit the existing indoor 3D object detection methods that directly use raw point clouds to detect 3D boxes. We categorize them into three types based on their strategies: (i) Voting-based methods, such as VoteNet (Qi et al., 2019), MLCVNet (Xie et al., 2020) and H3DNet (Zhang et al., 2020), use a voting mechanism to shift the surface points toward the object centers and group them into object candidates. (ii) Expansion-based methods, such as GSDN(Gwak et al., 2020), FCAF3D(Rukhovich et al., 2022), and CAGroup3D(Wang et al., 2022a), which generate virtual center features from surface features using a generative sparse decoder and predict high-quality 3D region proposals. (iii) DETR-based methods, unlike these two types that require modifying the original geometry structure of the input 3D point cloud, we adopt the DETRbased approach (Liu et al., 2021b; Misra et al., 2021) for its simplicity and generalization ability. Our experiments show that DETR has great potential for indoor 3D object detection. We show the differences between above-mentioned methods in Figure 2.\n3D Outdoor Object Detection. We briefly review some methods for outdoor 3D object detection (Yan et al., 2018; Zhou & Tuzel, 2018; Lang et al., 2019; Yin et al., 2021), which mostly transform 3D points into a bird-eye-view plane and apply 2D object detection techniques. For example, VoxelNet (Zhou & Tuzel, 2018) is a single-stage and end-to-end network that combines feature extraction and bounding box prediction. PointPillars (Lang et al., 2019) uses a 2D convolution neural network to process the flattened pillar features from a Bird\u2019s Eye View (BEV). CenterPoint (Yin et al., 2021) first detects centers of objects using a keypoint detector and regresses to other attributes, then refines them using additional point features on the object. However, these methods still suffer from center feature missing issues, which FSD (Fan et al., 2023b) tries to address. We plan to extend our approach to outdoor 3D object detection in the future, which could unify indoor and outdoor 3D detection tasks."
+        },
+        {
+            "heading": "3 OUR APPROACH",
+            "text": ""
+        },
+        {
+            "heading": "3.1 BASELINE SETUP",
+            "text": "Pipeline. We build our V-DETR baseline following the previous DETR-based 3D object detection methods (Misra et al., 2021; Liu et al., 2021b). The detailed steps are as follows: given a 3D point cloud I\u2208RN\u00d76 sampled from a 3D scan of an indoor scene, where the RGB values are in the first 3 dimensions and the position XYZ values are in the last 3 dimensions. We first sample about \u223c40K points from the original point cloud that typically has around \u223c200K points. Second, we use a feature encoder to process the raw sampled points and compute the point features F\u2208RM\u00d7C. Third, we construct a set of 3D object queries Q\u2208RK\u00d7C send them into a plain Transformer decoder to predict a set of 3D bounding boxes B\u2208RK\u00d7D. We set K = 1024 by default. Figure 3 shows the overall pipeline. We present more details on the encoder architecture design, the 3D object query construction, the Hungarian matching, and loss function formulations as follows.\nEncoder architecture. We choose two different kinds of encoder architecture for experiments including: (i) a PointNet followed by a shallow Transformer encoder adopted by Misra et al. (2021)\nor (ii) a sparse 3D modification of ResNet34 followed by an FPN neck adopted by Rukhovich et al. (2022), where we replace the expensive generative transposed convolution with a simple transposed convolution within the FPN neck.\nof two linear layers. We build the 3D object query by adding the 3D position query to the 3D content query.\nHungarian matching and loss function. We choose the weighted combination of six terms including the bounding box localization regression loss, angular classification and regression loss, and semantic classification loss as the final matching cost functions and training loss functions. We illustrate the mathematical formulations as follows:\nLDETR = \u2212\u03bb1GIoU(b\u0302,b) + \u03bb2Lcenter(c\u0302, c) + \u03bb3Lsize(s\u0302, s) \u2212\u03bb4FL(p\u0302[l]) + \u03bb5Lhuber(a\u0302r,ar) + \u03bb6CE(a\u0302c,ac),\nwhere we use b\u0302, c\u0302, s\u0302, p\u0302, a\u0302 (or b, c, s, l, a) to represent the predicted (or ground-truth) bounding box, box center, box size, classification score, and rotation angle respectively, e.g., l represents the ground-truth semantic category of b. CE represents angle classification cross entropy loss and Lhuber represents the residual continuous angle regression loss. FL represents semantic classification focal loss. We ablate the influence of hyper-parameter value choices in the ablation experiments.\nObject-normalized box parameterization. We propose an object-normalized box reparameterization scheme that differs from the original DETR (Carion et al., 2020), which normalizes the box predictions by the scene scales. We account for one key discrepancy between object size variation in 2D images and 3D point clouds, e.g., a chair\u2019s 2D box size may change depending on its distance to the cameras, but its 3D box size should remain consistent as the point cloud captures the real 3D world. In the implementation, we simply reparameterize the prediction target of width and height from the original groud-truth bh and bw to bh/b\u0302l\u22121h and bw/b\u0302 l\u22121 w , where b\u0302 l\u22121 h and b\u0302 l\u22121 w represent the coarsely predicted box height and width."
+        },
+        {
+            "heading": "3.2 3DV-RPE IN CANONICAL OBJECT SPACE",
+            "text": "Position Encoding (PE) is crucial for enhancing the ability of transformers to comprehend the spatial context of the tokens. The appropriate PE strategy depends on tasks. For 3D object detection, where geometry features are the primary focus, it is essential for PE to encode rich semantic positions for the points, whether they are on/off the 3D shapes of interest.\nTo that end, we present 3D Vertex Relative Position Encoding (3DV-RPE), a novel solution specifically tailored for 3D object detection within the DETR framework. We modify the global plain Transformer decoder multi-head cross-attention maps as follows:\nA\u0302 = Softmax(QKT + R), (1) where Q and K represent the sparse query points and dense key-value points, respectively. R represents the position encoding computed by our 3DV-RPE that carries accurate position information.\n3DV-RPE. Our key insight is that, encoding a point by its relative position to the target object, which is coarsely represented by a box, is sufficient for 3D object detection. It is computed as follows:\nPi = MLPi(F(\u2206Pi)), (2)\nwhere \u2206Pi \u2208 RK\u00d7N\u00d73 denotes the offsets between the N points and the i-th vertex of the K boxes and Pi \u2208 RK\u00d7N\u00d7h represents the relative position bias term. h is the number of heads. F(\u00b7) is a non-linear function. We will evaluate several alternatives for F(\u00b7) in the experiments. MLPi represents an MLP based transformation that first projects the features to a higher dimension space, and then to the output features of dimension h. We obtain the final relative position bias term by adding the bias term of the eight vertices, respectively:\nR = 8\u2211 i=1 Pi, (3)\nwhere R, encodes the relations between the 3D boxes and the points. In the subsequent section, we will introduce how we compute \u2206Pi with the aid of the boxes predicted at current layer.\nCanonical Object Spaces. It is worth noting that the direction of the offsets are dependent on the definition of the world coordinate system and the object orientation which complicates the learning of semantic position encoding. To address the limitation, we propose to transform it to a object coordinate system defined by the rotated bounding box. As illustrated in Figure 4, an offset vector in the world coordinate system can be transformed to the object coordinate system (x\u03b8, y\u03b8) following:[\n\u2206x\u03b8 \u2206y\u03b8 \u2206z\u03b8\n] = [ cos \u03b8 \u2212 sin \u03b8 0 sin \u03b8 cos \u03b8 0 0 0 1 ]T [ \u2206x \u2206y \u2206z ] = RT\u03b8 \u2206p, (4)\nwhere \u2206p is an element of \u2206Pi. We use the other transformations in Equation 2 and Equation 3 to get the final normalized relative position bias item that models the rotated 3D bounding box position information. We perform 3DV-RPE operations for different Transformer decoder layers by default.We have observed that the canonical coordinate transformation bears resemblance to our earlier examination of Point-RCNN (Shi et al., 2019). In both instances, the bounding box undergoes a transformation into a canonical object space. However, a significant difference lies in the objectives of the canonical operation. In Point-RCNN, the objective is to achieve precise refine-\nment by transforming the points contained within the 3D bounding box proposals. Conversely, our primary focus is on transforming the offset vectors to align with the object coordinate system.\nEfficient implementation. A naive implementation has high GPU memory consumption due to the large number of combinations between the object queries (each object query predicts a 3D bounding box) and the key-value points (output by the encoder), i.e. K\u00d7N=1, 024\u00d7 4, 096, which makes it hard to train and deploy.\nTo solve this challenge, we use a smaller pre-defined 3DV-RPE table of shape: T \u2208 R10\u00d710\u00d710, which represents a discretized set of possible \u2206Pi that we interpolate into. We apply the non-linear projection F on this 3DV-RPE table and do volumetric (5-D) grid sample on the transformed 3DVRPE table as follows:\nPi = grid sample(MLPi(F(T)), \u2206Pi). (5)"
+        },
+        {
+            "heading": "3.3 DETR WITH 3DV-RPE",
+            "text": "Framework. We extend the original plain Transformer decoder, which consists of a stack of decoder layers and was designed for 2D object detection, to detect 3D bounding boxes from the irregular 3D points. Our approach has two steps: (i) as the first decoder layer has no access to coarse 3D bounding boxes, we employ a light-weight FFN to predict the initial 3D bounding boxes and feed the top confident ones to the first Transformer decoder layer (e.g., {\u03b80, x0, y0, z0, w0, l0, h0}); and\n(ii) we update the bounding box predictions with the output of each Transformer decoder layer and use them to compute the modulation term in the multi-head cross-attention.\n4 EXPERIMENT\n4.1 DATASETS AND METRICS\nDatasets. We evaluate our approach on two challenging 3D indoor object detection benchmarks including:\nScanNetV2 (Dai et al., 2017): ScanNetV2 consists of 3D meshes recovered from RGB-D videos captured in various indoor scenes. It has about 12K training meshes and 312 validation meshes, each annotated with semantic and instance segmentation masks for around 18 classes of objects. We follow Qi et al. (2019) to extract the point clouds from the meshes.\nSUN RGB-D (Song et al., 2015): SUN RGB-D is a single-view RGB-D image dataset. It has about 5K images for both training and validation sets. Each image is annotated with oriented 3D bounding boxes for 37 classes of objects. We follow VoteNet (Qi et al., 2019) to convert the RGB-D image to the point clouds using the camera parameters and evaluate our approach on the 10 most common classes of objects.\nMetrics. We report the standard mean Average Precision (mAP) under different IoU thresholds, AP25 for 0.25 IoU threshold and AP50 for 0.5 IoU threshold."
+        },
+        {
+            "heading": "4.2 IMPLEMENTATION DETAILS",
+            "text": "Training. We use the AdamW optimizer (Loshchilov & Hutter, 2019) with the base learning rate 7e-4, the batch size 8, and the weight decay 0.1. The learning rate is warmed up for 9 epochs, then is dropped to 1e-6 using the cosine schedule during the entire training process. We use gradient clipping to stabilize the training. We train for 360 epochs on ScanNetV2 and 240 epochs on SUN RGB-D in all experiments except for the system-level comparisons, where we train for 540 epochs on ScanNetV2. We use the standard data augmentations including random cropping (at least 30K points), random sampling (100K points), random flipping (p=0.5), random rotation along the z-axis (-5\u25e6, 5\u25e6), random translation (-0.4, 0.4), random scaling (0.6, 1.4). We also use the one-to-many\nmatching (Jia et al., 2022) to speed up the convergence speed with more rich and informative positive samples.\nInference. We process the entire point clouds of each scene and generate the bounding box proposals. We use 3D NMS to suppress the duplicated proposals in the one-to-many matching setting, which is not needed in the one-to-one matching setting. We also use test-time augmentation, i.e., flipping, by default unless specified otherwise."
+        },
+        {
+            "heading": "4.3 COMPARISONS WITH PREVIOUS SYSTEMS",
+            "text": "In Table 1, we compare our method with the state-of-the-art methods from previous works at the system level. These methods use different techniques, so we cannot compare them in a controlled way. According to the results, we show that our method performs the best either measured by the highest performance or the average results under multiple trials. For example, on ScanNetV2 val set, our method achieves AP25=77.8% and AP50=66.0%, which surpasses the latest state-of-theart SWIN3D + CAGroup3D (Yang et al., 2023) that reports AP25=76.4% and AP50=63.2% while SWIN3D requires additional pertaining. Notably, on ScanNetV2, we observe more significant gains on AP50 (+2.8%) that requires more accurate localization, i.e., under a higher IoU threshold. We also observe consistent gains on both AP25 and AP50 on SUN RGB-D."
+        },
+        {
+            "heading": "4.4 3DV-RPE ABLATION EXPERIMENTS",
+            "text": "We conduct all the following ablation experiments on ScanNetV2 except for the ablation experiments on the coordinate system, where we report the results on SUN RGB-D.\nComparison with 3D box mask. Table 6 compares our 3DV-RPE with a 3D box mask method, which sets the relative position bias term to \u2212\u221e for positions outside the 3D bounding box and 0 otherwise. The first and fourth rows essentially display the results of our baseline settings, which have been augmented with various additional enhancements introduced in the section 3.1. The results show that (i) the 3D box mask method achieves strong results on AP25, and (ii) our 3DVRPE significantly improves over the 3D box mask method on AP50. We speculate that our 3DV-RPE performs better because the 3D box mask method suffers from error accumulation from the previous decoder layers and cannot be optimized end-to-end. We also report the results of combining the 3D box mask and 3DV-RPE, which performs better than the 3D box mask scheme but worse than our 3DV-RPE. This verifies that our 3DV-RPE can learn to (i) exploit more accurate geometric structure information within the 3D bounding box and (ii) benefit from capturing useful long-range context information outside the box. Moreover, we report the results with longer training epochs and observe that the gap between the 3D box mask and 3DV-RPE remains, thus further demonstrating the advantages of our approach.\nNon-linear transform. Table 2 shows the effect of different non-linear transform functions. The results show that the signed log function performs the best. Figure 7 illustrates the curve of the\nsigned log function and shows how it magnifies small changes in smaller ranges. Therefore, we choose the signed log function by default.\n-5 -4 -3 -2 -1 0 1 2 3 4 5 x\n1\n0\n1\nNo n-\nlin ea\nr(x )\nCoordinate system on SUN RGB-D. We evaluate the effect of the coordinate system on calculating the relative positions in our 3DV-RPE on SUN RGB-D, which requires predicting the rotation angle along the z-axis. Table 4 shows the results. We find that transforming the relative offsets from the world coordinate system to the object coordinate system significantly improves the performance, e.g., AP25 and AP50 increase by +2.2% and 4.2%, respectively.\nEncoder choice. Table 5 compares the results of using different encoder architectures. We find that using a sparse 3D version of ResNet34 with an FPN neck achieves the best results. Therefore, we use ResNet34 + FPN as our default encoder.\nObject-normalized box parameterization. In Table 7, we show the effect of using objectnormalized box parameterization. We find using the object-normalized scheme significantly boosts the AP50 from 61.1 to 65.0.\nTable 8: Effect of voxel expansion.\nmethod voxel expansion AP25 AP50\nFCAF3D % 67.5 52.4\n! 70.5 54.8\nOurs % 76.7 65.0\n! 75.5 62.0\nVoxel expansion. Table 8 evaluates the effect of using voxel expansion in the FPN neck when the encoder is ResNet34 + FPN. We also compare our results with the recent FCAF3D method. The results show that (i) voxel expansion is crucial for FCAF3D, which relies on building virtual center features; and (ii) voxel expansion degrades the performance when using DETR, which might lose the original accurate 3D surface information. Therefore, we demonstrate an important advantage of using DETR-based approaches, i.e., they do not require complicated voxel expansion operations.\nQualitative comparisons. We show some examples of V-DETR detection results on ScanNetV2 in Figure 8 and on SUN RGB-D in Figure 9 in the supplementary material, where the scenes are diverse and challenging with clutter, partiality, scanning artifacts, etc. Our V-DETR performs well despite these challenges.\nMore ablation experiments. We provide more ablation studies on the effects of using different shapes for the pre-defined 3DV-RPE table, one-to-many matching, the number of points in training and testing, and other factors in the Appendix."
+        },
+        {
+            "heading": "5 CONCLUSION",
+            "text": "In this work, we have shown how to make DETR-based approaches competitive for indoor 3D object detection tasks. The key contribution is an effective 3D vertex relative position encoding (3DV-RPE) scheme that can model the accurate position information in the irregular sparse 3D point cloud directly. We demonstrate the advantages of our approach by achieving strong results on two challenging 3D detection benchmarks. We also plan to extend our approach to outdoor 3D object detection tasks, which differ from most existing methods that rely on modern 2D DETRbased detectors by converting 3D points to a 2D bird-eye-view plane. We hope our approach can show the potential for unifying the object detection architecture design for indoor and outdoor 3D detection tasks."
+        },
+        {
+            "heading": "A MORE ABLATION EXPERIMENTS AND ANALYSIS",
+            "text": "Table 9: Effect of light-weight FFN.\nLight-weight FFN AP25 AP50 % 76.6 62.8 \u2713 76.7 65.0\nTable 10: Effect of using more points.\n# of points AP25 AP50 20K 73.9 61.6 40K 75.2 62.4 100K 76.7 65.0\nLight-weight FFN. Table 9 reports the comparison results on the effect of proposed light FFN. According to the results, we observe that using the light-weight FFN significantly boosts the AP50 from 62.8 to 65.0, thus showing the advantages of using a set of adaptive predicted initial 3D bounding boxes over a set of pre-defined 3D bounding boxes of the same size.\nNumber of points during training and evaluation. In Table 10, we report the comparison results when using different number of points during training. We observe that using 100K points achieves consistently better performance, thus we choose 100K points.\nOne-to-many matching. Table 11 shows the comparison results when choosing different hyperparameters for a one-to-many matching scheme. For example, we find increasing the number of queries and the number of ground truth repeating times even hurts the performance when training with 40K points but improves the performance when training with 100K.\nTable shape. In Table 12, we show the effect of different shapes for the pre-defined 3DV-RPE table. We find that 10\u00d710\u00d710 achieves the best results. Our approach is less sensitive to the shape of the 3DV-RPE table thanks to the signed log function, which improves the interpolation quality to some degree.\nComparison with other attention modulation methods. We summarize the comparison results with other advanced related methods including contextual relative position encoding (CRPE) (Lai et al., 2022; Yang et al., 2022), conditional cross-attention (Cond-CA) (Meng et al., 2021), dynamic anchor box cross-attention (DAB-CA) (Liu et al., 2022) in Table 13. We report the comparison results under the most strong settings, i.e., 540 training epochs. Accordingly, we see that (i) both CRPE (Stratified Transformer (Lai et al., 2022)) and CRPE (EQNet (Yang et al., 2022)) consistently improve the baseline; (ii) our 3DV-RPE achieves the best performance. The reason is that the CRPE methods of Stratified-Transformer (Lai et al., 2022) and EQNet (Yang et al., 2022) only consider the center point of the 3D box while our 3DV-RPE explicitly considers the 8\u00d7 vertex points and rotated angle of the 3D box. Our method encodes the box size and the six faces, thus modeling the accurate\nposition relations between all other points and the 3D bounding box (supported by the much larger gains on AP50).\nInference complexity comparison. Table 14 reports the comparison results to FCAF3D and CAGroup3D. We do not apply the test-time augmentation (TTA) to ensure fair comparisons. Accordingly, our method achieves a better performance-efficiency trade-off than CAGroup3D. We also provide a light version by decreasing the number of 3D object query from 1024 to 256, which achieves AP25=75.6 and AP50=62.7. Notably, the reported latency of CAGroup3D is close to the numbers in their official logs but different from the numbers reported in the paper (179.3ms tested on RTX 3090 GPU). The authors of CAGroup3D have acknowledged this issue in their GitHub repository."
+        },
+        {
+            "heading": "B MORE QUALITATIVE RESULTS AND ANALYSIS",
+            "text": "We show more qualitative examples of our V-DETR detection on ScanNetV2 and SUN RGB-D in Figure 8 and Figure 9, respectively. We can observe that our method can find most of the target objects in various scenes.\nFigure 10 shows the spatial cross-attention maps of our 3DV-RPE on three ScanNetV2 scenes. We see that (i) our 3DV-RPE can find the 3D bounding boxes accurately and (ii) each vertex\u2019s RPE can enhance the regions inside the boxes from that vertex."
+        },
+        {
+            "heading": "C EFFECT OF DATA SCALE ON LEARNING THE LOCALITY INDUCTIVE BIAS",
+            "text": "FOR 2D OBJECT DETECTION\nWe conduct experiments on the 2D detector DETR Carion et al. (2020), using approximately 1% of the training data (1, 200 images), following your suggestion. We train DETR for the same number of iterations (2, 217, 881 iterations) as the original DETR, which was trained on the full dataset for \u223c300 epochs, while maintaining a batch size of 16. First, we observe that the mAP of the validation set drops from 44.9% to 10.4%, which closely aligns with the performance reported in Table 4 of DETReg Bar et al. (2022).\nSecond, in accordance with Figure 6 of the DETR paper, we visualize the cross-attention maps for the predicted object in Figure 11. We note that these attention maps fail to focus on local object regions, especially the object extremities. Therefore, it is evident that the scale of data has a substantial impact on the model\u2019s ability to effectively learn the locality inductive biases."
+        }
+    ],
+    "year": 2023
+}

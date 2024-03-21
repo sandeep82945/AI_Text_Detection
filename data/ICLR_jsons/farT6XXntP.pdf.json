@@ -1,0 +1,887 @@
+{
+    "abstractText": "Generative Large Language Models (LLMs) have achieved remarkable advancements in various NLP tasks. However, these advances have not been reflected in the translation task, especially those with moderate model sizes (i.e., 7B or 13B parameters), which still lag behind conventional supervised encoder-decoder translation models. Previous studies have attempted to improve the translation capabilities of these LLMs, but their gains have been limited. In this study, we propose a novel fine-tuning approach for LLMs that is specifically designed for the translation task, eliminating the need for the abundant parallel data that traditional translation models usually depend on. Our approach consists of two finetuning stages: initial fine-tuning on monolingual data followed by subsequent fine-tuning on a small set of high-quality parallel data. We introduce the LLM developed through this strategy as Advanced Language Model-based trAnslator (ALMA). Based on LLaMA-2 (Touvron et al., 2023b) as our underlying model, our results show that the model can achieve an average improvement of more than 12 BLEU and 12 COMET over its zero-shot performance across 10 translation directions from the WMT\u201921 (2 directions) and WMT\u201922 (8 directions) test datasets. The performance is significantly better than all prior work and even superior to the NLLB-54B model (NLLB TEAM et al., 2022) and GPT3.5-text-davinci-003, with only 7B or 13B parameters. This method establishes the foundation for a novel training paradigm in machine translation. 1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Haoran Xu"
+        },
+        {
+            "affiliations": [],
+            "name": "Young Jin Kim"
+        },
+        {
+            "affiliations": [],
+            "name": "Amr Sharaf"
+        },
+        {
+            "affiliations": [],
+            "name": "Hany Hassan Awadalla"
+        }
+    ],
+    "id": "SP:9f91c10c3f34118ddc2ef3008bb05e2539d41577",
+    "references": [
+        {
+            "authors": [
+                "Roee Aharoni",
+                "Melvin Johnson",
+                "Orhan Firat"
+            ],
+            "title": "Massively multilingual neural machine translation",
+            "venue": "arXiv preprint arXiv:1903.00089,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Ebtesam Almazrouei",
+                "Hamza Alobeidli",
+                "Abdulaziz Alshamsi",
+                "Alessandro Cappelli",
+                "Ruxandra Cojocaru",
+                "Merouane Debbah",
+                "Etienne Goffinet",
+                "Daniel Heslow",
+                "Julien Launay",
+                "Quentin Malartic",
+                "Badreddine Noune",
+                "Baptiste Pannier",
+                "Guilherme Penedo"
+            ],
+            "title": "Falcon-40B: an open large language model with state-of-the-art performance",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yijie Chen",
+                "Yijin Liu",
+                "Fandong Meng",
+                "Yufeng Chen",
+                "Jinan Xu",
+                "Jie Zhou"
+            ],
+            "title": "Improving translation faithfulness of large language models via augmenting instructions",
+            "venue": "arXiv preprint arXiv:2308.12674,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "arXiv preprint arXiv:2204.02311,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Guillaume Lample",
+                "Ruty Rinott",
+                "Adina Williams",
+                "Samuel R Bowman",
+                "Holger Schwenk",
+                "Veselin Stoyanov"
+            ],
+            "title": "Xnli: Evaluating cross-lingual sentence representations",
+            "venue": "arXiv preprint arXiv:1809.05053,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alexis Conneau",
+                "Kartikay Khandelwal",
+                "Naman Goyal",
+                "Vishrav Chaudhary",
+                "Guillaume Wenzek",
+                "Francisco Guzm\u00e1n",
+                "Edouard Grave",
+                "Myle Ott",
+                "Luke Zettlemoyer",
+                "Veselin Stoyanov"
+            ],
+            "title": "Unsupervised cross-lingual representation learning at scale",
+            "venue": "In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Markus Freitag",
+                "Ricardo Rei",
+                "Nitika Mathur",
+                "Chi-kiu Lo",
+                "Craig Stewart",
+                "Eleftherios Avramidis",
+                "Tom Kocmi",
+                "George Foster",
+                "Alon Lavie",
+                "Andr\u00e9 F.T. Martins"
+            ],
+            "title": "Results of WMT22 metrics shared task: Stop using BLEU \u2013 neural metrics are better and more robust",
+            "venue": "In Proceedings of the Seventh Conference on Machine Translation (WMT),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Robert M French"
+            ],
+            "title": "Catastrophic forgetting in connectionist networks",
+            "venue": "Trends in cognitive sciences,",
+            "year": 1999
+        },
+        {
+            "authors": [
+                "Leo Gao",
+                "Jonathan Tow",
+                "Stella Biderman",
+                "Sid Black",
+                "Anthony DiPofi",
+                "Charles Foster",
+                "Laurence Golding",
+                "Jeffrey Hsu",
+                "Kyle McDonell",
+                "Niklas Muennighoff",
+                "Jason Phang",
+                "Laria Reynolds",
+                "Eric Tang",
+                "Anish Thite",
+                "Ben Wang",
+                "Kevin Wang",
+                "Andy Zou"
+            ],
+            "title": "A framework for few-shot language model evaluation",
+            "venue": "URL https://doi.org/10.5281/zenodo",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Amr Hendy",
+                "Mohamed Abdelrehim",
+                "Amr Sharaf",
+                "Vikas Raunak",
+                "Mohamed Gabr",
+                "Hitokazu Matsushita",
+                "Young Jin Kim",
+                "Mohamed Afify",
+                "Hany Hassan Awadalla"
+            ],
+            "title": "How good are gpt models at machine translation? a comprehensive evaluation",
+            "venue": "arXiv preprint arXiv:2302.09210,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "yelong shen",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "LoRA: Low-rank adaptation of large language models",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenxiang Jiao",
+                "Wenxuan Wang",
+                "Jen-tse Huang",
+                "Xing Wang",
+                "Zhaopeng Tu"
+            ],
+            "title": "Is chatgpt a good translator? a preliminary study",
+            "venue": "arXiv preprint arXiv:2301.08745,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "James Kirkpatrick",
+                "Razvan Pascanu",
+                "Neil Rabinowitz",
+                "Joel Veness",
+                "Guillaume Desjardins",
+                "Andrei A Rusu",
+                "Kieran Milan",
+                "John Quan",
+                "Tiago Ramalho",
+                "Agnieszka Grabska-Barwinska"
+            ],
+            "title": "Overcoming catastrophic forgetting in neural networks",
+            "venue": "Proceedings of the national academy of sciences,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Mofetoluwa Adeyemi"
+            ],
+            "title": "Quality at a glance: An audit of web-crawled multilingual datasets. Transactions of the Association for Computational Linguistics, 10:50\u201372, 2022. doi: 10.1162/ tacl a 00447",
+            "venue": "URL https://aclanthology.org/2022.tacl-1.4",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiahuan Li",
+                "Hao Zhou",
+                "Shujian Huang",
+                "Shanbo Chen",
+                "Jiajun Chen"
+            ],
+            "title": "Eliciting the translation ability of large language models via multilingual finetuning with translation instructions",
+            "venue": "arXiv preprint arXiv:2305.15083,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xi Victoria Lin",
+                "Todor Mihaylov",
+                "Mikel Artetxe",
+                "Tianlu Wang",
+                "Shuohui Chen",
+                "Daniel Simig",
+                "Myle Ott",
+                "Naman Goyal",
+                "Shruti Bhosale",
+                "Jingfei Du"
+            ],
+            "title": "Few-shot learning with multilingual language models",
+            "venue": "arXiv preprint arXiv:2112.10668,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haokun Liu",
+                "Derek Tam",
+                "Mohammed Muqeeth",
+                "Jay Mohta",
+                "Tenghao Huang",
+                "Mohit Bansal",
+                "Colin A Raffel"
+            ],
+            "title": "Few-shot parameter-efficient fine-tuning is better and cheaper than in-context learning",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yinhan Liu",
+                "Jiatao Gu",
+                "Naman Goyal",
+                "Xian Li",
+                "Sergey Edunov",
+                "Marjan Ghazvininejad",
+                "Mike Lewis",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Multilingual denoising pre-training for neural machine translation",
+            "venue": "Transactions of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jean Maillard",
+                "Cynthia Gao",
+                "Elahe Kalbassi",
+                "Kaushik Ram Sadagopan",
+                "Vedanuj Goswami",
+                "Philipp Koehn",
+                "Angela Fan",
+                "Francisco Guzm\u00e1n"
+            ],
+            "title": "Small data, big impact: Leveraging minimal data for effective machine translation",
+            "venue": "In Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sourab Mangrulkar",
+                "Sylvain Gugger",
+                "Lysandre Debut",
+                "Younes Belkada",
+                "Sayak Paul"
+            ],
+            "title": "Peft: State-of-the-art parameter-efficient fine-tuning methods",
+            "venue": "https://github.com/ huggingface/peft,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Marius Mosbach",
+                "Tiago Pimentel",
+                "Shauli Ravfogel",
+                "Dietrich Klakow",
+                "Yanai Elazar"
+            ],
+            "title": "Fewshot fine-tuning vs. in-context learning: A fair comparison and evaluation",
+            "venue": "arXiv preprint arXiv:2305.16938,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nasrin Mostafazadeh",
+                "Michael Roth",
+                "Annie Louis",
+                "Nathanael Chambers",
+                "James Allen"
+            ],
+            "title": "LSDSem 2017 shared task: The story cloze test",
+            "venue": "In Proceedings of the 2nd Workshop on Linking Models of Lexical, Sentential and Discourse-level Semantics,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "April"
+            ],
+            "title": "Association for Computational Linguistics",
+            "venue": "doi: 10.18653/v1/W17-0906. URL https://aclanthology.org/W17-0906.",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Marta R NLLB TEAM",
+                "Costa-juss\u00e0",
+                "James Cross",
+                "Onur \u00c7elebi",
+                "Maha Elbayad",
+                "Kenneth Heafield",
+                "Kevin Heffernan",
+                "Elahe Kalbassi",
+                "Janice Lam",
+                "Daniel Licht",
+                "Jean Maillard"
+            ],
+            "title": "No language left behind: Scaling human-centered machine translation",
+            "venue": "arXiv preprint arXiv:2207.04672,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pedro Javier Ortiz Su\u2019arez",
+                "Benoit Sagot",
+                "Laurent Romary"
+            ],
+            "title": "Asynchronous pipelines for processing huge corpora on medium to low resource infrastructures",
+            "venue": "Proceedings of the Workshop on Challenges in the Management of Large Corpora (CMLC-7) 2019. Cardiff,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Kishore Papineni",
+                "Salim Roukos",
+                "Todd Ward",
+                "Wei-Jing Zhu"
+            ],
+            "title": "Bleu: a method for automatic evaluation of machine translation",
+            "venue": "In Proceedings of the 40th annual meeting of the Association for Computational Linguistics,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Matt Post"
+            ],
+            "title": "A call for clarity in reporting BLEU scores",
+            "venue": "In Proceedings of the Third Conference on Machine Translation: Research Papers,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jeff Rasley",
+                "Samyam Rajbhandari",
+                "Olatunji Ruwase",
+                "Yuxiong He"
+            ],
+            "title": "Deepspeed: System optimizations enable training deep learning models with over 100 billion parameters",
+            "venue": "In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Vikas Raunak",
+                "Arul Menezes",
+                "Hany Awadalla"
+            ],
+            "title": "Dissecting in-context learning of translations in GPT-3",
+            "venue": "Findings of the Association for Computational Linguistics: EMNLP 2023,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ricardo Rei",
+                "Jos\u00e9 G.C. de Souza",
+                "Duarte Alves",
+                "Chrysoula Zerva",
+                "Ana C Farinha",
+                "Taisiya Glushkova",
+                "Alon Lavie",
+                "Luisa Coheur",
+                "Andr\u00e9 F.T. Martins"
+            ],
+            "title": "COMET-22: Unbabel-IST 2022 submission for the metrics shared task",
+            "venue": "In Proceedings of the Seventh Conference on Machine Translation (WMT),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Sascha Rothe",
+                "Shashi Narayan",
+                "Aliaksei Severyn"
+            ],
+            "title": "Leveraging pre-trained checkpoints for sequence generation",
+            "venue": "tasks. Transactions of the Association for Computational Linguistics,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Teven Le Scao",
+                "Angela Fan",
+                "Christopher Akiki",
+                "Ellie Pavlick",
+                "Suzana Ili\u0107",
+                "Daniel Hesslow",
+                "Roman Castagn\u00e9",
+                "Alexandra Sasha Luccioni",
+                "Fran\u00e7ois Yvon",
+                "Matthias Gall\u00e9"
+            ],
+            "title": "Bloom: A 176bparameter open-access multilingual language model",
+            "venue": "arXiv preprint arXiv:2211.05100,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Weiting Tan",
+                "Haoran Xu",
+                "Lingfeng Shen",
+                "Shuyue Stella Li",
+                "Kenton Murray",
+                "Philipp Koehn",
+                "Benjamin Van Durme",
+                "Yunmo Chen"
+            ],
+            "title": "Narrowing the gap between zero- and few-shot machine translation by matching styles, 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yi Tay",
+                "Mostafa Dehghani",
+                "Vinh Q Tran",
+                "Xavier Garcia",
+                "Jason Wei",
+                "Xuezhi Wang",
+                "Hyung Won Chung",
+                "Dara Bahri",
+                "Tal Schuster",
+                "Steven Zheng"
+            ],
+            "title": "Ul2: Unifying language learning paradigms",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yi Tay",
+                "Jason Wei",
+                "Hyung Won Chung",
+                "Vinh Q Tran",
+                "David R So",
+                "Siamak Shakeri",
+                "Xavier Garcia",
+                "Huaixiu Steven Zheng",
+                "Jinfeng Rao",
+                "Aakanksha Chowdhery"
+            ],
+            "title": "Transcending scaling laws with 0.1% extra compute",
+            "venue": "arXiv preprint arXiv:2210.11399,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexey Tikhonov",
+                "Max Ryabinin"
+            ],
+            "title": "It\u2019s All in the Heads: Using Attention Heads as a Baseline for Cross-Lingual Transfer in Commonsense Reasoning",
+            "venue": "In Findings of the Association for Computational Linguistics: ACL-IJCNLP",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Louis Martin",
+                "Kevin Stone",
+                "Peter Albert",
+                "Amjad Almahairi",
+                "Yasmine Babaei",
+                "Nikolay Bashlykov",
+                "Soumya Batra",
+                "Prajjwal Bhargava",
+                "Shruti Bhosale"
+            ],
+            "title": "Llama 2: Open foundation and fine-tuned chat models",
+            "venue": "arXiv preprint arXiv:2307.09288,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Thomas Wang",
+                "Adam Roberts",
+                "Daniel Hesslow",
+                "Teven Le Scao",
+                "Hyung Won Chung",
+                "Iz Beltagy",
+                "Julien Launay",
+                "Colin Raffel"
+            ],
+            "title": "What language model architecture and pretraining objective works best for zero-shot generalization",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiangpeng Wei",
+                "Haoran Wei",
+                "Huan Lin",
+                "Tianhao Li",
+                "Pei Zhang",
+                "Xingzhang Ren",
+                "Mei Li",
+                "Yu Wan",
+                "Zhiwei Cao",
+                "Binbin Xie"
+            ],
+            "title": "Polylm: An open source polyglot large language model",
+            "venue": "arXiv preprint arXiv:2307.06018,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haoran Xu",
+                "Benjamin Van Durme",
+                "Kenton Murray"
+            ],
+            "title": "BERT, mBERT, or BiBERT? a study on contextualized embeddings for neural machine translation",
+            "venue": "In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haoran Xu",
+                "Jean Maillard",
+                "Vedanuj Goswami"
+            ],
+            "title": "Language-aware multilingual machine translation with self-supervised learning",
+            "venue": "Association for Computational Linguistics. doi: 10.18653/v1/2023.findings-eacl.38. URL https://aclanthology.org/ 2023.findings-eacl.38",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wen Yang",
+                "Chong Li",
+                "Jiajun Zhang",
+                "Chengqing Zong"
+            ],
+            "title": "Bigtrans: Augmenting large language models with multilingual translation capability over 100 languages",
+            "venue": "arXiv preprint arXiv:2305.18098,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jiali Zeng",
+                "Fandong Meng",
+                "Yongjing Yin",
+                "Jie Zhou. Tim"
+            ],
+            "title": "Teaching large language models to translate with comparison",
+            "venue": "arXiv preprint arXiv:2307.04408,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mike Zhang",
+                "Antonio Toral"
+            ],
+            "title": "The effect of translationese in machine translation test sets",
+            "venue": "In Proceedings of the Fourth Conference on Machine Translation (Volume 1: Research Papers),",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Renrui Zhang",
+                "Jiaming Han",
+                "Aojun Zhou",
+                "Xiangfei Hu",
+                "Shilin Yan",
+                "Pan Lu",
+                "Hongsheng Li",
+                "Peng Gao",
+                "Yu Qiao"
+            ],
+            "title": "Llama-adapter: Efficient fine-tuning of language models with zero-init attention",
+            "venue": "arXiv preprint arXiv:2303.16199,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shaolei Zhang",
+                "Qingkai Fang",
+                "Zhuocheng Zhang",
+                "Zhengrui Ma",
+                "Yan Zhou",
+                "Langlin Huang",
+                "Mengyu Bu",
+                "Shangtong Gui",
+                "Yunji Chen",
+                "Xilin Chen"
+            ],
+            "title": "Bayling: Bridging cross-lingual alignment and instruction following through interactive translation for large language models",
+            "venue": "arXiv preprint arXiv:2306.10968,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models",
+            "venue": "arXiv preprint arXiv:2205.01068,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chunting Zhou",
+                "Pengfei Liu",
+                "Puxin Xu",
+                "Srini Iyer",
+                "Jiao Sun",
+                "Yuning Mao",
+                "Xuezhe Ma",
+                "Avia Efrat",
+                "Ping Yu",
+                "Lili Yu"
+            ],
+            "title": "Lima: Less is more for alignment",
+            "venue": "arXiv preprint arXiv:2305.11206,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhao Zhu",
+                "Hongyi Liu",
+                "Qingxiu Dong",
+                "Jingjing Xu",
+                "Lingpeng Kong",
+                "Jiajun Chen",
+                "Lei Li",
+                "Shujian Huang"
+            ],
+            "title": "Multilingual machine translation with large language models: Empirical results and analysis",
+            "venue": "arXiv preprint arXiv:2304.04675,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhao Zhu",
+                "Yunzhe Lv",
+                "Qingxiu Dong",
+                "Fei Yuan",
+                "Jingjing Xu",
+                "Shujian Huang",
+                "Lingpeng Kong",
+                "Jiajun Chen",
+                "Lei Li"
+            ],
+            "title": "Extrapolating large language models to non-english by aligning languages",
+            "venue": "arXiv preprint arXiv:2308.04948,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aharoni"
+            ],
+            "title": "2019), a technique prevalently adopted in the processing of unbalanced multilingual machine translation. Consequently, the process of selecting a monolingual example from language l adheres to the following distribution: P",
+            "year": 2019
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Generative (decoder-only) large language models (LLMs) such as GPT models (Brown et al., 2020; OpenAI, 2023), PaLM (Chowdhery et al., 2022), OPT (Zhang et al., 2022), BLOOM (Scao et al., 2022), LLaMA (Touvron et al., 2023a;b), and others have exhibited remarkable capabilities across various NLP tasks. However, for the translation task, only very large models such as GPT-3.5 and GPT-4 can rival the supervised encoder-decoder state-of-the-art (SoTA) models like NLLB (NLLB TEAM et al., 2022), while they still fall short in translation for low-resource languages (Hendy et al., 2023; Jiao et al., 2023). The discrepancy becomes more evident when comparing other LLMs with traditional translation models (Zhu et al., 2023a). For instance, the OPT-175B model trails behind the NLLB-1.3B model by an average of more than 15 BLEU (Papineni et al., 2002) points for languages within the Indo-European-Romance family. The gap is even larger in smaller LLMs; for example, XGLM (Lin et al., 2021), with a parameter size of 7B, lags behind the NLLB-1.3B by a substantial 30 BLEU points (Zhu et al., 2023a). Therefore, there is an urgent need to narrow this performance gap between LLMs and conventional SoTA models.\nAs exemplified by NLLB-1.3B, traditional machine translation models demonstrate proficiency in producing high-quality translations with a small number of parameters. By extension, smaller LLMs\n1We release our code and models at: https://github.com/fe1ixxu/ALMA.\nshould similarly possess the capability to adeptly manage the translation task. Recent research has sought to enhance translation performance by commencing with smaller LLMs (Yang et al., 2023; Zeng et al., 2023; Chen et al., 2023; Zhu et al., 2023b; Li et al., 2023; Zhang et al., 2023b), especially 7B or 13B parameters. Nevertheless, the achieved improvements remain modest and limited. As depicted in Figure 1, contemporary studies such as Balyling (Zhang et al., 2023b) and BigTranslate (Yang et al., 2023), which use LLaMA as their backbone, exhibit a maximum increment of 3 to 4 BLEU or COMET in relation to the zero-shot performance of LLaMA on the WMT\u201922 test set (8 directions).2 While these gains represent promising research direction for smaller LLMs in the translation task, a significant performance chasm persists when benchmarked against very large LLMs such as GPT-3.5-text-davinci-003 and SoTA translation models such as NLLB-54B. We posit that the modest translation gains observed in prior studies can be ascribed to an unsuitable training recipe.\nWe hypothesize that an efficacious training recipe ought to follow two stages: learning general multilingual linguistic knowledge and inducing (instructing) models toward translation generation. Consequently, we propose a two-stage fine-tuning approach and introduce the LLM developed through this strategy as Advanced Language Model-based trAnslator (ALMA). Specifically, given most LLMs are trained on English-dominant data, the first stage is fine-tuning non-English monolingual data to enhance the model\u2019s proficiency in other languages involved in the translation task. Secondly, drawing inspiration from the recognized significance of data quality in other applications (Zhou et al., 2023; Maillard et al., 2023; Gunasekar et al., 2023), we fine-tune the model with a small amount of high-quality parallel data.\nOur main contributions are summarized as follows:\nDiminished Necessity of Parallel Data Traditional translation frameworks rely on large amounts of parallel data, which may lead to a false impression that such data is essential for the translation task with LLMs. Prior studies have fine-tuned LLMs with datasets containing over 300M parallel instances (Yang et al., 2023). However, our empirical evaluations suggest that this strategy may not be optimal, and even harm the translation capabilities of LLMs.\nLLM Via A New Training Recipe: ALMA We introduce a novel two-stage fine-tuning method for translation with decoder-only LLMs. Leveraging LLaMA-2 as the base model, we attain an average improvement of more than 12 BLEU and COMET scores over its zero-shot performance\n2All COMET scores in the paper is COMET-22 (Unbabel/wmt22-comet-da) (Rei et al., 2022).\nacross 10 translation directions from WMT\u201921 and WMT\u201922 test datasets. Notably, the performance surpasses all previous work and is even better than the NLLB-54B model and GPT-3.5text-davinci-003.\nEfficient Computational Cost Our ablation study reveals both stages are crucial factors for achieving large improvements. The most computationally intensive part is monolingual data fine-tuning, however, we show that only fine-tuning 1B monolingual tokens is sufficient to have comparable performance to NLLB-54B in 10 translation directions, which only requires around 18 hours to complete with 16 MI200 GPUs."
+        },
+        {
+            "heading": "2 PRELIMINARY",
+            "text": ""
+        },
+        {
+            "heading": "2.1 TASK DEFINITION",
+            "text": "We consider a decoder-only transformer model parameterized by \u03b8 for machine translation. Let x represent the source sentence and y its corresponding target sentence. We utilize a fixed prompt template, denoted as I, to guide the model in generating translation. The log-likelihood loss of the parallel sentence (x, y) with regard to the model parameters \u03b8 can be formulated as follows:\nLNLL(x,y, \u03b8) = \u2212 logP (y|x, I; \u03b8) (1)\n= \u2212 T\u2211\nt=1\nlogP (yt|y<t,x, I; \u03b8), (2)\nwhere T is length of the target sentence, and yt is the t-th target token. The loss is a standard causal language modeling (CLM) loss, which predicts the next token based on prior tokens. We use the same sentence-level translation prompt template suggested by Hendy et al. (2023), and illustrate the prompt and the model input/target in Figure 2. Note that we do not compute the loss for the prompt template and source sentence during training (Zhang et al., 2023a). In Appendix A, we show that CLM is more suitable for the translation task compared with other modeling methods, such as prefix language modeling (Wang et al., 2022) and mixture-of-denoisers (Tay et al., 2022a)."
+        },
+        {
+            "heading": "2.2 A BACKBONE LLM FOR TRANSLATION",
+            "text": "We seek a robust LLM to serve as our foundational model. With the recent emergence of numerous LLMs, we prioritize evaluating the zero-shot translation performance of these models before delving into optimal training recipes. As most of these models provide a 7B version, our comparative analysis centers on this magnitude: OPT-7B (Zhang et al., 2022), Falcon-7B (Almazrouei et al., 2023), BLOOM-7B (Scao et al., 2022), MPT-7B (MosaicML, 2023), LLaMA-1-7B (Touvron et al., 2023a), and LLaMA-2-7B (Touvron et al., 2023b). We additionally present results from GPT-3.5text-davinci-003 (hereinafter referred to as GPT-3.5-D) and GPT-3.5-turbo-0301 (hereinafter referred to as GPT-3.5-T) to show the performance gap.3\nZero-Shot Evaluation We conduct zero-shot evaluations on 5 English-centric language pairs, considering both from English and to English directions: German (de), Czech (cs), Icelandic (is), Chinese (zh) and Russian (ru), where Icelandic test data is from WMT\u201921 and the others are from WMT\u201922. We choose these test dataset because they are the recent and less likely\n3https://beta.openai.com/docs/model-index-for-researchers\nto overlap the training data used by LLMs, and importantly, they have high-quality data to avoid problems of \u201ctranslationese\u201d (Zhang & Toral, 2019). The beam size is 5. We report sacreBLEU (zh tokenizer for Chinese and 13a for the others) (Post, 2018). We also report COMET (Unbabel/wmt22-comet-da) (Rei et al., 2022) because BLEU only reflects the degree of lexical match. In this paper, We rely more on COMET than BLEU due to its better alignment with human evaluations (Freitag et al., 2022).4\nLLM Translation Performance The overall results for the LLMs are presented in Figure 3, with scores averaged across five languages for translations to and from English. Among the 7B LLMs, LLaMA-2-7B exhibits superior performance translating into English, while MPT-7B leads in translations out of English, as measured by BLEU. However, when evaluated with COMET, LLaMA-27B wins in both directions. We show the numeric results in Appendix B. Consequently, we select LLaMA-2-7B and MPT-7B for further investigation into the necessity of parallel data for LLMs."
+        },
+        {
+            "heading": "3 DO LLMS HAVE AN APPETITE FOR PARALLEL DATA?",
+            "text": "Conventional machine translation training predominantly relies on utilizing large volumes of parallel datasets within encoder-decoder frameworks. This trend is not confined to training models from scratch but also pertains to strategies that fine-tune pre-trained LLMs, often involving millions of parallel sentences (Rothe et al., 2020; Liu et al., 2020; Xu et al., 2021; 2023; Yang et al., 2023). In this section, we examine whether the recently proposed decoder-only LLMs retain a dependence on substantial parallel data and adhere to the traditional training paradigm."
+        },
+        {
+            "heading": "3.1 EXPERIMENTAL DESIGN",
+            "text": "Following Section 2.2, our focus narrows to fine-tuning LLaMA-2-7B and MPT-7B. To allow for a deep analysis, we concentrate on one language pair, English\u2192Russian (en\u2192ru). We opted for a language pair that is translating out of English and to a non-Latin language, since those categories show larger gaps with SoTA models in our initial investigation in Section 2.2. We use the clean data filtered from 75M parallel sentences from Hendy et al. (2023) and split the data size in 5 levels: 10K, 100K, 1M, 5M, and 20M. We use the same prompt template and training scheme as described in Section 2.1, and train the model by updating all parameters. Detailed training settings can be found in Appendix C."
+        },
+        {
+            "heading": "3.2 OBSERVATIONS",
+            "text": "The fine-tuning results for LLaMA-2-7B and MPT-7B at each data size step are presented in Figure 4. Additionally, we benchmark these against the performance of the NLLB-54B model to show the disparity with one of the SoTA multilingual translation models.\n4According to Freitag et al. (2022), COMET holds the 2-nd position in alignment with human ratings, whereas BLEU is situated at the 19-th spot among 20 metrics.\nSmall Training Data Is Enough According to COMET, there is a notable difference in the curve of LLaMA-2-7B and MPT-7B: LLaMA-2-7B peaks with 10K and 100K training data before experiencing a decline, while MPT-7B exhibits continuous improvement with more training data. LLaMA2-7B requires only limited training examples (10K and 100K) to achieve competent translation. However, a surplus of examples (5M or 20M) seems to dilute its existing knowledge in Russian. Conversely, MPT-7B, potentially due to its inherently weaker translation capability, exhibits improved performance with an increase in training data. This may suggest that LLaMA-2 or other well-trained LLMs may not necessitate substantial parallel data.\nLarge Parallel Data Wash Out the Knowledge Both LLMs eventually achieve similar BLEU and COMET with 20M training data, regardless of their performance on smaller data. We hypothesize that this phenomenon is caused by catastrophic forgetting (French, 1999; Kirkpatrick et al., 2017), suggesting that too many parallel data wash out the pre-existing knowledge. To validate this hypothesis, we consider an extreme case: training the model from scratch using 20M data, thereby erasing all prior knowledge.5 As expected, it tends up with a similar performance in both BLEU and COMET evaluations (triangle in Figure 4), strengthening our speculation regarding the dilution of LLM\u2019s intrinsic knowledge with extensive data training.\nBeyond BLEU COMET reveals a decline in translation performance for LLaMA-2-7B as the amount of parallel data increases, a trend not captured by BLEU which shows an increase. This discrepancy arises since BLEU primarily evaluates lexical overlap, and the extensive WMT training data, being similar in domain to the test set, likely enhances this measure. This highlights the necessity of utilizing additional metrics (like COMET) for a comprehensive evaluation of translation.\nFrom our observations, LLaMA-2 (potentially other well-trained LLMs) should not adopt the same training approach as earlier models\u2014-whether randomly initialized or pre-trained\u2014that rely heavily on vast amounts of training data."
+        },
+        {
+            "heading": "4 A NEW TRAINING RECIPE",
+            "text": "We demonstrate that LLMs like LLaMA-2-7B do not voraciously consume parallel data. We introduce a novel training strategy that markedly enhances translation performance without relying heavily on parallel data. The recipe comprises two stages: continuous monolingual data finetuning and high-quality parallel data fine-tuning. After applying our training recipe to LLMs, we name the resulting model as ALMA (Advanced Language Model-based trAnslator).\nMonolingual Data Fine-tuning LLMs like LLaMA are pre-trained on English-dominated corpora. This potentially explains their inadequate translation performance which necessitates cross-lingual capabilities. To ameliorate this, our first stage is fine-tuning LLMs with monolingual data of nonEnglish languages involved in translation tasks, enhancing their proficiency in these languages. Note\n5We initialize parameters randomly based on the LLaMA-2-7B model, but use the same vocabulary.\nthat we also add English monolingual data during fine-tuning to prevent English knowledge forgetting. Previous studies also offer some clues that monolingual data help in translation. For instance, Tan et al. (2023) utilizes a monolingual target corpus to bridge the gap in translation mismatches caused by domain discrepancies. BigTranslate (Yang et al., 2023) and PolyLM (Wei et al., 2023) use a huge amount of Chinese monolingual data and improve translation to or from Chinese. Furthermore, Li et al. (2023) utilizes monolingual generation instructions to improve translation. In Section 6.1, we show that utilizing small monolingual data and modest computational cost (e.g., 1B monolingual tokens mixed by 6 languages and fine-tuning under 18 hours), can facilitate significant improvements in 10 translation directions. Note that we employ full-weight fine-tuning at this stage.\nHigh-Quality Data Fine-tuning Drawing on insights from Section 3.2 that LLMs may require only small parallel data, coupled with previous research emphasizing training data quality (Zhou et al., 2023; Maillard et al., 2023; Gunasekar et al., 2023), we fine-tune the model using a small, yet high-quality parallel dataset in this stage. To ensure the data quality, we collect human-written datasets from WMT test data and Flores-200 (NLLB TEAM et al., 2022) development and test sets. Here, we explore both full-weight and lightweight Low-Rank Adaptation (LoRA) (Hu et al., 2022; Mangrulkar et al., 2022) fine-tuning, where we apply LoRA to the down-projection layer in each feed-forward network."
+        },
+        {
+            "heading": "5 EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "5.1 DATA",
+            "text": "For our parallel training data, we collect human-written test datasets from WMT\u201917 to WMT\u201920, plus the development and test sets from Flores-200 (NLLB TEAM et al., 2022), resulting in a total of 58K training examples across all languages. For the test data, we still use the same 10 translation directions to be consistent with our study in Section 2: cs\u2194en, de\u2194en, is\u2194en, zh\u2194en, ru\u2194en, where is\u2194en is from WMT\u201921 and the others are from WMT\u201922. Test data in WMT\u201921 (except for is) is used for the development dataset (a total of 8K parallel sentences).6 The monolingual dataset is sourced from OSCAR (Ortiz Su\u2019arez et al., 2019; Kreutzer et al., 2022). We mix the monolingual data and fine-tune the model with a sampling ratio of 20%, 14%, 8%, 19%, 22%, and 17% respectively for de, cs, is, zh, ru and en. We explain the reasoning behind the sampling ratios and show the detailed parallel data information in Appendix D."
+        },
+        {
+            "heading": "5.2 TRAINING SETUP",
+            "text": "We train the model in a many-to-many multilingual translation manner, and use LLaMA-2-7B (or 13B) as our backbone model given its best zero-shot performance. Our two-stage fine-tuning process yields two model types, differentiated based on the utilization of LoRA:\nALMA-7B/ALMA-13B Full-Weight fine-tuning on monolingual data followed by Full-Weight finetuning on high-quality parallel data for LLaMA-2-7B or -13B models.\nALMA-7B-LoRA/ALMA-13B-LoRA Full-Weight fine-tuning on monolingual data followed by LoRA fine-tuning on high-quality parallel data for LLaMA-2-7B or -13B models.\nIf using LoRA, the LoRA rank is 16 and only updates 0.1% parameters (7.7M for 7B and 12M for 13B model). Both monolingual data fine-tuning and human-written data fine-tuning basically share the same hyperparameter settings. Specifically, we fine-tune LLaMA-2 with a batch size of 256, a warm-up ratio of 0.01, and a sequence containing a maximum of 512 tokens. For monolingual data fine-tuning, we train the LLaMA-2-7B up to 20B tokens and LLaMA-2-13B up to 12B tokens. However, it is very likely that the model would be better in translation with more monolingual data fine-tuning. For human-written data fine-tuning, we train the model for 2 epochs (enough to see a clear convergence) and pick the best model with the lowest validation loss. For both stages, we adopt deepspeed (Rasley et al., 2020) to accelerate our training.\n6There is no development dataset for Icelandic."
+        },
+        {
+            "heading": "5.3 BASELINES",
+            "text": "We evaluate our method against two baseline categories. First, we consider prior studies with the goal aligning with ours: leveraging LLMs for translation. Secondly, we benchmark against the current SoTA translation models. It\u2019s worth noting that this comparison isn\u2019t entirely fair due to discrepancies in training data and model architectures (e.g., 175B GPT-3.5 vs. our 7B models). Nevertheless, utilizing the same test set provides insights into our model\u2019s current standing.\nPrior Similar Work We compare our model with BigTranslate (Yang et al., 2023), which extends LLaMA-1-13B to over 100 translation directions; TIM (Zeng et al., 2023), which uses correct and incorrect examples to help LLM to learn translation; SWIE (Chen et al., 2023), which improves LLM in translation via instruction augmentation; and BayLing (Zhang et al., 2023b), which uses interactive translation instructions. Given that the same test data and evaluation metrics are utilized, we directly report BLEU and COMET from their papers (except for BigTranslate, we assess their released model using the prompt they provided).\nSoTA Models We consider the NLLB-54B model, which is the largest and best translation model released in the NLLB family (NLLB TEAM et al., 2022); and the zero-shot performance of GPT3.5-text-davinci-003 (GPT-3.5-D) and GPT-3.5-turbo-0301 (GPT-3.5-T). Additionally, we present the zero-shot results for GPT-4.7\nare emphasized in dark red boxes, those that are more than 5 points below are emphasized in shallow red boxes, and all other scores are emphasized in green boxes. Bold numbers represent the highest scores among ALMA models and prior similar studies."
+        },
+        {
+            "heading": "5.4 RESULTS",
+            "text": "We show our main results of en\u2192xx and xx\u2192en respectively in Table 1 and 2. In summary, our best system (ALMA-13B-LoRA) outperforms all previous studies, NLLB-54B, and GPT-3.5-D, while it marginally underperforms compared to GPT-3.5-T and GPT-4.\nComparing With LLaMA-2 Zero-Shot For all 10 translation directions and both 7B and 13B models, LLaMA-2 trained by our recipe significantly outperforms its original zero-shot performance. For instance, ALMA-7B achieves +16.12 BLEU and +17.61 COMET for en\u2192xx on average. It is worth noting that LLaMA-2-13B suffers from the off-target issue in en\u2192xx zero-shot translation. However, it can be substantially alleviated by few-shot in-context learning (Brown et al., 2020), but still largely lag behind our methods (e.g., over 10 BLEU and COMET when translating from English). We discuss this further in Appendix E.\n7GPT-4 results are sourced from Zhang et al. (2023b).\nCompared with Prior Similar Studies ALMA significantly outperforms all prior studies. BigTranslate, which is fine-tuned on Chinese corpus and 300M parallel corpus, struggles to surpass LLaMA-2\u2019s zero-shot performance, except for en\u2192zh. This observation also aligns with our findings that an excessive amount of parallel data may damage the model, whereas target monolingual data is helpful to translation. Both TIM and SWIE specifically target two high-resource languages, de and zh. Their performance, however, is predominantly determined by their backbone models: effective translation is observed for zh but is lackluster for dewhen using BLOOMZ, and vice versa with LLaMA-1. In contrast, ALMA is versatile, showcasing strong results across all directions.\nCompared with SoTA models Our best model (ALMA-13B-LoRA) substantially outperforms NLLB-54B and GPT-3.5-D on average. In en\u2192xx direction, it even outperforms GPT-3.5-T on average COMET (87.00 vs. 86.56) and has close performance when it comes to xx\u2192en. Notably, SoTA models typically excel with high-resource languages but falter with low-resource languages such as is. With our recipe, the performance of is remains strong and performs the best."
+        },
+        {
+            "heading": "6 ANALYSES",
+            "text": ""
+        },
+        {
+            "heading": "6.1 HOW MUCH MONOLINGUAL DATA TO USE?",
+            "text": "In our main results, we present ALMA with our best settings, fine-tuned on either 20B or 12B tokens. Yet, we snapshot all ALMA models after every 1B monolingual tokens (and human-written parallel data) they have been fine-tuned with, and evaluate all their translation performance. As illustrated\nin Figure 5, we report the ALMA-7B\u2019s average performance across all directions after fine-tuning every 1B tokens. The test dataset remains the same, i.e., the 10 aforementioned directions. We provide detailed numeric results and similar analysis for ALMA-13B to Appendix F. Importantly, merely fine-tuning on 1B monolingual tokens, followed by fine-tuning on human-written data, yields performance comparable to NLLB-54B and GPT-3.5-D. In practice, we employ 16 MI200 GPUs with a batch size of 256 and sequence length of 512, which requires only 18 hours to complete the fine-tuning of 1B tokens and an additional hour allocated for human-written data fine-tuning. It takes around 19 hours of training to have a strong MMT model."
+        },
+        {
+            "heading": "6.2 THE EFFECT OF MONOLINGUAL DATA AND PARALLEL DATA QUALITY",
+            "text": "To scrutinize the impact of monolingual data, we juxtapose LLaMA-2-7B models fine-tuned with and without monolingual data (20B tokens), while keeping the same parallel data. Furthermore, to evaluate the impact of parallel data quality, we introduce three distinct parallel datasets for stage 2 fine-tuning. The first dataset is the human-written data (HW) utilized in prior experiments. The second is the filtered data (Filtered) referenced in Section 3.1. Lastly, we employ a randomly selected dataset (Random) sourced from the comprehensive WMT data. We anticipate the quality hierarchy as HW, followed by Filtered, and lastly, Random. For both Filtered and Random, each translation direction has 10K parallel data, aligning the total training dataset size with HW. We show the ablation results in Table 3. Using the LLaMA-2-7B as our foundational model, it\u2019s evident that with the same parallel data, incorporation of monolingual data largely enhances translation results, e.g., an increase from 74.35 to 83.98 in en\u2192xx COMET scores when training on the same Filtered data. Moreover, regardless of the monolingual data\u2019s presence, models fine-tuned with higher-quality data exhibit better performance. Both monolingual and human-written data emerge as critical factors in improving translation. Detailed results for each language pair are deferred to the Appendix G."
+        },
+        {
+            "heading": "6.3 OTHER ANALYSES",
+            "text": "We also explore additional in-depth analyses and elaborate on them in the appendix: 1) The impact of the volume and domain of human-written data on translation performance is explored in Appendix H; 2) A comparison between stage 2 fine-tuning (parallel data fine-tuning) and in-context few-shot learning can be found in Appendix I; 3) An evaluation of the zero-shot cross-lingual capabilities of LLaMA-2 after stage 1 fine-tuning on other tasks is presented in Appendix J."
+        },
+        {
+            "heading": "7 CONCLUSION",
+            "text": "In this paper, we show that LLMs do not require as extensive a collection of parallel data as traditional translation models do. Subsequently, we introduce a novel training recipe for decoder-only LLMs in translation, resulting in strong translation models, ALMA. When using our LLaMA-2 as our foundational model, ALMA exceeds the zero-shot translation performance of LLaMA-2 by more than 12 BLEU and COMET scores across 10 directions on average. Moreover, ALMA models surpass all preceding studies and even outperform NLLB-54B and GPT-3.5-D."
+        },
+        {
+            "heading": "ACKNOWLEDGMENTS",
+            "text": "We extend our gratitude to Hieu Hoang, Marcin Junczys-Dowmunt, Yunmo Chen, Steven Tan, Huda Khayrallah, Thamme Gowda, Vikas Raunak, Matt Post, Anoop Kunchukuttan, Roman Grundkiewicz, Tom Kocmi, Kenton Murray and Arul Menezes for their insightful and valuable suggestions."
+        },
+        {
+            "heading": "A COMPARING LLM TRAINING OBJECTIVES FOR MACHINE TRANSLATION",
+            "text": "We evaluate three potential training objectives for decoder-only LLM in machine translation.\nCausal Language Modeling (CLM) We first consider a standard language modeling loss that predicts the next token based on all prior tokens.\nPrefix Language Modeling (Prefix LM) For decoder-only models, a prefix can be defined with a non-causal attention mask. Analogous to standard language modeling, the model predicts each token outside the prefix based on previous tokens. In the context of machine translation, the provided prompt serves as the prefix, as depicted in Figure 2.\nMixture-of-Denoisers (MoD) The UL2 model (Tay et al., 2022a) introduces a unified approach to masking methods, utilizing a mixture-of-denoisers (MoD) strategy, which has also been implemented in the fine-tuning of PaLM (Tay et al., 2022b). This strategy is grounded in three objectives:\n\u2022 Regular Denoising: In this approach, noise is sampled in spans and replaced with sentinel tokens, aligning with the standard span corruption technique delineated in Raffel et al. (2020). The parameters set for this objective include a mean of 3 and a corruption rate of 15\n\u2022 Extreme Denoising: This method amplifies the noise to a comparatively \u2019extreme\u2019 level, characterized by a mean length of 32 and a corruption rate reaching up to 25\n\u2022 Sequential Denoising: This is known as the Prefix LM objective previously mentioned.\nIn our training process, we allocate a 25% probability each for both regular and extreme denoising, and a 50% probability for sequential denoising.\nWe employ the MPT-7B as our backbone model. Our investigation considers four distinct training data sizes: 0 (zero-shot), 100K, 1M, and 5M, with translation directed from Russian to English. We use the parallel dataset previously described in Section 3.1. For each data size, the MPT-7B is fine-tuned using the corresponding training objective, noting that all trainings utilize full-weight fine-tuning.\nThe results of the comparison between training objectives can be viewed in Figure 6. Although three objectives end up with similar performance under 5M training data, both prefix LM and MoD markedly lag behind CLM under limited parallel data (100K or 1M). Surprisingly, with 100K, models fine-tuned using prefix LM and MoD even underperform their zero-shot performance. Conversely, CLM demonstrates a healthy improvement as the amount of parallel data increases. Consequently, we adopt CLM as our primary training objective for machine translation."
+        },
+        {
+            "heading": "B FULL RESULTS OF ZERO-SHOT EVALUATION",
+            "text": "In Section 2.2, we present the average zero-shot translation performance of recently released LLMs. Detailed results for each translation direction can be found in Table 4."
+        },
+        {
+            "heading": "C TRAINING DETAILS",
+            "text": "We fine-tune the backbone model using a warm-up ratio of 0.01, a maximum sequence length of 512 tokens, and a weight decay of 0.01. The test data from WMT\u201921 serves as our development set. The training spans 3 epochs (for MPT-7B as detailed in Section 3, and 2 epochs for LLaMA-2 human-written data fine-tuning). The best model is selected based on the lowest validation loss, with validation performed every 10% of the total training progress. We utilize 16 MI200 GPUs for training; each GPU manages 4 batches and has a gradient accumulation step of 4, yielding an effective batch size of 256. The peak learning rate is set at 2e-5 , with an inverse square learning rate decay to 0. The training operates under fp16 precision, facilitated by deepspeed Rasley et al. (2020), employing ZeRO stage 2."
+        },
+        {
+            "heading": "D DATA INFORMATION",
+            "text": "D.1 SAMPLING RATIO FOR MONOLINGUAL DATA\nIn Table 5, we observe a substantial imbalance in the volume of monolingual data available for different languages, denoted by their respective word counts8. Specifically, the English language dataset contains 523.9B words, vastly outnumbering other languages, such as Icelandic, which contains 0.3B words. Utilizing an unmodified concatenation and shuffling approach for this data would disproportionately prioritize English, undermining our objective of enhancing the model\u2019s proficiency in non-English languages. To address this, we straightforwardly set the sampling ratio for English as P (l = en) = 16 , thereby ensuring a balanced learning emphasis. The remaining 5 6 of the probability allocation employs temperature sampling, as suggested by Aharoni et al. (2019), a technique prevalently adopted in the processing of unbalanced multilingual machine translation. Consequently, the process of selecting a monolingual example from language l adheres to the following distribution:\nP (l) \u221d ( Dl\u2211 l\u2032\u2208L Dl\u2032 ) 1 T s.t. \u2211 l\u2032\u2208L P (l\u2032) = 5 6 (3)\nwhere Dl is the amount of the data in language l, T is the temperature, and L is the set of all languages except for English. The temperature we use is 6.\n8https://huggingface.co/datasets/oscar-corpus/OSCAR-2301\nD.2 DATA STATISTICS\nWe show data statistics in Table 5. The training parallel data is sourced from the WMT\u201917 to WMT\u201920. The development data was acquired from WMT\u201921, and the test data was derived from WMT\u201922, with the exception of the Icelandic dataset, which was procured from WMT\u201921. This means, Icelandic does not have development dataset. Additionally, the monolingual data was extracted from the Oscar dataset."
+        },
+        {
+            "heading": "E OFF-TARGET ISSUE FOR LLAMA-2-13B",
+            "text": "In the zero-shot scenario, the performance of LLaMA-2-13 is reasonable for translations into English. However, we identify a significant off-target issue with LLaMA-2-13B when translating from English to other languages. This issue is highlighted in Table 6 using a red highlighted box . An illustrative example of the off-target issue is provided below:\nTranslate this from English to Russian: English: Plug the wall charger (not included) to a power outlet, and then connect your eReader to the wall charger. Russian: Comment: I\u2019m voting to close this question as off-topic because it is not about programming.\nwithin red boxes . Implementing prompts in the target languages and incorporating few-shot learning can markedly alleviate this issue. It is pertinent to note that the quality of the shots also influences the final outcomes.\nExpectedly, the model should produce translations in Russian. Yet, LLaMA-2-13B outputs \u201cI\u2019m voting to ...\u201d, indicating a misinterpretation of the task, potentially linked to its pre-training phase. We address this off-target behavior through two methods.\nPrompt in the Target Language One approach is to utilize prompts in the target language (Raunak et al., 2023). For instance, when translating from English to Chinese, the preferred prompt\nis: \u201d\u5c06\u5176\u4ece\u82f1\u6587\u7ffb\u8bd1\u6210\u4e2d\u6587\uff1a\\n\u82f1\u6587\uff1a<source sentence>\\n\u4e2d\u6587\uff1a\u201d as opposed to \u201dTranslate this from English to Chinese:\\nEnglish:<source sentence>\\nChinese:\u201d. Employing this technique markedly enhances the zero-shot performance of LLaMA-2-13B. Specifically, the BLEU score escalates from 0.87 to 20.80 for en\u2192cs, and from 0.59 to 22.66 for en\u2192ru.\nIn-Context Few-Shot Learning Employing in-context few-shot learning by including several examples within the prompt has proven effective. We investigate both 1-shot and 5-shot learning scenarios. As delineated in Section I, we utilize two sets of examples: Filtered, extracted from the WMT training data, and another set randomly chosen from human-written data, termed HW. Table 6 demonstrates that both 1-shot and 5-shot configurations effectively counteract the off-target challenges. Few-shot learning exhibits performance comparable to the strategy of using prompts in the target language. Moreover, echoing observations from Section I, examples of human-written quality outperform those from the Filtered set.\nNevertheless, both strategies trail behind our proposed solution by a margin of approximately 5 BLEU and COMET points during translations into English, and by over 10 BLEU and COMET points in translations originating from English."
+        },
+        {
+            "heading": "F NUMERIC RESULTS FOR MODELS FINE-TUNED WITH EVERY 1B TOKENS",
+            "text": "In Table 7 and 8, results for LLaMA-2-13B and LLaMA-2-7B are presented. Both models were fine-tuned at every 1B-token interval (comprising six languages) before subsequent fine-tuning with human-written parallel data. Full-weight fine-tuning was employed to ensure a consistent comparison. During inference, the 7B models utilized a beam search of size 5, while the 13B models adopted a greedy search strategy. For 13B models, we only utilize a beam size 5 for the final models we reported in the main manuscript (Table 1 and 2).\nThe data from these tables highlight that fine-tuning only 1B tokens, followed by human-written data fine-tuning, is adequate to compete with or even outperform the state-of-the-art (SoTA) models."
+        },
+        {
+            "heading": "G DETAILED RESULTS IN ABLATION STUDY",
+            "text": "We show the detailed results of the ablation study on the effect of monolingual data and the quality of the data in Table 9.\nH IS MORE HUMAN-WRITTEN PARALLEL DATA BETTER?\nThe composition of our human-written data consists of the prior-year WMT test sets (approximately 10K parallel sentences per pair) and Flores data (around 2K per pair). In this analysis, we assess the\nimpact of additional human-written parallel data. Specifically, we compare models (LLaMa-2-7B after stage 1) fine-tuned exclusively on Flores against those fine-tuned on both Flores and WMT data. Results can be found in Table 10. Notably, upon integrating WMT data into the training set, we discern a modest improvement in COMET scores. However, there\u2019s an uptick in BLEU scores, particularly for translations into English. We attribue the increase in lexical match (BLEU) to the domain alignment of WMT data. Consequently, our hypothesis is that while an augmented volume of human-written data might marginally enhance segment-level human judgment correlation (COMET), in-domain data can significantly enhance lexical matching."
+        },
+        {
+            "heading": "I PARALLEL DATA FINE-TUNING VS. IN-CONTEXT LEARNING",
+            "text": "An alternative way to instruct the model to have better translation is in-context learning (ICL) (Brown et al., 2020), as opposed to additional fine-tuning on parallel data. However, ICL is limited to only a few shots given the length of translation examples, while fine-tuning can leverage\nentirely available data. For ICL, we consider 5-shot evaluations. 5 examples are randomly selected from Filtered data (the Quality-Random examples used by Hendy et al. (2023)). We also consider another 5 examples randomly from the human-written data to examine the impact of example quality. We here compare the performance of our fine-tuning method and 5-shot ICL.9 We assess the LLaMA-2-13B after stage 1 (12B token fine-tuning) and present results in Table 11.\nInterestingly, ICL also holds the same property that higher quality data leads to better performance (Filtered 5-shot vs. HW 5-shot). Moreover, as expected, ICL substantially underperforms our stage 2 fine-tuning possibly due to the small examples provided, which aligns with the findings in the previous work (Liu et al., 2022; Mosbach et al., 2023). This could also clarify why implementing ICL subsequent to stage 2 yields no additional benefits, as all high-quality data has already been incorporated during stage 2 fine-tuning (the last row in the Table)."
+        },
+        {
+            "heading": "J CROSS-LINGUAL PROFICIENCY OF FINE-TUNED MODELS",
+            "text": "We explore the cross-lingual competencies of our models derived from LLaMA-2 after fine-tuning them on monolingual data. Our aim is to discern whether augmenting monolingual data enhances performance in cross-lingual tasks. Experiments were conducted on zero-shot cross-lingual tasks encompassing three benchmarks: Cross-lingual language understanding (XNLI) Conneau et al. (2018), XStoryCloze\u2014a translation of the English StoryCloze dataset into ten languages (Mostafazadeh et al., 2017), and XWinograd\u2014a multilingual compilation of Winograd Schemas Tikhonov & Ryabinin (2021). Evaluations were restricted to languages overlapping with our fine-tuned languages, namely, German (with only XNLI being inclusive), Chinese, Russian, and English. Unfortunately, none of these datasets covers Icelandic. We first consider baselines for some widely used models: XLM-R large (Conneau et al., 2020), XGLM-7.5B (Lin et al., 2021), BLOOM-7B (Scao et al., 2022), and MPT-7B (MosaicML, 2023). In these comparisons, LLaMA-2 demonstrates the top performance for the tested languages. Subsequent fine-tuning with either 1B or 20B monolingual tokens on both LLaMA-2-7B and 13B models yields substantial enhancements for non-English languages across all tasks. A consistent trend observed was that increased monolingual data corresponds to greater performance boosts. Only English is observed for a negligible difference after fine-tuning monolingual data, which is an anticipated outcome given LLaMA-2\u2019s proficient grasp of English. The tool we utilize for LLM evaluation is lm-evaluation-harness (Gao et al., 2021).10\n9Due to ICL\u2019s extended prompt length, employing a large beam size is impractical; hence, we opt for a beam size of 1 for all to ensure a fair comparison.\n10https://github.com/EleutherAI/lm-evaluation-harness/tree/big-refactor"
+        }
+    ],
+    "title": "A PARADIGM SHIFT IN MACHINE TRANSLATION: BOOSTING TRANSLATION PERFORMANCE OF LARGE LANGUAGE MODELS",
+    "year": 2024
+}

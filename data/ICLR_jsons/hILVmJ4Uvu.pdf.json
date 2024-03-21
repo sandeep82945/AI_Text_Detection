@@ -1,0 +1,944 @@
+{
+    "abstractText": "Despite the impressive performance across numerous tasks, large language models (LLMs) often fail in solving simple decision-making tasks due to the misalignment of the knowledge in LLMs with environments. On the contrary, reinforcement learning (RL) agents learn policies from scratch, which makes them always align with environments but difficult to incorporate prior knowledge for efficient explorations. To narrow the gap, we propose TWOSOME, a novel general online framework that deploys LLMs as decision-making agents to efficiently interact and align with embodied environments via RL without requiring any prepared datasets or prior knowledge of the environments. Firstly, we query the joint probabilities of each valid action with LLMs to form behavior policies. Then, to enhance the stability and robustness of the policies, we propose two normalization methods and summarize four prompt design principles. Finally, we design a novel parameter-efficient training architecture where the actor and critic share one frozen LLM equipped with low-rank adapters (LoRA) updated by PPO. We conduct extensive experiments to evaluate TWOSOME. i) TWOSOME exhibits significantly better sample efficiency and performance compared to the conventional RL method, PPO, and prompt tuning method, SayCan, in both classical decisionmaking environment, Overcooked, and simulated household environment, VirtualHome. ii) Benefiting from LLMs\u2019 open-vocabulary feature, TWOSOME shows superior generalization ability to unseen tasks. iii) Under our framework, there is no significant loss of the LLMs\u2019 original ability during online PPO finetuning. 1",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "ALIGNING LLMS"
+        },
+        {
+            "affiliations": [],
+            "name": "REINFORCEMENT LEARNING"
+        },
+        {
+            "affiliations": [],
+            "name": "Weihao Tan"
+        },
+        {
+            "affiliations": [],
+            "name": "Wentao Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Shanqi Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Longtao Zheng"
+        },
+        {
+            "affiliations": [],
+            "name": "Xinrun Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Bo An"
+        }
+    ],
+    "id": "SP:d39c69470f8e60ce0fbe77544618f1933868c3e4",
+    "references": [
+        {
+            "authors": [
+                "Josh Abramson",
+                "Arun Ahuja",
+                "Iain Barr",
+                "Arthur Brussee",
+                "Federico Carnevale",
+                "Mary Cassin",
+                "Rachita Chhaparia",
+                "Stephen Clark",
+                "Bogdan Damoc",
+                "Andrew Dudzik"
+            ],
+            "title": "Imitating interactive intelligence",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Anthony Brohan",
+                "Yevgen Chebotar",
+                "Chelsea Finn",
+                "Karol Hausman",
+                "Alexander Herzog",
+                "Daniel Ho",
+                "Julian Ibarz",
+                "Alex Irpan",
+                "Eric Jang",
+                "Ryan Julian"
+            ],
+            "title": "Do as I can, not as I say: Grounding language in robotic affordances",
+            "venue": "In Conference on Robot Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom B Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "In Proceedings of the 34th International Conference on Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Thomas Carta",
+                "Cl\u00e9ment Romac",
+                "Thomas Wolf",
+                "Sylvain Lamprier",
+                "Olivier Sigaud",
+                "Pierre-Yves Oudeyer"
+            ],
+            "title": "Grounding large language models in interactive environments with online reinforcement learning",
+            "venue": "arXiv preprint arXiv:2302.02662,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Maxime Chevalier-Boisvert",
+                "Dzmitry Bahdanau",
+                "Salem Lahlou",
+                "Lucas Willems",
+                "Chitwan Saharia",
+                "Thien Huu Nguyen",
+                "Yoshua Bengio"
+            ],
+            "title": "Babyai: A platform to study the sample efficiency of grounded language learning",
+            "venue": "arXiv preprint arXiv:1810.08272,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "arXiv preprint arXiv:2204.02311,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ishita Dasgupta",
+                "Christine Kaeser-Chen",
+                "Kenneth Marino",
+                "Arun Ahuja",
+                "Sheila Babayan",
+                "Felix Hill",
+                "Rob Fergus"
+            ],
+            "title": "Collaborating with language models for embodied reasoning",
+            "venue": "In Second Workshop on Language and Reinforcement Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ning Ding",
+                "Yujia Qin",
+                "Guang Yang",
+                "Fuchao Wei",
+                "Zonghan Yang",
+                "Yusheng Su",
+                "Shengding Hu",
+                "Yulin Chen",
+                "Chi-Min Chan",
+                "Weize Chen"
+            ],
+            "title": "Parameter-efficient fine-tuning of large-scale pre-trained language models",
+            "venue": "Nature Machine Intelligence,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Danny Driess",
+                "Fei Xia",
+                "Mehdi SM Sajjadi",
+                "Corey Lynch",
+                "Aakanksha Chowdhery",
+                "Brian Ichter",
+                "Ayzaan Wahid",
+                "Jonathan Tompson",
+                "Quan Vuong",
+                "Tianhe Yu"
+            ],
+            "title": "PaLM-E: An embodied multimodal language model",
+            "venue": "arXiv preprint arXiv:2303.03378,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Linxi Fan",
+                "Guanzhi Wang",
+                "Yunfan Jiang",
+                "Ajay Mandlekar",
+                "Yuncong Yang",
+                "Haoyi Zhu",
+                "Andrew Tang",
+                "De-An Huang",
+                "Yuke Zhu",
+                "Anima Anandkumar"
+            ],
+            "title": "MineDojo: Building open-ended embodied agents with internet-scale knowledge",
+            "venue": "arXiv preprint arXiv:2206.08853,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zihao Fu",
+                "Wai Lam",
+                "Anthony Man-Cho So",
+                "Bei Shi"
+            ],
+            "title": "A theoretical analysis of the repetition problem in text generation",
+            "venue": "In Proceedings of the AAAI Conference on Artificial Intelligence,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Leo Gao",
+                "Jonathan Tow",
+                "Stella Biderman",
+                "Sid Black",
+                "Anthony DiPofi",
+                "Charles Foster",
+                "Laurence Golding",
+                "Jeffrey Hsu",
+                "Kyle McDonell",
+                "Niklas Muennighoff",
+                "Jason Phang",
+                "Laria Reynolds",
+                "Eric Tang",
+                "Anish Thite",
+                "Ben Wang",
+                "Kevin Wang",
+                "Andy Zou"
+            ],
+            "title": "A framework for few-shot language model evaluation",
+            "venue": "URL https://doi.org/10.5281/zenodo",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yicong Hong",
+                "Qi Wu",
+                "Yuankai Qi",
+                "Cristian Rodriguez-Opazo",
+                "Stephen Gould"
+            ],
+            "title": "Vln-bert: A recurrent vision-and-language bert for navigation",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Neil Houlsby",
+                "Andrei Giurgiu",
+                "Stanislaw Jastrzebski",
+                "Bruna Morrone",
+                "Quentin De Laroussilhe",
+                "Andrea Gesmundo",
+                "Mona Attariyan",
+                "Sylvain Gelly"
+            ],
+            "title": "Parameter-efficient transfer learning for NLP",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Edward J Hu",
+                "Yelong Shen",
+                "Phillip Wallis",
+                "Zeyuan Allen-Zhu",
+                "Yuanzhi Li",
+                "Shean Wang",
+                "Lu Wang",
+                "Weizhu Chen"
+            ],
+            "title": "LoRA: Low-rank adaptation of large language models",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Hengyuan Hu",
+                "Dorsa Sadigh"
+            ],
+            "title": "Language instructed reinforcement learning for human-AI coordination",
+            "venue": "arXiv preprint arXiv:2304.07297,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shengyi Huang",
+                "Chang Ye",
+                "Jeff Braga",
+                "Dipam Chakraborty",
+                "Kinal Mehta",
+                "Jo\u00e3o GM Ara\u00fajo"
+            ],
+            "title": "CleanRL: High-quality single-file implementations of deep reinforcement learning algorithms",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenlong Huang",
+                "Pieter Abbeel",
+                "Deepak Pathak",
+                "Igor Mordatch"
+            ],
+            "title": "Language models as zero-shot planners: Extracting actionable knowledge for embodied agents",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenlong Huang",
+                "Fei Xia",
+                "Ted Xiao",
+                "Harris Chan",
+                "Jacky Liang",
+                "Pete Florence",
+                "Andy Zeng",
+                "Jonathan Tompson",
+                "Igor Mordatch",
+                "Yevgen Chebotar",
+                "Pierre Sermanet",
+                "Tomas Jackson",
+                "Noah Brown",
+                "Linda Luu",
+                "Sergey Levine",
+                "Karol Hausman",
+                "Brian Ichter"
+            ],
+            "title": "Inner monologue: Embodied reasoning through planning with language models",
+            "venue": "In Conference on Robot Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yunfan Jiang",
+                "Agrim Gupta",
+                "Zichen Zhang",
+                "Guanzhi Wang",
+                "Yongqiang Dou",
+                "Yanjun Chen",
+                "Li FeiFei",
+                "Anima Anandkumar",
+                "Yuke Zhu",
+                "Linxi Fan"
+            ],
+            "title": "Vima: General robot manipulation with multimodal prompts",
+            "venue": "arXiv preprint arXiv:2210.03094,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Siddharth Karamcheti",
+                "Megha Srivastava",
+                "Percy Liang",
+                "Dorsa Sadigh"
+            ],
+            "title": "LILA: Languageinformed latent actions",
+            "venue": "In Conference on Robot Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Apoorv Khandelwal",
+                "Luca Weihs",
+                "Roozbeh Mottaghi",
+                "Aniruddha Kembhavi"
+            ],
+            "title": "Simple but effective: CLIP embeddings for embodied AI",
+            "venue": "Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Geunwoo Kim",
+                "Pierre Baldi",
+                "Stephen McAleer"
+            ],
+            "title": "Language models can solve computer",
+            "venue": "tasks. arXiv preprint arXiv:2303.17491,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "George Konidaris",
+                "Scott Kuindersma",
+                "Roderic Grupen",
+                "Andrew Barto"
+            ],
+            "title": "Autonomous skill acquisition on a mobile manipulator",
+            "venue": "In Proceedings of the AAAI Conference on Artificial Intelligence,",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Aviral Kumar",
+                "Rishabh Agarwal",
+                "Xinyang Geng",
+                "George Tucker",
+                "Sergey Levine"
+            ],
+            "title": "Offline Qlearning on diverse multi-task data both scales and generalizes",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Brian Lester",
+                "Rami Al-Rfou",
+                "Noah Constant"
+            ],
+            "title": "The power of scale for parameter-efficient prompt tuning",
+            "venue": "In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shuang Li",
+                "Xavier Puig",
+                "Chris Paxton",
+                "Yilun Du",
+                "Clinton Wang",
+                "Linxi Fan",
+                "Tao Chen",
+                "De-An Huang",
+                "Ekin Aky\u00fcrek",
+                "Anima Anandkumar",
+                "Jacob Andreas",
+                "Igor Mordatch",
+                "Antonio Torralba",
+                "Yuke Zhu"
+            ],
+            "title": "Pre-trained language models for interactive decision-making",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiang Lisa Li",
+                "Percy Liang"
+            ],
+            "title": "Prefix-tuning: Optimizing continuous prompts for generation",
+            "venue": "In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "J. Liang",
+                "Wenlong Huang",
+                "F. Xia",
+                "Peng Xu",
+                "Karol Hausman",
+                "Brian Ichter",
+                "Peter R. Florence",
+                "Andy Zeng"
+            ],
+            "title": "Code as policies: Language model programs for embodied control",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Pan Lu",
+                "Baolin Peng",
+                "Hao Cheng",
+                "Michel Galley",
+                "Kai-Wei Chang",
+                "Ying Nian Wu",
+                "Song-Chun Zhu",
+                "Jianfeng Gao"
+            ],
+            "title": "Chameleon: Plug-and-play compositional reasoning with large language models",
+            "venue": "arXiv preprint arXiv:2304.09842,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Arjun Majumdar",
+                "Ayush Shrivastava",
+                "Stefan Lee",
+                "Peter Anderson",
+                "Devi Parikh",
+                "Dhruv Batra"
+            ],
+            "title": "Improving vision-and-language navigation with image-text pairs from the web",
+            "venue": "In Computer Vision\u2013ECCV 2020: 16th European Conference,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Gray",
+                "John Schulman",
+                "Jacob Hilton",
+                "Fraser Kelton",
+                "Luke Miller",
+                "Maddie Simens",
+                "Amanda Askell",
+                "Peter Welinder",
+                "Paul Christiano",
+                "Jan Leike",
+                "Ryan Lowe"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Simone Parisi",
+                "Aravind Rajeswaran",
+                "Senthil Purushwalkam",
+                "Abhinav Kumar Gupta"
+            ],
+            "title": "The unsurprising effectiveness of pre-trained vision models for control",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xavier Puig",
+                "Kevin Ra",
+                "Marko Boben",
+                "Jiaman Li",
+                "Tingwu Wang",
+                "Sanja Fidler",
+                "Antonio Torralba"
+            ],
+            "title": "Virtualhome: Simulating household activities via programs",
+            "venue": "In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Allen Z Ren",
+                "Bharat Govil",
+                "Tsung-Yen Yang",
+                "Karthik R Narasimhan",
+                "Anirudha Majumdar"
+            ],
+            "title": "Leveraging language for accelerated learning of tool manipulation",
+            "venue": "In Conference on Robot Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "John Schulman",
+                "Filip Wolski",
+                "Prafulla Dhariwal",
+                "Alec Radford",
+                "Oleg Klimov"
+            ],
+            "title": "Proximal policy optimization algorithms",
+            "venue": "arXiv preprint arXiv:1707.06347,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Yongliang Shen",
+                "Kaitao Song",
+                "Xu Tan",
+                "Dongsheng Li",
+                "Weiming Lu",
+                "Yueting Zhuang"
+            ],
+            "title": "HuggingGPT: Solving AI tasks with ChatGPT and its friends in Huggingface",
+            "venue": "arXiv preprint arXiv:2303.17580,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Noah Shinn",
+                "Beck Labash",
+                "Ashwin Gopinath"
+            ],
+            "title": "Reflexion: An autonomous agent with dynamic memory and self-reflection",
+            "venue": "arXiv preprint arXiv:2303.11366,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mohit Shridhar",
+                "Lucas Manuelli",
+                "Dieter Fox"
+            ],
+            "title": "Cliport: What and where pathways for robotic manipulation",
+            "venue": "In Conference on Robot Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ishika Singh",
+                "Valts Blukis",
+                "Arsalan Mousavian",
+                "Ankit Goyal",
+                "Danfei Xu",
+                "Jonathan Tremblay",
+                "Dieter Fox",
+                "Jesse Thomason",
+                "Animesh Garg"
+            ],
+            "title": "Progprompt: Generating situated robot task plans using large language models",
+            "venue": "arXiv preprint arXiv:2209.11302,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Richard S Sutton",
+                "Andrew G Barto"
+            ],
+            "title": "Reinforcement Learning: An Introduction",
+            "venue": "MIT press,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Georgios Theocharous",
+                "Leslie Kaelbling"
+            ],
+            "title": "Approximate planning in pomdps with macro-actions",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2003
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "LLaMA: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Guanzhi Wang",
+                "Yuqi Xie",
+                "Yunfan Jiang",
+                "Ajay Mandlekar",
+                "Chaowei Xiao",
+                "Yuke Zhu",
+                "Linxi Fan",
+                "Anima Anandkumar"
+            ],
+            "title": "Voyager: An open-ended embodied agent with large language models",
+            "venue": "arXiv preprint arXiv:2305.16291,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zihao Wang",
+                "Shaofei Cai",
+                "Anji Liu",
+                "Xiaojian Ma",
+                "Yitao Liang"
+            ],
+            "title": "Describe, explain, plan and select: Interactive planning with large language models enables open-world multi-task agents",
+            "venue": "arXiv preprint arXiv:2302.01560,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sarah A Wu",
+                "Rose E Wang",
+                "James A Evans",
+                "Joshua B Tenenbaum",
+                "David C Parkes",
+                "Max Kleiman-Weiner"
+            ],
+            "title": "Too many cooks: Bayesian inference for coordinating multi-agent collaboration",
+            "venue": "Topics in Cognitive Science,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jiannan Xiang",
+                "Tianhua Tao",
+                "Yi Gu",
+                "Tianmin Shu",
+                "Zirui Wang",
+                "Zichao Yang",
+                "Zhiting Hu"
+            ],
+            "title": "Language models meet world models: Embodied experiences enhance language models",
+            "venue": "arXiv preprint arXiv:2305.10626,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yuchen Xiao",
+                "Weihao Tan",
+                "Christopher Amato"
+            ],
+            "title": "Asynchronous actor-critic for multi-agent reinforcement learning",
+            "venue": "In Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jin Xu",
+                "Xiaojiang Liu",
+                "Jianhao Yan",
+                "Deng Cai",
+                "Huayang Li",
+                "Jian Li"
+            ],
+            "title": "Learning to break the loop: Analyzing and mitigating repetitions for neural text generation",
+            "venue": "arXiv preprint arXiv:2206.02369,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shunyu Yao",
+                "Jeffrey Zhao",
+                "Dian Yu",
+                "Nan Du",
+                "Izhak Shafran",
+                "Karthik R Narasimhan",
+                "Yuan Cao"
+            ],
+            "title": "ReAct: Synergizing reasoning and acting in language models",
+            "venue": "In The Eleventh International Conference on Learning Representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Andy Zeng",
+                "Adrian S. Wong",
+                "Stefan Welker",
+                "Krzysztof Choromanski",
+                "Federico Tombari",
+                "Aveek Purohit",
+                "Michael S. Ryoo",
+                "Vikas Sindhwani",
+                "Johnny Lee",
+                "Vincent Vanhoucke",
+                "Peter R. Florence"
+            ],
+            "title": "Socratic models: Composing zero-shot multimodal reasoning with language. ArXiv",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Longtao Zheng",
+                "Rundong Wang",
+                "Xinrun Wang",
+                "Bo An"
+            ],
+            "title": "Synapse: Trajectory-as-exemplar prompting with memory for computer control",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dasgupta"
+            ],
+            "title": "2022) employ the LLM as a planner and success detector for an agent with their actor module necessitates pre-training with RL to enable the agent to follow natural language instructions. While these works demonstrate impressive results, they rely too heavily on the inherent capabilities of powerful LLMs, like GPT4 and PaLM (Chowdhery",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "tuning (Lester"
+            ],
+            "title": "2021) and prefix tuning (Li & Liang, 2021) prepend additional tunable tokens to the input or hidden layers, and adapter tuning (Houlsby et al., 2019) introduces the adapter, i.e., the bottleneck layers, to LLMs, where only the introduced tokens and adapters are finetuned. Recently, low-rank adaption (LoRA) (Hu et al., 2022) introduces low-rank matrices to approximate parameter updates",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiao"
+            ],
+            "title": "2022) despite that we only have one agent. Here we list and briefly describe all the macro-actions we use: Chop, chops a raw ingredient into pieces when the agent stands next to a cutting board with an unchopped ingredient on it. Get-Tomato, Get-Lettuce, Get-Onion, Get-Bowl, Go-Cutting-Board-1/2 and Deliver, which navigate the agent to the location of the corresponding object and execute the corresponding action",
+            "year": 2022
+        }
+    ],
+    "sections": [
+        {
+            "text": "1 INTRODUCTION\nLLMs have demonstrated remarkable success in natural language generation and understanding (Brown et al., 2020; OpenAI, 2023). Recent studies show that LLMs can manage other AI models and tools to address complex multimodal tasks (Shen et al., 2023; Lu et al., 2023), assist or play sophisticated games, such as TextWorld (Yao et al., 2023), Handbi (Hu & Sadigh, 2023), and MineCraft (Wang et al., 2023a), or be deployed on robots for real-world interactions (Brohan et al., 2023; Driess et al., 2023). While LLMs can provide insightful suggestions for complex tasks, they often fail in solving simple decision-making tasks due to misalignment issues (Brohan et al., 2023).\nThere are two main misalignment issues leading to the failures of LLMs in decision-making\n\u2217Co-corresponding Authors 1Code is available at https://github.com/WeihaoTan/TWOSOME.\ntasks. i) LLMs may generate invalid actions. As the example shown in Figure 1a, LLMs may keep adding cucumber and pepper when asked to make a tomato and lettuce salad, while these ingredients are not provided. ii) LLMs may not know accurately the dynamic transitions of the environments, especially when some specific constraints are introduced in the environments. This incorrect estimation will make LLMs tend to choose actions that fit their learned common sense, resulting in the failure to solve domain-specific tasks. As the example shown in Figure 1b, LLMs may keep trying to put both tomato and lettuce on the same cutting board, without knowing that only one item can be placed on the board in this environment. Addressing these two misalignment issues requires careful alignment between LLMs and environments.\nOn the contrary, reinforcement learning (RL) learns agents\u2019 policies from scratch through trial and error in environments (Sutton & Barto, 2018), which ensures that RL agents are well aligned with environments. Most RL methods start from random policies, updated according to the return from the environments, which leads to poor sample efficiency as most policies have poor performance at the early stage of learning. One way to improve the sample efficiency is to incorporate the prior knowledge with the initialization of the policy and the exploration during training (Kumar et al., 2023). LLMs are ideal sources of prior knowledge for RL agents as LLMs are trained with enormous data from the corpus. Therefore, by leveraging RL to align LLMs with embodied environments to solve decision-making tasks, we can address the misalignment issues in LLMs and the sample efficiency issue in RL simultaneously.\nMotivated by this idea, we propose True knoWledge cOmeS frOM practicE (TWOSOME), a general online framework that deploys LLMs as embodied agents to efficiently interact and align with environments via RL to solve decision-making tasks without requiring any prepared datasets or prior knowledge of the environments. Instead of letting LLMs directly generate actions, we use the loglikelihood scores of each token provided by LLMs to calculate the joint probabilities of each action and form valid behavior policies. This process eliminates the misalignment caused by invalid actions. Moreover, the LLM agents are optimized with proximal policy optimization (PPO) (Schulman et al., 2017) using rewards from the environments, which eliminates the misalignment caused by dynamic transitions. We observe that the formed behavior policies suffer a severe issue that longer actions tend to have lower joint probabilities, resulting in an unreasonable unbalance over the action distribution. To overcome this issue, we propose token normalization and word normalization in terms of the number of tokens and words in actions to rectify the unbalance. Furthermore, we design a novel architecture for efficient training, where both the actor and critic in RL methods share the same frozen LLaMA-7B model (Touvron et al., 2023), updated by parameter efficient finetuning methods, e.g., LoRA (Hu et al., 2022). During training, we observe that prompts for observations and actions can greatly influence the initial policies of LLM agents, therefore, we also summarize four principles for designing efficient prompts to enhance the reasoning ability of LLMs.\nWe first evaluate our methods on a classical RL decision-making environment, Overcooked, and a simulated physical environment, VirtualHome, with various tasks to show that our proposed word normalization method can remarkably improve stability and accelerate convergence during the training process. TWOSOME with word normalization exhibits significantly better sample efficiency and performance compared to the conventional RL method, PPO, and prompt tuning method, SayCan, in all tasks. Then, we test our trained TWOSOME agents in eight new unseen tasks and find that TWOSOME has superior generalization ability across unseen tasks. Finally, we evaluate our trained TWOSOME agents on traditional NLP benchmarks to demonstrate that under our framework, there is no significant loss of the LLMs\u2019 original ability during online PPO fine-tuning."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": "In this section, we present a brief overview of related work. More discussions are in Appendix A.\nEmbodied Agents with LLMs. Recent methods use LLMs to assist planning and reasoning in robot learning (Brohan et al., 2023; Liang et al., 2022; Zeng et al., 2022) and simulation environments (Fan et al., 2022; Wang et al., 2023a; Yao et al., 2023). LLMs are also applied to help robot navigation (Parisi et al., 2022; Majumdar et al., 2020) and manipulation (Jiang et al., 2022; Ren et al., 2023; Khandelwal et al., 2022). Among them, ReAct (Yao et al., 2023) uses chain-of-thought prompting by generating both reasoning traces and action plans with LLMs. SayCan (Brohan et al., 2023) leverages the ability of LLMs to understand human instructions to make plans for completing\ntasks without finetuning LLMs. Voyager (Wang et al., 2023a) leverages GPT-4 to learn and continually discover skills during learning. While these works exhibit promising results, they rely too heavily on the inherent capabilities of powerful LLMs, which are difficult to apply to smaller LLMs with weaker reasoning abilities. Concurrent to our work, GLAM (Carta et al., 2023) uses RL to ground LLMs. However, they focus on simple primitive actions in toy environments without rich semantics, resulting in underutilizing the capabilities of LLMs, and failing to observe the impact of prompt design and address the unbalance over action space.\nFinetuning LLMs. Parameter-efficient finetuning (PEFT) can significantly reduce the number of parameters to tune LLMs while with minor loss of the performance (Ding et al., 2023). Prompt tuning (Lester et al., 2021) and prefix tuning (Li & Liang, 2021) prepend additional tunable tokens to the input or hidden layers, and adapter tuning (Houlsby et al., 2019) introduces the adapter to LLMs, where only the introduced tokens and adapters are finetuned. Recently, low-rank adaption (LoRA) (Hu et al., 2022) introduces low-rank matrices to approximate parameter updates. Reinforcement learning from human feedback (RLHF) is effective in finetuning LLMs (Ouyang et al., 2022), where the reward for RL is learned from human feedback. Another concurrent work (Xiang et al., 2023) leverages embodied environments to provide feedback to finetune LLMs. Different from our method, they use supervised learning to finetune LLMs with pre-collected embodied experiences by random sampling in environments instead of doing decision-making tasks from scratch."
+        },
+        {
+            "heading": "3 PRELIMINARIES",
+            "text": "In this section, we provide a brief background on LLM and the RL problem formulation.\nLLMs learn from text data using unsupervised learning. LLMs optimize the joint probabilities of variable-length symbol sequences as the product of conditional probabilities by P (x) =\u220fn\ni=1 P (si|s1, ..., si\u22121), where (s1, s2, ..., sn) is variable length sequence of symbols. LoRA is a parameter- and compute-efficient finetuning method that incorporates trainable rank decomposition matrices into each layer of an LLM. It allows indirect training of dense layers with weight matrix, W0 \u2208 Rd\u00d7k by optimizing the rank-decomposition matrices by W0 + \u2206W = W0 +BA, where B \u2208 Rd\u00d7r, A \u2208 Rr\u00d7k, and the rank r is much smaller than d and k. RL formulates decision-making problems as Markov Decision Processes (MDPs). An MDP is defined by the tuple (S,A, T,R, \u03b3), where S is the state space, A is the action space, T is the transition dynamics, R is the reward function and \u03b3 is the discount factor. Agents select actions based on observations, aiming to maximize the expected discounted accumulative reward.\nPPO is a state-of-the-art actor-critic RL method that optimizes the policy based on the accumulative reward with advantage function A(st, at) = Q(st, at) \u2212 V (st), where V (st) is the value function and Q(st, at) is the action-value function. The objective of PPO can be expressed as:\nJ(\u03b8) = Es,a[min( \u03c0\u03b8(a|s) \u03c0\u03b8old(a|s) A\u03c0\u03b8old (s, a), clip( \u03c0\u03b8(a | s) \u03c0\u03b8old(a | s) , 1\u00b1 \u03f5)A\u03c0\u03b8old (s, a))]\nwhere A\u03c0\u03b8old represents the advantage function of the policy before updating, and the clip operator controls the size of policy updates.\nAligning LLMs with Embodied Environments. We intend to deploy LLMs as interactive agents in embodied environments, where LLMs receive textual observations and generate textual actions executed in the environments. The textual observations and actions can be transferred from images or vectors by vision-language modes (VLMs) or scripts. Compared to primitive actions, high-level actions, such as macro-actions (Theocharous & Kaelbling, 2003) and learned skills (Konidaris et al., 2011) usually have richer semantics, benefiting LLMs to leverage their prior knowledge."
+        },
+        {
+            "heading": "4 TWOSOME",
+            "text": "In this section, we present TWOSOME, a general online framework to align LLMs with embodied environments via RL. We first describe how to deploy LLMs as embodied agents to generate valid actions. Secondly, we investigate the influence of lengths of action prompts on the generated policies and propose two normalization techniques, i.e., token normalization and word normalization, to al-\nleviate the unbalance over actions. Then, we design a parameter-efficient training method under the PPO framework. Finally, we summarize four principles for efficient prompt design for TWOSOME."
+        },
+        {
+            "heading": "4.1 VALID POLICY GENERATION",
+            "text": "Actions directly generated by LLMs could be invalid in environments. This issue can be partially resolved by prompt design, i.e., adding the restrictions of actions in the prompt. However, most of the current LLMs cannot exactly follow the restrictions, especially for small and medium LLMs, i.e., less than 65B. Therefore, novel methods are required to let LLMs generate valid policies.\nInstead of letting LLMs generate actions directly, TWOSOME queries the scores of all available actions from LLMs. These scores are used to determine the probabilities of executing the actions, which is similar to SayCan (Brohan et al., 2023). The process of the generation of policy is illustrated in Figure 2. Specifically, we associate a unique semantic prompt, e.g., pick up the tomato, to each action in the embodied environments, named action prompt, and observation prompt for the raw observation. The action prompt ak \u2208 A is a sequence of tokens ak = {w1k, . . . , w Nk k } where Nk is the length of the action prompt k. We note that the action prompts are not necessarily of the same length. At each step, the observation prompt s \u2208 S is concatenated with each of the valid action prompts ak, which forms the input of the LLM. We use the probabilities of tokens generated by the LLMs to compute the probability of the action prompt. Note that this probability differs from the probability of executing the action in the environment. For convenience, we call this probability token-level probability. The token-level probability of ak is\nPtoken(ak|s) = P (w1k, . . . , w Nk k |s) = \u220fNk i=1 P (wik|s, w1k, . . . , wi\u22121k ) (1)\nNormally, scores provided by LLMs are the loglikelihood of each token, namely the logits, logPtoken. We use softmax to normalize token-level probabilities over actions to get the policy:\nP (ak|s) = exp(logPtoken(ak|s))\u2211 a\u2208A exp(logPtoken(a|s))\n(2)\nThere are two main advantages of this method: i) the generated policy is always valid for execution in the embodied environments and ii) leveraging the compositionability, our method can be applied to enormous actions representable by the vocabulary."
+        },
+        {
+            "heading": "4.2 ACTION PROMPT NORMALIZATION",
+            "text": "In this subsection, we will illustrate the issue in the method presented in the above section and present two normalization techniques to alleviate them.\nIssue of Eq. (1). One key issue in Eq. (1) is that the probability of each token P (wik|\u00b7) is always less than 1. Therefore, longer action prompts tend to have lower token-level probabilities, even though the longer action prompts may be more reasonable in the environment. For example, in Figure 2, pick up the tomato has more tokens than serve the dish but is the optimal action in terms of the given observation. A simple remedy for this issue is forcing all action prompts to have similar lengths, which is the case in GLAM (Carta et al., 2023) where all primitive actions have similar lengths. However, this will harm the applicability of the methods which makes the design of the\naction prompts difficult, even impossible sometimes. Therefore, we propose two normalization techniques, token normalization and word normalization, to address this issue.\nToken and Word Normalization. A simple idea to solve this issue is to normalize the token-level probabilities of the actions with the number of tokens, which can be defined as:\nlogP tntoken(ak|s) = logPtoken(ak|s)/Nk (3)\nWe note that logPtoken(ak|s) will always be negative, the longer action prompts will have smaller negative values, therefore, dividing by the number of tokens will make the token-level probabilities of longer action prompts fall in the same magnitude with short action prompts. Another option is that instead of dividing the number of tokens, we can normalize the token-level probability by dividing the number of words, i.e.,\nlogPwntoken(ak|s) = logPtoken(ak|s)/Wk (4)\nwhere Wk is the number of words in the action prompt k. For the example of pick up the tomato, Nk = 5 while Wk = 4.\nComparing the Two Normalizations. Though token normalization can eliminate the influence brought by the length of action prompts, it is slightly excessive. We observe that if a word is divided into several tokens, the first token usually has a relatively low probability, while the probabilities of the rest of the tokens tend to be remarkably high, which are often almost close to 100%. For example, another important action, chop, in the Overcooked environment, is made up of two tokens, ch and op. The probabilities of ch are usually in the range of 0 \u2212 20%, depending on the priority given by the LLM agent according to the observation, however, once ch appears, the probability of op will boost to 90 \u2212 99% in the next word since there are no other words starting with ch in the observation prompts. The same phenomenon is also observed in tomao and dish as shown in Figure 2. LLMs discovered and learned this statistical law during the autoregressive training process. Thus, instead of normalizing the probabilities of actions according to the number of tokens, it is more reasonable to regard the several tokens made up of one word as an integrated symbol. Therefore, word normalization is a more suitable normalization, where the log probabilities of action get averaged according to the number of words in the action prompts."
+        },
+        {
+            "heading": "4.3 PARAMETER-EFFICIENT PPO FINETUNING",
+            "text": "In this section, we present the parameter-efficient finetuning method to align LLMs and embodied environments with the generated policies under the PPO framework. We first introduce the network design and then the training procedure.\nArchitecture. As shown in Figure 3, we add additional MLP layers to the last transformer block of LLaMA-7B model as the critic. The critic\u2019s MLPs use the last token of the observation prompt as input and output the estimated value of the observation prompt. On the other hand, the actor is formed by the frozen LLaMA-7B model with the augmentation of LoRA parameters. We also note that the dropout layers would bring additional training instabilities, because the randomness of the dropout may violate the KL divergence constraint in PPO, therefore, we do not use dropout in our LoRA modules. During training, only the MLPs for\nthe critic and the LoRA parameters for the actor are updated, which makes the training efficient. The LLaMA-7B model can also serve as the reference model to regularize the update of the parameters, which is not explored in this work. Though we focus on the decoder-only models, our method can be seamlessly extended to the encoder-decoder architecture, e.g., T5 (Raffel et al., 2020).\nTraining. The training procedure generally follows PPO (Schulman et al., 2017), which is demonstrated to be effective in finetuning LLMs with human feedback (Ouyang et al., 2022). We observe the training instability when updating the actor multiple times with the same data, which is also\nobserved in DeepSpeed Chat blog2. Therefore, every sampled data is discarded after training once. Given the fact that the newly added MLPs in the critic are initialized randomly, while the LoRA parameters in the actor are initialized as zero, i.e., the output of the actor is exactly the same as the LLaMA-7B model, which is reasonable, therefore, a larger learning rate for the critic and a smaller learning rate for the actor is preferred for stable training and fast convergence.\nInference. During inference, the critic is discarded and only the actor is needed. Furthermore, the alignment of the LLMs and embodied environments is fully encoded in the LoRA parameters, which is normally 20 times less than the LLMs, e.g., 4.2M for LLaMA-7B. Therefore, the LoRA parameters can be a plug-and-play module of LLMs for generalizability across different environments."
+        },
+        {
+            "heading": "4.4 PROMPT DESIGN",
+            "text": "The prompts of observations and actions will significantly influence the generated policies by LLMs, which is a path orthogonal way to the finetuning for the alignment between LLMs and embodied environments. We summarize four principles for designing efficient prompts:\n\u2022 Prompts of observations and actions should be cohesive for concatenation. Observation prompts end with you should and the next step is to, indicating the start of action prompts.\n\u2022 Articles, i.e., the, a, and an, are important for action prompts. Most action prompts consist of a verb and a noun, e.g., pick up the tomato. As LLMs are trained with high-quality corpus, they are sensitive to the articles. Therefore, pick up the tomato is better than pick up tomato, where the latter leads to the extremely low probability on tomato.\n\u2022 Preferred actions should appear in the observation prompt. As observed in (Xu et al., 2022; Fu et al., 2021), LLMs tend to assign higher probabilities to the repetitive tokens. Therefore, we can encourage LLMs to assign higher probability on preferred actions by emphasizing the nouns several times in the observation prompts. For example, if the observation prompt is I see a tomato. My task is to make a tomato salad. I should, then the tomato will have a relatively high probability.\n\u2022 The same action can have different action prompts under different observations. For example, in Overcooked, when the agent carries a bowl in hand, pick up the toamto can be replaced with put the tomato in the plate, where both action prompts have the same function in the environment, the latter one better fits with the context and thus has higher probability.\nThe objective of the prompt design is to represent the observations and actions in the understandable manner of LLMs, thus improving the alignment between LLMs and embodied environments."
+        },
+        {
+            "heading": "5 EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "5.1 EXPERIMENTS SETUP",
+            "text": "We deploy our methods on the LLaMA-7B model with half-precision and compare the performance among five methods: PPO (adapted from CleanRL (Huang et al., 2022a)), TWOSOME without finetuning (similar to SayCan (Brohan et al., 2023) with affordance value set to 1), TWOSOME without action prompt normalization (similar to GLAM (Carta et al., 2023) under decoder-only architecture and high-level actions) and TWOSOME with token normalization or word normalization. We mainly evaluate these methods in a typical decision-making environment, Overcooked, and a simulated physical household environment, VirtualHome.\nOvercooked An agent is placed in the 7\u00d77 Overcooked kitchen, aiming to make and serve a tomato salad and tomato-lettuce salad with the provided ingredients and tools in two tasks shown in Figure 4a and 4b. In the second task, we add an additional ingredient, onion as a disruptor, to show the robustness of our method. The agent needs to explore and learn the correct order to cook the dish with the provided macro-actions, such as Chop, Get-Tomato, and Go-Cutting-Board. The environment is partially observable. The agent only observes the objects within 5\u00d75 square centered on the agent. The reward involves +0.2 for chopping a correct ingredient, +1 terminal reward for delivering the correct dish, \u22120.1 for delivering any wrong item, and \u22120.001 for every time step. The environment is adapted from Xiao et al. (2022) and Wu et al. (2021).\n2https://github.com/microsoft/DeepSpeedExamples/blob/master/ applications/DeepSpeed-Chat/training/step3_rlhf_finetuning/README.md\nVirtualHome An agent is placed in a fully furnished household with various rich objects. Compared to Overcooked, this environment is more complex with a larger action space. The agent uses macro-actions to interact with the environment such as walk to the living room, turn on the TV and sit on the sofa. As shown in Figure 4c and 4d, we design two tasks. For the first task in Figure 4c, the agent needs to find the cold pancake on the table and heat it with the microwave in the kitchen. For the second task shown in Figure 4d, the agent plans to have some entertainment so it wants to find something to enjoy while watching TV. Thus, it needs to pick up chips and milk in the kitchen, bring them to the living room, turn on the TV, sit on the sofa and enjoy. The challenge arises when the agent already holding both the milk and chips, lacks an additional hand to turn on the TV. Consequently, it needs to learn to put at least one item on the nearby coffee table before operating the TV. Both tasks adopt a sparse reward setting, only when the task is finished, will the agent receive +1 reward. The environment is also partially observable. The agent can only see the objects in the current room. The environment is adapted from (Puig et al., 2018). A more detailed introduction of these two environments can be found in Appendix C. Our parameter-efficient framework enables us to complete all the experiments in one NVIDIA Tesla A100 40GB GPU. All the hyperparameters can be found in Appendix D.2. Finally, we provide the policy visualization and a detailed analysis of prompt design for all tasks in Appendix E and F."
+        },
+        {
+            "heading": "5.2 THE IMPACT OF DIFFERENT NORMALIZATIONS IN TWOSOME",
+            "text": "Figure 5a shows the performance of finetuned TWOSOMEs. TWOSOME with word normalization succeeds in learning the optimal policy among all tasks, exhibiting great performance, and high sample efficiency over other methods, which is consistent with the analysis in Section 4.2. Except for the second Overcooked task, which is more difficult, TWOSOME without normalization learns quickly at the beginning but suffers a severe sudden drop in the the other three tasks. Without normalization, the unbalance over action distribution can accelerate the training process if the shorter action prompts happen to be reasonable actions but introduce extra training instability. TWOSOME with token normalization alleviates this instability slightly excessively, resulting in less data efficiency and slow convergence, as shown in the two overcooked tasks."
+        },
+        {
+            "heading": "5.3 TWOSOME VS. BASELINES",
+            "text": "Figure 5b shows the performance among the typical RL method, PPO, prompt tuning method, TWOSOME without finetuning, and our best method, TWOSOME with word normalization.\nComparison with Prompt Tuning. TWOSOME without finetuning fully relies on the capabilities of pre-trained LLMs with the designed prompts, demonstrating the LLM\u2019s decision-making ability\nand the difficulty of the task. For the second task, which is the most difficult task, the non-finetuned LLM agent fails to finish the task completely. For the other three tasks, the low total returns with large variations indicate that the non-finetuned LLM agent can only finish these tasks with low probabilities. Prompt tuning can improve LLMs in solving easy decision-making tasks but difficult to solve complex and long-horizontal tasks with more interferents in the environment. We conclude that all training methods including PPO and all TWOSOME variants surpass the performance of the prompt tuning method, emphasizing the necessity of aligning LLMs with environments via RL.\nComparison with PPO. TWOSOME with word normalization succeeds in learning the optimal policies in both Overcooked tasks using 10k and 80k sampled data, respectively. In contrast, PPO fails to learn the optimal policy and gets stuck in the suboptimal due to partial observability. For the more complex second task, PPO even needs more than 500K steps to converge. As for the two tasks in VirtualHome, we find that vanilla PPO cannot deal with the large action space and learns nothing, as shown in Appendix C.3.1. So we mask all the unrelated actions in VirtualHome for PPO. The masked PPO manages to learn the optimal policy in the task of Food Preparation but still fails in the task of Entertainment. The results demonstrate that by leveraging the power of LLM, our method can defeat the traditional RL methods in solving decision-making tasks with large action spaces.\nAll finetuned TWOSOME methods, no matter whether they are normalized, manage to overcome partial observability and achieve optimal performance in at least two seeds in the two Overcooked tasks. Even though the agent does not see the target object, e.g., tomato, it can still appear in the goal part of the observation prompt, such as your task is to make a salad consisting of tomato, maintaining the high probabilities of tomato related actions, while other unrelated objects like onion, not appeared in neither the observation nor the observation prompt, remain relatively low probabilities. This feature greatly facilitates the exploration process and helps agents to sample good actions."
+        },
+        {
+            "heading": "5.4 OPEN-VOCABULARY TASK GENERALIZATION",
+            "text": "We also evaluate the generalization ability of TWOSOME in eight new unseen tasks. LLMs\u2019 openvocabulary feature enables TWOSOME to transfer learned skills to different tasks, while traditional RL agents do not have such ability. We compare the performance between our finetuned TWOSOME and non-tuned TWOSOME. Figure 6 shows that for the first four tasks, which are similar to the agent\u2019s original trained task, though non-tuned TWOSOME can somehow finish the tasks, fine-\ntuned TWOSOME achieves perfect performance. Replacing objects has little impact on finetuned TWOSOME. For the following two more different tasks, Washing Plate and Laundry, there is an obvious drop in the success rate of non-tuned TWOSOME, while finetuned TWOSOME still manages to complete the task. For the last two crossover tasks, where agents are tested in a completely different task, TWOSOME still exhibits remarkable performance. Especially in the Entertainment task, where non-tuned TWOSOME can barely finish the task and finetuned TWOSOME still maintains a 97% success rate. Total returns of each task are provided in Appendix B.2."
+        },
+        {
+            "heading": "5.5 IMPACT OF ONLINE FINETUNING",
+            "text": "To investigate the impacts of online finetuning on the LLM\u2019s abilities, we evaluate the models trained by TWOSOME with word normalization in Virtualhome on widely used NLP benchmarks (Gao et al., 2021). The models trained in Food Preparation and Entertainment are named TWOSOME-FP and TWOSOMEE, respectively. The four benchmarks are\nARC_C, HellaSwag, PIQA and MMLU, which are also reported in Touvron et al. (2023). Results of the zero-shot performance are displayed in Table 1, which demonstrates that there is no significant loss of the ability of the language understanding of LLMs after the aligning with embodied environments, and even sometimes brings minor improvements. The full results are in Appendix B.3."
+        },
+        {
+            "heading": "6 DISCUSSION AND CONCLUSION",
+            "text": "In this paper, we propose TWOSOME, a general online framework for efficiently aligning LLMs with embodied environments via RL to solve decision-making tasks without requiring any prepared datasets or prior knowledge of environments and without significant loss of LLMs\u2019 original ability. Instead of letting LLMs generate actions directly, TWOSOME is more controllable and feasible with better interpretability, since the impact of tuning prompts can be clearly reflected by the change of action probabilities. TWOSOME with word normalization exhibits significantly better sample efficiency and performance compared to traditional RL methods and prompt tuning methods. Moreover, TWOSOME exhibits a remarkable generalization ability to transfer learned skills and knowledge to unseen tasks. However, our method suffers a major limitation that training a PPO agent from scratch is far faster and cheaper than finetuning an LLM. TWOSOME needs to feed all the valid actions to the LLMs for every action sampling, resulting in multiple times the amount of computation and a small batch size. We hope this work can provide a step toward the general autonomous agent, where LLMs can self-improve by interacting with the world and harvesting true knowledge from practice."
+        },
+        {
+            "heading": "REPRODUCIBILITY STATEMENT",
+            "text": "This work does not use any dataset. All the TWOSOME experimental code and environment code of Overcooked and VirtualHome are included in the Supplementary Materials. We also provide videos for each task recorded by our best agent in the Supplementary Materials. All the hyperparameters and network architecture we use can be found in Appendix D.1 and D.2. We provide the policy visualization and a detailed analysis of prompt design for all tasks in Appendix E and F. Our parameter-efficient framework enables us to complete all the experiments in one NVIDIA Tesla A100 40GB GPU. Additional experimental results such as success rate and NLP benchmarks can be found in Appendix B. A detailed introduction to the Overcooked and VirtualHome environments, including observation space, action space, and macro actions we use can be found in Appendix C."
+        },
+        {
+            "heading": "ACKNOWLEDGMENTS",
+            "text": "This research is supported by the National Research Foundation Singapore and DSO National Laboratories under the AI Singapore Programme (AISGAward No: AISG2-GC-2023-009). This research is also supported by the National Research Foundation, Singapore under its Industry Alignment Fund \u2013 Pre-positioning (IAF-PP) Funding Initiative. Any opinions, findings and conclusions or recommendations expressed in this material are those of the author(s) and do not reflect the views of National Research Foundation, Singapore. The computational work for this work was partially performed on resources of the National Supercomputing Centre, Singapore (https://www.nscc.sg)."
+        },
+        {
+            "heading": "APPENDIX",
+            "text": ""
+        },
+        {
+            "heading": "A MORE RELATED WORK",
+            "text": "Embodied Agent with LLMs. The successful integration of language as a semantically rich input for interactive decision-making highlights the crucial role of LLMs in facilitating interaction and decision-making processes (Abramson et al., 2020; Karamcheti et al., 2021; Li et al., 2022). LLMs are also applied in various environments to aid robot navigation (Parisi et al., 2022; Hong et al., 2021; Majumdar et al., 2020) and manipulation (Jiang et al., 2022; Ren et al., 2023; Khandelwal et al., 2022). Recently, there have been a large number of methods that utilize LLMs to enhance planning and reasoning capabilities in embodied agents. SayCan (Brohan et al., 2023) assesses the affordance of candidate actions by multiplying their probabilities under LLMs with a value function. Zeng et al. (2022) combine the LLM with a visual-language model and a pre-trained language-conditioned policy (Shridhar et al., 2022) to enable open vocabulary robotic tasks. Huang et al. (2022b) demonstrate that LLMs can be employed for planning and executing simple household tasks. They ground LLM-generated actions by comparing their embeddings with a predefined list of acceptable actions. To incorporate environment feedback, Inner Monologue (Huang et al., 2022c) extends SayCan using a closed-loop principle. This principle is also applied in related works such as (Yao et al., 2023; Huang et al., 2022c; Kim et al., 2023; Singh et al., 2022; Liang et al., 2022; Shinn et al., 2023; Wang et al., 2023b;a) to continuously monitor agent behaviors and refine and adjust plans accordingly for tasks such as computer automation, Minecraft, etc. Furthermore, there are approaches that prompt LLMs to generate temporal-abstracted actions (Zheng et al., 2023). Dasgupta et al. (2022) employ the LLM as a planner and success detector for an agent with their actor module necessitates pre-training with RL to enable the agent to follow natural language instructions. While these works demonstrate impressive results, they rely too heavily on the inherent capabilities of powerful LLMs, like GPT4 and PaLM (Chowdhery et al., 2022), which are difficult to apply to smaller LLMs with weaker reasoning abilities, like LLaMA-7B.\nConcurrent to our work, GLAM (Carta et al., 2023) utilizes RL finetuning to achieve functional grounding of LLMs. However, they focus on simple primitive actions (turn left, turn right, go forward, etc.) evaluated in toy environments, BabyAI (Chevalier-Boisvert et al., 2018) with a much smaller encoder-decoder LLM, Flan-T5-780M. These primitive actions have a similar number of tokens and less meaningful semantics, resulting in underutilizing the capabilities of LLMs, and failing to observe the impact of prompt design and address the unbalance over action space, resulting in additional instability and poor robustness.\nFinetuning LLMs. Parameter-efficient finetuning (PEFT) can significantly reduce the number of parameters to tune LLMs while with minor loss of the performance (Ding et al., 2023). Prompt tuning (Lester et al., 2021) and prefix tuning (Li & Liang, 2021) prepend additional tunable tokens to the input or hidden layers, and adapter tuning (Houlsby et al., 2019) introduces the adapter, i.e., the bottleneck layers, to LLMs, where only the introduced tokens and adapters are finetuned. Recently, low-rank adaption (LoRA) (Hu et al., 2022) introduces low-rank matrices to approximate parameter updates.\nReinforcement learning from human feedback (RLHF) (Ouyang et al., 2022) proves that RL is an effective way to make alignments with human preferences and proposes a novel perspective regarding LLMs as actors under actor-critic framework. Our work is also motivated by this method. While RLHF needs to train a reward model to simulate human preferences, these signals are naturally present in most RL environments, which makes it possible to align LLMs with certain environments.\nAnother concurrent work (Xiang et al., 2023) leverages VirtualHome to collect embodied experiences by random sampling and use supervised learning to finetune LLMs to these embodied knowledge. They finally apply a simple RL method, MCTS, to plan without training, instead of directly generating plans. It is worth pointing out that our method also applies their supervised learning process to learn the embodied knowledge and get more familiar with the environments. Our online PPO sampling is much more efficient and feasible than their random sampling, e.g. in the overcooked tasks, it is almost impossible to complete the task by random sampling. In addition, an online learning PPO is obviously better than a simple MCTS without training. Compared with this work, our method is a simpler end-to-end online framework, which can automatically acquire new knowledge and solve decision-making tasks by interacting with environments without any prepared datasets."
+        },
+        {
+            "heading": "B ADDITIONAL EXPERIMENTAL RESULTS",
+            "text": ""
+        },
+        {
+            "heading": "B.1 SUCCESS RATE IN OVERCOOKED AND VIRTUALHOME",
+            "text": "Besides the total reward provided in 5b, here we also provide the final success rates of all methods in Table 2, which tells almost the same story. Our TWOSOME with word normalization method achieves a 100% success rate across all tasks, exhibiting great stability and remarkable performance."
+        },
+        {
+            "heading": "B.2 PERFORMANCE OF TWOSOME AND SAYCAN IN EIGHT UNSEEN TASKS",
+            "text": "Table 3 and 4 show the final success rate and total return of our best method TWOSOME with word normalization and our baseline, SayCan(non-finetuned TWSOME) in eight unseen tasks. Each task is run for 100 episodes. TWOSOME exhibits superior generalization across all tasks."
+        },
+        {
+            "heading": "B.3 EVALUATION ON NLP BENCHMARKS",
+            "text": "To investigate the impacts of the PPO online finetuning on the LLM\u2019s abilities, we evaluate the models trained by TWOSOME with word normalization in the virtual home tasks on widely used NLP benchmasrks (Gao et al., 2021). The models trained in Food Preparation and Entertainment are named TWOSOME-FP and TWOSOME-E, respectively. The four benchmarks are ARC_C, HellaSwag, PIQA and MMLU, which are also reported in (Touvron et al., 2023). The results on ARC_Challenge, HellaSwag and PIQA are displayed in Table 5 and the results of MMLU are displayed in Table 6. All results are calculated following the default configurations in (Gao et al., 2021)."
+        },
+        {
+            "heading": "C DETAILS OF EMBODIED ENVIRONMENTS",
+            "text": "In this section, we present the details of the embodied environments Overcooked and VirtualHome."
+        },
+        {
+            "heading": "C.1 OVERCOOKED",
+            "text": "Goal. An agent is placed in the Overcooked kitchen and aims to cook a certain dish with the provided ingredients and tools and deliver it to the \u2018star\u2019 cell as soon as possible. Agents have to learn the correct procedure in terms of picking up raw vegetables, chopping them, and merging them in a bowl before delivering. Figure 7a and 7b show the recipes for making tomato salad and tomato-lettuce salad.\nObservation Space. The environment is a 7\u00d77 grid world involving ingredients, bowls, cutting boards, and a delivery counter. For the task of making tomato salad, there is only one tomato, one bowl, one cutting board, and one delivery counter available in the environment. For the task of making a tomato-lettuce salad, one tomato, one lettuce, one onion, one bowl, two cutting boards, and one delivery cell are provided in the environment. The onion serves as an interferent, though it does not appear in the recipe. The global state information consists of the positions of the agent and the above objects, and the status of each ingredient: chopped or unchopped. The environment is partially observable. For the observation, the agent only observes the positions and status of the entities within a 5 \u00d7 5 square centered on the agent. Other unseen objects are masked in the observation. And the initial positions of all the objects are known to agents. The symbolic raw observations are directly fed into PPO as input and converted to prompts with scripts to serve as LLMs\u2019 input.\nPrimitive-Action Space. Agents use five primitive actions: up, down, left, right, and stay to interact with the environment. Agents can move around and achieve picking, placing, chopping, and delivering by standing next to the corresponding cell and moving against it. All the macro-actions are based on these primitive actions.\nMacro-Action Space. In this work, we mainly focus on using high-level macro-actions, since they usually have richer semantics. Every macro-action may take several time steps to complete. The main function of each macro-action and the corresponding termination conditions is exactly the same as the setting in (Xiao et al., 2022) despite that we only have one agent. Here we list and briefly describe all the macro-actions we use: Chop, chops a raw ingredient into pieces when the agent stands next to a cutting board with an unchopped ingredient on it. Get-Tomato, Get-Lettuce, Get-Onion, Get-Bowl, Go-Cutting-Board-1/2 and Deliver, which navigate the agent to the location of the corresponding object and execute the corresponding action.\nIn the first task of making tomato salad, Get-Tomato, Get-Bowl, Go-Cutting-Board-1 and Deliver are available. In the second task of making tomato-lettuce salad all the macro-actions are valid.\nDynamics: The transition in this task is deterministic. If an agent delivers any wrong item, the item will be reset to its initial position.\nReward: +0.2 for chopping a correct ingredient, +1 terminal reward for delivering the correct dish, \u22120.1 for delivering any wrong dish, and \u22120.001 for every timestep. Episode Termination: Each episode terminates either when the agent successfully delivers the target dish to the delivery counter or reaches the maximal time steps, 200.\nC.2 VIRTUALHOME\n(a) Food Preparation (b) Entertainment\nFigure 8: VirtualHome environments.\nGoal. An agent, represented as a humanoid avatar, is placed in a fully furnished household with various rich objects to interact with. Figure 8a and 8b show two tasks we design for the agent to complete. For the first task of food preparation, the agent needs to find the pancake on the table in the kitchen and put it in the microwave to heat. For the second task of entertainment, the agent needs to find and bring chips and milk, from the kitchen to the living room and succeed sitting on the sofa with the TV open and the milk and chips are nearby. The challenge arises when the agent, already holding both the milk and chips, lacks an additional hand to turn on the TV. Consequently, it needs to learn to put at least one item on the nearby coffee table before operating the TV.\nObservation Space. The environment is also partially observable. The agent can only see the objects in the current room and does not the objects in the other room. The observation consists of a set of bool values, representing whether the agent sees the relative object, whether these objects are close to the agent and the status of the objects, such as whether the TV is turned on and whether the milk is on the coffee table. The symbolic raw observations are directly fed into PPO as input and converted to prompts with scripts to serve as LLMs\u2019 input."
+        },
+        {
+            "heading": "C.3 ACTION SPACE",
+            "text": "To simulate the daily activities, all the actions in VirtualHome are macro-actions. Every macroaction takes only time step for execution. Here, we list and briefly describe all the macro-actions as Table 7.\nFor the first task of heating pancake, there are four rooms and two items in the environment and their corresponding object id are as follows: livingroom(267), kitchen(11), bathroom(172), bedroom(210), pancake(62), microwave(109). For the second task of watching TV, there are four rooms and five items in the environment and their corresponding object id are as follows: livingroom(267), kitchen(11), bathroom(172), bedroom(210), chips(61), milk(46), TV(297), sofa(276), coffeetable(268). For their actions, corresponding action prompts and abbreviated labels, please refer to Table 8 and Table 9.\nOnly when the agent is close to the object, can the agent operate the object. For example, the agent needs to walk to the TV before turning it on.\nDynamics: The transition in this task is deterministic.\nReward: We adopt a sparse reward setting, where only when the task is finished will the agent receive +1 reward.\nEpisode Termination: Each episode terminates either when the agent successfully finishes the task or reaches the maximal time steps, 50 since every macro-action takes only time step for execution. For the task of heating pancake, the agent succeeds when it places the pancake in the microwave and closes the microwave. For the task of watching TV, the agent succeeds when it sits on the sofa with TV turned on and chips and milk are on the coffee table or hold in hand.\nC.3.1 VANILLA PPO VS PPO WITH ACTION MASK\nAs mentioned in Section 5.3, in VirtualHome environment, vanilla PPO without action mask cannot learn anything for the two tasks due to the large action space. Figure 9 shows the performance of vanilla PPO without action mask and PPO with action mask."
+        },
+        {
+            "heading": "D TRAINING DETAILS",
+            "text": "Our results are mainly generated on a single NVIDIA Tesla A100 and NVIDIA RTX A6000 GPU. For all domains, we use the same architecture, which is shown in Figure 10. Throughout all the experiments, we conducted training and testing using the half-precision float16."
+        },
+        {
+            "heading": "D.1 NETWORK ARCHITECTURE",
+            "text": "The same neural network architecture is applied to both the actor and critic networks across TWOSOME method. In the LLaMA-7B model, additional MLP layers are incorporated into the last transformer block to serve as the critic. The critic\u2019s MLPs take the last token of the observation prompt as input and output the estimated value of the observation prompt. The critic utilizes a 3- layer MLP structure, with the number of neurons in each layer being 1024, 512, and 1, respectively. ReLU is employed as the activation function. On the other hand, the actor consists of the frozen LLaMA-7B model with the augmentation of LoRA parameters. The policy optimizer uses AdamW with an epsilon value of 1e-5 and a weight decay of 0. The critic optimizer uses Adam with an epsilon value of 1e-5 and the default weight decay of 0. In our experiments, we found that the default epsilon value of 1e-8 in the policy optimizer\u2019s AdamW can lead to unstable training and potential \"nan\" outputs in Lora.\nIn the PPO method, the critic network remains a 3-layer MLP architecture with 64 neurons in each layer and a single neuron as the final output. However, the main distinction from TWOSOME lies in the choice of activation function, which is Tanh. Meanwhile, the actor in the PPO method also adopts a 3-layer MLP architecture. The number of neurons in the first two layers is the same as the critic, which is 64. The activation function used is Tanh. The final layer\u2019s output depends on the number of actions in the task. For example, in the Entertainment task, there are 17 actions, while in the Food Preparation task, there are 10 actions. The optimizer uses Adam with an epsilon value of 1e-5 and a weight decay of 0."
+        },
+        {
+            "heading": "D.2 HYPERPARAMETERS FOR TWOSOME AND PPO",
+            "text": "In following subsections, we first list the hyper-parameter candidates used for training TWOSOME via grid search in the corresponding task, and then show the hyper-parameter table with the parameters used by TWOSOME and PPO achieving the best performance. We choose the best performance of each method depending on its final convergence value and convergence efficiency."
+        },
+        {
+            "heading": "E BEHAVIOR VISUALIZATION",
+            "text": "In this section, we display the optimal behaviors learned by TWOSOME with word normalization under all considered domains. We also provide corresponding videos for each task in the Supplementary Materials.\nE.1 VISUALIZATION OF TOMATO SALAD\n(a) The initial state of the environment, the agent is in the kitchen without grabbing anything. (b) The agent executes GetTomato. (c) After picking up the tomato, the agent executes Go-Cutting-Board1.\n(d) After approaching the cutting board, the agent executes the action Chop to chop the tomato. (e) After chopping the tomato, the agent executes the action GetTomato to pick up the chopped tomato. (f) After picking up the chopped tomato, the agent executes the action Get-Bowl to take a bowl and place the chopped tomato inside it.\n(g) After placing the chopped tomato inside the bowl, the agent executes the action Deliver to complete the task.\nE.2 VISUALIZATION OF TOMATO LETTUCE SALAD\n(a) The initial state of the environment, the agent is in the kitchen without grabbing anything. (b) The agent executes GetTomato. (c) After picking up the tomato, the agent executes Go-Cutting-Board-1.\n(d) After approaching the cutting board 1, the agent executes the action Chop to chop the tomato. (e) After chopping the tomato, the agent executes GetLettuce. (f) After picking up the lettuce, the agent executes GoCutting-Board-2.\n(g) After approaching the cutting board 2, the agent executes the action Chop to chop the lettuce. (h) After chopping the lettuce, the agent executes the action Get-Bowl to take a bowl. (i) After taking a bowl, the agent executes the action GetTomato to place the chopped tomato inside the bowl.\n(j) After picking up the chopped tomato, the agent executes Get-Lettuce to place the chopped lettuce inside the bowl. (k) After placing the chopped lettuce inside the bowl, the agent executes the action Deliver to complete the task.\nE.3 VISUALIZATION OF Food Preparation\n(a) The initial state of the environment, the agent is in the kitchen without grabbing the pancake.\n(b) The agent executes Walk-Pancake.\n(c) After approaching the pancake, the agent executes Grab-Pancake. (d) After grabbing the pancake, the agent executes Walk-Microwave.\n(e) After approaching the microwave, the agent executes Open-Microwave. (f) After opening the microwave, the agent executes Putin-Pancake-Microwave.\n(g) After placing the pancake into the microwave, the agent executes Close-Microwave.\nE.4 VISUALIZATION OF THE Entertainment\n(a) The initial state of the environment, the agent is in the kitchen without grabbing anything.\n(b) The agent executes Walk-Chips.\n(c) After approaching the chips, the agent executes Grab-Chips. (d) After grabbing the chips, the agent executes WalkMilk.\n(e) After approaching the milk, the agent executes Grab-Milk. (f) After grabbing the milk, the agent executes WalkLivingroom.\n(g) The agent leaves the kitchen and enters the living room, then executes Walk-Coffeetable. (h) After approaching the coffee table, the agent executes Putback-Chips-Coffeetable.\n(i) With the chips on the coffee table, the agent executes Walk-TV. (j) After approaching the television, the agent executes Switchon-TV.\n(k) After turning on the television, the agent executes Walk-Sofa. (l) After approaching the sofa, the agent executes the action Sit-Sofa to complete the task."
+        },
+        {
+            "heading": "F PROMPT DESIGN",
+            "text": "In this section, we provide a detailed analysis of the design of the observation prompt and action prompt and their impacts on the probabilities of each action. All the prompts are converted from raw observations and actions by scripts. For each observation shown in the visualization, we first present the observation prompt of the corresponding observation and then show the action prompts, tokens that make up the action prompts, the probability of each token, and the policy of TWOSOME without normalization, TWOSOME with token normalization and TWOSOME with word normalization, sequentially."
+        },
+        {
+            "heading": "F.1 TOMATO SALAD",
+            "text": "(a) The initial state of the environment, the agent is in the kitchen without grabbing anything.\nObservation prompt in step (a): There is a fixed cutting board in the room. You notice a tomato on the table. Currently you don\u2019t have anything in hand. To serve the dish of a bowl only containing chopped tomato, you should first\nAnalysis: To ensure a high probability of items that are useful for completing the task like tomato and bowl, we need to mention them in the observation prompt. However, due to the partial observability, the agent cannot see bowl in the current position. So we need to mention the bowl in the task by mentioning To serve the dish of a bowl, which can increase the probability of serve, too. Because currently there is nothing for the agent to serve and chop, so we can use nothing to lower the probability of these two actions. These two actions are actually not necessary to appear in the action prompt list, which is what we do in the VirtualHome environment. To show the performance of our method, which can solve typical decision-making tasks, we do not mask these actions here, for a fair comparison with PPO.\n(b) The agent executes GetTomato. (c) After picking up the tomato, the agent executes Go-Cutting-Board1.\nObservation prompt step (b): There is a fixed cutting board in the room. Currently you are carrying an unchopped tomato in hand. To serve the dish of a bowl only containing chopped tomato, you should first\nObservation prompt step (c): There is a fixed cutting board in the room. An unchopped tomato is on the cutting board. Currently you are standing in front of the cutting board without anything in hand. To serve the dish of a bowl only containing chopped tomato, you should first\nAnalysis: In Step (b), because the agent has already picked up the tomato, the third action walk to the cutting board can be replaced to put the tomato on the cutting board, which is more contextually appropriate and thus has a high probability. And the agent now can serve the tomato, so the fourth action is replaced with serve the dish, though it is not a correct action. LLMs need to learn which dish is the correct dish, namely the alignment. It is worth noting that for TWOSOME without normalization, serve the dish also has a high probability, if the agent happens to sample this action several times, it may learn to avoid entering this state and refuse to pick up the tomato, resulting in the divergence.\nIn Step (c), the tomato is put on the cutting board, so the final action is replaced with chop the tomato.\n(d) After approaching the cutting board, the agent executes the action Chop to chop the tomato. (e) After chopping the tomato, the agent executes the action GetTomato to pick up the chopped tomato.\nObservation prompt step (d): There is a fixed cutting board in the room. A chopped tomato is on the cutting board. Currently you are standing in front of the cutting board without anything in hand. To serve the dish of a bowl only containing chopped tomato, you should first\nObservation prompt step (e): There is a fixed cutting board in the room. Currently you are standing in front of the cutting board, carrying a chopped tomato in hand. To serve the dish of a bowl only containing chopped tomato, you should first\n(f) After picking up the chopped tomato, the agent executes the action Get-Bowl to take a bowl and place the chopped tomato inside it.\nObservation prompt step (f): There is a fixed cutting board in the room. Currently you are carrying a bowl containing chopped tomato. To serve the dish of a bowl only containing chopped tomato, you should first\nAnalysis: Even for the final step, serve the dish still has a not high probability, which reflects the ability of LLaMA 7B. LLMs need to learn what is the correct dish to serve and make alignment with the environment."
+        },
+        {
+            "heading": "F.2 TOMATO LETTUCE SALAD",
+            "text": "(a) The initial state of the environment, the agent is in the kitchen without grabbing anything. (b) The agent executes GetTomato.\nObservation prompt step (a): There are two fixed cutting boards in the room. You notice a tomato, a lettuce and an onion on the different tables. Currently you don\u2019t have anything in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nObservation prompt step (b): There are two fixed cutting boards in the room. You notice a lettuce and an onion on the different tables. Currently you are carrying an unchopped tomato in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nAnalysis: In Step (a), to ensure a high probability of items that are useful for completing the task like tomato, lettuce and bowl, we need to mention them in the observation prompt. However, due to the partial observability, the agent cannot see bowl in the current position. So we need to mention the bowl in the task by mentioning To serve the dish of a bowl, which can increase the probability of serve, too. Compared with onion, tomato and lettuce appear twice in the observation prompt, thus having higher probabilities. We add the status empty to the bowl to lower the probability of holding the plate at the beginning, where the agent can do nothing but to serve the plate to the delivery counter and receive a negative reward.\nIn Step (b), because the agent has already picked up the tomato, the third action walk to the first cutting board can be replaced to put the tomato on the first cutting board, which is more contextually appropriate and thus has a high probability. It is worth noting that TWOSOME without the normalization method has an extremely low probability of long action prompts, such as walk to the first cutting board , and put the tomato on the first cutting board, which is consistent with the disadvantage mentioned in the main paper. Thus, this method has a poor performance in this task.\n(c) After picking up the tomato, the agent executes Go-Cutting-Board1. (d) After approaching the cutting board 1, the agent executes the action Chop to chop the tomato.\nObservation prompt step (c): There are two fixed cutting boards in the room. An unchopped tomato is on the first cutting board. Currently you are standing in front of the first cutting board without anything in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nObservation prompt step (d): There are two fixed cutting boards in the room. A chopped tomato is on the first cutting board. Currently you are standing in front of the first cutting board without anything in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nAnalysis: In Step (c) and (d), TWOSOME without normalization shows high probabilities on the optimal actions for both steps, namely chop the tomato and pick up the lettuce, due to the fewer tokens these actions have. So if all the optimal actions happen to have very few tokens, this method can achieve very good performance.\n(e) After chopping the tomato, the agent executes Get-Lettuce. (f) After picking up the lettuce, the agent executes Go-Cutting-Board2.\nObservation prompt step (e): There are two fixed cutting boards in the room. You notice an onion on the table. Currently you are carrying an unchopped lettuce in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nObservation prompt step (f): There are two fixed cutting boards in the room. A chopped tomato is on the first cutting board. An unchopped lettuce is on the second cutting board. Currently you are standing in front of the second cutting board without anything in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\n(g) After approaching the cutting board 2, the agent executes the action Chop to chop the lettuce. (h) After chopping the lettuce, the agent executes the action Get-Bowl to take a bowl.\nObservation prompt step (g): There are two fixed cutting boards in the room. A chopped tomato is on the first cutting board. A chopped lettuce is on the second cutting board. Currently you are standing in front of the second cutting board without anything in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nObservation prompt step (h): There are two fixed cutting boards in the room. Currently you are carrying a bowl in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nAnalysis: In Step (g), because the word empty has an extremely low probability, TWOSOME without normalization agent struggles with getting the bowl.\nIn Step (h), because other action prompts happen to be relatively long, though the probability of serve is still low, the probability of serve the dish is extremely high compared with other actions for TWOSOME without the normalization method. This step also explains why this method cannot have good performance in this task.\n(i) After taking a bowl, the agent executes the action Get-Tomato to place the chopped tomato inside the bowl. (j) After picking up the chopped tomato, the agent executes GetLettuce to place the chopped lettuce inside the bowl.\nObservation prompt step (i): There are two fixed cutting boards in the room. A chopped lettuce is on the second cutting board. Currently you are standing in front of the first cutting board, carrying a bowl containing chopped tomato in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nObservation prompt step (j): There are two fixed cutting boards in the room. Currently you are standing in front of the second cutting board, carrying a bowl containing chopped tomato and lettuce in hand. To serve the dish of a bowl only containing chopped tomato and lettuce, you should first\nAnalysis: In both Step (i) and Step (j), short actions prompts, take the bowl and serve the dish still dominates the probabilities, making it difficult for TWOSOME without normalization to sample optimal action and learn good policy."
+        },
+        {
+            "heading": "F.3 FOOD PREPARATION",
+            "text": "(a) The initial state of the environment, the agent is in the kitchen without grabbing the pancake.\n(b) The agent executes Walk-Pancake.\nObservation prompt step (a): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen. You notice pancake and microwave. Currently, you are not grabbing anything in hand. The pancake and the microwave are not within your immediate reach. The microwave is not opened. In order to heat up the pancake in the microwave, your next step is to\nObservation prompt step (b): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen. You notice pancake and microwave. Currently, you are not grabbing anything in hand. The pancake is within your immediate reach. The microwave is not opend. In order to heat up the pancake in the microwave, your next step is to\nAnalysis: In the Food Preparation task, to ensure a high probability of the items necessary for task completion, we increase the loglikelihood of their occurrence by mentioning task-related objects observed in the current room. For example, in the kitchen, we use You notice a pancake and a microwave to raise the chances of the pancake and microwave appearing. To distinguish the probability of each action, our design utilizes different phrases. For approaching a room, we use walk to. For approaching food, we use reach for. And for approaching furniture, we use move to. This differentiation helps to convey the varying probabilities associated with each action.\nIn Step (a), because the agent is currently not next to the pancake, there is no action available in the options for grabbing objects. To increase the probability of approaching the pancake, we emphasize in the observation prompt that it is not within your immediate reach and we also use the word reach in the available actions to raise the probability.\nIn Step (b), as the agent is currently close to the pancake, the action grab the pancake is included, while the action reach for the pancake is removed from the options.\n(c) After approaching the pancake, the agent executes Grab-Pancake. (d) After grabbing the pancake, the agent executes Walk-Microwave.\nObservation prompt step (c): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen. You notice pancake and microwave. Currently, you have grabbed the pancake in hand. The microwave is not within your immediate reach. The microwave is not opend. In order to heat up the pancake in the microwave, your next step is to\nObservation prompt step (d): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen. You notice pancake and microwave. Currently, you have grabbed the pancake in hand. The microwave is within your immediate reach. The microwave is not opend. In order to heat up the pancake in the microwave, your next step is to\nAnalysis: In Step (c) and Step (d), we control the probability of the agent approaching the microwave and opening it by describing the current state of whether the agent is grabbing the pancake or not.\n(e) After approaching the microwave, the agent executes Open-Microwave. (f) After opening the microwave, the agent executes Put-in-Pancake-Microwave.\nObservation prompt step (e): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen. You notice pancake and microwave. Currently, you have grabbed the pancake in hand. The microwave is within your immediate reach. The microwave is opened. In order to heat up the pancake in the microwave, your next step is to\nObservation prompt step (f): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen. You notice pancake and microwave. The microwave is opened. In order to heat up the pancake in the microwave, your next step is to\nAnalysis: In Step (e), despite the microwave being already open, the action open the microwave still has the highest probability, while the optimal action put the pancake in the microwave is just slightly lower. During the training process, the agent will gradually increase the probability of sampling the optimal action. It is worth noting that for TWOSOME without normalization, open the microwave remains excessively high, if the agent happens to sample this action several times, it may learn to avoid entering this state and refuse to put the pancake in the microwave, resulting in the divergence.\nIn Step (f), open the microwave still has the highest probability, while the optimal action close the microwave is the second highest, which reflects the ability of LLaMA 7B. LLMs need to learn what is the correct open and close and make alignment with the environment."
+        },
+        {
+            "heading": "F.4 ENTERTAINMENT",
+            "text": "(a) The initial state of the environment, the agent is in the kitchen without grabbing anything.\nObservation prompt step (a): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen and notice chips and milk. But they are not within your immediate reach. Currently, you are not grabbing anything in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nAblation Observation prompt step (a): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen and notice chips and milk. But they are not close to you. Currently, you are not grabbing anything in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nAnalysis: In the task of Entertainment, to ensure a high probability of the items necessary for task completion, we increase the loglikelihood of their occurrence by mentioning task-related objects observed in the current room. For example, in the kitchen, we use notice chips and milk to raise the chances of the chips and milk appearing, in the living room, we use notice a coffee table, a TV and a sofa to raise the chances of the coffee table, TV and sofa appearing. To distinguish the probability of each action, our design utilizes different phrases. For approaching a room, we use walk to. For approaching food, we use reach for. And for approaching furniture, we use move to. This differentiation helps to convey the varying probabilities associated with each action.\nIn Step (a), we have found that the combination of within your immediate reach and reach for has a higher probability of occurrence compared to the combination of close to and reach for.\n(b) The agent executes Walk-Chips.\nObservation prompt step (b): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen and notice chips and milk. The chips are within your immediate reach. But you have not grabbed the chips. Currently, you are not grabbing anything in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nAnalysis: In Step (b), as the agent is currently close to the chips, the action grab the chips is included, while the action reach for the chips is removed from the options. However, despite the presence of the option reach for the milk, grab the chips still obtains the highest probability.\n(c) After approaching the chips, the agent executes Grab-Chips. (d) After grabbing the chips, the agent executes WalkMilk.\nObservation prompt step (c): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen and notice chips and milk. The milk is not within your immediate reach. Currently, you have grabbed the chips in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nObservation prompt step (d): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen and notice chips and milk. The milk is within your immediate reach. But you have not grabbed the milk. Currently, you have grabbed the chips in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\n(e) After approaching the milk, the agent executes Grab-Milk. (f) After grabbing the milk, the agent executes WalkLivingroom.\nObservation prompt step (e): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the kitchen and notice chips and milk. Currently, you have grabbed the chips and the milk in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nObservation prompt step (f): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the living room and notice a coffee table, a TV and a sofa. They are not close to you. Currently, you have grabbed the chips and the milk in hand. To enjoy the chips and the milk while watching TV, your next step is to\nAnalysis: In Step (e), since the agent now has grabbed the chips and milk, its only choice is to leave the kitchen and move to another room.\nIn Step (f), currently, the agent is in the living room. Since the agent is not close to the coffee table, TV, or sofa, it does not have any actions related to interacting with those furniture pieces. It is worth mentioning that the action walk to the kitchen has the highest probability. However, the difference in probabilities between the action move to \"furniture\" and walk to the kitchen is not significant.\n(g) The agent leaves the kitchen and enters the living room, then executes Walk-Coffeetable. (h) After approaching the coffee table, the agent executes Putback-Chips-Coffeetable.\nObservation prompt step (g): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the living room and notice a coffee table, a TV and a sofa. The coffee table is close to you. Currently, you have grabbed the chips and the milk in hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nObservation prompt step (h): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the living room. You notice a coffee table, a TV and a sofa. The TV is not close to you. Currently, you have the chips on the coffee table and the milk in your hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nAnalysis: In Step (g), since the agent is next to the coffee table, there is now actions available to place chips and milk on the coffee table.\nIn Step (h), we emphasize that the chips are already on the coffee table, reminding the agent to move to other furniture nearby.\n(i) With the chips on the coffee table, the agent executes Walk-TV. (j) After approaching the television, the agent executes Switchon-TV.\nObservation prompt step (i): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the living room. You notice a coffee table, a TV and a sofa. The TV is close to you. Currently, you have the chips on the coffee table and the milk in your hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nObservation prompt step (j): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the living room. You notice a coffee table, a TV and a sofa. The sofa is not close to you. Currently, the TV is turned on, you have the chips on the coffee table and the milk in your hand. In order to enjoy the chips and the milk while watching TV, your next step is to\nAnalysis: In Step (i), the agent is next to the TV, and it is emphasized that the TV is not turned on, increasing the probability of turning on the TV.\nIn Step (j), we found that the probability of take a seat on the sofa is higher than the probability of move to the sofa, which reflects the ability of LLaMA 7B. However, we believe that TWOSOME will gradually learn the optimal action for this step, and experimental evidence supports this belief.\n(k) After turning on the television, the agent executes Walk-Sofa.\nObservation prompt step (k): There are four rooms: the kitchen, bathroom, bedroom, and living room. You are in the living room. You notice a coffee table, a TV and a sofa. The sofa is close to you. Currently, the TV is turned on, you have the chips on the coffee table and the milk in your hand. In order to enjoy the chips and the milk while watching TV, your next step is to"
+        }
+    ],
+    "year": 2024
+}

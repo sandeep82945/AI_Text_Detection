@@ -1,0 +1,828 @@
+{
+    "abstractText": "Reinforcement learning from human feedback (RLHF) is a standard approach for fine-tuning large language models to follow instructions. As part of this process, learned reward models are used to approximately model human preferences. However, as imperfect representations of the \u201ctrue\u201d reward, these learned reward models are susceptible to overoptimization. Gao et al. (2023) studied this phenomenon in a synthetic human feedback setup with a significantly larger \u201cgold\u201d reward model acting as the true reward (instead of humans) and showed that overoptimization remains a persistent problem regardless of the size of the proxy reward model and training data used. Using a similar setup, we conduct a systematic study to evaluate the efficacy of using ensemble-based conservative optimization objectives, specifically worst-case optimization (WCO) and uncertainty-weighted optimization (UWO), for mitigating reward model overoptimization when using two optimization methods: (a) best-of-n sampling (BoN) (b) proximal policy optimization (PPO). We additionally extend the setup of Gao et al. (2023) to include 25% label noise to better mirror real-world conditions. Both with and without label noise, we find that conservative optimization practically eliminates overoptimization and improves performance by up to 70% for BoN sampling. For PPO, ensemble-based conservative optimization always reduces overoptimization and outperforms single reward model optimization. Moreover, combining it with a small KL penalty successfully prevents overoptimization at no performance cost. Overall, our results demonstrate that ensemble-based conservative optimization can effectively counter overoptimization.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "Thomas Coste"
+        },
+        {
+            "affiliations": [],
+            "name": "Usman Anwar"
+        },
+        {
+            "affiliations": [],
+            "name": "Robert Kirk"
+        },
+        {
+            "affiliations": [],
+            "name": "David Krueger"
+        }
+    ],
+    "id": "SP:624b62502c2d348761c90faa997072f4c6eb8823",
+    "references": [
+        {
+            "authors": [
+                "Josh Abramson",
+                "Arun Ahuja",
+                "Federico Carnevale",
+                "Petko Georgiev",
+                "Alex Goldin",
+                "Alden Hung",
+                "Jessica Landon",
+                "Jirka Lhotka",
+                "Timothy Lillicrap",
+                "Alistair Muldal"
+            ],
+            "title": "Improving multimodal interactive agents with reinforcement learning from human feedback",
+            "venue": "arXiv preprint arXiv:2211.11602,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuntao Bai",
+                "Andy Jones",
+                "Kamal Ndousse",
+                "Amanda Askell",
+                "Anna Chen",
+                "Nova DasSarma",
+                "Dawn Drain",
+                "Stanislav Fort",
+                "Deep Ganguli",
+                "Tom Henighan"
+            ],
+            "title": "Training a helpful and harmless assistant with reinforcement learning from human feedback",
+            "venue": "arXiv preprint arXiv:2204.05862,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yuntao Bai",
+                "Saurav Kadavath",
+                "Sandipan Kundu",
+                "Amanda Askell",
+                "Jackson Kernion",
+                "Andy Jones",
+                "Anna Chen",
+                "Anna Goldie",
+                "Azalia Mirhoseini",
+                "Cameron McKinnon"
+            ],
+            "title": "Constitutional ai: Harmlessness from ai feedback",
+            "venue": "arXiv preprint arXiv:2212.08073,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Stella Biderman",
+                "Hailey Schoelkopf",
+                "Quentin Gregory Anthony",
+                "Herbie Bradley",
+                "Kyle O\u2019Brien",
+                "Eric Hallahan",
+                "Mohammad Aflah Khan",
+                "Shivanshu Purohit",
+                "USVSN Sai Prashanth",
+                "Edward Raff"
+            ],
+            "title": "Pythia: A suite for analyzing large language models across training and scaling",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kiante Brantley",
+                "Wen Sun",
+                "Mikael Henaff"
+            ],
+            "title": "Disagreement-regularized imitation learning",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Stephen Casper",
+                "Xander Davies",
+                "Claudia Shi",
+                "Thomas Krendl Gilbert",
+                "J\u00e9r\u00e9my Scheurer",
+                "Javier Rando",
+                "Rachel Freedman",
+                "Tomasz Korbak",
+                "David Lindner",
+                "Pedro Freire"
+            ],
+            "title": "Open problems and fundamental limitations of reinforcement learning from human feedback",
+            "venue": "arXiv preprint arXiv:2307.15217,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Paul F Christiano",
+                "Jan Leike",
+                "Tom Brown",
+                "Miljan Martic",
+                "Shane Legg",
+                "Dario Amodei"
+            ],
+            "title": "Deep reinforcement learning from human preferences",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Kurtland Chua",
+                "Roberto Calandra",
+                "Rowan McAllister",
+                "Sergey Levine"
+            ],
+            "title": "Deep reinforcement learning in a handful of trials using probabilistic dynamics models",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Jack Clark",
+                "Dario Amodei"
+            ],
+            "title": "Faulty reward functions in the wild. https://openai.com/ research/faulty-reward-functions, 2016",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Stefan Depeweg",
+                "Jos\u00e9 Miguel Hern\u00e1ndez-Lobato",
+                "Finale Doshi-Velez",
+                "Steffen Udluft"
+            ],
+            "title": "Learning and policy search in stochastic dynamical systems with bayesian neural networks",
+            "venue": "arXiv preprint arXiv:1605.07127,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Thomas G Dietterich"
+            ],
+            "title": "Ensemble methods in machine learning",
+            "venue": "In International workshop on multiple classifier systems,",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Hanze Dong",
+                "Wei Xiong",
+                "Deepanshu Goyal",
+                "Rui Pan",
+                "Shizhe Diao",
+                "Jipeng Zhang",
+                "Kashun Shum",
+                "Tong Zhang"
+            ],
+            "title": "Raft: Reward ranked finetuning for generative foundation model alignment",
+            "venue": "arXiv preprint arXiv:2304.06767,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yann Dubois",
+                "Xuechen Li",
+                "Rohan Taori",
+                "Tianyi Zhang",
+                "Ishaan Gulrajani",
+                "Jimmy Ba",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B Hashimoto"
+            ],
+            "title": "Alpacafarm: A simulation framework for methods that learn from human feedback",
+            "venue": "arXiv preprint arXiv:2305.14387,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yarin Gal",
+                "Rowan McAllister",
+                "Carl Edward Rasmussen"
+            ],
+            "title": "Improving PILCO with Bayesian neural network dynamics models",
+            "venue": "In Data-Efficient Machine Learning workshop, International Conference on Machine Learning,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Leo Gao",
+                "John Schulman",
+                "Jacob Hilton"
+            ],
+            "title": "Scaling laws for reward model overoptimization",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Adam Gleave",
+                "Geoffrey Irving"
+            ],
+            "title": "Uncertainty estimation for language reward models",
+            "venue": "arXiv preprint arXiv:2203.07472,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Caglar Gulcehre",
+                "Tom Le Paine",
+                "Srivatsan Srinivasan",
+                "Ksenia Konyushkova",
+                "Lotte Weerts",
+                "Abhishek Sharma",
+                "Aditya Siddhant",
+                "Alex Ahern",
+                "Miaosen Wang",
+                "Chenjie Gu"
+            ],
+            "title": "Reinforced self-training (rest) for language modeling",
+            "venue": "arXiv preprint arXiv:2308.08998,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mikael Henaff"
+            ],
+            "title": "Explicit explore-exploit algorithms in continuous state spaces",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Borja Ibarz",
+                "Jan Leike",
+                "Tobias Pohlen",
+                "Geoffrey Irving",
+                "Shane Legg",
+                "Dario Amodei"
+            ],
+            "title": "Reward learning from human preferences and demonstrations in atari",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Andreas K\u00f6pf",
+                "Yannic Kilcher",
+                "Dimitri von R\u00fctte",
+                "Sotiris Anagnostidis",
+                "Zhi-Rui Tam",
+                "Keith Stevens",
+                "Abdullah Barhoum",
+                "Nguyen Minh Duc",
+                "Oliver Stanley",
+                "Rich\u00e1rd Nagyfi"
+            ],
+            "title": "Openassistant conversations\u2013democratizing large language model alignment",
+            "venue": "arXiv preprint arXiv:2304.07327,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Victoria Krakovna",
+                "Jonathan Uesato",
+                "Vladimir Mikulik",
+                "Matthew Rahtz",
+                "Tom Everitt",
+                "Ramana Kumar",
+                "Zac Kenton",
+                "Jan Leike",
+                "Shane Legg"
+            ],
+            "title": "Specification gaming: The flip side of ai ingenuity",
+            "venue": "URL https://www.deepmind.com/blog/ specification-gaming-the-flip-side-of-ai-ingenuity. A",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Balaji Lakshminarayanan",
+                "Alexander Pritzel",
+                "Charles Blundell"
+            ],
+            "title": "Simple and scalable predictive uncertainty estimation using deep ensembles",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Kimin Lee",
+                "Laura Smith",
+                "Pieter Abbeel"
+            ],
+            "title": "Pebble: Feedback-efficient interactive reinforcement learning via relabeling experience and unsupervised pre-training",
+            "venue": "arXiv preprint arXiv:2106.05091,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Joel Lehman",
+                "Jeff Clune",
+                "Dusan Misevic",
+                "Christoph Adami",
+                "Lee Altenberg",
+                "Julie Beaulieu",
+                "Peter J Bentley",
+                "Samuel Bernard",
+                "Guillaume Beslon",
+                "David M Bryson"
+            ],
+            "title": "The surprising creativity of digital evolution: A collection of anecdotes from the evolutionary computation and artificial life research communities",
+            "venue": "Artificial life,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Aman Madaan",
+                "Niket Tandon",
+                "Prakhar Gupta",
+                "Skyler Hallinan",
+                "Luyu Gao",
+                "Sarah Wiegreffe",
+                "Uri Alon",
+                "Nouha Dziri",
+                "Shrimai Prabhumoye",
+                "Yiming Yang"
+            ],
+            "title": "Self-refine: Iterative refinement with self-feedback",
+            "venue": "arXiv preprint arXiv:2303.17651,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Timothy Prickett Morgan"
+            ],
+            "title": "Counting the cost of training large language models, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Reiichiro Nakano",
+                "Jacob Hilton",
+                "Suchir Balaji",
+                "Jeff Wu",
+                "Long Ouyang",
+                "Christina Kim",
+                "Christopher Hesse",
+                "Shantanu Jain",
+                "Vineet Kosaraju",
+                "William Saunders"
+            ],
+            "title": "Webgpt: Browser-assisted question-answering with human feedback",
+            "venue": "arXiv preprint arXiv:2112.09332,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Xu Jiang",
+                "Diogo Almeida",
+                "Carroll Wainwright",
+                "Pamela Mishkin",
+                "Chong Zhang",
+                "Sandhini Agarwal",
+                "Katarina Slama",
+                "Alex Ray"
+            ],
+            "title": "Training language models to follow instructions with human feedback",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yaniv Ovadia",
+                "Emily Fertig",
+                "Jie Ren",
+                "Zachary Nado",
+                "David Sculley",
+                "Sebastian Nowozin",
+                "Joshua Dillon",
+                "Balaji Lakshminarayanan",
+                "Jasper Snoek"
+            ],
+            "title": "Can you trust your model\u2019s uncertainty? evaluating predictive uncertainty under dataset shift",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alexander Pan",
+                "Kush Bhatia",
+                "Jacob Steinhardt"
+            ],
+            "title": "The effects of reward misspecification: Mapping and mitigating misaligned models",
+            "venue": "arXiv preprint arXiv:2201.03544,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Deepak Pathak",
+                "Dhiraj Gandhi",
+                "Abhinav Gupta"
+            ],
+            "title": "Self-supervised exploration via disagreement",
+            "venue": "In International conference on machine learning,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Rafael Rafailov",
+                "Archit Sharma",
+                "Eric Mitchell",
+                "Stefano Ermon",
+                "Christopher D Manning",
+                "Chelsea Finn"
+            ],
+            "title": "Direct preference optimization: Your language model is secretly a reward model",
+            "venue": "arXiv preprint arXiv:2305.18290,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "William Saunders",
+                "Catherine Yeh",
+                "Jeff Wu",
+                "Steven Bills",
+                "Long Ouyang",
+                "Jonathan Ward",
+                "Jan Leike"
+            ],
+            "title": "Self-critiquing models for assisting human evaluators",
+            "venue": "arXiv preprint arXiv:2206.05802,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "J\u00e9r\u00e9my Scheurer",
+                "Jon Ander Campos",
+                "Tomasz Korbak",
+                "Jun Shern Chan",
+                "Angelica Chen",
+                "Kyunghyun Cho",
+                "Ethan Perez"
+            ],
+            "title": "Training language models with language feedback at scale",
+            "venue": "arXiv preprint arXiv:2303.16755,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "John Schulman"
+            ],
+            "title": "Approximating kl divergence, 2020",
+            "venue": "URL http://joschu.net/blog/ kl-approx.html. C",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "John Schulman",
+                "Filip Wolski",
+                "Prafulla Dhariwal",
+                "Alec Radford",
+                "Oleg Klimov"
+            ],
+            "title": "Proximal policy optimization algorithms",
+            "venue": "arXiv preprint arXiv:1707.06347,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Pranav Shyam",
+                "Wojciech Ja\u015bkowski",
+                "Faustino Gomez"
+            ],
+            "title": "Model-based active exploration",
+            "venue": "In International conference on machine learning,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Joar Skalse",
+                "Nikolaus Howe",
+                "Dmitrii Krasheninnikov",
+                "David Krueger"
+            ],
+            "title": "Defining and characterizing reward gaming",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Nisan Stiennon",
+                "Long Ouyang",
+                "Jeffrey Wu",
+                "Daniel Ziegler",
+                "Ryan Lowe",
+                "Chelsea Voss",
+                "Alec Radford",
+                "Dario Amodei",
+                "Paul F Christiano"
+            ],
+            "title": "Learning to summarize with human feedback",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Rohan Taori",
+                "Ishaan Gulrajani",
+                "Tianyi Zhang",
+                "Yann Dubois",
+                "Xuechen Li",
+                "Carlos Guestrin",
+                "Percy Liang",
+                "Tatsunori B. Hashimoto"
+            ],
+            "title": "Stanford alpaca: An instruction-following llama model",
+            "venue": "https://github.com/tatsu-lab/stanford_alpaca,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jonathan Uesato",
+                "Nate Kushman",
+                "Ramana Kumar",
+                "Francis Song",
+                "Noah Siegel",
+                "Lisa Wang",
+                "Antonia Creswell",
+                "Geoffrey Irving",
+                "Irina Higgins"
+            ],
+            "title": "Solving math word problems with process-and outcome-based feedback",
+            "venue": "arXiv preprint arXiv:2211.14275,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Abhinav Venigalla",
+                "Linden Li"
+            ],
+            "title": "Mosaic llms (part 2): Gpt-3 quality for < 500 k, 2022",
+            "venue": "URL https://www.mosaicml.com/blog/gpt-3-quality-for-500k",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jeff Wu",
+                "Long Ouyang",
+                "Daniel M Ziegler",
+                "Nisan Stiennon",
+                "Ryan Lowe",
+                "Jan Leike",
+                "Paul Christiano"
+            ],
+            "title": "Recursively summarizing books with human feedback",
+            "venue": "arXiv preprint arXiv:2109.10862,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yue Wu",
+                "Shuangfei Zhai",
+                "Nitish Srivastava",
+                "Joshua Susskind",
+                "Jian Zhang",
+                "Ruslan Salakhutdinov",
+                "Hanlin Goh"
+            ],
+            "title": "Uncertainty weighted actor-critic for offline reinforcement learning",
+            "venue": "arXiv preprint arXiv:2105.08140,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wanqiao Xu",
+                "Shi Dong",
+                "Dilip Arumugam",
+                "Benjamin Van Roy"
+            ],
+            "title": "Shattering the agent-environment interface for fine-tuning inclusive language models",
+            "venue": "arXiv preprint arXiv:2305.11455,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianhe Yu",
+                "Garrett Thomas",
+                "Lantao Yu",
+                "Stefano Ermon",
+                "James Y Zou",
+                "Sergey Levine",
+                "Chelsea Finn",
+                "Tengyu Ma"
+            ],
+            "title": "Mopo: Model-based offline policy optimization",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Tianhe Yu",
+                "Garrett Thomas",
+                "Lantao Yu",
+                "Stefano Ermon",
+                "James Y Zou",
+                "Sergey Levine",
+                "Chelsea Finn",
+                "Tengyu Ma"
+            ],
+            "title": "Mopo: Model-based offline policy optimization",
+            "venue": "Advances in Neural Information Processing Systems, 33:14129\u201314142,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zheng Yuan",
+                "Hongyi Yuan",
+                "Chuanqi Tan",
+                "Wei Wang",
+                "Songfang Huang",
+                "Fei Huang"
+            ],
+            "title": "Rrhf: Rank responses to align language models with human feedback without tears",
+            "venue": "arXiv preprint arXiv:2304.05302,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yao Zhao",
+                "Rishabh Joshi",
+                "Tianqi Liu",
+                "Misha Khalman",
+                "Mohammad Saleh",
+                "Peter J Liu"
+            ],
+            "title": "Slic-hf: Sequence likelihood calibration with human feedback",
+            "venue": "arXiv preprint arXiv:2305.10425,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Rui Zheng",
+                "Shihan Dou",
+                "Songyang Gao",
+                "Wei Shen",
+                "Binghai Wang",
+                "Yan Liu",
+                "Senjie Jin",
+                "Qin Liu",
+                "Limao Xiong",
+                "Lu Chen"
+            ],
+            "title": "Secrets of rlhf in large language models part i: Ppo",
+            "venue": "arXiv preprint arXiv:2307.04964,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Simon Zhuang",
+                "Dylan Hadfield-Menell"
+            ],
+            "title": "Consequences of misaligned ai",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Daniel M Ziegler",
+                "Nisan Stiennon",
+                "Jeffrey Wu",
+                "Tom B Brown",
+                "Alec Radford",
+                "Dario Amodei",
+                "Paul Christiano",
+                "Geoffrey Irving"
+            ],
+            "title": "Fine-tuning language models from human preferences",
+            "venue": "arXiv preprint arXiv:1909.08593,",
+            "year": 1909
+        },
+        {
+            "authors": [
+                "Pan"
+            ],
+            "title": "Reward Hacking: Overotpimization in RLHF is an instance of reward hacking. Many examples of reward hacking exist in literature (Clark & Amodei, 2016",
+            "venue": "Krakovna et al.,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dubois"
+            ],
+            "title": "2023) is used as the gold reward model. In contrast, Gao et al. used closed-source models based on GPT series. Our successful reproduction of their results in our setup hints at the general nature of overoptimization. (a) BoN results for various reward model sizes, with data size held constant (46k)",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dubois"
+            ],
+            "title": "PPO optimization results for various reward model training data sizes, with reward model size held constant (44M). Average and standard deviation over three runs are shown. A similar trend to Gao et al",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "With the advent of large language models, reinforcement learning from human feedback (RLHF) has emerged as a powerful technique to fine-tune and enhance models\u2019 behaviors (Ziegler et al., 2019; Ouyang et al., 2022; Bai et al., 2022a). However, despite its empirical success, RLHF remains a fickle method suffering from many failure modes (Casper et al., 2023). One such failure mode is overoptimization, a phenomenon in which policy optimization appears to be making progress according to the learned reward model, but in reality begins to regress with respect to the true reward function (Ziegler et al., 2019; Stiennon et al., 2020; Gao et al., 2023). While many works on RLHF contain anecdotal evidence of overoptimization (Ziegler et al., 2019; Stiennon et al., 2020; Dubois et al., 2023), Gao et al. (2023) is the only work that studies overoptimization in a systematic way. As working directly with human labelers is expensive, Gao et al. (2023) introduce a synthetic setup to study overoptimization in which a much larger language model is first trained as a \u201cgold\u201d reward model and is then used to generate preference labels for training of proxy reward models.\nIn this work, we conduct a systematic study investigating whether combining ensembles with conservative optimization can help mitigate overoptimization. Our results indicate that not only does ensemble-based conservative optimization help mitigate overoptimization, it also results in improved performance. Our setup is identical to that of Gao et al. (2023) with one modification: the addition of label noise. Gao et al. assume that the preference labels used to train the proxy reward model do not contain any noise. However, this does not mirror the real-world RLHF setup, in which agreement rates among human annotators are typically between 60 \u2212 75% (Ziegler et al.,\nThe code is available at: https://github.com/tlc4418/llm_optimization.\n2019; Stiennon et al., 2020; Dubois et al., 2023). To simulate that disagreement and to better reflect the real-world RLHF, we extend the setup to include 25% label noise as well. In both the cases of no label noise and 25% label noise, we provide strong evidence that ensemble-based conservative optimization methods are effective in mitigating overoptimization and improving performance.\nScaling laws for reward model overoptimization discovered by Gao et al. (2023) indicate that increasing the size of the proxy reward model reduces overoptimization as well. However, reward models are derived from pretrained language models. Thus, acquiring a larger reward model would require significant pretraining, which is not always feasible and can be very costly (Morgan, 2022; Venigalla & Li, 2022). However, our approach, using ensembles of reward models, only requires fine-tuning multiple copies of an already pretrained reward model, which is relatively inexpensive. Moreover, our model and data scaling results (Figures 8 and 9) indicate that the gains provided by our method are orthogonal to the gains achieved by increasing the reward model size; thus, the two approaches can be combined seamlessly for even better results.\nOur main contributions are as follows:\n\u2022 We conduct the first study of using ensembles to counter overoptimization in RLHF-based fine-tuning of language models.\n\u2022 Our results indicate that using ensembles and conservative optimization eliminates overoptimization for BoN and results in up to 70% improvement in some cases.\n\u2022 For PPO, ensemble-based conservative optimization typically outperforms single reward model optimization, and when combined with a suitable KL penalty weight successfully eliminates overoptimization.\n\u2022 We further conduct studies to establish the robustness of the ensemble-based conservative optimization methods to any new hyperparameters it introduces (e.g. size of the ensemble)."
+        },
+        {
+            "heading": "2 BACKGROUND",
+            "text": "In this section, we briefly review two commonly used policy optimization methods: best-of-n sampling (BoN) and proximal policy optimization (PPO), followed by a discussion of overoptimization."
+        },
+        {
+            "heading": "2.1 BEST-OF-N SAMPLING (BON)",
+            "text": "Best-of-n (BoN) sampling, also called rejection sampling, is a simple inference-time optimization method (Ouyang et al., 2022; Nakano et al., 2021). For a given prompt, n responses are generated from the policy model, and the answer with the highest proxy reward model score is returned. To evaluate the degree of optimization, the KL distance is defined analytically as a function of n:\nKLbon = logn\u2212 n\u2212 1 n\n(1)"
+        },
+        {
+            "heading": "2.2 PROXIMAL POLICY OPTIMIZATION (PPO)",
+            "text": "Proximal Policy Optimization (Schulman et al., 2017) is a policy-gradient-based online reinforcement learning method that maximizes a given reward function by repeatedly performing small incremental updates to the policy. PPO is the standard algorithm used in fine-tuning language models based on human feedback (Ouyang et al., 2022; Bai et al., 2022a; Stiennon et al., 2020; Zheng et al., 2023). When using PPO to fine-tune a language model, a KL penalty term is added during the reward calculation to regularize the policy by preventing it from deviating far from the initial policy:\nRPPO(q, a) = R(q, a)\u2212 \u03b2 log [ \u03c0PPO(a|q) \u03c0init(a|q) ] (2)\nwhere \u03c0PPO is the policy being optimized and \u03c0init is the initial (pretrained) language model. The degree of optimization is measured in terms of KL distance between the initial policy and the one being optimized, with details for this calculation provided in Appendix C."
+        },
+        {
+            "heading": "2.3 OVEROPTIMIZATION",
+            "text": "In reinforcement learning from human feedback (RLHF) a reward model is used to approximate human preferences, to remove the need for querying humans for every policy generation. As the learned reward model is only a proxy for the true reward function, optimizing it may not always result in an improvement according to true human preferences. In practice, optimizing a (fixed) learned reward model almost always leads to improvement according to this learned reward model, but only improves according to the true reward model (i.e. humans) for some initial period, after which performance often begins to regress. This phenomenon is referred to as overoptimization, an example of which is shown in Figure 2.\nTo study the problem of overoptimization, Gao et al. (2023) introduced a synthetic setup in which, instead of human annotators, a gold reward model is used to score responses and generate preferences to train proxy reward models. The gold reward model is generally chosen to be much larger than the proxy reward model, to simulate the fact that in a real setup, human preferences are too complex to be captured by a neural network with a finite capacity. Within this setup, Gao et al. (2023) discover overoptimization to be a persistent issue, although they note that larger proxy reward model sizes and greater amounts of training data can help reduce overoptimization. However, scaling up is not always a feasible solution as the proxy reward models are generally derived from extensively pretrained language models."
+        },
+        {
+            "heading": "3 METHOD",
+            "text": "Standard RLHF often learns a single reward model to estimate the true reward, which is then used to optimize the policy. However, many works in wider machine learning have shown that learning multiple estimators and combining them can help improve robustness (Lakshminarayanan et al., 2017; Ovadia et al., 2019; Yu et al., 2020b). Taking inspiration from this insight, we propose to learn an ensemble of reward models {R1, ..., Rk} in the reward model training stage. During policy optimization, we combine the reward estimates from different reward models within the ensemble according to the following three methods.\nMean Optimization: Mean optimization (Boyd & Vandenberghe, 2004; Wright, 2006) simply takes the mean of the outputs of the different ensemble members:\nR\u00b5(q, a) := 1\nk k\u2211 i=1 Ri(q, a) (3)\nwhere q is the prompt given to language model and a is the corresponding response sampled from the language model.\nWe note that mean optimization is not a conservative optimization technique; if at least one member of the ensemble overestimates the reward (even while other members accurately estimate it), mean optimization will not prevent the policy from exploiting the faulty reward model.\nWorst-Case Optimization: Worst-case optimization (WCO) (Boyd & Vandenberghe, 2004; Wright, 2006) creates a conservative estimate by choosing the lowest reward from the ensemble at every step. Choosing the lowest reward helps ensure that as long as at least one ensemble member does not overestimate the true reward, policy optimization will not result in overoptimization.\nRWCO(q, a) := min i Ri(q, a) (4)\nA major advantage of WCO is that it does not have any hyperparameters that might require tuning. However, it can sometimes result in a performance penalty due to its highly conservative nature.\nUncertainty-Weighted Optimization: In uncertainty-weighted optimization (UWO) (Wu et al., 2021b; Yu et al., 2020b; Brantley et al., 2019), the reward for a sample is calculated by combining the average reward across all models in an ensemble with the intra-ensemble variance, weighted by a coefficient \u03bb. Intuitively, UWO works by penalizing the policy for generating responses for which there is high disagreement among reward models within the ensemble. This helps prevent the exploitation of a single faulty reward model which might be erroneously assigning high rewards to incorrect or low-quality responses. Mathematically, this objective is given by:\nRUWO(q, a) := 1\nk \u2211 i\nRi(q, a)\ufe38 \ufe37\ufe37 \ufe38 mean\n\u2212\u03bb 1 k \u2211 i\n( Ri(q, a)\u2212 1\nk \u2211 i Ri(q, a) )2 \ufe38 \ufe37\ufe37 \ufe38\nvariance\n(5)\nwhere \u03bb is a hyperparameter which controls the weight of the uncertainty component."
+        },
+        {
+            "heading": "4 EXPERIMENTAL SETUP",
+            "text": "We based our experiments on the setup proposed by Gao et al. (2023), however, we use open source models (Biderman et al., 2023; Dubois et al., 2023), open source datasets (Taori et al., 2023), and train our proxy reward models under 25% label noise. We also present qualitative reproduction of the results of Gao et al. in Appendix E."
+        },
+        {
+            "heading": "4.1 DATA",
+            "text": "In order to train proxy reward models, we use the Alpaca dataset (Taori et al., 2023), with 52, 000 instructions covering a range of commands and corresponding demonstrations generated by OpenAI\u2019s text-davinci-003 (OpenAI, 2023a). Each entry is composed of an instruction, an optional additional input, and a demonstrator output. More specifically, we use the AlpacaFarm (Dubois et al., 2023) variant of the dataset, as it provides splits for use in the different RLHF stages and for validation, as well as human preference annotations. Further details concerning the splits, prompt format, and examples are given in Appendix D."
+        },
+        {
+            "heading": "4.2 PRETRAINED MODELS",
+            "text": "For the policy model and (proxy) reward model, we use pretrained language models provided in the Pythia suite (Biderman et al., 2023). The policy model used everywhere in this work is the 1.4B Pythia model. For proxy reward models, we remove the unembedding layers from Pythia models of sizes 14M, 70M, and 1.4B and add a scalar head to output the reward to get proxy reward models of sizes 7M, 44M, and 1.3B.\nFinally, the 7B human preference reward model from AlpacaFarm (Dubois et al., 2023) is used as the gold reward model. It is of very similar size to the (closed-source) 6.9B gold reward model used in Gao et al. (2023) and is significantly larger than any of our proxy RMs (with the largest being 1.3B) and as such is a reasonable choice for a gold standard."
+        },
+        {
+            "heading": "4.3 RLHF PIPELINE",
+            "text": "Our RLHF pipeline is similar to that of Gao et al. (2023) with several modifications highlighted in Figure 1. We explain the full setup below for completeness.\nSupervised Fine-tuning: As the first step in our RLHF pipeline, both the policy model and the proxy reward model undergo supervised fine-tuning using 10k instruction demonstrations from the \u201csft\u201d split of the AlpacaFarm dataset (see Section 4.1 and Appendix D.2 for details). This fine-tunes the models to have better instruction-following capabilities.\nPreference Generation and Labeling: To generate a preference dataset, the SFT model is prompted using instructions from the AlpacaFarm dataset, for which it produces two responses per instruction. Relevant hyperparameters for sampling these responses are given in Appendix D.1. The two responses are then scored with the gold reward model, which assigns a score to each of them. Human annotators tend to have high disagreement rates, often around 25% (Stiennon et al., 2020) or more (Ziegler et al., 2019; Dubois et al., 2023). To simulate this, we optionally mislabel 25% of the dataset. This results in two datasets: one with no label noise and one with 25% label noise.\nProxy Reward Model Training: We train our proxy reward model by minimizing cross-entropy loss on the preference dataset generated in the previous timestep. Unless mentioned otherwise, we use the complete dataset of 46, 000 prompts for reward model training and train all the reward models for 5 epochs. We give other hyperparameters for reward model training in Appendix D.1 and example validation loss curves for a set of reward models in Appendix F.1. Trained reward models reach between 60-75% validation accuracy.\nEnsemble Creation: To create an ensemble, we train a fixed number of proxy reward models using identical data and hyperparameters but with different random seeds. This results in different random initialization for the scalar reward head added on top of the pretrained language model and a different data shuffling order. We use all the available training data for the training of every reward model as training on lesser data results in higher validation loss and poorer performance (Lakshminarayanan et al., 2017). Unless stated otherwise, we train an ensemble consisting of five reward models.\nPolicy Optimization: Similar to Gao et al. (2023), we use BoN sampling and PPO as optimization algorithms. For BoN, the evaluation cost for greater KL nats increases exponentially. As a result, due to constraints on available compute, we only evaluate BoN for a maximum of nmax = 12, 500 samples1, which roughly equals 8.4 nats of KL. For PPO, we train for 3000 PPO steps. We give further details on implementation and other hyperparameters in Appendix D.1."
+        },
+        {
+            "heading": "5 RESULTS",
+            "text": "In this section, we report the results of our experiments. To summarize, our main findings are:\n\u2022 Using an ensemble, with any of the objectives highlighted in Section 3, almost always helps over using a single reward model.\n\u2022 For BoN, we do not observe any overoptimization when using WCO and UWO as optimization methods; however, in the 25% label noise case, mean optimization does overoptimize (Figure 3).\n\u2022 For BoN, all three ensemble-based optimization methods result in up to \u223c 30% improvement in final performance over the average performance attained by optimizing individual reward models in the no label noise case and up to \u223c 75% improvement in the 25% label noise case (Figure 3).\n\u2022 For PPO, WCO, and UWO do reduce overoptimization (Figure 5), but completely mitigating overoptimization requires combining them with a small KL penalty (Figure 4).\n\u2022 For PPO, WCO, and UWO always match or outperform single reward model optimization in terms of final performance for all values of KL penalties (Figure 7).\n\u2022 Our findings are robust to scaling of model size and training dataset size (Figures 8 and 9).\nTo present our results, we primarily rely on policy optimization curves where we show the gold reward model score on the left y-axis and the proxy reward model score on the right y-axis. For\n1Generating the n = 12, 500 answers for 1000 prompts and then relabeling them with proxy and gold reward model takes approximately 700 A100 GPU hours.\nthe x-axis, following the common practice (Bai et al., 2022a; Gao et al., 2023), we use the KL divergence as defined in Eq. 1 or Appendix C, on a square root scale for clarity. For PPO, most runs do not exceed a KL divergence of 150, but those that do are truncated to maintain a more legible plot. Additionally, runs in Figure 4, the main PPO optimization illustration, are averaged over three PPO seeds, with standard deviation shown. For other PPO optimization figures, due to the low variance observed, a single seed is used. However, the results for single RMs are averaged over the five RMs which make up the ensemble for the other methods. When comparing many experiment results at once, we present bar plots showing the final performance on the gold reward model and the variable of interest on the x-axis. As an additional evaluation metric for quality, Appendix F.9 compares the final policy win-rate of different ensemble methods. Finally, we also include some qualitative samples in Appendix F.10."
+        },
+        {
+            "heading": "5.1 BEST-OF-N SAMPLING",
+            "text": "In Figure 3, we present results for BoN sampling for a 44M size reward model. Across both noiseless and noisy settings, ensembles help improve performance by \u223c 30% and \u223c 75% respectively and successfully avoid overoptimization, except for mean optimization in the case of noisy labels. For UWO, we show results for \u03bb = 0.5 which we found to be most performant; however, in Section 5.4, we show that many reasonable values of \u03bb work well. Additional results for different sizes of reward models are presented in Appendices F.3 and F.4."
+        },
+        {
+            "heading": "5.2 PROXIMAL POLICY OPTIMIZATION",
+            "text": "For PPO we observe that WCO and UWO reduce overoptimization and outperform other methods in terms of final performance in the absence of KL penalty, although they do not eliminate overoptimization completely (as shown in Figure 5). However, in Figure 4, we show that with a small KL\npenalty coefficient of 0.01, WCO and UWO both successfully prevent overoptimization, without any notable reduction in performance. On the other hand, when using KL penalty on its own, a 20x larger KL penalty weight of 0.2 is required to eliminate overoptimization which incurs a significant performance penalty (Figure 6). In Figure 7, we show that for all penalties, WCO and UWO match or outperform the average final performance achieved by optimizing a single reward model. Moreover, for small KL penalties, they comprehensively outperform single reward model optimization."
+        },
+        {
+            "heading": "5.3 MODEL AND DATA SCALING RESULTS",
+            "text": "Prior work (Gao et al., 2023) has shown that increasing reward model size or training dataset size helps improve performance as measured by the gold reward model. In Figure 8, we vary the size of reward models (keeping the dataset size fixed at 46k samples and policy size fixed at 1.4B) and plot the final performance of each method for the fixed training budget. Recall that for BoN, this is n = 12, 500 samples and for PPO, this is 3000 timesteps. Our results show that the improvement due to the use of ensembles is orthogonal to the improvement in performance achieved by scaling the reward model size. In particular, with the 1.3B reward model, we highlight that even when the policy and reward model have a similar number of parameters, WCO and UWO still provide nontrivial gains over using a single reward model. A more detailed illustration of this example can be found in Appendix F.4.\nSimilarly, in Figure 9, we vary the size of the training dataset (keeping the reward model size fixed at 44M) and plot the final performance for each method for the fixed training budget. The results again indicate that using ensembles provides additional improvement in addition to increasing the size of the training dataset."
+        },
+        {
+            "heading": "5.4 EVALUATING ROBUSTNESS TO HYPERPARAMETERS",
+            "text": "Using an ensemble-based approach introduces an additional hyperparameter: the cardinality, or size, of the ensemble. In Figure 11, we plot the final performance for BoN and PPO for the three ensemble-based approaches: mean optimization, WCO, and UWO. We note that while there is a noticeable gap between 3-member and 4-member ensembles, in most cases the performance is highly similar for 4-member and 5-member ensembles, indicating that 4-member or 5-member ensembles are likely to work best, and diminishing returns will be seen after this point.\nFor UWO, the value of the uncertainty penalty is another hyperparameter. Our results in Figure 12 indicate that most reasonable values of uncertainty penalty actually work well, indicating that there is potentially no need to tune this hyperparameter."
+        },
+        {
+            "heading": "5.5 EFFECTS OF LABEL NOISE AND UNCERTAINTY PENALTY",
+            "text": "In Figure 10, we show intra-ensemble variance for an ensemble of 44M parameter reward models optimized via UWO and mean optimization objectives using PPO. The variance among the ensemble members starts at a small value in the no label noise case, and increases by a relatively small amount during training for UWO. However, the uncertainty increases by almost 3 times for mean optimization during training.\nFor the case of 25% label noise, the variance starts much higher and during the course of training, increases by about 2.5 times for mean optimization. However, the variance only increases by about 20% for UWO (using \u03bb = 0.1). Further, using a KL penalty of 0.01 results in a slight reduction in the variance at the\nend of training. This hints at the fact that while mean optimization is able to exploit any reward model that overestimates the reward, the uncertainty penalty in UWO prevents that - resulting in better final performance (shown in Figure 7) and reduced overoptimization."
+        },
+        {
+            "heading": "6 DISCUSSION",
+            "text": "We have demonstrated that ensemble-based conservative optimization methods improve performance and are highly effective in combating the overoptimization problem in RLHF. This work opens up the possibility of several interesting follow-ups. Firstly, future work should consider replicating our findings in other environments (i.e. other RLHF datasets) and with larger-scale language models. Secondly, our setup is based on offline RLHF, in which human feedback is collected upfront and there are no updates made to the reward model throughout the policy optimization process. This contrasts with online RLHF (Bai et al., 2022a; Christiano et al., 2017), where reward models are periodically retrained on freshly collected data from humans. Does ensembling result in similar gains in this setup as well or not?"
+        },
+        {
+            "heading": "7 RELATED WORKS",
+            "text": "Overoptimization in RLHF: Several works (Ibarz et al., 2018; Ziegler et al., 2019; Stiennon et al., 2020) have provided anecdotal evidence of overoptimization in RLHF. However, to the best of our knowledge, Gao et al. (2023) are the only ones who study it systematically within the setup of finetuning of LLMs. Our work utilizes their setup, reproduces their results, and performs a systematic study evaluating the effectiveness of using ensembles for mitigating overoptimization.\nUse of Ensembles in (Model-Based) RL: Ensembles are often used in deep learning as a tool to estimate uncertainty (Lakshminarayanan et al., 2017; Dietterich, 2000) and can often outperform more complex Bayesian deep learning methods (Ovadia et al., 2019). Learning an ensemble of dynamics models is especially popular in model-based reinforcement learning where often a reliable uncertainty estimate over state space is critical for avoiding distribution shift (Depeweg et al., 2016; Gal et al., 2016; Chua et al., 2018; Yu et al., 2020a). Disagreement among ensemble members is also a popular approach for driving the exploration of learning agents in an environment (Henaff, 2019; Pathak et al., 2019; Shyam et al., 2019; Lee et al., 2021). Brantley et al. (2019) uses an ensemblebased approach to estimate the support of expert policies in an imitation learning setup. Within language models setting, Gleave & Irving (2022) explore the use of ensembles for uncertaintybased active learning to improve sample efficiency of reward models. However, to the best of our knowledge, there is no prior work that explores the use of ensembles for improving the robustness of RLHF; especially in the setting of language models fine-tuning."
+        },
+        {
+            "heading": "A ADDITIONAL RELATED WORKS",
+            "text": "RLHF: Reinforcement learning from human feedback (RLHF), in its modern form, was popularized by Christiano et al. (2017). Ziegler et al. (2019) was the first work to demonstrate the effectiveness of RLHF for fine-tuning language models. This led to several applications of RLHF to fine-tuning LLMs focused on improving several aspects of language models e.g. instruction following (Ouyang et al., 2022; Abramson et al., 2022), summarization capabilities (Stiennon et al., 2020; Wu et al., 2021a), web browsing (Nakano et al., 2021), translation (Gulcehre et al., 2023) and helpfulness & harmlessness (Bai et al., 2022a). This has also caused a great amount of interest in improving RLHF as a method. One main line of research here is methods that try to augment the learning signal for the reward model in some form e.g. language feedback (Scheurer et al., 2023) or process supervision (Lightman et al., 2023; Uesato et al., 2022). This, however, generally incurs additional costs in labeling. This has prompted research on extracting feedback signal from a pretrained language model via appropriate prompting (Bai et al., 2022b; OpenAI, 2023b; Madaan et al., 2023; Saunders et al., 2022), however, this requires effective prompting and a highly capable language model to be successful. Another line of research focuses on the use of alternative algorithms to PPO for policy optimization step (Gulcehre et al., 2023; Rafailov et al., 2023; Zhao et al., 2023; Yuan et al., 2023; Dong et al., 2023; Xu et al., 2023). Orthogonal to both these lines of work, we explore using ensembles to improve RLHF.\nReward Hacking: Overotpimization in RLHF is an instance of reward hacking. Many examples of reward hacking exist in literature (Clark & Amodei, 2016; Lehman et al., 2020; Krakovna et al., 2020). Skalse et al. (2022) provide a formal definition for reward hacking and theoretically study whether unhackable proxies can exist or not under different conditions. Zhuang & Hadfield-Menell (2020) study the reward hacking that might arise due to partial observability. Pan et al. (2022) provide examples of proxy reward functions in various reinforcement learning environments where low-capacity policies do not elicit reward hacking but policies with greater capacity do."
+        },
+        {
+            "heading": "B BON ESTIMATOR",
+            "text": "The naive way of estimating the average reward of the BoN policy under a gold reward model, when using a proxy reward model as the ranking function, is to use a Monte Carlo estimate in which n answers {A1, ..., A2} are sampled from a language model f and then scored for a given prompt q as follows:\nRgoldn (q) := EA1,A2,...,An\u223cf(q)\n[ Rgold ( argmax\na\u2208{A1,A2,...,An} Rproxy(a|q)|q\n)] (6)\nThis is very wasteful as it does not reuse answers for different values of n. Therefore, we instead use the following unbiased estimator (Nakano et al., 2021) that samples N \u2265 nmax outputs for a given input q:\nRgoldn (q) = 1( N n ) \u2211 1\u2264i1<\u00b7\u00b7\u00b7<in\u2264N Rgold  argmax a\u2208{Ai1 ,...,Ain} Rproxy (a | q) | q  (7) This can be computed efficiently by first sorting all answers A1, ..., AN under the proxy reward model to obtain scores S1, ..., SN and then computing:\n1( N n ) \u2211 1\u2264i1<\u00b7\u00b7\u00b7<in\u2264N Rgold  argmax a\u2208{Si1 ,...,Sin} Rproxy (a | q) | q  = N\u2211 i=n ( i\u22121 n\u22121 )( N n\n) Rgold (Si | q) (8) To get the gold reward model score for a given range of values n = 1, 2, ..., nmax, we simply evaluate the empirical average of the above estimator for all questions for each n."
+        },
+        {
+            "heading": "C KL DISTANCE CALCULATION FOR PPO",
+            "text": "The naive way to calculate KL distance between the PPO-optimized policy \u03c0RL and the pretrained model is as follows:\nKLRL(\u03c0RL, \u03c0init) = Ex\u223c\u03c0RL\n[ log\n\u03c0RL \u03c0init\n] (9)\nHowever, this estimator has high variance and can be negative, unlike actual KL. Therefore, we use the following estimator (Schulman, 2020):\nKLRL(\u03c0RL, \u03c0init) = Ex\u223c\u03c0RL\n[ 1\n2\n( log\n\u03c0RL \u03c0init\n)2] (10)"
+        },
+        {
+            "heading": "D ADDITIONAL EXPERIMENTAL DETAILS",
+            "text": "D.1 HYPERPARAMETERS\nWe give the hyperparameters here for different components of our RLHF pipeline:\nD.2 ALPACAFARM DATASET DETAILS\nThe AlpacaFarm dataset (Dubois et al., 2023) employed in our experiments uses the Alpaca data (Taori et al., 2023) made up of 52,000 samples. This data is chosen due to its large size and success in training instruction-following models. AlpacaFarm contains five splits: a labeled 10k \u201dsft\u201d split for\nsupervised fine-tuning, a 10k \u201dpref\u201d split containing pairwise preference labels, a 20k \u201dunlabeled\u201d split for training algorithms such as PPO, a 2k validation split, and an unused 10k split.\nD.3 PROMPT FORMAT\nThough we use instructions from the AlpacaFarm dataset, this only provides content for prompting the LLM and still requires formatting. We opt for minimalism, following the v2 format used in OpenAssistant (Ko\u0308pf et al., 2023). This format follows the GPTNeoXTokenizer class used to pretrain our LLMs and introduces two special tokens: <|prompter|> and <|assistant|>.\nFor answer generation, the model should be prompted with the instruction and the input. Inputs, should they be present, are appended to the instruction after a new line to form the prompt. The prompt is then prepended with the <|prompter|> token and closed off with an end-of-text (EOT) <|endoftext|> token declaring the end of the instruction, and the <|assistant|> token to start the answer. An example is shown in Table 5.\nFor reward modeling, the prompt should also contain an answer to be evaluated. In this case, the answer text (from an AlpacaFarm dataset demonstration or a previous answer generation) is appended to the initial prompt containing the instruction and closed off with the EOT token. This forms the full RM prompt, with an example shown in Table 5."
+        },
+        {
+            "heading": "E REPRODUCTION OF RESULTS OF GAO ET AL. (2023)",
+            "text": "We also successfully reproduced the results of Gao et al. in our setup shown in Figures 13 and 14. Note that our setup uses open-source models derived from the Pythia suite (Biderman et al., 2023) as the base for policy and proxy reward models and the AlpacaFarm human-preference reward model (Dubois et al., 2023) is used as the gold reward model. In contrast, Gao et al. used closed-source models based on GPT series. Our successful reproduction of their results in our setup hints at the general nature of overoptimization."
+        },
+        {
+            "heading": "F ADDITIONAL RESULTS",
+            "text": "F.1 RM VALIDATION LOSS CURVE\nF.2 INDIVIDUAL REWARD MODEL TRAINING OPTIMIZATION PLOTS\nFor the single reward model results, we optimize each reward model separately and present their average in Figures 3 and 4. Here, we present the training curve for each reward model separately.\nF.3 7M REWARD MODEL TRAINING OPTIMIZATION RESULTS\nF.4 1.3B REWARD MODEL TRAINING OPTIMIZATION RESULTS\nF.5 ADDITIONAL NO LABEL NOISE RESULTS\nF.6 35% LABEL NOISE RESULTS\nF.7 LONGER PPO RESULTS\nF.8 FULL UNCROPPED KL DIVERGENCE PPO RESULTS\nF.9 WIN-RATE EVALUATION OF ENSEMBLE METHODS\nAs an additional measure of quality, Tables 6 and 7 show the win-rate of final policies trained with the different ensemble methods, when compared with the single reward models, across multiple reward model scales. These tables correspond to runs shown earlier in Figures 3, 4, 18 and 19. For BoN, we use the unbiased estimator at n = 12500 and compare gold scores between each method and the single reward models for each prompt. For PPO, we compare the gold scores of answers generated by the policy after 3000 PPO training steps. Win-rate is calculated by averaging the individual win-rates against each of the five single reward models, with standard deviation also presented. Results for PPO are additionally averaged over the three PPO seeds.\nF.10 QUALITATIVE SAMPLES\nQuantitative metrics are used throughout our experiments as they enable the rapid and comprehensive evaluation of various methods. Here we provide a brief insight into the qualitative aspect of the methods discussed in this work. For a given prompt, answers from the final policy (n = 12500 for BoN, and 3000 steps for PPO) of each method are provided. Policies from the runs in Figures 3 and 4, which provide the strongest final results, are used.\nThe main takeaways are as follows. First, the BoN answers are shorter, because policy optimization does not occur in the same way it does for PPO. Second, single reward models show signs of failure and overoptimization. For BoN, this translates to poor answers and even hallucinations in the case of Table 8. For PPO, this also translates to poor answers, which are very long and highly repetitive. These are clear instances of overoptimization, where the reward model seems to have learned to produce long answers regardless of the content, which offers good proxy reward model performance but poor gold model performance. Finally, we note that the conservative optimization methods produce strong qualitative results, even when single reward models are struggling.\nPrompt Create an analogy to explain cloud computing.\nSingle RM (BoN) Cloud computing is like the sky; it is a vast, untamed expanse filled with a variety of colorful shapes and textures. Just like clouds move and shift based on the weather, so too does cloud computing. It is constantly evolving and adapting to meet the demands of modern technology.\nMean (BoN) Cloud computing is like a sprawling house, with multiple rooms and floors that each represent a specific type of resource. Each room serves a specific purpose, such as storage, processing, or network access, and each floor has its own features such as storage, computing power, or network connectivity. The cloud provides a central hub where resources can be accessed from anywhere in the house, and enables users to access the resources they need quickly and easily.\nContinued on the next page\nPrompt Create an analogy to explain cloud computing.\nWCO (BoN) Cloud computing is like a giant server room in your home, with multiple computers connected together to store, process, and retrieve data. The computers are like small servers in the server room, performing different tasks such as running virtual machines, performing analytics, and performing other tasks. Each computer is connected to the server, and the data stored in the server is retrieved and used by the computers. The data is stored in a database, allowing data to be quickly and easily accessed, updated, and processed.\nUWO (BoN) Cloud computing is like a stack of pancakes; each pancake is a machine that processes data and provides computing power. When you want to make pancakes, you simply select the ingredients, put them in a pan, and flip them to make pancakes. Similarly, when you use cloud computing, you select the services you need to make use of, then pay a monthly fee to use them. When you\u2019re done with your work, you can shut down the machine and delete the files, or if you need more power, you can simply purchase more power and pay a recurring fee to make use of it.\nSingle RM (PPO) The analogy is that of a computer being a network of interconnected servers, each with its own processing power and memory, and the cloud as the central hub where the data is stored, allowing the various servers to access the data in a more efficient and cost-effective manner. It is the cloud that allows the various servers to be able to access the same data in the same way, and the data is stored and managed in the cloud, thus allowing the various servers to work together to provide a more efficient and cost-effective solution. It is the cloud that is the backbone of the modern technology and it is the ability to access the data from the various servers, in a more cost-effective and efficient manner, that makes cloud computing the ideal solution for the modern technology. It is the cloud that is the future of technology and it is the ability to access the data from the various servers, in a more cost-effective and efficient manner, that is the foundation of the modern technology. It is the cloud that is the new standard and it is the ability to access the data from the various servers, in a more cost-effective and efficient manner, that is the foundation of the future of technology. It is the cloud that is the future of technology, and it is the ability\nMean (PPO) Cloud computing is like a giant cloud of air that provides all of the computing power needed to run a business. The cloud provides access to the necessary computing resources to enable businesses to remain competitive and stay ahead of the competition. Cloud computing is a cost-effective way to access the computing power needed to run a business, and it can reduce the time it takes to develop and deploy new software. It also allows businesses to scale their operations quickly, with the ability to quickly add or remove resources as needed. Cloud computing is a great way for businesses to remain competitive and stay ahead of the competition.\nContinued on the next page\nPrompt Create an analogy to explain cloud computing.\nWCO (PPO) Cloud computing is like a huge, open room with many different walls and floors. The walls provide security and privacy, while the floors provide resources and data access. The ceiling is the sky, and the sky is the sky, providing a vast amount of resources, power, and opportunities. The cloud is a room full of resources, and the resources are the people, providing a diverse community of expertise and resources. The walls, floors, and sky are all important, and together they provide an invaluable resource. This analogy helps to explain the importance of cloud computing, and how it can be beneficial to organizations of all sizes. It shows the power of the cloud and the opportunities it provides, allowing organizations to scale quickly and efficiently. It also illustrates the importance of providing a secure, reliable, and cost-effective infrastructure.\nUWO (PPO) Cloud computing is like a modern-day library, where data is stored and processed on a centralized server. The data is accessed and manipulated from any device connected to the internet, allowing for faster and more efficient services. The data is stored in the cloud and is accessible from any device, allowing for the user to access the data quickly and efficiently. The cloud computing platform is easy to use, provides the user with the flexibility to access the data quickly and easily, and is cost effective. The cloud computing platform provides the user with the ability to access the data quickly and easily, allowing them to make decisions based on the data. The cloud computing platform also provides the user with the flexibility to access the data quickly and easily, allowing them to make decisions based on the data. This allows the cloud computing platform to be a cost effective solution for the user, while providing them with the ability to access the data quickly and easily."
+        }
+    ],
+    "title": "REWARD MODEL ENSEMBLES HELP MITIGATE OVEROPTIMIZATION",
+    "year": 2024
+}

@@ -1,0 +1,974 @@
+{
+    "abstractText": "In the classical transformer attention scheme, we are given three n\u00d7d size matrices Q,K, V (the query, key, and value tokens), and the goal is to compute a new n\u00d7 d size matrix D\u22121 exp(QK\u22a4)V where D = diag(exp(QK)1n). Here, exp() is applied entry-wise and 1n denotes a length-n vector whose entries are all ones. Intuitively, attention computation captures pairwise information between words in a sentence, but not higher-order information. Indeed, recent work Sanford et al. (2023) has shown that attention units cannot solve simple problems about detecting triples of connected words. In this work, we study a generalization of attention which captures triple-wise correlations. The generalization is based on computations involving tensors defined by tuples of words. More formally, given five n\u00d7d size matrices Q,K1,K2, V1 and V2 (generalized query, key, and value tokens), our new goal is to compute an n\u00d7 d size matrix D\u22121 exp(Q(K1 \u2298K2))(V1 \u2298 V2) where D = diag(exp(Q(K1 \u2298 K2) )1n2) and K1 \u2298K2 \u2208 R \u00d7d denotes the column-wise Kronecker product of K1 and K2. This generalization is indeed able to solve problems about detecting triple-wise connections that were shown to be impossible for transformers. The potential downside of this generalization is that it appears as though computations are even more difficult, since the straightforward algorithm requires cubic time in n. However, we show that in the bounded-entry setting (which arises in practice, and which is well-studied in both theory and practice), there is actually a near-linear time algorithm. More precisely, we show that bounded entries are both necessary and sufficient for quickly performing generalized computations: \u2022 On the positive side, if all entries of the input matrices are bounded above by o( 3 \u221a log n) then we show how to approximate the \u201ctensor-type\u201d attention matrix in n time. \u2022 On the negative side, we show that if the entries of the input matrices may be as large as \u03a9( 3 \u221a log n), then there is no algorithm that runs faster than n3\u2212o(1) (assuming the Strong Exponential Time Hypothesis from fine-grained complexity theory). We also show that our construction, algorithms, and lower bounds naturally generalize to higher-order tensors and correlations. Interestingly, the higher the order of the tensors, the lower the bound on the entries needs to be for an efficient algorithm. Our results thus yield a natural tradeoff between the boundedness of the entries, and order of the tensor one may use for more expressive, efficient attention computation. Our constructions make use of a novel connection with a higher-order variant on the kernel density estimation problem. They combine a number of technical tools, including the polynomial method, algebraic geometry codes, and multiparty Merlin-Arthur communication protocols.",
+    "authors": [],
+    "id": "SP:42f6ae955fbcc12d6327df22f451c71d477ed237",
+    "references": [
+        {
+            "authors": [
+                "Scott Aaronson",
+                "Avi Wigderson"
+            ],
+            "title": "Algebrization: A new barrier in complexity theory",
+            "venue": "ACM Transactions on Computation Theory (TOCT),",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Amir Abboud",
+                "Virginia Vassilevska Williams",
+                "Oren Weimann"
+            ],
+            "title": "Consequences of faster alignment of sequences",
+            "venue": "In Automata, Languages, and Programming: 41st International Colloquium,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Amir Abboud",
+                "Aviad Rubinstein",
+                "Ryan Williams"
+            ],
+            "title": "Distributed pcp theorems for hardness of approximation in p",
+            "venue": "IEEE 58th Annual Symposium on Foundations of Computer Science (FOCS),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Amol Aggarwal",
+                "Josh Alman"
+            ],
+            "title": "Optimal-degree polynomial approximations for exponentials and gaussian kernel density estimation",
+            "venue": "Schloss Dagstuhl-Leibniz-Zentrum fu\u0308r Informatik,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Thomas D Ahle",
+                "Michael Kapralov",
+                "Jakob BT Knudsen",
+                "Rasmus Pagh",
+                "Ameya Velingker",
+                "David P Woodruff",
+                "Amir Zandieh"
+            ],
+            "title": "Oblivious sketching of high-degree polynomial kernels",
+            "venue": "In Proceedings of the Fourteenth Annual ACM-SIAM Symposium on Discrete Algorithms (SODA),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Josh Alman",
+                "Zhao Song"
+            ],
+            "title": "Fast attention requires bounded entries",
+            "venue": "In NeurIPS. arXiv preprint arXiv:2302.13214,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Josh Alman",
+                "Timothy Chu",
+                "Aaron Schild",
+                "Zhao Song"
+            ],
+            "title": "Algorithms and hardness for linear algebra on geometric graphs",
+            "venue": "IEEE 61st Annual Symposium on Foundations of Computer Science (FOCS),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Sanjeev Arora",
+                "Boaz Barak"
+            ],
+            "title": "Computational complexity: a modern approach",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "L\u00e1szl\u00f3 Babai"
+            ],
+            "title": "Trading group theory for randomness",
+            "venue": "In Proceedings of the seventeenth annual ACM symposium on Theory of computing,",
+            "year": 1985
+        },
+        {
+            "authors": [
+                "Arturs Backurs",
+                "Moses Charikar",
+                "Piotr Indyk",
+                "Paris Siminelakis"
+            ],
+            "title": "Efficient density evaluation for smooth kernels",
+            "venue": "IEEE 59th Annual Symposium on Foundations of Computer Science (FOCS),",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Aditya Bhaskara",
+                "Moses Charikar",
+                "Ankur Moitra",
+                "Aravindan Vijayaraghavan"
+            ],
+            "title": "Smoothed analysis of tensor decompositions",
+            "venue": "In Proceedings of the forty-sixth annual ACM symposium on Theory of computing (STOC),",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Aditya Bhaskara",
+                "Aidao Chen",
+                "Aidan Perreault",
+                "Aravindan Vijayaraghavan"
+            ],
+            "title": "Smoothed analysis for tensor methods in unsupervised learning",
+            "venue": "Mathematical Programming,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jan van den Brand",
+                "Zhao Song",
+                "Tianyi Zhou"
+            ],
+            "title": "Algorithm and hardness for dynamic attention maintenance in large language models",
+            "venue": "arXiv e-prints, pp",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tom Brown",
+                "Benjamin Mann",
+                "Nick Ryder",
+                "Melanie Subbiah",
+                "Jared D Kaplan",
+                "Prafulla Dhariwal",
+                "Arvind Neelakantan",
+                "Pranav Shyam",
+                "Girish Sastry",
+                "Amanda Askell"
+            ],
+            "title": "Language models are few-shot learners. Advances in neural information processing systems (NeurIPS)",
+            "year": 1877
+        },
+        {
+            "authors": [
+                "Beidi Chen",
+                "Tri Dao",
+                "Eric Winsor",
+                "Zhao Song",
+                "Atri Rudra",
+                "Christopher R\u00e9"
+            ],
+            "title": "Scatterbrain: Unifying sparse and low-rank attention",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Beidi Chen",
+                "Tri Dao",
+                "Kaizhao Liang",
+                "Jiaming Yang",
+                "Zhao Song",
+                "Atri Rudra",
+                "Christopher Re"
+            ],
+            "title": "Pixelated butterfly: Simple and efficient sparse training for neural network models",
+            "venue": "In International Conference on Learning Representations (ICLR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rewon Child",
+                "Scott Gray",
+                "Alec Radford",
+                "Ilya Sutskever"
+            ],
+            "title": "Generating long sequences with sparse transformers",
+            "venue": "arXiv preprint arXiv:1904.10509,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Krzysztof Choromanski",
+                "Valerii Likhosherstov",
+                "David Dohan",
+                "Xingyou Song",
+                "Andreea Gane",
+                "Tamas Sarlos",
+                "Peter Hawkins",
+                "Jared Davis",
+                "Afroz Mohiuddin",
+                "Lukasz Kaiser"
+            ],
+            "title": "Rethinking attention with performers",
+            "venue": "In ICLR. arXiv preprint arXiv:2009.14794,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham",
+                "Hyung Won Chung",
+                "Charles Sutton",
+                "Sebastian Gehrmann"
+            ],
+            "title": "Palm: Scaling language modeling with pathways",
+            "venue": "arXiv preprint arXiv:2204.02311,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tri Dao"
+            ],
+            "title": "Flashattention-2: Faster attention with better parallelism and work partitioning",
+            "venue": "arXiv preprint arXiv:2307.08691,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tri Dao",
+                "Dan Fu",
+                "Stefano Ermon",
+                "Atri Rudra",
+                "Christopher R\u00e9"
+            ],
+            "title": "Flashattention: Fast and memoryefficient exact attention with io-awareness",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Giannis Daras",
+                "Nikita Kitaev",
+                "Augustus Odena",
+                "Alexandros G Dimakis"
+            ],
+            "title": "Smyrf-efficient attention using asymmetric clustering",
+            "venue": "Advances in Neural Information Processing Systems (NeurIPS),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yichuan Deng",
+                "Zhao Song",
+                "Junze Yin"
+            ],
+            "title": "Faster robust tensor power method for arbitrary order",
+            "venue": "arXiv preprint arXiv:2306.00406,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer"
+            ],
+            "title": "Llm. int8 (): 8-bit matrix multiplication for transformers at scale",
+            "venue": "arXiv preprint arXiv:2208.07339,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tim Dettmers",
+                "Mike Lewis",
+                "Younes Belkada",
+                "Luke Zettlemoyer"
+            ],
+            "title": "8-bit matrix multiplication for transformers at scale",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova. Bert"
+            ],
+            "title": "Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "arXiv preprint arXiv:1810.04805,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Huaian Diao",
+                "Zhao Song",
+                "Wen Sun",
+                "David Woodruff"
+            ],
+            "title": "Sketching for kronecker product regression and p-splines",
+            "venue": "In International Conference on Artificial Intelligence and Statistics,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Huaian Diao",
+                "Rajesh Jayaram",
+                "Zhao Song",
+                "Wen Sun",
+                "David Woodruff"
+            ],
+            "title": "Optimal sketching for kronecker product regression and low rank approximation",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yeqi Gao",
+                "Zhao Song",
+                "Weixin Wang",
+                "Junze Yin"
+            ],
+            "title": "A fast optimization view: Reformulating single layer attention in llm based on tensor and svm trick, and solving it in matrix multiplication time",
+            "venue": "arXiv preprint arXiv:2309.07418,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yeqi Gao",
+                "Zhao Song",
+                "Xin Yang"
+            ],
+            "title": "Differentially private attention computation",
+            "venue": "arXiv preprint arXiv:2305.04701,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yeqi Gao",
+                "Zhao Song",
+                "Junze Yin"
+            ],
+            "title": "Gradientcoin: A peer-to-peer decentralized large language models",
+            "venue": "arXiv preprint arXiv:2308.10502,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shafi Goldwasser",
+                "Michael Sipser"
+            ],
+            "title": "Private coins versus public coins in interactive proof systems",
+            "venue": "In Proceedings of the eighteenth annual ACM symposium on Theory of computing,",
+            "year": 1986
+        },
+        {
+            "authors": [
+                "Valerii Denisovich"
+            ],
+            "title": "Goppa. Codes on algebraic curves",
+            "venue": "In Doklady Akademii Nauk,",
+            "year": 1981
+        },
+        {
+            "authors": [
+                "Russell Impagliazzo",
+                "Ramamohan Paturi"
+            ],
+            "title": "On the complexity of k-sat",
+            "venue": "Journal of Computer and System Sciences,",
+            "year": 2001
+        },
+        {
+            "authors": [
+                "Praneeth Kacham",
+                "Vahab Mirrokni",
+                "Peilin Zhong"
+            ],
+            "title": "Polysketchformer: Fast transformers via sketches for polynomial kernels",
+            "venue": "arXiv preprint arXiv:2310.01655,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Angelos Katharopoulos",
+                "Apoorv Vyas",
+                "Nikolaos Pappas",
+                "Fran\u00e7ois Fleuret"
+            ],
+            "title": "Transformers are rnns: Fast autoregressive transformers with linear attention",
+            "venue": "In International Conference on Machine Learning (ICLR),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Feyza Duman Keles",
+                "Pruthuvi Mahesakya Wijewardena",
+                "Chinmay Hegde"
+            ],
+            "title": "On the computational complexity of self-attention",
+            "venue": "In International Conference on Algorithmic Learning Theory,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nikita Kitaev",
+                "\u0141ukasz Kaiser",
+                "Anselm Levskaya"
+            ],
+            "title": "Reformer: The efficient transformer",
+            "venue": "arXiv preprint arXiv:2001.04451,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zichang Liu",
+                "Jue Wang",
+                "Tri Dao",
+                "Tianyi Zhou",
+                "Binhuang Yuan",
+                "Zhao Song",
+                "Anshumali Shrivastava",
+                "Yuandong Tian Ce Zhang",
+                "Christopher Re",
+                "Beidi Chen"
+            ],
+            "title": "Deja vu: Contextual sparsity for efficient llms at inference time",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Sergio P. Perez",
+                "Yan Zhang",
+                "James Briggs",
+                "Charlie Blake",
+                "Josh Levy-Kramer",
+                "Paul Balanca",
+                "Carlo Lushi",
+                "Stephen Barlow",
+                "Andrew Fitzgibbon"
+            ],
+            "title": "Training and inference of large language models using 8-bit floating point",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhen Qin",
+                "Weixuan Sun",
+                "Hui Deng",
+                "Dongxu Li",
+                "Yunshen Wei",
+                "Baohong Lv",
+                "Junjie Yan",
+                "Lingpeng Kong",
+                "Yiran Zhong"
+            ],
+            "title": "cosformer: Rethinking softmax in attention",
+            "venue": "In ICLR. arXiv preprint arXiv:2202.08791,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Karthik Narasimhan",
+                "Tim Salimans",
+                "Ilya Sutskever"
+            ],
+            "title": "Improving language understanding by generative pre-training",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Alec Radford",
+                "Jeffrey Wu",
+                "Rewon Child",
+                "David Luan",
+                "Dario Amodei",
+                "Ilya Sutskever"
+            ],
+            "title": "Language models are unsupervised multitask learners",
+            "venue": "OpenAI blog,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Baptiste Rozi\u00e8re",
+                "Jonas Gehring",
+                "Fabian Gloeckle",
+                "Sten Sootla",
+                "Itai Gat",
+                "Xiaoqing Ellen Tan",
+                "Yossi Adi",
+                "Jingyu Liu",
+                "Tal Remez",
+                "J\u00e9r\u00e9my Rapin"
+            ],
+            "title": "Code llama: Open foundation models for code",
+            "venue": "arXiv preprint arXiv:2308.12950,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aviad Rubinstein"
+            ],
+            "title": "Hardness of approximate nearest neighbor search",
+            "venue": "In Proceedings of the 50th annual ACM SIGACT symposium on theory of computing,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Clayton Sanford",
+                "Daniel Hsu",
+                "Matus Telgarsky"
+            ],
+            "title": "Representational strengths and limitations of transformers",
+            "venue": "arXiv preprint arXiv:2306.02896,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Haihao Shen",
+                "Naveen Mellempudi",
+                "Xin He",
+                "Qun Gao",
+                "Chang Wang",
+                "Mengni Wang"
+            ],
+            "title": "Efficient post-training quantization with fp8 formats",
+            "venue": "arxiv preprint https://arxiv.org/pdf/2309.14592.pdf,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Kenneth W Shum",
+                "Ilia Aleshnikov",
+                "P Vijay Kumar",
+                "Henning Stichtenoth",
+                "Vinay Deolalikar"
+            ],
+            "title": "A low-complexity algorithm for the construction of algebraic-geometric codes better than the gilbert-varshamov bound",
+            "venue": "IEEE Transactions on Information Theory,",
+            "year": 2001
+        },
+        {
+            "authors": [
+                "Kenneth Wing-Ki Shum"
+            ],
+            "title": "A low-complexity construction of algebraic geometric codes better than the Gilbert-Varshamov bound",
+            "venue": "University of Southern California,",
+            "year": 2000
+        },
+        {
+            "authors": [
+                "Zhao Song",
+                "David P Woodruff",
+                "Peilin Zhong"
+            ],
+            "title": "Relative error tensor low rank approximation",
+            "venue": "In Proceedings of the Thirtieth Annual ACM-SIAM Symposium on Discrete Algorithms,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhao Song",
+                "David Woodruff",
+                "Zheng Yu",
+                "Lichen Zhang"
+            ],
+            "title": "Fast sketching of polynomial kernels of polynomial degree",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhao Song",
+                "Lichen Zhang",
+                "Ruizhe Zhang"
+            ],
+            "title": "Training multi-layer over-parametrized neural network in subquadratic time",
+            "venue": "arXiv preprint arXiv:2112.07628,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhao Song",
+                "Xin Yang",
+                "Yuanyuan Yang",
+                "Lichen Zhang"
+            ],
+            "title": "Sketching meets differential privacy: fast",
+            "year": 2024
+        },
+        {
+            "authors": [
+                "PMLR",
+                "2023a. Zhao Song",
+                "Mingquan Ye",
+                "Junze Yin",
+                "Lichen Zhang"
+            ],
+            "title": "A nearly-optimal bound for fast regression",
+            "venue": "Learning (ICML),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhao Song",
+                "Mingquan Ye",
+                "Lichen Zhang"
+            ],
+            "title": "Streaming semidefinite programs",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Madhu Sudan"
+            ],
+            "title": "Lecture notes 8 of madhu sudan\u2019s class, and scribed by josh alman",
+            "venue": "In Essential coding theory. http://people.seas.harvard.edu/ madhusudan/MIT/ST13/scribe/lect08.pdf,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Xiao Sun",
+                "Jungwook Choi",
+                "Chia-Yu Chen",
+                "Naigang Wang",
+                "Swagath Venkataramani",
+                "Vijayalakshmi Viji Srinivasan",
+                "Xiaodong Cui",
+                "Wei Zhang",
+                "Kailash Gopalakrishnan"
+            ],
+            "title": "Hybrid 8-bit floating point (hfp8) training and inference for deep neural networks",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Louis Martin",
+                "Kevin Stone",
+                "Peter Albert",
+                "Amjad Almahairi",
+                "Yasmine Babaei",
+                "Nikolay Bashlykov",
+                "Soumya Batra",
+                "Prajjwal Bhargava",
+                "Shruti Bhosale"
+            ],
+            "title": "Llama 2: Open foundation and fine-tuned chat models",
+            "venue": "arXiv preprint arXiv:2307.09288,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Michael A Tsfasman",
+                "SG Vl\u0103dutx",
+                "Th Zink"
+            ],
+            "title": "Modular curves, shimura curves, and goppa codes, better than varshamov-gilbert bound",
+            "venue": "Mathematische Nachrichten,",
+            "year": 1982
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "Advances in neural information processing systems (NeurIPS),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Sinong Wang",
+                "Belinda Z Li",
+                "Madian Khabsa",
+                "Han Fang",
+                "Hao Ma"
+            ],
+            "title": "Linformer: Self-attention with linear complexity",
+            "venue": "arXiv preprint arXiv:2006.04768,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Ryan Williams"
+            ],
+            "title": "A new algorithm for optimal 2-constraint satisfaction and its implications",
+            "venue": "Theoretical Computer Science,",
+            "year": 2005
+        },
+        {
+            "authors": [
+                "Virginia Vassilevska Williams"
+            ],
+            "title": "On some fine-grained questions in algorithms and complexity",
+            "venue": "In Proceedings of the international congress of mathematicians: Rio de janeiro 2018,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Guangxuan Xiao",
+                "Ji Lin",
+                "Mickael Seznec",
+                "Hao Wu",
+                "Julien Demouth",
+                "Song Han"
+            ],
+            "title": "Smoothquant: Accurate and efficient post-training quantization for large language models",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Greg Yang"
+            ],
+            "title": "Wide feedforward or recurrent neural networks of any architecture are gaussian processes",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Greg Yang"
+            ],
+            "title": "Tensor programs ii: Neural tangent kernel for any architecture",
+            "venue": "arXiv preprint arXiv:2006.14548,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Greg Yang"
+            ],
+            "title": "Tensor programs iii: Neural matrix laws",
+            "venue": "arXiv preprint arXiv:2009.10685,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Greg Yang",
+                "Edward J Hu"
+            ],
+            "title": "Tensor programs iv: Feature learning in infinite-width neural networks",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ofir Zafrir",
+                "Guy Boudoukh",
+                "Peter Izsak",
+                "Moshe Wasserblat"
+            ],
+            "title": "Q8bert: Quantized 8bit bert",
+            "venue": "Fifth Workshop on Energy Efficient Machine Learning and Cognitive Computing-NeurIPS Edition",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Amir Zandieh",
+                "Insu Han",
+                "Majid Daliri",
+                "Amin Karbasi"
+            ],
+            "title": "Kdeformer: Accelerating transformers via kernel density estimation",
+            "venue": "In ICML. arXiv preprint arXiv:2302.02451,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Susan Zhang",
+                "Stephen Roller",
+                "Naman Goyal",
+                "Mikel Artetxe",
+                "Moya Chen",
+                "Shuohui Chen",
+                "Christopher Dewan",
+                "Mona Diab",
+                "Xian Li",
+                "Xi Victoria Lin"
+            ],
+            "title": "Opt: Open pre-trained transformer language models",
+            "venue": "arXiv preprint arXiv:2205.01068,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zhenyu Zhang",
+                "Ying Sheng",
+                "Tianyi Zhou",
+                "Tianlong Chen",
+                "Lianmin Zheng",
+                "Ruisi Cai",
+                "Zhao Song",
+                "Yuandong Tian",
+                "Christopher R\u00e9",
+                "Clark Barrett",
+                "Zhangyang Wang",
+                "Beidi Chen"
+            ],
+            "title": "H2O : Heavyhitter oracle for efficient generative inference of large language models",
+            "venue": "In NeurIPS. arXiv preprint arXiv:2306.14048,",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "text": "In the classical transformer attention scheme, we are given three n\u00d7d size matrices Q,K, V (the query, key, and value tokens), and the goal is to compute a new n\u00d7 d size matrix D\u22121 exp(QK\u22a4)V where D = diag(exp(QK\u22a4)1n). Here, exp() is applied entry-wise and 1n denotes a length-n vector whose entries are all ones.\nIntuitively, attention computation captures pairwise information between words in a sentence, but not higher-order information. Indeed, recent work Sanford et al. (2023) has shown that attention units cannot solve simple problems about detecting triples of connected words.\nIn this work, we study a generalization of attention which captures triple-wise correlations. The generalization is based on computations involving tensors defined by tuples of words. More formally, given five n\u00d7d size matrices Q,K1,K2, V1 and V2 (generalized query, key, and value tokens), our new goal is to compute an n\u00d7 d size matrix D\u22121 exp(Q(K1 \u2298K2)\u22a4)(V1 \u2298 V2) where D = diag(exp(Q(K1 \u2298 K2) \u22a4)1n2) and K1 \u2298K2 \u2208 Rn 2\u00d7d denotes the column-wise Kronecker product of K1 and K2. This generalization is indeed able to solve problems about detecting triple-wise connections that were shown to be impossible for transformers.\nThe potential downside of this generalization is that it appears as though computations are even more difficult, since the straightforward algorithm requires cubic time in n. However, we show that in the bounded-entry setting (which arises in practice, and which is well-studied in both theory and practice), there is actually a near-linear time algorithm. More precisely, we show that bounded entries are both necessary and sufficient for quickly performing generalized computations:\n\u2022 On the positive side, if all entries of the input matrices are bounded above by o( 3 \u221a log n) then we show how to approximate the \u201ctensor-type\u201d attention\nmatrix in n1+o(1) time.\n\u2022 On the negative side, we show that if the entries of the input matrices may be as large as \u2126( 3 \u221a log n), then there is no algorithm that runs faster than\nn3\u2212o(1) (assuming the Strong Exponential Time Hypothesis from fine-grained complexity theory).\nWe also show that our construction, algorithms, and lower bounds naturally generalize to higher-order tensors and correlations. Interestingly, the higher the order of the tensors, the lower the bound on the entries needs to be for an efficient algorithm. Our results thus yield a natural tradeoff between the boundedness of the entries, and order of the tensor one may use for more expressive, efficient attention computation.\nOur constructions make use of a novel connection with a higher-order variant on the kernel density estimation problem. They combine a number of technical tools, including the polynomial method, algebraic geometry codes, and multiparty Merlin-Arthur communication protocols."
+        },
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Large language models, such as Transformer Vaswani et al. (2017), BERT Devlin et al. (2018), GPT-1 Radford et al. (2018), GPT-2 Radford et al. (2019), GPT-3 Brown et al. (2020), PaLM Chowdhery et al. (2022), OPT Zhang et al. (2022), GPT-3.5, Bard, GPT-4 OpenAI (2023), Llama Touvron et al. (2023a); Rozie\u0300re et al. (2023), Llama 2 Touvron et al. (2023b) and its successors, have gained immense importance and found a wide range of applications due to their ability to understand and generate human-like text. These models are trained on massive amounts of text data, enabling them to learn patterns, structures, and nuances of human language. They have applications in many areas, including understanding natural language, content generation, improved human-computer interaction, translation and multilingual communication, and rapid prototyping.\nThe fundamental computational structure at the core of LLMs is called an attention unit. When a length-n input is given to the attention unit (like a sentence or paragraph of n words), we embed it into three matrices Q,K, V (the query, key, and value token matrices) where each has n rows and d columns. Here d is the feature dimension; one has d \u226a n in the long sentence regime. Mathematically, the attention unit computes D\u22121 exp(QK\u22a4)V , where D = diag(exp(QK\u22a4)1n) is a diagonal matrix, 1n denotes the length-n vector with all entries equal to 1, and exp is applied entry-wise.\nIntuitively, the attention unit is finding pairwise correlations between tokens in the input since it computes inner products between pairs of tokens when computing QK\u22a4. However, if the input data has correlated triples of tokens, it is not clear an attention unit can detect this.\nA recent and exciting work Sanford et al. (2023) formalized this intuition. They defined a simple task about learning correlations between triples of words, and showed that attention units are unable to solve it. By contrast, they are able to solve the analogous problem of learning correlations between pairs of words. Toward resolving this, Sanford et al. (2023) proposed a generalization of attention computation: Definition 1.1 (Tensor generalization of attention scheme). Given as input n \u00d7 d matrices Q,K1,K2, V1, V2, the goal is to construct another n\u00d7 d matrix D\u22121A(V1 \u2298 V2). Here\n\u2022 V1 \u2298 V2 \u2208 Rn 2\u00d7d denotes the column-wise Kronecker product of V1 and V2. Similarly\nfor K1 \u2298 K2 \u2208 Rn 2\u00d7d below. (The column-wise Kronecker product of matrices K1 \u2208 Rn\u00d7d,K2 \u2208 Rn\u00d7d is a matrix K := K1 \u2298 K2 \u2208 Rn 2\u00d7d defined as Ki1+(i2\u22121)n,j := (K1)i1,j \u00b7 (K2)i2,j , \u2200i1, i2 \u2208 [n], j \u2208 [d].)\n\u2022 A \u2208 Rn\u00d7n2 is the n\u00d7 n2 matrix exp(Q(K1 \u2298K2)\u22a4/d), where exp is applied entry-wise.\n\u2022 D \u2208 Rn\u00d7n is the n\u00d7 n diagonal matrix diag(exp(Q(K1 \u2298K2)\u22a4/d)1n2)\n\u2022 1n2 here denotes a length-n2 vector whose entries are all ones.\nOne may naturally view A as an n\u00d7n\u00d7n tensor, which is why we call this a \u2018tensor generalization\u2019; this view will be important in our proofs below.\nIn this generalization, entries of the matrix A now correspond to triples of tokens, so one may hope that this generalization can detect triple-wise correlations. And indeed, Sanford et al. (2023) show that this is the case: the tensor generalization gets around their expressivity barrier and is able to detect correlations among triples of tokens.\nA fundamental question arises naturally: how quickly can generalized attention computations be performed? The running time of attention computations is critically important, since it forms the time bottleneck of LLM training and inference. By generalizing attention to make it more expressive, have we also made it intractably slow?\nTo answer this question, we focus on an approximate version of the tensor attention computation problem. In practical applications, it is sufficient to approximately perform these computations Child et al. (2019); Kitaev et al. (2020); Wang et al. (2020); Choromanski et al. (2021); Daras et al. (2020);\nKatharopoulos et al. (2020); Chen et al. (2021; 2022); Qin et al. (2022); Zandieh et al. (2023); Liu et al. (2023); Zhang et al. (2023); Kacham et al. (2023); Dao et al. (2022); Dao (2023), and this often helps lead to faster algorithms.\nDefinition 1.2 (Approximate Tensor Attention Computation ATAttC(n, d,B, \u03f5a)). Let \u03f5a > 0, B > 0 be parameters.Given five matrices Q,K1,K2, V1, V2 \u2208 Rn\u00d7d that satisfy the following bounded constraints,\n\u2022 \u2225Q\u2225\u221e \u2264 B, \u2225K1\u2225\u221e \u2264 B, \u2225K2\u2225\u221e \u2264 B, \u2225V1\u2225\u221e \u2264 B, \u2225V2\u2225\u221e \u2264 B\nwe want to generate a matrix T \u2208 Rn\u00d7d which is able to entry-wisely approximate D\u22121AV , i.e.,\n\u2225T \u2212D\u22121A(V1 \u2298 V2)\u2225\u221e \u2264 \u03f5a\nHere,\n\u2022 the \u2113\u221e norm for a matrix N \u2208 Rn\u00d7d is written as \u2225N\u2225\u221e := maxi\u2208[n],j\u2208[d] |Ni,j |, and\n\u2022 the other matrices are defined as in Definition 1.1 above.\nWe focus here on the natural setting with d = O(log n) (so that we are modeling long sequences) and \u03f5a = 1/ poly(n) (so that one can combine the errors from attention computations over an entire network).\nIn the case of (non-tensor) attention, the computational complexity of exact and approximate attention computation is very well-understood. Keles et al. (2023) showed that the trivial O(n2) time algorithm is essentially optimal for exact computation, assuming the Strong Exponential Time Hypothesis (SETH). SETH Impagliazzo & Paturi (2001) is a popular conjecture from fine-grained complexity which posits that one cannot substantially improve our current best algorithms for k-SAT; see the survey Williams (2018) for more details. Since k-SAT algorithms are very well-studied, it is not commonly believed that major improvements are possible, and so much of fine-grained complexity theory is based on this assumption.\nAlman & Song (2023) studied the approximate (non-tensor) attention problem and showed that its complexity depends on the magnitude of the entries of the matrices Q,K: If they are smaller than o( \u221a log n), then there is a fast algorithm running in time n1+o(1); this near-linear time algorithm is essentially as fast as one could hope for. On the other hand, if they are at least \u2126( \u221a log n), then there is no algorithm substantially faster than the trivial O(n2) assuming SETH. This theoretical result mirrors practical observations that bounded entries are essential for fast attention Zafrir et al. (2019); Sun et al. (2019); Katharopoulos et al. (2020); Dettmers et al. (2022b); Xiao et al. (2023); Dettmers et al. (2022a); Perez et al. (2023); Shen et al. (2023)."
+        },
+        {
+            "heading": "1.1 OUR RESULTS",
+            "text": "Our main results tightly resolve the computational complexity of the tensor generalization of attention. Generalizing the situation for (non-tensor) attention, we show that whether or not there is a fast algorithm for AAttC depends on the parameter B, the magnitudes of the entries in the query, key, and value matrices. We first show a lower bound, that when B \u2265 \u2126( 3 \u221a log n), it is impossible to design a truly subcubictime algorithm (assuming SETH). Note that the straigtforward algorithm for this problem runs in cubic time, so our result shows that one cannot substantially improve on the straightforward algorithm when the entries have magnitude at least \u2126( 3 \u221a log n).\nTheorem 1.3 (Lower bound, informal version of Theorem B.2). Assuming SETH, for every q > 0, there are constants C,Ca, Cb > 0 such that: there is no algorithm running in time O(n3\u2212q) for the problem ATAttC(n, d = C log n,B = Cb 3 \u221a log n, \u03f5a = n \u2212Ca). Our second result is a new algorithm, showing that when B < o( 3 \u221a log n), then there is an almost linear time algorithm for solving the problem.\nTheorem 1.4 (Upper bound, informal version of Theorem E.3). There is an algorithm (Algorithm 1) that solves ATAttC(n, d = O(log n), B = o( 3 \u221a log n), \u03f5a = 1/ poly(n)) in time n1+o(1).\nOur Theorems 1.3 and 1.4 together show that the complexity of ATAttC has a very tight transition at B = \u0398( 3 \u221a log n). When B < o( 3 \u221a log n) is smaller than the threshold, the problem can be solved essentially as quickly as one could hope for, in time n1+o(1). Meanwhile, when B \u2265 \u2126( 3 \u221a log n) is greater than the threshold, it is impossible to achieve a subcubic running time, no matter what algorithmic techniques are used (assuming SETH).\nIt is exciting that, even for the more expressive tensor generalization of attention, there is a near-linear time algorithm in the bounded entry regime. Interestingly, though, the bound must be smaller than for regular attention: for regular attention to have a near-linear time algorithm, it is necessary and sufficient that B < \u221a log n, whereas for tensor-based attention, we show it is necessary and sufficient that B < 3 \u221a log n.\nMore generally, for any positive integer k \u2265 2, we study a higher-order tensor generalization of attention which can detect k-wise correlations. (Regular attention corresponds to k = 2 and ATAttC corresponds to k = 3.) For this problem, we further generalize our results to show that there is a nearlinear time algorithm when the entries satisfy B < k \u221a log n, and that the trivial O(nk) time essentially cannot be beaten otherwise. This suggests an intriguing tradeoff between the boundedness of the entries, and the expressiveness of attention we can perform quickly: Given vectors corresponding to tokens for LLM training or inference, we let B be the largest magnitude of an entry, then we select the largest k for which B < k \u221a log n, and we can quickly perform k-th order attention computations for our tokens, but not higher-order attention.\nDefinition 1.5 (k-th order generalization of Definition 1.1). Suppose we are given n\u00d7 d matrices Q,K1,K2, \u00b7 \u00b7 \u00b7 ,Kk\u22121 and V1, V2, \u00b7 \u00b7 \u00b7 , Vk\u22121, our target is to construct another n\u00d7 d matrix\nD\u22121A(V1 \u2298 V2 \u2298 \u00b7 \u00b7 \u00b7 \u2298 Vk\u22121)\nHere\n\u2022 V1 \u2298 V2 \u2298 \u00b7 \u00b7 \u00b7 \u2298 Vk\u22121 \u2208 Rn k\u22121\u00d7d is the column-wise tensor product of V1, \u00b7 \u00b7 \u00b7 , Vk\u22121\n\u2022 A \u2208 Rn\u00d7nk\u22121 is the n\u00d7 nk\u22121 size matrix exp(Q(K1 \u2298K2 \u2298 \u00b7 \u00b7 \u00b7 \u2298Kk\u22121)\u22a4/d)\n\u2022 D \u2208 Rn\u00d7n is the n\u00d7 n diagonal matrix diag(exp(Q(K1 \u2298K2 \u2298 \u00b7 \u00b7 \u00b7 \u2298Kk\u22121)/d)1nk\u22121)\n\u2022 1nk\u22121 is the length-nk\u22121 vector whose entries are all ones."
+        },
+        {
+            "heading": "Roadmap.",
+            "text": "In Section 2, we provide a number of basic notations and definitions. In Section 3, we give a technique overview, summarizing our proofs for both our upper bound result and our lower bound result. In Section 4, we prove the key intermediate results for our lower bound result. Our upper bound result, and the remainder of our lower bound result, are proved in the Appendix."
+        },
+        {
+            "heading": "2 PRELIMINARY",
+            "text": ""
+        },
+        {
+            "heading": "Hadamard Product",
+            "text": "Definition 2.1 (\u25e6 Hadamard product). Given A,B \u2208 Rn\u00d7d, we use C := A \u25e6 B to denote their entry-wise product, i.e., the matrix C \u2208 Rn\u00d7d given by Ci,j = Ai,jBi,j . We similarly define \u25e6 to denote the entry-wise product of vectors or tensors. This is often called the Hadamard product in the literature.\nTensor Operations Many of our proofs will involve manipulating tensors. Here we introduce three different tensor operations we will frequently use. Definition 2.2 (\u2299 tensor computation). Given matrices A \u2208 Rn\u00d7d, B \u2208 Rn\u00d7d, C \u2208 Rn\u00d7d, we use T = A \u2299 B \u2299 C to denote an n \u00d7 n \u00d7 n tensor whose entries are given by Ti,j,l :=\u2211d\na=1 Ai,aBj,aCl,a, \u2200i \u2208 [n], j \u2208 [n], l \u2208 [n].\nWe note that a tensor T can be written in the form A\u2299B \u2299C like this if and only if its tensor rank is at most d.\nDefinition 2.3 (\u2297 Kronecker product). Given two matrices K1 \u2208 Rn\u00d7d and K2 \u2208 Rn\u00d7d, we define K := K1 \u2297 K2 \u2208 Rn\n2\u00d7d2 as follows Ki1+(i2\u22121)n,j1+(j2\u22121)d = (K1)i1,j1 \u00b7 (K2)i2,j2 , \u2200i1 \u2208 [n], i2 \u2208 [n], j1 \u2208 [d], j2 \u2208 [d].\nIn this work, we will primarily use the following column-wise version of the Kronecker product. Definition 2.4 (\u2298 column-wise Kronecker product). Given matrices K1 \u2208 Rn\u00d7d,K2 \u2208 Rn\u00d7d, we define matrix K := K1 \u2298K2 \u2208 Rn\n2\u00d7d as follows Ki1+(i2\u22121)n,j := (K1)i1,j \u00b7 (K2)i2,j , \u2200i1, i2 \u2208 [n], j \u2208 [d].\nMatrix Multiplication Finally, our algorithm will make use of matrix multiplications. For positive integers n,m, d, we write Tmat(n, d,m) to denote the time to multiply a given n\u00d7 d matrix A and a d \u00d7m matrix B. The straightforward algorithm shows that Tmat(n, d,m) = O(ndm), and this will suffice for our algorithms here; we will typically apply this when two of n,m, d are very small compared to the third, and in this situation, more clever matrix multiplication algorithm do not yield substantial speedups."
+        },
+        {
+            "heading": "3 TECHNIQUE OVERVIEW",
+            "text": "Generalizing prior work on the computational complexity of the attention problem to our tensor generalization requires overcoming a number of technical challenges. Here we summarize our approach, with an emphasis on differences with the prior work on (non-tensor) attention that we build on Rubinstein (2018); Katharopoulos et al. (2020); Alman & Song (2023); Sanford et al. (2023)."
+        },
+        {
+            "heading": "3.1 ALGORITHM",
+            "text": "Tool for the column-wise Kronecker product We begin by introducing a basic tool for manipulating computations involving the column-wise Kronecker product \u2298 (see details in Lemma C.3 below). Define the following matrices.\n\u2022 Given A1 \u2208 Rn\u00d7d1 , A2 \u2208 Rn\u00d7d1 , we define A := (A1 \u2298A2) \u2208 Rn 2\u00d7d1 . \u2022 Given B1 \u2208 Rn\u00d7d2 , B2 \u2208 Rn\u00d7d2 , we define B := (B1 \u2298B2) \u2208 Rn 2\u00d7d2 . \u2022 We define C \u2208 Rd1\u00d7d2 as C := A\u22a4B, and similarly define C1 := A\u22a41 B1 and C2 := A\u22a42 B2.\nThen, we prove that we have C1 \u25e6 C2 = C. Using this identity, C can be computed in time O(Tmat(d1, n, d2)) given the matrices A1, A2, B1, B2.\nApproximating D In order to perform generalized attention, we aim to compute the matrix D = diag(exp(Q(K1 \u2298K2)\u22a4/d)1n2). Notice that the intermediate matrix exp(Q(K1 \u2298K2)\u22a4/d) has n3 entries. We thus cannot compute it in subcubic time. We instead aim to use an implicit representation of an approximation of this matrix which can be quickly manipulated.\nToward this goal, we find appropriate matrices U1, U2, U3 (which we discuss in more detail shortly) and formulate D\u0303 = diag(U1(U2 \u2298 U3)\u22a41n2) such that D\u0303 \u2248 D. Given the matrices U1, U2, U3, and using the above tool for \u2298, we can compute D\u0303 quickly in O(nd) time.\nApproximating A We can similarly approximate the attention matrix A = exp(Q(K1 \u2298K2)\u22a4/d) via A\u0303 = U1(U2 \u2298 U3)\u22a4 such that A\u0303 \u2248 A (in \u2113\u221e norm). Again, in contrast to D\u0303, we cannot compute the entries of A\u0303 since it has n3 entries. We instead directly approximate A(V1 \u2298 V2) by computing A\u0303(V1 \u2298 V2). This can again be done in O(Tmat(d, n, d)) = n1+o(1) time by using the above tool.\nFinding approximating matrices U1, U2, U3 Thus, it remains to find matrices U1, U2, U3 which appropriately approximate D and A as above. We show how to efficiently find such matrices as long as the inputs Q,K1,K1, V1, V2 have bounded entries. The key idea is to use the polynomial method, a key tool from prior work Aggarwal & Alman (2022); Alman & Song (2023) which allows one to find low-rank representations of matrices.\nThe method generally says that if M is a low-rank matrix, and p is a low-degree polynomial, then p(M) (where p is applied entry-wise) also has relatively low rank. Furthermore, its low-rank decomposition can be found efficiently given the decomposition of M . By applying this method where p is an appropriate polynomial approximation of the exp function (see Aggarwal & Alman (2022)), we get a low-rank approximation of exp(M).\nThis polynomial method approach was also taken in the prior work on (non-tensor) attention Alman & Song (2023). Here we generalize it, showing that the same line of attack can be applied to low-rank tensors. Viewing A interchangeably as both an n\u00d7n\u00d7n tensor and an n\u00d7n2 matrix allows us to take advantage of this low-rank tensor approximation as well as the aforementioned matrix multiplication algorithms, and U1, U2, U3 are ultimately the low-rank approximation expression for this tensor. Notably, as the bound B on the entries increases, the degree of the polynomial to approximate exp also increases, but the degree needs to be small enough to give a nontrivial algorithm. See details in Lemma E.1."
+        },
+        {
+            "heading": "3.2 HARDNESS",
+            "text": "Gap-MaxIP Our hardness proof proceeds by introducing and considering a new intermediate problem we call Gap\u2212MaxIP (Definition 4.6), a promise version of the more common 3-Max IP problem. In this problem, one is given as input 3n vectors a1, . . . , an, b1, . . . , bn, c1, . . . , cn \u2208 {0, 1}d as well as a threshold t, and the goal is to distinguish between the cases\n\u2022 \u27e8ai, bj , ck\u27e9 \u2264 t for all i, j, k \u2208 [n], or \u2022 \u27e8ai, bj , ck\u27e9 \u2265 2t for some i, j, k \u2208 [n].\n(If neither is the case, we may give any output.) Here, \u27e8ai, bj , ck\u27e9 denotes the 3-way inner product\u2211d \u2113=1 ai[\u2113] \u00b7 bj [\u2113] \u00b7 ck[\u2113]. We first prove that Gap\u2212MaxIP cannot be solved in truly subcubic time assuming SETH. We then show that a truly subcubic time algorithm for our generalized ATAttC (Definition 1.2) problem with large entries would yield one for Gap\u2212MaxIP as well. Previous work on (non-tensor) attention Alman & Song (2023) used as its intermediate problem the approximate Hamming Nearest Neighbor problem. However, it is not obvious how to directly generalize this to the tensor setting, since there is no way to define a \u2018distance\u2019 function for triples of vectors which satisfies the needed properties to generalize the original proof. We instead investigate the Gap\u2212MaxIP problem, which can itself be seen as a generalization of an intermediate step in the proof of hardness for approximate Hamming Nearest Neighbor Rubinstein (2018).\nHardness of Gap\u2212MaxIP Fine-grained complexity results for approximation problems like Gap\u2212MaxIP have previously been shown using a distributed probabilistically checkable proof framework Abboud et al. (2017); Rubinstein (2018), which we also use here.\nWe begin by generalizing the approach of Rubinstein (2018) using Merlin-Arthur (MA) communication protocols (Babai (1985); Goldwasser & Sipser (1986); Arora & Barak (2009)). We construct a four party communication protocol for the disjointness problem: Alice, Bob and Charlie are each given subsets of a universe, and want to determine whether there is an element in all three of their sets. In an MA protocol, Merlin first sends an advice string to the three players to convince them their sets are disjoint. Alice, Bob and Charlie may then flip private random coins and communicate to come to an answer. (See details in Theorem 4.5).\nGeneralizing known three-party protocols for disjointness Aaronson & Wigderson (2009); Rubinstein (2018), our protocol is algebraic in nature, and critically makes use of algebraic geometry codes from coding theory Shum (2000); Shum et al. (2001).\nWe then use this protocol to reduce from SAT to Gap\u2212MaxIP. A standard reduction Williams (2005) shows that SAT reduces to the 3OV problem, which is a computational version of the three player disjointness problem. We can convert inputs to this problem into vectors by corresponding entries of the vectors to possible transcripts of the communication protocol. The gap in inner products will arise naturally from the correctness guarantees of the protocol. See reduction details in Theorem 4.7 and its proofs.\nReducing from Gap\u2212MaxIP to ATAttC Finally, we reduce the Gap\u2212MaxIP (Definition 4.6) problem to our ATAttC (Definition 1.2) problem. The key idea is that, by defining the matrices Q,K1,K2, V1, V2 of generalized attention in terms of the inputs to Gap\u2212MaxIP, we can make large entries of the attention matrix A correspond to the triples with largest inner product. (See Lemma B.1 below for an illustration.) Some manipulation similar to prior work Alman & Song (2023) allows us to detect large entries from the output of ATAttC. This approach has been used for the fine-grained hardness of many attention and kernel density estimation problems Backurs et al. (2018); Katharopoulos et al. (2020); Alman et al. (2020); Aggarwal & Alman (2022); Alman & Song (2023). See details in Lemma B.1 and its proofs."
+        },
+        {
+            "heading": "4 HARDNESS",
+            "text": "In this section, we begin the formal proof of our hardness result. We begin by introducing the fine-grained hypotheses we will use. Hypothesis 4.1 (Strong Exponential Time Hypothesis (SETH), Impagliazzo & Paturi (2001)). For every \u03f5 > 0 there exists an integer k \u2265 3 such that CNF \u2212 SAT on formulas with clauses size at most k (the so called k-SAT problem) and n variables cannot be solved in O(2(1\u2212\u03f5)n) time even by a randomized algorithm. Definition 4.2 (3OV). Given three sets A,B,C \u2282 {0, 1}d where |A| = |B| = |C| = n, the goal is to find a tuple (i1, i2, i3) \u2208 [n]\u00d7 [n]\u00d7 [n] such that \u27e8ai1 , bi2 , ci3\u27e9 = 0. Conjecture 4.3 (Orthogonal Vectors Conjecture (3OVC) Williams (2005); Abboud et al. (2014)). For every \u03f5 > 0, there is a c \u2265 1 such that 3OV cannot be solved in n3\u2212\u03f5 time on instances with d = c log n.\nIt is known that SETH implies 3OVC; see, e.g., Williams (2005)."
+        },
+        {
+            "heading": "4.1 ALGEBRAIC GEOMETRY CODES FROM PREVIOUS WORK",
+            "text": "We state a important tool from the field of algebraic geometry codes. For more background on algebraic geometry codes, we refer the reader to Goppa (1981); Tsfasman et al. (1982); Shum (2000); Shum et al. (2001); Sudan (2013). Theorem 4.4 (Shum et al. (2001); see also Rubinstein (2018)). There is a constant q0 \u2208 N such that, for every prime q \u2265 q0, there are two systematic code families C := {Cn} and C\u2032 := {C \u2032n} whose codewords are given by functions w : Rn \u2192 Fq2 for some appropriate subsetRn \u2282 F O(logn) q2 . The codes C, C\u2032 satisfy four key properties:\n\u2022 Systematicity. There exists a subset Sn \u2282 Rn of cardinality |Sn| = \u0398(n), such that for any assignment x : Sn \u2192 Fq2 , there exists a codeword w \u2208 C such that w|Sn = x \u2022 3-way Polynomial Closure. C and C\u2032 are linear codes. For each w1, w2, w3 \u2208 C, there exists w\u2032 \u2208 C\u2032 such that for each i \u2208 Rn, w\u2032(i) = w1(i) \u00b7 w2(i) \u00b7 w3(i)\n\u2022 Efficiency. Both codes can be encoded in poly(n) time and checked in poly(n) time.\n\u2022 Parameters. Both codes have relative rate at least 0.01 and relative distance at least 0.01."
+        },
+        {
+            "heading": "4.2 A FOUR PARTY MA COMMUNICATION PROTOCOL",
+            "text": "Prior work (Rubinstein (2018)) constructed a protocol for three party communication, which includes Merlin, Alice and Bob. Here we modify this protocol for four parties. Theorem 4.5. For any T \u2208 [2,m]. There is a MA-communication protocol for Set Disjointness over universe [m]. This protocol is computationally efficient.\nIn particular, the details of protocol are\n\u2022 Merlin sends Alice O(m log TT ) bits\n\u2022 Alice, Bob, Charlie toss O(logm) coins\n\u2022 Charlie sends Alice O(T log T ) bits\n\u2022 Bob sends Alice O(T log T ) bits\n\u2022 Alice returns Accept or Reject\nIf the three sets do not have any element in common, Alice always accepts. Otherwise, she accepts with probability at most 1/2.\nProof. We assume that T divides m, i.e., there is some positive integer r such that m = Tr. Otherwise, increase m to the nest multiple of T ; this at most doubles m. We partition the universe into T disjoint sets of size r: [m] = U1 \u222a \u00b7 \u00b7 \u00b7 \u222a UT . Let \u03b1, \u03b2, \u03b3 \u2286 [m] denote the inputs of Alice, Bob, and Charlie. Our goal is to determine whether there is an element in the intersection \u03b1 \u2229 \u03b2 \u2229 \u03b3. For each t \u2208 [T ], we define the t-th parts of the three sets: \u03b1t := \u03b1\u2229U t, \u03b2t := \u03b2\u2229U t, \u03b3t := \u03b3\u2229U t. We will next encode these parts using an algebraic geometry code. Let q be a prime greater than T , and let C be an algebraic geometry code over the field Fq2 , and let C \u2032 be its associated code for the polynomial closure property. Let \u03c1C , \u03b4C be the rate and distance of the code; recall these are at least a positive constant. Let nC = mT \u00b7\u03c1C = O(m/T ) be the length of the codewords of C.\nFor each t \u2208 [T ], we write C(\u03b1t), C(\u03b2t), C(\u03b3t) to denote the encodings of \u03b1t, \u03b2t and \u03b3t. Thus, their entry-wise product \u00b5t ( i.e., \u00b5ti := C(\u03b1\nt)i \u00b7 C(\u03b2t)i \u00b7 C(\u03b3t)i ) is a codeword in the second code C \u2032. Furthermore, since C \u2032 is a linear code, the entry-wise sum of the \u00b5t\u2019s (\u00b5i = \u2211T t=1 \u00b5 t i) is also a codeword of C\u2019.\nC is a systematic code, so we may assume that for each i \u2208 [n/T ], the entries C(\u03b1t)i, C(\u03b2t)i, C(\u03b3t)i are from {0, 1} and represent membership in the set. Similarly, \u00b5ti \u2208 {0, 1}, and the sets are disjoint if and only if \u00b5ti = 0 for all i \u2208 [m/T ] and t \u2208 [T ], or equivalently, \u00b5i = 0 for all i \u2208 [m/T ]. Now the protocol proceeds as follows:\n\u2022 Step 1. Merlin sends Alice \u00b5\u0302, which is supposed to be the encoding of \u00b5\n\u2022 Step 2. Charlie, Bob and Alice pick a random i\u2217 \u2208 [nC ]\n\u2022 Step 3. Charlie sends Alice C(\u03b3t)i\u2217 for all t \u2208 [T ]\n\u2022 Step 4. Bob sends Alice C(\u03b2t)i\u2217 for all t \u2208 [T ]\n\u2022 Step 5. Alice accepts iff all of the following hold: \u2013 \u00b5\u0302 is a codeword in C \u2032 , \u00b5\u0302i\u2217 = \u2211T t=1 C(\u03b1 t)i\u2217 \u00b7 C(\u03b2t)i\u2217 \u00b7 C(\u03b3t)i\u2217 and \u00b5\u0302i = 0 for all\ni \u2208 [m/T ]\nFirst, we observe that Merlin\u2019s message length is nc \u00b7 log T = O((log T ) \u00b7m/T ) , and both Bob and Charlie\u2019s message lengths are T \u00b7 O(log T ), as desired. To see correctness, note that if Alice ever accepts given Merlin\u2019s message \u00b5\u0302, then \u00b5\u0302 must in particular be a codeword of C \u2032. If Alice accepts with probability greater than 1\u2212 \u03b4C\u2032 (where \u03b4C\u2032 is a positive constant) then \u00b5\u0302 is also equal to the true \u00b5 by definition of \u03b4C\u2032 . This means \u00b5i = 0,\u2200i \u2208 [m/T ], so the sets are disjoint.\n4.3 SHOWING 3-MAX-IP IS HARD\nWe define the appropriate gap 3-MAX-IP problem, which we use as our intermediate hard problem. Definition 4.6 (Gap approximate maximum inner product search (Gap\u2212MaxIP(n, d, t, \u03f5))). Suppose the following conditions hold\n\u2022 We use t > 0 to represent a threshold parameter.\n\u2022 We use \u03f5 to represent an accuracy parameter.\n\u2022 Suppose n, d denote two positive integers.\n\u2022 Given three sets of points,A = {a1, \u00b7 \u00b7 \u00b7 , an}, B = {b1, \u00b7 \u00b7 \u00b7 , bn}, C = {c1, \u00b7 \u00b7 \u00b7 , cn} \u2282 {0, 1}d\nFor every index i \u2208 [n], we need to distinguish the following two cases\n\u2022 Case 1. There exists a pair (j1, j2) \u2208 [n]\u00d7 [n] such that \u27e8ai, bj1 , cj2\u27e9 \u2265 t.\n\u2022 Case 2. For all pairs (j1, j2) \u2208 [n]\u00d7 [n] we have \u27e8ai, bj1 , cj2\u27e9 \u2264 (1\u2212 \u03f5) \u00b7 t.\nImplicit in previous work (Rubinstein (2018)) is a proof that the analogue of Gap\u2212MaxIP with two sets of points is hard. Here we generalize this to three sets. Theorem 4.7. Unless SETH and OVC are false, the following holds: for every \u03b4 > 0 there are constants \u03b11 > \u03b12 > 0 such that for integer n, solving Gap\u2212MaxIP(n, d = \u03b11 log n, t = \u03b12 log n, \u03f5 = 1/2) requires time \u2126(n3\u2212\u03b4).\nProof. We reduce from 3OV to Gap\u2212MaxIP. Let \u03b4OV = \u03b4/2. Our reduction takes as input an instance (AOV, BOV, COV) of orthogonal vectors over {0, 1}m. These sets have sizes |AOV| = |BOV| = |COV| = 2m/c for a constant c depending on \u03b4OV from Definition 4.2 and Conjecture 4.3, and 3OVC posits there is no algorithm solving this problem in time O((2m/c)3\u2212\u03b4OV).\nFor a constant k > 0 to be determined, pick \u03f5 > 0 to be a constant such that kc log 2 log(1/\u03f5)\nlog(1/\u03f5) < \u03b4/2.\nWe use the protocol of Theorem 4.5, instantiated with parameter T = T (\u03f5) = O( log(1/\u03f5)log log(1/\u03f5) ).\nSuppose that T \u2032 = 2O((log T )\u00b7T ) is representing the number of different possible messages sent by Bob and Charlie in the protocol. Let us choose T so that T \u2032 = O(1/\u03f5). For each vector \u03b3 \u2208 COV, we construct a new vector c\u0303\u03b3 \u2208 {0, 1}(T \u2032)2\u00d7m by setting c\u0303\u03b3iB ,iC ,j := 1 iff Charlie send message iC \u2208 [T \u2032] on input \u03b3\u2032 and randomness j \u2208 [m]. (The value is independent of iB .) For each vector \u03b2 \u2208 BOV, we construct a new vector b\u0303\u03b2 \u2208 {0, 1}(T \u2032)2\u00d7m by setting b\u0303\u03b2iB ,iC ,j := 1 iff Bob sends message iB \u2208 [T \u2032] on input \u03b2\u2032 and randomness j \u2208 [m]. (The value is independent of iC .)\nFor each Merlin-message \u00b5 \u2208 {0, 1}O((log T )\u00b7m/T ) and vector \u03b1 \u2208 AOV, we construct a new vector a\u0303\u00b5,\u03b1 \u2208 {0, 1}(T \u2032)2\u00d7m as follows: a\u0303\u00b5,\u03b1iB ,iC ,j := 1 iff Alice accepts on\n\u2022 input \u03b1,\n\u2022 message \u00b5 from Merlin,\n\u2022 message iB from Bob, message iC from Charlie, and randomness j.\nNotice also that the inner product of three vectors \u27e8a\u0303\u00b5,\u03b1, b\u0303\u03b2 , c\u0303\u03b3\u27e9 is exactly proportional to the probability that Alice, Bob and Charlie accept on inputs \u03b1, \u03b2, \u03b3 and message \u00b5 from Merlin.\nIn particular, if \u03b1, \u03b2 and \u03b3 are not orthogonal (i.e., \u27e8\u03b1, \u03b2, \u03b3\u27e9 > 0), then the inner product is at most \u27e8a\u0303\u00b5,\u03b1, b\u0303\u03b2 , c\u0303\u03b3\u27e9 \u2264 m/2. Otherwise, there exists a \u00b5 that Merlin could send to make the players accept, meaning that \u27e8a\u0303\u00b5,\u03b1, b\u0303\u03b2 , c\u0303\u03b3\u27e9 = m. In particular, these can be distinguished by an algorithm for\nGap\u2212MaxIP(n = 2m/c \u00b7 2O(m log 2 log 1/\u03f5/ log 1/\u03f5), d = 2(T \u2032)2m, t = m, \u03f5 = 1/2),\nwhich must therefore be as hard as solving the original instance of 3OV. By 3OVC, this means it requires time\n(|AOV|+ |BOV|+ |COV|)3\u2212\u03b4OV = (2m/c)3\u2212\u03b4OV = n3/2m(\u03b4OV/c\u2212O( log2 log(1/\u03f5) log(1/\u03f5) )) \u2264 n3\u2212\u03b4\nwhere the last step follows from choosing k large enough in the definition of \u03f5.\nAt the end, we notice that the vectors we construct have dimension 2(T \u2032)2 \u00b7m = O(m) = O(log n) as desired."
+        },
+        {
+            "heading": "APPENDIX",
+            "text": ""
+        },
+        {
+            "heading": "Roadmap.",
+            "text": "In Section A, we provide the definitions of several notations. In Section C, we provide the running time proofs for our upper bound result. In Section D, we provide the error analysis for our upper bound result. In Section E, we combine everything together, and also present our algorithm. In Section B. we show how to reduce our problem to Gap\u2212MaxIP."
+        },
+        {
+            "heading": "A PRELIMINARY",
+            "text": "We write R to denote the real numbers, and write Rn\u00d7d to denote the set of n\u00d7 d matrices whose entries are real numbers.\nFor any positive integer n, we write [n] to denote {1, 2, \u00b7 \u00b7 \u00b7 , n}. For a matrix A \u2208 Rn\u00d7d and indices i \u2208 [n], j \u2208 [d], we write Ai,j to denote the entry of A in the i-th row and j-th column.\nWe use 1n to denote a length-n vector whose entries are all ones. For a vector w \u2208 Rn, we use diag(w) \u2208 Rn\u00d7n denote a diagonal matrix with (diag(w))i,i = wi; all the other (off-diagonal) entries of the matrix are zero.\nIf D \u2208 Rn\u00d7n is a diagonal matrix, we write D\u22121 \u2208 Rn\u00d7n for its inverse, which is the diagonal matrix whose i-th entry on the diagonal is 1/Di,i, and whose off-diagonal entries are all zero.\nFor a matrix A \u2208 Rn\u00d7d, we use A\u22a4 \u2208 Rd\u00d7n to denote its transpose. For a vector x \u2208 Rn, we use exp(x) \u2208 Rn to denote the entry-wise exponential of x, i.e., the length-n vector with exp(x)i = exp(xi) for all i \u2208 [n]. For a matrix X \u2208 Rn\u00d7n, we similarly use exp(X) \u2208 Rn\u00d7n to denote the matrix with exp(X)i,j = exp(Xi,j).\nFor any matrix A \u2208 Rn\u00d7d, we define \u2225A\u2225F := ( \u2211n\ni=1 \u2211d j=1 A 2 i,j)\n1/2 to be the Frobenius norm of A.\nFor a vector a, b \u2208 Rn, we write \u27e8a, b\u27e9 to denote their inner product, \u2211n\ni=1 aibi.\nFor a matrix A \u2208 Rn\u00d7d, we write \u2225A\u2225\u221e to denote its \u2113\u221e norm, i.e., \u2225A\u2225\u221e := maxi\u2208[n],j\u2208[d] |Ai,j |.\nFor a tensor T \u2208 Rn\u00d7n\u00d7n, we similarly write \u2225T\u2225\u221e to denote the \u2113\u221e norm of that tensor T , i.e., \u2225T\u2225\u221e := maxi\u2208[n],j\u2208[n],l\u2208[n] |Ti,j,l|. Definition A.1 (k-wise inner product). For k vectors a1, . . . , ak \u2208 Rd, we define\n\u27e8a1, . . . , ak\u27e9 := d\u2211\n\u2113=1 k\u220f i=1 ai,\u2113.\nDefinition A.2 (3-MAX-IP). Given three sets A,B,C \u2286 {0, 1}d of vectors where |A| = |B| = |C| = n, the goal is to compute\nmax a\u2208A,b\u2208B,c\u2208C\n\u27e8a, b, c\u27e9\nB HARDNESS: FROM MaxIP TO OUR PROBLEM\nIn Section B.1, we show how to reduce our problem to Gap\u2212MaxIP. In Section B.2, we present our main lower bound (hardness) result."
+        },
+        {
+            "heading": "B.1 REDUCTION",
+            "text": "We now generalize the hardness proof of Alman & Song (2023) to the tensor attention case.\nLemma B.1. For every constant C\u03b3 \u2208 (0, 0.1), every \u03f5 > 0, and every C > C0 > 0, there exist constants Ca > 0 and Cb > 0 and such that, if ATAttC (Definition D.1) for parameters (2n, d = 2C log n,B = Cb 3 \u221a log n, \u03f5a = n\n\u2212Ca) can be solved in time T , then Gap\u2212MaxIP(n, d = C log n, t = C0 log n, \u03f5) (Definition 4.6) can be solved in time O(T + n3\u2212C\u03b3 ).\nProof. We give an algorithm for Gap\u2212MaxIP(n, d = C log n, t = C0 log n, \u03f5) (Definition 4.6). Let a1, \u00b7 \u00b7 \u00b7 , an, b1, \u00b7 \u00b7 \u00b7 , bn, c1, \u00b7 \u00b7 \u00b7 , cn \u2208 {0, 1}d denote the inputs to this problem. Using them, we will construct appropriate inputs to the ATAttC problem so that its output will help us to detect triples with large inner product.\nLet \u03b2 > 0 and d\u0303 \u2265 d be parameters to be determined (in Eq. (5) and Eq. (2) below). Define \u03c4 > 0 by \u03c4 := exp(\u03b2/2). (1)\nWe pick these parameters so that \u03c4 will be an upper bound on entries of the attention matrix, namely\n\u03c4 \u2265 max i\u2208[n],j1\u2208[n],j2\u2208[n] exp(\u03b2\u27e8ai, bj1 , cj2\u27e9/d\u0303).\nWe will use an algorithm for the ATAttC(n\u0303, d\u0303, B, \u03f5a) problem with parameters:\nn\u0303 := 2n, d\u0303 := 2d, (2) B := Cb 3 \u221a log n, where Cb := \u221a 40C/(C0\u03f5), (3)\n\u03f5a := n \u2212Ca , where Ca := 2 + C2b (1\u2212 C0/C). (4)\nFurthermore, set \u03b2 := B3. (5)\nWe define the query and key matrices, Q \u2208 Rn\u0303\u00d7d\u0303 and K1,K2 \u2208 Rn\u0303\u00d7d\u0303 as\nQ := 3 \u221a \u03b2 \u00b7  a\u22a41 1 \u22a4 d a\u22a42 1 \u22a4 d ... ... a\u22a4n 1 \u22a4 d 0\u22a4d 1 \u22a4 d 0\u22a4d 1 \u22a4 d ... ...\n0\u22a4d 1 \u22a4 d\n , K1 := 3 \u221a \u03b2 \u00b7  b\u22a41 0 \u22a4 d b\u22a42 0 \u22a4 d ... ... b\u22a4n 0 \u22a4 d 0\u22a4d 1 \u22a4 d 0\u22a4d 1 \u22a4 d ... ...\n0\u22a4d 1 \u22a4 d\n , and K2 := 3 \u221a \u03b2 \u00b7  c\u22a41 0 \u22a4 d c\u22a42 0 \u22a4 d ... ... c\u22a4n 0 \u22a4 d 0\u22a4d 1 \u22a4 d 0\u22a4d 1 \u22a4 d ... ...\n0\u22a4d 1 \u22a4 d\n .\nSince each entry of Q and K1, K2 is either 3 \u221a \u03b2 or 0, it follows that \u2225Q\u2225\u221e \u2264 3 \u221a \u03b2 = B\n\u2225K1\u2225\u221e \u2264 3 \u221a \u03b2 = B\n\u2225K2\u2225\u221e \u2264 3 \u221a \u03b2 = B\n\u2225QK\u22a4/d\u0303\u2225\u221e \u2264 \u03b2 \u00b7 d\u0303 d\u0303 = \u03b2 = B3.\nIn terms of these matrices Q \u2208 Rn\u0303\u00d7d\u0303 and K = K1 \u2298K2 \u2208 Rn\u0303 2\u00d7d\u0303, the attention matrix\nA := exp(QK\u22a4/d\u0303) \u2208 Rn\u0303\u00d7n\u0303 2\nis naturally partitioned into eight submatrices\nA = [ A1 A2 A3 A4 A5 A6 A7 A8 ] where each Ai (\u2200i \u2208 [8]) is a matrix of size n \u00d7 n2, defined as follows. For each j0 \u2208 [n], j1 \u2208 [n], j2 \u2208 [n],\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A1 is\n\u2013 exp(\u03b2(\u27e8aj0 , bj1 , cj2\u27e9+ \u27e81d,0d,0d\u27e9)/d\u0303) = exp(\u03b2\u27e8aj0 , bj1 , cj2\u27e9/d\u0303)\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A2 is\n\u2013 exp(\u03b2(\u27e8aj0 , bj1 ,0d\u27e9+ \u27e8aj0 ,0d,1d\u27e9)/d\u0303) = exp(0) = 1\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A3 is\n\u2013 exp(\u03b2(\u27e8aj0 ,0d, cj2\u27e9+ \u27e8aj0 ,1d,0d\u27e9)/d\u0303) = exp(0) = 1\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A4 is\n\u2013 exp(\u03b2(\u27e8aj0 ,0d,0d\u27e9+ \u27e81d,1d,1d\u27e9)/d\u0303) = exp(\u03b2d/d\u0303) = \u03c4\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A5 is 1\n\u2013 exp(\u03b2(\u27e80d, bj1 , cj2\u27e9+ \u27e81d,0d,0d\u27e9)/d\u0303) = exp(0) = 1\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A6 is 1\n\u2013 exp(\u03b2(\u27e80d, bj1 ,0d\u27e9+ \u27e8aj0 ,0d,1d\u27e9)/d\u0303) = exp(0) = 1\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A7 is 1\n\u2013 exp(\u03b2(\u27e80d,0d, cj2\u27e9+ \u27e8aj0 ,1d,0d\u27e9)/d\u0303) = exp(0) = 1\n\u2022 The (j0, j1 + (j2 \u2212 1)n)-th entry of A8 is\n\u2013 exp(\u03b2(\u27e80d,0d,0d\u27e9+ \u27e81d,1d,1d\u27e9)/d\u0303) = exp(\u03b2d/d\u0303) = \u03c4\nFor each (i, j1, j2) \u2208 [n]\u00d7 [n]\u00d7 [n], we know that\nAi,j1+(j2\u22121)n = exp(\u03b2 \u00b7 \u27e8ai, bj1 , cj2\u27e9/d\u0303)\n\u2264 exp(\u03b2 \u00b7 \u2225ai\u2225\u221e \u00b7 \u2225bj1\u2225\u221e \u00b7 \u2225cj2\u2225\u221e \u00b7 d/d\u0303) \u2264 exp(\u03b2/2) = \u03c4. (6)\nHere we used the fact that d < d\u0303 (see Eq. (2)), and the last step uses the definition of \u03c4 (see Eq. (1)).\nWe also know that for each (i, j1, j2) \u2208 [n]\u00d7 [n]\u00d7 [n],\nAi,j1+(j2\u22121)n \u2265 0 (7)\nsince it is the exponential of an entry of QK\u22a4/d\u0303.\nBy combining our expression for A with Eq. (6) and Eq. (7), we see that\nn2\u03c4 \u2264 (A1n\u03032)i \u2264 4n2\u03c4, \u2200i \u2208 [n\u0303].\nSince Di,i = (A1n\u0303)i, it follows that\nn2\u03c4 \u2264 Di,i \u2264 4n2\u03c4, \u2200i \u2208 [n\u0303].\nChoose the vector v \u2208 Rn\u03032 (recall that n\u03032 = 4n2) defined as\nv = 1n20n20n2 0n2  .\nWe define t\u0303 as\nt\u0303 := 1\n3 exp(0.25\u03b2t/d)/(4n2\u03c4). (8)\nWe can see that t\u0303 \u2265 \u03f5a as follows:\nt\u0303 = 1\n12n2 exp(0.25\u03b2t/d\u2212 \u03b2/2)\n= 1\n12n2 exp(\u22120.5\u03b2 + 0.25\u03b2t/d)\n= 1\n12n2 exp(\u22120.5\u03b2 + 0.25\u03b2C0/C)\n= 1\n12 exp(\u22120.5\u03b2 + 0.25\u03b2C0/C \u2212 2 log n)\n= 1\n12 exp(\u22120.5C2b log n+ 0.25C2b (C0/C) log n\u2212 2 log n)\n\u2265 n\u2212Ca\n= \u03f5a.\nHere, the last two steps follow from Eq. (4).\nWe now use an algorithm for ATAttC(n\u0303, d\u0303, B, \u03f5a), with the value matrix V with one row v and the rest 0. Since t\u0303 \u2265 \u03f5a, the result is a vector u \u2208 Rn\u0303 such that, for all i \u2208 [n\u0303],\n|ui \u2212 (D\u22121Av)i| < t\u0303.\nRecall that for each i \u2208 [n] we need to distinguish between two cases: either there is a pair (j1, j2) \u2208 [n] such that \u27e8ai, bj1 , cj2\u27e9 \u2265 t, or else for all pairs (j1, j2) \u2208 [n] the inner product \u27e8ai, bj1 , cj2\u27e9 \u2264 (1\u2212 \u03f5a)t. We will distinguish between these cases by checking whether ui is greater than a threshold value t\u03030 := 2t\u0303. We next consider the two cases to see why this is.\nCase 1.\nFor a given i \u2208 [n], if there are (j1, j2) \u2208 [n]\u00d7 [n] such that \u27e8ai, bj1 , bj2\u27e9 \u2265 t, then\n\u03b2\u27e8ai, bj1 , cj2\u27e9/d\u0303 = 0.5 \u00b7 \u03b2\u27e8ai, bj1 , cj2\u27e9/d \u2265 0.25 \u00b7 \u03b2t/d,\nwhere the 1st step follows from 2d = d\u0303 (see Eq. (2)). This means as desired that\nui \u2265 exp(0.25\u03b2t/d)/(4n2\u03c4)\u2212 t\u0303 = 3t\u0303\u2212 t\u0303 = 2t\u0303\n= t\u03030.\nCase 2.\nFor a given i \u2208 [n], if for all (j1, j2) \u2208 [n]\u00d7 [n] we have \u27e8ai, bj1 , cj2\u27e9 < t(1\u2212 \u03f5), then\n\u03b2\u27e8ai, bj1 , cj2\u27e9/d\u0303 \u2264 0.25\u03b2 \u00b7 (1\u2212 \u03f5)t/d.\nHence, as desired,\nui < (n 2 \u00b7 exp(0.25\u03b2(1\u2212 \u03f5)t/d)))/(n2\u03c4) + t\u0303\n= exp(0.25\u03b2t/d)/(4n2\u03c4) \u00b7 (4n2/ exp(0.25\u03b2\u03f5t/d)) + t\u0303 = 3t\u0303 \u00b7 (4n2/ exp(0.25\u03b2\u03f5t/d)) + t\u0303 by definiton of t\u0303, see Eq. (8)\n\u2264 3t\u0303 \u00b7 1 4 + t\u0303\n= 2t\u0303\n= t\u03030.\nHere, the 4th step follows because, by our choice of \u03b2 and t, we have exp(0.25\u03b2\u03f5t/d) = exp((0.25\u03b2\u03f5C0 log n)/d)\n= exp(0.25\u03b2\u03f5C0/C) = exp(10 log n)\n> 16n2, (9)\nwhere we used that t = C0 log n (by Lemma statement), that d = C log n, that \u03b2 = B3 (Eq. (5)) and the choice of B (Eq. (3))."
+        },
+        {
+            "heading": "B.2 MAIN HARDNESS RESULT",
+            "text": "We can finally conclude our main lower bound. Theorem B.2 (Lower bound, formal version of Theorem 1.3). Assuming SETH, for every q > 0, there are constants C,Ca, Cb > 0 such that: there is no algorithm running in time O(n3\u2212q) for the problem AAttC(n, d = C log n,B = Cb 3 \u221a log n, \u03f5a = n \u2212Ca).\nProof. Follows from combining Theorem 4.5, Theorem 4.7, and Lemma B.1."
+        },
+        {
+            "heading": "C UPPER BOUND: RUNNING TIME",
+            "text": "In Section C.1, we review the standard \u201cmatrix\u201d attention computation problem. In Section C.2, we define the \u201ctensor\u201d attention computation problem. In Section C.3, we provide an efficient tool for implementing tensor related computations. In Section C.4, we provide several tools for rearranging tensor computations that we will use in our algorithm."
+        },
+        {
+            "heading": "C.1 CLASSICAL ATTENTION COMPUTATION",
+            "text": "We first review the attention computation definition in Vaswani et al. (2017); Devlin et al. (2018); Radford et al. (2018; 2019); Brown et al. (2020); OpenAI (2023); Zandieh et al. (2023); Alman & Song (2023); Brand et al. (2023); Gao et al. (2023b;c;a), Definition C.1. Suppose there are three n\u00d7 d size matrices Q,K, V \u2208 Rn\u00d7d, our plan is to generate the n\u00d7 d matrix Att(Q,K, V ) defined by\nAtt( Q\ufe38\ufe37\ufe37\ufe38 n\u00d7d , K\ufe38\ufe37\ufe37\ufe38 n\u00d7d , V\ufe38\ufe37\ufe37\ufe38 n\u00d7d )\n\ufe38 \ufe37\ufe37 \ufe38 n\u00d7d\n:= D\u22121\ufe38\ufe37\ufe37\ufe38 n\u00d7n A\ufe38\ufe37\ufe37\ufe38 n\u00d7n V\ufe38\ufe37\ufe37\ufe38 n\u00d7d\ufe38 \ufe37\ufe37 \ufe38\nn\u00d7d\nwhere A \u2208 Rn\u00d7n and diagonal matrix D \u2208 Rn\u00d7n are defined as A\ufe38\ufe37\ufe37\ufe38\nn\u00d7n := exp( Q\ufe38\ufe37\ufe37\ufe38 n\u00d7d K\u22a4\ufe38\ufe37\ufe37\ufe38 d\u00d7n /d)\n\ufe38 \ufe37\ufe37 \ufe38 n\u00d7n\n, and D\ufe38\ufe37\ufe37\ufe38 n\u00d7n := diag( A\ufe38\ufe37\ufe37\ufe38 n\u00d7n 1n\ufe38\ufe37\ufe37\ufe38 n\u00d71 )\n\ufe38 \ufe37\ufe37 \ufe38 n\u00d7n"
+        },
+        {
+            "heading": "C.2 TENSOR ATTENTION COMPUTATION",
+            "text": "Given two n \u00d7 d matrices, there are two standard variants on their Kronecker product one may consider: The standard Kronecker product (denoted \u2297) is a new n2 \u00d7 d2 matrix, whereas the column-wise Kronecker product (denoted \u2298) is a new n2 \u00d7 d matrix. For more literature on tensor computations and their applications in learning algorithms, we refer the readers to Bhaskara et al. (2014); Song et al. (2019); Diao et al. (2018; 2019); Yang (2019; 2020a;b); Bhaskara et al. (2020); Ahle et al. (2020); Song et al. (2021a;b); Yang & Hu (2021); Song et al. (2023a;b;c); Deng et al. (2023).\nNext, we generalize the matrix attention computation (in Alman & Song (2023)) into tensor attention computation as follows:\nDefinition C.2 (TensorAtt). Given matrices Q,K1,K2 \u2208 Rn\u00d7d and matrices V1, V2 \u2208 Rn\u00d7d, the goal of tensor attention computation is to compute\nTensorAtt(Q,K1,K2, V1, V2)\ufe38 \ufe37\ufe37 \ufe38 n\u00d7d := D\u22121\ufe38\ufe37\ufe37\ufe38 n\u00d7n A\ufe38\ufe37\ufe37\ufe38 n\u00d7n2 V\ufe38\ufe37\ufe37\ufe38 n2\u00d7d\ufe38 \ufe37\ufe37 \ufe38\nn\u00d7d\nwhere\n\u2022 A \u2208 Rn\u00d7n2 is defined as A := Q\ufe38\ufe37\ufe37\ufe38 n\u00d7d ( K1\ufe38\ufe37\ufe37\ufe38 n\u00d7d \u2298 K2\ufe38\ufe37\ufe37\ufe38 n\u00d7d )\u22a4 \u2022 D \u2208 Rn\u00d7n is defined as D := diag( A\ufe38\ufe37\ufe37\ufe38 n\u00d7n2 \u00b7 1n2\ufe38\ufe37\ufe37\ufe38 n2\u00d71 ) \u2022 V \u2208 Rn2\u00d7d is defined as V := V1\ufe38\ufe37\ufe37\ufe38 n\u00d7d \u2298 V2\ufe38\ufe37\ufe37\ufe38 n\u00d7d"
+        },
+        {
+            "heading": "C.3 EFFICIENT COLUMN-WISE KRONECKER COMPUTATION",
+            "text": "We prove an important tool which will be used in analyze the running time of our algorithm. Lemma C.3. If the following condition holds\n\u2022 Let \u2298 be defined as Definition 2.4.\n\u2022 Given A1 \u2208 Rn\u00d7d1 , A2 \u2208 Rn\u00d7d1 , we define A := (A1 \u2298A2) \u2208 Rn 2\u00d7d1 .\n\u2022 Given B1 \u2208 Rn\u00d7d2 , B2 \u2208 Rn\u00d7d2 , we define B := (B1 \u2298B2) \u2208 Rn 2\u00d7d2 .\n\u2022 We define C \u2208 Rd1\u00d7d2 as C := A\u22a4B\n\u2022 We define C1 := A\u22a41 B1, C2 := A \u22a4 2 B2\nThen, we have\n\u2022 Part 1. C1 \u25e6 C2 = C\n\u2022 Part 2. Given as input A1, A2, B1, B2, we can compute C in Tmat(d1, n, d2) time.\nProof. For each i \u2208 [n], let a\u22a41,i denote the i-th row of A1 \u2208 Rn\u00d7d1 .\nFor each i \u2208 [n], let a\u22a42,i denote the i-th row of A2 \u2208 Rn\u00d7d1 .\nFor each i \u2208 [n], let b\u22a41,i denote the i-th row of B1.\nFor each i \u2208 [n], let b\u22a42,i denote the i-th row of B2.\nFor each i \u2208 [d], let A\u2217,i \u2208 Rn 2 denote the i-th column of matrix A \u2208 Rn2\u00d7d1"
+        },
+        {
+            "heading": "Recall that C1 \u2208 Rd1\u00d7d2 and C2 \u2208 Rd1\u00d7d2 ,",
+            "text": "C1 := A \u22a4 1 B1, C2 := A \u22a4 2 B2\nThus, we see that\n(C1)k1,k2 = n\u2211 i=1 a1,i,k1b1,i,k2\n(C2)k1,k2 = n\u2211 j=1 a2,j,k1b2,j,k2\nThen, we can write C \u2208 Rd1\u00d7d2 as\nC\ufe38\ufe37\ufe37\ufe38 d1\u00d7d2 = A\u22a4\ufe38\ufe37\ufe37\ufe38 d1\u00d7n2 B\ufe38\ufe37\ufe37\ufe38 n2\u00d7d2\n= n2\u2211 i=1 A\u2217,i\ufe38\ufe37\ufe37\ufe38 d1\u00d71 B\u22a4\u2217,i\ufe38\ufe37\ufe37\ufe38 1\u00d7d2\n= n\u2211 i=1 n\u2211 j=1\nA\u2217,i+(j\u22121)n\ufe38 \ufe37\ufe37 \ufe38 d1\u00d71 B\u22a4\u2217,i+(j\u22121)n\ufe38 \ufe37\ufe37 \ufe38 1\u00d7d2\n= n\u2211 i=1 n\u2211 j=1 (a1,i \u25e6 a2,j)\ufe38 \ufe37\ufe37 \ufe38 d1\u00d71 \u00b7 (b1,i \u25e6 b2,j)\u22a4\ufe38 \ufe37\ufe37 \ufe38 1\u00d7d2\n(10)\nwhere the first step follows from definition of C \u2208 Rd\u00d7d, the second step follows from the matrix can written as the summation of n2 rank-1 matrices, the third step follows from changing the index, the forth step follows from A\u2217,i+(j\u22121)n\ufe38 \ufe37\ufe37 \ufe38\nd1\u00d71\n= a1,i\ufe38\ufe37\ufe37\ufe38 d1\u00d71 \u25e6 a2,j\ufe38\ufe37\ufe37\ufe38 d1\u00d71 .\nFrom the above, we can calculate that the entry of C in location k1, k2 is\nCk1,k2 = n\u2211 i=1 n\u2211 j=1 (a1,i \u25e6 a2,j)k1 \u00b7 (b1,i \u25e6 b2,j)\u22a4k2\n= n\u2211 i=1 n\u2211 j=1 a1,i,k1a2,j,k1b1,i,k2b2,j,k2\n= ( n\u2211 i=1 a1,i,k1b1,i,k2) \u00b7 ( n\u2211 j=1 a2,j,k1b2,j,k2)\n= (C1)k1,k2 \u00b7 (C2)k1,k2 where the first step follows from Eq. (10), the second step follows from simple algebra, the third step follows from separating the summation over i and the summation over j, and the last step follows from definition of matrices C1 and C2.\nThus, we can conclude\nC = C1 \u25e6 C2.\nThe algorithm will first compute C1 and C2, whic takes Tmat(d1, n, d2) time. Then it calculates C1 \u25e6 C2, which takes O(d1d2) time."
+        },
+        {
+            "heading": "C.4 SIMPLE EQUIVALENT TOOLS FOR TENSOR NOTATIONS",
+            "text": "We define a standard tensor notation, for example see Song et al. (2019). Definition C.4 ((\u00b7, \u00b7, \u00b7) tensor operator). Given a tensor T \u2208 Rn1\u00d7n2\u00d7n3 , let X \u2208 Rn1\u00d7d1 , Y \u2208 Rn2\u00d7d2 , Z \u2208 Rn3\u00d7d3 . We define T (X,Y, Z) \u2208 Rd1\u00d7d2\u00d7d3 as follows\nT (X,Y, Z)i,j,l = n1\u2211 a=1 n2\u2211 b=1 n3\u2211 c=1 Ta,b,cXa,iYb,jZc,l, \u2200a \u2208 [d1], b \u2208 [d2], c \u2208 [d3].\nNext, we present several equivalence results for tensors. Lemma C.5. If the following conditions hold\n\u2022 Let \u2298 be defined as Definition 2.4.\n\u2022 Let \u2299 be defined as Definition 2.2.\n\u2022 Let (\u00b7, \u00b7, \u00b7) operator be defined as Definition C.4.\n\u2022 Let \u25e6 be defined as Definition 2.1.\n\u2022 Let Q,K1,K2, V1, V2 \u2208 Rn\u00d7d\n\u2022 Let A \u2208 Rn\u00d7n2 be Q(K1 \u2298K2)\u22a4.\n\u2022 Let A \u2208 Rn\u00d7n\u00d7n be Q\u2299K1 \u2299K2.\nThen, we have\n\u2022 Part 1. Ai,j1+(j2\u22121)n = Ai,j1,j2 for i \u2208 [n], j1 \u2208 [n], j2 \u2208 [n] (This means A can be viewed as the tensor version of A)\n\u2022 Part 2. A1n2 = A(I,1n,1n) = Q\u2299 (1\u22a4nK1)\u2299 (1\u22a4nK2) \u2022 Part 3. A(V1 \u2298 V2) = Q(K1 \u2298K2)\u22a4(V1 \u2298 V2) = Q((K\u22a41 V1) \u25e6 (K\u22a42 V2))\nProof. Proof of Part 1.\nDirectly follows from definition of A and A."
+        },
+        {
+            "heading": "Proof of Part 2.",
+            "text": "Follows from tensor notations in Definition 2.2 and Definition C.4."
+        },
+        {
+            "heading": "Proof of Part 3.",
+            "text": "Directly follows from applying Part 1 of Lemma C.3 here."
+        },
+        {
+            "heading": "D UPPER BOUND: ERROR ANALYSIS",
+            "text": "In Section D.1, we provide the definition of approximate tensor attention computation. In Section D.2, we state a polynomial approximation tool from previous work. In Section D.3, we show a bound on the entries of the attention matrix. In Section D.4, we provide a low-rank decomposition for the tensor version of the attention matrix. Finally, in Section D.5, we compute the error propagation from A to D, then in Section D.6, we analyze the error propagation from A and D to the attention matrix."
+        },
+        {
+            "heading": "D.1 APPROXIMATE TENSOR ATTENTION COMPUTATION",
+            "text": "Definition D.1 (A tensor generalization of standard attention computation, restatement of Definition 1.2). Let \u03f5a > 0, B > 0 be parameters. Given five matrices Q,K1,K2, V1, V2 \u2208 Rn\u00d7d such that\n\u2022 \u2225Q\u2225\u221e \u2264 B, \u2225K1\u2225\u221e \u2264 B, \u2225K2\u2225\u221e \u2264 B, \u2225V1\u2225\u221e \u2264 B, \u2225V2\u2225\u221e \u2264 B\nOur goal is to find a matrix T \u2208 Rn\u00d7d which can entry-wisely approximate D\u22121AV , in particular, it means the following \u2113\u221e norm guarantee, \u2225T \u2212D\u22121AV \u2225\u221e \u2264 \u03f5a Here,\n\u2022 A := exp(Q(K1 \u2298 K2)\u22a4) \u2208 Rn\u00d7n 2\n(We remark that we can also view matrix A as the flattening of an n\u00d7 n\u00d7 n tensor)\n\u2022 V := V1 \u2298 V2 \u2208 Rn 2\u00d7d\n\u2022 D = diag(A1n2) \u2208 Rn\u00d7n is an n\u00d7 n size positive diagonal matrix.\nNotice that the straightforward algorithm for this problem will spend at least \u2126(n3) time to write the matrix A (we can also think of A as an tensor that has size n\u00d7 n\u00d7 n)."
+        },
+        {
+            "heading": "D.2 AN ERROR CONTROL TOOL FROM PREVIOUS WORK",
+            "text": "We state a tool from previous work.\nCorollary D.2 (Corollary 2.2 in Alman & Song (2023)). Suppose the following conditions hold\n\u2022 Let B > 1.\n\u2022 Let \u03f5 \u2208 (0, 0.1).\n\u2022 Let g := \u0398(max{ log(1/\u03f5)log(log(1/\u03f5)/B) , B}).\nThere is a polynomial P : R\u2192 R of degree-g such that for all x \u2208 [\u2212B,B], we have\n(1\u2212 \u03f5) \u00b7 exp(x) < P (x) < (1 + \u03f5) \u00b7 exp(x)."
+        },
+        {
+            "heading": "D.3 TENSOR Q\u2299K1 \u2299K2 HAS BOUNDED ENTRIES",
+            "text": "Lemma D.3 (Bounded entry). Suppose the following conditions hold\n\u2022 Suppose B \u2265 1\n\u2022 Assume matrices Q,K1,K2 \u2208 Rn\u00d7d have \u2225Q\u2225\u221e \u2264 B, \u2225K1\u2225\u221e \u2264 B, \u2225K2\u2225\u221e \u2264 B.\n\u2022 Let \u2299 operation be defined as Definition 2.2.\nThen, we have\n\u2225Q\u2299K1 \u2299K2/d\u2225\u221e \u2264 B3.\nProof. For every index triple (i, j1, j2) \u2208 [n]\u00d7 [n]\u00d7 [n], we are able to prove\n|(QK\u22a4)i,j1,j2 | = | d\u2211\nl=1\nQi,l(K1)j1,l(K2)j2,l|\n\u2264 d \u00b7 \u2225Q\u2225\u221e \u00b7 \u2225K1\u2225\u221e \u00b7 \u2225K2\u2225\u221e \u2264 d \u00b7B3,\nwhere the 2nd step is because triangle inequality, the 3rd step is using \u2113\u221e norm bound on Q,K1,K2.\nNow, we complete the proofs."
+        },
+        {
+            "heading": "D.4 TENSOR LOW-RANK APPROXIMATION",
+            "text": "In the following definition, we view the n\u00d7 n2 size matrix as an n\u00d7 n\u00d7 n size attention matrix. Definition D.4. Assume the following parameters regime,\n\u2022 We use r \u2265 1 to denote a positive integer.\n\u2022 We use \u03f5 \u2208 (0, 0.1) to represent an accuracy parameter.\n\u2022 Suppose there is a 3rd order tensor A \u2208 Rn\u00d7n\u00d7n\u22650\nWe say 3rd order tensor A\u0303 \u2208 Rn\u00d7n\u00d7n\u22650 is an (\u03f5, r)-approximation of tensor A if\n\u2022 A\u0303 = U1 \u2299 U2 \u2299 U3 for some matrices U1, U2, U3 \u2208 Rn\u00d7r (i.e., A\u0303 has rank at most r), and\n\u2022 |A\u0303i,j1,j2 \u2212Ai,j1,j2 | \u2264 \u03f5 \u00b7 Ai,j1,j2 for all (i, j1, j2) \u2208 [n]\u00d7 [n]\u00d7 [n]."
+        },
+        {
+            "heading": "D.5 FROM A TO D",
+            "text": "In this section and the next, we generalize the proof of Alman & Song (2023) for error propagation from the matrix setting to the tensor setting. The proofs are nearly identical.\nLemma D.5. Let A \u2208 Rn\u00d7n2 be a matrix with positive entries, and \u03f5A \u2208 (0, 0.1) be any parameter. Let A\u0303 \u2208 Rn\u00d7n2 be an approximation to A, meaning for all (i, l) \u2208 [n]\u00d7 [n2], we have\n|A\u0303i,l \u2212Ai,l| \u2264 \u03f5A \u00b7Ai,l.\nWe consider two diagonal matrices D, D\u0303 \u2208 Rn\u00d7n which can be formally written as D := diag(A1n2) and D\u0303 := diag(A\u03031n2).\nThen, for every index i \u2208 [n], the following bound holds\n|D\u0303i,i \u2212Di,i| \u2264 \u03f5A \u00b7Di,i.\nProof. We calculate that\n|D\u0303i,i \u2212Di,i| = | n2\u2211 l=1 A\u0303i,l \u2212 \u2211 j=1 Ai,l|\n\u2264 n2\u2211 l=1 |A\u0303i,l \u2212Ai,l| \u2264 n2\u2211 l=1 \u03f5AAi,l = \u03f5A \u00b7Di,i.\nwhere the second step follows from triangle inequality.\nThis completes the proof.\nD.6 FROM A,D TO TENSOR ATTENTION\nThe goal of this section is to prove Lemma D.6.\nLemma D.6. Suppose the following conditions are true\n\u2022 Let \u03f5A, \u03f5D \u2208 (0, 0.1)\n\u2022 Let B > 1 be a bounded parameter,\n\u2022 We use V = (V1 \u2298 V2) \u2208 Rn 2\u00d7d to represent a matrix with \u2225V \u2225\u221e \u2264 B2.\n\u2022 Let A \u2208 Rn\u00d7n 2\n>0 be a positive matrix,\n\u2022 and let A\u0303 \u2208 Rn\u00d7n2 be a matrix such that, for every tuple (i, l) \u2208 [n]\u00d7 [n2] we have\n|A\u0303i,l \u2212Ai,l| \u2264 \u03f5A \u00b7Ai,l.\n\u2022 Suppose D, D\u0303 \u2208 Rn\u00d7n are diagonal matrices with positive diagonal entries, and such that for every index i \u2208 [n], we have\n|D\u0303i,i \u2212Di,i| \u2264 \u03f5D \u00b7Di,i.\nThen, we have\n\u2225D\u0303\u22121A\u0303V \u2212D\u22121AV \u2225\u221e \u2264 (\u03f5A + \u03f5D) \u00b7B2.\nProof. By the triangle inequality, we know\n\u2225D\u0303\u22121A\u0303V \u2212D\u22121AV \u2225\u221e \u2264 \u2225D\u0303\u22121A\u0303V \u2212D\u22121A\u0303V \u2225\u221e + \u2225D\u22121A\u0303V \u2212D\u22121AV \u2225\u221e. (11)\nWe bound each of these two terms to get our desired result.\nFirst of all, for every index pair (i, j) \u2208 [n]\u00d7 [d],\n|(D\u0303\u22121A\u0303V \u2212D\u22121A\u0303V )i,j | = | n2\u2211 l=1 (D\u0303\u22121i,i \u2212D \u22121 i,i ) \u00b7 A\u0303i,l \u00b7 Vl,j |\n\u2264 n2\u2211 l=1 |(D\u0303\u22121i,i \u2212D \u22121 i,i ) \u00b7 A\u0303i,l| \u00b7 \u2225V \u2225\u221e\n= n2\u2211 l=1 |Di,i \u2212 D\u0303i,i Di,iD\u0303i,i A\u0303i,l| \u00b7 \u2225V \u2225\u221e \u2264 \u03f5D \u00b7 n2\u2211 l=1 |D\u0303\u22121i,i A\u0303i,l| \u00b7 \u2225V \u2225\u221e = \u03f5D \u00b7 | n2\u2211 l=1 D\u0303\u22121i,i A\u0303i,l| \u00b7 \u2225V \u2225\u221e = \u03f5D \u00b7 \u2225V \u2225\u221e \u2264 \u03f5D \u00b7B2. (12)\nHere the 2nd step uses the triangle inequality, the 4th step follows from the assumption that |(Di,i \u2212 D\u0303i,i)/Di,i| \u2264 \u03f5D, the 5th step follows because D\u0303\u22121i and A\u0303i,l are positive numbers, and the final step follows by \u2113\u221e norm of V is bounded by B2.\nSecond, for every (i, j) \u2208 [n]\u00d7 [d],\n|(D\u22121A\u0303V \u2212D\u22121AV )i,j | = | n2\u2211 l=1 D\u22121i,i (A\u0303i,l \u2212Ai,l) \u00b7 Vl,j |\n\u2264 n2\u2211 l=1 |D\u22121i,i | \u00b7 |(A\u0303i,l \u2212Ai,l)| \u00b7 \u2225V \u2225\u221e\n= n2\u2211 l=1 D\u22121i,i \u00b7 |(A\u0303i,l \u2212Ai,l)| \u00b7 \u2225V \u2225\u221e \u2264 n2\u2211 l=1 D\u22121i,i \u00b7 \u03f5AAi,l \u00b7B 2 = \u03f5A \u00b7B2. (13)\nHere, again, the 2nd step uses the triangle inequality, the 3rd step follows because D\u22121i,i is positive, the 4th step follows from the assumption that |A\u0303i,l \u2212Ai,l| \u2264 \u03f5A \u00b7Ai,l and the final step follows by definition of Di,i.\nThe Lemma conclusion then becomes true by substituting Eq. (12) and Eq. (13) into Eq. (11)."
+        },
+        {
+            "heading": "E UPPER BOUND: PUTTING IT ALL TOGETHER",
+            "text": "In Section E.1, we provide a low-rank decomposition for approximating the original attention tensor. In Section E.2, we calculate the running time of constructing that low-rank decomposition. In Section E.3, we put everything together, and prove our main upper bound theorem.\nE.1 DECOMPOSING INTO U1, U2 AND U3\nThe goal of this section is to prove Lemma E.1. Lemma E.1. If the following conditions hold\n\u2022 We use M := X \u2299Y \u2299Z \u2208 Rn\u00d7n\u00d7n to represent a tensor that is constructed by X,Y, Z \u2208 Rn\u00d7d.\n\u2022 Let P (x) denote a degree-g single-variable polynomial. We apply P (M) entry-wisely, i.e, P (M)i,j,l = P (Mi,j,l).\n\u2022 Let r be rank parameter that is r := ( 3(g+d)\n3g\n) .\nThere is an algorithm running in time O(nrg) which, given as input X,Y, Z, constructs matrices U1, U2, U3 \u2208 Rn\u00d7r such that P (M) = U1 \u2299 U2 \u2299 U3.\nProof. Expand P as a sum of monomials as\nP (x) = d\u2211 i=0 ci \u00b7 xi.\nConsider the function K : Rd \u00d7 Rd \u00d7 Rd \u2192 R defined by, for u, v, w \u2208 Rd,\nK(u, v, w) := P (\u27e8u, v, w\u27e9).\nWe define set V and provide names for variables in set V in the following sense,\nV := {u1, \u00b7 \u00b7 \u00b7 , ud, v1, \u00b7 \u00b7 \u00b7 , vd, w1, \u00b7 \u00b7 \u00b7 , wd}.\nThus, function K can be viewed a degree-3g polynomial in the 3d entries in V of the vectors u, v, w.\nWe count the number of its monomials.\nWe define set F as\nF := { f : V \u2192 {0, 1, 2, \u00b7 \u00b7 \u00b7 , 3g} |\n\u2211 v\u2208V f(v) \u2264 3g\n} .\nLet us count the size of set F\n|F| = ( 3d+ 3g\n3g\n) .\nThere exists coefficients {ct}t\u2208F \u2208 R such that K(u, v, w) = \u2211 t\u2208F ct \u00b7 \u220f \u03b2\u2208V vt(\u03b2).\nWe define partitions of V :\nVu := {u1, \u00b7 \u00b7 \u00b7 , ud}, Vv := {v1, \u00b7 \u00b7 \u00b7 , vd}, Vw := {w1, \u00b7 \u00b7 \u00b7 , wd}.\nWe define \u03d5u : Rd \u2192 R|F| by, for any t \u2208 F , \u03d5u(u1, \u00b7 \u00b7 \u00b7 , ud)t = ct \u00b7 \u220f\nui\u2208Vu\nu t(ui) i .\nSimilarly, we define \u03d5v : Rd \u2192 R|F| by, for any t \u2208 F , \u03d5v(v1, \u00b7 \u00b7 \u00b7 , vd)t = \u220f\nvi\u2208Vv\nv t(vi) i .\nand we define \u03d5w : Rd \u2192 R|F| by, for any t \u2208 F , \u03d5w(w1, \u00b7 \u00b7 \u00b7 , wd)t = \u220f\nwi\u2208Vw\nw t(wi) i .\nHere, we can view K function as\nK(u, v, w) = \u27e8\u03d5u(u), \u03d5v(v), \u03d5w(w)\u27e9.\nFor every index i \u2208 [n], suppose Xi \u2208 Rd is the i-th row of X , assume Yi \u2208 Rd is the i-th row of Y , and let Zi \u2208 Rd denote the i-th row of Z. Therefore, we should construct three matrices U1, U2 and U3 as the following way, for each i \u2208 [n]\n\u2022 the i-th row of the matrix U1 \u2208 Rn\u00d7|F| is the vector \u03d5u(xi),\n\u2022 the i-th row of the matrix U2 \u2208 Rn\u00d7|F| is the vector \u03d5v(yi),\n\u2022 the i-th row of the matrix U3 \u2208 Rn\u00d7|F| is the vector \u03d5w(zi).\nThese n\u00d7 r matrices can be constructed in time O(nrg) in the straightforward way, since each entry depends on g variables.\nAlgorithm 1 Our Polynomial Method Tensor Attention Algorithm\n1: procedure POLYTENSORATTENTION(Q \u2208 Rn\u00d7d,K1 \u2208 Rn\u00d7d,K2 \u2208 Rn\u00d7d, V1 \u2208 Rn\u00d7d, V2 \u2208 Rn\u00d7d, n \u2208 N+, d \u2208 N+, B > 0, \u03f5 \u2208 (0, 0.1)) \u25b7 Theorem 1.4 2: \u25b7 n can be viewed as the length of the sentence 3: \u25b7 d can be viewed as the feature of dimension 4: \u25b7 \u03f5 is the accuracy output 5: \u25b7 max{\u2225Q\u2225\u221e, \u2225K1\u2225\u221e, \u2225K2\u2225\u221e, \u2225V1\u2225\u221e, \u2225V2\u2225\u221e} \u2264 B 6: g \u2190 O(max{ log(1/\u03f5)log(log(1/\u03f5)/B3) , B\n3}) 7: r \u2190 ( 3(g+d)\n3d ) 8: /*Step 1*/ 9: Construct U1, U2, U3 \u2208 Rn\u00d7r via Lemma E.2 \u25b7 O(nrg) time\n10: /*Step 2*/ 11: w\u0303 \u2190 U1\ufe38\ufe37\ufe37\ufe38\nn\u00d7r \u00b7((U2 \u2298 U3)\u22a4\ufe38 \ufe37\ufe37 \ufe38 r\u00d7n2 (1n \u2298 1n)\ufe38 \ufe37\ufe37 \ufe38 n2\u00d71 ) \u25b7 O(nr) time\n12: /*Step 3*/ 13: D\u0303\u22121 = diag(w\u0303\u22121) \u25b7 O(n) time 14: /*Step 4*/ 15: Compute (U2 \u2298 U3)\u22a4(V1 \u2298 V2) \u2208 Rr\u00d7d \u25b7 Takes Tmat(r, n, d) time 16: /*Step 5*/ 17: Compute U1 \u00b7 ((U2 \u2298 U3)\u22a4(V1 \u2298 V2)) \u25b7 Tmat(n, r, d) time 18: /*Step 6*/ 19: T \u2190 D\u0303\u22121 \u00b7 (U1 \u00b7 ((U2 \u2298 U3)\u22a4(V1 \u2298 V2))) \u25b7 O(nd) time 20: return T \u25b7 T \u2208 Rn\u00d7d 21: end procedure\nE.2 TIME FOR CONSTRUCTING U1, U2, U3\nLemma E.2. Suppose five matrices Q,K1,K2, V1, V2 \u2208 Rn\u00d7d satisfy\n\u2022 \u2225Q\u2225\u221e \u2264 B,\n\u2022 \u2225K1\u2225\u221e \u2264 B, \u2225K2\u2225\u221e \u2264 B,\n\u2022 \u2225V1\u2225\u221e \u2264 B, and \u2225V2\u2225\u221e \u2264 B.\nWe define tensor A := exp(Q\u2299K1 \u2299K2/d) \u2208 Rn\u00d7n\u00d7n. For bounded number B > 0 and accuracy parameter \u03f5 \u2208 (0, 1), there are positive integers g and r\n\u2022 the condition for g:\ng = O ( max { log(1/\u03f5) log(log(1/\u03f5)/B3) , B3 }) ,\n\u2022 the condition for r:\nr \u2264 ( 3(g + d)\n3g ) such that:\nThere is a third order tensor A\u0303 \u2208 Rn\u00d7n\u00d7n that\n\u2022 A\u0303 is an (\u03f5, r)-approximation (Definition D.4) of A \u2208 Rn\u00d7n\u00d7n\n\u2022 Let U1, U2 and U3 \u2208 Rn\u00d7r be the matrices defining A\u0303, i.e., A\u0303 = U1 \u2299 U2 \u2299 U3 \u2022 it takes O(nr) time to construct U1, U2 and U3.\nProof. We define M := Q\u2299K1 \u2299K2/d \u2208 Rn\u00d7n\u00d7n. Using Lemma D.3, we can show that \u2225M\u2225\u221e \u2264 B3.\nRecall that the definition of (\u03f5, r)-approximation can be found in Definition D.4.\nNext, we will apply Corollary D.2 (with replacing B by B3), there is a degree-g polynomial P : R\u2192 R such that the tensor A\u0303 = P (M) is an (\u03f5, r)-approximation to tensor A. Here we apply P to M entrywisely.\nWe can then compute U1, U2, and U3 using Lemma E.1, which gives the bound r \u2264 ( 3(g + d)\n3g\n) .\nTherefore, we finish the proof."
+        },
+        {
+            "heading": "E.3 MAIN ALGORITHMIC RESULT",
+            "text": "We present our main algorithmic result as follows: Theorem E.3 (Upper bound, formal version of Theorem 1.4). There is an algorithm (Algorithm 1) that solves ATAttC(n, d = O(log n), B = o( 3 \u221a log n), \u03f5a = 1/ poly(n)) in time n1+o(1).\nProof. Proof of Running Time.\n\u2022 Using Lemma E.2, we know that Step 1 (in Algorithm 1) can be implemented in O(nrg) time\n\u2022 Using Lemma C.3, we know that Step 2 (in Algorithm 1) can be implemented in O(nr) time\n\u2022 Step 3 can implemented in O(n) in a straightforward way.\n\u2022 To compute Step 4 efficiently, we need to use Lemma C.3 again.\n\u2022 Computing Step 5 is just standard matrix multiplication\n\u2022 Step 6 is just rescaling the n\u00d7 d matrix"
+        },
+        {
+            "heading": "Proof of Correctness.",
+            "text": "We combine Corollary D.2, Lemma D.5, Lemma D.6, and simple algebra."
+        }
+    ],
+    "year": 2023
+}

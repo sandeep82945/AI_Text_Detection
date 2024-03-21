@@ -1,0 +1,732 @@
+{
+    "abstractText": "Diffusion models have emerged as a powerful method of generative modeling across a range of fields, capable of producing stunning photo-realistic images from natural language descriptions. However, these models lack explicit control over the 3D structure in the generated images. Consequently, this hinders our ability to obtain detailed 3D annotations for the generated images or to craft instances with specific poses and distances. In this paper, we propose a simple yet effective method that incorporates 3D geometry control into diffusion models. Our method exploits ControlNet, which extends diffusion models by using visual prompts in addition to text prompts. We generate images of the 3D objects taken from 3D shape repositories (e.g., ShapeNet and Objaverse), render them from a variety of poses and viewing directions, compute the edge maps of the rendered images, and use these edge maps as visual prompts to generate realistic images. With explicit 3D geometry control, we can easily change the 3D structures of the objects in the generated images and obtain ground-truth 3D annotations automatically. This allows us to improve a wide range of vision tasks, e.g., classification and 3D pose estimation, in both in-distribution (ID) and out-of-distribution (OOD) settings. We demonstrate the effectiveness of our method through extensive experiments on ImageNet-100, ImageNet-R, PASCAL3D+, ObjectNet3D, and OOD-CV. The results show that our method significantly outperforms existing methods across multiple benchmarks, e.g., 3.8 percentage points on ImageNet-100 using DeiT-B and 3.5 percentage points on PASCAL3D+ & ObjectNet3D using NeMo.",
+    "authors": [],
+    "id": "SP:91423300363653a136a79164cdd3005ca4fb082c",
+    "references": [
+        {
+            "authors": [
+                "Shekoofeh Azizi",
+                "Simon Kornblith",
+                "Chitwan Saharia",
+                "Mohammad Norouzi",
+                "David J Fleet"
+            ],
+            "title": "Synthetic data from diffusion models improves imagenet classification",
+            "venue": "arXiv preprint arXiv:2304.08466,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dmitry Baranchuk",
+                "Andrey Voynov",
+                "Ivan Rubachev",
+                "Valentin Khrulkov",
+                "Artem Babenko"
+            ],
+            "title": "Labelefficient semantic segmentation with diffusion models",
+            "venue": "In ICLR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gilad Baruch",
+                "Zhuoyuan Chen",
+                "Afshin Dehghan",
+                "Tal Dimry",
+                "Yuri Feigin",
+                "Peter Fu",
+                "Thomas Gebauer",
+                "Brandon Joffe",
+                "Daniel Kurz",
+                "Arik Schwartz",
+                "Elad Shulman"
+            ],
+            "title": "ARKitscenes - a diverse real-world dataset for 3d indoor scene understanding using mobile RGB-d data",
+            "venue": "In Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Garrick Brazil",
+                "Abhinav Kumar",
+                "Julian Straub",
+                "Nikhila Ravi",
+                "Justin Johnson",
+                "Georgia Gkioxari"
+            ],
+            "title": "Omni3D: A large benchmark and model for 3D object detection in the wild",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "John Canny"
+            ],
+            "title": "A computational approach to edge detection",
+            "venue": "TPAMI, 8(6):679\u2013698,",
+            "year": 1986
+        },
+        {
+            "authors": [
+                "Angel X Chang",
+                "Thomas Funkhouser",
+                "Leonidas Guibas",
+                "Pat Hanrahan",
+                "Qixing Huang",
+                "Zimo Li",
+                "Silvio Savarese",
+                "Manolis Savva",
+                "Shuran Song",
+                "Hao Su"
+            ],
+            "title": "Shapenet: An information-rich 3d model repository",
+            "venue": "arXiv preprint arXiv:1512.03012,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Aakanksha Chowdhery",
+                "Sharan Narang",
+                "Jacob Devlin",
+                "Maarten Bosma",
+                "Gaurav Mishra",
+                "Adam Roberts",
+                "Paul Barham. Palm"
+            ],
+            "title": "Scaling language modeling with pathways",
+            "venue": "arXiv preprint arXiv:2204.02311,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ekin D Cubuk",
+                "Barret Zoph",
+                "Jonathon Shlens",
+                "Quoc V Le"
+            ],
+            "title": "Randaugment: Practical automated data augmentation with a reduced search space",
+            "venue": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition workshops,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Matt Deitke",
+                "Dustin Schwenk",
+                "Jordi Salvador",
+                "Luca Weihs",
+                "Oscar Michel",
+                "Eli VanderBilt",
+                "Ludwig Schmidt",
+                "Kiana Ehsani",
+                "Aniruddha Kembhavi",
+                "Ali Farhadi"
+            ],
+            "title": "Objaverse: A universe of annotated 3d objects",
+            "venue": "arXiv preprint arXiv:2212.08051,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Matt Deitke",
+                "Ruoshi Liu",
+                "Matthew Wallingford",
+                "Huong Ngo",
+                "Oscar Michel",
+                "Aditya Kusupati",
+                "Alan Fan",
+                "Christian Laforte",
+                "Vikram Voleti",
+                "Samir Yitzhak Gadre"
+            ],
+            "title": "Objaverse-xl: A universe of 10m+ 3d objects",
+            "venue": "arXiv preprint arXiv:2307.05663,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jia Deng",
+                "Wei Dong",
+                "Richard Socher",
+                "Li-Jia Li",
+                "Kai Li",
+                "Li Fei-Fei"
+            ],
+            "title": "Imagenet: A large-scale hierarchical image database",
+            "venue": "IEEE conference on computer vision and pattern recognition,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Philipp Fischer",
+                "Eddy Ilg",
+                "Philip Hausser",
+                "Caner Hazirbas",
+                "Vladimir Golkov",
+                "Patrick Van Der Smagt",
+                "Daniel Cremers",
+                "Thomas Brox"
+            ],
+            "title": "Flownet: Learning optical flow with convolutional networks",
+            "venue": "In ICCV,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Klaus Greff",
+                "Francois Belletti",
+                "Lucas Beyer",
+                "Carl Doersch",
+                "Yilun Du",
+                "Daniel Duckworth",
+                "David J Fleet",
+                "Dan Gnanapragasam",
+                "Florian Golemo",
+                "Charles Herrmann"
+            ],
+            "title": "Kubric: A scalable dataset generator",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ruifei He",
+                "Shuyang Sun",
+                "Xin Yu",
+                "Chuhui Xue",
+                "Wenqing Zhang",
+                "Philip Torr",
+                "Song Bai",
+                "Xiaojuan Qi"
+            ],
+            "title": "Is synthetic data from generative models ready for image recognition",
+            "venue": "In ICLR,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Norman Mu",
+                "Ekin Dogus Cubuk",
+                "Barret Zoph",
+                "Justin Gilmer",
+                "Balaji Lakshminarayanan"
+            ],
+            "title": "Augmix: A simple data processing method to improve robustness and uncertainty",
+            "venue": "In ICLR,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Dan Hendrycks",
+                "Steven Basart",
+                "Norman Mu",
+                "Saurav Kadavath",
+                "Frank Wang",
+                "Evan Dorundo",
+                "Rahul Desai",
+                "Tyler Zhu",
+                "Samyak Parajuli",
+                "Mike Guo"
+            ],
+            "title": "The many faces of robustness: A critical analysis of out-of-distribution generalization",
+            "venue": "In Proceedings of the IEEE/CVF International Conference on Computer Vision,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Ajay Jain",
+                "Pieter Abbeel"
+            ],
+            "title": "Denoising diffusion probabilistic models",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Chitwan Saharia",
+                "William Chan",
+                "David J Fleet",
+                "Mohammad Norouzi",
+                "Tim Salimans"
+            ],
+            "title": "Cascaded diffusion models for high fidelity image generation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jizhizi Li",
+                "Jing Zhang",
+                "Stephen J Maybank",
+                "Dacheng Tao"
+            ],
+            "title": "Bridging composite and real: towards end-to-end deep image matting",
+            "venue": "International Journal of Computer Vision,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Qihao Liu",
+                "Yi Zhang",
+                "Song Bai",
+                "Alan L. Yuille"
+            ],
+            "title": "Explicit occlusion reasoning for multi-person 3d human pose estimation",
+            "venue": "In ECCV,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Yaoyao Liu",
+                "Qianru Sun",
+                "Xiangnan He",
+                "An-An Liu",
+                "Yuting Su",
+                "Tat-Seng Chua"
+            ],
+            "title": "Generating face images with attributes for free. TNNLS",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yaoyao Liu",
+                "Yingying Li",
+                "Bernt Schiele",
+                "Qianru Sun"
+            ],
+            "title": "Online hyperparameter optimization for class-incremental learning",
+            "venue": "In AAAI,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ze Liu",
+                "Yutong Lin",
+                "Yue Cao",
+                "Han Hu",
+                "Yixuan Wei",
+                "Zheng Zhang",
+                "Stephen Lin",
+                "Baining Guo"
+            ],
+            "title": "Swin transformer: Hierarchical vision transformer using shifted windows",
+            "venue": "In Proceedings of the IEEE/CVF international conference on computer vision,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zhuang Liu",
+                "Hanzi Mao",
+                "Chao-Yuan Wu",
+                "Christoph Feichtenhofer",
+                "Trevor Darrell",
+                "Saining Xie"
+            ],
+            "title": "A convnet for the 2020s",
+            "venue": "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ilya Loshchilov",
+                "Frank Hutter"
+            ],
+            "title": "Decoupled weight decay regularization",
+            "venue": "arXiv preprint arXiv:1711.05101,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Wufei Ma",
+                "Angtian Wang",
+                "Alan Yuille",
+                "Adam Kortylewski"
+            ],
+            "title": "Robust category-level 6d pose estimation with coarse-to-fine rendering of neural features",
+            "venue": "In European Conference on Computer Vision,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ren\u00e9 Ranftl",
+                "Katrin Lasinger",
+                "David Hafner",
+                "Konrad Schindler",
+                "Vladlen Koltun"
+            ],
+            "title": "Towards robust monocular depth estimation: Mixing datasets for zero-shot cross-dataset transfer",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Robin Rombach",
+                "Andreas Blattmann",
+                "Dominik Lorenz",
+                "Patrick Esser",
+                "Bj\u00f6rn Ommer"
+            ],
+            "title": "Highresolution image synthesis with latent diffusion models",
+            "venue": "In CVPR,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Uriel Singer",
+                "Adam Polyak",
+                "Thomas Hayes",
+                "Xi Yin",
+                "Jie An",
+                "Songyang Zhang",
+                "Qiyuan Hu",
+                "Harry Yang",
+                "Oron Ashual",
+                "Oran Gafni"
+            ],
+            "title": "Make-a-video: Text-to-video generation without text-video data",
+            "venue": "arXiv preprint arXiv:2209.14792,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Deqing Sun",
+                "Daniel Vlasic",
+                "Charles Herrmann",
+                "Varun Jampani",
+                "Michael Krainin",
+                "Huiwen Chang",
+                "Ramin Zabih",
+                "William T Freeman",
+                "Ce Liu"
+            ],
+            "title": "Autoflow: Learning a better training set for optical flow",
+            "venue": "In CVPR,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Yonglong Tian",
+                "Dilip Krishnan",
+                "Phillip Isola"
+            ],
+            "title": "Contrastive multiview coding",
+            "venue": "In Computer Vision\u2013ECCV 2020: 16th European Conference,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Matthieu Cord",
+                "Matthijs Douze",
+                "Francisco Massa",
+                "Alexandre Sablayrolles",
+                "Herve Jegou"
+            ],
+            "title": "Training data-efficient image transformers distillation through attention",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hugo Touvron",
+                "Thibaut Lavril",
+                "Gautier Izacard",
+                "Xavier Martinet",
+                "Marie-Anne Lachaux",
+                "Timoth\u00e9e Lacroix",
+                "Baptiste Rozi\u00e8re",
+                "Naman Goyal",
+                "Eric Hambro",
+                "Faisal Azhar"
+            ],
+            "title": "Llama: Open and efficient foundation language models",
+            "venue": "arXiv preprint arXiv:2302.13971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Brandon Trabucco",
+                "Kyle Doherty",
+                "Max Gurinas",
+                "Ruslan Salakhutdinov"
+            ],
+            "title": "Effective data augmentation with diffusion models",
+            "venue": "arXiv preprint arXiv:2302.07944,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N Gomez",
+                "\u0141ukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you",
+            "venue": "need. NeurIPS,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Ruben Villegas",
+                "Mohammad Babaeizadeh",
+                "Pieter-Jan Kindermans",
+                "Hernan Moraldo",
+                "Han Zhang",
+                "Mohammad Taghi Saffar",
+                "Santiago Castro",
+                "Julius Kunze",
+                "Dumitru Erhan"
+            ],
+            "title": "Phenaki: Variable length video generation from open domain textual description",
+            "venue": "arXiv preprint arXiv:2210.02399,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Angtian Wang",
+                "Shenxiao Mei",
+                "Alan L. Yuille",
+                "Adam Kortylewski"
+            ],
+            "title": "Neural view synthesis and matching for semi-supervised few-shot learning of 3d pose",
+            "venue": "In NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Shangzhe Wu",
+                "Christian Rupprecht",
+                "Andrea Vedaldi"
+            ],
+            "title": "Unsupervised learning of probably symmetric deformable 3d objects from images in the wild",
+            "venue": "In CVPR,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yu Xiang",
+                "Roozbeh Mottaghi",
+                "Silvio Savarese"
+            ],
+            "title": "Beyond pascal: A benchmark for 3d object detection in the wild",
+            "venue": "In WACV, pp",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Yu Xiang",
+                "Wonhui Kim",
+                "Wei Chen",
+                "Jingwei Ji",
+                "Christopher Choy",
+                "Hao Su",
+                "Roozbeh Mottaghi",
+                "Leonidas Guibas",
+                "Silvio Savarese"
+            ],
+            "title": "Objectnet3d: A large scale database for 3d object recognition",
+            "venue": "In ECCV,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Sangdoo Yun",
+                "Dongyoon Han",
+                "Seong Joon Oh",
+                "Sanghyuk Chun",
+                "Junsuk Choe",
+                "Youngjoon Yoo"
+            ],
+            "title": "Cutmix: Regularization strategy to train strong classifiers with localizable features",
+            "venue": "In Proceedings of the IEEE/CVF international conference on computer vision,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Hongyi Zhang",
+                "Moustapha Cisse",
+                "Yann N Dauphin",
+                "David Lopez-Paz"
+            ],
+            "title": "mixup: Beyond empirical risk minimization",
+            "venue": "arXiv preprint arXiv:1710.09412,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Lvmin Zhang",
+                "Maneesh Agrawala"
+            ],
+            "title": "Adding conditional control to text-to-image diffusion models",
+            "venue": "arXiv preprint arXiv:2302.05543,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bingchen Zhao",
+                "Shaozuo Yu",
+                "Wufei Ma",
+                "Mingxin Yu",
+                "Shenxiao Mei",
+                "Angtian Wang",
+                "Ju He",
+                "Alan Yuille",
+                "Adam Kortylewski"
+            ],
+            "title": "Ood-cv: A benchmark for robustness to out-of-distribution shifts of individual nuisances in natural images",
+            "venue": "In ECCV,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Bingchen Zhao",
+                "Jiahao Wang",
+                "Wufei Ma",
+                "Artur Jesslen",
+                "Siwei Yang",
+                "Shaozuo Yu",
+                "Oliver Zendel",
+                "Christian Theobalt",
+                "Alan Yuille",
+                "Adam Kortylewski"
+            ],
+            "title": "Ood-cv-v2: An extended benchmark for robustness to out-of-distribution shifts of individual nuisances in natural images",
+            "venue": "arXiv preprint arXiv:2304.10266,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Jia Zheng",
+                "Junfei Zhang",
+                "Jing Li",
+                "Rui Tang",
+                "Shenghua Gao",
+                "Zihan Zhou"
+            ],
+            "title": "Structured3d: A large photo-realistic dataset for structured 3d modeling",
+            "venue": "In ECCV,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhun Zhong",
+                "Liang Zheng",
+                "Guoliang Kang",
+                "Shaozi Li",
+                "Yi Yang"
+            ],
+            "title": "Random erasing data augmentation",
+            "venue": "In Proceedings of the AAAI Conference on Artificial Intelligence (AAAI),",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Xingyi Zhou",
+                "Arjun Karpur",
+                "Linjie Luo",
+                "Qixing Huang"
+            ],
+            "title": "Starmap for category-agnostic keypoint and viewpoint estimation",
+            "venue": "In ECCV,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "AdamW Loshchilov",
+                "Hutter"
+            ],
+            "title": "The initial learning rate is 1e \u2212 4 and we use a cosine scheduler for learning rate decay",
+            "venue": "We use Rand-Augment Cubuk et al",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Zhou"
+            ],
+            "title": "2018) and trained the model for 90 epochs with a learning rate of 0.01. For NeMo, we adopt the publicly released code Wang et al. (2021) and trained the NeMo models for 800 epochs on both the synthetic and real data. Each NeMo model is trained on four NVIDIA RTX A5000 for 10 hours",
+            "year": 2021
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Understanding the underlying 3D world of 2D images is essential to numerous computer vision tasks. The utilization of 3D modeling opens up the possibility of addressing a significant portion of the variability inherent in natural images, which could potentially enhance the overall understanding and interpretation of images (Wu et al., 2020). For example, 3D-aware models show high robustness and generalization ability under occlusion or environmental changes (Liu et al., 2022a). However, it is expensive and time-consuming to obtain ground-truth 3D annotations for 2D images. This training data shortage becomes a main obstacle to training large-scale 3D-aware models.\nRecently, diffusion models (Ho et al., 2020) have shown impressive performance in generating photo-realistic images, which can be used to solve the training data shortage. These models allow us to produce high-quality images from various conditional inputs, e.g., natural language descriptions, segmentation maps, and keypoints (Zhang & Agrawala, 2023). This facilitates generative data augmentation, e.g., He et al. (2023) use diffusion models to augment ImageNet (Deng et al., 2009) and significantly improve the classification results.\nDespite their success, diffusion models still lack explicit control over the underlying 3D world during the generation process. As a result, they still face two challenges that hinder their use in augmenting data for 3D tasks. The first challenge is the inability to control the 3D properties of the object in the generated images, such as pose and distance. The second challenge is the difficulty in obtaining ground-truth 3D annotations of objects automatically.\nTo tackle the above challenges, we propose a simple yet effective framework, 3D-controlled diffusion style transfer (3D-DST), which enables us to incorporate knowledge about 3D geometry structures. Our method exploits ControlNet (Zhang & Agrawala, 2023), which extends diffusion models by\nusing visual prompts in addition to text prompts. We generate images of 3D objects taken from 3D shape repositories (e.g., ShapeNet (Chang et al., 2015) and Objaverse (Deitke et al., 2022)), render them from a variety of viewing directions and distances, compute the edge maps of the rendered images, and use these edge maps as visual prompts to generate realistic images. With explicit 3D geometry control, we can easily change the 3D structures of the objects in the generated images and obtain corresponding 3D annotations automatically.\nTo enhance the diversity of the generated images, we apply the following strategies. Firstly, we vary the viewing directions in which the 3D objects are rendered. This generates a wide range of edge maps and allows us to produce multiple distinct images for each 3D object. Secondly, we introduce a novel prompting technique to improve diversity further. We input essential information about the 3D objects into large language models (LLM) (Touvron et al., 2023) to obtain reasonable descriptions, such as background and color. Then, we use these descriptions as the text prompts for diffusion models. This not only enables us to make the most of the vast potential of the diffusion models but also helps us to avoid generating images that are too similar. These two strategies allow us to generate diverse images that can be used to improve the out-of-distribution (OOD) robustness of AI models. As shown in Figure 1, our 3D-DST effectively generates images with a wide range of viewpoints, distances, colors, and backgrounds. These generated images have proven valuable in enhancing performance across both in-distribution (ID) and OOD scenarios.\nOur 3D-DST allows us to transfer recently released large-scale 3D object datasets, e.g., Objaverse and Objaverse-XL, into 2D datasets enriched with comprehensive 3D annotations, e.g., 3D poses, key points, and depths. Objaverse is a repository of 800K CAD models, while Objaverse-XL (Deitke et al., 2023) expands to more than 10 million 3D objects. With the capabilities offered by our 3D-DST, we are able to harness the potential of these vast datasets to enhance performance across various tasks, including 3D-aware classification, 3D pose estimation, OOD classification, and more.\nWe conducted extensive experiments to show the effectiveness of our method. Firstly, we show that our method can be directly used as a data augmentation method for classification. For example, our method improves the ImageNet-100 accuracy by 3.8 percentage points on DeiT-B (Touvron et al., 2021). Secondly, we demonstrate that our method is able to boost the performance of 3D-aware models. With automatically produced 3D annotations, pre-training on our generated images can improve the 3D pose estimation benchmark, PASCAL3D+ (Xiang et al., 2014), by 3.9 and 2.4 percentage points in ID and OOD settings, respectively (accuracy @\u03c0/18).\nTo summarise, we make three contributions:\n\u2022 Automatic generation of 3D annotations. We propose a simple yet effective pipeline that allows us to add 3D conditional control to diffusion models. This enables us to acquire 3D annotations for the generated images through the rendering process.\n\u2022 Generating images with multiple viewpoints. Our method generates images from diverse viewpoints, including those that are rarely encountered in typical scenarios. They can be used as training to improve the model\u2019s robustness in the OOD setting.\n\u2022 Diverse text prompts by LLM. We propose a novel strategy for text prompt generation using LLM. This strategy effectively prevents the generation of redundant or similar images."
+        },
+        {
+            "heading": "2 RELATED WORK",
+            "text": "Synthetic data augmentation. Synthetic data has gained significant attention in generating labeled data for vision tasks that require extensive annotations (Rombach et al., 2022; Zhang & Agrawala, 2023). The synthetic data augmentation methods can be categorized into two groups: 1) 2D-based methods employ recent generative models like GANs and diffusion models to create photo-realistic images (Baranchuk et al., 2022; Liu et al., 2021a; Dosovitskiy et al., 2015; Sun et al., 2021), and other dense prediction tasks. Despite their effectiveness, these methods lack 3D structures, making it challenging to acquire 3D annotations for the generated images. 2) 3D-based methods leverage simulation environments with physically realistic engines to render 3D models and generate images (Greff et al., 2022; Zheng et al., 2020). However, the generated images\u2019 diversity is limited as they heavily rely on the existing textures of the 3D models. In our work, we investigate the integration of 3D control into diffusion models. This allows us to generate diverse images using the appearance produced by diffusion models while obtaining 3D annotations through the 3D structure conditions.\nDiffusion models operate by incrementally degrading the data through introducing Gaussian noise gradually, and subsequently learn to restore the data by reversing this noise infusion process (Ho et al., 2020; Singer et al., 2022; Villegas et al., 2022). They have shown remarkable success in generating high-resolution photo-realistic images from various conditional inputs, e.g., natural language descriptions, segmentation maps, and keypoints (Ho et al., 2020; 2022; Zhang & Agrawala, 2023). Recently, text-to-image diffusion models have also been used to augment training data. Trabucco et al. (2023) investigate various strategies for augmenting individual images with the help of a pre-trained diffusion model, showcasing considerable enhancements in few-shot learning scenarios. Azizi et al. (2023) present evidence that the usage of class names as text prompts can guide the diffusion models to generate images that subsequently improve performance in ImageNet classification tasks. Despite their advancements, diffusion models still face limitations in explicitly controlling the 3D structure of the images they generate. Our research contributes to overcoming this challenge by integrating 3D geometry conditional inputs into diffusion models. This enhancement empowers us with precise control over the 3D structure of the object within the produced image, and facilitates effortless acquisition of 3D annotations, such as 3D pose key points.\nLarge language models (LLM). The field of natural language processing has witnessed a transformative shift in recent years, spurred by the advent of large language models such as PaLM (Chowdhery et al., 2022), and LLaMA (Touvron et al., 2023). These large language models have showcased remarkable proficiency in zero-shot and few-shot tasks, as well as more intricate assignments like mathematical problem-solving and commonsense reasoning. Their impressive performance can be attributed to the extensive corpora they are trained on and the intensive computational resources dedicated to their training. In our study, we utilize LLaMA to enhance the quality of text prompts. By automatically generating descriptive prompts pertaining to backgrounds, color, and weather conditions, we successfully improve the diversity of our generated images."
+        },
+        {
+            "heading": "3 METHODOLOGY",
+            "text": "As illustrated in Figure 2, our proposed 3D-DST enhances diffusion models by incorporating both 3D visual prompts and diverse text prompts. In Section 3.1, we describe how existing diffusion models (Rombach et al., 2022; Zhang & Agrawala, 2023) incorporate 2D visual and simple text conditions for generative data augmentation. In Section 3.2, we introduce how to produce visual prompts based on 3D geometry conditions by graphics-based rendering. In Section 3.3, we show how to create text prompts with LLM (Touvron et al., 2023) to enhance the diversity. Algorithm 1 summarizes how to generate images with 3D annotations using our 3D-DST."
+        },
+        {
+            "heading": "3.1 BACKGROUND: DIFFUSION MODELS WITH TEXT AND 2D VISUAL PROMPTS",
+            "text": "Diffusion models (Ho et al., 2020; Rombach et al., 2022) achieve great success in conditional image generation using text and 2D visual prompts. In the following, we first introduce the original diffusion models without conditional inputs. Then, we show how to add text prompts by augmenting the underlying U-Net backbone of the diffusion models with a cross-attention mechanism (Rombach et al., 2022). Moreover, we elaborate on how to integrate 2D visual prompts using the ControlNet architecture (Zhang & Agrawala, 2023).\nDiffusion model pipeline. Diffusion models learn to generate images by learning a sequence of denoising U-Nets. Starting from a random noise zT , the denoising process is as follows,\nzt\u22121 = \u03f5(zt, t), t = T . . . 1, (1)\nwhere \u03f5(zt, t) denotes the denoising U-Nets. zt\u22121 is a denoise version of the input zt. In the final step, z0 is input to a pre-trained decoder D to get the generated image Ifinal, i.e., Ifinal = D(z0). While diffusion models have achieved significant success in image synthesis, the original version (Ho et al., 2020) does not inherently support conditional control. In the following, we show how to add text and 2D visual controls to the diffusion models.\nAdding text prompts via cross-attention. Existing works (Zhang & Agrawala, 2023; Azizi et al., 2023; Rombach et al., 2022) effectively employ text prompts, such as class names or keywords, as guidance for diffusion models, enabling them to generate images that adhere to specific content requirements. To achieve this, they incorporate text prompts into diffusion models using the crossattention mechanism (Vaswani et al., 2017), following Rombach et al. (2022). First, they pre-process the text prompts T with a pre-trained text encoder \u03b8. Then, they map the prompts to the intermediate layers of the U-Net \u03f5 via cross-attention layers:\n\u03d5i = softmax ( QKM\u221a |\u03d5i\u22121| ) \u00b7 V, Q = W (i)Q \u00b7 \u03d5i\u22121, K = W (i) K \u00b7 \u03b8(T ), V = W (i) V \u00b7 \u03b8(T ), (2)\nwhere \u03d5i denotes the i-th layer intermediate representation of the U-Net \u03f5, and \u03d5i = zt. W (i) Q , W (i) K , and W (i)V are learnable projection matrices. M is a hyperparameter of the cross-attention.\nAdding 2D visual prompts via ControlNet. To integrate 2D visual prompts into diffusion models, we utilize the ControlNet architecture, which enables the incorporation of 2D visual prompts without retraining the entire diffusion model.\nDuring Step t of the denoising process, the 2D visual prompts E2D are added to the latent variable zt, and the resulting sum is inputted into the ControlNet. Then, the outputs of the ControlNet will be integrated into the denoising U-Net \u03f5, i.e.,\nzt\u22121 = \u03f5(zt, T ,ControlNet(zt + E2D)). (3)\nLimitations of existing methods. Although existing approaches have achieved notable success, they still encounter the following challenges. Firstly, these methods lack 3D geometry control, making it arduous to explicitly modify the 3D structure of objects in generated images and acquire corresponding 3D annotations, such as 3D pose key points. Secondly, existing methods frequently depend on simple text prompts to guide the image generation process when augmenting datasets with diffusion models. Consequently, it is difficult to create images for OOD scenarios, which is very important for training robust models.\nIn order to address these challenges, in the following, we demonstrate the generation of 3D visual prompts through graphics-based rendering and augment the text prompts with LLM, effectively enhancing the diversity of the generated images."
+        },
+        {
+            "heading": "3.2 3D VISUAL PROMPTS BY GRAPHICS-BASED RENDERING",
+            "text": "In order to effectively integrate 3D geometry control into diffusion models, it is essential to ensure that the visual prompts meet the following two specific requirements.\nFirstly, the visual prompts must encompass sufficient information to depict the 3D geometry structure of the objects accurately. Without this information, it would be challenging to achieve explicit control over the 3D structure of the objects (e.g., shape and pose) in the generated images, consequently hindering the generation of corresponding 3D annotations.\nSecondly, the visual prompts should be compact and concise, enabling diffusion models to comprehend and effectively process them. Utilizing overly complex visual prompts, such as the vertices and meshes of a CAD model, would prove impractical and unfeasible for the diffusion models to handle efficiently. Therefore, it is crucial to strike a balance and employ visual prompts that are both informative and manageable within the diffusion model framework.\nTo satisfy the aforementioned requirements, our proposed approach involves generating visual prompts through graphics-based rendering. We leverage 3D Computer Aided Design (CAD) models, which can be easily obtained from existing 3D shape repositories such as ShapeNet, Objaverse, and Objaverse-XL. Then, we render the CAD models from diverse viewpoints and distances, compute edge maps based on the rendered images, and utilize these edge maps as visual prompts. This approach enables us to encapsulate the necessary information regarding the 3D geometry structure of the objects. The rendered images provide essential details such as the viewing directions and distances, facilitating explicit control over the 3D structure during the generation of images. By extracting edge maps, we create compact visual prompts that are suitable for integration within diffusion models. In the following, we will elaborate on the detailed steps.\nGraphics-based rendering. We render CAD models with various viewing directions and distances and then obtain the rendered sketch images. Given a CAD model C, we generate the rendered sketch images Irender as follows, Irender = R(C, \u03be,K), (4) where R denotes an off-the-shelf renderer, i.e. (Community, 2018), K is the camera intrinsic matrix, \u03be represents a camera extrinsic matrix computed from a randomized viewing direction and distance follows a predefined distribution. In practice, we use the Perspective camera with focal length f = 35mm to render the images. Complex backgrounds are not necessary here because the rendered sketch images are used to extract edge maps.\nEdge map computation. Next, we extract edge maps from the rendered sketch images. The primary objective of this process is to enhance the compactness and conciseness of the rendered images while preserving the underlying 3D geometry structure. To achieve this, we apply classical edge detection methods, e.g., Canny edge (Canny, 1986). Given a rendered sketch images Irender, we obtain the edge map E3D as follows,\nE3D = CannyEdge(Irender). (5)\nThen, we use E3D as the 3D visual prompt for the CAD model C, replacing E2D in Eq. 3."
+        },
+        {
+            "heading": "3.3 DIVERSE TEXT PROMPTS BY LLM",
+            "text": "Algorithm 1 Generating images using our 3D-DST\n1: Input: 3D shape repository {C, w, k}. 2: Output: Images with 3D annotations {Ifinal, y3D}. 3: for iterations do 4: Get a CAD model C from the 3D shape repository; 5: Load the class name w and keyword k of C; 6: Load the camera intrinsic matrix K; 7: Generate randomized camera extrinsic matrices {\u03be}; 8: for different camera extrinsic matrix \u03be do 9: // 3D visual prompt generation\n10: Render sketch image Irender using \u03be and K by Eq. 4; 11: Produce 3D annotations y3D of Irender; 12: Compute edge map E3D using Canny Edge by Eq. 5 ; 13: // Text prompt generation 14: Create text prompts T using w and k by Eq. 6; 15: // Image generation 16: Initialize a random noise zT ; 17: for t in T, \u00b7 \u00b7 \u00b7 , 1 do 18: Denoise zt to zt\u22121 using T and E3D by Eq. 3; 19: Generate images Ifinal = D(z0). 20: Collect the generated dataset {Ifinal, y3D}.\nText prompts play a crucial role in guiding diffusion models to generate diverse images. However, current data augmentation methods based on diffusion models often rely on overly simplistic text prompts to guide the image generation process. For example, Azizi et al. (2023) utilize class names directly as text prompts, while Zhang & Agrawala (2023) employ a default prompt such as \u201ca high-quality, detailed, and professional image.\u201d These simplistic approaches fail to fully harness the rich appearance information stored within diffusion models.\nTo address the aforementioned issue, we present a novel strategy for text prompt generation. Our approach involves combining the class names of objects with the associated tags or keywords of the CAD models. This combined information forms the initial text prompts. Then, we enhance these prompts by incorporating the descriptions generated by LLM. The final text prompts T of a CAD model C are created as follows,\nT = {t, w, k, LLM(t, w, k)}, (6)\nwhere t represents a prompt template, such as \u201ca photo of \u00b7 \u00b7 \u00b7 \u201d. w corresponds to the class name of the CAD model C, while k denotes the tags or keywords associated with C in the 3D shape repository (e.g., Objaverse-XL). LLM is a large language model capable of generating rich and coherent descriptions (e.g., backgrounds, colors) when provided with the initial text prompts (t, w, k).\n4 EXPERIMENTS\nIn this section, we demonstrate how our 3D-DST synthetic data can be used to boost the performance of deep learning models for both 2D recognition tasks (e.g., image classification) and 3D vision tasks (e.g., 3D pose estimation) in the ID and OOD settings. Specifically, in Section 4.1, we present quantitative results for image classification. In Section 4.2, we provide the results for 3D pose estimation. In Section 4.3, we show the visualization results."
+        },
+        {
+            "heading": "4.1 IN-DISTRIBUTION (ID) AND OUT-OF-DISTRIBUTION (OOD) IMAGE CLASSIFICATION",
+            "text": "Datasets. We consider three datasets: ImageNet-100, ImageNet-200, and ImageNet-R. The first two datasets are ID datasets, while the third one is an OOD dataset. All datasets are created based on the well-known image classification dataset, ImageNet (Russakovsky et al., 2015). ImageNet-100 (Tian et al., 2020; Liu et al., 2023) and ImageNet-200 are 100-class and 200-class subsets, respectively, randomly sampled from ImageNet. ImageNet-R (Hendrycks et al., 2021) contains 30, 000 images with various artistic renditions of 200 classes of the original ImageNet. It is widely used to evaluate OOD performance.\nImplentation details. Network architectures. We use representative network architectures, i.e., DeiT (Touvron et al., 2021), ConvNeXt (Liu et al., 2022b), and Swin Transformer (Swin) (Liu et al., 2021b). For DeiT and ConvNeXt, we follow the official codebases and experimented on tiny (DeiT only), small, and base settings. No distillation is used for DeiT. For Swin Transformer and MAE, we experimented on the small setting following the training strategies released in the official implementations. Data generation. We collect around 30 CAD models from ShapeNet and Objaverse for each object class. Then, we run our 3D-DST and generate 2, 500 images for each class.\nID results on ImageNet-100 and ImageNet-200. In Table 1, we show the ID classification results on ImageNet-100. \u201cBaseline\u201d (Line 1) is to train models purely on ImageNet-100 for 600 epochs. \u201cw/ Text2Img\u201d (Line 2) is to pretrain the models on the images generated by a text-to-image (Text2Img) model (He et al., 2023) without 3D control for 300 epochs and finetune on ImageNet-100 for 300 epochs. \u201cw/ 3D-DST\u201d (Line 3) is to pre-train the models on our 3D-DST synthetic data first for 300 epochs and finetune on ImageNet-100 for 300 epochs. For MAE in various settings, we follow the official implementation and pretrain the model for 800 epochs and then finetune on ImageNet-100 for 100 epochs. Comparing results on Line 3 and Line 1, we can observe with the help of 3D-DST data, the Top-1 accuracies increase by more than 3.50 percentage points for DeiT models and an average of 1.07 percentage points for other models with an accuracy of more than 90 percentage points. As a comparison, pretraining on Text2Img (Line 2) yields mixed results with no evident improvements. In Table 2, we provide the results on ImageNet-200. We can see that using our 3D-DST can still achieve significant improvements, i.e., 3.31 percentage points compared to the baseline."
+        },
+        {
+            "heading": "1 83.84 (\u21910.00) 84.56 (\u21910.00) 91.34 (\u21910.00) 49.96 (\u21910.00) 49.61 (\u21910.00) 67.19 (\u21910.00)",
+            "text": ""
+        },
+        {
+            "heading": "2 \u2713 86.52 (\u21912.68) 87.82 (\u21913.26) 91.96 (\u21910.62) 54.51 (\u21914.55) 55.95 (\u21916.34) 68.29 (\u21911.10)",
+            "text": ""
+        },
+        {
+            "heading": "3 \u2713 \u2713 87.36 (\u21913.52) 88.96 (\u21914.40) 92.18 (\u21910.84) 56.12 (\u21916.16) 56.65 (\u21917.04) 69.69 (\u21912.50)",
+            "text": "OOD results on ImageNet-R. Table 1 also demonstrate the OOD classification results on ImageNetR. For \u201cBaseline\u201d, \u201cw/ Text2Img\u201d, and \u201cw/ 3D-DST\u201d, we apply the similar settings as the ID experiments. Comparing results on Line 2 with Line 1, we can observe that Text2Img improves the performance on ImageNet-R by a small marge with an average of 1.06 percentage points, while pretraining models on our 3D-DST data bring a consistent and significant improvement across all models, with an average of 4.70 percentage points.\nAblation results. In Table 3, we provide the ablation results. Line 1 shows the baseline results without pre-training. Line 2 and Line 3 report the results that pre-train on 3D-DST data with and without LLM prompts. As we can see, using LLM can significantly improve the performance on both in-distribution and out-of-distribution data. Note that the LLM prompts are generated with our novel generation strategy introduced in Section 3.3, effectively improving the diversity of the produced prompts. As a result, LLM prompts achieve larger improvements in OOD compared to ID."
+        },
+        {
+            "heading": "4.2 ROBUST CATEGORY-LEVEL 3D POSE ESTIMATION",
+            "text": "Datasets and evaluations. Datasets. We consider three datasets for 3D pose estimation: PASCAL3D+, ObjectNet3D, and OOD-CV. The PASCAL3D+ dataset (Xiang et al., 2014) contains 11, 045 training images and 10, 812 validation images with category and object pose annotations. The OOD-CV dataset (Zhao et al., 2022; 2023) includes OOD examples from PASCAL3D+ and is a benchmark to evaluate OOD robustness to individual nuisance factors, including pose, shape, appearance, context, and weather. The ObjectNet3D dataset is another 3D pose estimation benchmark that contains 100 categories with 17, 101 training samples and 19, 604 testing samples. Following Wang et al. (2021); Zhao et al. (2022), we evaluate pose estimation models on 10 categories from PASCAL3D+ and a subset of ObjectNet3D with 10 categories. Evaluations. Following Zhou et al. (2018); Wang et al. (2021), we measure the 3D pose prediction with the pose estimation error between the predicted rotation matrix and the ground truth rotation matrix \u2206(Rpred,Rgt) = \u2225logm(R\u22a4predRgt)\u2225F\u221a\n2 .\nWe report results under thresholds \u03c06 and \u03c0 18 , following Zhou et al. (2018); Wang et al. (2021).\ncar\nsofa\nmicrowave\nID Results on PASCAL3D+ and ObjectNet3D. In Table 4, we show the ID pose estimation results on PASCAL3D+ and ObjectNet3D. The first block (Lines 1-3) shows ResNet results, i.e., extending a ResNet model with a pose classification head (Zhou et al., 2018). The second block (Lines 4-5) shows the results based on the state-of-the-art 3D pose estimation method, NeMo (Wang et al., 2021). \u201cw/ 3D-DST\u201d denotes using the models pre-trained on 3D-DST. We also pre-train the model with a strong data augmentation method, AugMix (Hendrycks et al., 2020), which mixes augmented images and enforces consistent embeddings of the augmented images. \u201cw/ AugMix\u201d shows its results. We can see that using the model pre-trained on our synthetic data can effectively improve the 3D pose estimation results. For example, comparing Line 3 with Line 1, we can observe that \u201cw/ 3D-DST\u201d improves the 3D pose estimation results by 1.89 and 3.47 percentage points with a threshold of \u03c06 and by 3.92 and 5.39 percentage points for \u03c018 , on ResNet. As a comparison, \u201cw/ AugMix\u201d brings limited improvements compared to our 3D-DST when evaluated on the ID test data.\nTraining: Canny Edge; Inference: Canny Edge\nTraining: MiDaS Depths; Inference: MiDaS Depths\nTraining: MiDaS Depths; Inference: Rendered Depths\nFigure 4: Qualitative examples of using different types of 3D control. We experimented with three different types of 3D control: edge maps (top), MiDaS predicted depth (middle), and Blender rendered depth (bottom), using the same 3D model and text prompts. Qualitative results show that using edge maps as 3D control gives overall better outputs.\nOOD Results on on OOD-CV. We also provide OOD pose estimation results on the OOD-CV dataset. For the baseline, \u201cw/ AugMix\u201d, and \u201cw/ 3D-DST\u201d, we apply the similar settings as the ID experiments. Comparing Line 3 with Line 1, our 3D-DST data can effectively improve the model\u2019s performance on OOD data, e.g., with a gap of 2.37 and 3.50 percentage points for \u03c06 . This shows that our approach with 3D-DST can introduce diverse data not present in the training data and improve the robustness of models to various domain shifts."
+        },
+        {
+            "heading": "4.3 VISUALIZATIONS",
+            "text": "Figure 3 shows the visualized samples generated by our 3D-DST. We can observe that 3D-DST can generate realistic images with diverse appearances. In Figure 4, we provide the comparisons among three types of 3D controls, edge maps, MiDaS (Ranftl et al., 2020) predicted depths, and rendered depths. Results show that using edge maps as control gives the best outputs visually, while MiDaS depths and rendered depths demonstrate reasonable results but are limited in the realism and clarity of the foreground object or the background scene."
+        },
+        {
+            "heading": "5 CONCLUSION",
+            "text": "In this work, we introduce a simple yet effective framework, 3D-DST, which incorporates 3D geometry control into diffusion models. This empowers us with explicit control over the 3D structure of the objects in the generated images. As a result, we can conveniently acquire ground-truth 3D annotations for the produced 2D images. To boost the diversity of the images, we adjust 3D poses and distances and employ LLM for creating dynamic text prompts. Our empirical results reveal that the images generated by our method can significantly enhance performance across a range of vision tasks, including classification and 3D pose estimation, in both ID and OOD settings."
+        },
+        {
+            "heading": "A ADDITIONAL RESULTS",
+            "text": "Qualitative examples of LLM prompts. To demonstrate how diverse prompts from LLM can help to generate diverse outputs in textures and backgrounds, we show some qualitative comparisons in Figure 5 between 3D-DST data with and without diverse prompts from LLM (when not using LLM, we only use the class names from ImageNet and descriptions from the CAD models as simple prompts).\nError bar. It would be too computationally expensive to report the error bars for all the experiments. However, we compute the error bar for a main experiment in the paper, i.e., the top-1 classification accuracy of the three models trained on ImageNet-100 + 3D-DST, by only changing the random seeds and keeping all the other settings the same. The standard deviations of the classification accuracy of DeiT-S, ConvNeXt-S are 0.12%, 0.06%, respectively.\nGenerating balanced data from 3D controllability. Another advantage of our 3D-DST dataset is to generated balanced data with respect to 3D viewpoint, object 2D location or size, thanks to the 3D controllability of our generation pipeline. To visualize the 3D viewpoint distribution in different synthetic dataset, we randomly select 200 car/bus image samples from Text2Img and our 3D-DST, and run a state-of-the-art 6D pose estimation model to obtain the 3D viewpoint, NeMo6D (Ma et al., 2022). Then we manually go over the estimated poses to remove samples with poorly estimated poses and obtain 120 well-annotated samples for each dataset. We visualize the distribution of the azimuth angles for 120 objects in Text2Img (left) and 3D-DST (right). Synthetic data in Text2Img show strong pose biases propagated from the image diffusion model, while our 3D-DST dataset alleviate this issue by introducing explicit 3D controls.b"
+        },
+        {
+            "heading": "B MODEL TRAINING",
+            "text": "Image classification. We follow the implementation from the DeiT Touvron et al. (2021) codebase for all models. During training, the input image size is 224\u00d7 224, the batch size is set to 512, and we use AdamW Loshchilov & Hutter (2017) as the optimizer. The initial learning rate is 1e \u2212 4 and we use a cosine scheduler for learning rate decay. We use Rand-Augment Cubuk et al. (2020), random erasing Zhong et al. (2020), Mixup Zhang et al. (2017) and Cutmix Yun et al. (2019) for data augmentation. We use two NVIDIA Quadro RTX 8000 GPUs for each training. For other settings, we refer to Touvron et al. (2021).\n3D pose estimation. For the classification-based model, ResNet50, we use the released implementation from Zhou et al. (2018) and trained the model for 90 epochs with a learning rate of 0.01. For NeMo, we adopt the publicly released code Wang et al. (2021) and trained the NeMo models for 800 epochs on both the synthetic and real data. Each NeMo model is trained on four NVIDIA RTX A5000 for 10 hours."
+        },
+        {
+            "heading": "C MORE DETAILS ABOUT GENERATING 3D-DST SYNTHETIC DATA",
+            "text": "The 100 classes we used in main classification experiments (Table 1) follow the 100 classes in (Tian et al., 2020). To demonstrate the scalability of our approach, we randomly select another 100 classes and report 200-class classification results in Table 2. We collect 30 CAD models for each class from the ShapeNet dataset (Chang et al., 2015) and the Objeverse dataset (Deitke et al., 2022), and 2,500 images were rendered for each class. We sample the object viewpoint with a uniform distribution over the azimuth angle and Gaussian distributions over the elevation and theta angles. The viewpoint sampling rules are detailed in Table 5. For pose estimation, we estimate the mean and variance of the object viewpoints from the training data of PASCAL3D+ (Xiang et al., 2014) and ObjectNet3D (Xiang et al., 2016) and sample from the fitted Gaussian distributions."
+        },
+        {
+            "heading": "D ABLATION STUDY EXPERIMENTS ON DATA GENERATION",
+            "text": "Besides the results in Table 1 and Table 4, we consider the following ablation study experiments on different data generation methods. In the following we introduce different data generation procedures.\nSample images for each data generation approach are shown in Figure 7. Experimental results are presented in Table 6 for image classification and in Table 7 for 3D pose estimation.\nDiffusion-based generation conditioned on edges obtained from ImageNet images (\u201cImageNet edges\u201d). Instead of using edges produced from our 3D visual prompt module, the images are generated with the same diffusion model but conditioned on edges computed from ImageNet images with the Canny edge detector (Canny, 1986).\nRendered images with random 2D image backgrounds (\u201crendering + BG2D\u201d). We overlay the rendered objects to a randomly sampled background image. The background images come from the training split of BG-20k (Li et al., 2022) dataset with no salient objects.\nRendered iamges with random 3D environment backgrounds (\u201crendering + BG3D\u201d). We collected 100 HDRIs from polyhaven (pol) and used them as the world environment in Blender rendering. The 100 HDRIs cover a wide range of scenes, including both indoor and outdoor, natural and urban, and different lighting conditions (day or night)."
+        },
+        {
+            "heading": "E EXPERIMENTAL RESULTS ON 3D OBJECT DETECTION",
+            "text": "To show the flexibility of our DST-3D approach and its potential to a wide range of 3D tasks, we present qualitative and quantitative results on 3D object detection from 3D scenes on ARKitScenes dataset (Baruch et al., 2021; Brazil et al., 2023). In the following, we start by presenting our DST-3D data generation for 3D scenes with multiple objects. Then we visualize qualitative examples in Figure 8. Finally we report the quantitative results in Table 8. Results show that (i) our DST-3D approach can generate synthetic scene images with multiple objects from different categories, and (ii) state-of-the-art models pretrained on DST-3D data can achieve improved performance for 3D object detection in terms of both AP2D and AP3D.\nDST-3D data generation for 3D scenes. Unlike 2D image classification or 3D pose estimation, generating 3D scene images for 3D object detection consists of the generation of multiple objects from multiple categories in a reasonable 3D scene structure. Therefore, we adopt the scene structures from the ARKitScenes dataset (Baruch et al., 2021) and extend our 3D visual prompt module (see Figure 2) as follows. In ARKitScenes, each 3D scene is represented by a list of 3D bounding boxes, each associated with a category label. We start by sampling a CAD model from the target category and put it in the Blender scene at the target location and with the target rotation. The synthetic 3D scene possesses a reasonable scene structure (object location and rotation) with randomness inherent in the CAD models (object styles and shape ratios). Finally we sample different camera locations and rotations to generate a series images of the same scene but from different viewpoints.\nQualitative examples of 3D synthetic scenes generate with our DST-3D. In Figure 8 we visualize several qualitative examples of scene images produced by our DST-3D. We can see that our DST-3D approach can generate scene images with multiple objects from multiple categories with diverse viewpoints.\nQuantitative results of 3D object detection on ARKitScenes dataset. We choose CubeRCNN (Brazil et al., 2023) from CVPR 2023 as the baseline model and report the 3D object detection performance on ARKitScenes dataset (Baruch et al., 2021) in Table 8. Results show that by pretraining 3D object detection models on synthetic DST-3D scene images, we achieve improved performance in terms of both AP2D and AP3D metrics."
+        },
+        {
+            "heading": "F ANALYZING THE QUALITY OF THE AUTOMATIC 3D ANNOTATIONS",
+            "text": "In Table 4 and Section E we showed that improved performance on both in-distribution data and out-of-distribution data can be achieved by pretraining 3D models on our DST-3D data. However, it remains unclear how much of the synthetic data have accurate 3D annotations or how much noises were introduced from our DST-3D data generation.\nIn this section, we first introduce two metrics to analyze the quality of the automatic 3D annotations in our DST-3D data. Then we propose a K-fold consistency filter (KCF) built on a state-of-the-art pose estimation method that can effectively filter noisy images with inaccurate 3D annotations from our DST-3D data, hence improving the overall quality. We also present quantitative and qualitative results to support our argument.\nMeasuring the quality of 3D annotations. Two metrics were considered to measure the quality of 3D annotations in a synthetic 3D dataset.\n1. Real-to-synthetic performance. Given a powerful 3D pose estimation model (Ma et al., 2022) trained on real data, we evaluate the model on the synthetic dataset. A good real-tosynthetic performance indicates the consistencies between the real data and the synthetic data, as well as the general quality of the 3D annotations in the synthetic dataset. However, a critical limitation of this metric is the domain gap between the synthetic and real. For instance, a synthetic dataset with higher diversity than real data, e.g., our DST-3D data with diverse LLMs, could lead to a lower real-to-synthetic performance due to unseen textures, weather, poses, etc.\n2. Pose consistency score (PCS). By randomly splitting the synthetic data into training sets and validation sets, the pose consistency score (PCS) is given by a model\u2019s average performance on the validation sets after fitting the corresponding training sets. Since the training data and validation data shares the same source domain, synthetic data with noisy 3D labels would yield a lower PCS as the model cannot recover the noises added from the image generation module. It should be noted that the absolute value of PCS is also affected by the fitting capabilities of existing 3D models and the diversity of the synthetic data.\nK-fold consistency filter (KCF). We propose a simple yet effective approach to filter out noisy samples with inaccurate 3D annotations. We follow the K-fold splits and for each train-val split, we train a state-of-the-art 3D pose estimation model (Ma et al., 2022) and evaluate it on the validation split. For each sample in the validation split, we regard it as a noisy sample with possibly inaccurate 3D annotation if the confidence score given the 3D annotation is lower than a threshold.\nQuantitative and qualitative examples of KCF. To show the efficacy of the K-fold consistency filter (KCF), we present quantitative results on four categories: bus, car, and microwave. Results in Table 9 show that KCF can effectively remove the noisy samples with inaccurate 3D annotations with increases in both R2S and PCS. We further visualize samples with high confidence scores (possibly accurate) and low confidence scores (possibly noisy) in Figure 9. We find that KCF is working as expected and most samples removed by KCF are indeed noisy ones with inaccurate 3D annotations. However, we observe few samples mistakenly filtered by KCF. We conjecture this is due to the diverse image space explored by DST-3D and the limited robustness of existing 3D pose estimation methods, on which KCF is built."
+        }
+    ],
+    "year": 2023
+}

@@ -1,0 +1,965 @@
+{
+    "abstractText": "We study the problem of building an agent that can follow open-ended instructions in open-world environments. We propose to follow reference videos as instructions, which offer expressive goal specifications while eliminating the need for expensive text-gameplay annotations. We implement our agent GROOT in a simple yet effective encoder-decoder architecture based on causal transformers. We evaluate GROOT against open-world counterparts and human players on a proposed Minecraft SkillForge benchmark. The Elo ratings clearly show that GROOT is closing the human-machine gap as well as exhibiting a 70% winning rate over the best generalist agent baseline. Qualitative analysis of the induced goal space further demonstrates some interesting emergent properties, including the goal composition and complex gameplay behavior synthesis. Figure 1: Through the cultivation of extensive gameplay videos, GROOT has grown a rich set of skill fruits (number denotes success rate; skills shown above do not mean to be exhaustive; kudos to the anonymous artist).",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "WATCHING GAMEPLAY VIDEOS"
+        },
+        {
+            "affiliations": [],
+            "name": "Shaofei Cai"
+        },
+        {
+            "affiliations": [],
+            "name": "Bowei Zhang"
+        },
+        {
+            "affiliations": [],
+            "name": "Zihao Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiaojian Ma"
+        },
+        {
+            "affiliations": [],
+            "name": "Anji Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Yitao Liang"
+        },
+        {
+            "affiliations": [],
+            "name": "Team CraftJarvis"
+        }
+    ],
+    "id": "SP:346b272ab874d232d7270f215ac3300de1438364",
+    "references": [
+        {
+            "authors": [
+                "Yusuf Aytar",
+                "Tobias Pfaff",
+                "David Budden",
+                "Tom Le Paine",
+                "Ziyun Wang",
+                "Nando de Freitas"
+            ],
+            "title": "Playing hard exploration games by watching youtube",
+            "venue": "In Neural Information Processing Systems, 2018a. URL https://api.semanticscholar.org/CorpusID:44061126",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Yusuf Aytar",
+                "Tobias Pfaff",
+                "David Budden",
+                "Tom Le Paine",
+                "Ziyun Wang",
+                "Nando de Freitas"
+            ],
+            "title": "Playing hard exploration games by watching youtube",
+            "venue": "In Neural Information Processing Systems, 2018b. URL https://api.semanticscholar.org/CorpusID:44061126",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Bowen Baker",
+                "Ilge Akkaya",
+                "Peter Zhokhov",
+                "Joost Huizinga",
+                "Jie Tang",
+                "Adrien Ecoffet",
+                "Brandon Houghton",
+                "Raul Sampedro",
+                "Jeff Clune"
+            ],
+            "title": "Video pretraining (vpt): Learning to act by watching unlabeled online",
+            "venue": "videos. ArXiv,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Karl Pertsch",
+                "Jornell Quiambao",
+                "Kanishka Rao",
+                "Michael S. Ryoo",
+                "Grecia Salazar",
+                "Pannag R. Sanketi",
+                "Kevin Sayed",
+                "Jaspiar Singh",
+                "Sumedh Anand Sontakke",
+                "Austin Stone",
+                "Clayton Tan",
+                "Huong Tran",
+                "Vincent Vanhoucke",
+                "Steve Vega",
+                "Quan Ho Vuong",
+                "F. Xia",
+                "Ted Xiao",
+                "Peng Xu",
+                "Sichun Xu",
+                "Tianhe Yu",
+                "Brianna Zitkovich"
+            ],
+            "title": "Rt-1: Robotics transformer for real-world control at scale",
+            "venue": "ArXiv, abs/2212.06817,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Dario Amodei"
+            ],
+            "title": "Language models are few-shot learners",
+            "venue": "ArXiv, abs/2005.14165,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Jake Bruce",
+                "Ankit Anand",
+                "Bogdan Mazoure",
+                "Rob Fergus"
+            ],
+            "title": "Learning about progress from experts",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Shaofei Cai",
+                "Zihao Wang",
+                "Xiaojian Ma",
+                "Anji Liu",
+                "Yitao Liang"
+            ],
+            "title": "Open-world multi-task control through goal-aware representation learning and adaptive horizon prediction",
+            "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Lili Chen",
+                "Kevin Lu",
+                "Aravind Rajeswaran",
+                "Kimin Lee",
+                "Aditya Grover",
+                "Michael Laskin",
+                "P. Abbeel",
+                "A. Srinivas",
+                "Igor Mordatch"
+            ],
+            "title": "Decision transformer: Reinforcement learning via sequence modeling",
+            "venue": "In Neural Information Processing Systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Zihang Dai",
+                "Zhilin Yang",
+                "Yiming Yang",
+                "Jaime Carbonell",
+                "Quoc Le",
+                "Ruslan Salakhutdinov"
+            ],
+            "title": "Transformer-xl: Attentive language models beyond a fixed-length context",
+            "venue": "In Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, Jan 2019",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jacob Devlin",
+                "Ming-Wei Chang",
+                "Kenton Lee",
+                "Kristina Toutanova"
+            ],
+            "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+            "venue": "ArXiv, abs/1810.04805,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Norman Di Palo",
+                "Arunkumar Byravan",
+                "Leonard Hasenclever",
+                "Markus Wulfmeier",
+                "Nicolas Heess",
+                "Martin Riedmiller"
+            ],
+            "title": "Towards a unified agent with foundation models",
+            "venue": "In Workshop on Reincarnating Reinforcement Learning at ICLR 2023,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Yiming Ding",
+                "Carlos Florensa",
+                "Mariano Phielipp",
+                "P. Abbeel"
+            ],
+            "title": "Goal-conditioned imitation learning",
+            "venue": "ArXiv, abs/1906.05838,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Lucas Beyer",
+                "Alexander Kolesnikov",
+                "Dirk Weissenborn",
+                "Xiaohua Zhai",
+                "Thomas Unterthiner",
+                "Mostafa Dehghani",
+                "Matthias Minderer",
+                "Georg Heigold",
+                "Sylvain Gelly",
+                "Jakob Uszkoreit",
+                "Neil Houlsby"
+            ],
+            "title": "An image is worth 16x16 words: Transformers for image recognition",
+            "venue": "at scale. ArXiv,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Heming Du",
+                "Xin Yu",
+                "Liang Zheng"
+            ],
+            "title": "Vtnet: Visual transformer network for object goal navigation",
+            "venue": "ArXiv, abs/2105.09447,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Lasse Espeholt",
+                "Hubert Soyer",
+                "R\u00e9mi Munos",
+                "Karen Simonyan",
+                "Volodymyr Mnih",
+                "Tom Ward",
+                "Yotam Doron",
+                "Vlad Firoiu",
+                "Tim Harley",
+                "Iain Dunning",
+                "Shane Legg",
+                "Koray Kavukcuoglu"
+            ],
+            "title": "Impala: Scalable distributed deep-rl with importance weighted actor-learner",
+            "venue": "architectures. ArXiv,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Linxi (Jim) Fan",
+                "Guanzhi Wang",
+                "Yunfan Jiang",
+                "Ajay Mandlekar",
+                "Yuncong Yang",
+                "Haoyi Zhu",
+                "Andrew Tang",
+                "De-An Huang",
+                "Yuke Zhu",
+                "Anima Anandkumar"
+            ],
+            "title": "Minedojo: Building open-ended embodied agents with internet-scale knowledge",
+            "venue": "ArXiv, abs/2206.08853,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ran Gong",
+                "Qiuyuan Huang",
+                "Xiaojian Ma",
+                "Hoi Vo",
+                "Zane Durante",
+                "Yusuke Noda",
+                "Zilong Zheng",
+                "Song-Chun Zhu",
+                "Demetri Terzopoulos",
+                "Li Fei-Fei"
+            ],
+            "title": "Mindagent: Emergent gaming interaction",
+            "venue": "arXiv preprint arXiv:2309.09971,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "William H. Guss",
+                "Brandon Houghton",
+                "Nicholay Topin",
+                "Phillip Wang",
+                "Cayden Codel",
+                "Manuela M. Veloso",
+                "Ruslan Salakhutdinov"
+            ],
+            "title": "Minerl: A large-scale dataset of minecraft demonstrations",
+            "venue": "In International Joint Conference on Artificial Intelligence,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Yicong Hong",
+                "Qi Wu",
+                "Yuankai Qi",
+                "Cristian Rodriguez-Opazo",
+                "Stephen Gould"
+            ],
+            "title": "Vln-bert: A recurrent vision-and-language bert for navigation",
+            "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Wenlong Huang",
+                "F. Xia",
+                "Ted Xiao",
+                "Harris Chan",
+                "Jacky Liang",
+                "Peter R. Florence",
+                "Andy Zeng",
+                "Jonathan Tompson",
+                "Igor Mordatch",
+                "Yevgen Chebotar",
+                "Pierre Sermanet",
+                "Noah Brown",
+                "Tomas Jackson",
+                "Linda Luu",
+                "Sergey Levine",
+                "Karol Hausman",
+                "Brian Ichter"
+            ],
+            "title": "Inner monologue: Embodied reasoning through planning with language models",
+            "venue": "In Conference on Robot Learning,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Wenlong Huang",
+                "Chen Wang",
+                "Ruohan Zhang",
+                "Yunzhu Li",
+                "Jiajun Wu",
+                "Li Fei-Fei"
+            ],
+            "title": "Voxposer: Composable 3d value maps for robotic manipulation with language models",
+            "venue": "ArXiv, abs/2307.05973,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mingxuan Jing",
+                "Xiaojian Ma",
+                "Wenbing Huang",
+                "Fuchun Sun",
+                "Chao Yang",
+                "Bin Fang",
+                "Huaping Liu"
+            ],
+            "title": "Reinforcement learning from imperfect demonstrations under soft expert guidance",
+            "venue": "In Proceedings of the AAAI conference on artificial intelligence,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Mingxuan Jing",
+                "Wenbing Huang",
+                "Fuchun Sun",
+                "Xiaojian Ma",
+                "Tao Kong",
+                "Chuang Gan",
+                "Lei Li"
+            ],
+            "title": "Adversarial option-aware hierarchical imitation learning",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Matthew Johnson",
+                "Katja Hofmann",
+                "Tim Hutton",
+                "David Bignell"
+            ],
+            "title": "The malmo platform for artificial intelligence experimentation",
+            "venue": "In International Joint Conference on Artificial Intelligence,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Apoorv Khandelwal",
+                "Luca Weihs",
+                "Roozbeh Mottaghi",
+                "Aniruddha Kembhavi"
+            ],
+            "title": "Simple but effective: Clip embeddings for embodied ai",
+            "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR),",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Diederik P. Kingma",
+                "Max Welling"
+            ],
+            "title": "Auto-encoding variational bayes",
+            "venue": "CoRR, abs/1312.6114,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Michael Laskin",
+                "Luyu Wang",
+                "Junhyuk Oh",
+                "Emilio Parisotto",
+                "Stephen Spencer",
+                "Richie Steigerwald",
+                "DJ Strouse",
+                "Steven Stenberg Hansen",
+                "Angelos Filos",
+                "Ethan Brooks",
+                "Maxime Gazeau",
+                "Himanshu Sahni",
+                "Satinder Singh",
+                "Volodymyr Mnih"
+            ],
+            "title": "In-context reinforcement learning with algorithm distillation",
+            "venue": "ArXiv, abs/2210.14215,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shalev Lifshitz",
+                "Keiran Paster",
+                "Harris Chan",
+                "Jimmy Ba",
+                "Sheila A. McIlraith"
+            ],
+            "title": "Steve-1: A generative model for text-to-behavior in minecraft",
+            "venue": "ArXiv, abs/2306.00937,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zichuan Lin",
+                "Junyou Li",
+                "Jianing Shi",
+                "Deheng Ye",
+                "Qiang Fu",
+                "Wei Yang"
+            ],
+            "title": "Juewu-mc: Playing minecraft with sample-efficient hierarchical reinforcement learning",
+            "venue": "arXiv preprint arXiv:2112.04907,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Minghuan Liu",
+                "Menghui Zhu",
+                "Weinan Zhang"
+            ],
+            "title": "Goal-conditioned reinforcement learning: Problems and solutions",
+            "venue": "ArXiv, abs/2201.08299,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Arjun Majumdar",
+                "Gunjan Aggarwal",
+                "Bhavika Devnani",
+                "Judy Hoffman",
+                "Dhruv Batra"
+            ],
+            "title": "Zson: Zero-shot object-goal navigation using multimodal goal embeddings",
+            "venue": "ArXiv, abs/2206.12403,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Volodymyr Mnih",
+                "Koray Kavukcuoglu",
+                "David Silver",
+                "Andrei A. Rusu",
+                "Joel Veness",
+                "Marc G. Bellemare",
+                "Alex Graves",
+                "Martin A. Riedmiller",
+                "Andreas Kirkeby Fidjeland",
+                "Georg Ostrovski",
+                "Stig Petersen",
+                "Charlie Beattie",
+                "Amir Sadik",
+                "Ioannis Antonoglou",
+                "Helen King",
+                "Dharshan Kumaran",
+                "Daan Wierstra",
+                "Shane Legg",
+                "Demis Hassabis"
+            ],
+            "title": "Human-level control through deep reinforcement learning",
+            "venue": "Nature, 518:529\u2013533,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Emilio Parisotto",
+                "H. Francis Song",
+                "Jack W. Rae",
+                "Razvan Pascanu",
+                "\u00c7aglar G\u00fcl\u00e7ehre",
+                "Siddhant M. Jayakumar",
+                "Max Jaderberg",
+                "Raphael Lopez Kaufman",
+                "Aidan Clark",
+                "Seb Noury",
+                "Matthew M. Botvinick",
+                "Nicolas Manfred Otto Heess",
+                "Raia Hadsell"
+            ],
+            "title": "Stabilizing transformers for reinforcement learning",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Scott Reed",
+                "Konrad Zolna",
+                "Emilio Parisotto",
+                "Sergio Gomez Colmenarejo",
+                "Alexander Novikov",
+                "Gabriel Barth-Maron",
+                "Mai Gimenez",
+                "Yury Sulsky",
+                "Jackie Kay",
+                "Jost Tobias Springenberg"
+            ],
+            "title": "A generalist agent",
+            "venue": "arXiv preprint arXiv:2205.06175,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jos Rozen",
+                "Abheesht Sharma",
+                "Andrea Santilli",
+                "Thibault Fevry",
+                "Jason Alan Fries",
+                "Ryan Teehan",
+                "Stella Biderman",
+                "Leo Gao",
+                "Tali Bers",
+                "Thomas Wolf",
+                "Alexander M. Rush"
+            ],
+            "title": "Multitask prompted training enables zero-shot task generalization, 2021",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Juergen Schmidhuber"
+            ],
+            "title": "Reinforcement learning upside down: Don\u2019t predict rewards - just map them to actions. ArXiv, abs/1912.02875, 2019",
+            "venue": "URL https://api.semanticscholar.org/ CorpusID:208857600",
+            "year": 2088
+        },
+        {
+            "authors": [
+                "John Schulman",
+                "Filip Wolski",
+                "Prafulla Dhariwal",
+                "Alec Radford",
+                "Oleg Klimov"
+            ],
+            "title": "Proximal policy optimization algorithms. ArXiv, abs/1707.06347, 2017",
+            "venue": "URL https://api. semanticscholar.org/CorpusID:28695052",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "David Silver",
+                "Aja Huang",
+                "Chris J. Maddison",
+                "Arthur Guez",
+                "L. Sifre",
+                "George van den Driessche",
+                "Julian Schrittwieser",
+                "Ioannis Antonoglou",
+                "Vedavyas Panneershelvam",
+                "Marc Lanctot",
+                "Sander Dieleman",
+                "Dominik Grewe",
+                "John Nham",
+                "Nal Kalchbrenner",
+                "Ilya Sutskever",
+                "Timothy P. Lillicrap",
+                "Madeleine Leach",
+                "Koray Kavukcuoglu",
+                "Thore Graepel",
+                "Demis Hassabis"
+            ],
+            "title": "Mastering the game of go with deep neural networks and tree",
+            "venue": "search. Nature,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Austin Stone",
+                "Ted Xiao",
+                "Yao Lu",
+                "Keerthana Gopalakrishnan",
+                "Kuang-Huei Lee",
+                "Quan Ho Vuong",
+                "Paul Wohlhart",
+                "Brianna Zitkovich",
+                "F. Xia",
+                "Chelsea Finn",
+                "Karol Hausman"
+            ],
+            "title": "Open-world object manipulation using pre-trained vision-language",
+            "venue": "models. ArXiv,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Mingxing Tan",
+                "Quoc V. Le"
+            ],
+            "title": "Efficientnet: Rethinking model scaling for convolutional neural networks. ArXiv, abs/1905.11946, 2019",
+            "venue": "URL https://api.semanticscholar.org/ CorpusID:167217261",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Maxim Tkachenko",
+                "Mikhail Malyuk",
+                "Andrey Holmanyuk",
+                "Nikolai Liubimov"
+            ],
+            "title": "Label Studio: Data labeling software, 2020-2022",
+            "venue": "URL https://github.com/heartexlabs/ label-studio. Open source software available from https://github.com/heartexlabs/labelstudio",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Laurens van der Maaten",
+                "Geoffrey E. Hinton"
+            ],
+            "title": "Visualizing data using t-sne",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2008
+        },
+        {
+            "authors": [
+                "Ashish Vaswani",
+                "Noam M. Shazeer",
+                "Niki Parmar",
+                "Jakob Uszkoreit",
+                "Llion Jones",
+                "Aidan N. Gomez",
+                "Lukasz Kaiser",
+                "Illia Polosukhin"
+            ],
+            "title": "Attention is all you need",
+            "venue": "In NIPS,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Guanzhi Wang",
+                "Yuqi Xie",
+                "Yunfan Jiang",
+                "Ajay Mandlekar",
+                "Chaowei Xiao",
+                "Yuke Zhu",
+                "Linxi (Jim) Fan",
+                "Anima Anandkumar"
+            ],
+            "title": "Voyager: An open-ended embodied agent with large language models. ArXiv, abs/2305.16291, 2023a",
+            "venue": "URL https://api.semanticscholar.org/CorpusID: 258887849",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zihao Wang",
+                "Shaofei Cai",
+                "Anji Liu",
+                "Xiaojian Ma",
+                "Yitao Liang"
+            ],
+            "title": "Describe, explain, plan and select: Interactive planning with large language models enables open-world multi-task agents",
+            "venue": "ArXiv, abs/2302.01560,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Zhihui Xie",
+                "Zichuan Lin",
+                "Deheng Ye",
+                "Qiang Fu",
+                "Wei Yang",
+                "Shuai Li"
+            ],
+            "title": "Future-conditioned unsupervised pretraining for decision transformer",
+            "venue": "In International Conference on Machine Learning,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chao Yang",
+                "Xiaojian Ma",
+                "Wenbing Huang",
+                "Fuchun Sun",
+                "Huaping Liu",
+                "Junzhou Huang",
+                "Chuang Gan"
+            ],
+            "title": "Imitation learning from observations by minimizing inverse dynamics disagreement",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Tianhe Yu",
+                "Deirdre Quillen",
+                "Zhanpeng He",
+                "Ryan C. Julian",
+                "Karol Hausman",
+                "Chelsea Finn",
+                "Sergey Levine"
+            ],
+            "title": "Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning",
+            "venue": "ArXiv, abs/1910.10897,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Qihang Zhang",
+                "Zhenghao Peng",
+                "Bolei Zhou"
+            ],
+            "title": "Learning to drive by watching youtube videos: Action-conditioned contrastive policy pretraining",
+            "venue": "In European Conference on Computer Vision,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xizhou Zhu",
+                "Yuntao Chen",
+                "Hao Tian",
+                "Chenxin Tao",
+                "Weijie Su",
+                "Chenyuan Yang",
+                "Gao Huang",
+                "Bin Li",
+                "Lewei Lu",
+                "Xiaogang Wang",
+                "Y. Qiao",
+                "Zhaoxiang Zhang",
+                "Jifeng Dai"
+            ],
+            "title": "Ghost in the minecraft: Generally capable agents for open-world environments via large language models with text-based knowledge and memory",
+            "venue": "ArXiv, abs/2305.17144,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Daniel M. Ziegler",
+                "Nisan Stiennon",
+                "Jeff Wu",
+                "Tom B. Brown",
+                "Alec Radford",
+                "Dario Amodei",
+                "Paul Christiano",
+                "Geoffrey Irving"
+            ],
+            "title": "Fine-tuning language models from human",
+            "venue": "preferences. ArXiv,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "VPT is the first foundation model in the Minecraft domain developed by Baker"
+            ],
+            "title": "Its architecture consists of ImpalaCNN and TransformerXL",
+            "venue": "Using behavior cloning algorithms to pretrain on large-scale YouTube demonstrations, they obtained the first checkpoint of VPT(fd) which can freely explore the environment. To further enhance the agent\u2019s abilities in early-game environments, they constructed an \u201cearlygame\u201d dataset and fine-tuned the pre-trained foundation model on that",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lifshitz"
+            ],
+            "title": "They train a conditional variational autoencoder to project text into video space",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Cai"
+            ],
+            "title": "J POTENTIAL APPLICATIONS AND INTEGRATION WITH PLANNER GROOT is specialized in short-horizon instruction-following tasks with its goal being a video clip while LLM has demonstrated the ability to plan for long-horizon tasks in an open-world environment",
+            "venue": "For example, DEPS Wang et al",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Developing human-level embodied agents that can solve endless tasks in open-world environments, such as Minecraft (Johnson et al., 2016; Fan et al., 2022), has always been a long-term goal pursued in AI. Recent works have explored using Large Language Models (LLMs) to generate high-level plans, which guide the agent to accomplish challenging long-horizon tasks (Wang et al., 2023b;a; Zhu et al., 2023). However, a major gap between these LLM-based agents and generalist agents that can\n\u2217Corresponding Author.\ncomplete endless amounts of tasks is the capability of their low-level controllers, which map the plans to motor commands. Recently developed controllers are only capable of completing a predefined and narrow set of programmatic tasks (Lin et al., 2021; Baker et al., 2022; Cai et al., 2023), which hinders LLM-based planning agents from unleashing their full potential. We attribute the limitation of these low-level controllers to how the goal is specified. Specifically, existing controllers use task indicator (Yu et al., 2019), future outcome (Chen et al., 2021; Lifshitz et al., 2023), and language (Brohan et al., 2022) to represent the goal. While it is easy to learn a controller with some of these goal specifications, they may not be expressive enough for diverse tasks. Taking future outcome goals as an example, an image of a desired house clearly lacks procedural information on how the house was built. One exception is language, but learning a controller that can receive language goals is prohibitively expensive as it requires a huge number of trajectory-text pairs with text that precisely depicts the full details of the gameplay, therefore preventing them from scaling up to more open-ended tasks.\nHaving observed the limitations of goal specification in the prior works, this paper seeks to find a balance between the capacity of goal specification and the cost of controller learning. Concretely, we propose to specify the goal as a reference gameplay video clip. While such video instruction is indeed expressive, there are two challenges: 1) How can the controller understand the actual goal being specified as the video itself can be ambiguous, i.e., a goal space or video instruction encoder has to be learned; 2) How to ultimately map such goal to actual motor commands? To this end, we introduce a learning framework that simultaneously produces a goal space and a video instruction following controller from gameplay videos. The fundamental idea is casting the problem as future state prediction based on past observations:\n\u2022 The predicting model needs to identify which goal is being pursued from the past observations, which requires a good goal space (induced by a video instruction encoder); \u2022 Since the transition dynamics model is fixed, a policy that maps both the state and the recognized goal to action is also needed by the predicting model when rolling the future state predictions.\nEffectively, this results in the goal space and control policy we need. We introduce a variational learning objective for this problem, which leads to a combination of a cloning loss and a KL regularization loss. Based on this framework, we implement GROOT, an agent with an encoderdecoder architecture to solve open-ended Minecraft tasks by following video instructions. The video encoder is a non-causal transformer that extracts the semantic information expressed in the video and maps it to the latent goal space. The controller policy is a decoder module implemented by a causal transformer, which decodes the goal information in the latent space and translates it into a sequence of actions in the given environment states in an autoregressive manner.\nTo comprehensively evaluate an agent\u2019s mastery of skills, we designed a benchmark called Minecraft SkillForge. The benchmark covers six common Minecraft task groups: collect, build, survive, explore, tool, and craft, testing the agent\u2019s abilities in resource collection, structure building, environmental understanding, and tool usage, in a total of 30 tasks. We calculate Elo ratings among GROOT, several counterparts, and human players based on human evaluations. Our experiments showed that GROOT is closing the human-machine gap and outperforms the best baseline by 150 points (or 70% winning rate) in an Elo tournament system. Our qualitative analysis of the induced goal space further demonstrates some interesting emergent properties, including the goal composition and complex gameplay behavior synthesis.\nTo sum up, our main contributions are as follows:\n\u2022 Start by maximizing the log-likelihood of future states given past ones, we have discovered the learning objectives that lead to a good goal space and ultimately the instruction-following controller from gameplay videos. It provides theoretical guidance for the agent architecture design and model optimization. \u2022 Based on our proposed learning framework, we implemented a simple yet efficient encoderdecoder agent based on causal transformers. The encoder is responsible for understanding the goal information in the video instruction while the decoder as the policy emits motor commands. \u2022 On our newly introduced benchmark, Minecraft SkillForge, GROOT is closing the human-machine gap and surpassing the state-of-the-art baselines by a large margin in the overall Elo rating comparison. GROOT also exhibits several interesting emergent properties, including goal composition and complex gameplay behavior synthesis."
+        },
+        {
+            "heading": "2 PRELIMINARIES AND PROBLEM FORMULATION",
+            "text": "Reinforcement Learning (RL) concerns the problem in which an agent interacts with an environment at discrete time steps, aiming to maximize its expected cumulative reward (Mnih et al., 2015; Schulman et al., 2017; Espeholt et al., 2018). Specifically, the environment is defined as a Markov Decision Process (MDP) \u27e8S,A,R,P, d0\u27e9, where S is the state space,A is the action space,R : S\u00d7A \u2192 R is the reward function, P : S \u00d7A \u2192 S is the transition dynamics, and d0 is the initial state distribution. Our goal is to learn a policy \u03c0(a|s) that maximizes the expected cumulative reward E[ \u2211\u221e t=0 \u03b3\ntrt], where \u03b3 \u2208 (0, 1] is a discount factor. In goal-conditioned RL (GCRL) tasks, we are additionally provided with a goal g \u2208 G (Andrychowicz et al., 2017; Ding et al., 2019; Liu et al., 2022; Cai et al., 2023; Jing et al., 2021; 2020; Yang et al., 2019). And the task becomes learning a goal-conditioned policy \u03c0(a|s, g) that maximizes the expected return E[ \u2211\u221e t=0 \u03b3 trgt ], where r g t is the goal-specific reward achieved at time step t. Apart from being a new type of RL task, GCRL has been widely studied as a pre-training stage toward conquering more challenging environments/tasks (Aytar et al., 2018b; Baker et al., 2022; Zhang et al., 2022). Specifically, suppose we are provided with a good goal-condition policy, the goal can be viewed as a meta-action that drives the agent to accomplish various sub-tasks, which significantly simplifies tasks that require an extended horizon to accomplish. Further, when equipped with goal planners, we can achieve zero- or few-shot learning on compositional tasks that are beyond the reach of RL algorithms (Huang et al., 2022; Wang et al., 2023b;a; Zhu et al., 2023; Gong et al., 2023).\nAt the heart of leveraging such benefits, a key requirement is to have a properly-defined goal space that (i) has a wide coverage of common tasks/behaviors, and (ii) succinctly describes the task without including unnecessary information about the state. Many prior works establish goal spaces using guidance from other modalities such as language (Hong et al., 2020; Stone et al., 2023; Cai et al., 2023) or code (Wang et al., 2023a; Huang et al., 2023). While effective, the requirement on large-scale trajectory data paired with this auxiliary information could be hard to fulfill in practice. Instead, this paper studies the problem of simultaneously learning a rich and coherent goal space and the corresponding goal-conditioned policy, given a pre-trained inverse dynamic model and raw gameplay videos, i.e., sequences of states {s(i)0:T }i collected using unknown policies."
+        },
+        {
+            "heading": "3 GOAL SPACE DISCOVERY VIA FUTURE STATE PREDICTION",
+            "text": "This section explains our learning framework: discovering a \u201cgood\u201d goal space as well as a video instruction following the controller through the task of predicting future states given previous ones. We start with an illustrative example in Minecraft (Johnson et al., 2016). Imagine that an agent is standing inside a grassland holding an axe that can be used to chop the tree in front of them. Suppose in the gameplay video, players either go straight to chop the tree or bypass it to explore the territory. In order to predict future frames, it is sufficient to know (i) which goal (chop tree or bypass tree) is being pursued by the agent, and (ii) what will happen if the agent chooses a particular option (i.e., transition dynamics). Apart from the latter information that is irrelevant to the past observations, we only need to capture the goal information, i.e., whether the agent decides to chop the tree or bypass the tree. Therefore, the task of establishing a comprehensive yet succinct goal space can be interpreted as predicting future states while conditioning on the transition dynamics of the environment.\nFormally, our learning objective is to maximize the log-likelihood of future states given past ones: log p\u03b8(st+1:T |s0:t). Define g as a latent variable conditioned on past states (think of it as the potential goals the agent is pursuing given past states), the evidence lower-bound of the objective given variational posterior q\u03d5(g|s0:T ) is the following (see Appendix A for derivations):\nlog p\u03b8(st+1:T |s0:t) = log \u2211 g p\u03b8(st+1:T , g|s0:t)\n\u2265 Eg\u223cq\u03d5(\u00b7|s0:T ) [log p\u03b8(st+1:T |s0:t, g)]\u2212DKL (q\u03d5(g|s0:T ) \u2225 p\u03b8(g|s0:t)) ,\nwhere DKL(\u00b7\u2225\u00b7) denotes the KL-divergence. Next, we break down the first term (i.e., p\u03b8(st+1:T |s0:t, g)) into components contributed by the (unknown) goal-conditioned policy \u03c0\u03b8(a|s, g)\nand the transition dynamics p\u03b8(st+1|s0:t, at) :\nlog p\u03b8(st+1:T |s0:t, g) = T\u2211\n\u03c4=t log \u2211 a\u03c4 \u03c0\u03b8(a\u03c4 |s0:\u03c4 , g) \u00b7 p\u03b8(s\u03c4+1|s0:\u03c4 , a\u03c4 )\n\u2265 T\u2211\n\u03c4=t\nEa\u03c4\u223cp\u03b8(a\u03c4 |s0:\u03c4+1) [ log \u03c0\u03b8(a\u03c4 |s0:\u03c4 , g) + C ] ,\nwhere the constant C contains terms that depend solely on the environment dynamics and are irrelevant to what we want to learn (i.e., the goal space and the goal-conditioned policy). Bring it back to the original objective, we have log p(st+1:T |s0:t) \u2265 T\u22121\u2211 \u03c4=t\nEg\u223cq\u03d5(\u00b7|s0:T ),a\u03c4\u223cp\u03b8(\u00b7|s0:\u03c4+1) [log \u03c0\u03b8(a\u03c4 |s0:\u03c4 , g)]\ufe38 \ufe37\ufe37 \ufe38 behaviour cloning \u2212DKL (q\u03d5(g|s0:T ) \u2225 p\u03b8(g|s0:t))\ufe38 \ufe37\ufe37 \ufe38 goal space constraint (KL regularization) ,\nwhere q\u03d5(\u00b7|s0:T ) is implemented as a video encoder that maps the whole state sequence into the latent goal space. p\u03b8(\u00b7|s0:\u03c4+1) is the inverse dynamic model (IDM) that predicts actions required to achieve a desired change in the states, which is usually a pre-trained model, details are in Appendix C. Thus, the objective can be explained as jointly learning a video encoder and a goal-controller policy through behavior cloning under succinct goal space constraints."
+        },
+        {
+            "heading": "4 GROOT ARCHITECTURE DESIGN AND TRAINING STRATEGY",
+            "text": "This section illustrates how to create an agent (we call it GROOT) that can understand the semantic meaning of a reference video and interact with the environment based on the aforementioned learning framework. According to the discussion in Section 3, the learnable parts of GROOT include the video encoder and the goal-conditioned policy. Recently, Transformer (Vaswani et al., 2017) has demonstrated effectiveness in solving sequential decision-making problems (Parisotto et al., 2019; Chen et al., 2021; Brohan et al., 2022). Motivated by this, we implement GROOT with transformerbased encoder-decoder architecture, as shown in Figure 2."
+        },
+        {
+            "heading": "4.1 VIDEO ENCODER",
+            "text": "The video encoder includes a Convolutional Neural Network (CNN) to extract spatial information from image states s1:T and a non-causal transformer to capture temporal information from videos. Specifically, we use a CNN backbone to extract visual embeddings {x1:T } for all frames. Additionally, motivated by Devlin et al. (2019); Dosovitskiy et al. (2020), we construct a set of learnable embeddings (or summary tokens), represented as {c1:N}, to capture the semantic information present in the video.\nThe visual embeddings and summary tokens are passed to a non-causal transformer, resulting in the output corresponding to the summary tokens as {c\u03021:N}\nx1:T \u2190 Backbone(s1:T ), c\u03021:N \u2190 Transformer([x1:T , c1:N ]).\n(1)\nSimilar to VAE (Kingma & Welling, 2013), we assume that the latent goal space follows a Gaussian distribution, hence we use two fully connected layers, \u00b5(\u00b7) and \u03c3(\u00b7), to generate the mean and standard deviation of the distribution, respectively. During training, we use the reparameterization trick to sample a set of embeddings {g1:N} from the distribution, where gt \u223c N (\u00b5(c\u0302t), \u03c3(c\u0302t)). During inference, we use the mean of the distribution as the goal embeddings, i.e. gt \u2190 \u00b5(c\u0302t)."
+        },
+        {
+            "heading": "4.2 DECODER AS POLICY",
+            "text": "To introduce our policy module, we start with VPT (Baker et al., 2022), a Minecraft foundation model trained with standard behavioral cloning. It is built on Transformer-XL (Dai et al., 2019) that can leverage long-horizon historical states and predict the next action seeing the current observation. However, the vanilla VPT architecture does not support instruction input. To condition the policy on goal embeddings, we draw the inspiration from Flamingo (Alayrac et al., 2022), that is, to insert gated cross-attention dense layers into every Transformer-XL block. The keys and values in these layers are obtained from goal embeddings, while the queries are derived from the environment states\nx\u0302 (l) 1:t \u2190 GatedXATTN(kv = g1:N , q = x (l\u22121) 1:t ; \u03b8l),\nx (l) 1:t \u2190 TransformerXL(qkv = x\u0302 (l) 1:t; \u03b8l),\na\u0302t \u2190 FeedForward(x(M)t ),\n(2)\nwhere the policy reuses the visual embeddings extracted by the video encoder, i.e., x(0)1:t = x1:t, the policy consists of M transformer blocks, \u03b8l is the parameter of l-th block, a\u0302t is the predicted action. Since our goal space contains information about how to complete a task that is richer than previous language-conditioned policy (Cai et al., 2023; Lifshitz et al., 2023), the cross-attention mechanism is necessary. It allows the GROOT to query the task progress from instruction information based on past states, and then perform corresponding behaviors to complete the remaining progress."
+        },
+        {
+            "heading": "4.3 TRAINING AND INFERENCE",
+            "text": "The training dataset can be a mixture of Minecraft gameplay videos and offline trajectories. For those videos without actions, an inverse dynamic model (Baker et al., 2022) can be used to generate approximate actions. Limited by the computation resources, we truncated all the trajectories into segments with a fixed length of T without using any prior. We denote the final dataset as D = {(x1:T , a1:T )}M , where M is the number of trajectories. We train GROOT in a fully self-supervised manner while the training process can be viewed as self-imitating, that is, training GROOT jointly using behavioral cloning and KL divergence loss\nL(\u03b8, \u03d5) = E(s,a)\u223cD [\u2211 t \u2212 log \u03c0\u03b8(at|s1:t, g) + \u03bbKL \u2211 \u03c4 DKL (q\u03d5(g|s0:T ) \u2225 p\u03b8(g|s0:\u03c4 )) ] , (3)\nwhere \u03bbKL is the tradeoff coefficient, q\u03d5 is a posterior visual encoder, p\u03b8 is a prior video encoder with the same architecture, g \u223c q\u03d5(\u00b7|s0:T ). More details are in the Appendix D."
+        },
+        {
+            "heading": "5 RESULT",
+            "text": ""
+        },
+        {
+            "heading": "5.1 PERFORMANCE ON MASTERING MINECRAFT SKILLS",
+            "text": "Minecraft SkillForge Benchmark. In order to comprehensively evaluate the mastery of tasks by agents in Minecraft, we created a diverse benchmark called Minecraft SkillForge. It covers 30 tasks from 6 major categories of representative skills in Minecraft, including collect, explore, craft, tool, survive, and build. For example, the task \u201cdig three down and fill one up\u201d in the build category asks the agent to first dig three blocks of dirt, then use the dirt to fill the space above; The task of \u201cbuilding a snow golem\u201d ( ) requires the agent to sequentially stack 2 snow\ntasks, such as dig three down and fill one up ( ) and build snow golems ( ).\nblocks ( ) and 1 carved pumpkin ( ). We put the details of this benchmark in the Appendix H. Apart from some relatively simple or common tasks such as \u201ccollect wood\u201d and \u201chunt animals\u201d, other tasks require the agent to have the ability to perform multiple steps in succession.\nWe compare GROOT with the following baselines: (a) VPT (Baker et al., 2022), a foundation model pre-trained on large-scale YouTube data, with three variants: VPT (fd), VPT(bc), and VPT(rl), indicating vanilla foundation model, behavior cloning finetuned model, and RL finetuned model; (b) STEVE-1 (Lifshitz et al., 2023), an instruction-following agent finetuned from VPT, with two variants: STEVE-1 (visual) and STEVE-1 (text) that receives visual and test instructions. More details are in Appendix F.1. It is worth noting that GROOT was trained from scratch.\nHuman Evaluation with Elo Rating. We evaluated the relative strength of agents by running an internal tournament and reporting their Elo ratings, as in Mnih et al. (2015). Before the tournament, each agent is required to generate 10 videos of length 600 on each task. Note that, all the reference videos used by GROOT are generated from another biome to ensure generalization. Additionally, we also invited 3 experienced players to do these tasks following the same settings. After the video collection, we asked 10 players to judge the quality of each pair of sampled videos from different agents. Considering the diversity of tasks, we designed specific evaluation criteria for every task to measure the quality of rollout trajectories. After 1500 comparisons, the Elo rating converged as in Figure 3 (left). Although there is a large performance gap compared with human players, GROOT has significantly surpassed the current state-of-the-art STEVE-1 series and condition-free VPT series on the overall tasks. Additional details are in Appendix G.\nIn Figure 3 (middle), we compare GROOT with other baselines in winning rate on six task groups. We found that except for the performance on craft tasks, where STEVE-1 (visual) outperforms our model, GROOT achieves state-of-the-art results. In particular, GROOT greatly outperforms other baselines by a large margin on build and tool. For build, the goal space needs to contain more detailed procedural information, which is the disadvantage of methods that use future outcomes as the goal. Moreover, such tasks are distributed sparsely in the dataset, or even absent in the dataset, which requires the agent to have strong generalization ability. As for craft group, GROOT is not superior enough, especially on the \u201ccrafting table\u201d task. We attribute this to the wide task distribution in the dataset. Thus the future outcomes can prompt STEVE-1 to achieve a high success rate.\nProgrammatic Evaluation. To quantitatively compare the performance of the agents, we selected 9 representative tasks out of 30 and reported the success rate of GROOT, STEVE-1 (visual), and VPT (bc) on these tasks in Figure 3 (right). We found that, based on the success rate on tasks such as dye and shear sheep( ), enchat sword ( ), smelt food ( ), use bow ( ), sleep ( ), and lead animals ( ), GROOT has already reached a level comparable to that of human players (100%). However, the success rates for build snow golems ( ) and build obsidian ( ) tasks are only 60% and 50%. By observing the generated videos, we\nfound that GROOT cannot precisely identify the items in Hotbar (such as buckets, lava buckets, snow blocks, and pumpkin heads), resulting in a low probability of switching to the correct item. STEVE-1 also has the same problem. This may be due to the current training paradigm lacking strong supervisory signals at the image level. Future work may introduce auxiliary tasks such as vision-question answering (VQA) to help alleviate this phenomenon. Details are in Appendix F.3."
+        },
+        {
+            "heading": "5.2 PROPERTIES OF LEARNED GOAL SPACE",
+            "text": "This section studies the properties of learned goal space. We used the t-SNE algorithm (van der Maaten & Hinton, 2008) to visualize the clustering effect of reference videos encoded in goal space, as in Figure 4. We select 7 kinds of videos, including craft items, combat enemies, harvest crops, hunt animals, chop trees, trade with villagers, and mine ores. These videos are sampled from the contractor data (Baker et al., 2022) according to the meta information (details are in Appendix F.2). Each category contains 1k video segments. As a control group, in Figure 4 (left), we showed the initial goal space of the video encoder (with a pre-trained EfficientNet-B0 (Tan & Le, 2019) as the backbone) before training. We found that the points are entangled together. After being trained on offline trajectories, as in Figure 4 (middle), it well understands reference videos and clusters them according to their semantics. This proves that it is efficient to learn behavior-relevant task representations using our self-supervised training strategy. The clustering effect is slightly better with KL regularization, though the difference is not very significant. Inevitably, there are still some videos from different categories entangled together. We attribute this to the possibility of overlap in the performed behaviors of these videos. For example, chop trees and harvest crops both rely on a sequential of \u201cattack\u201d actions.\nCondition on Concatenated Videos. We also study the possibility of conditioning the policy on concatenated videos. First, we collect 3 kinds of source videos, including chop trees, hunt animals, and trade with villagers. We randomly sampled two videos from sources of chop trees and hunt animals, downsampled and concatenated them into a synthetic video, denoted as [chop trees, hunt animals]. By the same token, we can obtain [hunt animals, trade with villagers]. We visualize these videos together with the source videos in Figure 4 (right). We found that the source videos lie far away from each other while the concatenated videos are distributed between their source videos. Based on this intriguing phenomenon, we infer that concatenated videos may prompt GROOT to solve both tasks simultaneously. To verify this, we evaluate GROOT on three kinds of reference videos, i.e., chop trees, hunt animals, and [chop trees, hunt animals]. We launched GROOT in the forest and in the animal plains, respectively. The collected wood and killed mobs are reported in Figure 5. We found that although the concatenated video may not be as effective as raw video in driving an agent to complete a single task (60% of the performance of raw video), it does possess the ability to drive the agent to perform multiple tasks. This is an important ability. As discussed in Wang et al. (2023b), sometimes the high-level planner will propose multiple candidate goals, it will be efficient if the low-level controller can automatically determine which to accomplish based on the current observation.\nAblation on KL Divergence Loss. To investigate the role of KL loss in training, we evaluated GROOT (w/ KL) and its variant (w/o KL) on three tasks: collect seagrass ( ), collect\nchop hunt concat\nW oo\nd C\nol le\nct ed 11.0\n1.5\n6.5\nchop hunt concat\nM ob\ns K\nil le\nd\n0.5\n2.2\n1.5\nFigure 5: Comparison on using raw and concatenated reference videos as conditions. Left: Collected wood in the forest biome. Right: Killed mobs in the plains biome. \u201cconcat\u201d denotes the reference video is [chop trees, hunt animals]. Statistics are measured over 10 episodes.\nw/ KL w/o KL\nS ea\ngr as\ns C\nol le\nct ed\n3.7\n1.8\nw/ KL w/o KL\nW o o d C\nol le\nct ed 11.0\n7.3\nw/ KL w/o KL\nA rr\no w\ns F ir\ned 10.7 9.3\nFigure 6: Ablation study on KL loss. After being jointly trained with KL loss, GROOT can collect 2\u00d7\nmore seagrass ( ) underwater and 1.5\u00d7 wood ( ) in the forest while the difference is not as impressive on the use bow ( ) task. Statistics are measured over 10 episodes.\nwood ( ), and use bow ( ). As shown in Figure 6, we found that introducing the constraint of KL loss improved agent performance by 2\u00d7 and 1.5\u00d7 in the first two tasks, whereas there was no significant effect in the use bow task. This may be because the first two tasks require the agent to generalize the corresponding skills to different terrains (e.g. locating trees in the environment for collecting wood and sinking to specific locations for collecting seagrass). Therefore, it puts higher demands on the agent\u2019s ability to generalize in the goal space, and this is exactly the role played by the KL loss. The use bow task is relatively simple in comparison because it only requires charging and shooting the arrow, without considering environmental factors."
+        },
+        {
+            "heading": "5.3 COMBINING SKILLS FOR LONG-HORIZON TASKS",
+            "text": "In this section, we explore whether GROOT can combine skills to solve long-horizon tasks, which is key to its integration with a high-level planner. Taking the task of mining diamonds as an example, prior knowledge is that diamond ores are generally distributed between the 7th and 14th floors underground, and the probability of appearing in other depths is almost zero. Therefore, the agent needs to first dig down to the specified depth (12) and then maintain horizontal mining. To achieve this, we designed two reference videos, each 128 frames long. One describes the policy of starting from the surface and digging down, and the other demonstrates the behaviors of horizontal mining. We show an example in Figure 7 (left). In the beginning, GROOT quickly digs down to the specified depth and then switches to horizontal mining mode. It maintains the same height for a long time and found diamonds at 11k steps. In addition, we compared STEVE-1 (visual) under the same setting in Figure 7 (right). After switching to the horizontal mining prompt, STEVE-1 maintains its height for a short time before it stuck in the bedrock layer (unbreakable in survival mode), greatly reducing the probability of finding diamonds. This indicates that our goal space is expressive enough to instruct the way of mining, and the policy can follow the instructions persistently and reliably. In contrast, STEVE-1, which relies on future outcomes as a condition, was unable to maintain its depth, despite attempts at various visual prompts. We conducted 25 experiments each on GROOT and STEVE-1, with success rates of 16% and 0% for finding diamonds. Additional details are in the Appendix F.4."
+        },
+        {
+            "heading": "6 RELATED WORKS",
+            "text": "Pre-train Policy on Offline Data. Pre-training neural networks on web-scale data has been demonstrated as an effective training paradigm in Nature Language Processing (Brown et al., 2020) and Computer Vision (Kirillov et al., 2023). Inspired by this, researchers tried to transfer the success to the field of decision-making from pre-training visual representations and directly distilling the policy from offline data. As the former, Aytar et al. (2018a); Bruce et al. (2023) leveraged temporal information present in videos as the supervision signal to learn visual representations. The representations are then used to generate intrinsic rewards for boosting downstream policy learning, which still requires expensive online interactions with the environment. Schmidhuber (2019); Chen et al. (2021) leveraged scalable offline trajectories to train optimal policy by conditioning it on cumulated rewards. Laskin et al. (2022) proposed to learn an in-context policy improvement operator that can distill an RL algorithm in high data efficiency. Reed et al. (2022) learned a multi-task agent Gato by doing behavior cloning on a large-scale expert dataset. By serializing task data into a flat of sequence, they use the powerful transformer architecture to model the behavior distribution. However, these methods either require elaborated reward functions or explicit task definitions. This makes it hard to be applied to open worlds, where tasks are infinite while rewards are lacking. Another interesting direction is to use pre-trained language models for reasoning and vision language models for discrimination, to guide the policy in life-long learning in the environment (Di Palo et al., 2023).\nCondition Policy on Goal Space. Researchers have explored many goal modalities, such as language (Khandelwal et al., 2021), image (Du et al., 2021), and future video (Xie et al., 2023), to build a controllable policy. Brohan et al. (2022) collected a large-scale dataset of trajectory-text pairs and trained a transformer policy to follow language instructions. Despite the language being a natural instruction interface, the cost of collecting paired training data is expensive. As a solution, Majumdar et al. (2022) sorted to use hindsight relabeling to first train a policy conditioned on the target image, then aligned text to latent image space, which greatly improves training efficiency. Lifshitz et al. (2023) moved a big step on this paradigm by replacing the target image with a 16-frame future video and reformulating the modality alignment problem into training a prior of latent goal given text.\nBuild Agents in Minecraft. As a challenging open-world environment, Minecraft is attracting an increasing number of researchers to develop AI agents on it, which can be divided into plan-oriented (Wang et al., 2023b;a) and control-oriented methods (Baker et al., 2022; Cai et al., 2023; Lifshitz et al., 2023) based on their emphasis. Plan-oriented agents aim to reason with Minecraft knowledge and decompose the long-horizon task into sub-tasks followed by calling a low-level controller. Control-oriented works follow the given instructions and directly interact with the environments using low-level actions (mouse and keyboard). Baker et al. (2022) pre-trained the first foundation model VPT in Minecraft using internet-scale videos. Although it achieves the first obtaining diamond milestone by fine-tuning with RL, it does not support instruction input. Lifshitz et al. (2023) created the first agent that can solve open-ended tasks by bridging VPT and MineCLIP (Fan et al., 2022). However, its goal space is not expressive enough and prevents it from solving multi-step tasks."
+        },
+        {
+            "heading": "7 LIMITATIONS AND CONCLUSION",
+            "text": "Although GROOT has demonstrated powerful capabilities in expressing open-ended tasks in the form of video instructions, training such a goal space remains highly challenging. We found that GROOT is quite sensitive to the selection of reference videos, which we attribute to the fact that the goal space trained from an unsupervised perspective may not be fully aligned with the human intention for understanding the semantics of the reference video. Therefore, it would be a promising research direction in the future to use SFT (supervised fine-tuning, Sanh et al. (2021)) and RLHF (Ziegler et al., 2019) to align the pre-trained goal space with human preference.\nWe propose a paradigm for learning to follow instructions by watching gameplay videos. We prove that video instruction is a good form of goal space that not only expresses open-ended tasks but can be trained through self-imitation (once the IDM is available to label pseudo actions for raw gameplay videos). Based on this, we built an encoder-decoder transformer architecture agent named GROOT in Minecraft. Without collecting any text-video data, GROOT demonstrated extraordinary instructionfollowing ability and crowned the Minecraft SkillForge benchmark. Additionally, we also demonstrate its potential as a planner downstream controller in the challenging obtain diamond task. We believe that this training paradigm can be generalized in other complex open-world environments."
+        },
+        {
+            "heading": "ACKNOWLEDGEMENTS",
+            "text": "This work is funded in part by the National Key R&D Program of China #2022ZD0160301, a grant from CCF-Tencent Rhino-Bird Open Research Fund."
+        },
+        {
+            "heading": "A DERIVATION",
+            "text": "In this section, we detail how we derive the final objective. Recall that the goal is to maximize the log-likelihood of future states given past ones: log p(st+1:T |s0:t). Using Bayes\u2019 theorem and the Jensen\u2019s inequality, we have:\nlog p(st+1:T |s0:t) = log \u2211 z p(st+1:T , z|s0:t), (4)\n= log \u2211 z p(st+1:T , z|s0:t) q(z|s0:T ) q(z|s0:T ) , (5)\n\u2265 Ez\u223cq(z|s0:T ) [ log p(st+1:T , z|s0:t)\u2212 log q(z|s0:T ) ] , (6)\n= Ez\u223cq(z|s0:T ) [ log p(st+1:T |s0:t, z) + log p(z|s0:t)\u2212 log q(z|s0:T ) ] , (7)\n= Ez\u223cq(z|s0:T ) [ log p(st+1:T |s0:t, z) ] + Ez\u223cq(z|s0:T ) [ log\np(z|s0:t) q(z|s0:T )\n] , (8)\n= Ez\u223cq(z|s0:T ) [ log p(st+1:T |s0:t, z) ] \u2212DKL ( q(z|s0:T ) \u2225 p(z|s0:t) ) . (9)\nWe break down p(st+1:T |s0:t, z) into components: goal-conditioned policy \u03c0(a\u03c4 |s0:\u03c4+1) and the transition dynamics p(st+1|s0:t, at), we have\np(st+1:T |s0:t, z) = T\u22121\u220f \u03c4=t (\u2211 a\u03c4 \u03c0(a\u03c4 |s0:\u03c4 , z) \u00b7 p(s\u03c4+1|s0:\u03c4 , a\u03c4 ) ) . (10)\nFurthermore, using Jensen\u2019s inequality, log p(st+1:T |s0:t, z) can be written as\nlog p(st+1:T |s0:t, z) = T\u22121\u2211 \u03c4=t log \u2211 a\u03c4 \u03c0(a\u03c4 |s0:\u03c4 , z) \u00b7 p(s\u03c4+1|s0:\u03c4 , a\u03c4 ), (11)\n= T\u22121\u2211 \u03c4=t log \u2211 a\u03c4 \u03c0(a\u03c4 |s0:\u03c4 , z) \u00b7 p(a\u03c4 |s0:\u03c4 , s\u03c4+1) \u00b7 p(s\u03c4+1|s0:\u03c4 ) p(a\u03c4 |s0:\u03c4 ) , (12)\n\u2265 T\u22121\u2211 \u03c4=t Ea\u03c4\u223cp(a\u03c4 |s0:\u03c4 ,s\u03c4+1) [ log \u03c0(a\u03c4 |s0:\u03c4 , z) + C ] , (13)\nwhere the constant C = log p(s\u03c4+1|s0:\u03c4 )\u2212 log p(a\u03c4 |s0:\u03c4 ) describes the dataset distribution and is irrelevant to what we want to learn (i.e., the goal space and the goal-conditioned policy), we have:\nEz\u223cq(z|s0:T ) [ log p(st+1:T |s0:t, z) ] \u2265 Ez\u223cq(z|s0:T ) [ T\u22121\u2211 \u03c4=t Ea\u03c4\u223cp(a\u03c4 |s0:\u03c4 ,s\u03c4+1) [ log \u03c0(a\u03c4 |s0:\u03c4 , z) ]] , (14)\n= T\u22121\u2211 \u03c4=t Ez\u223cq(z|s0:T ),a\u03c4\u223cp(a\u03c4 |s0:\u03c4 ,s\u03c4+1) [ log \u03c0(a\u03c4 |s0:\u03c4 , z) ] . (15)\nThus, we derived the evidence lower-bound of log p(st+1:T |s0:t) as follows\nlog p(st+1:T |s0:t) \u2265 T\u22121\u2211 \u03c4=t Ez\u223cq(z|s0:T ),a\u03c4\u223cp(a\u03c4 |s0:\u03c4+1) [ log \u03c0(a\u03c4 |s0:\u03c4 , z) ] \u2212DKL ( q(z|s0:T ) \u2225 p(z|s0:t) ) .\n(16)"
+        },
+        {
+            "heading": "B MINECRAFT ENVIRONMENT",
+            "text": "Minecraft is an extremely popular sandbox game that allows players to freely create and explore their world. This game has infinite freedom, allowing players to change the world and ecosystems through building, mining, planting, combating, and other methods (shown in Figure 8). It is precisely because\nof this freedom that Minecraft becomes an excellent AI testing benchmark (Johnson et al., 2016; Baker et al., 2022; Fan et al., 2022; Cai et al., 2023; Lifshitz et al., 2023; Wang et al., 2023b;a). In this game, AI agents need to face situations that are highly similar to the real world, making judgments and decisions to deal with various environments and problems. Therefore, Minecraft is a very suitable environment to be used as an AI testing benchmark. By using Minecraft, AI researchers can more conveniently simulate various complex and diverse environments and tasks, thereby improving the practical value and application of AI technology.\nWe use the combination of 1.16.5 version MineRL (Guss et al., 2019) and MCP-Reborn1 as our testing platform, which is consistent with the environment used by VPT (Baker et al., 2022) and STEVE-1 (Lifshitz et al., 2023). Mainly because this platform preserves observation and action space that is consistent with human players to the fullest extent. On the one hand, this design brings about high challenges, as agents can only interact with the environment using low-level mouse and keyboard actions, and can only observe visual information like human players without any in-game privileged information. Therefore, the AI algorithms developed on this platform can have higher generalization ability. On the other hand, this also presents opportunities for us to conduct large-scale pre-training on internet-scale gameplay videos."
+        },
+        {
+            "heading": "B.1 OBSERVATION SPACE",
+            "text": "The visual elements included in our observation space are completely consistent with those seen by human players, including the Hotbar, health indicators, player hands, and equipped items. The player\u2019s perspective is in the first person with a field of view of 70 degrees. The simulator first generates an RGB image with dimensions of 640 \u00d7 360 during the rendering process. Before inputting to the agent, we resize the image to 224 \u00d7 224 to enable the agent to clearly see item icons in the inventory and important details in the environment. When the agent opens the GUI, the simulator also renders the mouse cursor normally. The RGB image is the only observation that the agent can obtain from the environment during inference. It is worth noting that to help the agent see more clearly in extremely dark environments, we have added a night vision effect for the agent, which increases the brightness of the environment during nighttime."
+        },
+        {
+            "heading": "B.2 ACTION SPACE",
+            "text": "Our action space is almost identical to that of humans, except for actions that involve inputting strings. It consists of two parts: the mouse and the keyboard. The mouse movement is responsible for changing the player\u2019s camera perspective and moving the cursor when the GUI is opened. The left and right buttons are responsible for attacking and using items. The keyboard is mainly responsible for controlling the agent\u2019s movement. We list the meaning of each action in the Table 1. To avoid predicting null action, we used the same joint hierarchical action space as Baker et al. (2022), which consists of button space and camera space. Button space encodes all combinations of keyboard operations and a flag indicating whether the mouse is used, resulting in a total of 8461\n1https://github.com/Hexeption/MCP-Reborn\ncandidate actions. The camera space discretizes the range of one mouse movement into 121 actions. Therefore, the action head of the agent is a multi-classification network with 8461 dimensions and a multi-classification network with 121 dimensions.\nC INVERSE DYNAMIC MODEL\nAccording to the theory in Section 3, we know that our training paradigm relies on the inverse dynamic model (IDM) which generates pseudo action labels for raw gameplay videos to calculate the behavior cloning loss. Therefore, in this section, we introduced the background knowledge of IDM.\nIDM is a non-causal model that aims to uncover the underlying action that caused changes in the current step by observing historical and future states, and it can be formally represented as p(at|ot, ot+1). Compared with traditional policies learned via behavior cloning, IDM is more accurate in predicting actions because it can observe the changes between past and future frames. OpenAI (Baker et al., 2022) developed the first inverse dynamic model in the Minecraft domain. By extending the length of the observable sequence to 128 and modeling p(at|ot\u221264:t+64) with a non-causal transformer, the IDM achieved the accuracy of action prediction to over 95% with only 2k hours of game trajectories. This makes it possible for our training paradigm to utilize the large-scale Minecraft data available on the Internet. Moreover, Zhang et al. (2022) has also trained an accurate IDM model with a small amount of data in a real autonomous driving environment, which further provides a basic guarantee for our training method to generalize to other complex environments.\nD IMPLEMENTATION DETAILS"
+        },
+        {
+            "heading": "D.1 MODEL ARCHITECTURE",
+            "text": "The video encoder consists of a convolutional neural network backbone and a non-causal transformer. Inspired by Brohan et al. (2022), we adopted the EfficientNet (Tan & Le, 2019) as the backbone. Specifically, we use its variant EfficientNet-B0 for efficiency, which takes in images of size 224\u00d7224\nand extracts a feature vector of shape 7 \u00d7 7 \u00d7 1280, where 7 \u00d7 7 denotes the spatial dimensions. In order to adaptively enhance the important visual information, we use a shallow transformer to pool the feature map along spatial channels. To fuse global visual features, we construct another learnable embedding [sp], concatenate it with the 49 features in space, and obtain a token sequence of length 50. After being processed by the transformer, the output for the [sp] token corresponds to the pooled visual feature, whose dimension is dhid = 1024. To capture the temporal features of the video, we remove the code related to the casual mask in the minGPT2 and obtain a non-causal transformer. The policy decoder consists of 4 identical blocks, where each block contains a Flamingo gated-attention dense layer (Alayrac et al., 2022) and a Transformer-XL block(Dai et al., 2019). The Transformer-XL block maintains a recurrence memory of past 128 key-value pairs to memory long-horizon history states. We directly use the Transformer-XL implementation in Baker et al. (2022) with a simple modification, i.e., before passing states into the policy decoder, we add the previous action to the state embedding at each timestep. Notably, We find this modification very useful especially when we need to train the policy from scratch. As it not only accelerates the training process but makes the predicted action more consistent and smooth. Additional hyperparameters can be found in Table 2.\nTo generate reference videos, we invited three human players to play each task according to the task description. Each person was asked to produce two videos, so we could prepare six videos for each task in total. Then, we selected the most relevant video to the task description from the six videos and cropped the first 128 frames into a new video, which was used to instruct GROOT to complete this task. In addition, we selected a 16-frame segment that best expressed the task information as the visual prompt for STEVE-1 (visual) from these six videos. This ensures fairness in comparison.\nDuring inference, we found that in some tasks, such as build obsidian ( ), GROOT\u2019s behavior mixed with the intention of traveling around. We believe this is a bias introduced during training. We draw the inspiration from STEVE-1 (Lifshitz et al., 2023) and subtract this bias in the action logits space before sampling the action. Specifically, we infer two models at the same time, where one model\u2019s condition is a specific task video and the other model\u2019s condition is a 128-frame\n2https://github.com/karpathy/minGPT\nvideo of traveling freely in the environment. The input observations for the two models are exactly the same. At each time step, we use the action logits of the previous model to subtract a certain proportion of the action logits predicted by the latter model before using the Gumbel-Softmax trick to sample the action. The logits calculation equation is directly borrowed from Lifshitz et al. (2023)\nlogitst = (1 + \u03bb)f\u03b8(o1:t, ggoal)\u2212 \u03bbf\u03b8(o1:t, gbias) (17) where f\u03b8(o1:t, ggoal) and f\u03b8(o1:t, gbias) are two kinds of action logits generated by feeding forward two reference videos goal and bias to GROOT, \u03bb is a trade-off parameter. As illustrated in Figure 9, we find that this trick can improve the success rate of tasks such as build obsidian ( ), build snow golem ( ), enchant sword ( ), and dig three down and fill one up ( ) with the \u03bb = 1.5. Interestingly, we observe that the effective \u03bb scale (approximately 1.5) in our model is much smaller than the scale (approximately 6.5) used in STEVE-1. We speculate that this may be because STEVE-1 fine-tunes the foundation VPT to gain steerability, but VPT does not receive goal conditions for demonstrations during behavior cloning. This may cause VPT to learn overly smooth behavior distributions, requiring the use of larger lambda scales to activate goal-specific behaviors. Although this technique is effective at inference time, it still requires hyperparameter tuning in practice. In the future, it will be meaningful to directly remove biased behaviors from the training process."
+        },
+        {
+            "heading": "D.3 ABLATION ON NUMBER OF CONDITION SLOTS",
+            "text": "In this section, we explore the impact of the number of condition slots (number of learnable tokens) on the final performance. We compared the performance of the model on 6 programmatic tasks with N = 1 and N = 3 condition slots and computed quantitative metrics for each task. As shown in Table 3, we find that increasing the number of condition slots leads to a significant decrease in the model\u2019s performance on most tasks, except for the \u201cexplore run\u201d task. We speculate that having more condition slots may result in a higher number of dimensions in the goal space, which in turn reduces the generalization ability of the learned goal space. Therefore, we suggest that when applying GROOT to other environments, the hyperparameters should be carefully chosen based on the characteristics of the environment or using other parameter selection methods."
+        },
+        {
+            "heading": "E DATASET DETAILS",
+            "text": ""
+        },
+        {
+            "heading": "E.1 CONTRACTOR DATA",
+            "text": "The contractor data is a Minecraft offline trajectory dataset provided by Baker et al. (2022) 3, which is annotated by professional human players and used for training the inverse dynamic model. In this\n3https://github.com/openai/Video-Pre-Training\ndataset, human players play the game while the system records the image sequence {s1:T }M , action sequence {a1:T }M , and metadata {e1:T }M generated by the players. Excluding frames containing empty actions, the dataset contains 1.6 billion frames with a duration of approximately 2000 hours. The metadata records the events triggered by the agent in the game at each time step, including three types: craft item, pickup, and mine block, which represent the agent\u2019s activities of crafting items using the GUI, picking up dropped items and destroying blocks at the current time step, respectively. In the process of training GROOT, we use all trajectories provided by the contractor data, but without including any metadata. We only use the metadata to retrieve relevant trajectory segments during the visualization of the goal space."
+        },
+        {
+            "heading": "F EXPERIMENTAL SETUP DETAILS",
+            "text": ""
+        },
+        {
+            "heading": "F.1 BASELINE DETAILS",
+            "text": "VPT is the first foundation model in the Minecraft domain developed by Baker et al. (2022). Its architecture consists of ImpalaCNN and TransformerXL. Using behavior cloning algorithms to pretrain on large-scale YouTube demonstrations, they obtained the first checkpoint of VPT(fd) which can freely explore the environment. To further enhance the agent\u2019s abilities in early-game environments, they constructed an \u201cearlygame\u201d dataset and fine-tuned the pre-trained foundation model on that dataset, resulting in the VPT(bc) checkpoint. This model significantly improved performance on basic tasks such as \u201ccrafting table\u201d and \u201ccollecting wood\u201d. Based on VPT(bc), they used online reinforcement learning with a carefully designed reward shaping to obtain the checkpoint VPT(rl) capable of obtaining diamonds entirely from scratch. It is noteworthy that the models\u2019 architectures of all three checkpoints are consistent and do not support instruction input. That\u2019s why their rankings on the Minecraft SkillForge benchmark are low. We also observed that the performance of VPT(bc) surpasses that of VPT(rl) due to the \u201cearlygame\u201d dataset\u2019s exploratory nature, making it perform better on explore tasks. VPT(rl) is tailored specifically for diamond mining tasks and has thus lost the capability of most tasks outside diamond mining path. No matter where you place it, the first thing VPT(rl) does is to look for trees and prepare to mine diamonds.\nSTEVE-1 is a Minecraft agent that can follow open-ended text and visual instructions built on MineCLIP (Fan et al., 2022) and VPT. It can perform a wide range of short-horizon tasks that can be expressed by a 16-frame future video clip. The training of STEVE-1 can be described in two steps. The first step is to train a future-video conditioned policy with packed hindsight relabeling trick. With the frozen MineCLIP visual encoder to embed the visual instruction, they finetune the VPT(bc) on the contractor data to obtain STEVE-1(visual). The second step is to learn a model that translates textual instruction into visual instruction. By training a conditional variational autoencoder (CVAE) on the collected video-text pairs, they created a variant STEVE-1(text) that understands text instructions. This baseline performs well on many simple tasks in the Minecraft SkillForge benchmark, such as \"explore run,\" \"collect grass,\" and \"collect wood.\" However, it struggles with multi-step and less common tasks, like \"build snow golems\" and \"dig three down and fill one up.\"\nPlease note that all baselines, including GROOT, were not fine-tuned for tasks in Minecraft SkillForge."
+        },
+        {
+            "heading": "F.2 T-SNE VISUALIZATION DETAILS",
+            "text": "This section details how the videos are sampled to do visualization. The selected videos are categorized into seven groups: craft items, combat enemies, harvest crops, hunt animals, chop trees, trade with villagers, and mine ores. Generally, each group contains two types of videos, each with 1000 data points sampled. The sampling method retrieves the time when a certain event occurs in the metadata and goes back 128 frames from that time to obtain a video segment that is 128 frames long. We illustrate video configurations in Table 4. For example, in the combat enemies task, taking \"combat zombies\" as an example, we retrieve all the moments when the event \"pickup:rotten_flesh\" occurs, because after killing zombies, they will drop rotten flesh, which can then be picked up by players. Through sampling observations, we found that this method can sample videos that are consistent with the descriptions."
+        },
+        {
+            "heading": "F.3 PROGRAMMATIC EVALUATION DETAILS",
+            "text": "In this section, we elaborated on how each episode is regarded as successful. For the dye and shear sheep ( ) task, dyeing the sheep and shearing its wool must be successfully performed to be considered a success. For the use bow ( ) task, firing the arrow after charging it to the maximum degree is required to be successful. For the sleep ( ) task, placing the bed and spending the night on it are required to be successful. For the smelt ( ) task, placing the furnace and dragging coal and mutton into the designated slots are required to be successful. For the lead ( ) task, successfully tethering at least one animal is considered a success. For the build obsidian ( ) task, pouring a water bucket and a lava bucket to fuse them is required to be successful. For the enchant ( ) task, placing the enchantment table, putting a diamond sword and lapis lazuli into the slots, and clicking the enchanting option are required to be successful. For the dig down three fill one up ( ) task, the agent must first vertically break three dirt blocks below and then use one dirt block to seal the area above. For the build snow golems ( ) task, placing 2 snow blocks and 1 carved pumpkin head in order and triggering the creation of a snow golem are required to be successful."
+        },
+        {
+            "heading": "F.4 COMBINING SKILLS EXPERIMENTAL DETAILS",
+            "text": "First, we introduce the experimental environment selected for our study. The agent is summoned on the plains biome, holding a diamond pickaxe, and granted the night vision status to enable the agent to see the various ores underground. At the beginning of each episode, we set the agent\u2019s condition to dig down. When the agent descends to a depth below 12 layers, the condition automatically switches to horizontal mining. Each round of episodes lasts for 12,000 frames, which is equivalent to 10 minutes in the real world. For GROOT, both the reference videos of dig down and horizontal mining were recorded by a human player. For STEVE-1, we invited the same player to carefully record the prompt videos. It is worth noting that while we could easily prompt it to dig down, it was difficult to keep it in the horizontal mining condition. This made STEVE-1 prone to falling into the bedrock layer and getting stuck. Finally, we did not observe STEVE-1 finding any diamonds in the 25 experiments, which can be attributed to the inability of its goal space to encode details such as horizontal mining."
+        },
+        {
+            "heading": "G RATING SYSTEM",
+            "text": ""
+        },
+        {
+            "heading": "G.1 ELO RATING",
+            "text": "The ELO rating system is widely adopted for evaluating the skill levels of multiple players in twoplayer games, such as Chess and Go (Silver et al., 2016). In this section, we elaborate on how we\nintroduce human evaluation and use the ELO Rating system to measure the relative performance of agents on the Minecraft SkillForge benchmark.\nIn the ELO rating system, each agent\u2019s skill level is represented by a numerical rating. We repeatedly let agents play against each other in pairs. Specifically, in each game, we sample a task and two agents, denoted as Agent A and Agent B. Then, we randomly sample a trajectory for each agent corresponding to the designated task. The two trajectories are assigned to a human annotator, who selects the most task-relevant one. We implement the annotating system with Label Studio (Tkachenko et al., 2020-2022), as shown in Figure 10. We consider the agent that produced this trajectory to be the winner, let\u2019s assume it is Agent A. After each round, we update the scores of Agent A and Agent B as follows\nRA \u2190 RA +K \u00b7 1\n1 + 10(RA\u2212RB)/400 ,\nRB \u2190 RB \u2212K \u00b7 1\n1 + 10(RA\u2212RB)/400 ,\n(18)\nwhere K is the update factor and we set it to 8. After calculating the score of the agent, we use VPT (bc) as 1500 points and shift the scores of other agents accordingly. Based on the ELO ratings, we can easily measure the relative winning rate for each paired agent. The win rate of Agent A over Agent B can be represented as 1\n1+10(RB\u2212RA)/400 . For example, the win rate ratio between two agents with a\nscore difference of 100 scores is 64% : 36%. A score difference of 200 scores implicit 76% : 24%."
+        },
+        {
+            "heading": "G.2 TRUESKILL RATING",
+            "text": "We also report the comparison results using TrueSkill 4 rating system, which is used by gamers to evaluate their skill level. It was developed by Microsoft Research and is currently used on Xbox LIVE for matchmaking and ranking services. Different from ELO, it can also track the uncertainty of the rankings. This system utilizes the Bayesian inference algorithm to quantify a player\u2019s true skill points. In TrueSkill, rating is modeled as a Gaussian distribution which starts from N (25, 253 2 ), where \u00b5 is an average skill of player, and \u03c3 is a confidence of the guessed rating. A real skill of player is between \u00b5\u00b1 2\u03c3 with 95% confidence. After conducting 1500 updates, the TrueSkill scores converged as in Table 5. We found that the ranking order of the baseline methods is consistent with that obtained using ELO rating: HUMAN \u227b GROOT \u227b STEVE-1(visual) \u227b STEVE-1(text) \u227b VPT(bc) \u227b VPT(fd) \u227b VPT(rl)."
+        },
+        {
+            "heading": "G.3 HUMAN PARTICIPATION",
+            "text": "We recruited 15 students with varying degrees of Minecraft game experience, ranging from a few hours to several years, from the Minecraft project group to conduct the evaluation. They are all familiar with the basic operations of Minecraft. Each employee was asked to label 100 matches for ELO Rating or TrueSkill Rating, for a total of 1500 matches. For each employee who is required to collect or assess gameplay videos, we ask them to first read the description of each task in the Minecraft SkillForge Benchmark completely, as well as the evaluation criteria for task completion quality, see Appendix H. Taking the task of building a snow golem as an example, the evaluation criteria are as follows: Build a snow golem. \u227b Place both kinds of blocks. \u227b Place at least one kind of block. \u227b Place no block. This enables employees to quantify video quality and ensures that all employees evaluate task completion consistently. All these employees were explicitly informed that the collected data would be used for AI research."
+        },
+        {
+            "heading": "H MINECRAFT SKILLFORGE BENCHMARK",
+            "text": "In this section, we detail the benchmark titled \"Minecraft SkillForge\" which meticulously incorporates a wide spectrum of tasks prevalent within Minecraft. Our aim is to ensure that every task provides a meaningful evaluation of a specific skill that an AI agent might possess. We categorize these tasks into six groups: collect, explore, craft, tool, survive, and build. In the following subsections, we will provide a detailed introduction to each of them. The \u201cDescription\u201d field provides a brief description of the task, the \u201cPrecondition\u201d field outlines the initial settings of the testing environment for the task, the \u201cSkillAssessed\u201d field indicates which aspect(s) of the agent\u2019s ability are being assessed by the task, and the \u201cEvaluation\u201d field describes the quality evaluation metrics for task completion (based on which human players judge the quality of two rollout videos)."
+        },
+        {
+            "heading": "H.1 COLLECT",
+            "text": "The tasks categorized under the collect section of our benchmark are specifically designed to evaluate an AI agent\u2019s capability in resource acquisition proficiency and spatial awareness. This means the agent should not only be adept at identifying and gathering specific resources but also possess the acumen to navigate through varied environments while being aware of its surroundings and the available tools at its disposal.\nTask: collect dirt Description: Collect dirt from the surface. Precondition: Spawn the player in the plains biome. SkillAssessed: Basic terrain understanding and the ability to differentiate\nbetween surface-level blocks. Evaluation: Run away. < Look down. < Dig down. < Break the dirt on the surface.\nTask: collect grass Description: Remove weeds on the surface. Precondition: Spawn the player in the plains biome. SkillAssessed: Surface navigation and comprehension of vegetation blocks. Evaluation: Run away. < Break the grass block. < Break a large field of grass\nblocks.\nTask: collect wood Description: Cut down trees to collect wood. Precondition: Spawn the player in the forest biome with an iron_axe in its hand. SkillAssessed: Recognition of tree structures, efficient utilization of tools, and block harvesting capability. Evaluation: Run away. < Approach trees. < Chop the tree and collect logs.\nTask: collect seagrass Description: Dive into the water and collect seagrass. Precondition: Spawn the player near the sea. SkillAssessed: Water navigation, diving mechanics understanding, and underwater\nblock interaction. Evaluation: Walk on the land. < Swim on the water < Dive into the water. < Break\nseagrass blocks.\nTask: collect wool\ncollect dirt from the surface\nremove weeds on the surface\nchop trees to collect wood\ndive into the water and collect seagrass\ndye the sheep then shear the sheep"
+        },
+        {
+            "heading": "H.2 EXPLORE",
+            "text": "Precondition: Spawn the player in a deep cave with an iron_pickaxe in the hand. SkillAssessed: Underground navigation, tool utilization, and spatial reasoning in\nconfined spaces. Evaluation: Run away. < Break the stone. < Dig down. < Mine horizontally.\nTask: travel by boat Description: Travel on a wooden boat through water. Precondition: Spawn the player near the sea with a wooden boat in the hand. SkillAssessed: Aquatic travel, tool placement, and boat maneuverability. Evaluation: Did not place the boat. < Place the boat on the water. < Board the\nboat. < Row in the water.\nTask: explore the treasure Description: Rush into a villager\u2019s home and open a chest and acquire the treasure.\nPrecondition: Spawn the player in front of a villager\u2019s house. SkillAssessed: Interaction with structures, curiosity-driven exploration, and\nobject acquisition. Evaluation: Ignore the house and run away. < Open the door. < Enter the house. <\nOpen the chest. < Acquire the treasure.\nListing 2: The environment configuration and evaluation metric for explore series tasks."
+        },
+        {
+            "heading": "H.3 CRAFT",
+            "text": "The tasks under the craft category in our benchmark have been designed to shed light on an AI agent\u2019s prowess in item utilization, the intricacies of Minecraft crafting mechanics, and the nuances of various game mechanic interactions. These tasks provide a detailed examination of an agent\u2019s capability to convert materials into functional items and harness the game\u2019s various crafting and enhancement mechanics.\nTask: craft the crafting_table Description: Open inventory and craft a crafting table.\nopen inventory and craft a crafting table\nplace the crafting table and open it to craft ladders\nplace a furnace and use it to smelt food\nplace an enchanting table and enchant a diamond sword\nplace a stonecutter and use it to cut the stone\nDescription: Place a stonecutter and use it to cut stones. Precondition: Spawn the player in the plains biome with a stonecutter in its main\nhand, 6 stacks of stones in the inventory. SkillAssessed: Tool enhancement using enchantment stations and decision-making in\nchoosing enchantments. Evaluation: Place the stonecutter on the surface. < Open the stonecutter. < Place\nthe stones. < Select a target type of stone. < Drag stones to the inventory.\nListing 3: The environment configuration and evaluation metric for craft series tasks."
+        },
+        {
+            "heading": "H.4 TOOL",
+            "text": "The tasks within the Tool category of our benchmark are designed to deeply investigate an AI agent\u2019s capabilities in tool utilization, precision in tool handling, and contextual application of various tools to carry out specific tasks. This category provides insights into the agent\u2019s skill in wielding, using, and exploiting tools optimally within different Minecraft scenarios.\nTask: use bow Description: Draw a bow and shoot. Precondition: Spawn the player in the plains biome with a bow in the mainhand and\na stack of arrows in the inventory. SkillAssessed: Precision, tool handling, and projectile mastery. Evaluation: Just run. < Draw the bow and shoot the arrow. < Hold the bow steady\nand charge up the shot before releasing the arrow.\nTask: set fires Description: Set fires on the trees. Precondition: Spawn the player in the forest biome with a flint_and_steel in its\nmain hand. SkillAssessed: Environment manipulation and controlled chaos creation. Evaluation: Attack the tree. < Start a fire with the flint_and_steel. < Go wild\nwith the fire.\nTask: lead animals\nDescription: Use rein to tie up the animals. Precondition: Spawn the player in the plains biome with a stack of leads in its\nmain hand. Spawn 5 sheep and 5 cows near the player\u2019s position. SkillAssessed: Entity interaction, tool application on moving entities, and\nlivestock Evaluation: Ignore the animals and run away. < Use the rein to tie up animals.\nTask: carve pumpkins Description: Place the pumpkins and carve pumpkins with shears. Precondition: Spawn the player in the plains biome with a shear in its main hand\nand a stack of pumpkins in the inventory. SkillAssessed: Block placement, block modification, and crafting interaction. Evaluation: Just run. < Place the pumpkin on the surface. < Use the shear to carve\nit. < Get a carved pumpkin.\nTask: use trident Description: Fly the trident on a rainy day. Precondition: Spawn the player in the plains biome with a trident in the main hand, which is enchanted with riptide. The weather is rain. SkillAssessed: Weather-adaptive tool utilization, motion dynamics, and advanced\nweapon handling. Evaluation: Just run. < Use the trident to break the block. < Use the trident for\nquick movement. < Charge to throw the trident farther.\nListing 4: The environment configuration and evaluation metric for tool series tasks."
+        },
+        {
+            "heading": "H.5 SURVIVE",
+            "text": "The tasks embedded within the survive category of our benchmark aim to analyze an AI agent\u2019s ability to ensure its own survival, adeptness in combat scenarios, and its capability to interact with the environment in order to meet basic needs. Survival, being a core aspect of Minecraft gameplay, necessitates an intricate balance of offensive, defensive, and sustenance-related actions. This category is structured to ensure a thorough evaluation of these skills.\nTask: hunt animals Description: Hunt animals on the plains. Precondition: Spawn the player in the plains biome with an iron sword in the main\nhand. Spawn 5 sheep and 5 cows near the player\u2019s position. SkillAssessed: Predator instincts, combat efficiency, and sustenance acquisition. Evaluation: Ignore animals and run away. < Hurt animals. < Kill animals.\nTask: combat enemies Description: Fight the enemy spider. Precondition: Spawn the player in the plains biome with a diamond sword in its\nmain hand and a suite of diamond equipment. Spawn 3 spiders in front of the player.\nSkillAssessed: Self-defense, offensive combat strategy, and equipment utilization. Evaluation: Ignore spiders and run away. < Hurt spiders. < Kill spiders.\nTask: use shield Description: Use a shield to ward off zombies. Precondition: Spawn the player in the plains biome with a shield in its main hand\nand a suite of diamond equipment. Spawn 3 zombies in front of the player. SkillAssessed: Defensive tactics, tool application in combat, and strategic\nprotection. Evaluation: Ignore zombies and run away. < Use the shield to protect itself.\nTask: plant wheats Description: Use an iron_hoe to till the land and then plant wheat seeds. Precondition: Spawn the player in the plains biome with an iron hoe in its main\nhand, and a stack of wheat seeds in the off hand. SkillAssessed: Land cultivation, planting proficiency, and sustainable resource\ncreation. Evaluation: Just run away. < Till the land. < Plant the wheats.\nTask: sleep on the bed Description: Place the bed on the surface and sleep. Precondition: Spawn the player in the plains biome with a white bed in its main\nhand. SkillAssessed: Self-preservation, understanding of day-night cycle implications,\nand use of utilities for rest. Evaluation: Just run away. < Place the bed on the surface. < Sleep on the bed.\nListing 5: The environment configuration and evaluation metric for survive series tasks."
+        },
+        {
+            "heading": "H.6 BUILD",
+            "text": "The tasks within the build category of our benchmark are devised to evaluate an AI agent\u2019s aptitude in structural reasoning, spatial organization, and its capability to interact with and manipulate the environment to create specific structures or outcomes. Building is an integral component of Minecraft gameplay, requiring an intricate interplay of planning, creativity, and understanding of block properties.\nTask: build pillar Description: Build a pillar with dirt. Precondition: Spawn the player in the plains biome with a stack of dirt in the\nmain hand. SkillAssessed: Vertical construction and basic structure formation. Evaluation: Just run away. < Look down. < Jump and place the dirt. < Pile the dirt\ninto a few pillars. < Make a really high pillar.\nTask: dig three down and fill one up Description: Dig three dirt blocks and fill the hole above. Precondition: Spawn the player in the plains biome. SkillAssessed: Ground manipulation and depth perception. Evaluation: Just run away. < Look down. < Dig down three dirt blocks. < Raise the\nhead. < Raise the head and use dirt to fill the hole.\nTask: build gate Description: Build an archway gate. Precondition: Spawn the player in the plains biome with a stack of oak_planks in\nthe main hand. SkillAssessed: Symmetry, planning, and aesthetic construction.\nEvaluation: Place no plank. < Build 1 pillar. < Build 2 pillars. < Build an archway gate.\nTask: build obsidian Description: Make obsidian by pouring a water bucket and a lava bucket. Precondition: Spawn the player in the plains biome with two water buckets and two\nlava buckets in the Hotbar. SkillAssessed: Material transformation, understanding of in-game chemistry, and\nprecise pouring. Evaluation: Just run away. < Pour water or lava. < Pour both liquids. < Pour into\na mold to make obsidian.\nTask: build snow golems Description: Build snow golems by placing two snow blocks and one carved pumpkin. Precondition: Spawn the player in the plains biome with two stacks of snow blocks\nand two stacks of carved pumpkins in the Hotbar. SkillAssessed: Entity creation, sequential block placement, and combination of\nmultiple materials. Evaluation: Place no block. < Place at least one kind of block. < Place both kinds\nof blocks. < Build a snow golem.\nListing 6: The environment configuration and evaluation metric for build series tasks."
+        },
+        {
+            "heading": "I TEXT CONDITIONING",
+            "text": "Although video instruction has strong expressiveness, it still requires preparing at least one gameplay video for a new task. For most common tasks, such as collecting wood or stones, using natural language to specify a goal is a more natural approach. In this section, we explore the possibility of aligning the pre-trained goal space with other modal instructions, such as text instructions.\nAligning text instructions with visual instructions in goal space has been validated as feasible by Lifshitz et al. (2023). They train a conditional variational autoencoder to project text into video space after collecting 10,000 diversified text-video pairs, similar to what unCLIP did. However, the success of this alignment method depends on the pre-alignment of visual and text spaces through large-scale contrastive pre-training (Fan et al., 2022). During the training process of GROOT, we did not leverage the MineCLIP visual encoder to encode videos, instead trained goal space from scratch. On the one hand, this is because MineCLIP can only handle short videos (only 16 frames); on the other hand, it is to free our goal space from the expressiveness bounded by pre-trained VLM.\nAccording to the above discussion, we choose to replace the video encoder in the GROOT architecture with a text encoder, BERT, and directly optimize it through behavior cloning, as shown in Figure 17. In order to keep the original goal space, we freeze the decoder and regard it as a gradient generator that extracts high-level behavioral semantics from the demonstrations. We utilize the meta information in the contractor data to generate text-demonstration pairs. For example, in the task of \u201ccollect wood\u201d, we identify the moment t when event \u201cmine_block:oak_log\u201d is triggered in the video, and we capture the frames within the range of [t\u2212 127, t] to form a video clip, with \u201cmine block oak log\u201d assigned as its text, thus constructing a sample. Having been fine-tuned on these data, our model demonstrated some steerabilities in the text instruction space, as shown in Table 6. We find that the agent fine-tuned on the text-demonstration dataset shows a basic understanding of text instructions. Our method exhibits progress in tasks such as \u201cmine grass\u201d, \u201cmine wood\u201d, \u201cmine stone\u201d, \u201cmine seagrass\u201d, \u201cpickup beef\u201d and \u201cmine dirt\u201d. However, it falls short in successfully completing tasks such as \u201cmine seagrass\u201d. We speculate that this may be related to the distribution of the data, as there is much less data available for \u201cmine seagrass\u201d compared to the other tasks (about 300 trajectories).\nWe emphasize that this experiment is very preliminary. In this experiment, the steerability of the agent fine-tuned on text instructions is still weak and it is hard to solve practical tasks. Given the limited diversity of text instructions in the provided contractor data, we don\u2019t anticipate the model to possess any significant level of generalization with regard to language instructions. To further verify this point, one needs to collect more diverse and higher-quality text-demonstration pairs data. Anyway, this experimental result still indicates the possibility of optimizing the upstream instruction generator by leveraging the pre-trained decoder. This creates possibilities for developing more interesting applications on GROOT. Additional discussions on text-conditioning are beyond the scope of this paper, and we will leave them for future work."
+        },
+        {
+            "heading": "J POTENTIAL APPLICATIONS AND INTEGRATION WITH PLANNER",
+            "text": "GROOT is specialized in short-horizon instruction-following tasks with its goal being a video clip while LLM has demonstrated the ability to plan for long-horizon tasks in an open-world environment. For example, DEPS Wang et al. (2023b) utilizes a text-conditioned policy from Cai et al. (2023) to accomplish tasks such as mining diamonds from scratch. By integrating GROOT into the DEPS framework, it can act as a controller and assist with long-sequence tasks. However, while LLM can output language as the current goal, GROOT requires a specified video clip as its goal. Therefore, when combining GROOT with DEPS, it is necessary to use the visual language model CLIP to select the most suitable video clip based on the language goal produced by LLM.\nThe proposed approach involves preparing a pre-existing library of video clips V = {vi} that contains various actions performed by the agent in Minecraft (e.g., \u201cchopping trees\u201d or \u201cmine iron ore\u201d). When given a long-horizon instruction by LLM\u2019s Planner, it is decomposed into a series of short-horizon language tasks {gi}. During task execution, the CLIP model is utilized to calculate the similarity between each short-horizon clip vi in the library V and task gi, selecting the most similar video clip as GROOT\u2019s interaction goal with the environment. Additionally, accessing a video library of Minecraft content is effortless due to the abundance of available video data on the internet.\nWhile GROOT mainly relies on videos for input goals, LLM uses both input and output language modalities. These modalities can be aligned using a visual language model, allowing us to combine GROOT as a short-horizon control policy with an LLM-based Planner to complete long-sequence tasks."
+        }
+    ],
+    "year": 2024
+}

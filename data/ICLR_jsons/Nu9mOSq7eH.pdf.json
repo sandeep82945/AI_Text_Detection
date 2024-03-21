@@ -1,0 +1,801 @@
+{
+    "abstractText": "Recent advances in generative diffusion models have enabled text-controlled synthesis of realistic and diverse images with impressive quality. Despite these remarkable advances, the application of text-to-image generative models in computer vision for standard visual recognition tasks remains limited. The current de facto approach for these tasks is to design model architectures and loss functions that are tailored to the task at hand. In this paper, we develop a unified language interface for computer vision tasks that abstracts away task-specific design choices and enables task execution by following natural language instructions. Our approach involves casting multiple computer vision tasks as text-to-image generation problems. Here, the text represents an instruction describing the task, and the resulting image is a visuallyencoded task output. To train our model, we pool commonly-used computer vision datasets covering a range of tasks, including segmentation, object detection, depth estimation, and classification. We then use a large language model to paraphrase prompt templates that convey the specific tasks to be conducted on each image, and through this process, we create a multi-modal and multi-task training dataset comprising input and output images along with annotated instructions. Following the InstructPix2Pix architecture, we apply instruction-tuning to a text-to-image diffusion model using our constructed dataset, steering its functionality from a generative model to an instruction-guided multi-task vision learner. Experiments demonstrate that our model, dubbed InstructCV, performs competitively compared to other generalist and task-specific vision models. Moreover, it exhibits compelling generalization capabilities to unseen data, categories, and user instructions. Prompt: \u201cDetect Berkeley\u2019s Sather Tower\u201d \u201cHi InstructCV, please segment all trees\u201d \u201cCreate a monocular depth map\u201d \u201cSegment Berkeley\u2019s Sather Gate\u201d \u201cDetect MIT\u2019s great dome\u201d \u201cHi InstructCV, please segment all trees\u201d \u201cHighlight all trees around Stata\u201d \u201cCreate a depth map for Stata Center\u201d Figure 1: Application of InstructCV to new test images & user-written instructions: InstructCV performs the vision task described in the instruction on the input image. (Images courtesy of UC Berkeley and MIT).",
+    "authors": [],
+    "id": "SP:8b24fa5aa67fa8f555bb7b6db9075ce04542a1ff",
+    "references": [
+        {
+            "authors": [
+                "Chitwan Saharia",
+                "William Chan",
+                "Saurabh Saxena",
+                "Lala Li",
+                "Jay Whang",
+                "Emily L Denton",
+                "Kamyar Ghasemipour",
+                "Raphael Gontijo Lopes",
+                "Burcu Karagol Ayan",
+                "Tim Salimans"
+            ],
+            "title": "Photorealistic text-to-image diffusion models with deep language understanding",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Aditya Ramesh",
+                "Prafulla Dhariwal",
+                "Alex Nichol",
+                "Casey Chu",
+                "Mark Chen"
+            ],
+            "title": "Hierarchical text-conditional image generation with clip latents",
+            "venue": "arXiv preprint arXiv:2204.06125,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Prafulla Dhariwal",
+                "Alexander Nichol"
+            ],
+            "title": "Diffusion models beat gans on image synthesis",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Ajay Jain",
+                "Pieter Abbeel"
+            ],
+            "title": "Denoising diffusion probabilistic models",
+            "venue": "arXiv preprint arxiv:2006.11239,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Yang Song",
+                "Jascha Sohl-Dickstein",
+                "Diederik P. Kingma",
+                "Abhishek Kumar",
+                "Stefano Ermon",
+                "Ben Poole"
+            ],
+            "title": "Score-Based Generative Modeling through Stochastic Differential Equations",
+            "venue": "International Conference on Learning Representations,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Alex Nichol",
+                "Prafulla Dhariwal",
+                "A. Ramesh",
+                "Pranav Shyam",
+                "Pamela Mishkin",
+                "Bob McGrew",
+                "Ilya Sutskever",
+                "Mark Chen"
+            ],
+            "title": "GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models",
+            "venue": "arXiv (Cornell University),",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jascha Sohl-Dickstein",
+                "Eric Weiss",
+                "Niru Maheswaranathan",
+                "Surya Ganguli"
+            ],
+            "title": "Deep unsupervised learning using nonequilibrium thermodynamics",
+            "venue": "In Proceedings of the 32nd International Conference on Machine Learning, Proceedings of Machine Learning Research. PMLR,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Robin Rombach",
+                "Andreas Blattmann",
+                "Dominik Lorenz",
+                "Patrick Esser",
+                "Bj\u00f6rn Ommer"
+            ],
+            "title": "Highresolution image synthesis with latent diffusion models",
+            "venue": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Lu Yuan",
+                "Dongdong Chen",
+                "Yi-Ling Chen",
+                "Noel Codella",
+                "Xiyang Dai",
+                "Jianfeng Gao",
+                "Houdong Hu",
+                "Xuedong Huang",
+                "Boxin Li",
+                "Chunyuan Li",
+                "Ce Liu",
+                "Mengchen Liu",
+                "Zicheng Liu",
+                "Yumao Lu",
+                "Yu Shi",
+                "Lijuan Wang",
+                "Jianfeng Wang",
+                "Bin Xiao",
+                "Zhen Xiao",
+                "Jianwei Yang",
+                "Michael Zeng",
+                "Luowei Zhou",
+                "Pengchuan Zhang"
+            ],
+            "title": "Florence: A new foundation model for computer vision, 2021",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Peng Wang",
+                "An Yang",
+                "Rui Men",
+                "Junyang Lin",
+                "Shuai Bai",
+                "Zhikang Li",
+                "Jianxin Ma",
+                "Chang Zhou",
+                "Jingren Zhou",
+                "Hongxia Yang"
+            ],
+            "title": "Ofa: Unifying architectures, tasks, and modalities through a simple sequence-to-sequence learning framework",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiahui Yu",
+                "Zirui Wang",
+                "Vijay Vasudevan",
+                "Legg Yeung",
+                "Mojtaba Seyedhosseini",
+                "Yonghui Wu"
+            ],
+            "title": "Coca: Contrastive captioners are image-text foundation models",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Alexander Kolesnikov",
+                "\u2020 Andr\u00e9",
+                "Susano Pinto",
+                "Lucas Beyer",
+                "Xiaohua Zhai",
+                "Jeremiah Harmsen",
+                "Neil Houlsby"
+            ],
+            "title": "Uvim: A unified modeling approach for vision with learned guiding",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhai Wang",
+                "Zhe Chen",
+                "Xiaokang Chen",
+                "Jiannan Wu",
+                "Xizhou Zhu",
+                "Gang Zeng",
+                "Ping Luo",
+                "Tong Lu",
+                "Jie Zhou",
+                "Yu Qiao",
+                "Jifeng Dai"
+            ],
+            "title": "Visionllm: Large language model is also an open-ended decoder for vision-centric tasks, 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wenhui Wang",
+                "Hangbo Bao",
+                "Li Dong",
+                "Johan Bjorck",
+                "Zhiliang Peng",
+                "Qiang Liu",
+                "Kriti Aggarwal",
+                "Owais Khan Mohammed",
+                "Saksham Singhal",
+                "Subhojit Som",
+                "Furu Wei"
+            ],
+            "title": "Image as a foreign language: Beit pretraining for all vision and vision-language tasks, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiasen Lu",
+                "Christopher Clark",
+                "Rowan Zellers",
+                "Roozbeh Mottaghi",
+                "Aniruddha Kembhavi"
+            ],
+            "title": "Unified-io: A unified model for vision, language, and multi-modal",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ting Chen",
+                "Saurabh Saxena",
+                "Lala Li",
+                "David J. Fleet",
+                "Geoffrey Hinton"
+            ],
+            "title": "Pix2seq: A language modeling framework for object detection",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Ting Chen",
+                "Saurabh Saxena",
+                "Lala Li",
+                "Tsung-Yi Lin",
+                "David J. Fleet",
+                "Geoffrey Hinton"
+            ],
+            "title": "A unified sequence interface for vision tasks",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xinlong Wang",
+                "Wen Wang",
+                "Yue Cao",
+                "Chunhua Shen",
+                "Tiejun Huang"
+            ],
+            "title": "Images speak in images: A generalist painter for in-context visual learning",
+            "venue": "arXiv preprint arXiv:2212.02499,",
+            "year": 2024
+        },
+        {
+            "authors": [
+                "Amir Bar",
+                "Yossi Gandelsman",
+                "Trevor Darrell",
+                "Amir Globerson",
+                "Alexei A. Efros"
+            ],
+            "title": "Visual prompting via image inpainting",
+            "venue": "arXiv preprint arXiv:2209.00647,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Zigang Geng",
+                "Binxin Yang",
+                "Tiankai Hang",
+                "Chen Li",
+                "Shuyang Gu",
+                "Ting Zhang",
+                "Jianmin Bao",
+                "Zheng Zhang",
+                "Han Hu",
+                "Dong Chen"
+            ],
+            "title": "Instructdiffusion: A generalist modeling interface for vision tasks",
+            "venue": "arXiv preprint arXiv:2309.03895,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Hao Zhang",
+                "Feng Li",
+                "Xueyan Zou",
+                "Shilong Liu",
+                "Chunyuan Li",
+                "Jianfeng Gao",
+                "Jianwei Yang",
+                "Lei Zhang"
+            ],
+            "title": "A simple framework for open-vocabulary segmentation and detection",
+            "venue": "arXiv preprint arXiv:2303.08131,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Xizhou Zhu",
+                "Jinguo Zhu",
+                "Hao Li",
+                "Xiaoshi Wu",
+                "Xiaogang Wang",
+                "Hongsheng Li",
+                "Xiaohua Wang",
+                "Jifeng Dai"
+            ],
+            "title": "Uni-perceiver: Pre-training unified architecture for generic perception for zero-shot and few-shot tasks",
+            "venue": "arXiv preprint arXiv:2112.01522,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Hao Li",
+                "Jinguo Zhu",
+                "Xiaohu Jiang",
+                "Xizhou Zhu",
+                "Hongsheng Li",
+                "Chun Yuan",
+                "Xiaohua Wang",
+                "Yu Qiao",
+                "Xiaogang Wang",
+                "Wenhai Wang",
+                "Jifeng Dai"
+            ],
+            "title": "Uni-perceiver v2: A generalist model for large-scale vision and vision-language tasks, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xueyan Zou",
+                "Zi-Yi Dou",
+                "Jianwei Yang",
+                "Zhe Gan",
+                "Linjie Li",
+                "Chunyuan Li",
+                "Xiyang Dai",
+                "Harkirat Behl",
+                "Jianfeng Wang",
+                "Lu Yuan",
+                "Nanyun Peng",
+                "Lijuan Wang",
+                "Yong Jae Lee",
+                "Jianfeng Gao"
+            ],
+            "title": "Generalized decoding for pixel, image, and language, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Charlie Nash",
+                "Joao Carreira",
+                "Jacob C Walker",
+                "Iain Barr",
+                "Andrew Jaegle",
+                "Mateusz Malinowski",
+                "Peter Battaglia"
+            ],
+            "title": "Transframer: Arbitrary frame prediction with generative models",
+            "venue": "Transactions on Machine Learning Research,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Patrick Esser",
+                "Robin Rombach",
+                "Bjorn Ommer"
+            ],
+            "title": "Taming transformers for high-resolution image synthesis",
+            "venue": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Tim Brooks",
+                "Aleksander Holynski",
+                "Alexei A. Efros"
+            ],
+            "title": "Instructpix2pix: Learning to follow image editing instructions",
+            "venue": "In CVPR,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tsung-Yi Lin",
+                "Michael Maire",
+                "Serge Belongie",
+                "James Hays",
+                "Pietro Perona",
+                "Deva Ramanan",
+                "Piotr Doll\u00e1r",
+                "C. Lawrence Zitnick"
+            ],
+            "title": "Microsoft coco: Common objects in context",
+            "venue": "Lecture Notes in Computer Science,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Bolei Zhou",
+                "Hang Zhao",
+                "Xavier Puig",
+                "Sanja Fidler",
+                "Adela Barriuso",
+                "Antonio Torralba"
+            ],
+            "title": "Scene parsing through ade20k dataset",
+            "venue": "Computer Vision and Pattern Recognition,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Bolei Zhou",
+                "Hang Zhao",
+                "Xavier Puig",
+                "Tete Xiao",
+                "Sanja Fidler",
+                "Adela Barriuso",
+                "Antonio Torralba"
+            ],
+            "title": "Semantic understanding of scenes through the ade20k dataset",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Omkar M Parkhi",
+                "Andrea Vedaldi",
+                "Andrew Zisserman",
+                "CV Jawahar"
+            ],
+            "title": "Cats and dogs",
+            "venue": "IEEE conference on computer vision and pattern recognition,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Pushmeet Kohli Nathan Silberman",
+                "Derek Hoiem",
+                "Rob Fergus"
+            ],
+            "title": "Indoor segmentation and support inference from rgbd images",
+            "venue": "In ECCV,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Colin Raffel",
+                "Noam Shazeer",
+                "Adam Roberts",
+                "Katherine Lee",
+                "Sharan Narang",
+                "Michael Matena",
+                "Yanqi Zhou",
+                "Wei Li",
+                "Peter J. Liu"
+            ],
+            "title": "Exploring the limits of transfer learning with a unified text-to-text transformer",
+            "venue": "Journal of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Maxim Kuznetsov Vladimir Vorobev"
+            ],
+            "title": "A paraphrasing model based on chatgpt paraphrases",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Diederik P Kingma",
+                "Max Welling"
+            ],
+            "title": "Auto-encoding variational bayes",
+            "venue": "arXiv preprint arXiv:1312.6114,",
+            "year": 2013
+        },
+        {
+            "authors": [
+                "Yang Song",
+                "Stefano Ermon"
+            ],
+            "title": "Generative modeling by estimating gradients of the data distribution",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Tim Salimans"
+            ],
+            "title": "Classifier-free diffusion guidance",
+            "venue": "NeurIPS",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jonathan Ho",
+                "Chitwan Saharia",
+                "William Chan",
+                "David J Fleet",
+                "Mohammad Norouzi",
+                "Tim Salimans"
+            ],
+            "title": "Cascaded diffusion models for high fidelity image generation",
+            "venue": "The Journal of Machine Learning Research,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chitwan Saharia",
+                "William Chan",
+                "Huiwen Chang",
+                "Chris Lee",
+                "Jonathan Ho",
+                "Tim Salimans",
+                "David Fleet",
+                "Mohammad Norouzi"
+            ],
+            "title": "Palette: Image-to-image diffusion models",
+            "venue": "In ACM SIGGRAPH 2022 Conference Proceedings,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Chitwan Saharia",
+                "Jonathan Ho",
+                "William Chan",
+                "Tim Salimans",
+                "David J Fleet",
+                "Mohammad Norouzi"
+            ],
+            "title": "Image super-resolution via iterative refinement",
+            "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Uriel Singer",
+                "Adam Polyak",
+                "Thomas Hayes",
+                "Xi Yin",
+                "Jie An",
+                "Songyang Zhang",
+                "Qiyuan Hu",
+                "Harry Yang",
+                "Oron Ashual",
+                "Oran Gafni"
+            ],
+            "title": "Make-a-video: Text-to-video generation without text-video data",
+            "venue": "arXiv preprint arXiv:2209.14792,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Gihyun Kwon",
+                "Jong Chul Ye"
+            ],
+            "title": "Clipstyler: Image style transfer with a single text condition",
+            "venue": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Shoufa Chen",
+                "Peize Sun",
+                "Yibing Song",
+                "Ping Luo"
+            ],
+            "title": "Diffusiondet: Diffusion model for object detection, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiarui Xu",
+                "Sifei Liu",
+                "Arash Vahdat",
+                "Wonmin Byeon",
+                "Xiaolong Wang",
+                "Shalini De Mello"
+            ],
+            "title": "ODISE: Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models",
+            "venue": "arXiv preprint arXiv:",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nathan Silberman",
+                "Derek Hoiem",
+                "Pushmeet Kohli",
+                "Rob Fergus"
+            ],
+            "title": "Indoor segmentation and support inference from rgbd images",
+            "venue": "In Computer Vision\u2013ECCV 2012: 12th European Conference on Computer",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Omkar M Parkhi",
+                "Andrea Vedaldi",
+                "Andrew Zisserman",
+                "C.V. Jawahar"
+            ],
+            "title": "Cats and dogs",
+            "venue": "In 2012 IEEE Conference on Computer Vision and Pattern Recognition,",
+            "year": 2012
+        },
+        {
+            "authors": [
+                "Jia Deng",
+                "Wei Dong",
+                "Richard Socher",
+                "Li-Jia Li",
+                "Kai Li",
+                "Li Fei-Fei"
+            ],
+            "title": "Imagenet: A largescale hierarchical image database",
+            "venue": "IEEE conference on computer vision and pattern recognition,",
+            "year": 2009
+        },
+        {
+            "authors": [
+                "Bolei Zhou",
+                "Agata Lapedriza",
+                "Jianxiong Xiao",
+                "Antonio Torralba",
+                "Aude Oliva"
+            ],
+            "title": "Learning deep features for scene recognition using places database",
+            "venue": "Advances in Neural Information Processing Systems,",
+            "year": 2014
+        },
+        {
+            "authors": [
+                "Mark Everingham",
+                "John Winn"
+            ],
+            "title": "The pascal visual object classes challenge 2012 (voc2012) development kit",
+            "venue": "Pattern Analysis, Statistical Modelling and Computational Learning, Tech. Rep,",
+            "year": 2011
+        },
+        {
+            "authors": [
+                "Zhenyu Li",
+                "Zehui Chen",
+                "Xianming Liu",
+                "Junjun Jiang"
+            ],
+            "title": "Depthformer: Exploiting long-range correlation and local information for accurate monocular depth estimation, 2022",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Li",
+                "Zhenyu",
+                "Wang",
+                "Xuyang",
+                "Liu",
+                "Xianming",
+                "Jiang",
+                "Junjun"
+            ],
+            "title": "Binsformer: Revisiting adaptive bins for monocular depth estimation",
+            "venue": "Cornell University - arXiv,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Jiaqi Chen",
+                "Zeyu Yang",
+                "Li Zhang"
+            ],
+            "title": "Semantic segment anything",
+            "venue": "https://github. com/fudan-zvg/Semantic-Segment-Anything,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Bowen Cheng",
+                "Ishan Misra",
+                "Alexander G. Schwing",
+                "Alexander Kirillov",
+                "Rohit Girdhar"
+            ],
+            "title": "Masked-attention mask transformer for universal image segmentation",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Xiangyu Zhang",
+                "Shaoqing Ren",
+                "Jian Sun"
+            ],
+            "title": "Deep residual learning for image recognition",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Alexey Dosovitskiy",
+                "Lucas Beyer",
+                "Alexander Kolesnikov",
+                "Dirk Weissenborn",
+                "Xiaohua Zhai",
+                "Thomas Unterthiner",
+                "Mostafa Dehghani",
+                "Matthias Minderer",
+                "Georg Heigold",
+                "Sylvain Gelly",
+                "Jakob Uszkoreit",
+                "Neil Houlsby"
+            ],
+            "title": "An image is worth 16x16 words: Transformers for image recognition at scale, 2021",
+            "year": 2024
+        },
+        {
+            "authors": [
+                "Kaiming He",
+                "Georgia Gkioxari",
+                "Piotr Dollar",
+                "Ross Girshick"
+            ],
+            "title": "Mask r-cnn",
+            "venue": "In Proceedings of the IEEE International Conference on Computer Vision (ICCV),",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Amir Bar",
+                "Yossi Gandelsman",
+                "Trevor Darrell",
+                "Amir Globerson",
+                "Alexei A Efros"
+            ],
+            "title": "Visual prompting via image inpainting",
+            "venue": "arXiv preprint arXiv:2209.00647,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Xiang Li",
+                "Tianhan Wei",
+                "Yau Pun Chen",
+                "Yu-Wing Tai",
+                "Chi-Keung Tang"
+            ],
+            "title": "Fss-1000: A 1000-class dataset for few-shot segmentation",
+            "venue": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition,",
+            "year": 2020
+        }
+    ],
+    "sections": [
+        {
+            "text": ""
+        },
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Recent work on text-to-image models has achieved impressive performance in image synthesis [1\u2013 3]. Particularly, diffusion models [4\u20137] have demonstrated remarkable capabilities of transforming diverse text prompts into realistic images, even for novel concepts. Models like DALL\u00b7E [2] and Stable Diffusion [8] highlight this progress, now finding use in real-world applications. However, despite these impressive results, generative text-to-image models have so far not been exploited as a unified basis for standard visual recognition tasks. Instead, the predominant approach for these tasks is to design dedicated task-specific architectures and loss functions [9\u201311], foregoing the opportunity to learn generalizable representations across heterogeneous problem domains and data landscapes.\nPrevious attempts to create unified models for computer vision tasks have predominantly relied on prompt tuning approaches in conjunction with sequence-to-sequence architectures [9\u201317]. This general framework enables conditioning on input images as well as task-specific prompts by representing image pixels and (trainable) prompts as sequences of discrete tokens. When trained on multi-task datasets, the resulting output tokens align with the desired outcomes for the respective tasks prompted. One illustrative example of this approach is Pix2Seq [16], which follows an autoregressive language modeling approach for processing tokenized image pixels and task identifier codes. In these methods, the task-specific prompts steer a single architecture to execute multiple vision tasks. However, these prompts consist of (uninterpretable) numerical values derived from specific training datasets, which may limit their ability to generalize to new datasets or categories. Another example includes a class of methods based on visual prompting, in which the model learns to conduct new tasks \u201cin-context\u201d based on visual examples with a unified \u201cinpainting\u201d framework [18, 19]. The closest work to ours is InstructDiffusion [20], which also repurposes text-to-image models for multi-task learning.\nIn this paper, we propose a unified model for computer vision tasks that conducts a given task by following natural language instructions (Fig. 1). Our framework, dubbed InstructCV, repurposes generative text-to-image models to create a universal language interface for vision tasks. It does so by casting multiple computer vision tasks as text-to-image generation problems, where textual prompts (instructions) serve as explicit task descriptors, guiding the generation process to produce the visual task output corresponding to the input image. By conditioning on natural language descriptions of vision tasks, InstructCV enhances the representation of semantic coherence between images and language prompts, improving the model\u2019s generalization capabilities to new human-written instructions and new categories compared to prior \u201cgeneralist\u201d vision models [12, 13, 15\u201319, 21\u201327].\nTo train InstructCV, we follow an instruction tuning approach applied to a pretrained conditional diffusion model (Stable Diffusion). We generate the instruction tuning data by constructing a multimodal, multi-task training dataset that comprises tuples of textual instructions, input images and visually-encoded task outputs. We do so by first combining several standard computer vision datasets across multiple tasks including segmentation, object detection, depth estimation, and classification. Next, in order to create heterogeneous and semantically rich textual instructions, we use a large language model (LLM) to paraphrase prompt templates for each vision task. Finally, we encode the output of the vision task associated with each instruction in the form of an output image (e.g., a masking pattern for semantic segmantation). Using this dataset, we utilize the InstructPix2Pix architecture [28] to instruction-tune a text-to-image diffusion model, transforming its functionality from a generative image synthesis model into an instruction-guided multi-task vision learner. Our experiments demonstrate that InstructCV achieves competitive results compared to other vision generalist and task-specific vision models. Particularly, InstructCV displays compelling generalization properties, surpassing the performance of state-of-the-art vision generalist models on external datasets as well as on unseen prompts in open-vocabulary segmentation tasks."
+        },
+        {
+            "heading": "2 INSTRUCTCV",
+            "text": "The InstructCV framework comprises two key steps: (a) construction of a multi-modal and multi-task instruction-tuning dataset, and (b) finetuning a pretrained conditional diffusion model using the dataset generated in step (a). (See Fig. 2 for a pictorial depiction.) Details of each step are provided below."
+        },
+        {
+            "heading": "2.1 CONSTRUCTING A MULTI-MODAL & MULTI-TASK INSTRUCTION-TUNING DATASET",
+            "text": "We combine four widely-used computer vision datasets (MS-COCO [29], ADE20K [30, 31], OxfordIII-Pets [32] and NYUv2 [33]) covering four vision tasks (semantic segmentation, object detection,\nmonocular depth estimation and classification), into a single multi-task dataset D = {(xi,yi,mi)}i in which xi is the input image, yi is the task output and mi \u2208 {1, . . . ,M} is the task identifier (M = 4 in our setup). We convert D into a multi-modal instruction-tuning dataset DI = {(xi,v(yi), Ii)}i, in which the task identifier for training point i is expressed as a natural language instruction Ii, and the label yi is represented in a visual format v(yi). We construct the dataset DI through the following steps. LLM-based instruction generation. For each vision task m \u2208 {1, . . . ,M} under consideration, we pick a prompt template Imtemp that describes the task, e.g., \u201cSegment the %category%\u201d for the semantic segmentation task. We then attach a prompt to each training data point by inserting the category within the image in the corresponding task template, e.g., Imtemp(xi,yi) = \u201cSegment the cat\u201d. We consider two incarnations of our instruction-tuning dataset. First, we consider a baseline dataset that only uses the deterministic task-specific prompt templates described above. We refer to as this dataset as the fixed prompts (FP) instruction-tuning dataset DFPI = {(xi,v(yi), Imitemp(xi,yi))}i. In addition, we use a T5-based paraphrasing LLM [34, 35] to generate rephrased versions of the prompt template to create a diverse range of instructions. As shown in Fig. 2(a) (top), the LLM takes as an input the prompt template (e.g., \u201cSegment the %category%\u201d) and produces a wide range of paraphrased variants (e.g.,\n\u201cHighlight the %category%\u201d). This procedure ensures that our instruction set is varied yet firmly tied to the core intent of the original prompt. We use the LLM to sample a rephrased variant of the prompt template Ii \u223c LLM(Imitemp) for each training data point i in D. We refer to the resulting instruction tuning dataset as the rephrased prompt (RP) dataset DRPI = {(xi,v(yi), Ii(xi,yi))}i. Visual encoding of task outputs. We format the target label y of each task to represent it in the same RGB image space as the input image x through a \u201cvisual encoding\u201d function v(y) (Fig. 2(a) (bottom)). This enables casting all tasks in a unified text-to-image generation framework, leveraging Pix2Pix architectures. That is, given an image x and instruction I, InstructCV produces an image v(y) that encodes the task output. In the following, we provide the definition of v(y) for all tasks under study.\n(1) Semantic Segmentation. The target output y of this task is typically an assignment of a label or category to every pixel in an image. A natural choice of v(y) for the semantic segmentation task is a binary mask that labels pixels in the input image x belonging to the prompted category in I. (2) Object Detection. Here, the goal is to identify the spatial position of a category in an image using a bounding box, i.e., the label comprises bounding box coordinates y = [cx, cy, w, h]. We define v(y) for object detection as the image x with a bounding box overlaid according to the coordinates in y.\n(3) Monocular Depth Estimation. The target y of this task is the depth value (i.e., distance relative to the camera) of each pixel in the RGB image x. For this task, we define the visually-encoded target\nv(y) as an RGB image in which pixel colors encode the depth values. This encoding is done by converting depth values ranging from 0 to 10 meters (based on depth ranges in the NYUv2 dataset [33]) into the discrete space [0, 1, . . . , 255] for RGB image representation, i.e., v(y) = \u230a y \u00d7 25510 \u230b . We then apply the same value across all three RGB channels to create a visual depth map.\n(4) Image Classification. In multi-class image classification, the target label y is a categorical value indicating the object depicted in the image x. To represent image classification in a Pix2Pix format, we resort to a color-coding methodology. To this end, we use a prompt template of the form: \u201cDisplay %color% if the image contains %category%\u201d. We sample random colors when filling in the template for individual training points. This steers the text-to-image model to produce an image consisting of the pure color block if the category specified in the prompt is visible in x. (Note that this approach only enables us to predict if a specific category is in the input image x. For multi-class classification, we need to use a series of prompts specifying all categories of interest one at a time.)"
+        },
+        {
+            "heading": "2.2 INSTRUCTION-TUNING A LATENT DIFFUSION MODEL",
+            "text": "We use our instruction-tuning dataset DI = {(xi,v(yi), Ii)}i to train a (conditional) diffusion model that conducts the vision task specified in the instruction I on the input image x, producing a visuallyencoded task output v(y). By finetuning the text-to-image diffusion model using DI , we steer its functionality from a generative model to a language-guided multi-task vision learner. We use a training procedure similar to that of InstructPix2Pix [28], which applies uses a similar multi-modal dataset (pairs of images and editing instructions) to train an instruction-guided image editing model.\nDiffusion models [7] generate data by gradually denoising a normally distributed random variable; this process amounts to learning the reverse dynamics of a Markov chain with fixed length T . Latent diffusion models [8] applies this approach within the latent space of a pretrained variational autoencoder [36] with encoder E(.) and decoder D(.). Training a diffusion model involves a forward diffusion and a reverse denoising process. During the forward process, the image v(y) is transformed to its latent representation z0 = E(v(y)), which is then injected with Gaussian noise over T steps:\nq(zt|zt\u22121) = N (zt; \u221a 1\u2212 \u03b2tzt\u22121, \u03b2tI), \u2200t \u2208 {1, . . . , T}, (1)\nwhere the time-varying constants \u03b21:T control how much noise is added at each timestep t and are chosen such that zT roughly converges to a standard Gaussian vector. This forward process does not contain any trainable parameters and can be described as q(z1:T |z0) = \u220fT t=1 q(zt|zt\u22121). In the re-\nverse diffusion process, p\u03b8(z0:T ) = p(zT ) \u220fT\nt=1 p\u03b8(zt\u22121|zt) the objective is to learn a model to progressively denoise the latents zT :1 to recover the initial latent z0. The target image can then be reconstructed as v(y) = D(z0). The reverse diffusion process can be written as:\np\u03b8(zt\u22121|zt) = N (zt\u22121;\u00b5\u03b8(zt, t), \u03c12t I), \u2200t \u2208 {1, . . . , T}, (2) where the means \u00b5\u03b8 are typically parameterized using neural networks and the variances \u03c12t are predetermined constants. Such a denoising model is learned by optimizing a reweighted variant of the variational lower bound on the data distribution [4, 37], i.e.,\nLunconditional := EE(v(y)),\u03f5\u223cN (0,1),t [ \u2225\u03f5\u2212 \u03f5\u03b8 (t, zt)\u222522 ] , (3)\nwhere \u03f5 is a standard normal random variable and zt = \u03b1tz0 + \u03c3t\u03f5, where \u03b12t = \u220ft\ns=1(1\u2212 \u03b2s) and \u03c32t = 1\u2212 \u03b12t are based on the diffusion distribution q(zt|z0) = N (zt;\u03b1tz0, \u03c32t I). The noise predictor \u03f5\u03b8 is obtained from the parameterization \u00b5\u03b8(zt, t) := (zt \u2212 \u03b2t\u03f5\u03b8(zt, t)/ \u221a 1\u2212 \u03b12t )/ \u221a 1\u2212 \u03b2t. The model \u03f5\u03b8 is trained to predict the noise vector \u03f5 at each time-step t in order to denoise the latent variable zt.\nInstruction-tuning via image and text conditioning. The objective in (3) can be further refined to condition on both the input image x and instruction I to generate the desired output v(y)\u2014this can be achieved by learning a conditional noise predictor [8, 28], minimizing the following loss function:\nLconditional := EE(v(y)),E(x),I,\u03f5\u223cN (0,1),t [ \u2225\u03f5\u2212 \u03f5\u03b8 (t, zt,E(x), I)\u22252 ] . (4)\nWe use a pretrained Stable Diffusion checkpoint, which exhibits strong text-to-image generation capabilities, as the backbone architecture of our model. For text conditioning, we adopt the same methodology as in [8], utilizing the instruction I instead of image captions as textual inputs. For image conditioning, we concatenate the encoded input image E(x) with the latent zt, which are then fed into input to the first layer of the noise predictor \u03f5\u03b8 [28].\nClassifier-free guidance. To further improve the alignment between the generated outputs and their conditioning, we apply \u201cclassifier-free\u201d guidance [38]. This approach combines the unconditional and conditional noise predictors in (4) and (3) in order to shift probability mass towards data where an implicit classifier p\u03b8(c|zt) assigns a high score to the conditioning c. Similar to InstructPix2Pix ((3) in [28]), we use a modified noise predictor that assigns different weights to the different components of the conditioning (x, I) as follows:\n\u03f5\u0303\u03b8 (t, zt,x, I) = \u03f5\u03b8(t, zt,\u2205,\u2205) + \u03b3I \u00b7 (\u03f5\u03b8(t, zt,x,\u2205)\u2212 \u03f5\u03b8(t, zt,\u2205,\u2205)) + \u03b3T \u00b7 (\u03f5\u03b8(t, zt,x, I)\u2212 \u03f5\u03b8(t, zt,x,\u2205)).\nwhere \u03b3I and \u03b3T are guidance scales that determine the relative importance of the image and text\nconditioning. Unconditional denoising is achieved by introducing null values to the respective image and text channels of the noise predictor. In Fig. 3, we show the effects of the parameters \u03b3I and \u03b3T on the output image v(y) of InstructCV. As we can see, \u03b3I controls the similarity between the input and output images, x and v(y), whereas \u03b3T controls the extent to which pixel values v(y) correspond to actual depth values in x. Low \u03b3T and high \u03b3I result in output images that look very similar to input images with only a modification in the color map that does not reflect pixel depths. On the other hand, high \u03b3T and low \u03b3I produces coarse depth maps that miss nuanced details in the input images."
+        },
+        {
+            "heading": "3 RELATED WORK",
+            "text": "Repurposing diffusion models for vision tasks. Diffusion models have achieved impressive performance in image generation [4, 37, 39\u201341], text-to-image synthesis [1, 2, 6, 8], as well as generation of other modalities such as video [42] and audio [43]. The idea of repurposing diffusion models to tackle standard computer vision tasks has been considered before to develop models for object detection [44] and open-vocabulary panoptic segmentation [45]. These approaches were limited to single-task settings with specialized loss functions and (unimodal) architectures. Contrarily, InstructCV provides a unified architecture for multi-task learning, with a natural language interface that enhances generalization to new datasets and categories. The idea of \u201cinstruction-tuning\u201d text-to-image diffusion models was introduced in [28] with the objective of finetuning the model to follow editing instructions. InstructCV builds on this framework to adapt text-to-image models for performing conventional visual recognition tasks. To our knowledge, this is one of the earliest efforts in this direction.\nVision Generalists. Several prior attempts have aimed to develop unified models capable of executing multiple vision tasks within a single, shared architecture. Motivated by successes of LLMs, recent work has attempted to design such generalist models based on sequence-to-sequence architectures. Among these, models such as Florence [9], OFA [10], CoCa [11] and BEiT-3 [14], learn general representation encoder, which require individual finetuning to each specific downstream task. Methods such as Unified-IO [15] and Pix2Seq-v2 [17] build single architectures that are capable of performing multiple vision tasks via prompt tuning. However, the sequence-based operation of these models results in slow inference speeds, and the tuned prompts may not generalize to unseen datasets/categories. Another line of work proposes vision transformer-based architectures that frame different vision tasks as inpainting problems [18, 19]. This work focuses on in-context learning based on visual prompts and does not consider language-based instructions, which we believe is a more natural interface for general-purpose models. To the best of our knowledge, the only generalist model that supports a language-based interface for vision tasks similar to that of InstructCV is the VisionLLM model developed in [13]. This is an LLM-based framework that treats images as a foreign language and aligns vision-centric tasks with language tasks that can be flexibly defined using language-based instructions. VisionLLM and InstructCV share a common objective but use different approaches. VisionLLM finetunes a pre-trained LLM using vision-centric tasks, whereas InstructCV finetunes a text-to-image model by substituting image captions with instructional text. We were unable to empirically compare the two models as the code for VisionLLM was not available at the time of writing this paper."
+        },
+        {
+            "heading": "4 EXPERIMENTS",
+            "text": ""
+        },
+        {
+            "heading": "4.1 EXPERIMENTAL SET UP",
+            "text": "We evaluate InstructCV across the four vision tasks under study (semantic segmentation, object detection, monocular depth estimation and image classification). For this purpose, we consider widely used datasets for each task: ADE20k [30, 31] for semantic segmentation, MS-COCO [29] for object detection, NYUv2 for depth estimation [46] and Oxford-IIIT Pet [47] for classification. In what follows, we explain the processing steps and evaluation procedure for all tasks under consideration.\nSemantic Segmentation. ADE20K covers 150 semantic categories and comprises 25, 000 images of which we use 20, 000 for training, 2, 000 for validation, and 3, 000 for testing. We follow the same protocol as suggested in [18] to implement the training/test split. At inference time, we average the outputs of the three channels of the output image v(y) to obtain the final segmentation mask. We evaluate the accuracy of segmentation masks using the Mean Intersection over Union (mIoU) metric.\nObject Detection. MS-COCO contains 118, 000 training and 5, 000 validation images with labels for 80 different categories. We follow the same protocol as in Pix2Seq [16] to set up the training/test split. At inference time, we follow the post-processing steps in Appendix A.4 to derive the coordinates and category of each Region of Interest (RoI) from the output image v(y). We then aggregate the results for all categories in order to calculate the Mean Average Precision (mAP).\nDepth Estimation. The NYUv2 dataset [33] consists of 464 indoor scenes captured by a Microsoft Kinect camera. We follow the official training/test split, with 24, 231 image-depth pairs used for training, and 654 used for testing. For the test images we report the Root Mean Square Error (RMSE), absolute mean relative error (A.Rel), and the share of interior pixels with a different threshold \u03b4. During inference, we take the average across the three channels of the output image and apply the inverse of the linear transformation used in training to obtain a depth estimate in the range of [0, 10] meters.\nImage Classification. As mentioned in Section 2.1, we implement image classification by asking the InstructCV model if a category is visible in the input image x using the following template prompt: \u201cDisplay %color_1% if the image contains %category%, else display %color_2%\u201d. We evaluate the accuracy of InstructCV for classification by assessing whether v(y) contains the color block corresponding to the correct category. We do so by generating image pairs based on the Oxford-III Pet dataset for binary classification and augment these with negative pairs, where the category mentioned in the language instruction is not present. We then evaluate a classification score defined as: Cls-Score (v(y), c) = \u2211n i=1 \u2211m j=1 |vi,j(y)\u2212 ci,j |, i.e., the Euclidean distance between the pixel-wise colors of the output image v(y) and target color block c specified in the task instruction I. Our pooled multi-modal/multi-task instruction-tuning dataset comprises 180,285 images. We create two versions of the dataset, DFPI & DRPI , with fixed and rephrased prompts as described in Section 2.1. External Datasets. Since the generalist baselines and InstructCV were trained on different datasets1, we consider additional external datasets that are outside of the training distribution of all baselines. To this end, we consider the following datasets: ImageNet [48] for classification, SUNRGB-D [49] for object detection and VOC [50] for segmentation and monocular depth estimation tasks.\nImplementation Details. We train InstructCV for 20 epochs on 8 NVIDIA A100 GPUs over 10 hours. The training involves images with a resolution of 256 \u00d7 256 and incorporates data augmentation including random horizontal flipping and cropping with a batch size of 128. The proposed model is initialized with EMA weights obtained from the Stable Diffusion checkpoint, and trained with a learning rate 10\u22124 without any warm-up stage. Further details can be found in appendix A.1. We refer to the models trained on DFPI and DRPI as InstructCV-FP and InstructCV-RP, respectively."
+        },
+        {
+            "heading": "4.2 RESULTS",
+            "text": "Table 1 presents a quantitative comparison between InstructCV and task-specific as well as generalist vision models in both in-distribution and out-of-distribution datasets. (Fig. 4 displays illustrative examples of InstructCV outputs.) For depth estimation, we compare InstructCV with DepthFormer [51], BinsFormer [52] and UviM [12]. For semantic segmentation, our baselines include Mask2Former [54] and SSA [53]. For classification, we consider baseline classifiers with ResNet [55] and ViT [56] back-\n1Unified-IO has been trained on 90 datasets while Pix2SeqV2 was trained on MS-COCO.\nbones. Lastly, for object detection, we consider DETR [29] and Mask R-CNN [57]. Task-specific models for semantic segmentation, classification, and object detection have not been assessed on datasets beyond their training distribution. This is due to the fact that these new datasets introduce categories absent in the model\u2019s original training, which precludes zero-shot generalization. We consider Unified-IO [15] and Pix2SeqV2 [17] as generalist vision baselines. Note that we only report object detection results for Pix2SeqV2 [17], as this model does not cover the other tasks involved in the development of InstructCV. Additional tasks Pix2SeqV2 is able to perform, such as keypoint detection, have not been integrated into the current version of InstructCV.\nPerformance comparisons. Overall, Instruct CV performs competitively compared to both generalist and task-specific baselines across all four tasks. For depth estimation within in-distribution data, InstructCV achieves a 10% improvement in RMSE compared to the second best model, BinsFormer [52]. Notably, InstructCV demonstrates strong generalization performance to unseen datasets, surpassing all baselines by a large margin, with the exception of classification tasks. For instance, for the task of depth estimation the task-specific models Binsformer [52] and DepthFormer [51] experience high performance drops of \u2248 31.2% and \u2248 26.0%, respectively, while InstructCV\u2019s performance improved by 6% resulting in a 34.7% lower RMSE than the best task-specific model. Similarly, for the task of object detection, the performance of the Pix2SeqV2 generalist model drops by 32.2% when evaluated on VOC\u2014InstructCV outperforms this generalist model by a +23.2 in mAP@0.5. Among all baselines, only Unified-IO demonstrates comparable generalization properties to unseen datasets. However, InstructCV outperforms Unified-IO on all tasks except for classification. Notably, for semantic segmentation, InstructCV surpasses the performance of Unified-IO by +24.401 in mIOU. Classification is the task where InstructCV exhibited its weakest performance compared to baselines.\nGeneralization to unseen categories. Most existing taskspecific and multi-task models are built based on a fixed category pool determined by their training data, and do not exhibit zero-shot capabilities in detecting, segmenting or classifying categories outside of this set [15, 17, 29, 53\u201357]. Because InstructCV leverages semantically meaningful instructions and a pre-trained text-to-image generative model to guide learning, we expect its task-specific capabilities to generalize to\nnew categories. To investigate its generalization capabilities to unseen categories, we evaluate InstructCV on an open-vocabulary segmentation task using the FSS-1000 dataset [59]. This dataset comprises 1000 object classes, many of which have not been previously annotated in other computer vision datasets. Because the baselines in Table 1 do not accommodate many of these categories, we instead compare InstructCV with generalist vision models that exhibit zero-shot capabilities\u2014the visual prompting by Inpainting model in [58] and the Generalist Painter model in [18]. Both methods rely on visual prompting approaches, where the input prompt is a set of pixels and the vision tasks are all represented within a unified inpainting framework. Table 2 presents the results. Overall, InstructCV outperforms Generalist Painter and Inpainting by +3.5 and +7.3 in mIoU, respectively. This demonstrates the value of repurposing text-to-image models and language-based prompts to improve the generalization capabilities of generalist approaches to computer vision tasks.\nGeneralization to new user-written instructions. The InstructCV-RP model undergoes training using the dataset DRPI , which comprises a variety of instructions, all aimed at conveying a common underlying intent (i.e., describing a specific visual task). Through this diverse training data that encompasses a broad spectrum of phrasings and descriptions of the same task, we expect that InstructCV-RP\nwill be able to extrapolate its learning to novel user-generated instructions at inference time. To test this, we compared the performance of the InstructCV-FP and Instruct-RP variants on the semantic segmentation task. Both models were tested using manually-selected prompts (unseen in training data) on 200 images in the ADE20k test data. The results in Table 3 indicate that the InstructCV-RP model exhibits consistent performance and more robustness to variations in the phrasing of user instructions compared to InstructCV-FP. For example, testing InstructCV-FP with the instruction \u201cPlease highlight the image segment containing %category%.\u201d instead of the template prompt \u201cSegment %category%.\u201d led to a 51.8% drop in mIOU. Conversely, InstructCV-RP only incurred a performance reduction of 6% with this instruction compared to the template prompt. This suggests that our LLM-based prompt rephrasing approach effectively enhances the ability of InstructCV to generalize to new user-generated prompts that convey descriptions of tasks similar to those seen during training.\nComputational costs. Finally, we note that InstructCV was trained in an end-to-end fashion, with only 2,000 finetuning steps. The inference time of InstructCV on a single NVIDIA A100 GPU is 5 seconds (for a 256x256 image). This is a significant improvement over comparable generalist models, such as Unified-IO [15], which was trained from scratch using 1.5 million steps and takes around 40 seconds for inference (per class) on a single NVIDIA A100 GPU. Notably, InstructCV not only simplifies the training process but also outperforms Unified-IO in various tasks. These improvements can be attributed to the already impressive capabilities of the underlying text-to-image model. By instructiontuning a generative model with a relatively small number of steps and a moderately-sized dataset, we are able to steer its functionality with performance that is competitive with specialist models."
+        },
+        {
+            "heading": "5 CONCLUSION",
+            "text": "In this paper, we introduce a unified language interface for computer vision tasks, dubbed InstructCV, eliminating the need for task-specific design choices and allowing for task execution based on natural language instructions. InstructCV frames various computer vision tasks as text-to-image generation problems. In this setup, textual instructions describe the task, and the resulting image serves as a visual representation of the task output. Following the InstructPix2Pix architecture, we curate a multitask and multi-modal dataset to instruction-tune a pre-trained text-to-image diffusion model, steering its function from a generative model to an instruction-guided multi-task vision learner. By harnessing semantically meaningful language instructions to drive the learning process, our model demonstrates compelling generalization capabilities across unseen data, categories, and user instructions.\nLimitations. While InstructCV improves upon the computational cost of existing generalist models, the inference speed of our model lags behind specialized task-specific models and falls short of meeting the real-time inference requirements for tasks such as object detection and segmentation. Additionally, the Pix2Pix formulation can lead to inadmissible output images for a given vision task, e.g., failure to generate a box-shaped output for the object detection task. Furthermore, the semantic flexibility of InstructCV is constrained by the richness and diversity of our instruction-tuning dataset, which is currently generated by rephrasing a limited set of template prompts. This raises questions for future work: can this learning paradigm accommodate instructions that introduce more nuanced conditions? For example, an instruction might cap the count of objects to be detected. Exploring such ideas might require the integration of strategies such as learning from human feedback, which could enable more versatile generalist models by improving alignment of task outputs with more complex prompts."
+        },
+        {
+            "heading": "A APPENDIX",
+            "text": "A.1 INSTRUCTCV TRAINING AND EVALUATION DETAILS DETAILS\nWe train our multi-task vision model across 20 epochs for 10 hours on an array of 8 80GB NVIDIA A100 GPUs. Our training utilizes images of 256 \u00d7 256 resolution and a batch size of 128. Augmentation techniques applied include random horizontal flipping and crop augmentation. For the latter, images are first subjected to random resizing between 256 and 288 pixels before being cropped to a 256-pixel size. We set our learning rate at 10e-4 without incorporating a learning rate warm-up phase. Model initialization is performed using the EMA weights from the Stable Diffusion v1.5 checkpoint, and we adopt other training settings from the public Stable Diffusion repository. For the results presented in this paper, we operate at a 256-pixel resolution with 100 denoising steps. We employ an Euler ancestral sampler with a denoising variance schedule as proposed by [60]. On an NVIDIA A100 GPU, our model takes approximately 5 seconds to solve a given vision task. In all experiments, we use randomly generated rephrased prompts during inference for evaluating the InstructCV-RP model. These rephrased prompts were sampled at inference time and were not drawn from the prompts used for training.\nA.2 EXAMPLES OF THE REPHRASED PROMPTS.\nFigure 5-(a)/(b) qualitatively compares the robustness of InstructCV to changes in instruction wording when trained using the fixed prompt or the more diverse rephrased prompt dataset. The model trained using the fixed prompt data shows reasonable performance on segmentation tasks, even for prompts that slightly deviate from the standard instruction wording. However, as these deviations increase misclassfications become more common. Instead, the model trained on the rephrased prompt data appears more robust to such changes in task formulation. Notably, the model appears to show basic semantic understanding as it is in the last prompt example able to infer the correct intent despite the simultaneous occurrence of the potential object detection targets \u2019spider man\u2019 and \u2019face\u2019. Table 4 illustrated some examples of the rephrased prompts. To achieve good generalization performance, the model was trained on a large number of rephrased prompts repeatedly sampled from the LLM.\nA.3 POST-PROCESSING STEPS FOR OBJECT DETECTION TASKS\nWe use image processing techniques to derive the bounding box coordinates from the output image through out-of-the-box post-processing functions in the OpenCV library. First, we apply median and bilateral filters to the image in order to mitigate noise and enhancing features. Following, we convert the image from RGB to HSV space to isolate the red region within the target object, which is then extracted from the original image. Next, we identify closed contours in the image by converting it to a grayscale map, performing threshold segmentation based on grayscale, and ultimately, binarizing the image. We exclude disturbances that are not rectangular or that contain numerous red dots within the contour. The coordinates of the remaining contours are subsequently added to the prediction list.\nA.4 POST-PROCESSING STEPS FOR OBJECT DETECTION TASKS\nThe InstructCV pipeline is not limited to the four tasks considered in the paper, but can be applied to a much broader range of vision tasks including low-level tasks as well. Following [18], we fine-tuned InstructCV to conduct 3 more low-level vision tasks: Denoising (SIDD dataset), Deraining (Rain14000, Rain800, Rain100H, Rain100L, Rain1200 datasets) and Enhance (LOw-Light dataset). Results are provided in the table below.\nDenoising Deraining Enhance Painter 38.8 (PSNR\u2191) | 0.95 (SSIM\u2191) 29.4 (PSNR\u2191) | 0.86 (SSIM\u2191) 22.4 (PSNR\u2191) | 0.87 (SSIM\u2191) InstructCV-FP 39.2 (PSNR\u2191) | 0.94 (SSIM\u2191) 31.4 (PSNR\u2191) | 0.87 (SSIM\u2191) 24.8 (PSNR\u2191) | 0.89 (SSIM\u2191)\nTa bl\ne 4:\nR ep\nhr as\ned pr\nom pt\ns. W\ne au\nto m\nat ic\nal ly\nge ne\nra te\ndi ve\nrs e\nre ph\nra se\nd pr\nom pt\ns to\nge ne\nra te\nd a\ndi ve\nrs e\nre ph\nra se\nd pr\nom pt\ns (R\nP) in\nst ru\nct io\nn da\nta se\nt. H\ner e\nw e\ndi sp\nla y\nso m\ne ex\nam pl\nes of\nre ph\nra se\nd ta\nsk te\nm pl\nat es\n.\nSe gm\nen ta\ntio n\nD et\nec tio\nn C\nla ss\nifi ca\ntio n\nD ep\nth es\ntim at\nio n\nPr om\npt s\nSe gm\nen tt\nhe %\n. D\net ec\ntt he\n% Sh\now *\nif th\ner e\nex is\nts a\n% in\nth e\nfig ur\ne. E\nst im\nat e\nth e\nde pt\nh of\nth is\nim ag\ne.\nPl ea\nse br\nea k\ndo w\nn th\ne %\nin to\nin di\nvi du\nal pa\nrt s.\nC an\nyo u\nhe lp\nm e\nde te\nct th\ne %\n? D\nis pl\nay an\n* if\na %\nis pr\nes en\nti n\nth e\nfig ur\ne. A\npp ro\nxi m\nat e\nth e\nde pt\nh of\nth is\nim ag\ne.\nC an\nyo u\npr ov\nid e\nm e\nw ith a se gm en to ft he %\n? Pl\nea se\nem pl\noy bo\nun di\nng bo\nxe s\nfo rt\nhe pu\nrp os\ne of\n% de\nte ct\nio n.\nIn ca\nse a\n% ex\nis ts\nin th\ne fig\nur e,\ndi sp\nla y\nan *.\nM ak\ne an\nes tim\nat io\nn of\nho w\nde ep\nth e\nth is\nim ag\ne is\n.\nPl ea\nse di\nvi de\nth e\n% in\nto sm\nal le r pa rt s.\nL oc\nat e\nth e\n% \u2019s\npr es\nen ce\n. If\na %\nis pr\nes en\nti n\nth e\nfig ur e, in di ca te it w ith\n*. Pr\nov id\ne a\nro ug\nh ca\nlc ul\nat io\nn of\nth e\nim ag\ne\u2019 s\nde pt\nh.\nPl ea\nse pe\nrf or\nm im\nag e\nse gm\nen ta\ntio n\nto is\nol at\ne th\ne % in th is im ag e.\nPl ea\nse us\ne bo\nun di\nng bo\nxe s to id en tif y th e pr es en ce of a %\n. If\nth er\ne is\na %\nin th\ne fig\nur e,\nsh ow\nit as\n*.\nG iv\ne an\nap pr\nox im\nat e\nm ea\nsu re\nm en\nto ft\nhe im\nag e\u2019 s de pt h.\nH el\np m\ne se\ngm en\ntt he\n% .\nD et\nec ta\nnd id\nen tif\ny th\ne % \u2019s lo ca tio\nn. Sh\now *\nif th\ne fig\nur e\nco nt\nai ns a % . M\nak e\nan in\nfo rm\ned gu\nes s\nof th e de pt h of th e im ag e.\nW ou\nld yo\nu be\nw ill\nin g\nto se\ngm en t th e % ? U\ntil iz\ne bo\nun di\nng bo\nxe s\nin or\nde r\nto id\nen tif\ny th\ne pr\nes en\nce of\nth e\n% .\nSh ow\nan *\nif th\ner e\nis a\n% w\nith in\nth e\nfig ur\ne. M\nak e\nan es\ntim at\nio n\nof ho\nw de ep th e im ag e go es .\n(a) FP model - Different Prompts for Semantic Segmentation Task\n(b) RP model - Different Prompts for Object Detection Task\nSegment the grass. Could you help me segment the grass? Please provide a segmentation of the grass.\nPlease highlight the grass segment.\nDetect the Spider Man. Please locate the Spider Man.\nDetect the face of the Spider Man.\nDetect the Spider Man\u2019s face.\nHorse, Person Monitor, Bottle Chair, Person, Table Car, Bicycle\nInput prompt: Segment the %. %: the specific categories.\nFigure 6: Visualization of semantic segmentation examples. Segmentation categories are provided below each image."
+        }
+    ],
+    "year": 2023
+}

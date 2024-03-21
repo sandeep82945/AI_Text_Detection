@@ -1,0 +1,994 @@
+{
+    "abstractText": "Visual reinforcement learning (RL) has shown promise in continuous control tasks. Despite its progress, current algorithms are still unsatisfactory in virtually every aspect of the performance such as sample efficiency, asymptotic performance, and their robustness to the choice of random seeds. In this paper, we identify a major shortcoming in existing visual RL methods that is the agents often exhibit sustained inactivity during early training, thereby limiting their ability to explore effectively. Expanding upon this crucial observation, we additionally unveil a significant correlation between the agents\u2019 inclination towards motorically inactive exploration and the absence of neuronal activity within their policy networks. To quantify this inactivity, we adopt dormant ratio (Sokar et al., 2023) as a metric to measure inactivity in the RL agent\u2019s network. Empirically, we also recognize that the dormant ratio can act as a standalone indicator of an agent\u2019s activity level, regardless of the received reward signals. Leveraging the aforementioned insights, we introduce DrM , a method that uses three core mechanisms to guide agents\u2019 exploration-exploitation trade-offs by actively minimizing the dormant ratio. Experiments demonstrate that DrM achieves significant improvements in sample efficiency and asymptotic performance with no broken seeds (76 seeds in total) across three continuous control benchmark environments, including DeepMind Control Suite, MetaWorld, and Adroit. Most importantly, DrM is the first model-free algorithm that consistently solves tasks in both the Dog and Manipulator domains from the DeepMind Control Suite as well as three dexterous hand manipulation tasks without demonstrations in Adroit, all based on pixel observations. 1 0% 20% 40% 60% 80% 100% Training Progress 0 100 200 300 400 500 600 Ep iso de R ew ar d Deepmind Control Suite (8 Hard Tasks) 0% 20% 40% 60% 80% 100% Training Progress 0% 20% 40% 60% 80% 100% Su cc es s R at e MetaWorld (8 Tasks) 0% 20% 40% 60% 80% 100% Training Progress 0% 20% 40% 60% 80% 100% Su cc es s R at e Adroit (3 Tasks) DrM DrQ-v2 ALIX TACO Figure 1: Success rate and episode reward as a function of training progress for each of the three domains that we consider (Deepmind Control Suite, MetaWorld, Adroit). All results are averaged over 4 random seeds, and the shaded region stands for standard deviation across different random seeds.",
+    "authors": [
+        {
+            "affiliations": [],
+            "name": "ING THROUGH"
+        },
+        {
+            "affiliations": [],
+            "name": "DORMANT RATIO MINIMIZATION"
+        },
+        {
+            "affiliations": [],
+            "name": "Guowei Xu"
+        },
+        {
+            "affiliations": [],
+            "name": "Ruijie Zheng"
+        },
+        {
+            "affiliations": [],
+            "name": "Yongyuan Liang"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiyao Wang"
+        },
+        {
+            "affiliations": [],
+            "name": "Zhecheng Yuan"
+        },
+        {
+            "affiliations": [],
+            "name": "Tianying Ji"
+        },
+        {
+            "affiliations": [],
+            "name": "Yu Luo"
+        },
+        {
+            "affiliations": [],
+            "name": "Xiaoyu Liu"
+        },
+        {
+            "affiliations": [],
+            "name": "Jiaxin Yuan"
+        },
+        {
+            "affiliations": [],
+            "name": "Pu Hua"
+        },
+        {
+            "affiliations": [],
+            "name": "Shuzhen Li"
+        },
+        {
+            "affiliations": [],
+            "name": "Yanjie Ze Hal Daum\u00e9 III"
+        },
+        {
+            "affiliations": [],
+            "name": "Furong Huang"
+        },
+        {
+            "affiliations": [],
+            "name": "Huazhe Xu"
+        }
+    ],
+    "id": "SP:36c12b9f9cd948a4d2b7c672ef2730553cbab604",
+    "references": [
+        {
+            "authors": [
+                "Brandon Amos",
+                "Samuel Stanton",
+                "Denis Yarats",
+                "Andrew Gordon Wilson"
+            ],
+            "title": "On the model-based stochastic value gradient for continuous reinforcement learning",
+            "venue": "In L4DC,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Jordan Ash",
+                "Ryan P Adams"
+            ],
+            "title": "On warm-starting neural network training",
+            "venue": "Advances in neural information processing systems,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Peter Auer"
+            ],
+            "title": "Using confidence bounds for exploitation-exploration trade-offs",
+            "venue": "J. Mach. Learn. Res.,",
+            "year": 2002
+        },
+        {
+            "authors": [
+                "Adri\u00e0 Puigdom\u00e8nech Badia",
+                "Pablo Sprechmann",
+                "Alex Vitvitskyi",
+                "Zhaohan Daniel Guo",
+                "Bilal Piot",
+                "Steven Kapturowski",
+                "Olivier Tieleman",
+                "Mart\u0131\u0301n Arjovsky",
+                "Alexander Pritzel",
+                "Andrew Bolt",
+                "Charles Blundell"
+            ],
+            "title": "Never give up: Learning directed exploration strategies",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Marc G. Bellemare",
+                "Sriram Srinivasan",
+                "Georg Ostrovski",
+                "Tom Schaul",
+                "David Saxton",
+                "R\u00e9mi Munos"
+            ],
+            "title": "Unifying count-based exploration and intrinsic motivation",
+            "venue": "In NIPS,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Richard Bellman"
+            ],
+            "title": "A markovian decision process",
+            "venue": "Journal of mathematics and mechanics, pp",
+            "year": 1957
+        },
+        {
+            "authors": [
+                "Yuri Burda",
+                "Harrison Edwards",
+                "Amos J. Storkey",
+                "Oleg Klimov"
+            ],
+            "title": "Exploration by random network distillation",
+            "venue": "In ICLR (Poster). OpenReview.net,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Edoardo Cetin",
+                "Philip J. Ball",
+                "Stephen J. Roberts",
+                "Oya \u00c7eliktutan"
+            ],
+            "title": "Stabilizing off-policy deep reinforcement learning from pixels",
+            "venue": "In ICML,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Annie S. Chen",
+                "HyunJi Nam",
+                "Suraj Nair",
+                "Chelsea Finn"
+            ],
+            "title": "Batch exploration with examples for scalable robotic reinforcement learning",
+            "venue": "IEEE Robotics Autom. Lett., 6(3):4401\u20134408,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Xinyue Chen",
+                "Che Wang",
+                "Zijian Zhou",
+                "Keith W. Ross"
+            ],
+            "title": "Randomized ensembled double q-learning: Learning fast without a model",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Pierluca D\u2019Oro",
+                "Max Schwarzer",
+                "Evgenii Nikishin",
+                "Pierre-Luc Bacon",
+                "Marc G. Bellemare",
+                "Aaron C. Courville"
+            ],
+            "title": "Sample-efficient reinforcement learning by breaking the replay ratio barrier",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Meire Fortunato",
+                "Mohammad Gheshlaghi Azar",
+                "Bilal Piot",
+                "Jacob Menick",
+                "Matteo Hessel",
+                "Ian Osband",
+                "Alex Graves",
+                "Volodymyr Mnih",
+                "R\u00e9mi Munos",
+                "Demis Hassabis",
+                "Olivier Pietquin",
+                "Charles Blundell",
+                "Shane Legg"
+            ],
+            "title": "Noisy networks for exploration",
+            "venue": "In ICLR (Poster). OpenReview.net,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Meire Fortunato",
+                "Mohammad Gheshlaghi Azar",
+                "Bilal Piot",
+                "Jacob Menick",
+                "Matteo Hessel",
+                "Ian Osband",
+                "Alex Graves",
+                "Volodymyr Mnih",
+                "Remi Munos",
+                "Demis Hassabis",
+                "Olivier Pietquin",
+                "Charles Blundell",
+                "Shane Legg"
+            ],
+            "title": "Noisy networks for exploration",
+            "venue": "In International Conference on Learning Representations,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "\u00d6zlem G\u00fczel",
+                "Ilker Sahin",
+                "Chris Ryan"
+            ],
+            "title": "Push-motivation-based emotional arousal: A research study in a coastal destination",
+            "venue": "Journal of Destination Marketing & Management,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Danijar Hafner",
+                "Timothy P. Lillicrap",
+                "Ian Fischer",
+                "Ruben Villegas",
+                "David Ha",
+                "Honglak Lee",
+                "James Davidson"
+            ],
+            "title": "Learning latent dynamics for planning from pixels",
+            "venue": "In ICML,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Danijar Hafner",
+                "Timothy P. Lillicrap",
+                "Jimmy Ba",
+                "Mohammad Norouzi"
+            ],
+            "title": "Dream to control: Learning behaviors by latent imagination",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Danijar Hafner",
+                "Timothy P. Lillicrap",
+                "Mohammad Norouzi",
+                "Jimmy Ba"
+            ],
+            "title": "Mastering atari with discrete world models",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Danijar Hafner",
+                "Jurgis Pasukonis",
+                "Jimmy Ba",
+                "Timothy Lillicrap"
+            ],
+            "title": "Mastering diverse domains through world models",
+            "venue": "arXiv preprint arXiv:2301.04104,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Nicklas Hansen",
+                "Xiaolong Wang"
+            ],
+            "title": "Generalization in reinforcement learning by soft data augmentation",
+            "venue": "In International Conference on Robotics and Automation,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Nicklas Hansen",
+                "Hao Su",
+                "Xiaolong Wang"
+            ],
+            "title": "Temporal difference learning for model predictive control",
+            "venue": "In ICML,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Harrison",
+                "David W"
+            ],
+            "title": "Arousal theory. Brain Asymmetry and Neural Systems: Foundations in Clinical Neuroscience and Neuropsychology",
+            "venue": "pp. 427\u2013435,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Elad Hazan",
+                "Sham M. Kakade",
+                "Karan Singh",
+                "Abby Van Soest"
+            ],
+            "title": "Provably efficient maximum entropy exploration",
+            "venue": "In ICML, volume 97 of Proceedings of Machine Learning Research,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Takuya Hiraoka",
+                "Takahisa Imagawa",
+                "Taisei Hashimoto",
+                "Takashi Onishi",
+                "Yoshimasa Tsuruoka"
+            ],
+            "title": "Dropout q-functions for doubly efficient reinforcement learning",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Rein Houthooft",
+                "Xi Chen",
+                "Yan Duan",
+                "John Schulman",
+                "Filip De Turck",
+                "Pieter Abbeel"
+            ],
+            "title": "VIME: variational information maximizing exploration",
+            "venue": "In NIPS,",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Tianying Ji",
+                "Yu Luo",
+                "Fuchun Sun",
+                "Xianyuan Zhan",
+                "Jianwei Zhang",
+                "Huazhe Xu"
+            ],
+            "title": "Seizing serendipity: Exploiting the value of past success in off-policy actor-critic",
+            "venue": "arXiv preprint arXiv:2306.02865,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Chi Jin",
+                "Akshay Krishnamurthy",
+                "Max Simchowitz",
+                "Tiancheng Yu"
+            ],
+            "title": "Reward-free exploration for reinforcement learning",
+            "venue": "In ICML, volume 119 of Proceedings of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Leslie Pack Kaelbling",
+                "Michael L Littman",
+                "Anthony R Cassandra"
+            ],
+            "title": "Planning and acting in partially observable stochastic domains",
+            "venue": "Artificial intelligence,",
+            "year": 1998
+        },
+        {
+            "authors": [
+                "Emilie Kaufmann",
+                "Pierre M\u00e9nard",
+                "Omar Darwiche Domingues",
+                "Anders Jonsson",
+                "Edouard Leurent",
+                "Michal Valko"
+            ],
+            "title": "Adaptive reward-free exploration",
+            "venue": "In ALT,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Dongyoung Kim",
+                "Jinwoo Shin",
+                "Pieter Abbeel",
+                "Younggyo Seo"
+            ],
+            "title": "Accelerating reinforcement learning with value-conditional state entropy exploration",
+            "venue": "arXiv preprint arXiv:2305.19476,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Aviral Kumar",
+                "Rishabh Agarwal",
+                "Dibya Ghosh",
+                "Sergey Levine"
+            ],
+            "title": "Implicit under-parameterization inhibits data-efficient deep reinforcement learning",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Michael Laskin",
+                "Kimin Lee",
+                "Adam Stooke",
+                "Lerrel Pinto",
+                "Pieter Abbeel",
+                "Aravind Srinivas"
+            ],
+            "title": "Reinforcement learning with augmented data",
+            "venue": "In NeurIPS,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Michael Laskin",
+                "Aravind Srinivas",
+                "Pieter Abbeel"
+            ],
+            "title": "CURL: contrastive unsupervised representations for reinforcement learning",
+            "venue": "In ICML, volume 119 of Proceedings of Machine Learning Research,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Alex X. Lee",
+                "Anusha Nagabandi",
+                "Pieter Abbeel",
+                "Sergey Levine"
+            ],
+            "title": "Stochastic latent actor-critic: Deep reinforcement learning with a latent variable model",
+            "venue": "In NeurIPS,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Lisa Lee",
+                "Benjamin Eysenbach",
+                "Emilio Parisotto",
+                "Eric Xing",
+                "Sergey Levine",
+                "Ruslan Salakhutdinov"
+            ],
+            "title": "Efficient exploration via state marginal matching",
+            "venue": "arXiv preprint arXiv:1906.05274,",
+            "year": 1906
+        },
+        {
+            "authors": [
+                "Timothy P. Lillicrap",
+                "Jonathan J. Hunt",
+                "Alexander Pritzel",
+                "Nicolas Heess",
+                "Tom Erez",
+                "Yuval Tassa",
+                "David Silver",
+                "Daan Wierstra"
+            ],
+            "title": "Continuous control with deep reinforcement learning",
+            "venue": "In ICLR (Poster),",
+            "year": 2016
+        },
+        {
+            "authors": [
+                "Clare Lyle",
+                "Mark Rowland",
+                "Will Dabney"
+            ],
+            "title": "Understanding and preventing capacity loss in reinforcement learning",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Clare Lyle",
+                "Zeyu Zheng",
+                "Evgenii Nikishin",
+                "Bernardo \u00c1vila Pires",
+                "Razvan Pascanu",
+                "Will Dabney"
+            ],
+            "title": "Understanding plasticity in neural networks",
+            "venue": "In ICML,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Pierre M\u00e9nard",
+                "Omar Darwiche Domingues",
+                "Anders Jonsson",
+                "Emilie Kaufmann",
+                "Edouard Leurent",
+                "Michal Valko"
+            ],
+            "title": "Fast active learning for pure exploration in reinforcement learning",
+            "venue": "In ICML,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Pierre M\u00e9nard",
+                "Omar Darwiche Domingues",
+                "Xuedong Shang",
+                "Michal Valko"
+            ],
+            "title": "UCB momentum q-learning: Correcting the bias without forgetting",
+            "venue": "In ICML,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Mirco Mutti",
+                "Riccardo De Santi",
+                "Marcello Restelli"
+            ],
+            "title": "The importance of non-markovianity in maximum state entropy exploration",
+            "venue": "In ICML,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Evgenii Nikishin",
+                "Max Schwarzer",
+                "Pierluca D\u2019Oro",
+                "Pierre-Luc Bacon",
+                "Aaron C. Courville"
+            ],
+            "title": "The primacy bias in deep reinforcement learning",
+            "venue": "In ICML,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Evgenii Nikishin",
+                "Junhyuk Oh",
+                "Georg Ostrovski",
+                "Clare Lyle",
+                "Razvan Pascanu",
+                "Will Dabney",
+                "Andr\u00e9 Barreto"
+            ],
+            "title": "Deep reinforcement learning with plasticity injection",
+            "venue": "arXiv preprint arXiv:2305.15555,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Georg Ostrovski",
+                "Marc G. Bellemare",
+                "A\u00e4ron van den Oord",
+                "R\u00e9mi Munos"
+            ],
+            "title": "Count-based exploration with neural density models",
+            "venue": "In ICML,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Deepak Pathak",
+                "Pulkit Agrawal",
+                "Alexei A. Efros",
+                "Trevor Darrell"
+            ],
+            "title": "Curiosity-driven exploration by self-supervised prediction",
+            "venue": "In ICML,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Andrew Patterson",
+                "Samuel Neumann",
+                "Martha White",
+                "Adam White"
+            ],
+            "title": "Empirical design in reinforcement learning, 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Matthias Plappert",
+                "Rein Houthooft",
+                "Prafulla Dhariwal",
+                "Szymon Sidor",
+                "Richard Y. Chen",
+                "Xi Chen",
+                "Tamim Asfour",
+                "Pieter Abbeel",
+                "Marcin Andrychowicz"
+            ],
+            "title": "Parameter space noise for exploration",
+            "venue": "In ICLR (Poster). OpenReview.net,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Aravind Rajeswaran",
+                "Vikash Kumar",
+                "Abhishek Gupta",
+                "Giulia Vezzani",
+                "John Schulman",
+                "Emanuel Todorov",
+                "Sergey Levine"
+            ],
+            "title": "Learning complex dexterous manipulation with deep reinforcement learning and demonstrations",
+            "venue": "In Robotics: Science and Systems,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Thomas R\u00fcckstie\u00df",
+                "Frank Sehnke",
+                "Tom Schaul",
+                "Daan Wierstra",
+                "Yi Sun",
+                "J\u00fcrgen Schmidhuber"
+            ],
+            "title": "Exploring parameter space in reinforcement learning",
+            "venue": "Paladyn J. Behav. Robotics,",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Max Schwarzer",
+                "Ankesh Anand",
+                "Rishab Goel",
+                "R. Devon Hjelm",
+                "Aaron C. Courville",
+                "Philip Bachman"
+            ],
+            "title": "Data-efficient reinforcement learning with self-predictive representations",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Max Schwarzer",
+                "Johan Samir Obando-Ceron",
+                "Aaron C. Courville",
+                "Marc G. Bellemare",
+                "Rishabh Agarwal",
+                "Pablo Samuel Castro"
+            ],
+            "title": "Bigger, better, faster: Human-level atari with human-level efficiency",
+            "venue": "In ICML,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Frank Sehnke",
+                "Christian Osendorfer",
+                "Thomas R\u00fcckstie\u00df",
+                "Alex Graves",
+                "Jan Peters",
+                "J\u00fcrgen Schmidhuber"
+            ],
+            "title": "Parameter-exploring policy gradients",
+            "venue": "Neural Networks,",
+            "year": 2010
+        },
+        {
+            "authors": [
+                "Ramanan Sekar",
+                "Oleh Rybkin",
+                "Kostas Daniilidis",
+                "Pieter Abbeel",
+                "Danijar Hafner",
+                "Deepak Pathak"
+            ],
+            "title": "Planning to explore via self-supervised world models",
+            "venue": "In ICML,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Younggyo Seo",
+                "Lili Chen",
+                "Jinwoo Shin",
+                "Honglak Lee",
+                "Pieter Abbeel",
+                "Kimin Lee"
+            ],
+            "title": "State entropy maximization with random encoders for efficient exploration",
+            "venue": "In ICML,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ghada Sokar",
+                "Rishabh Agarwal",
+                "Pablo Samuel Castro",
+                "Utku Evci"
+            ],
+            "title": "The dormant neuron phenomenon in deep reinforcement learning",
+            "venue": "In ICML,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "H. Francis Song",
+                "Abbas Abdolmaleki",
+                "Jost Tobias Springenberg",
+                "Aidan Clark",
+                "Hubert Soyer",
+                "Jack W. Rae",
+                "Seb Noury",
+                "Arun Ahuja",
+                "Siqi Liu",
+                "Dhruva Tirumala",
+                "Nicolas Heess",
+                "Dan Belov",
+                "Martin A. Riedmiller",
+                "Matthew M. Botvinick"
+            ],
+            "title": "V-MPO: on-policy maximum a posteriori policy optimization for discrete and continuous control",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "H. Francis Song",
+                "Abbas Abdolmaleki",
+                "Jost Tobias Springenberg",
+                "Aidan Clark",
+                "Hubert Soyer",
+                "Jack W. Rae",
+                "Seb Noury",
+                "Arun Ahuja",
+                "Siqi Liu",
+                "Dhruva Tirumala",
+                "Nicolas Heess",
+                "Dan Belov",
+                "Martin A. Riedmiller",
+                "Matthew M. Botvinick"
+            ],
+            "title": "V-MPO: on-policy maximum a posteriori policy optimization for discrete and continuous control",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2020
+        },
+        {
+            "authors": [
+                "Adam Stooke",
+                "Kimin Lee",
+                "Pieter Abbeel",
+                "Michael Laskin"
+            ],
+            "title": "Decoupling representation learning from reinforcement learning",
+            "venue": "In ICML,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Haoran Tang",
+                "Rein Houthooft",
+                "Davis Foote",
+                "Adam Stooke",
+                "Xi Chen",
+                "Yan Duan",
+                "John Schulman",
+                "Filip De Turck",
+                "Pieter Abbeel"
+            ],
+            "title": "exploration: A study of count-based exploration for deep reinforcement learning",
+            "venue": "In NIPS,",
+            "year": 2017
+        },
+        {
+            "authors": [
+                "Yuval Tassa",
+                "Yotam Doron",
+                "Alistair Muldal",
+                "Tom Erez",
+                "Yazhe Li",
+                "Diego de Las Casas",
+                "David Budden",
+                "Abbas Abdolmaleki",
+                "Josh Merel",
+                "Andrew Lefrancq"
+            ],
+            "title": "Deepmind control suite",
+            "venue": "arXiv preprint arXiv:1801.00690,",
+            "year": 2018
+        },
+        {
+            "authors": [
+                "Xiyao Wang",
+                "Ruijie Zheng",
+                "Yanchao Sun",
+                "Ruonan Jia",
+                "Wichayaporn Wongkamjan",
+                "Huazhe Xu",
+                "Furong Huang"
+            ],
+            "title": "Coplanner: Plan to roll out conservatively but to explore optimistically for model-based rl, 2023",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Pawel Wawrzynski"
+            ],
+            "title": "Control policy with autocorrelated noise in reinforcement learning for robotics",
+            "venue": "International Journal of Machine Learning and Computing,",
+            "year": 2015
+        },
+        {
+            "authors": [
+                "Qisong Yang",
+                "Matthijs T.J. Spaan"
+            ],
+            "title": "CEM: constrained entropy maximization for task-agnostic safe exploration",
+            "venue": "In AAAI,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Denis Yarats",
+                "Ilya Kostrikov",
+                "Rob Fergus"
+            ],
+            "title": "Image augmentation is all you need: Regularizing deep reinforcement learning from pixels",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Denis Yarats",
+                "Rob Fergus",
+                "Alessandro Lazaric",
+                "Lerrel Pinto"
+            ],
+            "title": "Mastering visual continuous control: Improved data-augmented reinforcement learning",
+            "venue": "In ICLR. OpenReview.net,",
+            "year": 2022
+        },
+        {
+            "authors": [
+                "Tianhe Yu",
+                "Deirdre Quillen",
+                "Zhanpeng He",
+                "Ryan Julian",
+                "Karol Hausman",
+                "Chelsea Finn",
+                "Sergey Levine"
+            ],
+            "title": "Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning",
+            "venue": "In CoRL,",
+            "year": 2019
+        },
+        {
+            "authors": [
+                "Zhecheng Yuan",
+                "Sizhe Yang",
+                "Pu Hua",
+                "Can Chang",
+                "Kaizhe Hu",
+                "Huazhe Xu"
+            ],
+            "title": "RL-vigen: A reinforcement learning benchmark for visual generalization",
+            "venue": "In Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Tianjun Zhang",
+                "Paria Rashidinejad",
+                "Jiantao Jiao",
+                "Yuandong Tian",
+                "Joseph E. Gonzalez",
+                "Stuart Russell"
+            ],
+            "title": "MADE: exploration via maximizing deviation from explored regions",
+            "venue": "In NeurIPS,",
+            "year": 2021
+        },
+        {
+            "authors": [
+                "Ruijie Zheng",
+                "Xiyao Wang",
+                "Yanchao Sun",
+                "Shuang Ma",
+                "Jieyu Zhao",
+                "Huazhe Xu",
+                "Hal Daum\u00e9 III",
+                "Furong Huang"
+            ],
+            "title": "TACO: Temporal latent action-driven contrastive loss for visual reinforcement learning",
+            "venue": "In Thirty-seventh Conference on Neural Information Processing Systems,",
+            "year": 2023
+        },
+        {
+            "authors": [
+                "Wang",
+                "Yuan"
+            ],
+            "title": "Unlike standard DMC tasks where the agents have a static background, DMC-Generalization introduces a dynamic element by inserting a video clip into the background. If a low dormant ratio truly corresponded to significant frame-to-frame changes, then we would expect the dormant ratio in DMC-Gen to be low throughout the training process",
+            "year": 2023
+        }
+    ],
+    "sections": [
+        {
+            "heading": "1 INTRODUCTION",
+            "text": "Visual deep reinforcement learning (RL) agents that tackle complex continuous control tasks using high-dimensional pixels are crucial. Recent progress has been made through the incorporation of\n\u2217Equal contribution. \u2020Corresponding author. {xgw23@mails, huazhe xu@mail}.tsinghua.edu.cn 1Please refer to https://drm-rl.github.io/ for experiment videos and benchmark results.\ndata augmentation (Yarats et al., 2022; 2021; Laskin et al., 2020a), self-supervised representation learning (Zheng et al., 2023; Laskin et al., 2020b; Stooke et al., 2021; Schwarzer et al., 2021; D\u2019Oro et al., 2023), regularization of the temporal difference update (Cetin et al., 2022), and high updateto-data (UTD) ratio (Hiraoka et al., 2022). Nonetheless, the sample efficiency exhibited by these RL agents remains unsatisfactory. To be more specific, visual RL\u2019s inability first appears in the face of complex kinematics and a high number of degrees of freedom (DoFs), such as the Dog and Humanoid tasks in the DeepMind Control Suite (Tassa et al., 2018) or dexterous hand manipulation tasks in Adroit (Rajeswaran et al., 2018) without demonstrations. Second, the current leading visual RL agents might get stuck in the local optimum during the learning process under different initial random seeds. The inability to deal with complex systems and the presence of broken random seeds combined pose significant challenges to deploying visual RL agents in real-world applications.\nIn this paper, we examine the behaviors of visual RL agents at different stages of training. Intriguingly, a recurrent issue we identify by observing the learning agents\u2019 behavior is that the agents frequently become motorically inactive during the initial phases of training, hindering the effective exploration of useful behaviors. When the agent is experiencing motor inactivity, we find that the policy neural network also possesses a high rate of inactive neurons, which is defined as dormant neurons (Sokar et al., 2023) in the literature. As the training progresses, the agents\u2019 acquisition of new skills is usually accompanied by a decline in the portion of dormant neurons i.e., dormant ratio. Hence, we hypothesize and empirically verify that the dormant ratio acts as an inherent gauge of an agent\u2019s activity level, irrespective of the external rewards it receives. Such a connection opens up a new path for balancing between exploration and exploitation in RL agents. Remarkably, this pattern of inactivity in motor skills and neurons mirrors the arousal theory (Harrison & W, 2015; Gu\u0308zel et al., 2020) in neuroscience, which states that an optimal neural network activity level is essential for enhancing attention, memory, and learning efficiency.\nBased on this observation and insight, we propose to train visual RL agents with Dormant ratio Minimization (DrM). DrM introduces three simple mechanisms to effectively balance between exploration and exploitation while lowering the dormant ratio: a periodical neural network weight perturbation mechanism, a dormant-ratio-based exploration scheduler, and a dormant-ratio-based exploitation mechanism extended from Chen et al. (2021a). Consequently, the agent could emphasize exploration when the dormant ratio is high and shift its focus to exploitation when the dormant ratio is low. DrM is easy to implement, computationally efficient, and empirically sample efficient.\nDrM is evaluated across three different domains, Deepmind Control Suite (Tassa et al., 2018), MetaWorld (Yu et al., 2019), and Adroit (Rajeswaran et al., 2018), including 19 tasks within the realm of locomotion control, tabletop manipulation, and dexterous hand manipulation. Most notably, DrM is the first documented model-free algorithm that reliably solves complex dog and manipulator tasks, as well as demonstration-free Adroit dexterous hand manipulation tasks from pixels. Furthermore, compared with previous state-of-the-art model-free algorithms, DrM is significantly more sample efficient, especially on tasks with sparse rewards. To be precise, our technique requires 70%, 45%, and 60% fewer samples to match the peak asymptotic performance seen in the three baseline methods on the Deepmind Control suite, MetaWorld, and Adroit, respectively. Moreover, in terms of asymptotic performance, our method exhibits improvements of 65%, 35%, and 75% over the best-performing baseline on the Deepmind Control suite, MetaWorld, and Adroit, respectively.\nBelow, we summarize our key contributions:\n1. Through systematic examinations of the dormant ratio within agents performing continuous control tasks, we establish a crucial insight that a decline in the dormant ratio is an early indicator of successful skill acquisition, even before the increase of reward.\n2. We introduce a mechanism that periodically perturbs the model weights of the agent, effectively reducing the dormant ratio and hence accelerating skill acquisition.\n3. We additionally design a dormant-ratio-based self-adaptive exploration-exploitation scheduler that ensures the agent explores when the dormant ratio is high and exploits its past success when the dormant ratio is low.\n4. Extensive experiments on Deepmind Control Suite, MetaWorld, and Adroit show that DrM is particularly adept at handling tasks with sparse rewards or complex dynamics, achieving state-of-the-art performance against current leading visual RL baselines. DrM is the first\nmodel-free RL algorithm that can reliably solve complex tasks such as Dog, and Manipulator, as well as demonstration-free Adroit dexterous hand manipulation tasks directly from pixels."
+        },
+        {
+            "heading": "2 PRELIMINARY",
+            "text": "Visual reinforcement learning. In visual RL (Kaelbling et al., 1998), the landscape is characterized by the inherent challenge of partial observability when dealing with image inputs, which prompts us to approach the problem as a Partially Observable Markov Decision Process (POMDP) (Bellman, 1957), encapsulated within the tuple \u27e8S,O,A,P,R, \u03b3\u27e9. Here, S is the state space, O is the observation space and A stands for the action space. P : S \u00d7 A \u2192 \u2206(S) defines the state transition kernel, where \u2206(S) is a distribution over the state space. R : S \u00d7 A \u2192 R denotes the reward function and \u03b3 \u2208 [0, 1) represents the discount factor. Starting from an initial state s0 \u2208 S, the overarching objective within this framework is to discover an optimal policy \u03c0\u2217 : S \u2192 \u2206(A) that maximizes the expected cumulative return, formulated as E\u03c0[ \u2211\u221e t=0 \u03b3 trt].\nDormant Ratio of Neural Network The notion of dormant neurons, as originally introduced in Sokar et al. (2023), identifies neurons that have become nearly inactive, displaying minimal activation levels. This concept plays an important role in analyzing neural network behavior since networks used in online RL tend to lose their expressive ability. Definition 2.1. (Sokar et al., 2023) Consider a fully connected layer l with N l neurons in total. Given an input distribution D, let hli(x) denote the output of neuron i in layer l under input x \u2208 D. The score of a neuron i is:\nsli = Ex\u2208D|hli(x)|\n1 N l \u2211 k\u2208l Ex\u2208D|hlk(x)|\n(1)\nThen we define a neuron i in layer l to be \u03c4 -dormant if sli \u2264 \u03c4 . Definition 2.2. For a fully connected layer l, we denote the number of \u03c4 -dormant neurons as H l\u03c4 . The \u03c4 -dormant ratio of a neural network \u03d5 can be formally defined as follows:\n\u03b2\u03c4 = \u2211 l\u2208\u03d5 H l\u03c4/ \u2211 l\u2208\u03d5 N l (2)"
+        },
+        {
+            "heading": "3 METHOD",
+            "text": "In this section, we begin by discussing a key empirical observation: there is a connection between the sharp reduction of an agent\u2019s dormant ratio and the agent\u2019s skill acquisition in visual continuous control tasks. This is detailed in Section 3.1. Building on top of this crucial insight, in Section 3.2, we introduce our proposed algorithm DrM . In particular, we come up with three simple yet effective mechanisms in DrM such that they aim to not only reduce the agent\u2019s dormant ratio but also utilize the calculated dormant ratio to strike a balance between exploration and exploitation."
+        },
+        {
+            "heading": "3.1 KEY INSIGHT: DORMANT RATIO AND BEHAVIORAL VARIETY",
+            "text": "While previous works Lyle et al. (2022); Sokar et al. (2023) have highlighted that the actor/critic network of RL agents tends to lose expressivity during training, our empirical study offers a unique perspective on visual reinforcement learning for continuous control tasks: the dormant ratio and the agent\u2019s behavioral variety are correlated.\nTo illustrate this, we choose DrQ-v2, a leading model-free RL algorithm that learns directly from pixel observations. In Figure 2, we display the dormant ratio of an agent\u2019s policy network, alongside the behaviors learned by the agent during its training on the Hopper Hop task from DeepMind Control Suite as an example. Interestingly, as depicted in this figure, we notice that a sharp decline in the dormant ratio of an agent\u2019s policy network serves as an intrinsic indicator of the agent executing meaningful actions for exploration. Namely, when the dormant ratio is high, the agent becomes immobilized and struggles to make meaningful movements. However, as this ratio decreases, we observe a clear progression in the agent\u2019s mobility, as demonstrated in the figure: starting with crawling, advancing to standing, and ultimately, hopping. We refer the readers to Appendix A and project webpage for more visualizations of the dormant ratio.\nBased on these empirical observations, we conclude that the decline in the dormant ratio is closely linked to the agent\u2019s initiation of meaningful actions, marking a departure from its prior monotonous\nor random behaviors. Interestingly, this shift can happen without a corresponding rise in the agent\u2019s rewards. This suggests that the dormant ratio acts as an intrinsic metric, influenced more by the diversity and relevance of the agent\u2019s behaviors than by its received rewards, which underscores the value of the dormant ratio as a meaningful metric for understanding the behaviors of visual RL agents.\nMotivated by this insight, we aim to utilize dormant ratio as a pivotol tool for balancing exploration and exploitation. Many existing strategies adjust exploration noise based on static factors such as task complexity and training stage. Nonetheless, an agent\u2019s performance can fluctuate across tasks and with different initializations, making adjustments based solely on these static factors less efficient and often mandating exntensive, task-specific fine-tuning of hyperparameters. In contrast, customizing exploration noise according to the agent\u2019s current performance offers a more flexible and effective approach. While an intuitive approach would be to rely on reward signals, this strategy brings up the following challenges: 1) Reward values definitions vary across different tasks and domains, necessitating domain-specific knowledge for interpretation and hyperparameter tuning. 2) Even within a specific task, rewards might not indicate the agent\u2019s underlying learning phase. As depicted in Figure 2, an agent can attain similar rewards regardless of whether it has mastered motion or remains stagnant.\nIn light of this, the dormant ratio emerges as a more effective metric for adjusting the exploration and exploitation tradeoff, as it faithfully reflects the dynamic changes in the agent\u2019s behavior. Our design of DrM follows this simple intuition: a higher dormant ratio suggests the need for increased exploration, whereas a lower ratio calls for exploitation. As the dormant ratio captures the intrinsic characteristics of an agent\u2019s policy and behaviors, DrM is demonstrated to be effective across diverse tasks and domains with minimal hyperparameter tuning required.\n3.2 DRM : VISUAL REINFORCEMENT LEARNING THROUGH DORMANT RATIO MINIMIZATION\nAs shown in the previous subsection, given a fixed network capacity, it is essential for a visual RL agent to actively reduce its dormant ratio, thereby enabling it to explore the environment through purposeful actions. Driven by this insight, we introduce the three mechanisms of our proposed DrM algorithm in detail.\nDormant-ratio-guided perturbation. The goal of this mechanism is to perturb the model weights when the RL agent\u2019s network displays a high dormant ratio, losing its expressivity. Here, we utilize the perturbation reset method (D\u2019Oro et al., 2023; Ash & Adams, 2020) that employs soft resets, a process that interpolates all the agent\u2019s parameters between their prior values and randomly initialized values. This can be expressed with the following equation:\n\u03b8t = \u03b1\u03b8t\u22121 + (1\u2212 \u03b1)\u03d5, \u03d5 \u223c initializer (3)\nHere, \u03b1 is referred to as the perturb factor, \u03b8t\u22121 indicates the network weights before the reset, \u03b8t is the network weight after the reset, and \u03d5 is randomly initialized weights. Note that this is fundamentally different from the approach of NoisyNet (Fortunato et al., 2018b), which is designed to encourage exploration by injecting noise into the model weights at every timestep. Our goal here is to refresh the dormant weights only after a relatively long time interval (every 2e+5 frames). The value of \u03b1 is controlled by the dormant ratio \u03b2: \u03b1 = clip(1\u2212 k\u03b2, \u03b1min, \u03b1max), where k is the perturb rate.\nAwaken exploration scheduler. We aim to emphasize exploration with a large exploration noise when the dormant ratio is high, and reduce the exploration noise when the dormant ratio is low. Thus, rather than utilizing the linear decay of exploration noise variance in the original DrQ-v2, we introduce a dormant-ratio-based awaken exploration scheduler. Specifically, let \u03b2\u0302 denote a low dormant ratio threshold. We define the agent as \u201dawakened\u201d when its dormant ratio is below \u03b2\u0302. Let t0 be the number of timesteps until the agent becomes \u201dawakened\u201d from the start of training. The standard deviation of the exploration noise, \u03c3(t), is then defined as:\n\u03c3(t) =  max { 1 1+exp (\u2212(\u03b2\u2212\u03b2\u0302)/T ) , \u03c3linear(t\u2212 t0) } if awakened\n1 1+exp (\u2212(\u03b2\u2212\u03b2\u0302)/T )\notherwise (4)\nHere, T is the exploration temperature hyperparameter. \u03c3linear(\u00b7) is the linear schedule of exploration noise defined in DrQ-v2. We visualize the awaken exploration scheduler in Figure 3 as a function of the dormant ratio. Initially, when the dormant ratio is high, we would like to give the agent a big exploration noise to encourage effective exploration of the environment. As training progresses and the dormant ratio decreases to a relatively low level (below the threshold \u03b2\u0302), this indicates that the agent should transition from exploration to exploitation.\nDormant-ratio-guided exploitation. Furthermore, we introduce an another mechanism that skillfully prioritizes exploitation when the dormant ratio is low. For continuous control tasks using actor-critic algorithms, the critic aims to approximate r(s, a) + \u03b3Q(s\u2032, \u03c0(s\u2032)). In Ji et al. (2023), it demonstrates that value underestimation often occurs in the early stages of training, when the replay buffer could contain scarce high-quality episodes that the agent has encountered through exploration. In this training stage, \u03c0 is suboptimal, and the Q-value is often underestimated due to insufficient exploitation of high-quality samples in the replay buffer. To address this, it proposes to approximate a high expectile of Q values with V function using expectile regression, making the new target value\nr(s, a) + \u03b3[\u03bbV (s\u2032) + (1\u2212 \u03bb)Q(s\u2032, \u03c0(s\u2032))], \u03bb \u2208 [0, 1] (5)\nAs V converges more rapidly than Q-values, this mechanism allows the RL agent to quickly exploit its historically successful trajectories without introducing additional overestimation. Here, \u03bb serves as the exploitation hyperparameter. Higher values of \u03bb focus more on exploiting past successes through the fitted V function, the value of the best actions in that state. This emphasis on exploitation in our context refers to utilizing the V function to extract more value from historical experiences, aligning with its traditional usage of maximizing rewards based on known information. We introduce a dormantratio-guided exploitation technique \u03bb, which is now defined as a function of the dormant ratio \u03b2:\n\u03bb(\u03b2) = \u03bb\n1 + exp((\u03b2 \u2212 \u03b2\u0302)/T \u2032) (6)\nHere, \u03bb is the maximum exploitation hyperparameter, and T \u2032 is the exploitation temperature hyperparameter. \u03b2 and \u03b2\u0302 represent the dormant ratio and its threshold, as previously defined. In Figure 4, we plot the exploitation hyperparameter \u03bb as a function of the dormant ratio \u03b2. When the agent\u2019s dormant ratio exceeds the threshold \u03b2\u0302, a lower \u03bb is selected to emphasize exploration. Conversely, when the dormant ratio is low, indicating the agent can perform meaningful actions, a higher \u03bb is chosen to prioritize exploitation."
+        },
+        {
+            "heading": "4 EXPERIMENT",
+            "text": "In this section, we evaluate DrM on three visual continuous control benchmarks for both locomotion and robotic manipulation: DeepMind Control Suite (Tassa et al., 2018), MetaWorld (Yu et al.,\n2019), and Adroit (Rajeswaran et al., 2018). These environments feature rich visual elements such as textures and shading, necessitate fine-grained control due to complex geometry, and introduce additional challenges such as sparse rewards and high-dimensional action spaces that previous visual RL algorithms such as DrQv2 (Yarats et al., 2022) have been unable to solve.\nBaselines. We compare our algorithm with the three strongest existing model-free visual RL algorithms: DrQ-v2 (Yarats et al., 2022), ALIX (Cetin et al., 2022), and TACO (Zheng et al., 2023). ALIX and TACO build upon DrQ-v2. ALIX adds an adaptive regularization to the encoder\u2019s gradients to stabilize temporal difference learning from encoders. TACO incorporates an auxiliary temporal action-driven contrastive learning objective to learn state and action representations.\nDeepMind control suite. For Deepmind Control Suite, we evaluate DrM on eight hardest tasks from the Humanoid, Dog, and Manipulator domain, as well as Acrobot Swingup Sparse. The Manipulator domain is particularly challenging due to its sparse reward structure and the long horizon required for skill acquisition, while Humanoid and Dog tasks feature intricate kinematics, skinning weights, collision geometry, as well as muscle and tendon attachment points. This complexity makes these domains extremely difficult for algorithms to learn to control effectively. Following the experimental procedure described by Yarats et al. (2022), we evaluate DrM and all baseline algorithms over 30 million frames of online interaction, while Acrobot Swingup Sparse was run for 6 million frames. Intriguingly, in four dog tasks, we observe that existing baselines encounter a sudden performance decline for some random seeds. We have confirmed this is not due to the checkpoint loading mechanisms, and in contrast, DrM does not exhibit this issue in any of the four tasks. As shown in Figure 6, we note that DrM is the first documented model-free visual RL algorithm that is capable of solving both Dog and Manipulator domains in the DeepMind Control Suite using pixel observations. Additionally, we notice that the variation across different random seeds, as indicated by the shaded areas in our results, is considerably smaller for DrM compared to baseline algorithms. This reduced variation implies that DrM is more robust to different random initializations. In contrast, baseline algorithms frequently experience issues with broken seeds, where the agent fails to acquire any meaningful behaviors and receives consistently low rewards throughout the training process.\nMetaWorld. As shown in Figure 7, we evaluate DrM and baselines on eight challenging tasks including 4 very hard tasks with dense rewards following prior works and 4 medium tasks with sparse\nsuccess signals. Consistently across the spectrum of tasks within MetaWorld, our method outperforms other visual RL baselines, which demonstrates the significantly improved sample efficiency of DrM . Especially in more challenging scenarios featuring only sparse task completion rewards, existing visual RL baselines struggle to find a good policy, while DrM shines by achieving success rates on par with those using dense reward signals. This underscores the remarkable advantages brought by dormant-ratio-based exploration when dealing with tasks with sparse rewards.\nAdroit. In Figure 8, we also evaluate DrM on the Adroit domain, focusing on three dexterous hand manipulation tasks: Hammer, Door, and Pen, which requires controlling a robotic hand with 24 degrees of freedom. For additional task details, we refer readers to Rajeswaran et al. (2018). Given the task\u2019s high-dimensional action space and intricate physics, previous reinforcement learning algorithms have faced significant challenges, especially when learning from pixel observations. Notably, DrM is the first documented model-free visual RL algorithm that is capable of reliably solving tasks in the Adroit domain without expert demonstrations.\nDormant Ratio Analysis In this section, we conduct a detailed analysis and comparison of the dormant ratio changes during the training process of DrM and three baseline algorithms. We carry out experiments in three visual DMC tasks, and the experimental results are shown in Figure 9. From this figure, we observe that as training progresses, the dormant ratio of DrM rapidly decreases, indicating that our method effectively minimizes the dormant ratio. In comparison, other exisiting baselines all fail to effectively reduce the dormant ratio. This also explains why our approach exhibits high sample efficiency and performance.\nAblation Study We conduct ablation studies on the Adroit environment to evaluate the contribution of each component to our method, i.e., dormant-ratio-guided perturbation, awaken exploration, and dormant-ratio-guided exploitation. Additionally, to show that the dormant ratio plays a crucial role in integrating these three components, we also compare with a baseline where we use fixed parameters for the three mechanisms without being guided by the dormant ratio. (i.e., Drg perturbation with perturb factor \u03b1 fixed, fixed linear exploration schedule, and Drg exploitation with exploitation parameter \u03bb fixed.)\nThe experiment results are shown in Figure 10. From the results, we find that all three components are necessary to achieve the best results.\nWe observe that after removing the dormant-ratio-guided exploitation (DrM w/o Drg Exploitation), the final success rate decreased by nearly 20%, while eliminating either the dormantratio-guided perturbation (DrM w/o Drg Perturbation) or the awaken exploration (DrM w/o Awaken Exploration) lead to a decline of close to 40%, highlighting the importance of each component. In our ablated version without dormant-ratioguided perturbation, the agent only converges to a suboptimal policy, reaching a success rate of just about 40%. This is likely due to the fact that without the awaken exploration, the agent lacks sufficient exploration, making it easy to get stuck in a sub-optimal policy. Additionally, when removing the dormantratio-guided exploitation component, the agent lacks the ability to exploit its past success, and there fore exhibits a significantly slower learning curve."
+        },
+        {
+            "heading": "5 RELATED WORK",
+            "text": "Visual reinforcement learning. Visual reinforcement learning (RL) faces substantial challenges when training agents to make decisions based on pixel observations. Within this domain, two primary categories of approaches have emerged: model-based and model-free methods. Model-based methods (Hansen et al., 2022; Hafner et al., 2020; 2021; 2019; Lee et al., 2020; Hafner et al., 2023) accelerate visual RL by learning world models of the environment. On the other hand, model-free methods have made significant strides in improving data efficiency. These advancements include auxiliary losses, such as the contrastive objective in CURL (Laskin et al., 2020b), ATC (Stooke et al., 2021) for state representations, TACO (Zheng et al., 2023) for learning state and action representations through mutual information, and self-prediction representations in SPR (Schwarzer et al., 2021) and SR-SPR (D\u2019Oro et al., 2023). Data augmentation techniques, exemplified by RAD (Laskin et al., 2020a), DrQ (Yarats et al., 2021), and its enhanced version DrQv2 (Yarats et al., 2022), have been instrumental in enabling robust learning directly from pixel data, effectively bridging the gap between state-based and image-based RL. Additionally, regularization methods such as A-LIX (Cetin et al., 2022) have been introduced to mitigate catastrophic self-overfitting by providing adaptive regularization to convolutional features. Furthermore, strategies such as scaling network sizes (Schwarzer et al., 2023), high update-to-data (UTD) ratios (D\u2019Oro et al., 2023) and ensemble Q (Chen et al., 2021b; Hiraoka et al., 2022) have been explored to enhance sample efficiency in visual RL. TD-MPC (Hansen et al., 2022) merges the advantages of model-based and model-free methods through temporal difference learning. V-MPO (Song et al., 2020b), an on-policy adaptation of MPO (Song et al., 2020a), exhibits high asymptotic performance on challenging pixel-control tasks (Tassa et al., 2018). These various techniques collectively represent the state-of-the-art in visual RL, addressing the multifaceted challenges associated with decision-making from raw visual input. However, our proposed framework differs in that we address the sample efficiency challenge from\nthe perspective of dormant ratio. We propose more effective DrM that achieves superior performance than prior model-free baselines.\nLoss of expressivity of deep RL. In deep RL, there is a growing body of evidence suggesting that neural networks tend to lose their capacity and expressiveness for fitting new targets over time and ultimately harm their final performance. To alleviate this issue, Lyle et al. (2022) and Kumar et al. (2021) primarily focus on adjusting the learned feature values. Nikishin et al. (2022) shed light on the primacy bias when training on early data, which can impede further learning progress. Their proposal involves periodic parameter reinitialization for the last few layers while keeping the replay buffer unchanged. Lyle et al. (2023) aims to identify that the loss of plasticity is fundamentally influenced by the curvature of the loss landscape. Additionally, the dormant neuron phenomenon, as demonstrated by Sokar et al. (2023) prompts the development of ReDo, a method aimed at reducing dormant neurons and preserving network expressivity during training. Nikishin et al. (2023) introduces plasticity injection, a minimalistic intervention that temporarily freezes the current network and leverages newly initialized weights to facilitate continuous learning. These diverse approaches collectively address the issue of expressivity loss in deep RL, offering insights and methods to enhance computational efficiency and continual learning capabilities in deep RL algorithms. In our paper, we leverage the dormant ratio to gain valuable insights and interpretability into agent behavior in visual RL. We introduce a novel perturbation technique and exploration strategy based on the dormant ratio for addressing visual continuous control tasks.\nExploration in RL. Efficient exploration remains a substantial challenge in online RL, particularly in high-dimensional environments with sparse rewards. Based on different key ideas and principles, exploration strategies can be classified into two major categories. The first category is uncertaintyoriented exploration (Jin et al., 2020; Me\u0301nard et al., 2021a;b; Kaufmann et al., 2021; Wang et al., 2023), which often employs techniques such as the upper confidence bound (UCB) (Auer, 2002) to capture value estimate uncertainty to guide exploration. Another category is intrinsic motivationoriented exploration, which encourages agents to explore by maximizing intrinsic rewards. These rewards are often based on prediction errors (Houthooft et al., 2016; Pathak et al., 2017; Burda et al., 2019; Sekar et al., 2020; Badia et al., 2020) or count-based state novelty (Bellemare et al., 2016; Tang et al., 2017; Ostrovski et al., 2017), motivating the agent to visit states with high prediction errors or the unexplored states. A close idea is exploration by maximizing state entropy as an intrinsic reward (Lee et al., 2019; Hazan et al., 2019; Mutti et al., 2022; Yang & Spaan, 2023). Exploration methods have proven effective in enhancing sample efficiency in vision-based RL. RE3(Seo et al., 2021) utilizes a fixed random encoder to obtain a stable state entropy estimate, along with a value-conditional extension proposed in Kim et al. (2023). MADE (Zhang et al., 2021) introduces an adaptive regularization that maximizes deviation from explored regions, while BEE (Chen et al., 2021a) leverages past successes to capitalize on fortuitous circumstances. Closely relevant techniques involve injecting noise into action (Wawrzynski, 2015; Lillicrap et al., 2016) or parameter spaces (Ru\u0308ckstie\u00df et al., 2010; Sehnke et al., 2010; Fortunato et al., 2018a; Plappert et al., 2018). Furthermore, strategies that dynamically adjust exploration noise based on factors like agent performance, environmental complexity, and training stage have shown promise in Amos et al. (2021); Yarats et al. (2022). Our method distinguishes itself by directly perturbing the model weights of the agent to reduce the dormant ratio and design a dormant-ratio-guide exploration technique to improve exploration efficiency."
+        },
+        {
+            "heading": "6 CONCLUSION",
+            "text": "In this paper, we introduce a highly efficient online RL algorithm, DrM , which resolves the most complex visual control tasks that previous models failed to tackle, setting a new benchmark in both sample and time efficiency. Looking ahead, we perceive two main avenues for future RL exploration research. Firstly, the dormant ratio\u2019s interpretability is a captivating aspect, and subsequent research could delve into why it has a significant correlation with the diversity and significance of an agent\u2019s action, from a theoretical standpoint. Secondly, as the dormant ratio delivers a more precise depiction of an agent\u2019s early learning outcomes compared to rewards, it could be used in unsupervised RL. Additionally, although this work primarily concentrates on continuous control, the three key mechanisms we propose for DrM could well be adapted for discrete action tasks on DQN/Efficient Rainbow algorithms with some minor adjustments. We are confident that the dormant ratio\u2019s value\nextends beyond our current understanding, and that its strategic application could greatly enhance the performance of future visual reinforcement algorithms."
+        },
+        {
+            "heading": "A MORE VISUALIZATION RESULTS OF DORMANT RATIO",
+            "text": "0m 0.6m 1.2m 1.8m 2.4m 3m Number of Environment Steps\n0\n0.2\n0.4\n0.6\n0.8 1.0 Do rm an t R at io Acrobot Swingup Sparse (Success)\n0\n30\n60\n90\n120\n150\nEp iso\nde R\new ar\nd\n0m 0.2m 0.4m 0.6m 0.8m 1m Number of Environment Steps\n0\n0.2\n0.4\n0.6\n0.8\n1.0\nDo rm\nan t R\nat io\nCartpole Swingup Sparse (Success)\n0\n200\n400\n600\n800\n1000\nEp iso\nde R\new ar\nd\n0m 0.2m 0.4m 0.6m 0.8m 1m Number of Environment Steps\n0\n0.2\n0.4\n0.6\n0.8\n1.0\nDo rm\nan t R\nat io\nHopper Hop (Success)\n0\n30\n60\n90\n120\n150\nEp iso\nde R\new ar\nd\n0m 0.6m 1.2m 1.8m 2.4m 3m Number of Environment Steps\n0\n0.2\n0.4\n0.6\n0.8\n1.0\nDo rm\nan t R\nat io\nAcrobot Swingup Sparse (Failed)\n0\n20\n40\n60\n80\n100\nEp iso\nde R\new ar\nd\n0m 0.2m 0.4m 0.6m 0.8m 1m Number of Environment Steps\n0\n0.2\n0.4\n0.6\n0.8\n1.0\nDo rm\nan t R\nat io\nCartpole Swingup Sparse (Failed)\n0\n20\n40\n60\n80\n100\nEp iso\nde R\new ar\nd\n0m 0.2m 0.4m 0.6m 0.8m 1m Number of Environment Steps\n0\n0.2\n0.4\n0.6\n0.8\n1.0\nDo rm\nan t R\nat io\nHopper Hop (Failed)\n0\n20\n40\n60\n80\n100\nEp iso\nde R\new ar\nd\nDormant Ratio Episode Reward\nFigure 11: Analysis of the dormant ratio in successful vs. broken seeds reveals distinct behavior patterns. In a successful seed, a decreasing dormant ratio allows the agent to effectively explore the environment and learn skills. Conversely, in a broken seed, the agent becomes immobile and fails to discover meaningful motions.\nB TIME EFFICIENCY OF DRM\nTo assess the algorithms\u2019 speed, we measure their frames per second (FPS) on the same DeepMind Control Suite task, Dog Walk, using an identical Nvidia RTX A5000 GPU. As Figure 12 shows, while achieving significant sample efficiency and asymptotic performance, DrM only slightly compromises wall-clock time compared to DrQv2. Compared with two other baselines, DrM is roughly as timeefficient as ALIX and about three times faster than TACO, which needs a batch size four times larger than that of DrQ-v2 to compute its temporal contrastive loss.\nC IMPLEMENTATION DETAILS\nIn this section, we describe the implementation details of DrM . We have built DrM upon the publicly available source code of DrQ-v2. Subsequently, we present the pseudo-code outlining our approach.\nC.1 DORMANT RATIO CALCULATION\nIn this subsection, we demonstrate how the dormant ratio is calculated in Algorithm 1.\nAlgorithm 1 Dormant Ratio Calculation 1: procedure CAL DORMANT RATIO(model, inputs, \u03c4 -dormant threshold) 2: Initialize counters: total neurons, dormant neurons 3: Operate a forward propagation: model(inputs) 4: for each module in model do 5: if module is Fully Connected Layer then 6: output = average over the batch (|output of the forward propagation|) 7: average output = average over the neurons (output) 8: dormant neurons + = count ( output < average output \u00d7 \u03c4 -dormant threshold ) 9: total neurons + = neurons in this layer 10: end if 11: end for 12: return dormant ratio = dormant neurons / total neurons 13: end procedure\nC.2 DORMANT-RATIO-GUIDED PERTURBATION\nIn this subsection, we demonstrate how the perturbation is performed based on the dormant ratio in Algorithm 2.\nAlgorithm 2 Dormant-ratio-guided Perturbation 1: procedure PERTURB(network, optimizer, perturb factor) 2: Create a new network new net which has the same shape as the original network 3: Initialize weights of new net 4: for each layer and parameter in the network do 5: if layer is Fully Connected Layer then 6: Compute noise as: new net\u00d7 (1\u2212 perturb factor) 7: Update parameter with: net\u00d7 perturb factor + noise 8: end if 9: end for 10: Reset the state of the optimizer 11: return updated network, optimizer 12: end procedure\nC.3 AWAKEN EXPLORATION SCHEDULER\nIn this subsection, we demonstrate how the awaken exploration scheduler is performed in Algorithm 3.\nAlgorithm 3 Awaken Exploration Scheduler 1: Initialize awaken step to None 2: function STDDEV(step) 3: if awaken step is None then 4: return dormant stddev 5: else 6: linear stddev = linear schedule(step\u2212 awaken step) 7: return max(dormant stddev, linear stddev) 8: end if 9: end function 10: function UPDATE AWAKEN STEP(step) 11: if awaken step is None and dormant ratio < dormant ratio threshold then 12: awaken step\u2190 step 13: end if 14: end function\nC.4 DORMANT-RATIO-GUIDED EXPLOITATION\nIn this subsection, we demonstrate how the dormant-ratio-guided exploitation is performed in Algorithm 4.\nAlgorithm 4 Dormant-ratio-guided exploitation 1: function UPDATE VALUE NETWORK(obs, action) 2: Q1, Q2 = critic(obs, action) 3: Q = min(Q1, Q2) 4: V = Vnet(obs) 5: error = V \u2212Q\n6: sign = { 1 if error > 0 0 otherwise\n7: weight = (1\u2212 sign)expectile + sign(1\u2212 expectile) 8: value loss = mean(weight\u00d7 error2) 9: Update value network using value loss\n10: end function 11: function CAL TARGET Q(next obs, reward, discount) 12: action distribution = actor(next obs, awaken exploration scheduler) 13: Sample next action from the distribution with clipping 14: target Q1, target Q2 = critic target(next obs, next action) 15: target V explore = min(target Q1, target Q2) 16: target V exploit = Vnet(next obs) 17: target V = \u03bb\u00d7 target V exploit + (1\u2212 \u03bb)\u00d7 target V explore 18: target Q = reward + (discount\u00d7 target V) 19: return target Q 20: end function"
+        },
+        {
+            "heading": "D HYPERPARAMETERS",
+            "text": "D.1 HYPERPARAMETERS IN DRM\nWe summarize all the hyperparameters of DrM in Table 1. While we are trying to keep the settings identical for each of the task, there are a few specific deviations of DrM hyperparameters for some tasks. Additionally, in D.2, we demonstrate the performance of DrM with a single set of hyperparameters across these tasks.\nHammer, Pen, Door of Adroit: Exploitation expectile 0.7 Dog [Stand, Walk, Run], Humanoid Run, Coffee Push & Soccer: Maximum perturb factor \u03b1max = 0.6\nNote: For learning rate, feature dimension, and linear exploration schedule, we simply follow the standard of DrQ-v2, which has a separate setting for hard DMC tasks (lower learning rate, larger feature dimensionality, longer exploration schedule). These three hyperparameters are not introduced by DrM , and we do not do any tuning on these three.\nD.2 PERFORMANCE WITH ONE SET OF DRM HYPERPARAMETERS\nHere we show the performance of DrM on tasks where we use a single set of hyperparameters instead of the domain-specific ones.\n0m 5m 10m 15m 20m 25m 30m Number of Frames\n0\n200\n400\n600\n800\n1000\nEp iso\nde R\new ar\nd\nDog Stand\n0m 5m 10m 15m 20m 25m 30m Number of Frames\n0\n100\n200\n300\n400\n500\n600\n700\n800\nEp iso\nde R\new ar\nd\nDog Walk\n0m 5m 10m 15m 20m 25m 30m Number of Frames\n0\n50\n100\n150\n200\n250\n300\nEp iso\nde R\new ar\nd\nDog Run\n0m 5m 10m 15m 20m 25m 30m Number of Frames\n0\n50\n100\n150\n200\nEp iso\nde R\new ar\nd\nHumanoid Run\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Frames\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nCoffee Push\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Frames\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nSoccer\nHammer\nDoor\n100% Pen\nDrM DrM w. Fixed Hyperparameters\nIn general, we find that applying DrM with the default hyperparameter setting, using a unified set of hyperparameter off-the-shelf has a decently great performance across all tasks. But for some tasks such as Humanoid Run in DMC and Hammer in Adroit, some additional hyperparameter tuning would be beneficial to get further performance gain."
+        },
+        {
+            "heading": "E DRM VERSUS INTRINSIC REWARD BASED EXPLORATION TECHNIQUES",
+            "text": "While the primary advantage of our method (DrM ) lies in employing the dormant ratio to guide the agent\u2019s exploration-exploitation tradeoff, encouraging more active exploration of the environment, DrM demonstrates remarkable performance on the most challenging tasks, particularly those involving complex environmental dynamics and sparse rewards. Here, we compare DrMwith an intrinsic rewardbased exploration approach, which also aims for encouraging the exploration of a RL agent. For this comparison, we select Random Network Distillation (RND), a popular and widely used technique in intrinsic reward based exploration.\nFor RND, we implement RND on top of DrQ-v2 and compare its performance against DrM on three Adroit tasks. We introduce a random encoder f whose architecture is same as the encoder in DrQ-v2, and we introduce a predictor network g with the same architecture. The predictor network is then trained to predict representations from a random encoder f given the same observations, i.e., minimizing \u03f5 = \u2225f(si) \u2212 g(si)\u22252. We use prediction error \u03f5 as an intrinsic reward and learn a policy that maximizes rtotal = re + \u03c1ri. We perform hyperparameter search over the weight \u03c1 \u2208 {0.1, 1.0, 10.0} on the Pen task and and then use the best hyperparameter (\u03c1 = 1.0) for the three Adroit tasks.\nAs shown in Figure 14, an additional intrinsic exploration mechanism such as RND could indeed improve DrQ-v2\u2019s performance. (DrQ-v2 achieves 0% success rate across all tasks.) However, adding only an intrinsic exploration mechanism is still insufficient for the agents to discover the optimal policies. The performance gap again demonstrates the significance of DrM , which uses the dormant ratio to guide the agent\u2019s exploration-exploitation tradeoff. Furthermore, in principle, an RND-like intrinsic exploration technique could also be combined with DrM to further boost exploration. This integration could be implemented as a separate mechanism or as a replacement for the awaken exploration schedule in DrM . We could also use a similar strategy as in DrM , using the dormant ratio to control the magnitude of the intrinsic noise \u03c1. While we encourage future research in this direction, such exploration falls outside the scope of the current work."
+        },
+        {
+            "heading": "F COMPARISON WITH REDO",
+            "text": "To compare our approach with ReDo (Sokar et al., 2023), which only resets the weights of dormant neurons, we conducted experiments in three different environments on MetaWorld . In Figure 15, it can be observed that our method significantly outperforms the approach of resetting only dormant neurons and DrM with ReDo. We speculate that this improvement is due to the positive impact of resetting non-dormant neurons on exploration. Additionally, our use of the dormant ratio to guide exploration strategy distinguishes our approach from previous works.\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Environment Steps\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nSoccer (sparse)\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Environment Steps\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nHammer (sparse)\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Environment Steps\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nCoffee Push (sparse)\nDrQ-v2 DrQ+ReDo DrM(ReDo) DrM\nFigure 15: Comparison of DrM against ReDo (Sokar et al., 2023)"
+        },
+        {
+            "heading": "G DETAILED ABLATION RESULTS",
+            "text": "In this section, we present the results of additional ablation studies for DrM in addition to Figure 10. In particular, we conduct additional ablation studies on two MetWorld tasks, and we show the ablation study in three Adroit tasks separately instead of an aggregated plot."
+        },
+        {
+            "heading": "100% Pen",
+            "text": ""
+        },
+        {
+            "heading": "H AN ADDITIONAL ABLATIONON STUDY ON DORMANT-RATIO-GUIDED EXPLORATION",
+            "text": "To justify our design choice of dormant-ratio-guided exploration, here we have conducted an additional ablation study on the Adroit domain, where we compare DrM with a baseline such that it sets a maximal exploration noise (i.e., std = 1) before awakening and then using the linear schedule afterward.\nAs shown from Figure 17, we find that using the maximal exploration noise instead of our adaptive adjustment of exploration noise based on the dormant ratio results in significant performance degradation across all three Adroit tasks. This further justifies our design choice of the Dormant-ratio-guided exploration mechanism."
+        },
+        {
+            "heading": "I RESULTS WITH MORE RUNS",
+            "text": "Considering the variability in results introduced by random seeds and for statistical rigor, we conducted 10 runs of experiments for both DrQ-v2 and DrM across multiple MetaWorld environments, following the suggestion by Patterson et al. (2023). This was done to compare the performance of the algorithms across a broader range of seeds. It is evident that our algorithm is not sensitive to the randomness of seeds, and it consistently maintains a significant performance lead over baseline algorithms.\nDisassemble\nPick Place Wall\nSweep Into (sparse)"
+        },
+        {
+            "heading": "J EFFECT OF SHRINK-AND-PERTURB",
+            "text": "Regarding the potential complementary effects of \u201ddithering\u201d exploration introduced by the awaken scheduler and deeper exploration induced by network resets, we perform experiments by replacing reinitialized perturbations with the original initialization parameters. The results, depicted in the following figures, demonstrate that 1-shrink perturbations caused only a 10% decrease in performance in the Sweep-Into while maintaining comparable performance in Stick-Pull. This suggests that the combination of these exploration strategies may be complementary, providing a nuanced understanding of their interplay.\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Environment Steps\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nStick Pull\n0m 0.4m 0.8m 1.2m 1.6m 2m Number of Environment Steps\n0%\n20%\n40%\n60%\n80%\n100%\nSu cc\nes s R\nat e\nSweep Into\nDrM DrM (1-shrink)"
+        },
+        {
+            "heading": "K FURTHER DISCUSSION OF DORMANT RATIO",
+            "text": "In this section, we aim to evaluate an alternative hypothesis regarding the dormant ratio and DrM . The hypothesis is that dormant ratio measures the change from frame to frame and by minimizing it, DrM promotes the agent to maximize the velocity of change between frames, thereby encouraging exploration and yielding good empirical results. Through three experiments, we demonstrate that this is not the case. Instead, as argued in the main paper, the dormant ratio should be an intrinsic indicator of the agent\u2019s activity level, rather than merely reflecting the speed of change in observations from external environments.\nFirst, we performed an additional experiment using the DMC-Generalization Benchmark (Hansen & Wang, 2021; Yuan et al., 2023). Unlike standard DMC tasks where the agents have a static background, DMC-Generalization introduces a dynamic element by inserting a video clip into the background. If a low dormant ratio truly corresponded to significant frame-to-frame changes, then we would expect the dormant ratio in DMC-Gen to be low throughout the training process. However, our findings contradict this assumption. As demonstrated in Figure 19, the pattern of the dormant ratio in DMC-Gen mirrors that of ordinary DMC tasks. Initially, the agent\u2019s dormant ratio remains high, instead of being consistently low throughout the training, challenging the hypothesis that dormant ratio is merely a reflection of rapid frame-to-frame changes.\nNext, to further investigate whether using the difference between frames as an intrinsic reward for optimization is effective, we conducted an additional experiment on three Adroit tasks. The hypothesis suggests that by using the difference between consecutive observation frames as an intrinsic reward, an agent could achieve performance comparable to DrM by maximizing this reward. However, our empirical tests on three Adroit tasks indicate otherwise. For these experiments, we defined the intrinsic reward rit as the difference between the first and third frame of the agent\u2019s observations at timestep t. (Here, same as DrM , we follow the standard practice to use a stack of three consecutive image frames as the agent\u2019s observation at each timestep.) For our experiments, we calculated the L1 difference between the first and third frames. We then normalized this intrinsic reward using the running mean and standard deviation and trained a policy to maximize the total reward rtotal = re + ri.\nIn Figure 20, we show the performance of DrM against such baseline. As shown from the plot, simply maximizing the difference between frames clearly cannot solve the three tasks.\nFinally, it\u2019s important to note that if DrM solely focused on maximizing the difference between frames, it would likely struggle with tasks that require minimal motion, such as Acrobot Swingup, Humanoid Stand, and Dog Stand. In these tasks, excessive motion could lead to a low reward. Here we conducted an additional experiment on Cartpole Balance Sparse, a task that also necessitates reduced motion for maintaining balance. As illustrated in Figure 21, despite its simplicity, DrM continues to perform well when compared to baseline algorithms. This further indicates that DrM \u2019s effectiveness is not merely a result of maximizing frame-to-frame differences."
+        }
+    ],
+    "title": "DRM: MASTERING VISUAL REINFORCEMENT LEARN-",
+    "year": 2024
+}
