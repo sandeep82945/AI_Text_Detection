@@ -13,6 +13,8 @@ def download_pdfs_from_json(json_file, output_folder):
         if paper_link:
             i += 1
             print("Downloading file:", i)
+            if paper_link.split('=')[-1]+'.pdf' in list(os.listdir(output_folder)):
+                continue
 
             # Get response object for the PDF link
             response = requests.get(paper_link)
@@ -26,6 +28,6 @@ def download_pdfs_from_json(json_file, output_folder):
             print("File", i, "downloaded")
 
 # Example Usage:
-json_file_path = "/content/AI_Text_Detection/data_creation.py/paper_reviews_ICLR.json"
-output_folder_path = "/content/AI_Text_Detection/Downloaded pdfs"
+json_file_path = "/Users/sandeepkumar/AI_detection/AI_Text_Detection/data_creation.py/paper_reviews_ICLR.json"
+output_folder_path = "/Users/sandeepkumar/AI_detection/AI_Text_Detection/data/ICLR_PDFS"
 download_pdfs_from_json(json_file_path, output_folder_path)
