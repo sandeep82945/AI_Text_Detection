@@ -28,11 +28,8 @@ for submission in submissions:
     for i, review in enumerate(official_reviews, start=1):
         if 'content' in review:
           if 'rebuttal' not in review['content'] and 'acknowledgement' not in review['content'] and 'metareview' not in review['content']:
-            if 'decision' not in review['content']:
+            if 'decision' not in review['content'] and 'comment' not in review['content']:
               paper_data['Reviews'].append({f'Review {i} Content': review['content']})
-            else:
-              paper_data['Reviews'].append({'Paper Decision': review['content']})
-
     # Append the paper data to the review_data list
     review_data.append(paper_data)
 
